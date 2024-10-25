@@ -1,0 +1,12 @@
+{
+    "listeners": [
+        {
+        "protocol": "telnet",
+        "port": 4000
+        }
+    ],
+    "tick_interval": "2s",
+    "zones": {
+        "asset_path": "./assets"
+    }
+}
