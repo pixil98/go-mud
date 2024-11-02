@@ -3,65 +3,72 @@ package listener
 import (
 	"context"
 	"fmt"
-	"net"
+	"io"
 	"sync"
 
+	"github.com/iammegalith/telnet"
 	"github.com/pixil98/go-log/log"
+	"github.com/sirupsen/logrus"
 )
 
 type TelnetListener struct {
 	port uint16
-
-	wg sync.WaitGroup
+	cm   *ConnectionManager
 }
 
-func NewTelnetListener(port uint16) *TelnetListener {
+func NewTelnetListener(port uint16, cm *ConnectionManager) *TelnetListener {
 	return &TelnetListener{
 		port: port,
-		wg:   sync.WaitGroup{},
+		cm:   cm,
 	}
 }
 
 func (l *TelnetListener) Start(ctx context.Context) error {
-	listener, err := net.Listen("tcp", fmt.Sprintf(":%d", l.port))
+	handler := &telnetHandler{
+		cFunc:  l.cm.AcceptConnection,
+		logger: log.GetLogger(ctx),
+	}
+
+	svr := telnet.NewServer(fmt.Sprintf(":%d", l.port), handler)
+
+	// if the context is canceled, shutdown the server and all connections
+	go func() {
+		<-ctx.Done()
+		svr.Stop()
+	}()
+
+	err := svr.ListenAndServe()
 	if err != nil {
-		return fmt.Errorf("listening on port %d: %w", l.port, err)
+		return fmt.Errorf("serving telnet: %w", err)
 	}
-	defer listener.Close()
 
-	logger := log.GetLogger(ctx)
-	logger.Infof("listening for telnet on port %d", l.port)
-
-	for {
-		select {
-		case <-ctx.Done():
-			l.wg.Wait()
-			return nil
-		default:
-			conn, err := listener.Accept()
-			if err != nil {
-				logger.Errorf("accepting connection: %v", err)
-				continue
-			}
-
-			l.wg.Add(1)
-			go func() {
-				l.handleConnection(ctx, conn)
-				l.wg.Done()
-			}()
-		}
-	}
+	return nil
 }
 
-func (l *TelnetListener) handleConnection(ctx context.Context, conn net.Conn) {
-	defer conn.Close()
+type telnetHandler struct {
+	wg     sync.WaitGroup
+	cFunc  func(context.Context, io.ReadWriter)
+	logger logrus.FieldLogger
+	stop   chan bool
+}
 
-	logger := log.GetLogger(ctx)
-	logger.Infof("accepted connection from %s", conn.RemoteAddr())
+func (h *telnetHandler) HandleTelnet(conn *telnet.Connection) {
+	h.wg.Add(1)
+	defer h.wg.Done()
+	defer conn.Close() //TODO we should check this err
 
-	_, err := conn.Write([]byte("Hello, welcome to the mud!\n"))
-	if err != nil {
-		logger.Errorf("writing to connection: %v", err)
-		return
-	}
+	ctx, cancel := context.WithCancel(context.Background())
+	ctx = log.SetLogger(ctx, h.logger)
+
+	go func() {
+		<-h.stop
+		cancel()
+	}()
+
+	h.cFunc(ctx, conn)
+}
+
+func (h *telnetHandler) Stop() {
+	h.stop <- true
+	h.wg.Wait()
 }

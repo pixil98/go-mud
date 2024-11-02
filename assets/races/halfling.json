@@ -1,0 +1,12 @@
+{
+    "version": 1,
+    "id": "halfling-35",
+    "spec": {
+        "name": "Halfling",
+        "stats": {
+            "str": -2,
+            "dex": 2
+        },
+        "perks": []
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "dwarf-35",
+    "spec": {
+        "name": "Dwarf",
+        "stats": {
+            "con": 2,
+            "cha": -2
+        },
+        "perks": [
+            "darkvision"
+        ]
+    }
+}

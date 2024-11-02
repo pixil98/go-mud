@@ -9,8 +9,8 @@ import (
 
 type Config struct {
 	TickInterval string           `json:"tick_interval"`
-	Listeners    []ConfigListener `json:"listeners"`
-	Zones        ZoneConfig       `json:"zones"`
+	Listeners    []ListenerConfig `json:"listeners"`
+	Storage      StorageConfig    `json:"storage"`
 }
 
 func (c *Config) Validate() error {
@@ -30,7 +30,7 @@ func (c *Config) Validate() error {
 		}
 	}
 
-	el.Add(c.Zones.Validate())
+	el.Add(c.Storage.Validate())
 
 	return el.Err()
 }

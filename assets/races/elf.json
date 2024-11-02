@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "elf-35",
+    "spec": {
+        "name": "Elf",
+        "stats": {
+            "dex": 2,
+            "con": -2
+        },
+        "perks": [
+            "darkvision"
+        ]
+    }
+}

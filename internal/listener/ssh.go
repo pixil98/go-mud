@@ -30,7 +30,7 @@ func (l *SshListener) Start(ctx context.Context) error {
 	defer listener.Close()
 
 	logger := log.GetLogger(ctx)
-	logger.Infof("listening for telnet on port %d", l.port)
+	logger.Infof("listening for ssh on port %d", l.port)
 
 	for {
 		select {

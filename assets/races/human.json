@@ -1,0 +1,12 @@
+{
+    "version": 1,
+    "id": "human-35",
+    "spec": {
+        "name": "Human",
+        "stats": {
+            "str": -2,
+            "dex": 2
+        },
+        "perks": []
+    }
+}

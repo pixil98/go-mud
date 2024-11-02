@@ -27,12 +27,12 @@ func (lt *ListenerType) UnmarshalText(text []byte) error {
 	return nil
 }
 
-type ConfigListener struct {
+type ListenerConfig struct {
 	Protocol ListenerType `json:"protocol"`
 	Port     uint16       `json:"port"`
 }
 
-func (cl *ConfigListener) Validate() error {
+func (cl *ListenerConfig) Validate() error {
 	el := errors.NewErrorList()
 
 	if cl.Port == 0 {
@@ -42,10 +42,10 @@ func (cl *ConfigListener) Validate() error {
 	return el.Err()
 }
 
-func (cl *ConfigListener) NewListener() (service.Worker, error) {
+func (cl *ListenerConfig) NewListener(cm *listener.ConnectionManager) (service.Worker, error) {
 	switch cl.Protocol {
 	case ListenerTypeTelnet:
-		return listener.NewTelnetListener(cl.Port), nil
+		return listener.NewTelnetListener(cl.Port, cm), nil
 	default:
 		return nil, fmt.Errorf("unknown listener type: %v", cl.Protocol)
 	}

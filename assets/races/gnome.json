@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "gnome-35",
+    "spec": {
+        "name": "Gnome",
+        "stats": {
+            "str": -2,
+            "con": 2
+        },
+        "perks": [
+            "darkvision"
+        ]
+    }
+}

@@ -9,19 +9,19 @@ const (
 	DefaultTickLength = time.Second * 2
 )
 
-type Manager interface {
+type TickHandler interface {
 	Tick(context.Context) error
 }
 
 type MudDriver struct {
 	tickLength time.Duration
-	managers   []Manager
+	handlers   []TickHandler
 }
 
-func NewMudDriver(managers []Manager, opts ...MudDriverOpt) *MudDriver {
+func NewMudDriver(h []TickHandler, opts ...MudDriverOpt) *MudDriver {
 	d := &MudDriver{
 		tickLength: DefaultTickLength,
-		managers:   managers,
+		handlers:   h,
 	}
 
 	for _, opt := range opts {
@@ -47,7 +47,7 @@ func (d *MudDriver) Start(ctx context.Context) error {
 }
 
 func (d *MudDriver) Tick(ctx context.Context) error {
-	for _, m := range d.managers {
+	for _, m := range d.handlers {
 		if err := m.Tick(ctx); err != nil {
 			return err
 		}

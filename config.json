@@ -6,7 +6,15 @@
         }
     ],
     "tick_interval": "2s",
-    "zones": {
-        "asset_path": "./assets"
+    "storage": {
+        "characters": {
+            "path": "./assets/characters"
+        },
+        "pronouns": {
+            "path": "./assets/pronouns"
+        },
+        "races": {
+            "path": "./assets/races"
+        }
     }
 }
