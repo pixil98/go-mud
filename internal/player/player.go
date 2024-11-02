@@ -41,17 +41,13 @@ func (p *Player) Play(ctx context.Context) error {
 
 	var str string
 	for {
-
-		fmt.Println(p.flow)
 		// Run the next step in the current flow
 		done, err := p.flow.Run(str, p.state, p.conn)
 		if err != nil {
 			return fmt.Errorf("running flow %s: %w", p.flow.Name(), err)
 		}
-		fmt.Println("here 0")
 
 		if done {
-			fmt.Println("done")
 			if !p.loggedIn {
 				p.loggedIn = true
 				p.flow = p.mainFlow
@@ -60,7 +56,6 @@ func (p *Player) Play(ctx context.Context) error {
 				return nil
 			}
 		}
-		fmt.Println("here 1")
 
 		// Get the next input from the player
 		line, _, err := r.ReadLine()
@@ -71,8 +66,6 @@ func (p *Player) Play(ctx context.Context) error {
 				return fmt.Errorf("reading connection: %w", err)
 			}
 		}
-
-		fmt.Println("here 2")
 
 		// clean up the input
 		str = strings.TrimSpace(string(line))

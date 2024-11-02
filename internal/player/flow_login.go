@@ -34,7 +34,7 @@ func NewLoginFlow(c storage.Storer[*Character], ncFlow Flow) *loginFlow {
 
 func (f *loginFlow) Name() string {
 	if f.step == loginStepInNewCharFlow {
-		return fmt.Sprintf("login -> %w", f.ncFlow.Name())
+		return fmt.Sprintf("login -> %s", f.ncFlow.Name())
 	}
 
 	return "login"
