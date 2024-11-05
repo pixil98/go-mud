@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "say",
+    "spec": {
+        "handler": {
+            "function": "message",
+            "params": [
+                "zone-{{ state.zone }}-room-{{ state.room }}",
+                "$*"
+            ]
+        }
+    }
+}

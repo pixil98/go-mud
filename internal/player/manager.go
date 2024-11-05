@@ -4,23 +4,26 @@ import (
 	"context"
 	"io"
 
+	"github.com/pixil98/go-mud/internal/commands"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
 type PlayerManager struct {
-	players map[string]*Player
+	players    map[string]*Player
+	cmdHandler *commands.Handler
 
 	chars    storage.Storer[*Character]
 	pronouns storage.Storer[*Pronoun]
 	races    storage.Storer[*Race]
 }
 
-func NewPlayerManager(cs storage.Storer[*Character], ps storage.Storer[*Pronoun], rs storage.Storer[*Race]) *PlayerManager {
+func NewPlayerManager(cmd *commands.Handler, cs storage.Storer[*Character], ps storage.Storer[*Pronoun], rs storage.Storer[*Race]) *PlayerManager {
 	pm := &PlayerManager{
-		players:  map[string]*Player{},
-		chars:    cs,
-		pronouns: ps,
-		races:    rs,
+		players:    map[string]*Player{},
+		cmdHandler: cmd,
+		chars:      cs,
+		pronouns:   ps,
+		races:      rs,
 	}
 	return pm
 }
@@ -48,7 +51,7 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) *Player {
 		state:     &State{},
 		flow:      lf,
 		loginFlow: lf,
-		mainFlow:  NewMainFlow(m.pronouns, m.races, m.chars),
+		mainFlow:  NewMainFlow(m.cmdHandler, m.pronouns, m.races, m.chars),
 	}
 
 	return p

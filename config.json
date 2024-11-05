@@ -10,11 +10,19 @@
         "characters": {
             "path": "./assets/characters"
         },
+        "commands": {
+            "path": "./assets/commands"
+        },
         "pronouns": {
             "path": "./assets/pronouns"
         },
         "races": {
             "path": "./assets/races"
         }
+    },
+    "nats": {
+        "host": "127.0.0.1",
+        "port": 4223,
+        "start_timeout": "5s"
     }
 }

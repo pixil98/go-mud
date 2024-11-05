@@ -51,6 +51,7 @@ func (p *Player) Play(ctx context.Context) error {
 			if !p.loggedIn {
 				p.loggedIn = true
 				p.flow = p.mainFlow
+				//TODO: this calls the mainflow with the user's password still in the input
 				continue
 			} else {
 				return nil

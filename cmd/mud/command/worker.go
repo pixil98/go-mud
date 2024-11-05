@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/pixil98/go-mud/internal/commands"
 	"github.com/pixil98/go-mud/internal/driver"
 	"github.com/pixil98/go-mud/internal/listener"
 	"github.com/pixil98/go-mud/internal/player"
@@ -32,9 +33,16 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	if err != nil {
 		return nil, fmt.Errorf("creating race store: %w", err)
 	}
+	storeCmds, err := cfg.Storage.Commands.NewFileStore(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("creating command store: %w", err)
+	}
+
+	// Create command handler
+	cmdHandler := commands.NewHandler(storeCmds)
 
 	// Create player manager
-	playerManager := player.NewPlayerManager(storeCharacters, storePronouns, storeRaces)
+	playerManager := player.NewPlayerManager(cmdHandler, storeCharacters, storePronouns, storeRaces)
 
 	// Create connection manager
 	connectionManager := listener.NewConnectionManager(playerManager)
@@ -54,9 +62,16 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 		playerManager,
 	})
 
+	// Setup the nats server
+	nats, err := cfg.Nats.NewNatsServer()
+	if err != nil {
+		return nil, fmt.Errorf("creating nats server: %w", err)
+	}
+
 	// Create a worker list
 	return service.WorkerList{
-		"driver":    driver,
-		"listeners": &listeners,
+		"driver":      driver,
+		"listeners":   &listeners,
+		"nats server": nats,
 	}, nil
 }

@@ -11,6 +11,7 @@ type Config struct {
 	TickInterval string           `json:"tick_interval"`
 	Listeners    []ListenerConfig `json:"listeners"`
 	Storage      StorageConfig    `json:"storage"`
+	Nats         NatsConfig       `json:"nats"`
 }
 
 func (c *Config) Validate() error {
@@ -31,6 +32,7 @@ func (c *Config) Validate() error {
 	}
 
 	el.Add(c.Storage.Validate())
+	el.Add(c.Nats.Validate())
 
 	return el.Err()
 }
