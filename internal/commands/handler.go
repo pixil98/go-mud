@@ -24,7 +24,7 @@ func NewHandler(c storage.Storer[*Command]) *Handler {
 	return h
 }
 
-func (h *Handler) Exec(ctx context.Context, c string, args ...string) error {
+func (h *Handler) Exec(ctx context.Context, c string, a ...string) error {
 	cmd := h.store.Get(c)
 	if cmd == nil {
 		return nil
@@ -41,7 +41,7 @@ func (h *Handler) Exec(ctx context.Context, c string, args ...string) error {
 
 	// Build up the args
 	var args []string
-	for _, a := range cmd.Args {
+	for _, a := range cmd.Params {
 
 		args = append(args, a)
 	}
@@ -55,9 +55,7 @@ func (h *Handler) Exec(ctx context.Context, c string, args ...string) error {
 }
 
 func (h *Handler) parseArgs(args ...string) ([]string, error) {
-	for _, a := range args {
-		
-		
+	return nil, nil
 }
 
 func (h *Handler) do_message(ctx context.Context, args ...string) error {

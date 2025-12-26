@@ -11,6 +11,7 @@ import (
 func main() {
 	logger := log.NewLogger()
 
+	logger.Info("creating application")
 	app, err := service.NewApp(&command.Config{}, command.BuildWorkers)
 	if err != nil {
 		logger.WithError(err).Fatal("creating application")
@@ -21,5 +22,5 @@ func main() {
 		logger.WithError(err).Fatal("running application")
 	}
 
-	logger.Info("exiting")
+	logger.Info("exiting application")
 }

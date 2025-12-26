@@ -4,13 +4,14 @@ import (
 	"fmt"
 
 	"github.com/pixil98/go-errors/errors"
+	"github.com/pixil98/go-mud/internal/storage"
 )
 
 type Character struct {
-	Name     string `json:"name"`
-	Password string `json:"password"` //TODO make this okay to save
-	Pronoun  string `json:"pronoun"`
-	Race     string `json:"race"`
+	Name     string             `json:"name"`
+	Password string             `json:"password"` //TODO make this okay to save
+	Pronoun  storage.Identifier `json:"pronoun"`
+	Race     storage.Identifier `json:"race"`
 }
 
 func (c *Character) Validate() error {

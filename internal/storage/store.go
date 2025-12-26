@@ -16,12 +16,12 @@ type Storer[T ValidatingSpec] interface {
 	Load(context.Context) error
 	Save(string, T) error
 	Get(string) T
-	GetAll() []T
+	GetAll() map[Identifier]T
 }
 
 type FileStore[T ValidatingSpec] struct {
 	path    string
-	records map[string]T
+	records map[Identifier]T
 
 	mu sync.RWMutex
 }
@@ -37,7 +37,7 @@ func (s *FileStore[T]) Load(ctx context.Context) error {
 	defer s.mu.Unlock()
 
 	// Clear existing records when loading
-	s.records = map[string]T{}
+	s.records = map[Identifier]T{}
 
 	err := filepath.Walk(s.path, func(path string, info os.FileInfo, err error) error {
 		// Load all json files in the assets path
@@ -76,12 +76,12 @@ func (s *FileStore[T]) Save(id string, o T) error {
 	defer s.mu.Unlock()
 
 	// Update cached value
-	s.records[id] = o
+	s.records[Identifier(id)] = o
 
 	// Save asset to file
 	asset := &Asset[T]{
 		Version:    1,
-		Identifier: id,
+		Identifier: Identifier(id),
 		Spec:       o,
 	}
 
@@ -102,7 +102,7 @@ func (s *FileStore[T]) Get(id string) T {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 
-	val, ok := s.records[id]
+	val, ok := s.records[Identifier(id)]
 
 	if !ok {
 		//TODO: maybe this should error(?) I wouldn't want to kill the server for it though
@@ -113,16 +113,16 @@ func (s *FileStore[T]) Get(id string) T {
 	return val
 }
 
-func (s *FileStore[T]) GetAll() []T {
-	vals := []T{}
-	for _, v := range s.records {
-		vals = append(vals, v)
+func (s *FileStore[T]) GetAll() map[Identifier]T {
+	vals := map[Identifier]T{}
+	for id, v := range s.records {
+		vals[id] = v
 	}
 
 	return vals
 }
 
-func (s *FileStore[T]) filePath(id string) string {
+func (s *FileStore[T]) filePath(id Identifier) string {
 	return filepath.Join(s.path, fmt.Sprintf("%s.json", id))
 }
 

@@ -2,9 +2,6 @@ package commands
 
 import "fmt"
 
-type Handler struct {
-}
-
 type Command struct {
 	Handler string   `json:"handler"`
 	Params  []string `json:"params"`
