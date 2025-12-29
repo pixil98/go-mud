@@ -6,6 +6,7 @@ import (
 	"strings"
 	"unicode"
 
+	"github.com/pixil98/go-mud/internal"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
@@ -20,8 +21,8 @@ func (f *loginFlow) Run(rw io.ReadWriter) (*Character, error) {
 
 	for {
 		// Get username
-		username, err := Prompt(rw, "By what name do you wish to be known? ",
-			WithValidator(func(str string) (bool, string) {
+		username, err := internal.Prompt(rw, "By what name do you wish to be known? ",
+			internal.WithValidator(func(str string) (bool, string) {
 				// Ensure non-null name
 				if len(str) == 0 {
 					return false, "Invalid name, please try another.\n"
@@ -57,7 +58,7 @@ func (f *loginFlow) Run(rw io.ReadWriter) (*Character, error) {
 
 			// Existing user
 		} else {
-			_, err = Prompt(rw, "Password: ", WithMaxTries(maxPasswordTries), WithValidator(
+			_, err = internal.Prompt(rw, "Password: ", internal.WithMaxTries(maxPasswordTries), internal.WithValidator(
 				func(str string) (bool, string) {
 					if char.Password != str {
 						return false, ""
@@ -76,7 +77,7 @@ func (f *loginFlow) Run(rw io.ReadWriter) (*Character, error) {
 }
 
 func (f *loginFlow) newCharacter(rw io.ReadWriter, username string) (*Character, error) {
-	ok, err := PromptYN(rw, fmt.Sprintf("Did I get that right, %s (Y/N)? ", username))
+	ok, err := internal.PromptYN(rw, fmt.Sprintf("Did I get that right, %s (Y/N)? ", username))
 	if err != nil {
 		return nil, err
 	}
@@ -85,7 +86,7 @@ func (f *loginFlow) newCharacter(rw io.ReadWriter, username string) (*Character,
 	}
 
 	for {
-		passOne, err := Prompt(rw, fmt.Sprintf("Give me a password for %s: ", username), WithValidator(
+		passOne, err := internal.Prompt(rw, fmt.Sprintf("Give me a password for %s: ", username), internal.WithValidator(
 			func(str string) (bool, string) {
 				if len(str) == 0 || strings.EqualFold(str, username) {
 					return false, "Illegal Password.\n"
@@ -98,7 +99,7 @@ func (f *loginFlow) newCharacter(rw io.ReadWriter, username string) (*Character,
 			return nil, err
 		}
 
-		passTwo, err := Prompt(rw, "Please retype password: ")
+		passTwo, err := internal.Prompt(rw, "Please retype password: ")
 		if err != nil {
 			return nil, err
 		}

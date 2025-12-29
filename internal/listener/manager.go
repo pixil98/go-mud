@@ -18,12 +18,6 @@ func NewConnectionManager(pm *player.PlayerManager) *ConnectionManager {
 	}
 }
 
-func (m *ConnectionManager) Start(ctx context.Context) error {
-	<-ctx.Done()
-
-	return nil
-}
-
 func (m *ConnectionManager) AcceptConnection(ctx context.Context, conn io.ReadWriter) {
 	//TODO thread ctx though this for timeouts
 	p, err := m.pm.NewPlayer(conn)

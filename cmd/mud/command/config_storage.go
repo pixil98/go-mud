@@ -12,19 +12,15 @@ import (
 )
 
 type StorageConfig struct {
-	/* Player Parts */
+	/* Core Parts */
 	Characters AssetConfig[*player.Character] `json:"characters"`
 	Commands   AssetConfig[*commands.Command] `json:"commands"`
-	Pronouns   AssetConfig[*player.Pronoun]   `json:"pronouns"`
-	Races      AssetConfig[*player.Race]      `json:"races"`
 }
 
 func (c *StorageConfig) Validate() error {
 	el := errors.NewErrorList()
 	el.Add(c.Characters.Validate())
 	el.Add(c.Commands.Validate())
-	el.Add(c.Pronouns.Validate())
-	el.Add(c.Races.Validate())
 	return el.Err()
 }
 

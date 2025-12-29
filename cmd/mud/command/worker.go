@@ -8,6 +8,8 @@ import (
 	"github.com/pixil98/go-mud/internal/driver"
 	"github.com/pixil98/go-mud/internal/listener"
 	"github.com/pixil98/go-mud/internal/player"
+	"github.com/pixil98/go-mud/internal/plugins"
+	"github.com/pixil98/go-mud/internal/plugins/base"
 	"github.com/pixil98/go-service/service"
 )
 
@@ -20,18 +22,17 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	//TODO: Probably get a better context
 	ctx := context.Background()
 
+	// Setup Plugins
+	pluginManager := plugins.NewPluginManager()
+	err := pluginManager.Register(ctx, &base.BasePlugin{})
+	if err != nil {
+		return nil, err
+	}
+
 	// Create Stores
 	storeCharacters, err := cfg.Storage.Characters.NewFileStore(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("creating character store: %w", err)
-	}
-	storePronouns, err := cfg.Storage.Pronouns.NewFileStore(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("creating pronoun store: %w", err)
-	}
-	storeRaces, err := cfg.Storage.Races.NewFileStore(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("creating race store: %w", err)
 	}
 	storeCmds, err := cfg.Storage.Commands.NewFileStore(ctx)
 	if err != nil {
@@ -42,7 +43,7 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	cmdHandler := commands.NewHandler(storeCmds)
 
 	// Create player manager
-	playerManager := player.NewPlayerManager(cmdHandler, storeCharacters, storePronouns, storeRaces)
+	playerManager := player.NewPlayerManager(cmdHandler, pluginManager, storeCharacters)
 
 	// Create connection manager
 	connectionManager := listener.NewConnectionManager(playerManager)
@@ -60,6 +61,7 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	// Setup the mud driver
 	driver := driver.NewMudDriver([]driver.TickHandler{
 		playerManager,
+		pluginManager,
 	})
 
 	// Setup the nats server

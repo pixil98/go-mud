@@ -6,32 +6,31 @@ import (
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/commands"
+	"github.com/pixil98/go-mud/internal/plugins"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
 type PlayerManager struct {
-	players    map[string]*Player
-	cmdHandler *commands.Handler
+	players       map[string]*Player
+	cmdHandler    *commands.Handler
+	pluginManager *plugins.PluginManager
 
-	loginFlow        *loginFlow
-	charCreationFlow *characterCreationFlow
+	loginFlow *loginFlow
 
 	chars storage.Storer[*Character]
 	//pronouns storage.Storer[*Pronoun]
 	//races    storage.Storer[*Race]
 }
 
-func NewPlayerManager(cmd *commands.Handler, cs storage.Storer[*Character], ps storage.Storer[*Pronoun], rs storage.Storer[*Race]) *PlayerManager {
+func NewPlayerManager(cmd *commands.Handler, plugins *plugins.PluginManager, cs storage.Storer[*Character]) *PlayerManager {
 	pm := &PlayerManager{
-		players:   map[string]*Player{},
-		chars:     cs,
-		loginFlow: &loginFlow{cStore: cs},
-		charCreationFlow: &characterCreationFlow{
-			pSelector: NewSelector(ps.GetAll()),
-			rSelector: NewSelector(rs.GetAll()),
-		},
-		cmdHandler: cmd,
+		players:       map[string]*Player{},
+		pluginManager: plugins,
+		cmdHandler:    cmd,
+		loginFlow:     &loginFlow{cStore: cs},
+		chars:         cs,
 	}
+
 	return pm
 }
 
@@ -56,15 +55,9 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
 		return nil, err
 	}
 
-	err = m.charCreationFlow.Run(conn, char)
-	if err != nil {
-		return nil, err
-	}
+	err = m.pluginManager.InitCharacter(conn, char)
 
 	// Save the character back to preserve changes
-	if m.chars == nil {
-		conn.Write([]byte("chars is nil"))
-	}
 	m.chars.Save(strings.ToLower(char.Name), char)
 
 	return &Player{

@@ -28,7 +28,8 @@ type FileStore[T ValidatingSpec] struct {
 
 func NewFileStore[T ValidatingSpec](path string) *FileStore[T] {
 	return &FileStore[T]{
-		path: path,
+		path:    path,
+		records: map[Identifier]T{},
 	}
 }
 
@@ -39,7 +40,11 @@ func (s *FileStore[T]) Load(ctx context.Context) error {
 	// Clear existing records when loading
 	s.records = map[Identifier]T{}
 
-	err := filepath.Walk(s.path, func(path string, info os.FileInfo, err error) error {
+	err := filepath.Walk(s.path, func(path string, info os.FileInfo, walkErr error) error {
+		if walkErr != nil {
+			return walkErr
+		}
+
 		// Load all json files in the assets path
 		if !info.IsDir() && filepath.Ext(path) == ".json" {
 			asset, err := s.loadAsset(ctx, path)
@@ -114,6 +119,9 @@ func (s *FileStore[T]) Get(id string) T {
 }
 
 func (s *FileStore[T]) GetAll() map[Identifier]T {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+
 	vals := map[Identifier]T{}
 	for id, v := range s.records {
 		vals[id] = v
