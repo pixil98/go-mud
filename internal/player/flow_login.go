@@ -17,7 +17,10 @@ type loginFlow struct {
 }
 
 func (f *loginFlow) Run(rw io.ReadWriter) (*Character, error) {
-	rw.Write([]byte("Welcome to GoMud!\n"))
+	_, err := rw.Write([]byte("Welcome to GoMud!\n"))
+	if err != nil {
+		return nil, err
+	}
 
 	for {
 		// Get username
@@ -31,8 +34,7 @@ func (f *loginFlow) Run(rw io.ReadWriter) (*Character, error) {
 				// Ensure name is only letters
 				for _, r := range str {
 					if !unicode.IsLetter(r) {
-						rw.Write([]byte("Invalid name, please try another.\n"))
-						continue
+						return false, "Invalid name, please try another.\n"
 					}
 				}
 
@@ -105,7 +107,10 @@ func (f *loginFlow) newCharacter(rw io.ReadWriter, username string) (*Character,
 		}
 
 		if passOne != passTwo {
-			rw.Write([]byte("Passwords don't match... start over.\n"))
+			_, err = rw.Write([]byte("Passwords don't match... start over.\n"))
+			if err != nil {
+				return nil, err
+			}
 			continue
 		}
 

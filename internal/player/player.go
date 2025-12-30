@@ -12,9 +12,8 @@ type State struct {
 }
 
 type Player struct {
-	conn     io.ReadWriter
-	state    *State
-	loggedIn bool
+	conn  io.ReadWriter
+	state *State
 }
 
 func (p *Player) Tick(ctx context.Context) {

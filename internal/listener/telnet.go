@@ -55,7 +55,12 @@ type telnetHandler struct {
 func (h *telnetHandler) HandleTelnet(conn *telnet.Connection) {
 	h.wg.Add(1)
 	defer h.wg.Done()
-	defer conn.Close() //TODO we should check this err
+	defer func() {
+		err := conn.Close()
+		if err != nil {
+			h.logger.Errorf("closing telnet connection: %s", err)
+		}
+	}()
 
 	ctx, cancel := context.WithCancel(context.Background())
 	ctx = log.SetLogger(ctx, h.logger)

@@ -53,11 +53,17 @@ func Prompt(rw io.ReadWriter, prompt string, opts ...promptOption) (string, erro
 		if config.validator != nil {
 			ok, msg := config.validator(string(input))
 			if !ok {
-				rw.Write([]byte(msg))
+				_, err = rw.Write([]byte(msg))
+				if err != nil {
+					return "", err
+				}
 
 				tries++
 				if config.tries > 0 && config.tries == tries {
-					rw.Write([]byte("too many tries"))
+					_, err := rw.Write([]byte("too many tries"))
+					if err != nil {
+						return "", err
+					}
 					return "", fmt.Errorf("too many tries") //TODO: should this error?
 				}
 

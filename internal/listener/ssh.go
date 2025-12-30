@@ -23,13 +23,19 @@ func NewSshListener(port uint16) *SshListener {
 }
 
 func (l *SshListener) Start(ctx context.Context) error {
+	logger := log.GetLogger(ctx)
+
 	listener, err := net.Listen("tcp", fmt.Sprintf(":%d", l.port))
 	if err != nil {
 		return fmt.Errorf("listening on port %d: %w", l.port, err)
 	}
-	defer listener.Close()
+	defer func() {
+		err := listener.Close()
+		if err != nil {
+			logger.Errorf("closing listener: %s", err.Error())
+		}
+	}()
 
-	logger := log.GetLogger(ctx)
 	logger.Infof("listening for ssh on port %d", l.port)
 
 	for {
@@ -37,6 +43,7 @@ func (l *SshListener) Start(ctx context.Context) error {
 		case <-ctx.Done():
 			return nil
 		default:
+			return nil
 			/*
 				c, err := listener.Accept()
 				if err != nil {
@@ -59,9 +66,15 @@ func (l *SshListener) Start(ctx context.Context) error {
 }
 
 func (l *SshListener) handleConnection(ctx context.Context, conn net.Conn) {
-	defer conn.Close()
-
 	logger := log.GetLogger(ctx)
+
+	defer func() {
+		err := conn.Close()
+		if err != nil {
+			logger.Errorf("closing ssh connection: %s", err.Error())
+		}
+	}()
+
 	logger.Infof("accepted connection from %s", conn.RemoteAddr())
 
 	_, err := conn.Write([]byte("Hello, welcome to the mud!\n"))

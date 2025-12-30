@@ -2,8 +2,10 @@ package player
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"strings"
+	"sync"
 
 	"github.com/pixil98/go-mud/internal/commands"
 	"github.com/pixil98/go-mud/internal/plugins"
@@ -56,13 +58,19 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
 	}
 
 	err = m.pluginManager.InitCharacter(conn, char)
-
+	if err != nil {
+		return nil, fmt.Errorf("initilizing character: %w", err)
+	}
 	// Save the character back to preserve changes
-	m.chars.Save(strings.ToLower(char.Name), char)
+	err = m.chars.Save(strings.ToLower(char.Name), char)
+	if err != nil {
+		return nil, fmt.Errorf("saving character: %w", err)
+	}
 
 	return &Player{
 		conn: conn,
 		state: &State{
+			mu:   sync.Mutex{},
 			char: char,
 		},
 	}, nil

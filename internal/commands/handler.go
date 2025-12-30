@@ -39,23 +39,12 @@ func (h *Handler) Exec(ctx context.Context, c string, a ...string) error {
 		return fmt.Errorf("handler not found: %s", cmd.Handler)
 	}
 
-	// Build up the args
-	var args []string
-	for _, a := range cmd.Params {
-
-		args = append(args, a)
-	}
-
-	err := fn(ctx, args...)
+	err := fn(ctx, cmd.Params...)
 	if err != nil {
 		return fmt.Errorf("executing handler: %w", err)
 	}
 
 	return nil
-}
-
-func (h *Handler) parseArgs(args ...string) ([]string, error) {
-	return nil, nil
 }
 
 func (h *Handler) do_message(ctx context.Context, args ...string) error {

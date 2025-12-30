@@ -19,11 +19,16 @@ func NewConnectionManager(pm *player.PlayerManager) *ConnectionManager {
 }
 
 func (m *ConnectionManager) AcceptConnection(ctx context.Context, conn io.ReadWriter) {
+	l := log.GetLogger(ctx)
 	//TODO thread ctx though this for timeouts
 	p, err := m.pm.NewPlayer(conn)
 	if err != nil {
-		log.GetLogger(ctx).Warnf("creating new player: %v", err)
-		conn.Write([]byte("Failed to setup player."))
+		l.Warnf("creating new player: %v", err)
+		_, err := conn.Write([]byte("Failed to setup player session."))
+		if err != nil {
+			l.Warnf("writing err to player: %v", err)
+		}
+
 		return
 	}
 

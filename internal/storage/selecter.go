@@ -73,11 +73,17 @@ func (s *SelectableStorer[T]) build() {
 
 func (s *SelectableStorer[T]) Prompt(rw io.ReadWriter, prompt string) (Identifier, error) {
 
-	rw.Write([]byte(fmt.Sprintf("%s\n", prompt)))
+	_, err := fmt.Fprintf(rw, "%s\n", prompt)
+	if err != nil {
+		return "", err
+	}
 
 	for _, str := range s.output {
 		if len(str) > 0 {
-			rw.Write([]byte(fmt.Sprintf("%s\n", str)))
+			_, err = fmt.Fprintf(rw, "%s\n", str)
+			if err != nil {
+				return "", err
+			}
 		}
 	}
 

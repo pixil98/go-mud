@@ -11,8 +11,6 @@ import (
 
 const (
 	baseExtKey = "base"
-	pronounKey = "pronoun"
-	raceKey    = "race"
 )
 
 type baseChar struct {
@@ -59,11 +57,7 @@ func (p *BasePlugin) OnInitCharacter(rw io.ReadWriter, e plugins.Extensible) err
 		return err
 	}
 
-	for {
-		if char.Pronoun != "" {
-			break
-		}
-
+	for char.Pronoun == "" {
 		sel, err := p.pronouns.Prompt(rw, "What are your pronouns?")
 		if err != nil {
 			return fmt.Errorf("selecting pronouns: %w", err)
@@ -72,11 +66,7 @@ func (p *BasePlugin) OnInitCharacter(rw io.ReadWriter, e plugins.Extensible) err
 		char.Pronoun = sel
 	}
 
-	for {
-		if char.Race != "" {
-			break
-		}
-
+	for char.Race == "" {
 		sel, err := p.races.Prompt(rw, "What is your race?")
 		if err != nil {
 			return fmt.Errorf("selecting race: %w", err)
@@ -85,7 +75,5 @@ func (p *BasePlugin) OnInitCharacter(rw io.ReadWriter, e plugins.Extensible) err
 		char.Race = sel
 	}
 
-	e.Set(baseExtKey, char)
-
-	return nil
+	return e.Set(baseExtKey, char)
 }
