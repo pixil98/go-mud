@@ -6,7 +6,7 @@ import (
 	"io"
 
 	"github.com/pixil98/go-log/log"
-	"github.com/pixil98/go-mud/internal/driver"
+	"github.com/pixil98/go-mud/internal/game"
 )
 
 type Extensible interface {
@@ -15,7 +15,7 @@ type Extensible interface {
 }
 
 type Plugin interface {
-	driver.TickHandler
+	game.TickHandler
 	Key() string
 	Init(context.Context) error
 	OnInitCharacter(io.ReadWriter, Extensible) error

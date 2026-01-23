@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/pixil98/go-mud/internal/commands"
-	"github.com/pixil98/go-mud/internal/driver"
+	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/listener"
 	"github.com/pixil98/go-mud/internal/player"
 	"github.com/pixil98/go-mud/internal/plugins"
@@ -63,7 +63,7 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	}
 
 	// Setup the mud driver
-	driver := driver.NewMudDriver([]driver.TickHandler{
+	driver := game.NewMudDriver([]game.TickHandler{
 		playerManager,
 		pluginManager,
 	})

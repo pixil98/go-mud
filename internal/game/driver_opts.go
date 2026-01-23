@@ -1,4 +1,4 @@
-package driver
+package game
 
 import "time"
 
