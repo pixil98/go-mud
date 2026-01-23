@@ -39,8 +39,11 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 		return nil, fmt.Errorf("creating command store: %w", err)
 	}
 
-	// Create command handler
+	// Create command handler and compile all commands
 	cmdHandler := commands.NewHandler(storeCmds)
+	if err := cmdHandler.CompileAll(); err != nil {
+		return nil, fmt.Errorf("compiling commands: %w", err)
+	}
 
 	// Create player manager
 	playerManager := player.NewPlayerManager(cmdHandler, pluginManager, storeCharacters)

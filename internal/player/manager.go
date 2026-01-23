@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"strings"
-	"sync"
 
 	"github.com/pixil98/go-mud/internal/commands"
 	"github.com/pixil98/go-mud/internal/plugins"
@@ -68,10 +67,8 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
 	}
 
 	return &Player{
-		conn: conn,
-		state: &State{
-			mu:   sync.Mutex{},
-			char: char,
-		},
+		conn:       conn,
+		char:       char,
+		cmdHandler: m.cmdHandler,
 	}, nil
 }

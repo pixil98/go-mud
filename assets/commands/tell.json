@@ -1,12 +1,13 @@
 {
     "version": 1,
-    "id": "say",
+    "id": "tell",
     "spec": {
         "handler": "message",
         "config": {
-            "channel": "zone-{{ .State.Zone }}-room-{{ .State.Room }}"
+            "channel": "player-{{ .Args.target }}"
         },
         "params": [
+            {"name": "target", "type": "player", "required": true},
             {"name": "text", "type": "string", "required": true, "rest": true}
         ]
     }

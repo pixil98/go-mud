@@ -3,54 +3,228 @@ package commands
 import (
 	"context"
 	"fmt"
+	"strconv"
+	"strings"
 
+	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
-type handlerFunc func(context.Context, ...string) error
+// ParsedArg represents a validated and parsed command argument.
+type ParsedArg struct {
+	Spec  *ParamSpec
+	Raw   string // Original player input
+	Value any    // Parsed value: int for number, string for string/direction, etc.
+}
+
+// CommandFunc is the signature for compiled command functions.
+// It receives template data containing player state and parsed arguments.
+type CommandFunc func(ctx context.Context, data *TemplateData) error
+
+// HandlerFactory creates a CommandFunc from a command definition.
+// It's called once at startup when commands are compiled.
+type HandlerFactory func(cmd *Command) (CommandFunc, error)
+
+// compiledCommand holds a command that's been validated and compiled.
+type compiledCommand struct {
+	cmd     *Command
+	cmdFunc CommandFunc
+}
 
 type Handler struct {
-	store    storage.Storer[*Command]
-	handlers map[string]handlerFunc
+	store     storage.Storer[*Command]
+	factories map[string]HandlerFactory
+	compiled  map[storage.Identifier]*compiledCommand
 }
 
 func NewHandler(c storage.Storer[*Command]) *Handler {
 	h := &Handler{
-		store: c,
+		store:     c,
+		factories: make(map[string]HandlerFactory),
+		compiled:  make(map[storage.Identifier]*compiledCommand),
 	}
-	h.handlers = map[string]handlerFunc{
-		"message": h.do_message,
-	}
+	// Register built-in handlers
+	h.RegisterFactory("message", messageHandlerFactory)
+	h.RegisterFactory("quit", quitHandlerFactory)
 	return h
 }
 
-func (h *Handler) Exec(ctx context.Context, c string, a ...string) error {
-	cmd := h.store.Get(c)
-	if cmd == nil {
-		return nil
+// RegisterFactory registers a handler factory by name.
+// The name must match the "handler" field in command JSON definitions.
+func (h *Handler) RegisterFactory(name string, factory HandlerFactory) error {
+	if name == "" {
+		return fmt.Errorf("handler name cannot be empty")
 	}
-
-	if cmd.Handler == "" {
-		return fmt.Errorf("command handler not set")
+	if factory == nil {
+		return fmt.Errorf("handler factory cannot be nil")
 	}
-
-	fn, ok := h.handlers[cmd.Handler]
-	if !ok {
-		return fmt.Errorf("handler not found: %s", cmd.Handler)
+	if _, exists := h.factories[name]; exists {
+		return fmt.Errorf("handler factory %q already registered", name)
 	}
-
-	err := fn(ctx, cmd.Params...)
-	if err != nil {
-		return fmt.Errorf("executing handler: %w", err)
-	}
-
+	h.factories[name] = factory
 	return nil
 }
 
-func (h *Handler) do_message(ctx context.Context, args ...string) error {
-	fmt.Println("message:")
-	for _, a := range args {
-		fmt.Printf("    %s", a)
+// CompileAll compiles all commands from the store.
+// Call this after all handler factories have been registered.
+func (h *Handler) CompileAll() error {
+	for id, cmd := range h.store.GetAll() {
+		if err := h.compile(id, cmd); err != nil {
+			return fmt.Errorf("compiling command %q: %w", id, err)
+		}
 	}
 	return nil
+}
+
+func (h *Handler) compile(id storage.Identifier, cmd *Command) error {
+	factory, ok := h.factories[cmd.Handler]
+	if !ok {
+		return fmt.Errorf("unknown handler %q", cmd.Handler)
+	}
+
+	cmdFunc, err := factory(cmd)
+	if err != nil {
+		return fmt.Errorf("creating handler: %w", err)
+	}
+
+	h.compiled[id] = &compiledCommand{
+		cmd:     cmd,
+		cmdFunc: cmdFunc,
+	}
+	return nil
+}
+
+// Exec executes a command with the given arguments.
+func (h *Handler) Exec(ctx context.Context, state *game.EntityState, cmdName string, rawArgs ...string) error {
+	compiled, ok := h.compiled[storage.Identifier(cmdName)]
+	if !ok {
+		return nil // Command not found
+	}
+
+	// Validate and parse arguments
+	args, err := h.parseArgs(compiled.cmd.Params, rawArgs)
+	if err != nil {
+		return err
+	}
+
+	// Build template data from state and args
+	data := NewTemplateData(state, args)
+
+	return compiled.cmdFunc(ctx, data)
+}
+
+// parseArgs validates raw string arguments against parameter specs.
+func (h *Handler) parseArgs(specs []ParamSpec, rawArgs []string) ([]ParsedArg, error) {
+	// Count required params (rest params only need 1 word minimum)
+	requiredCount := 0
+	for _, spec := range specs {
+		if spec.Required {
+			requiredCount++
+		}
+	}
+
+	if len(rawArgs) < requiredCount {
+		return nil, fmt.Errorf("expected at least %d argument(s), got %d", requiredCount, len(rawArgs))
+	}
+
+	// If no rest param, check we don't have too many args
+	hasRest := len(specs) > 0 && specs[len(specs)-1].Rest
+	if !hasRest && len(rawArgs) > len(specs) {
+		return nil, fmt.Errorf("expected at most %d argument(s), got %d", len(specs), len(rawArgs))
+	}
+
+	args := make([]ParsedArg, 0, len(specs))
+	argIndex := 0
+
+	for i := range specs {
+		spec := &specs[i]
+
+		if argIndex >= len(rawArgs) {
+			// No more input - this param must be optional
+			if spec.Required {
+				return nil, fmt.Errorf("missing required parameter %q", spec.Name)
+			}
+			continue
+		}
+
+		var raw string
+		if spec.Rest {
+			// Consume all remaining args joined with spaces
+			raw = strings.Join(rawArgs[argIndex:], " ")
+			argIndex = len(rawArgs)
+		} else {
+			raw = rawArgs[argIndex]
+			argIndex++
+		}
+
+		value, err := h.parseValue(spec.Type, raw)
+		if err != nil {
+			return nil, fmt.Errorf("parameter %q: %w", spec.Name, err)
+		}
+
+		args = append(args, ParsedArg{
+			Spec:  spec,
+			Raw:   raw,
+			Value: value,
+		})
+	}
+
+	return args, nil
+}
+
+// parseValue parses a raw string into the appropriate type.
+// For types that require game state (target, player, mob, item),
+// this returns the raw string. Resolution happens at a higher level.
+func (h *Handler) parseValue(paramType ParamType, raw string) (any, error) {
+	switch paramType {
+	case ParamTypeString:
+		return raw, nil
+
+	case ParamTypeNumber:
+		n, err := strconv.Atoi(raw)
+		if err != nil {
+			return nil, fmt.Errorf("%q is not a valid number", raw)
+		}
+		return n, nil
+
+	case ParamTypeDirection:
+		// Could validate against known directions here
+		return raw, nil
+
+	case ParamTypeTarget, ParamTypePlayer, ParamTypeMob, ParamTypeItem:
+		// These require game state to resolve. Return raw string for now.
+		// Resolution will happen at a higher level that has access to game state.
+		return raw, nil
+
+	default:
+		return nil, fmt.Errorf("unknown parameter type %q", paramType)
+	}
+}
+
+// messageHandlerFactory creates a simple message-printing handler.
+func messageHandlerFactory(cmd *Command) (CommandFunc, error) {
+	// Get the channel template from config
+	channelTmpl, _ := cmd.Config["channel"].(string)
+
+	return func(ctx context.Context, data *TemplateData) error {
+		// Expand the channel template
+		channel, err := ExpandTemplate(channelTmpl, data)
+		if err != nil {
+			return fmt.Errorf("expanding channel template: %w", err)
+		}
+
+		// Get the message text from args
+		text, _ := data.Args["text"].(string)
+
+		fmt.Printf("[%s] %s\n", channel, text)
+		return nil
+	}, nil
+}
+
+// quitHandlerFactory creates a handler that signals the player wants to quit.
+func quitHandlerFactory(cmd *Command) (CommandFunc, error) {
+	return func(ctx context.Context, data *TemplateData) error {
+		data.State.Quit = true
+		return nil
+	}, nil
 }
