@@ -3,17 +3,16 @@ package player
 import (
 	"bufio"
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"strings"
-	"sync"
 
 	"github.com/pixil98/go-mud/internal/commands"
 	"github.com/pixil98/go-mud/internal/game"
 )
 
 type Player struct {
-	mu         sync.Mutex
 	conn       io.ReadWriter
 	char       *Character
 	cmdHandler *commands.Handler
@@ -28,12 +27,16 @@ func (p *Player) Tick(ctx context.Context) {
 func (p *Player) Play(ctx context.Context) error {
 	scanner := bufio.NewScanner(p.conn)
 
-	p.prompt()
+	if err := p.prompt(); err != nil {
+		return err
+	}
 
 	for scanner.Scan() {
 		line := strings.TrimSpace(scanner.Text())
 		if line == "" {
-			p.prompt()
+			if err := p.prompt(); err != nil {
+				return err
+			}
 			continue
 		}
 
@@ -48,7 +51,15 @@ func (p *Player) Play(ctx context.Context) error {
 		// Execute the command
 		err := p.cmdHandler.Exec(ctx, &p.EntityState, cmdName, args...)
 		if err != nil {
-			p.writeLine(fmt.Sprintf("Error: %v", err))
+			var userErr *commands.UserError
+			if errors.As(err, &userErr) {
+				if err := p.writeLine(userErr.Message); err != nil {
+					return err
+				}
+			} else {
+				// System error - log and disconnect
+				return fmt.Errorf("command execution failed: %w", err)
+			}
 		}
 
 		// Check if player wants to quit
@@ -62,16 +73,20 @@ func (p *Player) Play(ctx context.Context) error {
 			return ctx.Err()
 		}
 
-		p.prompt()
+		if err := p.prompt(); err != nil {
+			return err
+		}
 	}
 
 	return scanner.Err()
 }
 
-func (p *Player) prompt() {
-	p.conn.Write([]byte("> "))
+func (p *Player) prompt() error {
+	_, err := p.conn.Write([]byte("> "))
+	return err
 }
 
-func (p *Player) writeLine(msg string) {
-	p.conn.Write([]byte(msg + "\r\n"))
+func (p *Player) writeLine(msg string) error {
+	_, err := p.conn.Write([]byte(msg + "\r\n"))
+	return err
 }

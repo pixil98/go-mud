@@ -98,7 +98,7 @@ func (h *Handler) compile(id storage.Identifier, cmd *Command) error {
 func (h *Handler) Exec(ctx context.Context, state *game.EntityState, cmdName string, rawArgs ...string) error {
 	compiled, ok := h.compiled[storage.Identifier(cmdName)]
 	if !ok {
-		return nil // Command not found
+		return NewUserError(fmt.Sprintf("Unknown command: %s", cmdName))
 	}
 
 	// Validate and parse arguments
@@ -124,13 +124,13 @@ func (h *Handler) parseArgs(specs []ParamSpec, rawArgs []string) ([]ParsedArg, e
 	}
 
 	if len(rawArgs) < requiredCount {
-		return nil, fmt.Errorf("expected at least %d argument(s), got %d", requiredCount, len(rawArgs))
+		return nil, NewUserError(fmt.Sprintf("Expected at least %d argument(s), got %d", requiredCount, len(rawArgs)))
 	}
 
 	// If no rest param, check we don't have too many args
 	hasRest := len(specs) > 0 && specs[len(specs)-1].Rest
 	if !hasRest && len(rawArgs) > len(specs) {
-		return nil, fmt.Errorf("expected at most %d argument(s), got %d", len(specs), len(rawArgs))
+		return nil, NewUserError(fmt.Sprintf("Expected at most %d argument(s), got %d", len(specs), len(rawArgs)))
 	}
 
 	args := make([]ParsedArg, 0, len(specs))
@@ -142,7 +142,7 @@ func (h *Handler) parseArgs(specs []ParamSpec, rawArgs []string) ([]ParsedArg, e
 		if argIndex >= len(rawArgs) {
 			// No more input - this param must be optional
 			if spec.Required {
-				return nil, fmt.Errorf("missing required parameter %q", spec.Name)
+				return nil, NewUserError(fmt.Sprintf("Missing required parameter: %s", spec.Name))
 			}
 			continue
 		}
@@ -183,7 +183,7 @@ func (h *Handler) parseValue(paramType ParamType, raw string) (any, error) {
 	case ParamTypeNumber:
 		n, err := strconv.Atoi(raw)
 		if err != nil {
-			return nil, fmt.Errorf("%q is not a valid number", raw)
+			return nil, NewUserError(fmt.Sprintf("%q is not a valid number", raw))
 		}
 		return n, nil
 

@@ -39,7 +39,7 @@ func (p *BasePlugin) Init(ctx context.Context) error {
 	r := storage.NewFileStore[*Race]("./assets/races")
 	err = r.Load(ctx)
 	if err != nil {
-		return fmt.Errorf("loading pronouns: %w", err)
+		return fmt.Errorf("loading races: %w", err)
 	}
 	p.races = storage.NewSelectableStorer(r)
 

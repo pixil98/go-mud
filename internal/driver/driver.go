@@ -33,6 +33,8 @@ func NewMudDriver(h []TickHandler, opts ...MudDriverOpt) *MudDriver {
 
 func (d *MudDriver) Start(ctx context.Context) error {
 	ticker := time.NewTicker(d.tickLength)
+	defer ticker.Stop()
+
 	for {
 		select {
 		case <-ctx.Done():

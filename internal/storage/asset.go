@@ -7,6 +7,8 @@ import (
 	"github.com/pixil98/go-errors/errors"
 )
 
+var identifierPattern = regexp.MustCompile(`^[a-zA-Z0-9-]*$`)
+
 type ValidatingSpec interface {
 	Validate() error
 }
@@ -34,8 +36,7 @@ func (a *Asset[T]) Validate() error {
 		el.Add(fmt.Errorf("id must be set"))
 	}
 
-	is_alphanumeric := regexp.MustCompile(`^[a-zA-Z0-9-]*$`).MatchString(a.Identifier.String())
-	if !is_alphanumeric {
+	if !identifierPattern.MatchString(a.Identifier.String()) {
 		el.Add(fmt.Errorf("id must be alphanumeric"))
 	}
 
