@@ -24,17 +24,23 @@ func NewTelnetListener(port uint16, cm *ConnectionManager) *TelnetListener {
 }
 
 func (l *TelnetListener) Start(ctx context.Context) error {
+	// Create a cancelable context for all connections
+	connCtx, cancelConns := context.WithCancel(context.Background())
+
 	handler := &telnetHandler{
-		cFunc:  l.cm.AcceptConnection,
-		logger: log.GetLogger(ctx),
+		cFunc:       l.cm.AcceptConnection,
+		logger:      log.GetLogger(ctx),
+		connCtx:     connCtx,
+		cancelConns: cancelConns,
 	}
 
 	svr := telnet.NewServer(fmt.Sprintf(":%d", l.port), handler)
 
-	// if the context is canceled, shutdown the server and all connections
+	// When parent context is canceled, stop accepting and cancel all connections
 	go func() {
 		<-ctx.Done()
 		svr.Stop()
+		handler.Stop()
 	}()
 
 	err := svr.ListenAndServe()
@@ -46,10 +52,11 @@ func (l *TelnetListener) Start(ctx context.Context) error {
 }
 
 type telnetHandler struct {
-	wg     sync.WaitGroup
-	cFunc  func(context.Context, io.ReadWriter)
-	logger logrus.FieldLogger
-	stop   chan bool
+	wg          sync.WaitGroup
+	cFunc       func(context.Context, io.ReadWriter)
+	logger      logrus.FieldLogger
+	connCtx     context.Context
+	cancelConns context.CancelFunc
 }
 
 func (h *telnetHandler) HandleTelnet(conn *telnet.Connection) {
@@ -62,18 +69,13 @@ func (h *telnetHandler) HandleTelnet(conn *telnet.Connection) {
 		}
 	}()
 
-	ctx, cancel := context.WithCancel(context.Background())
-	ctx = log.SetLogger(ctx, h.logger)
-
-	go func() {
-		<-h.stop
-		cancel()
-	}()
+	// Use the shared context so all connections are canceled together
+	ctx := log.SetLogger(h.connCtx, h.logger)
 
 	h.cFunc(ctx, conn)
 }
 
 func (h *telnetHandler) Stop() {
-	h.stop <- true
+	h.cancelConns()
 	h.wg.Wait()
 }

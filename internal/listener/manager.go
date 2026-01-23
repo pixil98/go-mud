@@ -23,7 +23,7 @@ func (m *ConnectionManager) AcceptConnection(ctx context.Context, conn io.ReadWr
 	//TODO thread ctx though this for timeouts
 	p, err := m.pm.NewPlayer(conn)
 	if err != nil {
-		l.Warnf("creating new player: %v", err)
+		l.Warnf("creating player instance: %v", err)
 		_, err := conn.Write([]byte("Failed to setup player session."))
 		if err != nil {
 			l.Warnf("writing err to player: %v", err)
