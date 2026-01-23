@@ -1,6 +1,6 @@
 module github.com/pixil98/go-mud
 
-go 1.21.0
+go 1.22
 
 toolchain go1.23.2
 
@@ -10,10 +10,12 @@ require (
 	github.com/pixil98/go-errors v0.0.0-20241009155903-e7db5643855a
 	github.com/pixil98/go-log v0.0.0-20241009160017-35fcb07b6f0f
 	github.com/pixil98/go-service v0.0.0-20241025004227-0a5e6a51eeee
+	github.com/pixil98/go-testutil v0.0.0-20260123222118-fa427b8db36a
 	github.com/sirupsen/logrus v1.9.3
 )
 
 require (
+	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/klauspost/compress v1.17.11 // indirect
 	github.com/minio/highwayhash v1.0.3 // indirect
 	github.com/nats-io/jwt/v2 v2.5.8 // indirect

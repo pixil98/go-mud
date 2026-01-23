@@ -1,6 +1,8 @@
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/google/go-cmp v0.6.0 h1:ofyhxvXcZhMsU5ulbFiLKl/XBFqE1GSq7atu8tAmTRI=
+github.com/google/go-cmp v0.6.0/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
 github.com/iammegalith/telnet v0.0.0-20230201230822-b5765a6db0cf h1:gIF0jj1qvPnjeEHLhQ6b+P3SG+3XcKbnP5/f1lSeJyw=
 github.com/iammegalith/telnet v0.0.0-20230201230822-b5765a6db0cf/go.mod h1:npSEtwPj18S+f0OJ72uaL+bPSWxUczRdr+jumfzHbxQ=
 github.com/klauspost/compress v1.17.11 h1:In6xLpyWOi1+C7tXUUWv2ot1QvBjxevKAaI6IXrJmUc=
@@ -23,6 +25,8 @@ github.com/pixil98/go-log v0.0.0-20241009160017-35fcb07b6f0f h1:Xp41fPG5hPBk35oF
 github.com/pixil98/go-log v0.0.0-20241009160017-35fcb07b6f0f/go.mod h1:KOKA9byGHbsFZnrytR+Rfz0oWPUGlpXvef+2VJOzNZU=
 github.com/pixil98/go-service v0.0.0-20241025004227-0a5e6a51eeee h1:hIFtFQZW1bmBSwS2OkrR4F5TX4h838meU99IoucVTWA=
 github.com/pixil98/go-service v0.0.0-20241025004227-0a5e6a51eeee/go.mod h1:GYhwSyD3SEXZQ3DmppeT1Zn6eIgCT/Y725x0MM/EVIY=
+github.com/pixil98/go-testutil v0.0.0-20260123222118-fa427b8db36a h1:zPxmhEFpnvx0F8H1KbXH6SFQdHcB3qcSevmlYEQ+m0g=
+github.com/pixil98/go-testutil v0.0.0-20260123222118-fa427b8db36a/go.mod h1:qT1b5ei2nkl9QpEONfXJCGyHxod5KlkvpNT2wtv4TDI=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/sirupsen/logrus v1.9.3 h1:dueUQJ1C2q9oE3F7wvmSGAaVtTmUizReu6fjN8uqzbQ=

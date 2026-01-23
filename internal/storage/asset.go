@@ -32,6 +32,10 @@ func (c *Asset[T]) Id() Identifier {
 func (a *Asset[T]) Validate() error {
 	el := errors.NewErrorList()
 
+	if a.Version == 0 {
+		el.Add(fmt.Errorf("version must be set"))
+	}
+
 	if a.Identifier == "" {
 		el.Add(fmt.Errorf("id must be set"))
 	}

@@ -27,14 +27,16 @@ func (p *Player) Tick(ctx context.Context) {
 func (p *Player) Play(ctx context.Context) error {
 	scanner := bufio.NewScanner(p.conn)
 
-	if err := p.prompt(); err != nil {
+	err := p.prompt()
+	if err != nil {
 		return err
 	}
 
 	for scanner.Scan() {
 		line := strings.TrimSpace(scanner.Text())
 		if line == "" {
-			if err := p.prompt(); err != nil {
+			err = p.prompt()
+			if err != nil {
 				return err
 			}
 			continue
@@ -49,11 +51,12 @@ func (p *Player) Play(ctx context.Context) error {
 		}
 
 		// Execute the command
-		err := p.cmdHandler.Exec(ctx, &p.EntityState, cmdName, args...)
+		err = p.cmdHandler.Exec(ctx, &p.EntityState, cmdName, args...)
 		if err != nil {
 			var userErr *commands.UserError
 			if errors.As(err, &userErr) {
-				if err := p.writeLine(userErr.Message); err != nil {
+				err = p.writeLine(userErr.Message)
+				if err != nil {
 					return err
 				}
 			} else {
@@ -73,7 +76,8 @@ func (p *Player) Play(ctx context.Context) error {
 			return ctx.Err()
 		}
 
-		if err := p.prompt(); err != nil {
+		err = p.prompt()
+		if err != nil {
 			return err
 		}
 	}

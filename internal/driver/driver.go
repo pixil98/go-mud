@@ -50,7 +50,8 @@ func (d *MudDriver) Start(ctx context.Context) error {
 
 func (d *MudDriver) Tick(ctx context.Context) error {
 	for _, m := range d.handlers {
-		if err := m.Tick(ctx); err != nil {
+		err := m.Tick(ctx)
+		if err != nil {
 			return err
 		}
 	}

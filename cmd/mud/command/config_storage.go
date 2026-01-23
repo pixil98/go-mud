@@ -1,7 +1,6 @@
 package command
 
 import (
-	"context"
 	"fmt"
 	"os"
 
@@ -37,13 +36,6 @@ func (c *AssetConfig[T]) Validate() error {
 	return nil
 }
 
-func (c *AssetConfig[T]) NewFileStore(ctx context.Context) (*storage.FileStore[T], error) {
-	store := storage.NewFileStore[T](c.Path)
-
-	err := store.Load(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return store, nil
+func (c *AssetConfig[T]) NewFileStore() (*storage.FileStore[T], error) {
+	return storage.NewFileStore[T](c.Path)
 }

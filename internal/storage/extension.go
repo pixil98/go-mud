@@ -34,7 +34,8 @@ func (e ExtensionState) Get(key string, out any) (bool, error) {
 		return false, nil
 	}
 
-	if err := json.Unmarshal(raw, out); err != nil {
+	err := json.Unmarshal(raw, out)
+	if err != nil {
 		return true, fmt.Errorf("unmarshal extension %q: %w", key, err)
 	}
 	return true, nil

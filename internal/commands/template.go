@@ -34,7 +34,8 @@ func ExpandTemplate(tmplStr string, data *TemplateData) (string, error) {
 	}
 
 	var buf bytes.Buffer
-	if err := tmpl.Execute(&buf, data); err != nil {
+	err = tmpl.Execute(&buf, data)
+	if err != nil {
 		return "", fmt.Errorf("executing template: %w", err)
 	}
 

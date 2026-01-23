@@ -69,7 +69,8 @@ func (h *Handler) RegisterFactory(name string, factory HandlerFactory) error {
 // Call this after all handler factories have been registered.
 func (h *Handler) CompileAll() error {
 	for id, cmd := range h.store.GetAll() {
-		if err := h.compile(id, cmd); err != nil {
+		err := h.compile(id, cmd)
+		if err != nil {
 			return fmt.Errorf("compiling command %q: %w", id, err)
 		}
 	}

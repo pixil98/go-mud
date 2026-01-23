@@ -1,19 +1,15 @@
 package storage
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"io"
 	"os"
 	"path/filepath"
 	"sync"
-
-	"github.com/pixil98/go-log/log"
 )
 
 type Storer[T ValidatingSpec] interface {
-	Load(context.Context) error
 	Save(string, T) error
 	Get(string) T
 	GetAll() map[Identifier]T
@@ -26,14 +22,21 @@ type FileStore[T ValidatingSpec] struct {
 	mu sync.RWMutex
 }
 
-func NewFileStore[T ValidatingSpec](path string) *FileStore[T] {
-	return &FileStore[T]{
+func NewFileStore[T ValidatingSpec](path string) (*FileStore[T], error) {
+	s := &FileStore[T]{
 		path:    path,
 		records: map[Identifier]T{},
 	}
+
+	err := s.load()
+	if err != nil {
+		return nil, err
+	}
+
+	return s, nil
 }
 
-func (s *FileStore[T]) Load(ctx context.Context) error {
+func (s *FileStore[T]) load() error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -47,7 +50,7 @@ func (s *FileStore[T]) Load(ctx context.Context) error {
 
 		// Load all json files in the assets path
 		if !info.IsDir() && filepath.Ext(path) == ".json" {
-			asset, err := s.loadAsset(ctx, path)
+			asset, err := s.loadAsset(path)
 			if err != nil {
 				return err
 			}
@@ -134,18 +137,14 @@ func (s *FileStore[T]) filePath(id Identifier) string {
 	return filepath.Join(s.path, fmt.Sprintf("%s.json", id))
 }
 
-func (s *FileStore[T]) loadAsset(ctx context.Context, path string) (*Asset[T], error) {
+func (s *FileStore[T]) loadAsset(path string) (*Asset[T], error) {
 	file, err := os.Open(path)
 	if err != nil {
 		return nil, fmt.Errorf("opening file: %w", err)
 	}
 
-	defer func() {
-		err := file.Close()
-		if err != nil {
-			log.GetLogger(ctx).Errorf("closing file: %s", err.Error())
-		}
-	}()
+	// Ignoring close error - file is read-only, error is not actionable
+	defer func() { _ = file.Close() }()
 
 	jsonData, err := io.ReadAll(file)
 	if err != nil {

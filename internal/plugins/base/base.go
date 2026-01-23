@@ -29,15 +29,13 @@ func (p *BasePlugin) Key() string {
 
 func (p *BasePlugin) Init(ctx context.Context) error {
 	//TODO load these paths from config?
-	s := storage.NewFileStore[*Pronoun]("./assets/pronouns")
-	err := s.Load(ctx)
+	s, err := storage.NewFileStore[*Pronoun]("./assets/pronouns")
 	if err != nil {
 		return fmt.Errorf("loading pronouns: %w", err)
 	}
 	p.pronouns = storage.NewSelectableStorer(s)
 
-	r := storage.NewFileStore[*Race]("./assets/races")
-	err = r.Load(ctx)
+	r, err := storage.NewFileStore[*Race]("./assets/races")
 	if err != nil {
 		return fmt.Errorf("loading races: %w", err)
 	}

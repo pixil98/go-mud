@@ -30,18 +30,19 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	}
 
 	// Create Stores
-	storeCharacters, err := cfg.Storage.Characters.NewFileStore(ctx)
+	storeCharacters, err := cfg.Storage.Characters.NewFileStore()
 	if err != nil {
 		return nil, fmt.Errorf("creating character store: %w", err)
 	}
-	storeCmds, err := cfg.Storage.Commands.NewFileStore(ctx)
+	storeCmds, err := cfg.Storage.Commands.NewFileStore()
 	if err != nil {
 		return nil, fmt.Errorf("creating command store: %w", err)
 	}
 
 	// Create command handler and compile all commands
 	cmdHandler := commands.NewHandler(storeCmds)
-	if err := cmdHandler.CompileAll(); err != nil {
+	err = cmdHandler.CompileAll()
+	if err != nil {
 		return nil, fmt.Errorf("compiling commands: %w", err)
 	}
 
