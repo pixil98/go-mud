@@ -34,24 +34,25 @@ func Prompt(rw io.ReadWriter, prompt string, opts ...promptOption) (string, erro
 		opt(config)
 	}
 
-	br := bufio.NewReader(rw)
+	scanner := bufio.NewScanner(rw)
 
 	tries := 0
-	var input []byte
 	for {
 		_, err := rw.Write([]byte(prompt))
 		if err != nil {
 			return "", err
 		}
 
-		//TODO: I'm pretty sure this shouldn't be using ReadLine
-		input, _, err = br.ReadLine()
-		if err != nil {
-			return "", err
+		if !scanner.Scan() {
+			if err := scanner.Err(); err != nil {
+				return "", err
+			}
+			return "", io.EOF
 		}
+		input := strings.TrimRight(scanner.Text(), "\r")
 
 		if config.validator != nil {
-			ok, msg := config.validator(string(input))
+			ok, msg := config.validator(input)
 			if !ok {
 				_, err = rw.Write([]byte(msg))
 				if err != nil {
@@ -71,7 +72,7 @@ func Prompt(rw io.ReadWriter, prompt string, opts ...promptOption) (string, erro
 			}
 		}
 
-		return string(input), nil
+		return input, nil
 	}
 }
 
