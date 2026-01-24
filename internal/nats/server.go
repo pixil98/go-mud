@@ -6,11 +6,13 @@ import (
 	"time"
 
 	"github.com/nats-io/nats-server/v2/server"
+	"github.com/nats-io/nats.go"
 	"github.com/pixil98/go-log/log"
 )
 
 type NatsServer struct {
-	ns *server.Server
+	ns   *server.Server
+	conn *nats.Conn
 
 	startupTimeout time.Duration
 	host           string
@@ -50,11 +52,47 @@ func (n *NatsServer) Start(ctx context.Context) error {
 		return fmt.Errorf("nats server not ready for connections")
 	}
 
+	// Create internal client connection
+	conn, err := nats.Connect(n.clientURL())
+	if err != nil {
+		return fmt.Errorf("creating nats client connection: %w", err)
+	}
+	n.conn = conn
+
 	log.GetLogger(ctx).Infof("nats server listening on %s", n.ns.Addr())
 
 	<-ctx.Done()
+	n.conn.Close()
 	n.ns.Shutdown()
 	n.ns.WaitForShutdown()
 
 	return nil
+}
+
+// Subscribe creates a subscription on the given subject.
+// The handler is called for each message received.
+// Returns an unsubscribe function to remove the subscription.
+func (n *NatsServer) Subscribe(subject string, handler func(data []byte)) (func(), error) {
+	if n.conn == nil {
+		return nil, fmt.Errorf("nats server not started")
+	}
+	sub, err := n.conn.Subscribe(subject, func(msg *nats.Msg) {
+		handler(msg.Data)
+	})
+	if err != nil {
+		return nil, err
+	}
+	return func() { sub.Unsubscribe() }, nil
+}
+
+// Publish sends a message to the given subject
+func (n *NatsServer) Publish(subject string, data []byte) error {
+	if n.conn == nil {
+		return fmt.Errorf("nats server not started")
+	}
+	return n.conn.Publish(subject, data)
+}
+
+func (n *NatsServer) clientURL() string {
+	return fmt.Sprintf("nats://%s:%d", n.host, n.port)
 }

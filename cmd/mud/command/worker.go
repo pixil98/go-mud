@@ -39,15 +39,21 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 		return nil, fmt.Errorf("creating command store: %w", err)
 	}
 
+	// Setup the nats server
+	natsServer, err := cfg.Nats.NewNatsServer()
+	if err != nil {
+		return nil, fmt.Errorf("creating nats server: %w", err)
+	}
+
 	// Create command handler and compile all commands
-	cmdHandler := commands.NewHandler(storeCmds)
+	cmdHandler := commands.NewHandler(storeCmds, natsServer)
 	err = cmdHandler.CompileAll()
 	if err != nil {
 		return nil, fmt.Errorf("compiling commands: %w", err)
 	}
 
 	// Create player manager
-	playerManager := player.NewPlayerManager(cmdHandler, pluginManager, storeCharacters)
+	playerManager := player.NewPlayerManager(cmdHandler, pluginManager, storeCharacters, natsServer)
 
 	// Create connection manager
 	connectionManager := listener.NewConnectionManager(playerManager)
@@ -68,16 +74,10 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 		pluginManager,
 	})
 
-	// Setup the nats server
-	nats, err := cfg.Nats.NewNatsServer()
-	if err != nil {
-		return nil, fmt.Errorf("creating nats server: %w", err)
-	}
-
 	// Create a worker list
 	return service.WorkerList{
 		"driver":      driver,
 		"listeners":   &listeners,
-		"nats server": nats,
+		"nats server": natsServer,
 	}, nil
 }

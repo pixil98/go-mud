@@ -23,7 +23,7 @@ type CommandFunc func(ctx context.Context, data *TemplateData) error
 
 // HandlerFactory creates a CommandFunc from a command definition.
 // It's called once at startup when commands are compiled.
-type HandlerFactory func(cmd *Command) (CommandFunc, error)
+type HandlerFactory func(cmd *Command, pub Publisher) (CommandFunc, error)
 
 // compiledCommand holds a command that's been validated and compiled.
 type compiledCommand struct {
@@ -31,17 +31,24 @@ type compiledCommand struct {
 	cmdFunc CommandFunc
 }
 
+// Publisher provides the ability to publish messages to subjects
+type Publisher interface {
+	Publish(subject string, data []byte) error
+}
+
 type Handler struct {
 	store     storage.Storer[*Command]
 	factories map[string]HandlerFactory
 	compiled  map[storage.Identifier]*compiledCommand
+	publisher Publisher
 }
 
-func NewHandler(c storage.Storer[*Command]) *Handler {
+func NewHandler(c storage.Storer[*Command], publisher Publisher) *Handler {
 	h := &Handler{
 		store:     c,
 		factories: make(map[string]HandlerFactory),
 		compiled:  make(map[storage.Identifier]*compiledCommand),
+		publisher: publisher,
 	}
 	// Register built-in handlers
 	h.RegisterFactory("message", messageHandlerFactory)
@@ -83,7 +90,7 @@ func (h *Handler) compile(id storage.Identifier, cmd *Command) error {
 		return fmt.Errorf("unknown handler %q", cmd.Handler)
 	}
 
-	cmdFunc, err := factory(cmd)
+	cmdFunc, err := factory(cmd, h.publisher)
 	if err != nil {
 		return fmt.Errorf("creating handler: %w", err)
 	}
@@ -202,8 +209,8 @@ func (h *Handler) parseValue(paramType ParamType, raw string) (any, error) {
 	}
 }
 
-// messageHandlerFactory creates a simple message-printing handler.
-func messageHandlerFactory(cmd *Command) (CommandFunc, error) {
+// messageHandlerFactory creates a handler that publishes messages to a channel.
+func messageHandlerFactory(cmd *Command, pub Publisher) (CommandFunc, error) {
 	// Get the channel template from config
 	channelTmpl, _ := cmd.Config["channel"].(string)
 
@@ -217,13 +224,12 @@ func messageHandlerFactory(cmd *Command) (CommandFunc, error) {
 		// Get the message text from args
 		text, _ := data.Args["text"].(string)
 
-		fmt.Printf("[%s] %s\n", channel, text)
-		return nil
+		return pub.Publish(channel, []byte(text))
 	}, nil
 }
 
 // quitHandlerFactory creates a handler that signals the player wants to quit.
-func quitHandlerFactory(cmd *Command) (CommandFunc, error) {
+func quitHandlerFactory(cmd *Command, pub Publisher) (CommandFunc, error) {
 	return func(ctx context.Context, data *TemplateData) error {
 		data.State.Quit = true
 		return nil

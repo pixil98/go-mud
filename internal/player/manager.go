@@ -11,23 +11,28 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
+// Subscriber provides the ability to subscribe to message subjects
+type Subscriber interface {
+	Subscribe(subject string, handler func(data []byte)) (unsubscribe func(), err error)
+}
+
 type PlayerManager struct {
 	players       map[string]*Player
 	cmdHandler    *commands.Handler
 	pluginManager *plugins.PluginManager
+	subscriber    Subscriber
 
 	loginFlow *loginFlow
 
 	chars storage.Storer[*Character]
-	//pronouns storage.Storer[*Pronoun]
-	//races    storage.Storer[*Race]
 }
 
-func NewPlayerManager(cmd *commands.Handler, plugins *plugins.PluginManager, cs storage.Storer[*Character]) *PlayerManager {
+func NewPlayerManager(cmd *commands.Handler, plugins *plugins.PluginManager, cs storage.Storer[*Character], subscriber Subscriber) *PlayerManager {
 	pm := &PlayerManager{
 		players:       map[string]*Player{},
 		pluginManager: plugins,
 		cmdHandler:    cmd,
+		subscriber:    subscriber,
 		loginFlow:     &loginFlow{cStore: cs},
 		chars:         cs,
 	}
@@ -66,9 +71,21 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
 		return nil, fmt.Errorf("saving character: %w", err)
 	}
 
-	return &Player{
+	p := &Player{
 		conn:       conn,
 		char:       char,
 		cmdHandler: m.cmdHandler,
-	}, nil
+		subscriber: m.subscriber,
+		subs:       make(map[string]func()),
+		msgs:       make(chan []byte, 100),
+	}
+
+	// Subscribe to player-specific channel
+	subject := fmt.Sprintf("player-%s", strings.ToLower(char.Name))
+	err = p.Subscribe("player", subject)
+	if err != nil {
+		return nil, fmt.Errorf("subscribing to player channel: %w", err)
+	}
+
+	return p, nil
 }

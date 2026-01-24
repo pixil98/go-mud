@@ -227,7 +227,7 @@ func TestHandler_parseArgs(t *testing.T) {
 }
 
 func TestHandler_RegisterFactory(t *testing.T) {
-	dummyFactory := func(cmd *Command) (CommandFunc, error) {
+	dummyFactory := func(cmd *Command, pub Publisher) (CommandFunc, error) {
 		return nil, nil
 	}
 
