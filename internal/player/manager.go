@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"strings"
+	"sync"
 
 	"github.com/pixil98/go-mud/internal/commands"
 	"github.com/pixil98/go-mud/internal/plugins"
@@ -17,6 +18,7 @@ type Subscriber interface {
 }
 
 type PlayerManager struct {
+	mu            sync.RWMutex
 	players       map[string]*Player
 	cmdHandler    *commands.Handler
 	pluginManager *plugins.PluginManager
@@ -29,7 +31,7 @@ type PlayerManager struct {
 
 func NewPlayerManager(cmd *commands.Handler, plugins *plugins.PluginManager, cs storage.Storer[*Character], subscriber Subscriber) *PlayerManager {
 	pm := &PlayerManager{
-		players:       map[string]*Player{},
+		players:       make(map[string]*Player),
 		pluginManager: plugins,
 		cmdHandler:    cmd,
 		subscriber:    subscriber,
@@ -42,17 +44,26 @@ func NewPlayerManager(cmd *commands.Handler, plugins *plugins.PluginManager, cs 
 
 func (m *PlayerManager) Start(ctx context.Context) error {
 	<-ctx.Done()
-
-	//TODO stop all player connections
+	// Player connections are stopped via context cancellation from the telnet listener
 	return nil
 }
 
 func (m *PlayerManager) Tick(ctx context.Context) error {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+
 	for _, p := range m.players {
 		p.Tick(ctx)
 	}
 
 	return nil
+}
+
+// RemovePlayer removes a player from the active players map
+func (m *PlayerManager) RemovePlayer(id string) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	delete(m.players, id)
 }
 
 func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
@@ -81,11 +92,16 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
 	}
 
 	// Subscribe to player-specific channel
-	subject := fmt.Sprintf("player-%s", strings.ToLower(char.Name))
+	subject := fmt.Sprintf("player-%s", p.Id())
 	err = p.Subscribe("player", subject)
 	if err != nil {
 		return nil, fmt.Errorf("subscribing to player channel: %w", err)
 	}
+
+	// Track the player
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	m.players[p.Id()] = p
 
 	return p, nil
 }

@@ -30,6 +30,11 @@ func (p *Player) Tick(ctx context.Context) {
 	//p.character.Regen()
 }
 
+// Id returns the player's unique identifier (lowercase character name)
+func (p *Player) Id() string {
+	return strings.ToLower(p.char.Name)
+}
+
 // Unsubscribe removes a subscription by name
 func (p *Player) Unsubscribe(name string) {
 	if unsub, ok := p.subs[name]; ok {

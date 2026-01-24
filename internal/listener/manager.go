@@ -36,4 +36,7 @@ func (m *ConnectionManager) AcceptConnection(ctx context.Context, conn io.ReadWr
 	if err != nil {
 		log.GetLogger(ctx).Warnf("playing: %v", err)
 	}
+
+	// Remove player from active players when they disconnect
+	m.pm.RemovePlayer(p.Id())
 }
