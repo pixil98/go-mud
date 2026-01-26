@@ -4,7 +4,8 @@
     "spec": {
         "handler": "message",
         "config": {
-            "channel": "zone-{{ .State.Zone }}-room-{{ .State.Room }}"
+            "recipient_channel": "zone-{{ .State.Zone }}-room-{{ .State.Room }}",
+            "recipient_message": "{{ .Actor.Name }} says, \"{{ .Args.text }}\""
         },
         "params": [
             {"name": "text", "type": "string", "required": true, "rest": true}

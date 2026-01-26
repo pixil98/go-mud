@@ -226,10 +226,18 @@ func TestHandler_parseArgs(t *testing.T) {
 	}
 }
 
+type mockHandlerFactory struct{}
+
+func (f *mockHandlerFactory) ValidateConfig(config map[string]any) error {
+	return nil
+}
+
+func (f *mockHandlerFactory) Create(config map[string]any, pub Publisher) (CommandFunc, error) {
+	return nil, nil
+}
+
 func TestHandler_RegisterFactory(t *testing.T) {
-	dummyFactory := func(cmd *Command, pub Publisher) (CommandFunc, error) {
-		return nil, nil
-	}
+	dummyFactory := &mockHandlerFactory{}
 
 	tests := map[string]struct {
 		factoryFn  HandlerFactory

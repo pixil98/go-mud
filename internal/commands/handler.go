@@ -21,9 +21,14 @@ type ParsedArg struct {
 // It receives template data containing player state and parsed arguments.
 type CommandFunc func(ctx context.Context, data *TemplateData) error
 
-// HandlerFactory creates a CommandFunc from a command definition.
-// It's called once at startup when commands are compiled.
-type HandlerFactory func(cmd *Command, pub Publisher) (CommandFunc, error)
+// HandlerFactory creates CommandFuncs from command configurations.
+// Implementations should expose their expected config structure.
+type HandlerFactory interface {
+	// ValidateConfig validates that the config contains required fields.
+	ValidateConfig(config map[string]any) error
+	// Create creates a CommandFunc from the validated config.
+	Create(config map[string]any, pub Publisher) (CommandFunc, error)
+}
 
 // compiledCommand holds a command that's been validated and compiled.
 type compiledCommand struct {
@@ -51,8 +56,8 @@ func NewHandler(c storage.Storer[*Command], publisher Publisher) *Handler {
 		publisher: publisher,
 	}
 	// Register built-in handlers
-	h.RegisterFactory("message", messageHandlerFactory)
-	h.RegisterFactory("quit", quitHandlerFactory)
+	h.RegisterFactory("message", &MessageHandlerFactory{})
+	h.RegisterFactory("quit", &QuitHandlerFactory{})
 	return h
 }
 
@@ -90,7 +95,11 @@ func (h *Handler) compile(id storage.Identifier, cmd *Command) error {
 		return fmt.Errorf("unknown handler %q", cmd.Handler)
 	}
 
-	cmdFunc, err := factory(cmd, h.publisher)
+	if err := factory.ValidateConfig(cmd.Config); err != nil {
+		return fmt.Errorf("validating config: %w", err)
+	}
+
+	cmdFunc, err := factory.Create(cmd.Config, h.publisher)
 	if err != nil {
 		return fmt.Errorf("creating handler: %w", err)
 	}
@@ -103,7 +112,7 @@ func (h *Handler) compile(id storage.Identifier, cmd *Command) error {
 }
 
 // Exec executes a command with the given arguments.
-func (h *Handler) Exec(ctx context.Context, state *game.EntityState, cmdName string, rawArgs ...string) error {
+func (h *Handler) Exec(ctx context.Context, actor Actor, state *game.EntityState, cmdName string, rawArgs ...string) error {
 	compiled, ok := h.compiled[storage.Identifier(cmdName)]
 	if !ok {
 		return NewUserError(fmt.Sprintf("Unknown command: %s", cmdName))
@@ -116,7 +125,7 @@ func (h *Handler) Exec(ctx context.Context, state *game.EntityState, cmdName str
 	}
 
 	// Build template data from state and args
-	data := NewTemplateData(state, args)
+	data := NewTemplateData(actor, state, args)
 
 	return compiled.cmdFunc(ctx, data)
 }
@@ -209,27 +218,87 @@ func (h *Handler) parseValue(paramType ParamType, raw string) (any, error) {
 	}
 }
 
-// messageHandlerFactory creates a handler that publishes messages to a channel.
-func messageHandlerFactory(cmd *Command, pub Publisher) (CommandFunc, error) {
-	// Get the channel template from config
-	channelTmpl, _ := cmd.Config["channel"].(string)
+// MessageHandlerFactory creates handlers that publish messages to channels.
+// Config:
+//   - recipient_channel (optional): template for the recipient's channel
+//   - recipient_message (required if recipient_channel set): template for message to recipient
+//   - sender_channel (optional): template for sender's channel (for confirmation)
+//   - sender_message (required if sender_channel set): template for sender confirmation
+type MessageHandlerFactory struct{}
+
+func (f *MessageHandlerFactory) ValidateConfig(config map[string]any) error {
+	recipientChannel, _ := config["recipient_channel"].(string)
+	recipientMessage, _ := config["recipient_message"].(string)
+	if recipientChannel != "" && recipientMessage == "" {
+		return fmt.Errorf("recipient_message is required when recipient_channel is set")
+	}
+
+	senderChannel, _ := config["sender_channel"].(string)
+	senderMessage, _ := config["sender_message"].(string)
+	if senderChannel != "" && senderMessage == "" {
+		return fmt.Errorf("sender_message is required when sender_channel is set")
+	}
+
+	if recipientChannel == "" && senderChannel == "" {
+		return fmt.Errorf("at least one of recipient_channel or sender_channel is required")
+	}
+
+	return nil
+}
+
+func (f *MessageHandlerFactory) Create(config map[string]any, pub Publisher) (CommandFunc, error) {
+	recipientChannel, _ := config["recipient_channel"].(string)
+	recipientMessage, _ := config["recipient_message"].(string)
+	senderChannel, _ := config["sender_channel"].(string)
+	senderMessage, _ := config["sender_message"].(string)
 
 	return func(ctx context.Context, data *TemplateData) error {
-		// Expand the channel template
-		channel, err := ExpandTemplate(channelTmpl, data)
-		if err != nil {
-			return fmt.Errorf("expanding channel template: %w", err)
+		// Send confirmation to sender if configured
+		if senderChannel != "" {
+			channel, err := ExpandTemplate(senderChannel, data)
+			if err != nil {
+				return fmt.Errorf("expanding sender channel template: %w", err)
+			}
+
+			message, err := ExpandTemplate(senderMessage, data)
+			if err != nil {
+				return fmt.Errorf("expanding sender message template: %w", err)
+			}
+
+			if err := pub.Publish(channel, []byte(message)); err != nil {
+				return err
+			}
 		}
 
-		// Get the message text from args
-		text, _ := data.Args["text"].(string)
+		// Send message to recipient if configured
+		if recipientChannel != "" {
+			channel, err := ExpandTemplate(recipientChannel, data)
+			if err != nil {
+				return fmt.Errorf("expanding recipient channel template: %w", err)
+			}
 
-		return pub.Publish(channel, []byte(text))
+			message, err := ExpandTemplate(recipientMessage, data)
+			if err != nil {
+				return fmt.Errorf("expanding recipient message template: %w", err)
+			}
+
+			if err := pub.Publish(channel, []byte(message)); err != nil {
+				return err
+			}
+		}
+
+		return nil
 	}, nil
 }
 
-// quitHandlerFactory creates a handler that signals the player wants to quit.
-func quitHandlerFactory(cmd *Command, pub Publisher) (CommandFunc, error) {
+// QuitHandlerFactory creates handlers that signal the player wants to quit.
+type QuitHandlerFactory struct{}
+
+func (f *QuitHandlerFactory) ValidateConfig(config map[string]any) error {
+	return nil
+}
+
+func (f *QuitHandlerFactory) Create(config map[string]any, pub Publisher) (CommandFunc, error) {
 	return func(ctx context.Context, data *TemplateData) error {
 		data.State.Quit = true
 		return nil

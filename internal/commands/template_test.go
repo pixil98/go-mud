@@ -7,6 +7,14 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
+type mockActor struct {
+	name string
+}
+
+func (m *mockActor) Name() string {
+	return m.name
+}
+
 func TestExpandTemplate(t *testing.T) {
 	tests := map[string]struct {
 		tmplStr string
@@ -93,6 +101,8 @@ func TestExpandTemplate(t *testing.T) {
 }
 
 func TestNewTemplateData(t *testing.T) {
+	actor := &mockActor{name: "TestPlayer"}
+
 	tests := map[string]struct {
 		state   *game.EntityState
 		args    []ParsedArg
@@ -136,7 +146,11 @@ func TestNewTemplateData(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			got := NewTemplateData(tt.state, tt.args)
+			got := NewTemplateData(actor, tt.state, tt.args)
+
+			if got.Actor != actor {
+				t.Errorf("Actor pointer mismatch")
+			}
 
 			if got.State != tt.state {
 				t.Errorf("State pointer mismatch")

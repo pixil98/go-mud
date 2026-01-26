@@ -115,7 +115,7 @@ func (f *loginFlow) newCharacter(rw io.ReadWriter, username string) (*Character,
 		}
 
 		return &Character{
-			Name:     username,
+			CharName: username,
 			Password: passOne,
 		}, nil
 	}

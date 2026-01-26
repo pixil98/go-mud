@@ -77,7 +77,7 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
 		return nil, fmt.Errorf("initializing character: %w", err)
 	}
 	// Save the character back to preserve changes
-	err = m.chars.Save(strings.ToLower(char.Name), char)
+	err = m.chars.Save(strings.ToLower(char.Name()), char)
 	if err != nil {
 		return nil, fmt.Errorf("saving character: %w", err)
 	}

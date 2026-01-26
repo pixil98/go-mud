@@ -32,7 +32,7 @@ func (p *Player) Tick(ctx context.Context) {
 
 // Id returns the player's unique identifier (lowercase character name)
 func (p *Player) Id() string {
-	return strings.ToLower(p.char.Name)
+	return strings.ToLower(p.char.Name())
 }
 
 // Unsubscribe removes a subscription by name
@@ -132,7 +132,7 @@ func (p *Player) Play(ctx context.Context) error {
 			}
 
 			// Execute the command
-			err = p.cmdHandler.Exec(ctx, &p.EntityState, cmdName, args...)
+			err = p.cmdHandler.Exec(ctx, p.char, &p.EntityState, cmdName, args...)
 			if err != nil {
 				var userErr *commands.UserError
 				if errors.As(err, &userErr) {

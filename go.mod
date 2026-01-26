@@ -5,8 +5,10 @@ go 1.22
 toolchain go1.23.2
 
 require (
+	github.com/Masterminds/sprig/v3 v3.3.0
 	github.com/iammegalith/telnet v0.0.0-20230201230822-b5765a6db0cf
 	github.com/nats-io/nats-server/v2 v2.10.22
+	github.com/nats-io/nats.go v1.37.0
 	github.com/pixil98/go-errors v0.0.0-20241009155903-e7db5643855a
 	github.com/pixil98/go-log v0.0.0-20241009160017-35fcb07b6f0f
 	github.com/pixil98/go-service v0.0.0-20241025004227-0a5e6a51eeee
@@ -15,13 +17,21 @@ require (
 )
 
 require (
+	dario.cat/mergo v1.0.1 // indirect
+	github.com/Masterminds/goutils v1.1.1 // indirect
+	github.com/Masterminds/semver/v3 v3.3.0 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
+	github.com/google/uuid v1.6.0 // indirect
+	github.com/huandu/xstrings v1.5.0 // indirect
 	github.com/klauspost/compress v1.17.11 // indirect
 	github.com/minio/highwayhash v1.0.3 // indirect
+	github.com/mitchellh/copystructure v1.2.0 // indirect
+	github.com/mitchellh/reflectwalk v1.0.2 // indirect
 	github.com/nats-io/jwt/v2 v2.5.8 // indirect
-	github.com/nats-io/nats.go v1.37.0 // indirect
 	github.com/nats-io/nkeys v0.4.7 // indirect
 	github.com/nats-io/nuid v1.0.1 // indirect
+	github.com/shopspring/decimal v1.4.0 // indirect
+	github.com/spf13/cast v1.7.0 // indirect
 	github.com/stretchr/testify v1.8.2 // indirect
 	golang.org/x/crypto v0.28.0 // indirect
 	golang.org/x/sys v0.26.0 // indirect
