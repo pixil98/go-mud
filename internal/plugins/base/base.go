@@ -27,7 +27,7 @@ func (p *BasePlugin) Key() string {
 	return baseExtKey
 }
 
-func (p *BasePlugin) Init(ctx context.Context) error {
+func (p *BasePlugin) Init() error {
 	//TODO load these paths from config?
 	s, err := storage.NewFileStore[*Pronoun]("./assets/pronouns")
 	if err != nil {

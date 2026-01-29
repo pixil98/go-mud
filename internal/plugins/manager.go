@@ -17,7 +17,7 @@ type Extensible interface {
 type Plugin interface {
 	game.TickHandler
 	Key() string
-	Init(context.Context) error
+	Init() error
 	OnInitCharacter(io.ReadWriter, Extensible) error
 }
 
@@ -29,15 +29,15 @@ func NewPluginManager() *PluginManager {
 	return &PluginManager{plugins: []Plugin{}}
 }
 
-func (m *PluginManager) Register(ctx context.Context, p Plugin) error {
+func (m *PluginManager) Register(p Plugin) error {
 	if p == nil {
 		return fmt.Errorf("plugin is nil")
 	}
 
 	m.plugins = append(m.plugins, p)
-	slog.InfoContext(ctx, "registered plugin", "key", p.Key())
+	slog.Info("registered plugin", "key", p.Key())
 
-	return p.Init(ctx)
+	return p.Init()
 }
 
 func (m *PluginManager) Tick(ctx context.Context) error {

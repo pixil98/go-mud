@@ -1,7 +1,6 @@
 package command
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/pixil98/go-mud/internal/commands"
@@ -19,12 +18,9 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 		return nil, fmt.Errorf("unable to cast config")
 	}
 
-	//TODO: Probably get a better context
-	ctx := context.TODO()
-
 	// Setup Plugins
 	pluginManager := plugins.NewPluginManager()
-	err := pluginManager.Register(ctx, &base.BasePlugin{})
+	err := pluginManager.Register(&base.BasePlugin{})
 	if err != nil {
 		return nil, err
 	}
