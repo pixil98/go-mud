@@ -10,7 +10,7 @@ import (
 	"github.com/pixil98/go-mud/internal/player"
 	"github.com/pixil98/go-mud/internal/plugins"
 	"github.com/pixil98/go-mud/internal/plugins/base"
-	"github.com/pixil98/go-service/service"
+	"github.com/pixil98/go-service"
 )
 
 func BuildWorkers(config interface{}) (service.WorkerList, error) {
@@ -20,7 +20,7 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	}
 
 	//TODO: Probably get a better context
-	ctx := context.Background()
+	ctx := context.TODO()
 
 	// Setup Plugins
 	pluginManager := plugins.NewPluginManager()

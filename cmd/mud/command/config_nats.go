@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/pixil98/go-errors/errors"
+	"github.com/pixil98/go-errors"
 	"github.com/pixil98/go-mud/internal/nats"
 )
 

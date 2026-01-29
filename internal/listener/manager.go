@@ -3,8 +3,8 @@ package listener
 import (
 	"context"
 	"io"
+	"log/slog"
 
-	"github.com/pixil98/go-log/log"
 	"github.com/pixil98/go-mud/internal/player"
 )
 
@@ -19,14 +19,13 @@ func NewConnectionManager(pm *player.PlayerManager) *ConnectionManager {
 }
 
 func (m *ConnectionManager) AcceptConnection(ctx context.Context, conn io.ReadWriter) {
-	l := log.GetLogger(ctx)
 	//TODO thread ctx though this for timeouts
 	p, err := m.pm.NewPlayer(conn)
 	if err != nil {
-		l.Warnf("creating player instance: %v", err)
+		slog.WarnContext(ctx, "creating player instance", "error", err)
 		_, err := conn.Write([]byte("Failed to setup player session."))
 		if err != nil {
-			l.Warnf("writing err to player: %v", err)
+			slog.WarnContext(ctx, "writing err to player", "error", err)
 		}
 
 		return
@@ -34,7 +33,7 @@ func (m *ConnectionManager) AcceptConnection(ctx context.Context, conn io.ReadWr
 
 	err = p.Play(ctx)
 	if err != nil {
-		log.GetLogger(ctx).Warnf("playing: %v", err)
+		slog.WarnContext(ctx, "playing", "error", err)
 	}
 
 	// Remove player from active players when they disconnect

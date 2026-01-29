@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"regexp"
 
-	"github.com/pixil98/go-errors/errors"
+	"github.com/pixil98/go-errors"
 )
 
 var identifierPattern = regexp.MustCompile(`^[a-zA-Z0-9-]*$`)

@@ -3,11 +3,11 @@ package nats
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"time"
 
 	"github.com/nats-io/nats-server/v2/server"
 	"github.com/nats-io/nats.go"
-	"github.com/pixil98/go-log/log"
 )
 
 type NatsServer struct {
@@ -59,7 +59,7 @@ func (n *NatsServer) Start(ctx context.Context) error {
 	}
 	n.conn = conn
 
-	log.GetLogger(ctx).Infof("nats server listening on %s", n.ns.Addr())
+	slog.InfoContext(ctx, "nats server listening", "addr", n.ns.Addr())
 
 	<-ctx.Done()
 	n.conn.Close()

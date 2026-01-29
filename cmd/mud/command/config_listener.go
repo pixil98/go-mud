@@ -3,9 +3,9 @@ package command
 import (
 	"fmt"
 
-	"github.com/pixil98/go-errors/errors"
+	"github.com/pixil98/go-errors"
 	"github.com/pixil98/go-mud/internal/listener"
-	"github.com/pixil98/go-service/service"
+	"github.com/pixil98/go-service"
 )
 
 type ListenerType int

@@ -5,12 +5,11 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log/slog"
 	"sync"
 	"syscall"
 
 	"github.com/iammegalith/telnet"
-	"github.com/pixil98/go-log/log"
-	"github.com/sirupsen/logrus"
 )
 
 type TelnetListener struct {
@@ -31,7 +30,6 @@ func (l *TelnetListener) Start(ctx context.Context) error {
 
 	handler := &telnetHandler{
 		cFunc:       l.cm.AcceptConnection,
-		logger:      log.GetLogger(ctx),
 		connCtx:     connCtx,
 		cancelConns: cancelConns,
 	}
@@ -68,7 +66,6 @@ func (l *TelnetListener) Start(ctx context.Context) error {
 type telnetHandler struct {
 	wg          sync.WaitGroup
 	cFunc       func(context.Context, io.ReadWriter)
-	logger      logrus.FieldLogger
 	connCtx     context.Context
 	cancelConns context.CancelFunc
 }
@@ -79,14 +76,11 @@ func (h *telnetHandler) HandleTelnet(conn *telnet.Connection) {
 	defer func() {
 		err := conn.Close()
 		if err != nil {
-			h.logger.Errorf("closing telnet connection: %s", err)
+			slog.ErrorContext(h.connCtx, "closing telnet connection", "error", err)
 		}
 	}()
 
-	// Use the shared context so all connections are canceled together
-	ctx := log.SetLogger(h.connCtx, h.logger)
-
-	h.cFunc(ctx, conn)
+	h.cFunc(h.connCtx, conn)
 }
 
 func (h *telnetHandler) Stop() {

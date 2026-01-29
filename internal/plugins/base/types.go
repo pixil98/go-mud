@@ -3,7 +3,7 @@ package base
 import (
 	"fmt"
 
-	"github.com/pixil98/go-errors/errors"
+	"github.com/pixil98/go-errors"
 )
 
 type pronounPossessive struct {

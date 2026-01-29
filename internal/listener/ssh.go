@@ -3,10 +3,9 @@ package listener
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"net"
 	"sync"
-
-	"github.com/pixil98/go-log/log"
 )
 
 type SshListener struct {
@@ -23,8 +22,6 @@ func NewSshListener(port uint16) *SshListener {
 }
 
 func (l *SshListener) Start(ctx context.Context) error {
-	logger := log.GetLogger(ctx)
-
 	listener, err := net.Listen("tcp", fmt.Sprintf(":%d", l.port))
 	if err != nil {
 		return fmt.Errorf("listening on port %d: %w", l.port, err)
@@ -32,11 +29,11 @@ func (l *SshListener) Start(ctx context.Context) error {
 	defer func() {
 		err := listener.Close()
 		if err != nil {
-			logger.Errorf("closing listener: %s", err.Error())
+			slog.ErrorContext(ctx, "closing listener", "error", err)
 		}
 	}()
 
-	logger.Infof("listening for ssh on port %d", l.port)
+	slog.InfoContext(ctx, "listening for ssh", "port", l.port)
 
 	for {
 		select {
@@ -47,7 +44,7 @@ func (l *SshListener) Start(ctx context.Context) error {
 			/*
 				c, err := listener.Accept()
 				if err != nil {
-					logger.Errorf("accepting connection: %v", err)
+					slog.ErrorContext(ctx, "accepting connection", "error", err)
 					continue
 				}
 
@@ -55,7 +52,7 @@ func (l *SshListener) Start(ctx context.Context) error {
 					NoClientAuth: true,
 				})
 				if err != nil {
-					logger.Errorf("handshaking: %v", err)
+					slog.ErrorContext(ctx, "handshaking", "error", err)
 					continue
 				}
 
@@ -66,20 +63,18 @@ func (l *SshListener) Start(ctx context.Context) error {
 }
 
 func (l *SshListener) handleConnection(ctx context.Context, conn net.Conn) {
-	logger := log.GetLogger(ctx)
-
 	defer func() {
 		err := conn.Close()
 		if err != nil {
-			logger.Errorf("closing ssh connection: %s", err.Error())
+			slog.ErrorContext(ctx, "closing ssh connection", "error", err)
 		}
 	}()
 
-	logger.Infof("accepted connection from %s", conn.RemoteAddr())
+	slog.InfoContext(ctx, "accepted connection", "remote_addr", conn.RemoteAddr())
 
 	_, err := conn.Write([]byte("Hello, welcome to the mud!\n"))
 	if err != nil {
-		logger.Errorf("writing to connection: %v", err)
+		slog.ErrorContext(ctx, "writing to connection", "error", err)
 		return
 	}
 }

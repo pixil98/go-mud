@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"log/slog"
 
-	"github.com/pixil98/go-log/log"
 	"github.com/pixil98/go-mud/internal/game"
 )
 
@@ -35,7 +35,7 @@ func (m *PluginManager) Register(ctx context.Context, p Plugin) error {
 	}
 
 	m.plugins = append(m.plugins, p)
-	log.GetLogger(ctx).Infof("registered plugin: %s\n", p.Key())
+	slog.InfoContext(ctx, "registered plugin", "key", p.Key())
 
 	return p.Init(ctx)
 }

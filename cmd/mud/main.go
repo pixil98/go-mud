@@ -2,25 +2,27 @@ package main
 
 import (
 	"context"
+	"log/slog"
+	"os"
 
-	"github.com/pixil98/go-log/log"
 	"github.com/pixil98/go-mud/cmd/mud/command"
-	"github.com/pixil98/go-service/service"
+	"github.com/pixil98/go-service"
 )
 
 func main() {
-	logger := log.NewLogger()
+	slog.Info("creating application")
 
-	logger.Info("creating application")
 	app, err := service.NewApp(&command.Config{}, command.BuildWorkers)
 	if err != nil {
-		logger.WithError(err).Fatal("creating application")
+		slog.Error("creating application", "error", err)
+		os.Exit(1)
 	}
 
 	err = app.Run(context.Background())
 	if err != nil {
-		logger.WithError(err).Fatal("running application")
+		slog.Error("running application", "error", err)
+		os.Exit(1)
 	}
 
-	logger.Info("exiting application")
+	slog.Info("exiting application")
 }

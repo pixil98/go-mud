@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/pixil98/go-errors/errors"
+	"github.com/pixil98/go-errors"
 	"github.com/pixil98/go-mud/internal/commands"
 	"github.com/pixil98/go-mud/internal/player"
 	"github.com/pixil98/go-mud/internal/storage"
