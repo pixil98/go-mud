@@ -21,16 +21,60 @@ type TemplateData struct {
 }
 
 // NewTemplateData creates a TemplateData from world state and parsed arguments.
-func NewTemplateData(world *game.WorldState, charId storage.Identifier, args []ParsedArg) *TemplateData {
+// It resolves target-type parameters to their full game entities.
+func NewTemplateData(world *game.WorldState, charId storage.Identifier, args []ParsedArg) (*TemplateData, error) {
+	resolver := &DefaultTargetResolver{}
+
 	argsMap := make(map[string]any, len(args))
 	for _, arg := range args {
-		argsMap[arg.Spec.Name] = arg.Value
+		value, err := resolveArgValue(resolver, world, arg)
+		if err != nil {
+			return nil, err
+		}
+		argsMap[arg.Spec.Name] = value
 	}
 
 	return &TemplateData{
 		Actor: world.Characters().Get(string(charId)),
 		State: world.GetPlayer(charId),
 		Args:  argsMap,
+	}, nil
+}
+
+// resolveArgValue resolves a ParsedArg to its final value.
+// For target types, this involves looking up game entities.
+func resolveArgValue(resolver TargetResolver, world *game.WorldState, arg ParsedArg) (any, error) {
+	switch arg.Spec.Type {
+	case ParamTypePlayer:
+		raw, ok := arg.Value.(string)
+		if !ok {
+			return nil, fmt.Errorf("expected string for player parameter, got %T", arg.Value)
+		}
+		return resolver.ResolvePlayer(world, raw)
+
+	case ParamTypeMob:
+		raw, ok := arg.Value.(string)
+		if !ok {
+			return nil, fmt.Errorf("expected string for mob parameter, got %T", arg.Value)
+		}
+		return resolver.ResolveMob(world, raw)
+
+	case ParamTypeItem:
+		raw, ok := arg.Value.(string)
+		if !ok {
+			return nil, fmt.Errorf("expected string for item parameter, got %T", arg.Value)
+		}
+		return resolver.ResolveItem(world, raw)
+
+	case ParamTypeTarget:
+		raw, ok := arg.Value.(string)
+		if !ok {
+			return nil, fmt.Errorf("expected string for target parameter, got %T", arg.Value)
+		}
+		return resolver.ResolveTarget(world, raw)
+
+	default:
+		return arg.Value, nil
 	}
 }
 

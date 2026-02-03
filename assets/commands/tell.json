@@ -4,10 +4,10 @@
     "spec": {
         "handler": "message",
         "config": {
-            "recipient_channel": "player-{{ .Args.target }}",
+            "recipient_channel": "player-{{ .Args.target.Character.Name | lower }}",
             "recipient_message": "{{ .Actor.Name }} tells you, \"{{ .Args.text }}\"",
             "sender_channel": "player-{{ .Actor.Name | lower }}",
-            "sender_message": "You tell {{ .Args.target }}, \"{{ .Args.text }}\""
+            "sender_message": "You tell {{ .Args.target.Character.Name }}, \"{{ .Args.text }}\""
         },
         "params": [
             {"name": "target", "type": "player", "required": true},

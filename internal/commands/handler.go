@@ -113,7 +113,7 @@ func (h *Handler) compile(id storage.Identifier, cmd *Command) error {
 
 // Exec executes a command with the given arguments.
 func (h *Handler) Exec(ctx context.Context, world *game.WorldState, charId storage.Identifier, cmdName string, rawArgs ...string) error {
-	compiled, ok := h.compiled[storage.Identifier(cmdName)]
+	compiled, ok := h.compiled[storage.Identifier(strings.ToLower(cmdName))]
 	if !ok {
 		return NewUserError(fmt.Sprintf("Unknown command: %s", cmdName))
 	}
@@ -125,7 +125,11 @@ func (h *Handler) Exec(ctx context.Context, world *game.WorldState, charId stora
 	}
 
 	// Build template data from world state and args
-	data := NewTemplateData(world, charId, args)
+	// This resolves target-type parameters
+	data, err := NewTemplateData(world, charId, args)
+	if err != nil {
+		return err
+	}
 
 	return compiled.cmdFunc(ctx, data)
 }

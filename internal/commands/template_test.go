@@ -135,7 +135,7 @@ func TestNewTemplateData(t *testing.T) {
 		"single arg": {
 			args: []ParsedArg{
 				{
-					Spec:  &ParamSpec{Name: "count"},
+					Spec:  &ParamSpec{Name: "count", Type: ParamTypeNumber},
 					Value: 5,
 				},
 			},
@@ -143,27 +143,30 @@ func TestNewTemplateData(t *testing.T) {
 				"count": 5,
 			},
 		},
-		"multiple args": {
+		"multiple string args": {
 			args: []ParsedArg{
 				{
-					Spec:  &ParamSpec{Name: "target"},
-					Value: "bob",
+					Spec:  &ParamSpec{Name: "direction", Type: ParamTypeDirection},
+					Value: "north",
 				},
 				{
-					Spec:  &ParamSpec{Name: "message"},
+					Spec:  &ParamSpec{Name: "message", Type: ParamTypeString},
 					Value: "hello there",
 				},
 			},
 			expArgs: map[string]any{
-				"target":  "bob",
-				"message": "hello there",
+				"direction": "north",
+				"message":   "hello there",
 			},
 		},
 	}
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			got := NewTemplateData(world, charId, tt.args)
+			got, err := NewTemplateData(world, charId, tt.args)
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
 
 			if got.Actor == nil {
 				t.Errorf("Actor is nil, expected character")
