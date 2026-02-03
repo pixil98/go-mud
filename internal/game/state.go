@@ -1,12 +1,34 @@
 package game
 
-import "github.com/pixil98/go-mud/internal/storage"
+import (
+	"sync"
+	"time"
 
-// EntityState holds location and other shared state for a single entity (player, mob, etc).
-type EntityState struct {
-	Zone storage.Identifier
-	Room storage.Identifier
+	"github.com/pixil98/go-mud/internal/storage"
+)
 
-	// Quit signals the entity wants to disconnect
-	Quit bool
+// WorldState is the single source of truth for all mutable game state.
+// All access must go through its methods to ensure thread-safety.
+type WorldState struct {
+	mu      sync.RWMutex
+	players map[storage.Identifier]*PlayerState
+
+	// Stores for looking up entities
+	chars storage.Storer[*Character]
+}
+
+// PlayerState holds all mutable state for an active player.
+type PlayerState struct {
+	CharId storage.Identifier
+
+	// Location
+	ZoneId storage.Identifier
+	RoomId storage.Identifier
+
+	// Session state
+	Quit         bool
+	LastActivity time.Time
+
+	// Extension state (for plugins)
+	Extensions storage.ExtensionState
 }

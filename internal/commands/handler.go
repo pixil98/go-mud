@@ -112,7 +112,7 @@ func (h *Handler) compile(id storage.Identifier, cmd *Command) error {
 }
 
 // Exec executes a command with the given arguments.
-func (h *Handler) Exec(ctx context.Context, actor Actor, state *game.EntityState, cmdName string, rawArgs ...string) error {
+func (h *Handler) Exec(ctx context.Context, world *game.WorldState, charId storage.Identifier, cmdName string, rawArgs ...string) error {
 	compiled, ok := h.compiled[storage.Identifier(cmdName)]
 	if !ok {
 		return NewUserError(fmt.Sprintf("Unknown command: %s", cmdName))
@@ -124,8 +124,8 @@ func (h *Handler) Exec(ctx context.Context, actor Actor, state *game.EntityState
 		return err
 	}
 
-	// Build template data from state and args
-	data := NewTemplateData(actor, state, args)
+	// Build template data from world state and args
+	data := NewTemplateData(world, charId, args)
 
 	return compiled.cmdFunc(ctx, data)
 }
@@ -300,7 +300,9 @@ func (f *QuitHandlerFactory) ValidateConfig(config map[string]any) error {
 
 func (f *QuitHandlerFactory) Create(config map[string]any, pub Publisher) (CommandFunc, error) {
 	return func(ctx context.Context, data *TemplateData) error {
-		data.State.Quit = true
+		if data.State != nil {
+			data.State.Quit = true
+		}
 		return nil
 	}, nil
 }

@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"io"
 	"strings"
-	"sync"
 
 	"github.com/pixil98/go-mud/internal/commands"
+	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/plugins"
 	"github.com/pixil98/go-mud/internal/storage"
 )
@@ -18,25 +18,21 @@ type Subscriber interface {
 }
 
 type PlayerManager struct {
-	mu            sync.RWMutex
-	players       map[string]*Player
 	cmdHandler    *commands.Handler
 	pluginManager *plugins.PluginManager
 	subscriber    Subscriber
+	world         *game.WorldState
 
 	loginFlow *loginFlow
-
-	chars storage.Storer[*Character]
 }
 
-func NewPlayerManager(cmd *commands.Handler, plugins *plugins.PluginManager, cs storage.Storer[*Character], subscriber Subscriber) *PlayerManager {
+func NewPlayerManager(cmd *commands.Handler, plugins *plugins.PluginManager, subscriber Subscriber, world *game.WorldState) *PlayerManager {
 	pm := &PlayerManager{
-		players:       make(map[string]*Player),
 		pluginManager: plugins,
 		cmdHandler:    cmd,
 		subscriber:    subscriber,
-		loginFlow:     &loginFlow{cStore: cs},
-		chars:         cs,
+		world:         world,
+		loginFlow:     &loginFlow{world: world},
 	}
 
 	return pm
@@ -49,21 +45,18 @@ func (m *PlayerManager) Start(ctx context.Context) error {
 }
 
 func (m *PlayerManager) Tick(ctx context.Context) error {
-	m.mu.RLock()
-	defer m.mu.RUnlock()
-
-	for _, p := range m.players {
-		p.Tick(ctx)
-	}
-
+	// Iterate over all players in the world state
+	// Tick logic (regen, effects, etc.) can be added to PlayerState later
+	m.world.ForEachPlayer(func(p game.PlayerState) {
+		// Future: p.Tick() or similar
+		_ = p // Placeholder until tick logic is implemented
+	})
 	return nil
 }
 
-// RemovePlayer removes a player from the active players map
-func (m *PlayerManager) RemovePlayer(id string) {
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	delete(m.players, id)
+// RemovePlayer removes a player from the world state
+func (m *PlayerManager) RemovePlayer(charId string) {
+	_ = m.world.RemovePlayer(storage.Identifier(charId))
 }
 
 func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
@@ -77,14 +70,26 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
 		return nil, fmt.Errorf("initializing character: %w", err)
 	}
 	// Save the character back to preserve changes
-	err = m.chars.Save(strings.ToLower(char.Name()), char)
+	err = m.world.Characters().Save(strings.ToLower(char.Name()), char)
 	if err != nil {
 		return nil, fmt.Errorf("saving character: %w", err)
 	}
 
+	charId := storage.Identifier(strings.ToLower(char.Name()))
+
+	// Register player in world state
+	// TODO: Get starting zone/room from config or character data
+	startZone := storage.Identifier("default")
+	startRoom := storage.Identifier("default")
+	err = m.world.AddPlayer(charId, startZone, startRoom)
+	if err != nil {
+		return nil, fmt.Errorf("registering player in world: %w", err)
+	}
+
 	p := &Player{
 		conn:       conn,
-		char:       char,
+		charId:     charId,
+		world:      m.world,
 		cmdHandler: m.cmdHandler,
 		subscriber: m.subscriber,
 		subs:       make(map[string]func()),
@@ -95,13 +100,10 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
 	subject := fmt.Sprintf("player-%s", p.Id())
 	err = p.Subscribe("player", subject)
 	if err != nil {
+		// Clean up world state on failure
+		_ = m.world.RemovePlayer(charId)
 		return nil, fmt.Errorf("subscribing to player channel: %w", err)
 	}
-
-	// Track the player
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	m.players[p.Id()] = p
 
 	return p, nil
 }

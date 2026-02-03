@@ -6,13 +6,13 @@ import (
 
 	"github.com/pixil98/go-errors"
 	"github.com/pixil98/go-mud/internal/commands"
-	"github.com/pixil98/go-mud/internal/player"
+	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
 type StorageConfig struct {
 	/* Core Parts */
-	Characters AssetConfig[*player.Character] `json:"characters"`
+	Characters AssetConfig[*game.Character] `json:"characters"`
 	Commands   AssetConfig[*commands.Command] `json:"commands"`
 }
 

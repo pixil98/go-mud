@@ -7,16 +7,16 @@ import (
 	"unicode"
 
 	"github.com/pixil98/go-mud/internal"
-	"github.com/pixil98/go-mud/internal/storage"
+	"github.com/pixil98/go-mud/internal/game"
 )
 
 const maxPasswordTries = 3
 
 type loginFlow struct {
-	cStore storage.Storer[*Character]
+	world *game.WorldState
 }
 
-func (f *loginFlow) Run(rw io.ReadWriter) (*Character, error) {
+func (f *loginFlow) Run(rw io.ReadWriter) (*game.Character, error) {
 	_, err := rw.Write([]byte("Welcome to GoMud!\n"))
 	if err != nil {
 		return nil, err
@@ -46,7 +46,7 @@ func (f *loginFlow) Run(rw io.ReadWriter) (*Character, error) {
 		}
 
 		// Look up the character
-		char := f.cStore.Get(strings.ToLower(username))
+		char := f.world.Characters().Get(strings.ToLower(username))
 
 		// Must be a new character
 		if char == nil {
@@ -78,7 +78,7 @@ func (f *loginFlow) Run(rw io.ReadWriter) (*Character, error) {
 	}
 }
 
-func (f *loginFlow) newCharacter(rw io.ReadWriter, username string) (*Character, error) {
+func (f *loginFlow) newCharacter(rw io.ReadWriter, username string) (*game.Character, error) {
 	ok, err := internal.PromptYN(rw, fmt.Sprintf("Did I get that right, %s (Y/N)? ", username))
 	if err != nil {
 		return nil, err
@@ -114,7 +114,7 @@ func (f *loginFlow) newCharacter(rw io.ReadWriter, username string) (*Character,
 			continue
 		}
 
-		return &Character{
+		return &game.Character{
 			CharName: username,
 			Password: passOne,
 		}, nil

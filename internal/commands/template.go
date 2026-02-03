@@ -7,32 +7,29 @@ import (
 
 	"github.com/Masterminds/sprig/v3"
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // templateFuncs provides utility functions for templates.
 var templateFuncs = sprig.TxtFuncMap()
 
-// Actor represents the entity performing a command.
-type Actor interface {
-	Name() string
-}
-
 // TemplateData is the root data structure passed to templates.
 type TemplateData struct {
-	Actor Actor
-	State *game.EntityState
+	Actor *game.Character
+	State *game.PlayerState
 	Args  map[string]any
 }
 
-// NewTemplateData creates a TemplateData from state and parsed arguments.
-func NewTemplateData(actor Actor, state *game.EntityState, args []ParsedArg) *TemplateData {
+// NewTemplateData creates a TemplateData from world state and parsed arguments.
+func NewTemplateData(world *game.WorldState, charId storage.Identifier, args []ParsedArg) *TemplateData {
 	argsMap := make(map[string]any, len(args))
 	for _, arg := range args {
 		argsMap[arg.Spec.Name] = arg.Value
 	}
+
 	return &TemplateData{
-		Actor: actor,
-		State: state,
+		Actor: world.Characters().Get(string(charId)),
+		State: world.GetPlayer(charId),
 		Args:  argsMap,
 	}
 }

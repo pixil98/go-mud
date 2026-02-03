@@ -48,8 +48,11 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 		return nil, fmt.Errorf("compiling commands: %w", err)
 	}
 
+	// Create world state
+	worldState := game.NewWorldState(storeCharacters)
+
 	// Create player manager
-	playerManager := player.NewPlayerManager(cmdHandler, pluginManager, storeCharacters, natsServer)
+	playerManager := player.NewPlayerManager(cmdHandler, pluginManager, natsServer, worldState)
 
 	// Create connection manager
 	connectionManager := listener.NewConnectionManager(playerManager)

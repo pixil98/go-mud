@@ -7,12 +7,26 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
-type mockActor struct {
-	name string
+// mockCharStore implements storage.Storer[*game.Character] for testing
+type mockCharStore struct {
+	chars map[string]*game.Character
 }
 
-func (m *mockActor) Name() string {
-	return m.name
+func (m *mockCharStore) Get(id string) *game.Character {
+	return m.chars[id]
+}
+
+func (m *mockCharStore) GetAll() map[storage.Identifier]*game.Character {
+	result := make(map[storage.Identifier]*game.Character)
+	for k, v := range m.chars {
+		result[storage.Identifier(k)] = v
+	}
+	return result
+}
+
+func (m *mockCharStore) Save(id string, char *game.Character) error {
+	m.chars[id] = char
+	return nil
 }
 
 func TestExpandTemplate(t *testing.T) {
@@ -28,19 +42,19 @@ func TestExpandTemplate(t *testing.T) {
 			exp:     "hello world",
 		},
 		"expand state zone": {
-			tmplStr: "zone-{{ .State.Zone }}",
+			tmplStr: "zone-{{ .State.ZoneId }}",
 			data: &TemplateData{
-				State: &game.EntityState{
-					Zone: storage.Identifier("forest"),
+				State: &game.PlayerState{
+					ZoneId: storage.Identifier("forest"),
 				},
 			},
 			exp: "zone-forest",
 		},
 		"expand state room": {
-			tmplStr: "room-{{ .State.Room }}",
+			tmplStr: "room-{{ .State.RoomId }}",
 			data: &TemplateData{
-				State: &game.EntityState{
-					Room: storage.Identifier("clearing"),
+				State: &game.PlayerState{
+					RoomId: storage.Identifier("clearing"),
 				},
 			},
 			exp: "room-clearing",
@@ -48,7 +62,7 @@ func TestExpandTemplate(t *testing.T) {
 		"expand args": {
 			tmplStr: "player-{{ .Args.target }}",
 			data: &TemplateData{
-				State: &game.EntityState{},
+				State: &game.PlayerState{},
 				Args: map[string]any{
 					"target": "bob",
 				},
@@ -56,11 +70,11 @@ func TestExpandTemplate(t *testing.T) {
 			exp: "player-bob",
 		},
 		"expand multiple values": {
-			tmplStr: "zone-{{ .State.Zone }}-room-{{ .State.Room }}",
+			tmplStr: "zone-{{ .State.ZoneId }}-room-{{ .State.RoomId }}",
 			data: &TemplateData{
-				State: &game.EntityState{
-					Zone: storage.Identifier("castle"),
-					Room: storage.Identifier("throne"),
+				State: &game.PlayerState{
+					ZoneId: storage.Identifier("castle"),
+					RoomId: storage.Identifier("throne"),
 				},
 			},
 			exp: "zone-castle-room-throne",
@@ -101,20 +115,24 @@ func TestExpandTemplate(t *testing.T) {
 }
 
 func TestNewTemplateData(t *testing.T) {
-	actor := &mockActor{name: "TestPlayer"}
+	charStore := &mockCharStore{
+		chars: map[string]*game.Character{
+			"testplayer": {CharName: "TestPlayer"},
+		},
+	}
+	world := game.NewWorldState(charStore)
+	charId := storage.Identifier("testplayer")
+	_ = world.AddPlayer(charId, "testzone", "testroom")
 
 	tests := map[string]struct {
-		state   *game.EntityState
 		args    []ParsedArg
 		expArgs map[string]any
 	}{
 		"empty args": {
-			state:   &game.EntityState{},
 			args:    nil,
 			expArgs: map[string]any{},
 		},
 		"single arg": {
-			state: &game.EntityState{},
 			args: []ParsedArg{
 				{
 					Spec:  &ParamSpec{Name: "count"},
@@ -126,7 +144,6 @@ func TestNewTemplateData(t *testing.T) {
 			},
 		},
 		"multiple args": {
-			state: &game.EntityState{},
 			args: []ParsedArg{
 				{
 					Spec:  &ParamSpec{Name: "target"},
@@ -146,14 +163,20 @@ func TestNewTemplateData(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			got := NewTemplateData(actor, tt.state, tt.args)
+			got := NewTemplateData(world, charId, tt.args)
 
-			if got.Actor != actor {
-				t.Errorf("Actor pointer mismatch")
+			if got.Actor == nil {
+				t.Errorf("Actor is nil, expected character")
+				return
 			}
 
-			if got.State != tt.state {
-				t.Errorf("State pointer mismatch")
+			if got.Actor.Name() != "TestPlayer" {
+				t.Errorf("Actor.Name() = %q, expected %q", got.Actor.Name(), "TestPlayer")
+			}
+
+			if got.State == nil {
+				t.Errorf("State is nil, expected player state")
+				return
 			}
 
 			if len(got.Args) != len(tt.expArgs) {

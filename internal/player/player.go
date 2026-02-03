@@ -10,13 +10,14 @@ import (
 
 	"github.com/pixil98/go-mud/internal/commands"
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/storage"
 )
 
 type Player struct {
 	conn       io.ReadWriter
-	char       *Character
+	charId     storage.Identifier
+	world      *game.WorldState
 	cmdHandler *commands.Handler
-	game.EntityState
 
 	// Subscriber for creating new subscriptions
 	subscriber Subscriber
@@ -25,14 +26,9 @@ type Player struct {
 	msgs chan []byte
 }
 
-func (p *Player) Tick(ctx context.Context) {
-	// do something like regen here
-	//p.character.Regen()
-}
-
 // Id returns the player's unique identifier (lowercase character name)
 func (p *Player) Id() string {
-	return strings.ToLower(p.char.Name())
+	return string(p.charId)
 }
 
 // Unsubscribe removes a subscription by name
@@ -132,7 +128,7 @@ func (p *Player) Play(ctx context.Context) error {
 			}
 
 			// Execute the command
-			err = p.cmdHandler.Exec(ctx, p.char, &p.EntityState, cmdName, args...)
+			err = p.cmdHandler.Exec(ctx, p.world, p.charId, cmdName, args...)
 			if err != nil {
 				var userErr *commands.UserError
 				if errors.As(err, &userErr) {
@@ -147,7 +143,11 @@ func (p *Player) Play(ctx context.Context) error {
 			}
 
 			// Check if player wants to quit
-			if p.Quit {
+			state := p.world.GetPlayer(p.charId)
+			if state == nil {
+				return fmt.Errorf("player state not found for %s", p.charId)
+			}
+			if state.IsQuitting() {
 				p.writeLine("Goodbye!")
 				return nil
 			}
