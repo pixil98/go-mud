@@ -42,23 +42,31 @@ type Publisher interface {
 }
 
 type Handler struct {
-	store     storage.Storer[*Command]
 	factories map[string]HandlerFactory
 	compiled  map[storage.Identifier]*compiledCommand
 	publisher Publisher
 }
 
-func NewHandler(c storage.Storer[*Command], publisher Publisher) *Handler {
+func NewHandler(c storage.Storer[*Command], publisher Publisher) (*Handler, error) {
 	h := &Handler{
-		store:     c,
 		factories: make(map[string]HandlerFactory),
 		compiled:  make(map[storage.Identifier]*compiledCommand),
 		publisher: publisher,
 	}
+
 	// Register built-in handlers
 	h.RegisterFactory("message", &MessageHandlerFactory{})
 	h.RegisterFactory("quit", &QuitHandlerFactory{})
-	return h
+
+	// Compile commands
+	for id, cmd := range c.GetAll() {
+		err := h.compile(id, cmd)
+		if err != nil {
+			return nil, fmt.Errorf("compiling command %q: %w", id, err)
+		}
+	}
+
+	return h, nil
 }
 
 // RegisterFactory registers a handler factory by name.
@@ -74,18 +82,6 @@ func (h *Handler) RegisterFactory(name string, factory HandlerFactory) error {
 		return fmt.Errorf("handler factory %q already registered", name)
 	}
 	h.factories[name] = factory
-	return nil
-}
-
-// CompileAll compiles all commands from the store.
-// Call this after all handler factories have been registered.
-func (h *Handler) CompileAll() error {
-	for id, cmd := range h.store.GetAll() {
-		err := h.compile(id, cmd)
-		if err != nil {
-			return fmt.Errorf("compiling command %q: %w", id, err)
-		}
-	}
 	return nil
 }
 

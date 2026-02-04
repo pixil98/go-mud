@@ -19,8 +19,6 @@ type WorldState struct {
 
 // PlayerState holds all mutable state for an active player.
 type PlayerState struct {
-	CharId storage.Identifier
-
 	// Location
 	ZoneId storage.Identifier
 	RoomId storage.Identifier
@@ -28,7 +26,4 @@ type PlayerState struct {
 	// Session state
 	Quit         bool
 	LastActivity time.Time
-
-	// Extension state (for plugins)
-	Extensions storage.ExtensionState
 }

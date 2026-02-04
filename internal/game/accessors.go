@@ -39,7 +39,6 @@ func (w *WorldState) AddPlayer(charId, zoneId, roomId storage.Identifier) error 
 	}
 
 	w.players[charId] = &PlayerState{
-		CharId:       charId,
 		ZoneId:       zoneId,
 		RoomId:       roomId,
 		Quit:         false,

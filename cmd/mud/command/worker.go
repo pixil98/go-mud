@@ -42,8 +42,7 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	}
 
 	// Create command handler and compile all commands
-	cmdHandler := commands.NewHandler(storeCmds, natsServer)
-	err = cmdHandler.CompileAll()
+	cmdHandler, err := commands.NewHandler(storeCmds, natsServer)
 	if err != nil {
 		return nil, fmt.Errorf("compiling commands: %w", err)
 	}
