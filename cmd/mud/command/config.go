@@ -8,10 +8,11 @@ import (
 )
 
 type Config struct {
-	TickInterval string           `json:"tick_interval"`
-	Listeners    []ListenerConfig `json:"listeners"`
-	Storage      StorageConfig    `json:"storage"`
-	Nats         NatsConfig       `json:"nats"`
+	TickInterval  string              `json:"tick_interval"`
+	Listeners     []ListenerConfig    `json:"listeners"`
+	Storage       StorageConfig       `json:"storage"`
+	Nats          NatsConfig          `json:"nats"`
+	PlayerManager PlayerManagerConfig `json:"player_manager"`
 }
 
 func (c *Config) Validate() error {
@@ -33,6 +34,21 @@ func (c *Config) Validate() error {
 
 	el.Add(c.Storage.Validate())
 	el.Add(c.Nats.Validate())
+	el.Add(c.PlayerManager.Validate())
+
+	return el.Err()
+}
+
+type PlayerManagerConfig struct {
+	DefaultZone string `json:"default_zone"`
+}
+
+func (c *PlayerManagerConfig) Validate() error {
+	el := errors.NewErrorList()
+
+	if c.DefaultZone == "" {
+		el.Add(fmt.Errorf("default_zone is required"))
+	}
 
 	return el.Err()
 }

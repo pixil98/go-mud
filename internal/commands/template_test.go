@@ -29,6 +29,28 @@ func (m *mockCharStore) Save(id string, char *game.Character) error {
 	return nil
 }
 
+// mockZoneStore implements storage.Storer[*game.Zone] for testing
+type mockZoneStore struct {
+	zones map[string]*game.Zone
+}
+
+func (m *mockZoneStore) Get(id string) *game.Zone {
+	return m.zones[id]
+}
+
+func (m *mockZoneStore) GetAll() map[storage.Identifier]*game.Zone {
+	result := make(map[storage.Identifier]*game.Zone)
+	for k, v := range m.zones {
+		result[storage.Identifier(k)] = v
+	}
+	return result
+}
+
+func (m *mockZoneStore) Save(id string, zone *game.Zone) error {
+	m.zones[id] = zone
+	return nil
+}
+
 func TestExpandTemplate(t *testing.T) {
 	tests := map[string]struct {
 		tmplStr string
@@ -120,7 +142,8 @@ func TestNewTemplateData(t *testing.T) {
 			"testplayer": {CharName: "TestPlayer"},
 		},
 	}
-	world := game.NewWorldState(charStore)
+	zoneStore := &mockZoneStore{zones: map[string]*game.Zone{}}
+	world := game.NewWorldState(charStore, zoneStore)
 	charId := storage.Identifier("testplayer")
 	_ = world.AddPlayer(charId, "testzone", "testroom")
 

@@ -15,6 +15,7 @@ type WorldState struct {
 
 	// Stores for looking up entities
 	chars storage.Storer[*Character]
+	zones storage.Storer[*Zone]
 }
 
 // PlayerState holds all mutable state for an active player.

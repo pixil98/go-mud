@@ -57,7 +57,7 @@ func TestResolvePlayer(t *testing.T) {
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
 			charStore := &mockCharStore{chars: tt.chars}
-			world := game.NewWorldState(charStore)
+			world := game.NewWorldState(charStore, &mockZoneStore{zones: map[string]*game.Zone{}})
 
 			for _, charId := range tt.onlinePlayers {
 				_ = world.AddPlayer(storage.Identifier(charId), "zone", "room")
@@ -123,7 +123,7 @@ func TestResolveTarget(t *testing.T) {
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
 			charStore := &mockCharStore{chars: tt.chars}
-			world := game.NewWorldState(charStore)
+			world := game.NewWorldState(charStore, &mockZoneStore{zones: map[string]*game.Zone{}})
 
 			for _, charId := range tt.onlinePlayers {
 				_ = world.AddPlayer(storage.Identifier(charId), "zone", "room")
@@ -172,7 +172,7 @@ func TestResolveMob(t *testing.T) {
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
 			charStore := &mockCharStore{chars: map[string]*game.Character{}}
-			world := game.NewWorldState(charStore)
+			world := game.NewWorldState(charStore, &mockZoneStore{zones: map[string]*game.Zone{}})
 
 			resolver := &DefaultTargetResolver{}
 			result, err := resolver.ResolveMob(world, tt.input)
@@ -202,7 +202,7 @@ func TestResolveItem(t *testing.T) {
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
 			charStore := &mockCharStore{chars: map[string]*game.Character{}}
-			world := game.NewWorldState(charStore)
+			world := game.NewWorldState(charStore, &mockZoneStore{zones: map[string]*game.Zone{}})
 
 			resolver := &DefaultTargetResolver{}
 			result, err := resolver.ResolveItem(world, tt.input)
@@ -274,7 +274,7 @@ func TestNewTemplateData_TargetResolution(t *testing.T) {
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
 			charStore := &mockCharStore{chars: tt.chars}
-			world := game.NewWorldState(charStore)
+			world := game.NewWorldState(charStore, &mockZoneStore{zones: map[string]*game.Zone{}})
 
 			for _, charId := range tt.onlinePlayers {
 				_ = world.AddPlayer(storage.Identifier(charId), "zone", "room")

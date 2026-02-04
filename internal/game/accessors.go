@@ -7,10 +7,11 @@ import (
 )
 
 // NewWorldState creates a new WorldState.
-func NewWorldState(chars storage.Storer[*Character]) *WorldState {
+func NewWorldState(chars storage.Storer[*Character], zones storage.Storer[*Zone]) *WorldState {
 	return &WorldState{
 		players: make(map[storage.Identifier]*PlayerState),
 		chars:   chars,
+		zones:   zones,
 	}
 }
 
@@ -19,6 +20,11 @@ func NewWorldState(chars storage.Storer[*Character]) *WorldState {
 // Characters returns the character store.
 func (w *WorldState) Characters() storage.Storer[*Character] {
 	return w.chars
+}
+
+// Zones returns the zone store.
+func (w *WorldState) Zones() storage.Storer[*Zone] {
+	return w.zones
 }
 
 // GetPlayer returns the player state. Returns nil if player not found.

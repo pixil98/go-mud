@@ -18,11 +18,17 @@
         },
         "races": {
             "path": "./assets/races"
+        },
+        "zones": {
+            "path": "./assets/zones"
         }
     },
     "nats": {
         "host": "127.0.0.1",
         "port": 4223,
         "start_timeout": "5s"
+    },
+    "player_manager": {
+        "default_zone": "millbrook"
     }
 }

@@ -34,6 +34,10 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	if err != nil {
 		return nil, fmt.Errorf("creating command store: %w", err)
 	}
+	storeZones, err := cfg.Storage.Zones.NewFileStore()
+	if err != nil {
+		return nil, fmt.Errorf("creating zone store: %w", err)
+	}
 
 	// Setup the nats server
 	natsServer, err := cfg.Nats.NewNatsServer()
@@ -48,10 +52,10 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	}
 
 	// Create world state
-	worldState := game.NewWorldState(storeCharacters)
+	worldState := game.NewWorldState(storeCharacters, storeZones)
 
 	// Create player manager
-	playerManager := player.NewPlayerManager(cmdHandler, pluginManager, natsServer, worldState)
+	playerManager := player.NewPlayerManager(cmdHandler, pluginManager, natsServer, worldState, cfg.PlayerManager.DefaultZone)
 
 	// Create connection manager
 	connectionManager := listener.NewConnectionManager(playerManager)

@@ -12,14 +12,16 @@ import (
 
 type StorageConfig struct {
 	/* Core Parts */
-	Characters AssetConfig[*game.Character] `json:"characters"`
+	Characters AssetConfig[*game.Character]  `json:"characters"`
 	Commands   AssetConfig[*commands.Command] `json:"commands"`
+	Zones      AssetConfig[*game.Zone]        `json:"zones"`
 }
 
 func (c *StorageConfig) Validate() error {
 	el := errors.NewErrorList()
 	el.Add(c.Characters.Validate())
 	el.Add(c.Commands.Validate())
+	el.Add(c.Zones.Validate())
 	return el.Err()
 }
 

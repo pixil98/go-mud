@@ -23,16 +23,18 @@ type PlayerManager struct {
 	subscriber    Subscriber
 	world         *game.WorldState
 
-	loginFlow *loginFlow
+	loginFlow   *loginFlow
+	defaultZone storage.Identifier
 }
 
-func NewPlayerManager(cmd *commands.Handler, plugins *plugins.PluginManager, subscriber Subscriber, world *game.WorldState) *PlayerManager {
+func NewPlayerManager(cmd *commands.Handler, plugins *plugins.PluginManager, subscriber Subscriber, world *game.WorldState, defaultZone string) *PlayerManager {
 	pm := &PlayerManager{
 		pluginManager: plugins,
 		cmdHandler:    cmd,
 		subscriber:    subscriber,
 		world:         world,
 		loginFlow:     &loginFlow{world: world},
+		defaultZone:   storage.Identifier(defaultZone),
 	}
 
 	return pm
@@ -78,10 +80,9 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
 	charId := storage.Identifier(strings.ToLower(char.Name()))
 
 	// Register player in world state
-	// TODO: Get starting zone/room from config or character data
-	startZone := storage.Identifier("default")
+	// TODO: Get starting room from config or character data
 	startRoom := storage.Identifier("default")
-	err = m.world.AddPlayer(charId, startZone, startRoom)
+	err = m.world.AddPlayer(charId, m.defaultZone, startRoom)
 	if err != nil {
 		return nil, fmt.Errorf("registering player in world: %w", err)
 	}
