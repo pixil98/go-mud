@@ -78,11 +78,16 @@ func (p *Player) Play(ctx context.Context) error {
 	// Ensure subscriptions are cleaned up on exit
 	defer p.UnsubscribeAll()
 
-	err := p.prompt()
+	// Show the player their current room on login
+	err := p.cmdHandler.Exec(ctx, p.world, p.charId, "look")
 	if err != nil {
-		return err
+		var userErr *commands.UserError
+		if errors.As(err, &userErr) {
+			_ = p.writeLine(userErr.Message)
+		} else {
+			return fmt.Errorf("initial look failed: %w", err)
+		}
 	}
-
 	for {
 		select {
 		case <-ctx.Done():
@@ -127,6 +132,13 @@ func (p *Player) Play(ctx context.Context) error {
 				args = parts[1:]
 			}
 
+			// Capture location before command execution
+			state := p.world.GetPlayer(p.charId)
+			if state == nil {
+				return fmt.Errorf("player state not found for %s", p.charId)
+			}
+			prevZone, prevRoom := state.Location()
+
 			// Execute the command
 			err = p.cmdHandler.Exec(ctx, p.world, p.charId, cmdName, args...)
 			if err != nil {
@@ -143,13 +155,33 @@ func (p *Player) Play(ctx context.Context) error {
 			}
 
 			// Check if player wants to quit
-			state := p.world.GetPlayer(p.charId)
+			state = p.world.GetPlayer(p.charId)
 			if state == nil {
 				return fmt.Errorf("player state not found for %s", p.charId)
 			}
 			if state.IsQuitting() {
 				p.writeLine("Goodbye!")
 				return nil
+			}
+
+			// Update subscriptions if location changed
+			// TODO: Consider moving subscription management to WorldState so that
+			// features like "follow" can automatically update follower subscriptions
+			// when a player moves.
+			curZone, curRoom := state.Location()
+			if curZone != prevZone {
+				p.Unsubscribe("zone")
+				zoneSubject := fmt.Sprintf("zone-%s", curZone)
+				if err := p.Subscribe("zone", zoneSubject); err != nil {
+					return fmt.Errorf("subscribing to zone channel: %w", err)
+				}
+			}
+			if curZone != prevZone || curRoom != prevRoom {
+				p.Unsubscribe("room")
+				roomSubject := fmt.Sprintf("zone-%s-room-%s", curZone, curRoom)
+				if err := p.Subscribe("room", roomSubject); err != nil {
+					return fmt.Errorf("subscribing to room channel: %w", err)
+				}
 			}
 
 			err = p.prompt()

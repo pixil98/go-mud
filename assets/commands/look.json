@@ -1,0 +1,8 @@
+{
+    "version": 1,
+    "id": "look",
+    "spec": {
+        "handler": "look",
+        "params": []
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "version": 1,
+    "id": "millbrook-market",
+    "spec": {
+        "name": "Market",
+        "description": "Colorful stalls line the cobbled street, their awnings fluttering in the breeze. Merchants call out their wares: fresh bread, gleaming tools, bolts of cloth, and exotic spices. The smell of roasting meat mingles with the sweet scent of flowers. The town square lies to the east.",
+        "zone_id": "millbrook",
+        "exits": {
+            "east": {"room_id": "square"}
+        }
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "millbrook-square",
+    "spec": {
+        "name": "Town Square",
+        "description": "You stand in the heart of Millbrook. A weathered stone fountain bubbles cheerfully in the center, surrounded by cobblestones worn smooth by countless footsteps. The market lies to the west, while the warm glow of a tavern beckons from the east. A clock tower rises above to the north, and stone steps lead down to an old well.",
+        "zone_id": "millbrook",
+        "exits": {
+            "west": {"room_id": "market"},
+            "east": {"room_id": "tavern"},
+            "up": {"room_id": "clocktower"},
+            "down": {"room_id": "well"}
+        }
+    }
+}

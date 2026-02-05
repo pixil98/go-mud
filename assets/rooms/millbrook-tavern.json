@@ -1,0 +1,12 @@
+{
+    "version": 1,
+    "id": "millbrook-tavern",
+    "spec": {
+        "name": "The Rusty Nail Tavern",
+        "description": "Warm firelight flickers across rough-hewn wooden walls adorned with hunting trophies and old maps. The air is thick with pipe smoke and the smell of ale. A scarred oak bar runs along one wall, tended by a burly innkeeper who polishes glasses with practiced ease. Patrons huddle at tables, sharing tales in hushed voices. The door to the west leads back to the town square.",
+        "zone_id": "millbrook",
+        "exits": {
+            "west": {"room_id": "square"}
+        }
+    }
+}

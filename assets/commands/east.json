@@ -1,0 +1,11 @@
+{
+    "version": 1,
+    "id": "east",
+    "spec": {
+        "handler": "move",
+        "params": [],
+        "config": {
+            "direction": "east"
+        }
+    }
+}

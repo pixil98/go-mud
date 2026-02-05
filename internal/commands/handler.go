@@ -27,6 +27,7 @@ type HandlerFactory interface {
 	// ValidateConfig validates that the config contains required fields.
 	ValidateConfig(config map[string]any) error
 	// Create creates a CommandFunc from the validated config.
+	// TODO: Reevaluate whether Publisher should be passed to Create or held by the factory
 	Create(config map[string]any, pub Publisher) (CommandFunc, error)
 }
 
@@ -47,7 +48,7 @@ type Handler struct {
 	publisher Publisher
 }
 
-func NewHandler(c storage.Storer[*Command], publisher Publisher) (*Handler, error) {
+func NewHandler(c storage.Storer[*Command], publisher Publisher, world *game.WorldState) (*Handler, error) {
 	h := &Handler{
 		factories: make(map[string]HandlerFactory),
 		compiled:  make(map[storage.Identifier]*compiledCommand),
@@ -57,6 +58,8 @@ func NewHandler(c storage.Storer[*Command], publisher Publisher) (*Handler, erro
 	// Register built-in handlers
 	h.RegisterFactory("message", &MessageHandlerFactory{})
 	h.RegisterFactory("quit", &QuitHandlerFactory{})
+	h.RegisterFactory("move", NewMoveHandlerFactory(world))
+	h.RegisterFactory("look", NewLookHandlerFactory(world))
 
 	// Compile commands
 	for id, cmd := range c.GetAll() {

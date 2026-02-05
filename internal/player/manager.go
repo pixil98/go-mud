@@ -25,9 +25,10 @@ type PlayerManager struct {
 
 	loginFlow   *loginFlow
 	defaultZone storage.Identifier
+	defaultRoom storage.Identifier
 }
 
-func NewPlayerManager(cmd *commands.Handler, plugins *plugins.PluginManager, subscriber Subscriber, world *game.WorldState, defaultZone string) *PlayerManager {
+func NewPlayerManager(cmd *commands.Handler, plugins *plugins.PluginManager, subscriber Subscriber, world *game.WorldState, defaultZone, defaultRoom string) *PlayerManager {
 	pm := &PlayerManager{
 		pluginManager: plugins,
 		cmdHandler:    cmd,
@@ -35,6 +36,7 @@ func NewPlayerManager(cmd *commands.Handler, plugins *plugins.PluginManager, sub
 		world:         world,
 		loginFlow:     &loginFlow{world: world},
 		defaultZone:   storage.Identifier(defaultZone),
+		defaultRoom:   storage.Identifier(defaultRoom),
 	}
 
 	return pm
@@ -80,9 +82,8 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
 	charId := storage.Identifier(strings.ToLower(char.Name()))
 
 	// Register player in world state
-	// TODO: Get starting room from config or character data
-	startRoom := storage.Identifier("default")
-	err = m.world.AddPlayer(charId, m.defaultZone, startRoom)
+	// TODO: Get starting zone/room from saved character data instead of config defaults
+	err = m.world.AddPlayer(charId, m.defaultZone, m.defaultRoom)
 	if err != nil {
 		return nil, fmt.Errorf("registering player in world: %w", err)
 	}
@@ -104,6 +105,22 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
 		// Clean up world state on failure
 		_ = m.world.RemovePlayer(charId)
 		return nil, fmt.Errorf("subscribing to player channel: %w", err)
+	}
+
+	// Subscribe to zone channel
+	zoneSubject := fmt.Sprintf("zone-%s", m.defaultZone)
+	err = p.Subscribe("zone", zoneSubject)
+	if err != nil {
+		_ = m.world.RemovePlayer(charId)
+		return nil, fmt.Errorf("subscribing to zone channel: %w", err)
+	}
+
+	// Subscribe to room channel
+	roomSubject := fmt.Sprintf("zone-%s-room-%s", m.defaultZone, m.defaultRoom)
+	err = p.Subscribe("room", roomSubject)
+	if err != nil {
+		_ = m.world.RemovePlayer(charId)
+		return nil, fmt.Errorf("subscribing to room channel: %w", err)
 	}
 
 	return p, nil

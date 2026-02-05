@@ -41,6 +41,7 @@ func (c *Config) Validate() error {
 
 type PlayerManagerConfig struct {
 	DefaultZone string `json:"default_zone"`
+	DefaultRoom string `json:"default_room"`
 }
 
 func (c *PlayerManagerConfig) Validate() error {
@@ -48,6 +49,9 @@ func (c *PlayerManagerConfig) Validate() error {
 
 	if c.DefaultZone == "" {
 		el.Add(fmt.Errorf("default_zone is required"))
+	}
+	if c.DefaultRoom == "" {
+		el.Add(fmt.Errorf("default_room is required"))
 	}
 
 	return el.Err()

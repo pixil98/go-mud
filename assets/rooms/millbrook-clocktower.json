@@ -1,0 +1,12 @@
+{
+    "version": 1,
+    "id": "millbrook-clocktower",
+    "spec": {
+        "name": "Clock Tower",
+        "description": "You stand at the top of Millbrook's clock tower, surrounded by massive bronze gears and counterweights. The ancient mechanism ticks steadily, marking time as it has for centuries. Through narrow windows, you can see the entire town spread out below: the market square, the surrounding farmlands, and the distant forest. Worn stone steps lead down to the town square.",
+        "zone_id": "millbrook",
+        "exits": {
+            "down": {"room_id": "square"}
+        }
+    }
+}
