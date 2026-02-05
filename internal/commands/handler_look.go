@@ -12,18 +12,19 @@ import (
 // TODO: Add support for looking at targets (look <player>, look <item>, etc.)
 type LookHandlerFactory struct {
 	world *game.WorldState
+	pub   Publisher
 }
 
 // NewLookHandlerFactory creates a new LookHandlerFactory with access to world state.
-func NewLookHandlerFactory(world *game.WorldState) *LookHandlerFactory {
-	return &LookHandlerFactory{world: world}
+func NewLookHandlerFactory(world *game.WorldState, pub Publisher) *LookHandlerFactory {
+	return &LookHandlerFactory{world: world, pub: pub}
 }
 
 func (f *LookHandlerFactory) ValidateConfig(config map[string]any) error {
 	return nil
 }
 
-func (f *LookHandlerFactory) Create(config map[string]any, pub Publisher) (CommandFunc, error) {
+func (f *LookHandlerFactory) Create(config map[string]any) (CommandFunc, error) {
 	return func(ctx context.Context, data *TemplateData) error {
 		if data.State == nil {
 			return fmt.Errorf("player state not found")
@@ -42,8 +43,8 @@ func (f *LookHandlerFactory) Create(config map[string]any, pub Publisher) (Comma
 		// to avoid recreating the naming patterns everywhere
 		playerChannel := fmt.Sprintf("player-%s", strings.ToLower(data.Actor.Name()))
 		roomDesc := formatRoomDescription(room)
-		if pub != nil {
-			_ = pub.Publish(playerChannel, []byte(roomDesc))
+		if f.pub != nil {
+			_ = f.pub.Publish(playerChannel, []byte(roomDesc))
 		}
 
 		return nil

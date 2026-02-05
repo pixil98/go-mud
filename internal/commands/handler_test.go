@@ -232,7 +232,7 @@ func (f *mockHandlerFactory) ValidateConfig(config map[string]any) error {
 	return nil
 }
 
-func (f *mockHandlerFactory) Create(config map[string]any, pub Publisher) (CommandFunc, error) {
+func (f *mockHandlerFactory) Create(config map[string]any) (CommandFunc, error) {
 	return nil, nil
 }
 

@@ -14,11 +14,12 @@ import (
 //   - direction (required): the direction to move (north, south, east, west, up, down)
 type MoveHandlerFactory struct {
 	world *game.WorldState
+	pub   Publisher
 }
 
 // NewMoveHandlerFactory creates a new MoveHandlerFactory with access to world state.
-func NewMoveHandlerFactory(world *game.WorldState) *MoveHandlerFactory {
-	return &MoveHandlerFactory{world: world}
+func NewMoveHandlerFactory(world *game.WorldState, pub Publisher) *MoveHandlerFactory {
+	return &MoveHandlerFactory{world: world, pub: pub}
 }
 
 func (f *MoveHandlerFactory) ValidateConfig(config map[string]any) error {
@@ -34,7 +35,7 @@ func (f *MoveHandlerFactory) ValidateConfig(config map[string]any) error {
 	return nil
 }
 
-func (f *MoveHandlerFactory) Create(config map[string]any, pub Publisher) (CommandFunc, error) {
+func (f *MoveHandlerFactory) Create(config map[string]any) (CommandFunc, error) {
 	direction := strings.ToLower(config["direction"].(string))
 
 	return func(ctx context.Context, data *TemplateData) error {
@@ -77,8 +78,8 @@ func (f *MoveHandlerFactory) Create(config map[string]any, pub Publisher) (Comma
 		// Send room description to player
 		playerChannel := fmt.Sprintf("player-%s", strings.ToLower(data.Actor.Name()))
 		roomDesc := formatRoomDescription(newRoom)
-		if pub != nil {
-			_ = pub.Publish(playerChannel, []byte(roomDesc))
+		if f.pub != nil {
+			_ = f.pub.Publish(playerChannel, []byte(roomDesc))
 		}
 
 		return nil
