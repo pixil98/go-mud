@@ -17,7 +17,8 @@ type Room struct {
 	Name        string          `json:"name"`
 	Description string          `json:"description"`
 	ZoneId      string          `json:"zone_id"`
-	Exits       map[string]Exit `json:"exits"` // direction -> destination
+	Exits       map[string]Exit `json:"exits"`             // direction -> destination
+	Spawns      []string        `json:"spawns,omitempty"`  // mobile IDs to spawn; list duplicates for multiple
 }
 
 // ValidDirections defines the allowed exit directions.

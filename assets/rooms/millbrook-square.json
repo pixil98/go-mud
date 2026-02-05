@@ -10,6 +10,7 @@
             "east": {"room_id": "tavern"},
             "up": {"room_id": "clocktower"},
             "down": {"room_id": "well"}
-        }
+        },
+        "spawns": ["millbrook-guard"]
     }
 }

@@ -73,6 +73,28 @@ func (m *mockRoomStore) Save(id string, room *game.Room) error {
 	return nil
 }
 
+// mockMobileStore implements storage.Storer[*game.Mobile] for testing
+type mockMobileStore struct {
+	mobiles map[string]*game.Mobile
+}
+
+func (m *mockMobileStore) Get(id string) *game.Mobile {
+	return m.mobiles[id]
+}
+
+func (m *mockMobileStore) GetAll() map[storage.Identifier]*game.Mobile {
+	result := make(map[storage.Identifier]*game.Mobile)
+	for k, v := range m.mobiles {
+		result[storage.Identifier(k)] = v
+	}
+	return result
+}
+
+func (m *mockMobileStore) Save(id string, mobile *game.Mobile) error {
+	m.mobiles[id] = mobile
+	return nil
+}
+
 func TestExpandTemplate(t *testing.T) {
 	tests := map[string]struct {
 		tmplStr string
@@ -161,12 +183,13 @@ func TestExpandTemplate(t *testing.T) {
 func TestNewTemplateData(t *testing.T) {
 	charStore := &mockCharStore{
 		chars: map[string]*game.Character{
-			"testplayer": {CharName: "TestPlayer"},
+			"testplayer": {Entity: game.Entity{EntityName: "TestPlayer"}},
 		},
 	}
 	zoneStore := &mockZoneStore{zones: map[string]*game.Zone{}}
 	roomStore := &mockRoomStore{rooms: map[string]*game.Room{}}
-	world := game.NewWorldState(nil, charStore, zoneStore, roomStore)
+	mobileStore := &mockMobileStore{mobiles: map[string]*game.Mobile{}}
+	world := game.NewWorldState(nil, charStore, zoneStore, roomStore, mobileStore)
 	charId := storage.Identifier("testplayer")
 	_ = world.AddPlayer(charId, make(chan []byte, 1), "testzone", "testroom")
 

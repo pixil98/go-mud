@@ -16,6 +16,7 @@ type StorageConfig struct {
 	Commands   AssetConfig[*commands.Command] `json:"commands"`
 	Zones      AssetConfig[*game.Zone]        `json:"zones"`
 	Rooms      AssetConfig[*game.Room]        `json:"rooms"`
+	Mobiles    AssetConfig[*game.Mobile]      `json:"mobiles"`
 }
 
 func (c *StorageConfig) validate() error {
@@ -24,6 +25,7 @@ func (c *StorageConfig) validate() error {
 	el.Add(c.Commands.Validate())
 	el.Add(c.Zones.Validate())
 	el.Add(c.Rooms.Validate())
+	el.Add(c.Mobiles.Validate())
 	return el.Err()
 }
 

@@ -24,6 +24,9 @@
         },
         "rooms": {
             "path": "./assets/rooms"
+        },
+        "mobiles": {
+            "path": "./assets/mobiles"
         }
     },
     "nats": {

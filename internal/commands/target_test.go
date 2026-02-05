@@ -17,37 +17,37 @@ func TestResolvePlayer(t *testing.T) {
 		expErr        string
 	}{
 		"exact match": {
-			chars:         map[string]*game.Character{"bob": {CharName: "Bob"}},
+			chars:         map[string]*game.Character{"bob": {Entity: game.Entity{EntityName: "Bob"}}},
 			onlinePlayers: []string{"bob"},
 			input:         "bob",
 			expCharName:   "Bob",
 		},
 		"case insensitive match uppercase input": {
-			chars:         map[string]*game.Character{"bob": {CharName: "Bob"}},
+			chars:         map[string]*game.Character{"bob": {Entity: game.Entity{EntityName: "Bob"}}},
 			onlinePlayers: []string{"bob"},
 			input:         "BOB",
 			expCharName:   "Bob",
 		},
 		"case insensitive match mixed case input": {
-			chars:         map[string]*game.Character{"bob": {CharName: "Bob"}},
+			chars:         map[string]*game.Character{"bob": {Entity: game.Entity{EntityName: "Bob"}}},
 			onlinePlayers: []string{"bob"},
 			input:         "BoB",
 			expCharName:   "Bob",
 		},
 		"player not found": {
-			chars:         map[string]*game.Character{"bob": {CharName: "Bob"}},
+			chars:         map[string]*game.Character{"bob": {Entity: game.Entity{EntityName: "Bob"}}},
 			onlinePlayers: []string{"bob"},
 			input:         "alice",
 			expErr:        "Player 'alice' not found",
 		},
 		"player offline": {
-			chars:         map[string]*game.Character{"bob": {CharName: "Bob"}},
+			chars:         map[string]*game.Character{"bob": {Entity: game.Entity{EntityName: "Bob"}}},
 			onlinePlayers: []string{},
 			input:         "bob",
 			expErr:        "Player 'bob' not found",
 		},
 		"partial match does not work": {
-			chars:         map[string]*game.Character{"bobby": {CharName: "Bobby"}},
+			chars:         map[string]*game.Character{"bobby": {Entity: game.Entity{EntityName: "Bobby"}}},
 			onlinePlayers: []string{"bobby"},
 			input:         "bob",
 			expErr:        "Player 'bob' not found",
@@ -57,7 +57,7 @@ func TestResolvePlayer(t *testing.T) {
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
 			charStore := &mockCharStore{chars: tt.chars}
-			world := game.NewWorldState(nil, charStore, &mockZoneStore{zones: map[string]*game.Zone{}}, &mockRoomStore{rooms: map[string]*game.Room{}})
+			world := game.NewWorldState(nil, charStore, &mockZoneStore{zones: map[string]*game.Zone{}}, &mockRoomStore{rooms: map[string]*game.Room{}}, &mockMobileStore{mobiles: map[string]*game.Mobile{}})
 
 			for _, charId := range tt.onlinePlayers {
 				_ = world.AddPlayer(storage.Identifier(charId), make(chan []byte, 1), "zone", "room")
@@ -107,7 +107,7 @@ func TestResolveTarget(t *testing.T) {
 		expErr        string
 	}{
 		"resolves player": {
-			chars:         map[string]*game.Character{"alice": {CharName: "Alice"}},
+			chars:         map[string]*game.Character{"alice": {Entity: game.Entity{EntityName: "Alice"}}},
 			onlinePlayers: []string{"alice"},
 			input:         "alice",
 			expCharName:   "Alice",
@@ -123,7 +123,7 @@ func TestResolveTarget(t *testing.T) {
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
 			charStore := &mockCharStore{chars: tt.chars}
-			world := game.NewWorldState(nil, charStore, &mockZoneStore{zones: map[string]*game.Zone{}}, &mockRoomStore{rooms: map[string]*game.Room{}})
+			world := game.NewWorldState(nil, charStore, &mockZoneStore{zones: map[string]*game.Zone{}}, &mockRoomStore{rooms: map[string]*game.Room{}}, &mockMobileStore{mobiles: map[string]*game.Mobile{}})
 
 			for _, charId := range tt.onlinePlayers {
 				_ = world.AddPlayer(storage.Identifier(charId), make(chan []byte, 1), "zone", "room")
@@ -172,7 +172,7 @@ func TestResolveMob(t *testing.T) {
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
 			charStore := &mockCharStore{chars: map[string]*game.Character{}}
-			world := game.NewWorldState(nil, charStore, &mockZoneStore{zones: map[string]*game.Zone{}}, &mockRoomStore{rooms: map[string]*game.Room{}})
+			world := game.NewWorldState(nil, charStore, &mockZoneStore{zones: map[string]*game.Zone{}}, &mockRoomStore{rooms: map[string]*game.Room{}}, &mockMobileStore{mobiles: map[string]*game.Mobile{}})
 
 			resolver := &DefaultTargetResolver{}
 			result, err := resolver.ResolveMob(world, tt.input)
@@ -202,7 +202,7 @@ func TestResolveItem(t *testing.T) {
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
 			charStore := &mockCharStore{chars: map[string]*game.Character{}}
-			world := game.NewWorldState(nil, charStore, &mockZoneStore{zones: map[string]*game.Zone{}}, &mockRoomStore{rooms: map[string]*game.Room{}})
+			world := game.NewWorldState(nil, charStore, &mockZoneStore{zones: map[string]*game.Zone{}}, &mockRoomStore{rooms: map[string]*game.Room{}}, &mockMobileStore{mobiles: map[string]*game.Mobile{}})
 
 			resolver := &DefaultTargetResolver{}
 			result, err := resolver.ResolveItem(world, tt.input)
@@ -229,8 +229,8 @@ func TestNewTemplateData_TargetResolution(t *testing.T) {
 	}{
 		"resolves player target": {
 			chars: map[string]*game.Character{
-				"alice": {CharName: "Alice"},
-				"bob":   {CharName: "Bob"},
+				"alice": {Entity: game.Entity{EntityName: "Alice"}},
+				"bob":   {Entity: game.Entity{EntityName: "Bob"}},
 			},
 			onlinePlayers: []string{"alice", "bob"},
 			actorId:       "alice",
@@ -244,7 +244,7 @@ func TestNewTemplateData_TargetResolution(t *testing.T) {
 		},
 		"player not found returns error": {
 			chars: map[string]*game.Character{
-				"alice": {CharName: "Alice"},
+				"alice": {Entity: game.Entity{EntityName: "Alice"}},
 			},
 			onlinePlayers: []string{"alice"},
 			actorId:       "alice",
@@ -258,7 +258,7 @@ func TestNewTemplateData_TargetResolution(t *testing.T) {
 		},
 		"string args pass through unchanged": {
 			chars: map[string]*game.Character{
-				"alice": {CharName: "Alice"},
+				"alice": {Entity: game.Entity{EntityName: "Alice"}},
 			},
 			onlinePlayers: []string{"alice"},
 			actorId:       "alice",
@@ -274,7 +274,7 @@ func TestNewTemplateData_TargetResolution(t *testing.T) {
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
 			charStore := &mockCharStore{chars: tt.chars}
-			world := game.NewWorldState(nil, charStore, &mockZoneStore{zones: map[string]*game.Zone{}}, &mockRoomStore{rooms: map[string]*game.Room{}})
+			world := game.NewWorldState(nil, charStore, &mockZoneStore{zones: map[string]*game.Zone{}}, &mockRoomStore{rooms: map[string]*game.Room{}}, &mockMobileStore{mobiles: map[string]*game.Mobile{}})
 
 			for _, charId := range tt.onlinePlayers {
 				_ = world.AddPlayer(storage.Identifier(charId), make(chan []byte, 1), "zone", "room")

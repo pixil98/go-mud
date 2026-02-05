@@ -1,0 +1,8 @@
+{
+    "version": 1,
+    "id": "millbrook-guard",
+    "spec": {
+        "name": "Town Guard",
+        "description": "A burly guard in chain mail keeps watch over the square."
+    }
+}

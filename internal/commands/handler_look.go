@@ -54,13 +54,15 @@ func (f *LookHandlerFactory) Create(config map[string]any) (CommandFunc, error) 
 			}
 		})
 
-		// TODO: Find mobs in the room
+		// Find mobs in the room
+		mobsHere := f.world.GetMobilesInRoom(zoneId, roomId)
+
 		// TODO: Find items in the room
 
 		// TODO: Add helper functions for channel naming schemes (player-X, zone-X, zone-X-room-Y)
 		// to avoid recreating the naming patterns everywhere
 		playerChannel := fmt.Sprintf("player-%s", strings.ToLower(actorName))
-		roomDesc := f.formatFullRoomDescription(room, playersHere)
+		roomDesc := f.formatFullRoomDescription(room, playersHere, mobsHere)
 		if f.pub != nil {
 			_ = f.pub.Publish(playerChannel, []byte(roomDesc))
 		}
@@ -69,11 +71,23 @@ func (f *LookHandlerFactory) Create(config map[string]any) (CommandFunc, error) 
 	}, nil
 }
 
-func (f *LookHandlerFactory) formatFullRoomDescription(room *game.Room, players []storage.Identifier) string {
+func (f *LookHandlerFactory) formatFullRoomDescription(room *game.Room, players []storage.Identifier, mobs []*game.MobileInstance) string {
 	var sb strings.Builder
 	sb.WriteString(room.Name)
 	sb.WriteString("\n")
 	sb.WriteString(room.Description)
+
+	// Show mobs
+	if len(mobs) > 0 {
+		sb.WriteString("\n")
+		for _, mi := range mobs {
+			if mob := f.world.Mobiles().Get(string(mi.MobileId)); mob != nil {
+				sb.WriteString(fmt.Sprintf("%s is here.\n", mob.Name()))
+			}
+		}
+	}
+
+	// TODO: Show items
 
 	// Show players
 	if len(players) > 0 {
@@ -86,9 +100,6 @@ func (f *LookHandlerFactory) formatFullRoomDescription(room *game.Room, players 
 			sb.WriteString(fmt.Sprintf("%s is here.\n", name))
 		}
 	}
-
-	// TODO: Show mobs
-	// TODO: Show items
 
 	sb.WriteString("\n")
 	sb.WriteString(formatExits(room.Exits))

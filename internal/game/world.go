@@ -5,6 +5,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
@@ -16,19 +17,25 @@ type WorldState struct {
 	players    map[storage.Identifier]*PlayerState
 
 	// Stores for looking up entities
-	chars storage.Storer[*Character]
-	zones storage.Storer[*Zone]
-	rooms storage.Storer[*Room]
+	chars   storage.Storer[*Character]
+	zones   storage.Storer[*Zone]
+	rooms   storage.Storer[*Room]
+	mobiles storage.Storer[*Mobile]
+
+	// Mobile instances indexed by zone -> room -> instanceId -> instance
+	mobileInstances map[storage.Identifier]map[storage.Identifier]map[string]*MobileInstance
 }
 
 // NewWorldState creates a new WorldState.
-func NewWorldState(sub Subscriber, chars storage.Storer[*Character], zones storage.Storer[*Zone], rooms storage.Storer[*Room]) *WorldState {
+func NewWorldState(sub Subscriber, chars storage.Storer[*Character], zones storage.Storer[*Zone], rooms storage.Storer[*Room], mobiles storage.Storer[*Mobile]) *WorldState {
 	return &WorldState{
-		subscriber: sub,
-		players:    make(map[storage.Identifier]*PlayerState),
-		chars:      chars,
-		zones:      zones,
-		rooms:      rooms,
+		subscriber:      sub,
+		players:         make(map[storage.Identifier]*PlayerState),
+		chars:           chars,
+		zones:           zones,
+		rooms:           rooms,
+		mobiles:         mobiles,
+		mobileInstances: make(map[storage.Identifier]map[storage.Identifier]map[string]*MobileInstance),
 	}
 }
 
@@ -47,6 +54,50 @@ func (w *WorldState) Zones() storage.Storer[*Zone] {
 // Rooms returns the room store.
 func (w *WorldState) Rooms() storage.Storer[*Room] {
 	return w.rooms
+}
+
+// Mobiles returns the mobile store.
+func (w *WorldState) Mobiles() storage.Storer[*Mobile] {
+	return w.mobiles
+}
+
+// SpawnMobile creates a new mobile instance in the specified location.
+func (w *WorldState) SpawnMobile(mobileId, zoneId, roomId storage.Identifier) *MobileInstance {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+
+	// Ensure nested maps exist
+	if w.mobileInstances[zoneId] == nil {
+		w.mobileInstances[zoneId] = make(map[storage.Identifier]map[string]*MobileInstance)
+	}
+	if w.mobileInstances[zoneId][roomId] == nil {
+		w.mobileInstances[zoneId][roomId] = make(map[string]*MobileInstance)
+	}
+
+	instance := &MobileInstance{
+		InstanceId: uuid.New().String(),
+		MobileId:   mobileId,
+		ZoneId:     zoneId,
+		RoomId:     roomId,
+	}
+	w.mobileInstances[zoneId][roomId][instance.InstanceId] = instance
+	return instance
+}
+
+// GetMobilesInRoom returns all mobile instances in a room.
+func (w *WorldState) GetMobilesInRoom(zoneId, roomId storage.Identifier) []*MobileInstance {
+	w.mu.RLock()
+	defer w.mu.RUnlock()
+
+	if w.mobileInstances[zoneId] == nil || w.mobileInstances[zoneId][roomId] == nil {
+		return nil
+	}
+
+	result := make([]*MobileInstance, 0, len(w.mobileInstances[zoneId][roomId]))
+	for _, mi := range w.mobileInstances[zoneId][roomId] {
+		result = append(result, mi)
+	}
+	return result
 }
 
 // GetPlayer returns the player state. Returns nil if player not found.
