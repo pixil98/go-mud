@@ -18,7 +18,7 @@ type StorageConfig struct {
 	Rooms      AssetConfig[*game.Room]        `json:"rooms"`
 }
 
-func (c *StorageConfig) Validate() error {
+func (c *StorageConfig) validate() error {
 	el := errors.NewErrorList()
 	el.Add(c.Characters.Validate())
 	el.Add(c.Commands.Validate())
@@ -40,6 +40,6 @@ func (c *AssetConfig[T]) Validate() error {
 	return nil
 }
 
-func (c *AssetConfig[T]) NewFileStore() (*storage.FileStore[T], error) {
+func (c *AssetConfig[T]) BuildFileStore() (*storage.FileStore[T], error) {
 	return storage.NewFileStore[T](c.Path)
 }

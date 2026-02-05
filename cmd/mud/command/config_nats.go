@@ -14,7 +14,7 @@ type NatsConfig struct {
 	StartTimeout string `json:"start_timeout"`
 }
 
-func (n *NatsConfig) Validate() error {
+func (n *NatsConfig) validate() error {
 	el := errors.NewErrorList()
 
 	if n.StartTimeout != "" {
@@ -27,7 +27,7 @@ func (n *NatsConfig) Validate() error {
 	return el.Err()
 }
 
-func (c *NatsConfig) NewNatsServer() (*nats.NatsServer, error) {
+func (c *NatsConfig) buildNatsServer() (*nats.NatsServer, error) {
 	var opts []nats.NatsServerOpt
 	if c.StartTimeout != "" {
 		d, err := time.ParseDuration(c.StartTimeout)

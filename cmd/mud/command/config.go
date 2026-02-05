@@ -26,33 +26,15 @@ func (c *Config) Validate() error {
 	}
 
 	for i, l := range c.Listeners {
-		err := l.Validate()
+		err := l.validate()
 		if err != nil {
 			el.Add(fmt.Errorf("listener %d: %w", i, err))
 		}
 	}
 
-	el.Add(c.Storage.Validate())
-	el.Add(c.Nats.Validate())
-	el.Add(c.PlayerManager.Validate())
-
-	return el.Err()
-}
-
-type PlayerManagerConfig struct {
-	DefaultZone string `json:"default_zone"`
-	DefaultRoom string `json:"default_room"`
-}
-
-func (c *PlayerManagerConfig) Validate() error {
-	el := errors.NewErrorList()
-
-	if c.DefaultZone == "" {
-		el.Add(fmt.Errorf("default_zone is required"))
-	}
-	if c.DefaultRoom == "" {
-		el.Add(fmt.Errorf("default_room is required"))
-	}
+	el.Add(c.Storage.validate())
+	el.Add(c.Nats.validate())
+	el.Add(c.PlayerManager.validate())
 
 	return el.Err()
 }

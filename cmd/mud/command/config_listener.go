@@ -32,7 +32,7 @@ type ListenerConfig struct {
 	Port     uint16       `json:"port"`
 }
 
-func (cl *ListenerConfig) Validate() error {
+func (cl *ListenerConfig) validate() error {
 	el := errors.NewErrorList()
 
 	if cl.Port == 0 {
@@ -42,7 +42,7 @@ func (cl *ListenerConfig) Validate() error {
 	return el.Err()
 }
 
-func (cl *ListenerConfig) NewListener(cm *listener.ConnectionManager) (service.Worker, error) {
+func (cl *ListenerConfig) BuildListener(cm *listener.ConnectionManager) (service.Worker, error) {
 	switch cl.Protocol {
 	case ListenerTypeTelnet:
 		return listener.NewTelnetListener(cl.Port, cm), nil

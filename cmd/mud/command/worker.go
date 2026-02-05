@@ -6,7 +6,6 @@ import (
 	"github.com/pixil98/go-mud/internal/commands"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/listener"
-	"github.com/pixil98/go-mud/internal/player"
 	"github.com/pixil98/go-mud/internal/plugins"
 	"github.com/pixil98/go-mud/internal/plugins/base"
 	"github.com/pixil98/go-service"
@@ -26,40 +25,40 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	}
 
 	// Create Stores
-	storeCharacters, err := cfg.Storage.Characters.NewFileStore()
+	storeCharacters, err := cfg.Storage.Characters.BuildFileStore()
 	if err != nil {
 		return nil, fmt.Errorf("creating character store: %w", err)
 	}
-	storeCmds, err := cfg.Storage.Commands.NewFileStore()
+	storeCmds, err := cfg.Storage.Commands.BuildFileStore()
 	if err != nil {
 		return nil, fmt.Errorf("creating command store: %w", err)
 	}
-	storeZones, err := cfg.Storage.Zones.NewFileStore()
+	storeZones, err := cfg.Storage.Zones.BuildFileStore()
 	if err != nil {
 		return nil, fmt.Errorf("creating zone store: %w", err)
 	}
-	storeRooms, err := cfg.Storage.Rooms.NewFileStore()
+	storeRooms, err := cfg.Storage.Rooms.BuildFileStore()
 	if err != nil {
 		return nil, fmt.Errorf("creating room store: %w", err)
 	}
 
 	// Setup the nats server
-	natsServer, err := cfg.Nats.NewNatsServer()
+	natsServer, err := cfg.Nats.buildNatsServer()
 	if err != nil {
 		return nil, fmt.Errorf("creating nats server: %w", err)
 	}
 
 	// Create world state (must be before command handler since handlers need it)
-	worldState := game.NewWorldState(storeCharacters, storeZones, storeRooms)
+	world := game.NewWorldState(storeCharacters, storeZones, storeRooms)
 
 	// Create command handler and compile all commands
-	cmdHandler, err := commands.NewHandler(storeCmds, natsServer, worldState)
+	cmdHandler, err := commands.NewHandler(storeCmds, natsServer, world)
 	if err != nil {
 		return nil, fmt.Errorf("compiling commands: %w", err)
 	}
 
 	// Create player manager
-	playerManager := player.NewPlayerManager(cmdHandler, pluginManager, natsServer, worldState, cfg.PlayerManager.DefaultZone, cfg.PlayerManager.DefaultRoom)
+	playerManager := cfg.PlayerManager.BuildPlayerManager(cmdHandler, pluginManager, natsServer, world)
 
 	// Create connection manager
 	connectionManager := listener.NewConnectionManager(playerManager)
@@ -67,7 +66,7 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	// Create Listeners
 	listeners := make(service.WorkerList, len(cfg.Listeners))
 	for i, l := range cfg.Listeners {
-		listener, err := l.NewListener(connectionManager)
+		listener, err := l.BuildListener(connectionManager)
 		if err != nil {
 			return nil, fmt.Errorf("creating listener %d: %w", i, err)
 		}
