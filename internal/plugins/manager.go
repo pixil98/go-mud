@@ -30,12 +30,19 @@ type CharacterInfoProvider interface {
 	GetCharacterInfo(char *game.Character, style InfoStyle) map[string]string
 }
 
+// PluginServices combines all plugin service interfaces.
+// Use this when you need access to multiple plugin capabilities.
+type PluginServices interface {
+	CharacterInitializer
+	CharacterInfoProvider
+}
+
+// Plugin defines the full interface that plugin implementations must satisfy.
 type Plugin interface {
 	game.TickHandler
+	PluginServices
 	Key() string
 	Init() error
-	OnInitCharacter(io.ReadWriter, *game.Character) error
-	GetCharacterInfo(char *game.Character, style InfoStyle) map[string]string
 }
 
 type PluginManager struct {
@@ -70,7 +77,7 @@ func (m *PluginManager) Tick(ctx context.Context) error {
 
 func (m *PluginManager) InitCharacter(rw io.ReadWriter, char *game.Character) error {
 	for _, p := range m.plugins {
-		err := p.OnInitCharacter(rw, char)
+		err := p.InitCharacter(rw, char)
 		if err != nil {
 			return fmt.Errorf("initCharacter plugin %s: %w ", p.Key(), err)
 		}

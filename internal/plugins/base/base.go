@@ -51,7 +51,7 @@ func (p *BasePlugin) Tick(ctx context.Context) error {
 	return nil
 }
 
-func (p *BasePlugin) OnInitCharacter(rw io.ReadWriter, c *game.Character) error {
+func (p *BasePlugin) InitCharacter(rw io.ReadWriter, c *game.Character) error {
 	bc := &baseChar{}
 	_, err := c.Get(baseExtKey, bc)
 	if err != nil {
