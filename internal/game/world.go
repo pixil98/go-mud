@@ -123,12 +123,12 @@ func (w *WorldState) UpdatePlayer(charId storage.Identifier, fn func(*PlayerStat
 
 // ForEachPlayer calls the given function for each player.
 // The function receives a copy of the player state.
-func (w *WorldState) ForEachPlayer(fn func(PlayerState)) {
+func (w *WorldState) ForEachPlayer(fn func(storage.Identifier, PlayerState)) {
 	w.mu.RLock()
 	defer w.mu.RUnlock()
 
-	for _, p := range w.players {
-		fn(*p)
+	for id, p := range w.players {
+		fn(id, *p)
 	}
 }
 

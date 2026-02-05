@@ -44,7 +44,7 @@ func (m *PlayerManager) Start(ctx context.Context) error {
 func (m *PlayerManager) Tick(ctx context.Context) error {
 	// Iterate over all players in the world state
 	// Tick logic (regen, effects, etc.) can be added to PlayerState later
-	m.world.ForEachPlayer(func(p game.PlayerState) {
+	m.world.ForEachPlayer(func(id storage.Identifier, p game.PlayerState) {
 		// Future: p.Tick() or similar
 		_ = p // Placeholder until tick logic is implemented
 	})
