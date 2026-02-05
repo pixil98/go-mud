@@ -28,6 +28,6 @@ func (c *PlayerManagerConfig) validate() error {
 	return el.Err()
 }
 
-func (c *PlayerManagerConfig) BuildPlayerManager(cmdHandler *commands.Handler, pluginManager *plugins.PluginManager, subscriber player.Subscriber, world *game.WorldState) *player.PlayerManager {
-	return player.NewPlayerManager(cmdHandler, pluginManager, subscriber, world, c.DefaultZone, c.DefaultRoom)
+func (c *PlayerManagerConfig) BuildPlayerManager(cmdHandler *commands.Handler, pluginManager *plugins.PluginManager, world *game.WorldState) *player.PlayerManager {
+	return player.NewPlayerManager(cmdHandler, pluginManager, world, c.DefaultZone, c.DefaultRoom)
 }

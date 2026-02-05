@@ -12,15 +12,9 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
-// Subscriber provides the ability to subscribe to message subjects
-type Subscriber interface {
-	Subscribe(subject string, handler func(data []byte)) (unsubscribe func(), err error)
-}
-
 type PlayerManager struct {
 	cmdHandler    *commands.Handler
 	pluginManager *plugins.PluginManager
-	subscriber    Subscriber
 	world         *game.WorldState
 
 	loginFlow   *loginFlow
@@ -28,11 +22,10 @@ type PlayerManager struct {
 	defaultRoom storage.Identifier
 }
 
-func NewPlayerManager(cmd *commands.Handler, plugins *plugins.PluginManager, subscriber Subscriber, world *game.WorldState, defaultZone, defaultRoom string) *PlayerManager {
+func NewPlayerManager(cmd *commands.Handler, plugins *plugins.PluginManager, world *game.WorldState, defaultZone, defaultRoom string) *PlayerManager {
 	pm := &PlayerManager{
 		pluginManager: plugins,
 		cmdHandler:    cmd,
-		subscriber:    subscriber,
 		world:         world,
 		loginFlow:     &loginFlow{world: world},
 		defaultZone:   storage.Identifier(defaultZone),
@@ -81,26 +74,23 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
 
 	charId := storage.Identifier(strings.ToLower(char.Name()))
 
-	// Register player in world state
-	// TODO: Get starting zone/room from saved character data instead of config defaults
-	err = m.world.AddPlayer(charId, m.defaultZone, m.defaultRoom)
-	if err != nil {
-		return nil, fmt.Errorf("registering player in world: %w", err)
-	}
-
 	p := &Player{
 		conn:       conn,
 		charId:     charId,
 		world:      m.world,
 		cmdHandler: m.cmdHandler,
-		subscriber: m.subscriber,
-		subs:       make(map[string]func()),
 		msgs:       make(chan []byte, 100),
 	}
 
+	// Register player in world state
+	// TODO: Get starting zone/room from saved character data instead of config defaults
+	err = m.world.AddPlayer(charId, p.msgs, m.defaultZone, m.defaultRoom)
+	if err != nil {
+		return nil, fmt.Errorf("registering player in world: %w", err)
+	}
+
 	// Subscribe to player-specific channel
-	subject := fmt.Sprintf("player-%s", p.Id())
-	err = p.Subscribe("player", subject)
+	err = p.world.GetPlayer(charId).Subscribe(fmt.Sprintf("player-%s", p.Id()))
 	if err != nil {
 		// Clean up world state on failure
 		_ = m.world.RemovePlayer(charId)
@@ -108,16 +98,14 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
 	}
 
 	// Subscribe to zone channel
-	zoneSubject := fmt.Sprintf("zone-%s", m.defaultZone)
-	err = p.Subscribe("zone", zoneSubject)
+	err = p.world.GetPlayer(charId).Subscribe(fmt.Sprintf("zone-%s", m.defaultZone))
 	if err != nil {
 		_ = m.world.RemovePlayer(charId)
 		return nil, fmt.Errorf("subscribing to zone channel: %w", err)
 	}
 
 	// Subscribe to room channel
-	roomSubject := fmt.Sprintf("zone-%s-room-%s", m.defaultZone, m.defaultRoom)
-	err = p.Subscribe("room", roomSubject)
+	err = p.world.GetPlayer(charId).Subscribe(fmt.Sprintf("zone-%s-room-%s", m.defaultZone, m.defaultRoom))
 	if err != nil {
 		_ = m.world.RemovePlayer(charId)
 		return nil, fmt.Errorf("subscribing to room channel: %w", err)

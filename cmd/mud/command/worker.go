@@ -49,7 +49,7 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	}
 
 	// Create world state (must be before command handler since handlers need it)
-	world := game.NewWorldState(storeCharacters, storeZones, storeRooms)
+	world := game.NewWorldState(natsServer, storeCharacters, storeZones, storeRooms)
 
 	// Create command handler and compile all commands
 	cmdHandler, err := commands.NewHandler(storeCmds, natsServer, world)
@@ -58,7 +58,7 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	}
 
 	// Create player manager
-	playerManager := cfg.PlayerManager.BuildPlayerManager(cmdHandler, pluginManager, natsServer, world)
+	playerManager := cfg.PlayerManager.BuildPlayerManager(cmdHandler, pluginManager, world)
 
 	// Create connection manager
 	connectionManager := listener.NewConnectionManager(playerManager)

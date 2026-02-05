@@ -19,47 +19,12 @@ type Player struct {
 	world      *game.WorldState
 	cmdHandler *commands.Handler
 
-	// Subscriber for creating new subscriptions
-	subscriber Subscriber
-	// Cleanup functions for active subscriptions (player, room, group, etc.)
-	subs map[string]func()
 	msgs chan []byte
 }
 
 // Id returns the player's unique identifier (lowercase character name)
 func (p *Player) Id() string {
 	return string(p.charId)
-}
-
-// Unsubscribe removes a subscription by name
-func (p *Player) Unsubscribe(name string) {
-	if unsub, ok := p.subs[name]; ok {
-		unsub()
-		delete(p.subs, name)
-	}
-}
-
-// Subscribe creates a new subscription for the player
-func (p *Player) Subscribe(name, subject string) error {
-	if p.subscriber == nil {
-		return nil
-	}
-	unsub, err := p.subscriber.Subscribe(subject, func(data []byte) {
-		p.msgs <- data
-	})
-	if err != nil {
-		return err
-	}
-	p.subs[name] = unsub
-	return nil
-}
-
-// UnsubscribeAll removes all subscriptions
-func (p *Player) UnsubscribeAll() {
-	for name, unsub := range p.subs {
-		unsub()
-		delete(p.subs, name)
-	}
 }
 
 func (p *Player) Play(ctx context.Context) error {
@@ -76,7 +41,7 @@ func (p *Player) Play(ctx context.Context) error {
 	}()
 
 	// Ensure subscriptions are cleaned up on exit
-	defer p.UnsubscribeAll()
+	defer p.world.GetPlayer(p.charId).UnsubscribeAll()
 
 	// Show the player their current room on login
 	err := p.cmdHandler.Exec(ctx, p.world, p.charId, "look")
@@ -132,13 +97,6 @@ func (p *Player) Play(ctx context.Context) error {
 				args = parts[1:]
 			}
 
-			// Capture location before command execution
-			state := p.world.GetPlayer(p.charId)
-			if state == nil {
-				return fmt.Errorf("player state not found for %s", p.charId)
-			}
-			prevZone, prevRoom := state.Location()
-
 			// Execute the command
 			err = p.cmdHandler.Exec(ctx, p.world, p.charId, cmdName, args...)
 			if err != nil {
@@ -155,33 +113,13 @@ func (p *Player) Play(ctx context.Context) error {
 			}
 
 			// Check if player wants to quit
-			state = p.world.GetPlayer(p.charId)
+			state := p.world.GetPlayer(p.charId)
 			if state == nil {
 				return fmt.Errorf("player state not found for %s", p.charId)
 			}
-			if state.IsQuitting() {
+			if state.Quit {
 				p.writeLine("Goodbye!")
 				return nil
-			}
-
-			// Update subscriptions if location changed
-			// TODO: Consider moving subscription management to WorldState so that
-			// features like "follow" can automatically update follower subscriptions
-			// when a player moves.
-			curZone, curRoom := state.Location()
-			if curZone != prevZone {
-				p.Unsubscribe("zone")
-				zoneSubject := fmt.Sprintf("zone-%s", curZone)
-				if err := p.Subscribe("zone", zoneSubject); err != nil {
-					return fmt.Errorf("subscribing to zone channel: %w", err)
-				}
-			}
-			if curZone != prevZone || curRoom != prevRoom {
-				p.Unsubscribe("room")
-				roomSubject := fmt.Sprintf("zone-%s-room-%s", curZone, curRoom)
-				if err := p.Subscribe("room", roomSubject); err != nil {
-					return fmt.Errorf("subscribing to room channel: %w", err)
-				}
 			}
 
 			err = p.prompt()

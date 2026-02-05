@@ -166,9 +166,9 @@ func TestNewTemplateData(t *testing.T) {
 	}
 	zoneStore := &mockZoneStore{zones: map[string]*game.Zone{}}
 	roomStore := &mockRoomStore{rooms: map[string]*game.Room{}}
-	world := game.NewWorldState(charStore, zoneStore, roomStore)
+	world := game.NewWorldState(nil, charStore, zoneStore, roomStore)
 	charId := storage.Identifier("testplayer")
-	_ = world.AddPlayer(charId, "testzone", "testroom")
+	_ = world.AddPlayer(charId, make(chan []byte, 1), "testzone", "testroom")
 
 	tests := map[string]struct {
 		args    []ParsedArg

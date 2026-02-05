@@ -71,14 +71,8 @@ func (f *MoveHandlerFactory) Create(config map[string]any, pub Publisher) (Comma
 			return NewUserError("That exit leads nowhere.")
 		}
 
-		// Get charId from Actor
-		charId := storage.Identifier(strings.ToLower(data.Actor.Name()))
-
-		// Move the player
-		err := f.world.MovePlayer(charId, destZone, destRoom)
-		if err != nil {
-			return fmt.Errorf("failed to move player: %w", err)
-		}
+		// Move the player (updates location and subscriptions)
+		data.State.Move(destZone, destRoom)
 
 		// Send room description to player
 		playerChannel := fmt.Sprintf("player-%s", strings.ToLower(data.Actor.Name()))
