@@ -1,0 +1,10 @@
+{
+    "version": 1,
+    "id": "title",
+    "spec": {
+        "handler": "title",
+        "params": [
+            {"name": "text", "type": "string", "required": false, "rest": true}
+        ]
+    }
+}

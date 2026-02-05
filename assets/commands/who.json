@@ -1,0 +1,8 @@
+{
+    "version": 1,
+    "id": "who",
+    "spec": {
+        "handler": "who",
+        "params": []
+    }
+}

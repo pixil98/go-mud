@@ -3,6 +3,7 @@
     "id": "human-35",
     "spec": {
         "name": "Human",
+        "abbreviation": "Hu",
         "stats": {
             "str": -2,
             "dex": 2

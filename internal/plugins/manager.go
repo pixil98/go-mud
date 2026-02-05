@@ -9,16 +9,33 @@ import (
 	"github.com/pixil98/go-mud/internal/game"
 )
 
-type Extensible interface {
-	Set(string, any) error
-	Get(string, any) (bool, error)
+// InfoStyle indicates the display context for character info
+type InfoStyle int
+
+const (
+	InfoStyleShort InfoStyle = iota // brief display (e.g., "who" command)
+	InfoStyleFull                   // detailed display (e.g., "score" command)
+)
+
+// CharacterInitializer handles character initialization
+type CharacterInitializer interface {
+	InitCharacter(rw io.ReadWriter, char *game.Character) error
+}
+
+// CharacterInfoProvider returns display info about characters
+// TODO: Add importance/priority levels to returned info so callers can:
+//   - Order items consistently in displays like "score"
+//   - Filter to only show important items in compact displays like "who"
+type CharacterInfoProvider interface {
+	GetCharacterInfo(char *game.Character, style InfoStyle) map[string]string
 }
 
 type Plugin interface {
 	game.TickHandler
 	Key() string
 	Init() error
-	OnInitCharacter(io.ReadWriter, Extensible) error
+	OnInitCharacter(io.ReadWriter, *game.Character) error
+	GetCharacterInfo(char *game.Character, style InfoStyle) map[string]string
 }
 
 type PluginManager struct {
@@ -51,13 +68,24 @@ func (m *PluginManager) Tick(ctx context.Context) error {
 	return nil
 }
 
-func (m *PluginManager) InitCharacter(rw io.ReadWriter, e Extensible) error {
+func (m *PluginManager) InitCharacter(rw io.ReadWriter, char *game.Character) error {
 	for _, p := range m.plugins {
-		err := p.OnInitCharacter(rw, e)
+		err := p.OnInitCharacter(rw, char)
 		if err != nil {
 			return fmt.Errorf("initCharacter plugin %s: %w ", p.Key(), err)
 		}
 	}
 
 	return nil
+}
+
+// GetCharacterInfo aggregates character info from all plugins
+func (m *PluginManager) GetCharacterInfo(char *game.Character, style InfoStyle) map[string]string {
+	result := make(map[string]string)
+	for _, p := range m.plugins {
+		for k, v := range p.GetCharacterInfo(char, style) {
+			result[k] = v
+		}
+	}
+	return result
 }

@@ -3,6 +3,7 @@
     "id": "halfling-35",
     "spec": {
         "name": "Halfling",
+        "abbreviation": "Ha",
         "stats": {
             "str": -2,
             "dex": 2

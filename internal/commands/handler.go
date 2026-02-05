@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/plugins"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
@@ -47,7 +48,7 @@ type Handler struct {
 	compiled  map[storage.Identifier]*compiledCommand
 }
 
-func NewHandler(c storage.Storer[*Command], publisher Publisher, world *game.WorldState) (*Handler, error) {
+func NewHandler(c storage.Storer[*Command], publisher Publisher, world *game.WorldState, charInfo plugins.CharacterInfoProvider) (*Handler, error) {
 	h := &Handler{
 		factories: make(map[string]HandlerFactory),
 		compiled:  make(map[storage.Identifier]*compiledCommand),
@@ -58,6 +59,8 @@ func NewHandler(c storage.Storer[*Command], publisher Publisher, world *game.Wor
 	h.RegisterFactory("quit", &QuitHandlerFactory{})
 	h.RegisterFactory("move", NewMoveHandlerFactory(world, publisher))
 	h.RegisterFactory("look", NewLookHandlerFactory(world, publisher))
+	h.RegisterFactory("who", NewWhoHandlerFactory(world, publisher, charInfo))
+	h.RegisterFactory("title", NewTitleHandlerFactory(publisher))
 
 	// Compile commands
 	for id, cmd := range c.GetAll() {

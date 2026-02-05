@@ -6,6 +6,7 @@ import "github.com/pixil98/go-mud/internal/storage"
 type Character struct {
 	CharName string `json:"name"`
 	Password string `json:"password"` //TODO make this okay to save
+	Title    string `json:"title,omitempty"`
 
 	storage.ExtensionState `json:"ext,omitempty"`
 }

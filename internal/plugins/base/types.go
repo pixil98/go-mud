@@ -27,9 +27,10 @@ func (p *Pronoun) Selector() string {
 }
 
 type Race struct {
-	Name  string         `json:"name"`
-	Stats map[string]int `json:"stats"`
-	Perks []string       `json:"perks"`
+	Name         string         `json:"name"`
+	Abbreviation string         `json:"abbreviation"`
+	Stats        map[string]int `json:"stats"`
+	Perks        []string       `json:"perks"`
 }
 
 func (r *Race) Validate() error {

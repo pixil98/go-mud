@@ -3,6 +3,7 @@
     "id": "dwarf-35",
     "spec": {
         "name": "Dwarf",
+        "abbreviation": "Dw",
         "stats": {
             "con": 2,
             "cha": -2

@@ -3,6 +3,7 @@
     "id": "gnome-35",
     "spec": {
         "name": "Gnome",
+        "abbreviation": "Gn",
         "stats": {
             "str": -2,
             "con": 2

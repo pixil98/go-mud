@@ -31,8 +31,9 @@ func NewNatsServer(opts ...NatsServerOpt) (*NatsServer, error) {
 	}
 
 	ns, err := server.NewServer(&server.Options{
-		Host: s.host,
-		Port: s.port,
+		Host:   s.host,
+		Port:   s.port,
+		NoSigs: true, // Let the application handle signals
 	})
 
 	s.ns = ns

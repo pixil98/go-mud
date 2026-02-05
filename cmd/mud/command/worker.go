@@ -52,7 +52,7 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	world := game.NewWorldState(natsServer, storeCharacters, storeZones, storeRooms)
 
 	// Create command handler and compile all commands
-	cmdHandler, err := commands.NewHandler(storeCmds, natsServer, world)
+	cmdHandler, err := commands.NewHandler(storeCmds, natsServer, world, pluginManager)
 	if err != nil {
 		return nil, fmt.Errorf("compiling commands: %w", err)
 	}

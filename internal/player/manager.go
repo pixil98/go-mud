@@ -97,6 +97,13 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
 		return nil, fmt.Errorf("subscribing to player channel: %w", err)
 	}
 
+	// Subscribe to world channel (for gossip, etc.)
+	err = p.world.GetPlayer(charId).Subscribe("world")
+	if err != nil {
+		_ = m.world.RemovePlayer(charId)
+		return nil, fmt.Errorf("subscribing to world channel: %w", err)
+	}
+
 	// Subscribe to zone channel
 	err = p.world.GetPlayer(charId).Subscribe(fmt.Sprintf("zone-%s", m.defaultZone))
 	if err != nil {

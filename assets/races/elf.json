@@ -3,6 +3,7 @@
     "id": "elf-35",
     "spec": {
         "name": "Elf",
+        "abbreviation": "El",
         "stats": {
             "dex": 2,
             "con": -2
