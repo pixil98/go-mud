@@ -34,6 +34,7 @@ type TargetResolver interface {
 }
 
 // DefaultTargetResolver is the standard implementation of TargetResolver.
+// TODO this needs to be able to scope resolving, maybe by passing in a scope function
 type DefaultTargetResolver struct{}
 
 // ResolvePlayer resolves a player target by name (case-insensitive exact match).
@@ -46,7 +47,7 @@ func (r *DefaultTargetResolver) ResolvePlayer(world *game.WorldState, input stri
 	var matchedCharId storage.Identifier
 
 	for charId, char := range world.Characters().GetAll() {
-		if strings.ToLower(char.Name()) == inputLower {
+		if strings.ToLower(char.Name) == inputLower {
 			matchedChar = char
 			matchedCharId = charId
 			break

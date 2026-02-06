@@ -34,35 +34,15 @@ func (f *LookHandlerFactory) Create(config map[string]any) (CommandFunc, error) 
 		zoneId, roomId := data.State.Location()
 
 		// Look up current room
-		roomKey := string(zoneId) + "-" + string(roomId)
-		room := f.world.Rooms().Get(roomKey)
+		room := f.world.Rooms().Get(string(roomId))
 		if room == nil {
 			return NewUserError("You are in an invalid location.")
 		}
 
-		// Find other players in the room
-		var playersHere []storage.Identifier
-		actorName := data.Actor.Name()
-		f.world.ForEachPlayer(func(charId storage.Identifier, state game.PlayerState) {
-			pZone, pRoom := state.Location()
-			if pZone == zoneId && pRoom == roomId {
-				if char := f.world.Characters().Get(string(charId)); char != nil {
-					if char.Name() != actorName {
-						playersHere = append(playersHere, charId)
-					}
-				}
-			}
-		})
-
-		// Find mobs in the room
-		mobsHere := f.world.GetMobilesInRoom(zoneId, roomId)
-
-		// TODO: Find items in the room
-
 		// TODO: Add helper functions for channel naming schemes (player-X, zone-X, zone-X-room-Y)
 		// to avoid recreating the naming patterns everywhere
-		playerChannel := fmt.Sprintf("player-%s", strings.ToLower(actorName))
-		roomDesc := f.formatFullRoomDescription(room, playersHere, mobsHere)
+		playerChannel := fmt.Sprintf("player-%s", strings.ToLower(data.Actor.Name))
+		roomDesc := FormatFullRoomDescription(f.world, room, zoneId, roomId, data.Actor.Name)
 		if f.pub != nil {
 			_ = f.pub.Publish(playerChannel, []byte(roomDesc))
 		}
@@ -71,18 +51,26 @@ func (f *LookHandlerFactory) Create(config map[string]any) (CommandFunc, error) 
 	}, nil
 }
 
-func (f *LookHandlerFactory) formatFullRoomDescription(room *game.Room, players []storage.Identifier, mobs []*game.MobileInstance) string {
+// FormatFullRoomDescription builds a complete room description including mobs and players.
+// actorName is excluded from the player list (so you don't see "You are here").
+func FormatFullRoomDescription(world *game.WorldState, room *game.Room, zoneId, roomId storage.Identifier, actorName string) string {
 	var sb strings.Builder
 	sb.WriteString(room.Name)
 	sb.WriteString("\n")
 	sb.WriteString(room.Description)
+	sb.WriteString("\n")
 
 	// Show mobs
+	mobs := world.GetMobilesInRoom(zoneId, roomId)
 	if len(mobs) > 0 {
-		sb.WriteString("\n")
 		for _, mi := range mobs {
-			if mob := f.world.Mobiles().Get(string(mi.MobileId)); mob != nil {
-				sb.WriteString(fmt.Sprintf("%s is here.\n", mob.Name()))
+			if mob := world.Mobiles().Get(string(mi.MobileId)); mob != nil {
+				if mob.LongDesc != "" {
+					sb.WriteString(mob.LongDesc)
+				} else {
+					sb.WriteString(fmt.Sprintf("%s is here.", mob.ShortDesc))
+				}
+				sb.WriteString("\n")
 			}
 		}
 	}
@@ -90,12 +78,22 @@ func (f *LookHandlerFactory) formatFullRoomDescription(room *game.Room, players 
 	// TODO: Show items
 
 	// Show players
-	if len(players) > 0 {
-		sb.WriteString("\n")
-		for _, charId := range players {
+	var playersHere []storage.Identifier
+	world.ForEachPlayer(func(charId storage.Identifier, state game.PlayerState) {
+		pZone, pRoom := state.Location()
+		if pZone == zoneId && pRoom == roomId {
+			if char := world.Characters().Get(string(charId)); char != nil {
+				if char.Name != actorName {
+					playersHere = append(playersHere, charId)
+				}
+			}
+		}
+	})
+	if len(playersHere) > 0 {
+		for _, charId := range playersHere {
 			name := string(charId) // fallback to ID
-			if char := f.world.Characters().Get(string(charId)); char != nil {
-				name = char.Name()
+			if char := world.Characters().Get(string(charId)); char != nil {
+				name = char.Name
 			}
 			sb.WriteString(fmt.Sprintf("%s is here.\n", name))
 		}
@@ -105,4 +103,15 @@ func (f *LookHandlerFactory) formatFullRoomDescription(room *game.Room, players 
 	sb.WriteString(formatExits(room.Exits))
 
 	return sb.String()
+}
+
+func formatExits(exits map[string]game.Exit) string {
+	if len(exits) == 0 {
+		return "[Exits: none]"
+	}
+	dirs := make([]string, 0, len(exits))
+	for dir := range exits {
+		dirs = append(dirs, dir)
+	}
+	return fmt.Sprintf("[Exits: %s]", strings.Join(dirs, ", "))
 }

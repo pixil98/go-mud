@@ -1,7 +1,9 @@
 package game
 
 import (
+	"context"
 	"fmt"
+	"log/slog"
 	"sync"
 	"time"
 
@@ -24,10 +26,20 @@ type WorldState struct {
 
 	// Mobile instances indexed by zone -> room -> instanceId -> instance
 	mobileInstances map[storage.Identifier]map[storage.Identifier]map[string]*MobileInstance
+
+	// Index of rooms by zone for efficient zone resets
+	roomsByZone map[storage.Identifier][]storage.Identifier
 }
 
 // NewWorldState creates a new WorldState.
 func NewWorldState(sub Subscriber, chars storage.Storer[*Character], zones storage.Storer[*Zone], rooms storage.Storer[*Room], mobiles storage.Storer[*Mobile]) *WorldState {
+	// Build index of rooms by zone
+	roomsByZone := make(map[storage.Identifier][]storage.Identifier)
+	for roomId, room := range rooms.GetAll() {
+		zoneId := storage.Identifier(room.ZoneId)
+		roomsByZone[zoneId] = append(roomsByZone[zoneId], roomId)
+	}
+
 	return &WorldState{
 		subscriber:      sub,
 		players:         make(map[storage.Identifier]*PlayerState),
@@ -36,6 +48,7 @@ func NewWorldState(sub Subscriber, chars storage.Storer[*Character], zones stora
 		rooms:           rooms,
 		mobiles:         mobiles,
 		mobileInstances: make(map[storage.Identifier]map[storage.Identifier]map[string]*MobileInstance),
+		roomsByZone:     roomsByZone,
 	}
 }
 
@@ -98,6 +111,69 @@ func (w *WorldState) GetMobilesInRoom(zoneId, roomId storage.Identifier) []*Mobi
 		result = append(result, mi)
 	}
 	return result
+}
+
+// ResetZone despawns all mobiles in a zone and respawns them per room definitions.
+// If force is true, bypasses time/occupancy checks and resets immediately.
+func (w *WorldState) ResetZone(zoneId storage.Identifier, force bool) {
+	zone := w.zones.Get(string(zoneId))
+	if zone == nil {
+		slog.Warn("zone not found during reset", "zone", zoneId)
+		return
+	}
+
+	now := time.Now()
+
+	// Unless forced, check if reset conditions are met
+	if !force {
+		if zone.ResetMode == ZoneResetNever {
+			return
+		}
+		if now.Before(zone.NextReset) {
+			return
+		}
+		if zone.ResetMode == ZoneResetEmpty && w.isZoneOccupied(zoneId) {
+			return
+		}
+	}
+
+	w.mu.Lock()
+	defer w.mu.Unlock()
+
+	// Clear all mobile instances in this zone
+	delete(w.mobileInstances, zoneId)
+
+	slog.Info("resetting zone", "zone", zoneId, "rooms", len(w.roomsByZone[zoneId]))
+
+	// Respawn mobiles for each room in the zone
+	for _, roomId := range w.roomsByZone[zoneId] {
+		room := w.rooms.Get(string(roomId))
+		if room == nil {
+			slog.Warn("room not found during zone reset", "zone", zoneId, "room", roomId)
+			continue
+		}
+		for _, mobileId := range room.Spawns {
+			if w.mobileInstances[zoneId] == nil {
+				w.mobileInstances[zoneId] = make(map[storage.Identifier]map[string]*MobileInstance)
+			}
+			if w.mobileInstances[zoneId][roomId] == nil {
+				w.mobileInstances[zoneId][roomId] = make(map[string]*MobileInstance)
+			}
+			instance := &MobileInstance{
+				InstanceId: uuid.New().String(),
+				MobileId:   storage.Identifier(mobileId),
+				ZoneId:     zoneId,
+				RoomId:     roomId,
+			}
+			w.mobileInstances[zoneId][roomId][instance.InstanceId] = instance
+			slog.Debug("spawned mobile", "mobile", mobileId, "zone", zoneId, "room", roomId)
+		}
+	}
+
+	// Schedule next reset
+	if zone.LifespanDuration() > 0 {
+		zone.NextReset = now.Add(zone.LifespanDuration())
+	}
 }
 
 // GetPlayer returns the player state. Returns nil if player not found.
@@ -183,7 +259,52 @@ func (w *WorldState) ForEachPlayer(fn func(storage.Identifier, PlayerState)) {
 	}
 }
 
-// --- PlayerState Methods (access properties) ---
+// Subscriber provides the ability to subscribe to message subjects
+type Subscriber interface {
+	Subscribe(subject string, handler func(data []byte)) (unsubscribe func(), err error)
+}
+
+// Tick processes zone resets based on their reset mode and lifespan.
+func (w *WorldState) Tick(ctx context.Context) error {
+	//
+
+	// Reset pending zones
+	for zoneId := range w.zones.GetAll() {
+		w.ResetZone(zoneId, false)
+	}
+
+	return nil
+}
+
+// isZoneOccupied returns true if any players are in the zone.
+func (w *WorldState) isZoneOccupied(zoneId storage.Identifier) bool {
+	w.mu.RLock()
+	defer w.mu.RUnlock()
+
+	for _, p := range w.players {
+		if p.ZoneId == zoneId {
+			return true
+		}
+	}
+	return false
+}
+
+// PlayerState holds all mutable state for an active player.
+type PlayerState struct {
+	subscriber Subscriber
+	msgs       chan []byte
+
+	// Location
+	ZoneId storage.Identifier
+	RoomId storage.Identifier
+
+	// Subscriptions
+	subs map[string]func()
+
+	// Session state
+	Quit         bool
+	LastActivity time.Time
+}
 
 // Location returns the player's current zone and room.
 func (p *PlayerState) Location() (zoneId, roomId storage.Identifier) {
@@ -211,28 +332,7 @@ func (p *PlayerState) Move(toZoneId, toRoomId storage.Identifier) {
 	}
 }
 
-// Subscriber provides the ability to subscribe to message subjects
-type Subscriber interface {
-	Subscribe(subject string, handler func(data []byte)) (unsubscribe func(), err error)
-}
-
-// PlayerState holds all mutable state for an active player.
-type PlayerState struct {
-	subscriber Subscriber
-	msgs       chan []byte
-
-	// Location
-	ZoneId storage.Identifier
-	RoomId storage.Identifier
-
-	// Subscriptions
-	subs map[string]func()
-
-	// Session state
-	Quit         bool
-	LastActivity time.Time
-}
-
+// Subscribe adds a new subscription
 func (p *PlayerState) Subscribe(subject string) error {
 	if p.subscriber == nil {
 		return fmt.Errorf("subscriber is nil")
@@ -241,6 +341,13 @@ func (p *PlayerState) Subscribe(subject string) error {
 	unsub, err := p.subscriber.Subscribe(subject, func(data []byte) {
 		p.msgs <- data
 	})
+
+	// If we some how are subscribing to a channel we already think we have
+	// unsubscribe from the existing one.
+	if unsub, ok := p.subs[subject]; ok {
+		unsub()
+	}
+
 	if err != nil {
 		return fmt.Errorf("subscribing to channel '%s': %w", subject, err)
 	}
@@ -250,10 +357,10 @@ func (p *PlayerState) Subscribe(subject string) error {
 }
 
 // Unsubscribe removes a subscription by name
-func (p *PlayerState) Unsubscribe(name string) {
-	if unsub, ok := p.subs[name]; ok {
+func (p *PlayerState) Unsubscribe(subject string) {
+	if unsub, ok := p.subs[subject]; ok {
 		unsub()
-		delete(p.subs, name)
+		delete(p.subs, subject)
 	}
 }
 

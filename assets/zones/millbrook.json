@@ -3,6 +3,7 @@
     "id": "millbrook",
     "spec": {
         "name": "Town of Millbrook",
-        "description": "A quiet town nestled in a valley, known for its friendly inhabitants and bustling market."
+        "description": "A quiet town nestled in a valley, known for its friendly inhabitants and bustling market.",
+        "reset_mode": "never"
     }
 }

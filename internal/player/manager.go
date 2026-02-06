@@ -1,7 +1,6 @@
 package player
 
 import (
-	"context"
 	"fmt"
 	"io"
 	"strings"
@@ -35,22 +34,6 @@ func NewPlayerManager(cmd *commands.Handler, plugins *plugins.PluginManager, wor
 	return pm
 }
 
-func (m *PlayerManager) Start(ctx context.Context) error {
-	<-ctx.Done()
-	// Player connections are stopped via context cancellation from the telnet listener
-	return nil
-}
-
-func (m *PlayerManager) Tick(ctx context.Context) error {
-	// Iterate over all players in the world state
-	// Tick logic (regen, effects, etc.) can be added to PlayerState later
-	m.world.ForEachPlayer(func(id storage.Identifier, p game.PlayerState) {
-		// Future: p.Tick() or similar
-		_ = p // Placeholder until tick logic is implemented
-	})
-	return nil
-}
-
 // RemovePlayer removes a player from the world state
 func (m *PlayerManager) RemovePlayer(charId string) {
 	_ = m.world.RemovePlayer(storage.Identifier(charId))
@@ -67,12 +50,12 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
 		return nil, fmt.Errorf("initializing character: %w", err)
 	}
 	// Save the character back to preserve changes
-	err = m.world.Characters().Save(strings.ToLower(char.Name()), char)
+	err = m.world.Characters().Save(strings.ToLower(char.Name), char)
 	if err != nil {
 		return nil, fmt.Errorf("saving character: %w", err)
 	}
 
-	charId := storage.Identifier(strings.ToLower(char.Name()))
+	charId := storage.Identifier(strings.ToLower(char.Name))
 
 	p := &Player{
 		conn:       conn,

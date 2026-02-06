@@ -183,7 +183,7 @@ func TestExpandTemplate(t *testing.T) {
 func TestNewTemplateData(t *testing.T) {
 	charStore := &mockCharStore{
 		chars: map[string]*game.Character{
-			"testplayer": {Entity: game.Entity{EntityName: "TestPlayer"}},
+			"testplayer": {Name: "TestPlayer"},
 		},
 	}
 	zoneStore := &mockZoneStore{zones: map[string]*game.Zone{}}
@@ -242,8 +242,8 @@ func TestNewTemplateData(t *testing.T) {
 				return
 			}
 
-			if got.Actor.Name() != "TestPlayer" {
-				t.Errorf("Actor.Name() = %q, expected %q", got.Actor.Name(), "TestPlayer")
+			if got.Actor.Name != "TestPlayer" {
+				t.Errorf("Actor.Name() = %q, expected %q", got.Actor.Name, "TestPlayer")
 			}
 
 			if got.State == nil {

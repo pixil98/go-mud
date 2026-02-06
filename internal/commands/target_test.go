@@ -17,37 +17,37 @@ func TestResolvePlayer(t *testing.T) {
 		expErr        string
 	}{
 		"exact match": {
-			chars:         map[string]*game.Character{"bob": {Entity: game.Entity{EntityName: "Bob"}}},
+			chars:         map[string]*game.Character{"bob": {Name: "Bob"}},
 			onlinePlayers: []string{"bob"},
 			input:         "bob",
 			expCharName:   "Bob",
 		},
 		"case insensitive match uppercase input": {
-			chars:         map[string]*game.Character{"bob": {Entity: game.Entity{EntityName: "Bob"}}},
+			chars:         map[string]*game.Character{"bob": {Name: "Bob"}},
 			onlinePlayers: []string{"bob"},
 			input:         "BOB",
 			expCharName:   "Bob",
 		},
 		"case insensitive match mixed case input": {
-			chars:         map[string]*game.Character{"bob": {Entity: game.Entity{EntityName: "Bob"}}},
+			chars:         map[string]*game.Character{"bob": {Name: "Bob"}},
 			onlinePlayers: []string{"bob"},
 			input:         "BoB",
 			expCharName:   "Bob",
 		},
 		"player not found": {
-			chars:         map[string]*game.Character{"bob": {Entity: game.Entity{EntityName: "Bob"}}},
+			chars:         map[string]*game.Character{"bob": {Name: "Bob"}},
 			onlinePlayers: []string{"bob"},
 			input:         "alice",
 			expErr:        "Player 'alice' not found",
 		},
 		"player offline": {
-			chars:         map[string]*game.Character{"bob": {Entity: game.Entity{EntityName: "Bob"}}},
+			chars:         map[string]*game.Character{"bob": {Name: "Bob"}},
 			onlinePlayers: []string{},
 			input:         "bob",
 			expErr:        "Player 'bob' not found",
 		},
 		"partial match does not work": {
-			chars:         map[string]*game.Character{"bobby": {Entity: game.Entity{EntityName: "Bobby"}}},
+			chars:         map[string]*game.Character{"bobby": {Name: "Bobby"}},
 			onlinePlayers: []string{"bobby"},
 			input:         "bob",
 			expErr:        "Player 'bob' not found",
@@ -83,8 +83,8 @@ func TestResolvePlayer(t *testing.T) {
 			if result.Character == nil {
 				t.Fatal("result.Character is nil")
 			}
-			if result.Character.Name() != tt.expCharName {
-				t.Errorf("Character.Name() = %q, expected %q", result.Character.Name(), tt.expCharName)
+			if result.Character.Name != tt.expCharName {
+				t.Errorf("Character.Name() = %q, expected %q", result.Character.Name, tt.expCharName)
 			}
 
 			if result.State == nil {
@@ -107,7 +107,7 @@ func TestResolveTarget(t *testing.T) {
 		expErr        string
 	}{
 		"resolves player": {
-			chars:         map[string]*game.Character{"alice": {Entity: game.Entity{EntityName: "Alice"}}},
+			chars:         map[string]*game.Character{"alice": {Name: "Alice"}},
 			onlinePlayers: []string{"alice"},
 			input:         "alice",
 			expCharName:   "Alice",
@@ -151,8 +151,8 @@ func TestResolveTarget(t *testing.T) {
 				t.Fatalf("expected *ResolvedPlayer, got %T", result)
 			}
 
-			if resolved.Character.Name() != tt.expCharName {
-				t.Errorf("Character.Name() = %q, expected %q", resolved.Character.Name(), tt.expCharName)
+			if resolved.Character.Name != tt.expCharName {
+				t.Errorf("Character.Name() = %q, expected %q", resolved.Character.Name, tt.expCharName)
 			}
 		})
 	}
@@ -229,8 +229,8 @@ func TestNewTemplateData_TargetResolution(t *testing.T) {
 	}{
 		"resolves player target": {
 			chars: map[string]*game.Character{
-				"alice": {Entity: game.Entity{EntityName: "Alice"}},
-				"bob":   {Entity: game.Entity{EntityName: "Bob"}},
+				"alice": {Name: "Alice"},
+				"bob":   {Name: "Bob"},
 			},
 			onlinePlayers: []string{"alice", "bob"},
 			actorId:       "alice",
@@ -244,7 +244,7 @@ func TestNewTemplateData_TargetResolution(t *testing.T) {
 		},
 		"player not found returns error": {
 			chars: map[string]*game.Character{
-				"alice": {Entity: game.Entity{EntityName: "Alice"}},
+				"alice": {Name: "Alice"},
 			},
 			onlinePlayers: []string{"alice"},
 			actorId:       "alice",
@@ -258,7 +258,7 @@ func TestNewTemplateData_TargetResolution(t *testing.T) {
 		},
 		"string args pass through unchanged": {
 			chars: map[string]*game.Character{
-				"alice": {Entity: game.Entity{EntityName: "Alice"}},
+				"alice": {Name: "Alice"},
 			},
 			onlinePlayers: []string{"alice"},
 			actorId:       "alice",
@@ -301,8 +301,8 @@ func TestNewTemplateData_TargetResolution(t *testing.T) {
 				if !ok {
 					t.Fatalf("Args[\"target\"] is %T, expected *ResolvedPlayer", data.Args["target"])
 				}
-				if target.Character.Name() != tt.expTargetName {
-					t.Errorf("target.Character.Name() = %q, expected %q", target.Character.Name(), tt.expTargetName)
+				if target.Character.Name != tt.expTargetName {
+					t.Errorf("target.Character.Name() = %q, expected %q", target.Character.Name, tt.expTargetName)
 				}
 			}
 		})

@@ -39,7 +39,7 @@ type PluginServices interface {
 
 // Plugin defines the full interface that plugin implementations must satisfy.
 type Plugin interface {
-	game.TickHandler
+	game.Ticker
 	PluginServices
 	Key() string
 	Init() error

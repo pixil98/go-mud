@@ -46,8 +46,7 @@ func (f *MoveHandlerFactory) Create(config map[string]any) (CommandFunc, error) 
 		zoneId, roomId := data.State.Location()
 
 		// Look up current room
-		roomKey := string(zoneId) + "-" + string(roomId)
-		currentRoom := f.world.Rooms().Get(roomKey)
+		currentRoom := f.world.Rooms().Get(string(roomId))
 		if currentRoom == nil {
 			return NewUserError("You are in an invalid location.")
 		}
@@ -63,43 +62,24 @@ func (f *MoveHandlerFactory) Create(config map[string]any) (CommandFunc, error) 
 		if exit.ZoneId == "" {
 			destZone = zoneId
 		}
-		destRoom := storage.Identifier(exit.RoomId)
+		destRoomId := storage.Identifier(exit.RoomId)
 
 		// Verify destination room exists
-		destRoomKey := string(destZone) + "-" + string(destRoom)
-		newRoom := f.world.Rooms().Get(destRoomKey)
+		newRoom := f.world.Rooms().Get(string(destRoomId))
 		if newRoom == nil {
 			return NewUserError("That exit leads nowhere.")
 		}
 
 		// Move the player (updates location and subscriptions)
-		data.State.Move(destZone, destRoom)
+		data.State.Move(destZone, destRoomId)
 
 		// Send room description to player
-		playerChannel := fmt.Sprintf("player-%s", strings.ToLower(data.Actor.Name()))
-		roomDesc := formatRoomDescription(newRoom)
+		playerChannel := fmt.Sprintf("player-%s", strings.ToLower(data.Actor.Name))
+		roomDesc := FormatFullRoomDescription(f.world, newRoom, destZone, destRoomId, data.Actor.Name)
 		if f.pub != nil {
 			_ = f.pub.Publish(playerChannel, []byte(roomDesc))
 		}
 
 		return nil
 	}, nil
-}
-
-func formatRoomDescription(room *game.Room) string {
-	exitList := formatExits(room.Exits)
-	return fmt.Sprintf("%s\n%s\n%s", room.Name, room.Description, exitList)
-}
-
-func formatExits(exits map[string]game.Exit) string {
-	var dirs []string
-	if len(exits) == 0 {
-		return "[Exits: none]"
-	} else {
-	dirs = make([]string, 0, len(exits))
-	}
-	for dir := range exits {
-		dirs = append(dirs, dir)
-	}
-	return fmt.Sprintf("[Exits: %s]", strings.Join(dirs, ", "))
 }

@@ -9,16 +9,16 @@ const (
 	DefaultTickLength = time.Second * 2
 )
 
-type TickHandler interface {
+type Ticker interface {
 	Tick(context.Context) error
 }
 
 type MudDriver struct {
 	tickLength time.Duration
-	handlers   []TickHandler
+	handlers   []Ticker
 }
 
-func NewMudDriver(h []TickHandler, opts ...MudDriverOpt) *MudDriver {
+func NewMudDriver(h []Ticker, opts ...MudDriverOpt) *MudDriver {
 	d := &MudDriver{
 		tickLength: DefaultTickLength,
 		handlers:   h,

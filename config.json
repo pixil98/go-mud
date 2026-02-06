@@ -36,6 +36,6 @@
     },
     "player_manager": {
         "default_zone": "millbrook",
-        "default_room": "square"
+        "default_room": "millbrook-square"
     }
 }

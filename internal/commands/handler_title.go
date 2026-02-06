@@ -36,7 +36,7 @@ func (f *TitleHandlerFactory) Create(config map[string]any) (CommandFunc, error)
 			output = fmt.Sprintf("Title set to: %s", title)
 		}
 
-		playerChannel := fmt.Sprintf("player-%s", strings.ToLower(data.Actor.Name()))
+		playerChannel := fmt.Sprintf("player-%s", strings.ToLower(data.Actor.Name))
 		if f.pub != nil {
 			_ = f.pub.Publish(playerChannel, []byte(output))
 		}

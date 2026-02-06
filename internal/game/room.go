@@ -17,11 +17,12 @@ type Room struct {
 	Name        string          `json:"name"`
 	Description string          `json:"description"`
 	ZoneId      string          `json:"zone_id"`
-	Exits       map[string]Exit `json:"exits"`             // direction -> destination
-	Spawns      []string        `json:"spawns,omitempty"`  // mobile IDs to spawn; list duplicates for multiple
+	Exits       map[string]Exit `json:"exits"`            // direction -> destination
+	Spawns      []string        `json:"spawns,omitempty"` // mobile IDs to spawn; list duplicates for multiple
 }
 
 // ValidDirections defines the allowed exit directions.
+// TODO maybe we don't want to validate directions since the commands come from json
 var ValidDirections = map[string]bool{
 	"north": true,
 	"south": true,

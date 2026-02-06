@@ -45,11 +45,11 @@ func (f *WhoHandlerFactory) Create(config map[string]any) (CommandFunc, error) {
 			}
 			bracket := strings.Join(parts, " ")
 
-			lines = append(lines, fmt.Sprintf("[%s] %s %s", bracket, char.Name(), char.Title))
+			lines = append(lines, fmt.Sprintf("[%s] %s %s", bracket, char.Name, char.Title))
 		})
 
 		output := "Players Online:\n" + strings.Join(lines, "\n")
-		playerChannel := fmt.Sprintf("player-%s", strings.ToLower(data.Actor.Name()))
+		playerChannel := fmt.Sprintf("player-%s", strings.ToLower(data.Actor.Name))
 		if f.pub != nil {
 			_ = f.pub.Publish(playerChannel, []byte(output))
 		}

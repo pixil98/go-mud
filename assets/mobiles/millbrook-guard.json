@@ -3,6 +3,9 @@
     "id": "millbrook-guard",
     "spec": {
         "name": "Town Guard",
-        "description": "A burly guard in chain mail keeps watch over the square."
+        "aliases": ["guard", "town"],
+        "short_desc": "the town guard",
+        "long_desc": "A burly town guard in chain mail stands here, watching the square.",
+        "detailed_desc": "This guard is a tall, broad-shouldered man wearing well-maintained chain mail over a leather jerkin. A short sword hangs at his hip, and his watchful eyes scan the square for any signs of trouble. The insignia of Millbrook is emblazoned on his tabard."
     }
 }
