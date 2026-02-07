@@ -67,12 +67,13 @@ func (f *MoveHandlerFactory) Create(config map[string]any) (CommandFunc, error) 
 		// Verify destination room exists
 		newRoom := f.world.Rooms().Get(string(destRoomId))
 		if newRoom == nil {
-			return NewUserError("That exit leads nowhere.")
+			return NewUserError("Alas, you cannot go that way...")
 		}
 
 		// Move the player (updates location and subscriptions)
 		data.State.Move(destZone, destRoomId)
 
+		// TODO: we should reuse the look command
 		// Send room description to player
 		playerChannel := fmt.Sprintf("player-%s", strings.ToLower(data.Actor.Name))
 		roomDesc := FormatFullRoomDescription(f.world, newRoom, destZone, destRoomId, data.Actor.Name)
