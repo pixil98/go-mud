@@ -10,14 +10,14 @@ import (
 
 func TestResolver_ResolvePlayer(t *testing.T) {
 	tests := map[string]struct {
-		chars          map[string]*game.Character
-		onlinePlayers  map[string]struct{ zone, room storage.Identifier }
-		actorZone      storage.Identifier
-		actorRoom      storage.Identifier
-		name           string
-		scope          Scope
-		expPlayerName  string
-		expErr         string
+		chars         map[string]*game.Character
+		onlinePlayers map[string]struct{ zone, room storage.Identifier }
+		actorZone     storage.Identifier
+		actorRoom     storage.Identifier
+		name          string
+		scope         Scope
+		expPlayerName string
+		expErr        string
 	}{
 		"world scope finds any player": {
 			chars: map[string]*game.Character{
@@ -56,7 +56,7 @@ func TestResolver_ResolvePlayer(t *testing.T) {
 			actorRoom: "my-room",
 			name:      "bob",
 			scope:     ScopeZone,
-			expErr:    "Player 'bob' not found",
+			expErr:    `Player "bob" not found.`,
 		},
 		"room scope finds player in same room": {
 			chars: map[string]*game.Character{
@@ -82,7 +82,7 @@ func TestResolver_ResolvePlayer(t *testing.T) {
 			actorRoom: "my-room",
 			name:      "bob",
 			scope:     ScopeRoom,
-			expErr:    "Player 'bob' not found",
+			expErr:    `Player "bob" not found.`,
 		},
 		"combined scope room or zone finds in zone": {
 			chars: map[string]*game.Character{
@@ -117,7 +117,7 @@ func TestResolver_ResolvePlayer(t *testing.T) {
 			actorRoom:     "my-room",
 			name:          "nobody",
 			scope:         ScopeWorld,
-			expErr:        "Player 'nobody' not found",
+			expErr:        `Player "nobody" not found.`,
 		},
 		"player offline": {
 			chars: map[string]*game.Character{
@@ -128,7 +128,7 @@ func TestResolver_ResolvePlayer(t *testing.T) {
 			actorRoom:     "my-room",
 			name:          "bob",
 			scope:         ScopeWorld,
-			expErr:        "Player 'bob' not found",
+			expErr:        `Player "bob" not found.`,
 		},
 	}
 
@@ -177,15 +177,15 @@ func TestResolver_ResolvePlayer(t *testing.T) {
 
 func TestResolver_ResolveMob(t *testing.T) {
 	tests := map[string]struct {
-		mobiles       map[string]*game.Mobile
-		rooms         map[string]*game.Room
-		spawnedMobs   []struct{ mobileId, zoneId, roomId string }
-		actorZone     storage.Identifier
-		actorRoom     storage.Identifier
-		name          string
-		scope         Scope
-		expMobName    string
-		expErr        string
+		mobiles     map[string]*game.Mobile
+		rooms       map[string]*game.Room
+		spawnedMobs []struct{ mobileId, zoneId, roomId string }
+		actorZone   storage.Identifier
+		actorRoom   storage.Identifier
+		name        string
+		scope       Scope
+		expMobName  string
+		expErr      string
 	}{
 		"room scope finds mob in same room": {
 			mobiles: map[string]*game.Mobile{
@@ -250,7 +250,7 @@ func TestResolver_ResolveMob(t *testing.T) {
 			actorRoom: "my-room",
 			name:      "guard",
 			scope:     ScopeRoom,
-			expErr:    "Mob 'guard' not found",
+			expErr:    `Mobile "guard" not found.`,
 		},
 		"zone scope finds mob in different room same zone": {
 			mobiles: map[string]*game.Mobile{
@@ -284,7 +284,7 @@ func TestResolver_ResolveMob(t *testing.T) {
 			actorRoom: "my-room",
 			name:      "guard",
 			scope:     ScopeZone,
-			expErr:    "Mob 'guard' not found",
+			expErr:    `Mobile "guard" not found.`,
 		},
 		"world scope finds mob anywhere": {
 			mobiles: map[string]*game.Mobile{
@@ -310,7 +310,7 @@ func TestResolver_ResolveMob(t *testing.T) {
 			actorRoom: "my-room",
 			name:      "nobody",
 			scope:     ScopeRoom,
-			expErr:    "Mob 'nobody' not found",
+			expErr:    `Mobile "nobody" not found.`,
 		},
 	}
 
@@ -446,7 +446,7 @@ func TestResolver_ResolveTarget(t *testing.T) {
 			actorRoom:     "my-room",
 			name:          "nobody",
 			scope:         ScopeWorld,
-			expErr:        "Target 'nobody' not found",
+			expErr:        `Target "nobody" not found.`,
 		},
 	}
 

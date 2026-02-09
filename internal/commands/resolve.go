@@ -8,7 +8,6 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
-
 // Resolver resolves target names to game entities.
 // Used by the framework to process $resolve directives.
 type Resolver struct {
@@ -78,7 +77,7 @@ func (r *Resolver) resolvePlayer(charId storage.Identifier, name string, scope S
 		return PlayerRefFrom(targetCharId, char), nil
 	}
 
-	return nil, NewUserError(fmt.Sprintf("Player '%s' not found", name))
+	return nil, NewUserError(fmt.Sprintf("Player %q not found.", name))
 }
 
 // resolveMob resolves a mob by name within the given scope.
@@ -139,7 +138,7 @@ func (r *Resolver) resolveMob(charId storage.Identifier, name string, scope Scop
 		}
 	}
 
-	return nil, NewUserError(fmt.Sprintf("Mob '%s' not found", name))
+	return nil, NewUserError(fmt.Sprintf("Mobile %q not found.", name))
 }
 
 // resolveObject resolves an object by name within the given scope.
@@ -212,7 +211,7 @@ func (r *Resolver) resolveObject(charId storage.Identifier, name string, scope S
 		}
 	}
 
-	return nil, NewUserError(fmt.Sprintf("Object '%s' not found", name))
+	return nil, NewUserError(fmt.Sprintf("Object %q not found.", name))
 }
 
 // resolveTarget tries to resolve as player, then mobile, then object.
@@ -244,5 +243,5 @@ func (r *Resolver) resolveTarget(charId storage.Identifier, name string, scope S
 		}, nil
 	}
 
-	return nil, NewUserError(fmt.Sprintf("Target '%s' not found", name))
+	return nil, NewUserError(fmt.Sprintf("Target %q not found.", name))
 }

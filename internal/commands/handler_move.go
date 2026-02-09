@@ -81,7 +81,6 @@ func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 		// Move the player (updates location and subscriptions)
 		cmdCtx.Session.Move(destZone, destRoomId)
 
-		// TODO: we should reuse the look command
 		// Send room description to player
 		playerChannel := fmt.Sprintf("player-%s", strings.ToLower(cmdCtx.Actor.Name))
 		roomDesc := FormatFullRoomDescription(f.world, newRoom, destZone, destRoomId, cmdCtx.Actor.Name)

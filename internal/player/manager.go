@@ -3,6 +3,7 @@ package player
 import (
 	"fmt"
 	"io"
+	"log/slog"
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/commands"
@@ -65,9 +66,11 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
 		msgs:       make(chan []byte, 100),
 	}
 
+	// Determine starting location: use saved location if valid, otherwise defaults
+	startZone, startRoom := m.startingLocation(char)
+
 	// Register player in world state
-	// TODO: Get starting zone/room from saved character data instead of config defaults
-	err = m.world.AddPlayer(charId, p.msgs, m.defaultZone, m.defaultRoom)
+	err = m.world.AddPlayer(charId, p.msgs, startZone, startRoom)
 	if err != nil {
 		return nil, fmt.Errorf("registering player in world: %w", err)
 	}
@@ -88,18 +91,45 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
 	}
 
 	// Subscribe to zone channel
-	err = p.world.GetPlayer(charId).Subscribe(fmt.Sprintf("zone-%s", m.defaultZone))
+	err = p.world.GetPlayer(charId).Subscribe(fmt.Sprintf("zone-%s", startZone))
 	if err != nil {
 		_ = m.world.RemovePlayer(charId)
 		return nil, fmt.Errorf("subscribing to zone channel: %w", err)
 	}
 
 	// Subscribe to room channel
-	err = p.world.GetPlayer(charId).Subscribe(fmt.Sprintf("zone-%s-room-%s", m.defaultZone, m.defaultRoom))
+	err = p.world.GetPlayer(charId).Subscribe(fmt.Sprintf("zone-%s-room-%s", startZone, startRoom))
 	if err != nil {
 		_ = m.world.RemovePlayer(charId)
 		return nil, fmt.Errorf("subscribing to room channel: %w", err)
 	}
 
 	return p, nil
+}
+
+// startingLocation returns the zone and room a character should start in.
+// Uses saved location if the zone and room are still valid, otherwise falls back to defaults.
+func (m *PlayerManager) startingLocation(char *game.Character) (storage.Identifier, storage.Identifier) {
+	if char.LastZone == "" || char.LastRoom == "" {
+		return m.defaultZone, m.defaultRoom
+	}
+
+	// Verify zone exists
+	if m.world.Zones().Get(string(char.LastZone)) == nil {
+		slog.Warn("saved zone not found, using default", "char", char.Name, "zone", char.LastZone)
+		return m.defaultZone, m.defaultRoom
+	}
+
+	// Verify room exists and is in the saved zone
+	room := m.world.Rooms().Get(string(char.LastRoom))
+	if room == nil {
+		slog.Warn("saved room not found, using default", "char", char.Name, "room", char.LastRoom)
+		return m.defaultZone, m.defaultRoom
+	}
+	if room.ZoneId != string(char.LastZone) {
+		slog.Warn("saved room not in saved zone, using default", "char", char.Name, "zone", char.LastZone, "room", char.LastRoom, "room_zone", room.ZoneId)
+		return m.defaultZone, m.defaultRoom
+	}
+
+	return char.LastZone, char.LastRoom
 }

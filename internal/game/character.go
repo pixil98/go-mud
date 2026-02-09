@@ -20,6 +20,10 @@ type Character struct {
 	// Inventory holds items carried by this character
 	Inventory *Inventory `json:"inventory,omitempty"`
 
+	// Last known location, saved on quit/save for restoring on login
+	LastZone storage.Identifier `json:"last_zone,omitempty"`
+	LastRoom storage.Identifier `json:"last_room,omitempty"`
+
 	// ExtensionState holds plugin-specific data for this character
 	storage.ExtensionState `json:"ext,omitempty"`
 }

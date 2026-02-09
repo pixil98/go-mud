@@ -35,12 +35,12 @@ func TestHandler_parseValue(t *testing.T) {
 		"number type invalid": {
 			inputType: InputTypeNumber,
 			raw:       "abc",
-			expErr:    `"abc" is not a valid number`,
+			expErr:    `"abc" is not a valid number.`,
 		},
 		"number type float rejected": {
 			inputType: InputTypeNumber,
 			raw:       "3.14",
-			expErr:    `"3.14" is not a valid number`,
+			expErr:    `"3.14" is not a valid number.`,
 		},
 		"unknown type": {
 			inputType: InputType("bogus"),
@@ -93,14 +93,14 @@ func TestHandler_parseInputs(t *testing.T) {
 		"no inputs with args rejected": {
 			specs:   nil,
 			rawArgs: []string{"extra"},
-			expErr:  "Expected at most 0 argument(s), got 1",
+			expErr:  "Expected at most 0 argument(s), got 1.",
 		},
 		"required input missing": {
 			specs: []InputSpec{
 				{Name: "count", Type: InputTypeNumber, Required: true},
 			},
 			rawArgs: nil,
-			expErr:  "Expected at least 1 argument(s), got 0",
+			expErr:  "Expected at least 1 argument(s), got 0.",
 		},
 		"required input provided": {
 			specs: []InputSpec{
@@ -172,14 +172,14 @@ func TestHandler_parseInputs(t *testing.T) {
 				{Name: "count", Type: InputTypeNumber, Required: true},
 			},
 			rawArgs: []string{"5", "extra", "args"},
-			expErr:  "Expected at most 1 argument(s), got 3",
+			expErr:  "Expected at most 1 argument(s), got 3.",
 		},
 		"number parse error": {
 			specs: []InputSpec{
 				{Name: "count", Type: InputTypeNumber, Required: true},
 			},
 			rawArgs: []string{"notanumber"},
-			expErr:  `"notanumber" is not a valid number`,
+			expErr:  `"notanumber" is not a valid number.`,
 		},
 	}
 
@@ -356,7 +356,7 @@ func TestHandler_resolveTargets(t *testing.T) {
 				{Name: "target", Type: "player", Scopes: []string{"world"}, Input: "target"},
 			},
 			inputs: map[string]any{},
-			expErr: "Missing required input: target",
+			expErr: `Input "target" is required.`,
 		},
 		"player not found": {
 			chars:         map[string]*game.Character{},
@@ -369,7 +369,7 @@ func TestHandler_resolveTargets(t *testing.T) {
 			inputs: map[string]any{
 				"target": "nobody",
 			},
-			expErr: "Player 'nobody' not found",
+			expErr: `Player "nobody" not found.`,
 		},
 	}
 

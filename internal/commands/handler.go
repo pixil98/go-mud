@@ -89,7 +89,8 @@ func NewHandler(c storage.Storer[*Command], publisher Publisher, world *game.Wor
 
 	// Register built-in handlers
 	h.RegisterFactory("message", NewMessageHandlerFactory(publisher))
-	h.RegisterFactory("quit", &QuitHandlerFactory{})
+	h.RegisterFactory("quit", NewQuitHandlerFactory(world))
+	h.RegisterFactory("save", NewSaveHandlerFactory(world, publisher))
 	h.RegisterFactory("move", NewMoveHandlerFactory(world, publisher))
 	h.RegisterFactory("look", NewLookHandlerFactory(world, publisher))
 	h.RegisterFactory("who", NewWhoHandlerFactory(world, publisher, charInfo))
@@ -219,7 +220,7 @@ func (h *Handler) validateSpec(cmd *Command, spec *HandlerSpec) error {
 func (h *Handler) Exec(ctx context.Context, world *game.WorldState, charId storage.Identifier, cmdName string, rawArgs ...string) error {
 	compiled, ok := h.compiled[storage.Identifier(strings.ToLower(cmdName))]
 	if !ok {
-		return NewUserError(fmt.Sprintf("Unknown command: %s", cmdName))
+		return NewUserError(fmt.Sprintf("Command %q is unknown.", cmdName))
 	}
 
 	// Parse inputs
@@ -271,13 +272,13 @@ func (h *Handler) parseInputs(specs []InputSpec, rawArgs []string) ([]ParsedInpu
 	}
 
 	if len(rawArgs) < requiredCount {
-		return nil, NewUserError(fmt.Sprintf("Expected at least %d argument(s), got %d", requiredCount, len(rawArgs)))
+		return nil, NewUserError(fmt.Sprintf("Expected at least %d argument(s), got %d.", requiredCount, len(rawArgs)))
 	}
 
 	// If no rest input, check we don't have too many args
 	hasRest := len(specs) > 0 && specs[len(specs)-1].Rest
 	if !hasRest && len(rawArgs) > len(specs) {
-		return nil, NewUserError(fmt.Sprintf("Expected at most %d argument(s), got %d", len(specs), len(rawArgs)))
+		return nil, NewUserError(fmt.Sprintf("Expected at most %d argument(s), got %d.", len(specs), len(rawArgs)))
 	}
 
 	inputs := make([]ParsedInput, 0, len(specs))
@@ -289,7 +290,7 @@ func (h *Handler) parseInputs(specs []InputSpec, rawArgs []string) ([]ParsedInpu
 		if argIndex >= len(rawArgs) {
 			// No more input - this input must be optional
 			if spec.Required {
-				return nil, NewUserError(fmt.Sprintf("Missing required parameter: %s", spec.Name))
+				return nil, NewUserError(fmt.Sprintf("Parameter %q is required.", spec.Name))
 			}
 			continue
 		}
@@ -328,7 +329,7 @@ func (h *Handler) parseValue(inputType InputType, raw string) (any, error) {
 	case InputTypeNumber:
 		n, err := strconv.Atoi(raw)
 		if err != nil {
-			return nil, NewUserError(fmt.Sprintf("%q is not a valid number", raw))
+			return nil, NewUserError(fmt.Sprintf("%q is not a valid number.", raw))
 		}
 		return n, nil
 
@@ -354,7 +355,7 @@ func (h *Handler) resolveTargets(specs []TargetSpec, inputs map[string]any, char
 				targets[spec.Name] = nil
 				continue
 			}
-			return nil, NewUserError(fmt.Sprintf("Missing required input: %s", spec.Input))
+			return nil, NewUserError(fmt.Sprintf("Input %q is required.", spec.Input))
 		}
 
 		name, ok := inputValue.(string)

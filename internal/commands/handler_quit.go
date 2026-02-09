@@ -1,9 +1,20 @@
 package commands
 
-import "context"
+import (
+	"context"
+	"fmt"
 
-// QuitHandlerFactory creates handlers that signal the player wants to quit.
-type QuitHandlerFactory struct{}
+	"github.com/pixil98/go-mud/internal/game"
+)
+
+// QuitHandlerFactory creates handlers that save and quit.
+type QuitHandlerFactory struct {
+	world *game.WorldState
+}
+
+func NewQuitHandlerFactory(world *game.WorldState) *QuitHandlerFactory {
+	return &QuitHandlerFactory{world: world}
+}
 
 func (f *QuitHandlerFactory) Spec() *HandlerSpec {
 	return nil
@@ -15,6 +26,10 @@ func (f *QuitHandlerFactory) ValidateConfig(config map[string]any) error {
 
 func (f *QuitHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, cmdCtx *CommandContext) error {
+		if err := saveCharacter(f.world, cmdCtx); err != nil {
+			return fmt.Errorf("saving character on quit: %w", err)
+		}
+
 		if cmdCtx.Session != nil {
 			cmdCtx.Session.Quit = true
 		}
