@@ -3,9 +3,9 @@
     "id": "up",
     "spec": {
         "handler": "move",
-        "params": [],
         "config": {
             "direction": "up"
-        }
+        },
+        "inputs": []
     }
 }

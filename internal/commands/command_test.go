@@ -13,55 +13,64 @@ func TestCommand_Validate(t *testing.T) {
 			cmd:    Command{},
 			expErr: "command handler not set",
 		},
-		"valid command with no params": {
+		"valid command with no inputs": {
 			cmd: Command{
 				Handler: "quit",
 			},
 			expErr: "",
 		},
-		"valid command with params": {
+		"valid command with inputs": {
 			cmd: Command{
 				Handler: "say",
-				Params: []ParamSpec{
-					{Name: "text", Type: ParamTypeString, Required: true},
+				Inputs: []InputSpec{
+					{Name: "text", Type: InputTypeString, Required: true},
 				},
 			},
 			expErr: "",
 		},
-		"param missing name": {
+		"input missing name": {
 			cmd: Command{
 				Handler: "test",
-				Params: []ParamSpec{
-					{Type: ParamTypeString},
+				Inputs: []InputSpec{
+					{Type: InputTypeString},
 				},
 			},
-			expErr: "param 0: name is required",
+			expErr: "input 0: name is required",
 		},
-		"param missing type": {
+		"input missing type": {
 			cmd: Command{
 				Handler: "test",
-				Params: []ParamSpec{
+				Inputs: []InputSpec{
 					{Name: "foo"},
 				},
 			},
-			expErr: `param "foo": type is required`,
+			expErr: `input "foo": type is required`,
 		},
-		"rest param not last": {
+		"input unknown type": {
 			cmd: Command{
 				Handler: "test",
-				Params: []ParamSpec{
-					{Name: "first", Type: ParamTypeString, Rest: true},
-					{Name: "second", Type: ParamTypeString},
+				Inputs: []InputSpec{
+					{Name: "foo", Type: "bogus"},
 				},
 			},
-			expErr: `param "first": only the last parameter can have rest=true`,
+			expErr: `input "foo": unknown type "bogus"`,
 		},
-		"rest param at end is valid": {
+		"rest input not last": {
+			cmd: Command{
+				Handler: "test",
+				Inputs: []InputSpec{
+					{Name: "first", Type: InputTypeString, Rest: true},
+					{Name: "second", Type: InputTypeString},
+				},
+			},
+			expErr: `input "first": only the last input can have rest=true`,
+		},
+		"rest input at end is valid": {
 			cmd: Command{
 				Handler: "say",
-				Params: []ParamSpec{
-					{Name: "target", Type: ParamTypePlayer, Required: true},
-					{Name: "text", Type: ParamTypeString, Required: true, Rest: true},
+				Inputs: []InputSpec{
+					{Name: "target", Type: InputTypeString, Required: true},
+					{Name: "text", Type: InputTypeString, Required: true, Rest: true},
 				},
 			},
 			expErr: "",

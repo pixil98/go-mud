@@ -3,83 +3,18 @@ package commands
 import (
 	"bytes"
 	"fmt"
+	"strings"
 	"text/template"
 
 	"github.com/Masterminds/sprig/v3"
-	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // templateFuncs provides utility functions for templates.
 var templateFuncs = sprig.TxtFuncMap()
 
-// TemplateData is the root data structure passed to templates.
-type TemplateData struct {
-	Actor *game.Character
-	State *game.PlayerState
-	Args  map[string]any
-}
-
-// NewTemplateData creates a TemplateData from world state and parsed arguments.
-// It resolves target-type parameters to their full game entities.
-func NewTemplateData(world *game.WorldState, charId storage.Identifier, args []ParsedArg) (*TemplateData, error) {
-	resolver := &DefaultTargetResolver{}
-
-	argsMap := make(map[string]any, len(args))
-	for _, arg := range args {
-		value, err := resolveArgValue(resolver, world, arg)
-		if err != nil {
-			return nil, err
-		}
-		argsMap[arg.Spec.Name] = value
-	}
-
-	return &TemplateData{
-		Actor: world.Characters().Get(string(charId)),
-		State: world.GetPlayer(charId),
-		Args:  argsMap,
-	}, nil
-}
-
-// resolveArgValue resolves a ParsedArg to its final value.
-// For target types, this involves looking up game entities.
-func resolveArgValue(resolver TargetResolver, world *game.WorldState, arg ParsedArg) (any, error) {
-	switch arg.Spec.Type {
-	case ParamTypePlayer:
-		raw, ok := arg.Value.(string)
-		if !ok {
-			return nil, fmt.Errorf("expected string for player parameter, got %T", arg.Value)
-		}
-		return resolver.ResolvePlayer(world, raw)
-
-	case ParamTypeMob:
-		raw, ok := arg.Value.(string)
-		if !ok {
-			return nil, fmt.Errorf("expected string for mob parameter, got %T", arg.Value)
-		}
-		return resolver.ResolveMob(world, raw)
-
-	case ParamTypeItem:
-		raw, ok := arg.Value.(string)
-		if !ok {
-			return nil, fmt.Errorf("expected string for item parameter, got %T", arg.Value)
-		}
-		return resolver.ResolveItem(world, raw)
-
-	case ParamTypeTarget:
-		raw, ok := arg.Value.(string)
-		if !ok {
-			return nil, fmt.Errorf("expected string for target parameter, got %T", arg.Value)
-		}
-		return resolver.ResolveTarget(world, raw)
-
-	default:
-		return arg.Value, nil
-	}
-}
-
 // ExpandTemplate expands a template string using the provided data.
-func ExpandTemplate(tmplStr string, data *TemplateData) (string, error) {
+// The data can be any struct - templates access fields via {{ .FieldName }}.
+func ExpandTemplate(tmplStr string, data any) (string, error) {
 	tmpl, err := template.New("").Funcs(templateFuncs).Parse(tmplStr)
 	if err != nil {
 		return "", fmt.Errorf("parsing template: %w", err)
@@ -87,6 +22,28 @@ func ExpandTemplate(tmplStr string, data *TemplateData) (string, error) {
 
 	var buf bytes.Buffer
 	err = tmpl.Execute(&buf, data)
+	if err != nil {
+		return "", fmt.Errorf("executing template: %w", err)
+	}
+
+	return buf.String(), nil
+}
+
+// expandInputTemplate expands a template string using InputContext (Pass 1).
+// This substitutes input values into config strings before handler execution.
+func expandInputTemplate(tmplStr string, ctx *InputContext) (string, error) {
+	// Quick check: if no template markers, return as-is
+	if !strings.Contains(tmplStr, "{{") {
+		return tmplStr, nil
+	}
+
+	tmpl, err := template.New("").Funcs(templateFuncs).Parse(tmplStr)
+	if err != nil {
+		return "", fmt.Errorf("parsing template: %w", err)
+	}
+
+	var buf bytes.Buffer
+	err = tmpl.Execute(&buf, ctx)
 	if err != nil {
 		return "", fmt.Errorf("executing template: %w", err)
 	}

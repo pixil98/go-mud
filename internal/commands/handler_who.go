@@ -26,8 +26,8 @@ func (f *WhoHandlerFactory) ValidateConfig(config map[string]any) error {
 	return nil
 }
 
-func (f *WhoHandlerFactory) Create(config map[string]any) (CommandFunc, error) {
-	return func(ctx context.Context, data *TemplateData) error {
+func (f *WhoHandlerFactory) Create() (CommandFunc, error) {
+	return func(ctx context.Context, cmdCtx *CommandContext) error {
 		var lines []string
 
 		f.world.ForEachPlayer(func(charId storage.Identifier, state game.PlayerState) {
@@ -49,7 +49,7 @@ func (f *WhoHandlerFactory) Create(config map[string]any) (CommandFunc, error) {
 		})
 
 		output := "Players Online:\n" + strings.Join(lines, "\n")
-		playerChannel := fmt.Sprintf("player-%s", strings.ToLower(data.Actor.Name))
+		playerChannel := fmt.Sprintf("player-%s", strings.ToLower(cmdCtx.Actor.Name))
 		if f.pub != nil {
 			_ = f.pub.Publish(playerChannel, []byte(output))
 		}

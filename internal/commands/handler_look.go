@@ -3,6 +3,7 @@ package commands
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/game"
@@ -25,30 +26,61 @@ func (f *LookHandlerFactory) ValidateConfig(config map[string]any) error {
 	return nil
 }
 
-func (f *LookHandlerFactory) Create(config map[string]any) (CommandFunc, error) {
-	return func(ctx context.Context, data *TemplateData) error {
-		if data.State == nil {
+func (f *LookHandlerFactory) Create() (CommandFunc, error) {
+	return func(ctx context.Context, cmdCtx *CommandContext) error {
+		if cmdCtx.Session == nil {
 			return fmt.Errorf("player state not found")
 		}
 
-		zoneId, roomId := data.State.Location()
-
-		// Look up current room
-		room := f.world.Rooms().Get(string(roomId))
-		if room == nil {
-			return NewUserError("You are in an invalid location.")
+		// Check if target was resolved (from $resolve directive in config)
+		target := cmdCtx.Config["target"]
+		if target != nil {
+			return f.showTarget(cmdCtx, target)
 		}
 
-		// TODO: Add helper functions for channel naming schemes (player-X, zone-X, zone-X-room-Y)
-		// to avoid recreating the naming patterns everywhere
-		playerChannel := fmt.Sprintf("player-%s", strings.ToLower(data.Actor.Name))
-		roomDesc := FormatFullRoomDescription(f.world, room, zoneId, roomId, data.Actor.Name)
-		if f.pub != nil {
-			_ = f.pub.Publish(playerChannel, []byte(roomDesc))
-		}
-
-		return nil
+		return f.showRoom(cmdCtx)
 	}, nil
+}
+
+// showRoom displays the current room description.
+func (f *LookHandlerFactory) showRoom(cmdCtx *CommandContext) error {
+	zoneId, roomId := cmdCtx.Session.Location()
+
+	room := f.world.Rooms().Get(string(roomId))
+	if room == nil {
+		return NewUserError("You are in an invalid location.")
+	}
+
+	playerChannel := fmt.Sprintf("player-%s", strings.ToLower(cmdCtx.Actor.Name))
+	roomDesc := FormatFullRoomDescription(f.world, room, zoneId, roomId, cmdCtx.Actor.Name)
+	if f.pub != nil {
+		_ = f.pub.Publish(playerChannel, []byte(roomDesc))
+	}
+
+	return nil
+}
+
+// showTarget displays information about a specific target.
+func (f *LookHandlerFactory) showTarget(cmdCtx *CommandContext, target any) error {
+	playerChannel := fmt.Sprintf("player-%s", strings.ToLower(cmdCtx.Actor.Name))
+
+	switch t := target.(type) {
+	case *TargetRef:
+		// TODO: Implement detailed target descriptions
+		msg := fmt.Sprintf("You look at %s.", t.Name)
+		if f.pub != nil {
+			_ = f.pub.Publish(playerChannel, []byte(msg))
+		}
+	case *PlayerRef:
+		msg := fmt.Sprintf("You look at %s.", t.Name)
+		if f.pub != nil {
+			_ = f.pub.Publish(playerChannel, []byte(msg))
+		}
+	default:
+		return NewUserError("You can't look at that.")
+	}
+
+	return nil
 }
 
 // FormatFullRoomDescription builds a complete room description including mobs and players.
@@ -113,5 +145,6 @@ func formatExits(exits map[string]game.Exit) string {
 	for dir := range exits {
 		dirs = append(dirs, dir)
 	}
+	sort.Strings(dirs)
 	return fmt.Sprintf("[Exits: %s]", strings.Join(dirs, ", "))
 }

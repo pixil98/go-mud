@@ -11,16 +11,25 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
-// ParsedArg represents a validated and parsed command argument.
-type ParsedArg struct {
-	Spec  *ParamSpec
+// ParsedInput represents a validated and parsed command input.
+type ParsedInput struct {
+	Spec  *InputSpec
 	Raw   string // Original player input
-	Value any    // Parsed value: int for number, string for string/direction, etc.
+	Value any    // Parsed value: int for number, string for string/direction
+}
+
+// CommandContext is what handlers receive after config processing.
+type CommandContext struct {
+	Actor   *game.Character   // Character data (name, title, etc.)
+	Session *game.PlayerState // Current session state (location, quit flag, etc.)
+	World   *game.WorldState
+	Config  map[string]any // Config with $resolve directives processed
+	Inputs  map[string]any // Parsed input values keyed by name
 }
 
 // CommandFunc is the signature for compiled command functions.
-// It receives template data containing player state and parsed arguments.
-type CommandFunc func(ctx context.Context, data *TemplateData) error
+// It receives CommandContext with fully expanded config.
+type CommandFunc func(ctx context.Context, cmdCtx *CommandContext) error
 
 // HandlerFactory creates CommandFuncs from command configurations.
 // Implementations should expose their expected config structure.
@@ -28,8 +37,8 @@ type CommandFunc func(ctx context.Context, data *TemplateData) error
 type HandlerFactory interface {
 	// ValidateConfig validates that the config contains required fields.
 	ValidateConfig(config map[string]any) error
-	// Create creates a CommandFunc from the validated config.
-	Create(config map[string]any) (CommandFunc, error)
+	// Create creates a CommandFunc. Handlers read expanded config from CommandContext.
+	Create() (CommandFunc, error)
 }
 
 // compiledCommand holds a command that's been validated and compiled.
@@ -99,7 +108,7 @@ func (h *Handler) compile(id storage.Identifier, cmd *Command) error {
 		return fmt.Errorf("validating config: %w", err)
 	}
 
-	cmdFunc, err := factory.Create(cmd.Config)
+	cmdFunc, err := factory.Create()
 	if err != nil {
 		return fmt.Errorf("creating handler: %w", err)
 	}
@@ -118,25 +127,50 @@ func (h *Handler) Exec(ctx context.Context, world *game.WorldState, charId stora
 		return NewUserError(fmt.Sprintf("Unknown command: %s", cmdName))
 	}
 
-	// Validate and parse arguments
-	args, err := h.parseArgs(compiled.cmd.Params, rawArgs)
+	// Validate and parse inputs
+	inputs, err := h.parseInputs(compiled.cmd.Inputs, rawArgs)
 	if err != nil {
 		return err
 	}
 
-	// Build template data from world state and args
-	// This resolves target-type parameters
-	data, err := NewTemplateData(world, charId, args)
+	// Build input map for template expansion
+	inputMap := make(map[string]any, len(inputs))
+	for _, input := range inputs {
+		inputMap[input.Spec.Name] = input.Value
+	}
+
+	// Process $resolve directives in config
+	actor := world.Characters().Get(string(charId))
+	session := world.GetPlayer(charId)
+	resolver := NewResolver(world)
+
+	processedConfig, err := h.expandConfig(compiled.cmd.Config, inputMap, session, resolver)
 	if err != nil {
 		return err
 	}
 
-	return compiled.cmdFunc(ctx, data)
+	// Build context for template expansion
+	cmdCtx := &CommandContext{
+		Actor:   actor,
+		Session: session,
+		World:   world,
+		Config:  processedConfig,
+		Inputs:  inputMap,
+	}
+
+	// Expand all template strings in config
+	expandedConfig, err := h.expandTemplates(processedConfig, cmdCtx)
+	if err != nil {
+		return err
+	}
+	cmdCtx.Config = expandedConfig
+
+	return compiled.cmdFunc(ctx, cmdCtx)
 }
 
-// parseArgs validates raw string arguments against parameter specs.
-func (h *Handler) parseArgs(specs []ParamSpec, rawArgs []string) ([]ParsedArg, error) {
-	// Count required params (rest params only need 1 word minimum)
+// parseInputs validates raw string arguments against input specs.
+func (h *Handler) parseInputs(specs []InputSpec, rawArgs []string) ([]ParsedInput, error) {
+	// Count required inputs
 	requiredCount := 0
 	for _, spec := range specs {
 		if spec.Required {
@@ -148,20 +182,20 @@ func (h *Handler) parseArgs(specs []ParamSpec, rawArgs []string) ([]ParsedArg, e
 		return nil, NewUserError(fmt.Sprintf("Expected at least %d argument(s), got %d", requiredCount, len(rawArgs)))
 	}
 
-	// If no rest param, check we don't have too many args
+	// If no rest input, check we don't have too many args
 	hasRest := len(specs) > 0 && specs[len(specs)-1].Rest
 	if !hasRest && len(rawArgs) > len(specs) {
 		return nil, NewUserError(fmt.Sprintf("Expected at most %d argument(s), got %d", len(specs), len(rawArgs)))
 	}
 
-	args := make([]ParsedArg, 0, len(specs))
+	inputs := make([]ParsedInput, 0, len(specs))
 	argIndex := 0
 
 	for i := range specs {
 		spec := &specs[i]
 
 		if argIndex >= len(rawArgs) {
-			// No more input - this param must be optional
+			// No more input - this input must be optional
 			if spec.Required {
 				return nil, NewUserError(fmt.Sprintf("Missing required parameter: %s", spec.Name))
 			}
@@ -183,41 +217,172 @@ func (h *Handler) parseArgs(specs []ParamSpec, rawArgs []string) ([]ParsedArg, e
 			return nil, fmt.Errorf("parameter %q: %w", spec.Name, err)
 		}
 
-		args = append(args, ParsedArg{
+		inputs = append(inputs, ParsedInput{
 			Spec:  spec,
 			Raw:   raw,
 			Value: value,
 		})
 	}
 
-	return args, nil
+	return inputs, nil
 }
 
 // parseValue parses a raw string into the appropriate type.
-// For types that require game state (target, player, mob, item),
-// this returns the raw string. Resolution happens at a higher level.
-func (h *Handler) parseValue(paramType ParamType, raw string) (any, error) {
-	switch paramType {
-	case ParamTypeString:
+func (h *Handler) parseValue(inputType InputType, raw string) (any, error) {
+	switch inputType {
+	case InputTypeString:
 		return raw, nil
 
-	case ParamTypeNumber:
+	case InputTypeNumber:
 		n, err := strconv.Atoi(raw)
 		if err != nil {
 			return nil, NewUserError(fmt.Sprintf("%q is not a valid number", raw))
 		}
 		return n, nil
 
-	case ParamTypeDirection:
+	case InputTypeDirection:
 		// Could validate against known directions here
 		return raw, nil
 
-	case ParamTypeTarget, ParamTypePlayer, ParamTypeMob, ParamTypeItem:
-		// These require game state to resolve. Return raw string for now.
-		// Resolution will happen at a higher level that has access to game state.
-		return raw, nil
+	default:
+		return nil, fmt.Errorf("unknown parameter type %q", inputType)
+	}
+}
+
+// expandConfig processes $resolve directives in config.
+// Strings are passed through unchanged - handlers expand templates themselves.
+func (h *Handler) expandConfig(config map[string]any, inputs map[string]any, actorState *game.PlayerState, resolver *Resolver) (map[string]any, error) {
+	if config == nil {
+		return make(map[string]any), nil
+	}
+
+	expanded := make(map[string]any, len(config))
+
+	for key, value := range config {
+		expandedValue, err := h.expandValue(value, inputs, actorState, resolver)
+		if err != nil {
+			return nil, fmt.Errorf("expanding config key %q: %w", key, err)
+		}
+		expanded[key] = expandedValue
+	}
+
+	return expanded, nil
+}
+
+// expandValue processes a single config value, handling $resolve directives.
+// Strings pass through unchanged - handlers expand templates with full context.
+func (h *Handler) expandValue(value any, inputs map[string]any, actorState *game.PlayerState, resolver *Resolver) (any, error) {
+	switch v := value.(type) {
+	case map[string]any:
+		// Check if this is a $resolve directive
+		if directive, ok := IsResolveDirective(v); ok {
+			return h.processResolveDirective(directive, inputs, actorState, resolver)
+		}
+		// Otherwise recursively process the map
+		expanded := make(map[string]any, len(v))
+		for k, val := range v {
+			expandedVal, err := h.expandValue(val, inputs, actorState, resolver)
+			if err != nil {
+				return nil, err
+			}
+			expanded[k] = expandedVal
+		}
+		return expanded, nil
+
+	case []any:
+		// Recursively process array elements
+		expanded := make([]any, len(v))
+		for i, val := range v {
+			expandedVal, err := h.expandValue(val, inputs, actorState, resolver)
+			if err != nil {
+				return nil, err
+			}
+			expanded[i] = expandedVal
+		}
+		return expanded, nil
 
 	default:
-		return nil, fmt.Errorf("unknown parameter type %q", paramType)
+		// Pass through strings, numbers, bools, nil unchanged
+		return value, nil
+	}
+}
+
+// processResolveDirective handles a $resolve directive, resolving the target.
+func (h *Handler) processResolveDirective(directive *ResolveDirective, inputs map[string]any, actorState *game.PlayerState, resolver *Resolver) (any, error) {
+	// Get the input value to resolve
+	var name string
+	if directive.Input != "" {
+		inputValue, exists := inputs[directive.Input]
+		if !exists || inputValue == nil || inputValue == "" {
+			if directive.Optional {
+				return nil, nil
+			}
+			return nil, NewUserError(fmt.Sprintf("Missing required input: %s", directive.Input))
+		}
+		var ok bool
+		name, ok = inputValue.(string)
+		if !ok {
+			return nil, fmt.Errorf("input %q is not a string", directive.Input)
+		}
+	}
+
+	if name == "" {
+		if directive.Optional {
+			return nil, nil
+		}
+		return nil, NewUserError("No target specified")
+	}
+
+	// Resolve the target
+	return resolver.Resolve(actorState, name, directive.Resolve, directive.Scope)
+}
+
+// expandTemplates recursively expands all template strings in config.
+func (h *Handler) expandTemplates(config map[string]any, cmdCtx *CommandContext) (map[string]any, error) {
+	if config == nil {
+		return make(map[string]any), nil
+	}
+
+	expanded := make(map[string]any, len(config))
+	for key, value := range config {
+		expandedValue, err := h.expandTemplateValue(value, cmdCtx)
+		if err != nil {
+			return nil, fmt.Errorf("expanding template for key %q: %w", key, err)
+		}
+		expanded[key] = expandedValue
+	}
+	return expanded, nil
+}
+
+// expandTemplateValue expands templates in a single value.
+func (h *Handler) expandTemplateValue(value any, cmdCtx *CommandContext) (any, error) {
+	switch v := value.(type) {
+	case string:
+		return ExpandTemplate(v, cmdCtx)
+
+	case map[string]any:
+		expanded := make(map[string]any, len(v))
+		for k, val := range v {
+			expandedVal, err := h.expandTemplateValue(val, cmdCtx)
+			if err != nil {
+				return nil, err
+			}
+			expanded[k] = expandedVal
+		}
+		return expanded, nil
+
+	case []any:
+		expanded := make([]any, len(v))
+		for i, val := range v {
+			expandedVal, err := h.expandTemplateValue(val, cmdCtx)
+			if err != nil {
+				return nil, err
+			}
+			expanded[i] = expandedVal
+		}
+		return expanded, nil
+
+	default:
+		return value, nil
 	}
 }

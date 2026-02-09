@@ -21,17 +21,6 @@ type Room struct {
 	Spawns      []string        `json:"spawns,omitempty"` // mobile IDs to spawn; list duplicates for multiple
 }
 
-// ValidDirections defines the allowed exit directions.
-// TODO maybe we don't want to validate directions since the commands come from json
-var ValidDirections = map[string]bool{
-	"north": true,
-	"south": true,
-	"east":  true,
-	"west":  true,
-	"up":    true,
-	"down":  true,
-}
-
 // Validate satisfies storage.ValidatingSpec.
 // TODO: Add cross-reference validation to ensure:
 // - The room's zone_id references an existing zone
@@ -49,9 +38,6 @@ func (r *Room) Validate() error {
 	}
 
 	for dir, exit := range r.Exits {
-		if !ValidDirections[dir] {
-			el.Add(fmt.Errorf("invalid exit direction: %s", dir))
-		}
 		if exit.RoomId == "" {
 			el.Add(fmt.Errorf("exit %s: room_id is required", dir))
 		}

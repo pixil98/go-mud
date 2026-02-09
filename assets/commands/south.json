@@ -3,9 +3,9 @@
     "id": "south",
     "spec": {
         "handler": "move",
-        "params": [],
         "config": {
             "direction": "south"
-        }
+        },
+        "inputs": []
     }
 }

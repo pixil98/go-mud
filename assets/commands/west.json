@@ -3,9 +3,9 @@
     "id": "west",
     "spec": {
         "handler": "move",
-        "params": [],
         "config": {
             "direction": "west"
-        }
+        },
+        "inputs": []
     }
 }

@@ -98,61 +98,77 @@ func (m *mockMobileStore) Save(id string, mobile *game.Mobile) error {
 func TestExpandTemplate(t *testing.T) {
 	tests := map[string]struct {
 		tmplStr string
-		data    *TemplateData
+		data    any
 		exp     string
 		expErr  bool
 	}{
 		"plain string no expansion": {
 			tmplStr: "hello world",
-			data:    &TemplateData{},
+			data:    struct{}{},
 			exp:     "hello world",
 		},
-		"expand state zone": {
-			tmplStr: "zone-{{ .State.ZoneId }}",
-			data: &TemplateData{
-				State: &game.PlayerState{
+		"expand session zone": {
+			tmplStr: "zone-{{ .Session.ZoneId }}",
+			data: struct {
+				Session *game.PlayerState
+			}{
+				Session: &game.PlayerState{
 					ZoneId: storage.Identifier("forest"),
 				},
 			},
 			exp: "zone-forest",
 		},
-		"expand state room": {
-			tmplStr: "room-{{ .State.RoomId }}",
-			data: &TemplateData{
-				State: &game.PlayerState{
+		"expand session room": {
+			tmplStr: "room-{{ .Session.RoomId }}",
+			data: struct {
+				Session *game.PlayerState
+			}{
+				Session: &game.PlayerState{
 					RoomId: storage.Identifier("clearing"),
 				},
 			},
 			exp: "room-clearing",
 		},
-		"expand args": {
-			tmplStr: "player-{{ .Args.target }}",
-			data: &TemplateData{
-				State: &game.PlayerState{},
-				Args: map[string]any{
+		"expand config value": {
+			tmplStr: "player-{{ .Config.target }}",
+			data: struct {
+				Config map[string]any
+			}{
+				Config: map[string]any{
 					"target": "bob",
 				},
 			},
 			exp: "player-bob",
 		},
 		"expand multiple values": {
-			tmplStr: "zone-{{ .State.ZoneId }}-room-{{ .State.RoomId }}",
-			data: &TemplateData{
-				State: &game.PlayerState{
+			tmplStr: "zone-{{ .Session.ZoneId }}-room-{{ .Session.RoomId }}",
+			data: struct {
+				Session *game.PlayerState
+			}{
+				Session: &game.PlayerState{
 					ZoneId: storage.Identifier("castle"),
 					RoomId: storage.Identifier("throne"),
 				},
 			},
 			exp: "zone-castle-room-throne",
 		},
+		"expand actor name": {
+			tmplStr: "{{ .Actor.Name }} says hello",
+			data: struct {
+				Actor *game.Character
+			}{
+				Actor: &game.Character{Name: "Bob"},
+			},
+			exp: "Bob says hello",
+		},
 		"invalid template syntax": {
 			tmplStr: "{{ .Invalid",
-			data:    &TemplateData{},
+			data:    struct{}{},
 			expErr:  true,
 		},
 		"missing field": {
 			tmplStr: "{{ .Nonexistent }}",
-			data:    &TemplateData{},
+			data:    struct{}{},
 			expErr:  true,
 		},
 	}
@@ -180,86 +196,62 @@ func TestExpandTemplate(t *testing.T) {
 	}
 }
 
-func TestNewTemplateData(t *testing.T) {
-	charStore := &mockCharStore{
-		chars: map[string]*game.Character{
-			"testplayer": {Name: "TestPlayer"},
-		},
-	}
-	zoneStore := &mockZoneStore{zones: map[string]*game.Zone{}}
-	roomStore := &mockRoomStore{rooms: map[string]*game.Room{}}
-	mobileStore := &mockMobileStore{mobiles: map[string]*game.Mobile{}}
-	world := game.NewWorldState(nil, charStore, zoneStore, roomStore, mobileStore)
-	charId := storage.Identifier("testplayer")
-	_ = world.AddPlayer(charId, make(chan []byte, 1), "testzone", "testroom")
-
+func TestExpandInputTemplate(t *testing.T) {
 	tests := map[string]struct {
-		args    []ParsedArg
-		expArgs map[string]any
+		tmplStr string
+		ctx     *InputContext
+		exp     string
+		expErr  bool
 	}{
-		"empty args": {
-			args:    nil,
-			expArgs: map[string]any{},
+		"plain string no expansion": {
+			tmplStr: "hello world",
+			ctx:     &InputContext{Inputs: map[string]any{}},
+			exp:     "hello world",
 		},
-		"single arg": {
-			args: []ParsedArg{
-				{
-					Spec:  &ParamSpec{Name: "count", Type: ParamTypeNumber},
-					Value: 5,
+		"expand input value": {
+			tmplStr: "{{ .Inputs.text }}",
+			ctx: &InputContext{
+				Inputs: map[string]any{
+					"text": "hello there",
 				},
 			},
-			expArgs: map[string]any{
-				"count": 5,
-			},
+			exp: "hello there",
 		},
-		"multiple string args": {
-			args: []ParsedArg{
-				{
-					Spec:  &ParamSpec{Name: "direction", Type: ParamTypeDirection},
-					Value: "north",
-				},
-				{
-					Spec:  &ParamSpec{Name: "message", Type: ParamTypeString},
-					Value: "hello there",
+		"expand multiple inputs": {
+			tmplStr: "{{ .Inputs.name }} says {{ .Inputs.message }}",
+			ctx: &InputContext{
+				Inputs: map[string]any{
+					"name":    "Bob",
+					"message": "hi",
 				},
 			},
-			expArgs: map[string]any{
-				"direction": "north",
-				"message":   "hello there",
-			},
+			exp: "Bob says hi",
+		},
+		"no template markers returns as-is": {
+			tmplStr: "just plain text",
+			ctx:     &InputContext{Inputs: map[string]any{}},
+			exp:     "just plain text",
 		},
 	}
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			got, err := NewTemplateData(world, charId, tt.args)
-			if err != nil {
-				t.Fatalf("unexpected error: %v", err)
-			}
+			got, err := expandInputTemplate(tt.tmplStr, tt.ctx)
 
-			if got.Actor == nil {
-				t.Errorf("Actor is nil, expected character")
-				return
-			}
-
-			if got.Actor.Name != "TestPlayer" {
-				t.Errorf("Actor.Name() = %q, expected %q", got.Actor.Name, "TestPlayer")
-			}
-
-			if got.State == nil {
-				t.Errorf("State is nil, expected player state")
-				return
-			}
-
-			if len(got.Args) != len(tt.expArgs) {
-				t.Errorf("Args length = %d, expected %d", len(got.Args), len(tt.expArgs))
-				return
-			}
-
-			for k, exp := range tt.expArgs {
-				if got.Args[k] != exp {
-					t.Errorf("Args[%q] = %v, expected %v", k, got.Args[k], exp)
+			if tt.expErr {
+				if err == nil {
+					t.Errorf("expected error, got nil")
 				}
+				return
+			}
+
+			if err != nil {
+				t.Errorf("unexpected error: %v", err)
+				return
+			}
+
+			if got != tt.exp {
+				t.Errorf("got %q, expected %q", got, tt.exp)
 			}
 		})
 	}

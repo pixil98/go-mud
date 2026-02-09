@@ -3,6 +3,6 @@
     "id": "quit",
     "spec": {
         "handler": "quit",
-        "params": []
+        "inputs": []
     }
 }

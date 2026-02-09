@@ -5,9 +5,9 @@
         "handler": "message",
         "config": {
             "recipient_channel": "world",
-            "recipient_message": "{{ .Actor.Name }} gossips, \"{{ .Args.text }}\""
+            "recipient_message": "{{ .Actor.Name }} gossips, \"{{ .Inputs.text }}\""
         },
-        "params": [
+        "inputs": [
             {"name": "text", "type": "string", "required": true, "rest": true}
         ]
     }

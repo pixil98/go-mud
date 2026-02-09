@@ -9,10 +9,10 @@ func (f *QuitHandlerFactory) ValidateConfig(config map[string]any) error {
 	return nil
 }
 
-func (f *QuitHandlerFactory) Create(config map[string]any) (CommandFunc, error) {
-	return func(ctx context.Context, data *TemplateData) error {
-		if data.State != nil {
-			data.State.Quit = true
+func (f *QuitHandlerFactory) Create() (CommandFunc, error) {
+	return func(ctx context.Context, cmdCtx *CommandContext) error {
+		if cmdCtx.Session != nil {
+			cmdCtx.Session.Quit = true
 		}
 		return nil
 	}, nil

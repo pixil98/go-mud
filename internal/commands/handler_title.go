@@ -20,14 +20,15 @@ func (f *TitleHandlerFactory) ValidateConfig(config map[string]any) error {
 	return nil
 }
 
-func (f *TitleHandlerFactory) Create(config map[string]any) (CommandFunc, error) {
-	return func(ctx context.Context, data *TemplateData) error {
+func (f *TitleHandlerFactory) Create() (CommandFunc, error) {
+	return func(ctx context.Context, cmdCtx *CommandContext) error {
+		// Read new_title from expanded config (input was templated into config)
 		title := ""
-		if text, ok := data.Args["text"].(string); ok {
-			title = text
+		if t, ok := cmdCtx.Config["new_title"].(string); ok {
+			title = t
 		}
 
-		data.Actor.Title = title
+		cmdCtx.Actor.Title = title
 
 		var output string
 		if title == "" {
@@ -36,7 +37,7 @@ func (f *TitleHandlerFactory) Create(config map[string]any) (CommandFunc, error)
 			output = fmt.Sprintf("Title set to: %s", title)
 		}
 
-		playerChannel := fmt.Sprintf("player-%s", strings.ToLower(data.Actor.Name))
+		playerChannel := fmt.Sprintf("player-%s", strings.ToLower(cmdCtx.Actor.Name))
 		if f.pub != nil {
 			_ = f.pub.Publish(playerChannel, []byte(output))
 		}

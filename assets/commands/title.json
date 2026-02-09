@@ -3,7 +3,10 @@
     "id": "title",
     "spec": {
         "handler": "title",
-        "params": [
+        "config": {
+            "new_title": "{{ .Inputs.text }}"
+        },
+        "inputs": [
             {"name": "text", "type": "string", "required": false, "rest": true}
         ]
     }

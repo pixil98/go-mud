@@ -28,22 +28,23 @@ func (f *MoveHandlerFactory) ValidateConfig(config map[string]any) error {
 		return fmt.Errorf("direction is required")
 	}
 
-	if !game.ValidDirections[strings.ToLower(direction)] {
-		return fmt.Errorf("invalid direction: %s", direction)
-	}
-
 	return nil
 }
 
-func (f *MoveHandlerFactory) Create(config map[string]any) (CommandFunc, error) {
-	direction := strings.ToLower(config["direction"].(string))
-
-	return func(ctx context.Context, data *TemplateData) error {
-		if data.State == nil {
+func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
+	return func(ctx context.Context, cmdCtx *CommandContext) error {
+		if cmdCtx.Session == nil {
 			return fmt.Errorf("player state not found")
 		}
 
-		zoneId, roomId := data.State.Location()
+		// Read direction from expanded config
+		direction, ok := cmdCtx.Config["direction"].(string)
+		if !ok || direction == "" {
+			return fmt.Errorf("direction not set in config")
+		}
+		direction = strings.ToLower(direction)
+
+		zoneId, roomId := cmdCtx.Session.Location()
 
 		// Look up current room
 		currentRoom := f.world.Rooms().Get(string(roomId))
@@ -71,11 +72,11 @@ func (f *MoveHandlerFactory) Create(config map[string]any) (CommandFunc, error) 
 		}
 
 		// Move the player (updates location and subscriptions)
-		data.State.Move(destZone, destRoomId)
+		cmdCtx.Session.Move(destZone, destRoomId)
 
 		// Send room description to player
-		playerChannel := fmt.Sprintf("player-%s", strings.ToLower(data.Actor.Name))
-		roomDesc := FormatFullRoomDescription(f.world, newRoom, destZone, destRoomId, data.Actor.Name)
+		playerChannel := fmt.Sprintf("player-%s", strings.ToLower(cmdCtx.Actor.Name))
+		roomDesc := FormatFullRoomDescription(f.world, newRoom, destZone, destRoomId, cmdCtx.Actor.Name)
 		if f.pub != nil {
 			_ = f.pub.Publish(playerChannel, []byte(roomDesc))
 		}

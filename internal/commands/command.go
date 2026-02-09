@@ -2,23 +2,20 @@ package commands
 
 import "fmt"
 
-// ParamType represents the type of a command parameter.
-type ParamType string
+// InputType represents the type of a command input parameter.
+// Only primitive types are supported - target resolution is handled via $resolve directives.
+type InputType string
 
 const (
-	ParamTypeString    ParamType = "string"
-	ParamTypeNumber    ParamType = "number"
-	ParamTypeDirection ParamType = "direction"
-	ParamTypeTarget    ParamType = "target" // Any targetable entity
-	ParamTypePlayer    ParamType = "player"
-	ParamTypeMob       ParamType = "mob"
-	ParamTypeItem      ParamType = "item"
+	InputTypeString    InputType = "string"    // Text input (single word if rest=false, multi-word if rest=true)
+	InputTypeNumber    InputType = "number"    // Integer
+	InputTypeDirection InputType = "direction" // Direction string (could validate against known directions)
 )
 
-// ParamSpec defines a parameter that a command accepts.
-type ParamSpec struct {
+// InputSpec defines an input parameter that a command accepts from user input.
+type InputSpec struct {
 	Name     string    `json:"name"`
-	Type     ParamType `json:"type"`
+	Type     InputType `json:"type"`
 	Required bool      `json:"required"`
 	Rest     bool      `json:"rest"` // If true, captures all remaining input
 }
@@ -26,8 +23,8 @@ type ParamSpec struct {
 // Command defines a command loaded from JSON.
 type Command struct {
 	Handler string         `json:"handler"`
-	Config  map[string]any `json:"config"` // Static config passed to handler factory
-	Params  []ParamSpec    `json:"params"`
+	Config  map[string]any `json:"config"` // Config passed to handler, may contain templates and $resolve directives
+	Inputs  []InputSpec    `json:"inputs"` // User input parameters
 }
 
 func (c *Command) Validate() error {
@@ -35,16 +32,23 @@ func (c *Command) Validate() error {
 		return fmt.Errorf("command handler not set")
 	}
 
-	for i, p := range c.Params {
-		if p.Name == "" {
-			return fmt.Errorf("param %d: name is required", i)
+	for i, input := range c.Inputs {
+		if input.Name == "" {
+			return fmt.Errorf("input %d: name is required", i)
 		}
-		if p.Type == "" {
-			return fmt.Errorf("param %q: type is required", p.Name)
+		if input.Type == "" {
+			return fmt.Errorf("input %q: type is required", input.Name)
 		}
-		// Only the last param can have rest=true
-		if p.Rest && i != len(c.Params)-1 {
-			return fmt.Errorf("param %q: only the last parameter can have rest=true", p.Name)
+		// Validate input type is a known primitive
+		switch input.Type {
+		case InputTypeString, InputTypeNumber, InputTypeDirection:
+			// Valid
+		default:
+			return fmt.Errorf("input %q: unknown type %q", input.Name, input.Type)
+		}
+		// Only the last input can have rest=true
+		if input.Rest && i != len(c.Inputs)-1 {
+			return fmt.Errorf("input %q: only the last input can have rest=true", input.Name)
 		}
 	}
 

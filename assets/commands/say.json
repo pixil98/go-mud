@@ -4,10 +4,10 @@
     "spec": {
         "handler": "message",
         "config": {
-            "recipient_channel": "zone-{{ .State.ZoneId }}-room-{{ .State.RoomId }}",
-            "recipient_message": "{{ .Actor.Name }} says, \"{{ .Args.text }}\""
+            "recipient_channel": "zone-{{ .Session.ZoneId }}-room-{{ .Session.RoomId }}",
+            "recipient_message": "{{ .Actor.Name }} says, \"{{ .Inputs.text }}\""
         },
-        "params": [
+        "inputs": [
             {"name": "text", "type": "string", "required": true, "rest": true}
         ]
     }

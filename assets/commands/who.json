@@ -3,6 +3,6 @@
     "id": "who",
     "spec": {
         "handler": "who",
-        "params": []
+        "inputs": []
     }
 }

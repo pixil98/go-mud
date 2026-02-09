@@ -3,6 +3,16 @@
     "id": "look",
     "spec": {
         "handler": "look",
-        "params": []
+        "config": {
+            "target": {
+                "$resolve": "target",
+                "$scope": "room",
+                "$input": "target",
+                "$optional": true
+            }
+        },
+        "inputs": [
+            {"name": "target", "type": "string", "required": false}
+        ]
     }
 }

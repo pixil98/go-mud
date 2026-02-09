@@ -40,43 +40,24 @@ func (f *MessageHandlerFactory) ValidateConfig(config map[string]any) error {
 	return nil
 }
 
-func (f *MessageHandlerFactory) Create(config map[string]any) (CommandFunc, error) {
-	recipientChannel, _ := config["recipient_channel"].(string)
-	recipientMessage, _ := config["recipient_message"].(string)
-	senderChannel, _ := config["sender_channel"].(string)
-	senderMessage, _ := config["sender_message"].(string)
+func (f *MessageHandlerFactory) Create() (CommandFunc, error) {
+	return func(ctx context.Context, cmdCtx *CommandContext) error {
+		// Config values are already expanded by the framework
+		recipientChannel, _ := cmdCtx.Config["recipient_channel"].(string)
+		recipientMessage, _ := cmdCtx.Config["recipient_message"].(string)
+		senderChannel, _ := cmdCtx.Config["sender_channel"].(string)
+		senderMessage, _ := cmdCtx.Config["sender_message"].(string)
 
-	return func(ctx context.Context, data *TemplateData) error {
 		// Send confirmation to sender if configured
 		if senderChannel != "" {
-			channel, err := ExpandTemplate(senderChannel, data)
-			if err != nil {
-				return fmt.Errorf("expanding sender channel template: %w", err)
-			}
-
-			message, err := ExpandTemplate(senderMessage, data)
-			if err != nil {
-				return fmt.Errorf("expanding sender message template: %w", err)
-			}
-
-			if err := f.pub.Publish(channel, []byte(message)); err != nil {
+			if err := f.pub.Publish(senderChannel, []byte(senderMessage)); err != nil {
 				return err
 			}
 		}
 
 		// Send message to recipient if configured
 		if recipientChannel != "" {
-			channel, err := ExpandTemplate(recipientChannel, data)
-			if err != nil {
-				return fmt.Errorf("expanding recipient channel template: %w", err)
-			}
-
-			message, err := ExpandTemplate(recipientMessage, data)
-			if err != nil {
-				return fmt.Errorf("expanding recipient message template: %w", err)
-			}
-
-			if err := f.pub.Publish(channel, []byte(message)); err != nil {
+			if err := f.pub.Publish(recipientChannel, []byte(recipientMessage)); err != nil {
 				return err
 			}
 		}
