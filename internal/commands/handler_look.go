@@ -11,7 +11,6 @@ import (
 )
 
 // LookHandlerFactory creates handlers that display the current room.
-// TODO: Add support for looking at targets (look <player>, look <item>, etc.)
 type LookHandlerFactory struct {
 	world *game.WorldState
 	pub   Publisher
@@ -67,10 +66,10 @@ func (f *LookHandlerFactory) showTarget(cmdCtx *CommandContext, target *TargetRe
 	switch target.Type {
 	case "player":
 		msg = f.describePlayer(target.Player)
-	case "mob":
+	case "mobile":
 		msg = f.describeMob(target.Mob)
-	case "item":
-		msg = f.describeItem(target.Item)
+	case "object":
+		msg = f.describeObj(target.Obj)
 	default:
 		return NewUserError("You can't look at that.")
 	}
@@ -81,19 +80,17 @@ func (f *LookHandlerFactory) showTarget(cmdCtx *CommandContext, target *TargetRe
 	return nil
 }
 
+// TODO show inventory and condition
 func (f *LookHandlerFactory) describePlayer(player *PlayerRef) string {
-	// TODO: Implement detailed player descriptions
-	return fmt.Sprintf("You look at %s.", player.Name)
+	return player.Description
 }
 
-func (f *LookHandlerFactory) describeMob(mob *MobRef) string {
-	// TODO: Implement detailed mob descriptions
-	return fmt.Sprintf("You look at %s.", mob.Name)
+func (f *LookHandlerFactory) describeMob(mob *MobileRef) string {
+	return mob.Description
 }
 
-func (f *LookHandlerFactory) describeItem(item *ItemRef) string {
-	// TODO: Implement detailed item descriptions
-	return fmt.Sprintf("You look at %s.", item.Name)
+func (f *LookHandlerFactory) describeObj(obj *ObjectRef) string {
+	return obj.Description
 }
 
 // FormatFullRoomDescription builds a complete room description including mobs and players.
@@ -120,7 +117,7 @@ func FormatFullRoomDescription(world *game.WorldState, room *game.Room, zoneId, 
 		}
 	}
 
-	// TODO: Show items
+	// TODO: Show objects
 
 	// Show players
 	var playersHere []storage.Identifier

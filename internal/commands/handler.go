@@ -20,11 +20,11 @@ type ParsedInput struct {
 
 // CommandContext is what handlers receive after config processing.
 type CommandContext struct {
-	Actor   *game.Character        // Character data (name, title, etc.)
-	Session *game.PlayerState      // Current session state (location, quit flag, etc.)
+	Actor   *game.Character   // Character data (name, title, etc.)
+	Session *game.PlayerState // Current session state (location, quit flag, etc.)
 	World   *game.WorldState
-	Targets map[string]*TargetRef  // Resolved targets by name
-	Config  map[string]string      // Expanded config values (all templates resolved)
+	Targets map[string]*TargetRef // Resolved targets by name
+	Config  map[string]string     // Expanded config values (all templates resolved)
 }
 
 // CommandFunc is the signature for compiled command functions.
@@ -237,10 +237,6 @@ func (h *Handler) parseValue(inputType InputType, raw string) (any, error) {
 		}
 		return n, nil
 
-	case InputTypeDirection:
-		// Could validate against known directions here
-		return raw, nil
-
 	default:
 		return nil, fmt.Errorf("unknown parameter type %q", inputType)
 	}
@@ -272,8 +268,7 @@ func (h *Handler) resolveTargets(specs []TargetSpec, inputs map[string]any, sess
 		}
 
 		// Resolve the target
-		scope := ScopesFromConfig(spec.Scope)
-		resolved, err := resolver.Resolve(session, name, EntityType(spec.Type), scope)
+		resolved, err := resolver.Resolve(session, name, EntityType(spec.Type), spec.Scope())
 		if err != nil {
 			return nil, err
 		}
@@ -282,10 +277,10 @@ func (h *Handler) resolveTargets(specs []TargetSpec, inputs map[string]any, sess
 		switch t := resolved.(type) {
 		case *PlayerRef:
 			targets[spec.Name] = &TargetRef{Type: "player", Name: t.Name, Player: t}
-		case *MobRef:
-			targets[spec.Name] = &TargetRef{Type: "mob", Name: t.Name, Mob: t}
-		case *ItemRef:
-			targets[spec.Name] = &TargetRef{Type: "item", Name: t.Name, Item: t}
+		case *MobileRef:
+			targets[spec.Name] = &TargetRef{Type: "mobile", Name: t.Name, Mob: t}
+		case *ObjectRef:
+			targets[spec.Name] = &TargetRef{Type: "object", Name: t.Name, Obj: t}
 		case *TargetRef:
 			targets[spec.Name] = t
 		default:

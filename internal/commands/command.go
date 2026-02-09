@@ -1,15 +1,27 @@
 package commands
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // InputType represents the type of a command input parameter.
 // Only primitive types are supported - target resolution is handled via $resolve directives.
 type InputType string
 
 const (
-	InputTypeString    InputType = "string"    // Text input (single word if rest=false, multi-word if rest=true)
-	InputTypeNumber    InputType = "number"    // Integer
-	InputTypeDirection InputType = "direction" // Direction string (could validate against known directions)
+	InputTypeString InputType = "string" // Text input (single word if rest=false, multi-word if rest=true)
+	InputTypeNumber InputType = "number" // Integer
+)
+
+// Scope defines where to look for targets. Can be combined with bitwise OR.
+type Scope int
+
+const (
+	ScopeWorld     Scope = 1 << iota // All online players
+	ScopeZone                        // Players in current zone
+	ScopeRoom                        // Players/mobs/objects in current room
+	ScopeInventory                   // Objects in actor's inventory
 )
 
 // InputSpec defines an input parameter that a command accepts from user input.
@@ -22,11 +34,27 @@ type InputSpec struct {
 
 // TargetSpec defines a target to be resolved at runtime.
 type TargetSpec struct {
-	Name     string `json:"name"`              // Name to access in templates (e.g., "target" -> .Targets.target)
-	Type     string `json:"type"`              // Entity type: player, mob, item, target (polymorphic)
-	Scope    string `json:"scope,omitempty"`   // Resolution scope: room, world, zone, inventory
-	Input    string `json:"input"`             // Which input provides the name to resolve
-	Optional bool   `json:"optional,omitempty"` // If true, missing input -> nil (no error)
+	Name      string `json:"name"`               // Name to access in templates (e.g., "target" -> .Targets.target)
+	Type      string `json:"type"`               // Entity type: player, mob, object, target (polymorphic)
+	ScopeStr  string `json:"scope,omitempty"`    // Resolution scope: room, world, zone, inventory
+	Input     string `json:"input"`              // Which input provides the name to resolve
+	Optional  bool   `json:"optional,omitempty"` // If true, missing input -> nil (no error)
+}
+
+// Scope returns the parsed Scope value from ScopeStr.
+func (t *TargetSpec) Scope() Scope {
+	switch strings.ToLower(t.ScopeStr) {
+	case "room":
+		return ScopeRoom
+	case "inventory":
+		return ScopeInventory
+	case "world":
+		return ScopeWorld
+	case "zone":
+		return ScopeZone
+	default:
+		return 0
+	}
 }
 
 // Command defines a command loaded from JSON.
@@ -51,7 +79,7 @@ func (c *Command) Validate() error {
 		}
 		// Validate input type is a known primitive
 		switch input.Type {
-		case InputTypeString, InputTypeNumber, InputTypeDirection:
+		case InputTypeString, InputTypeNumber:
 			// Valid
 		default:
 			return fmt.Errorf("input %q: unknown type %q", input.Name, input.Type)
@@ -60,6 +88,12 @@ func (c *Command) Validate() error {
 		if input.Rest && i != len(c.Inputs)-1 {
 			return fmt.Errorf("input %q: only the last input can have rest=true", input.Name)
 		}
+	}
+
+	// Build set of valid input names for target validation
+	validInputs := make(map[string]bool)
+	for _, input := range c.Inputs {
+		validInputs[input.Name] = true
 	}
 
 	for i, target := range c.Targets {
@@ -71,13 +105,21 @@ func (c *Command) Validate() error {
 		}
 		// Validate target type
 		switch target.Type {
-		case "player", "mob", "item", "target":
+		case "player", "mobile", "object", "target":
 			// Valid
 		default:
 			return fmt.Errorf("target %q: unknown type %q", target.Name, target.Type)
 		}
 		if target.Input == "" {
 			return fmt.Errorf("target %q: input is required", target.Name)
+		}
+		// Validate that target.Input references an existing input
+		if !validInputs[target.Input] {
+			return fmt.Errorf("target %q: input %q does not exist in inputs", target.Name, target.Input)
+		}
+		// Validate scope if provided
+		if target.ScopeStr != "" && target.Scope() == 0 {
+			return fmt.Errorf("target %q: unknown scope %q", target.Name, target.ScopeStr)
 		}
 	}
 

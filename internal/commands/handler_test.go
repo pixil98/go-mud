@@ -323,7 +323,7 @@ func TestHandler_resolveTargets(t *testing.T) {
 			actorZone: "zone2",
 			actorRoom: "room2",
 			targetSpecs: []TargetSpec{
-				{Name: "target", Type: "player", Scope: "world", Input: "target"},
+				{Name: "target", Type: "player", ScopeStr: "world", Input: "target"},
 			},
 			inputs: map[string]any{
 				"target": "bob",
@@ -338,7 +338,7 @@ func TestHandler_resolveTargets(t *testing.T) {
 			actorZone:     "zone1",
 			actorRoom:     "room1",
 			targetSpecs: []TargetSpec{
-				{Name: "target", Type: "target", Scope: "room", Input: "target", Optional: true},
+				{Name: "target", Type: "target", ScopeStr: "room", Input: "target", Optional: true},
 			},
 			inputs:     map[string]any{},
 			expTargets: map[string]string{}, // target should be nil
@@ -349,7 +349,7 @@ func TestHandler_resolveTargets(t *testing.T) {
 			actorZone:     "zone1",
 			actorRoom:     "room1",
 			targetSpecs: []TargetSpec{
-				{Name: "target", Type: "player", Scope: "world", Input: "target"},
+				{Name: "target", Type: "player", ScopeStr: "world", Input: "target"},
 			},
 			inputs: map[string]any{},
 			expErr: "Missing required input: target",
@@ -360,7 +360,7 @@ func TestHandler_resolveTargets(t *testing.T) {
 			actorZone:     "zone1",
 			actorRoom:     "room1",
 			targetSpecs: []TargetSpec{
-				{Name: "target", Type: "player", Scope: "world", Input: "target"},
+				{Name: "target", Type: "player", ScopeStr: "world", Input: "target"},
 			},
 			inputs: map[string]any{
 				"target": "nobody",

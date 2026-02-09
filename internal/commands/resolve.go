@@ -5,60 +5,17 @@ import (
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/storage"
 )
-
-// Scope defines where to look for targets. Can be combined with bitwise OR.
-type Scope int
-
-const (
-	ScopeRoom      Scope = 1 << iota // Players/mobs/items in current room
-	ScopeInventory                   // Items in actor's inventory
-	ScopeWorld                       // All online players
-	ScopeZone                        // Players in current zone
-)
-
-// ScopeFromString converts a scope string to a Scope value.
-func ScopeFromString(s string) Scope {
-	switch strings.ToLower(s) {
-	case "room":
-		return ScopeRoom
-	case "inventory":
-		return ScopeInventory
-	case "world":
-		return ScopeWorld
-	case "zone":
-		return ScopeZone
-	default:
-		return 0
-	}
-}
-
-// ScopesFromConfig parses scope from config, which can be a string or []string.
-func ScopesFromConfig(v any) Scope {
-	switch s := v.(type) {
-	case string:
-		return ScopeFromString(s)
-	case []any:
-		var combined Scope
-		for _, item := range s {
-			if str, ok := item.(string); ok {
-				combined |= ScopeFromString(str)
-			}
-		}
-		return combined
-	default:
-		return 0
-	}
-}
 
 // EntityType defines what kind of entity to resolve.
 type EntityType string
 
 const (
 	EntityPlayer EntityType = "player"
-	EntityMob    EntityType = "mob"
-	EntityItem   EntityType = "item"
-	EntityTarget EntityType = "target" // Polymorphic: tries player, mob, item
+	EntityMob    EntityType = "mobile"
+	EntityObj    EntityType = "object"
+	EntityTarget EntityType = "target" // Polymorphic: tries player, mobile, object
 )
 
 // Resolver resolves target names to game entities.
@@ -73,15 +30,15 @@ func NewResolver(world *game.WorldState) *Resolver {
 }
 
 // Resolve resolves a target name to an entity based on type and scope.
-// Returns *PlayerRef, *MobRef, *ItemRef, or *TargetRef based on entityType.
+// Returns *PlayerRef, *MobileRef, *ObjectRef, or *TargetRef based on entityType.
 func (r *Resolver) Resolve(actorState *game.PlayerState, name string, entityType EntityType, scope Scope) (any, error) {
 	switch entityType {
 	case EntityPlayer:
 		return r.resolvePlayer(actorState, name, scope)
 	case EntityMob:
 		return r.resolveMob(actorState, name, scope)
-	case EntityItem:
-		return r.resolveItem(actorState, name, scope)
+	case EntityObj:
+		return r.resolveObject(actorState, name, scope)
 	case EntityTarget:
 		return r.resolveTarget(actorState, name, scope)
 	default:
@@ -123,25 +80,76 @@ func (r *Resolver) resolvePlayer(actorState *game.PlayerState, name string, scop
 			continue
 		}
 
-		return PlayerRefFrom(char), nil
+		return PlayerRefFrom(charId, char), nil
 	}
 
 	return nil, NewUserError(fmt.Sprintf("Player '%s' not found", name))
 }
 
 // resolveMob resolves a mob by name within the given scope.
-func (r *Resolver) resolveMob(actorState *game.PlayerState, name string, scope Scope) (*MobRef, error) {
-	// TODO: Implement mob resolution
+func (r *Resolver) resolveMob(actorState *game.PlayerState, name string, scope Scope) (*MobileRef, error) {
+	nameLower := strings.ToLower(name)
+	actorZone, actorRoom := actorState.Location()
+
+	// matchMob checks if a mob matches the given name by alias
+	matchMob := func(mi *game.MobileInstance) *MobileRef {
+		mob := r.world.Mobiles().Get(string(mi.MobileId))
+		if mob == nil {
+			return nil
+		}
+		for _, alias := range mob.Aliases {
+			if strings.ToLower(alias) == nameLower {
+				return MobRefFrom(mob, mi)
+			}
+		}
+		return nil
+	}
+
+	// Check room scope
+	if scope&ScopeRoom != 0 {
+		for _, mi := range r.world.GetMobilesInRoom(actorZone, actorRoom) {
+			if ref := matchMob(mi); ref != nil {
+				return ref, nil
+			}
+		}
+	}
+
+	// Check zone scope (all rooms in current zone)
+	if scope&ScopeZone != 0 {
+		for roomId, room := range r.world.Rooms().GetAll() {
+			if room.ZoneId != string(actorZone) {
+				continue
+			}
+			for _, mi := range r.world.GetMobilesInRoom(actorZone, storage.Identifier(roomId)) {
+				if ref := matchMob(mi); ref != nil {
+					return ref, nil
+				}
+			}
+		}
+	}
+
+	// Check world scope (all rooms in all zones)
+	if scope&ScopeWorld != 0 {
+		for roomId, room := range r.world.Rooms().GetAll() {
+			zoneId := storage.Identifier(room.ZoneId)
+			for _, mi := range r.world.GetMobilesInRoom(zoneId, storage.Identifier(roomId)) {
+				if ref := matchMob(mi); ref != nil {
+					return ref, nil
+				}
+			}
+		}
+	}
+
 	return nil, NewUserError(fmt.Sprintf("Mob '%s' not found", name))
 }
 
-// resolveItem resolves an item by name within the given scope.
-func (r *Resolver) resolveItem(actorState *game.PlayerState, name string, scope Scope) (*ItemRef, error) {
-	// TODO: Implement item resolution
-	return nil, NewUserError(fmt.Sprintf("Item '%s' not found", name))
+// resolveObject resolves an object by name within the given scope.
+func (r *Resolver) resolveObject(actorState *game.PlayerState, name string, scope Scope) (*ObjectRef, error) {
+	// TODO: Implement object resolution
+	return nil, NewUserError(fmt.Sprintf("Object '%s' not found", name))
 }
 
-// resolveTarget tries to resolve as player, then mob, then item.
+// resolveTarget tries to resolve as player, then mobile, then object.
 func (r *Resolver) resolveTarget(actorState *game.PlayerState, name string, scope Scope) (*TargetRef, error) {
 	// Try player first
 	if player, err := r.resolvePlayer(actorState, name, scope); err == nil {
@@ -152,61 +160,23 @@ func (r *Resolver) resolveTarget(actorState *game.PlayerState, name string, scop
 		}, nil
 	}
 
-	// Try mob
+	// Try mobile
 	if mob, err := r.resolveMob(actorState, name, scope); err == nil {
 		return &TargetRef{
-			Type: "mob",
+			Type: "mobile",
 			Mob:  mob,
 			Name: mob.Name,
 		}, nil
 	}
 
-	// Try item
-	if item, err := r.resolveItem(actorState, name, scope); err == nil {
+	// Try object
+	if obj, err := r.resolveObject(actorState, name, scope); err == nil {
 		return &TargetRef{
-			Type: "item",
-			Item: item,
-			Name: item.Name,
+			Type: "object",
+			Obj:  obj,
+			Name: obj.Name,
 		}, nil
 	}
 
 	return nil, NewUserError(fmt.Sprintf("Target '%s' not found", name))
-}
-
-// ResolveDirective represents a $resolve directive from config.
-type ResolveDirective struct {
-	Resolve  EntityType
-	Scope    Scope
-	Input    string
-	Optional bool
-}
-
-// IsResolveDirective checks if a config value is a $resolve directive.
-// Returns the parsed directive if valid, nil otherwise.
-func IsResolveDirective(v any) (*ResolveDirective, bool) {
-	m, ok := v.(map[string]any)
-	if !ok {
-		return nil, false
-	}
-
-	resolve, hasResolve := m["$resolve"].(string)
-	if !hasResolve {
-		return nil, false
-	}
-
-	directive := &ResolveDirective{
-		Resolve: EntityType(resolve),
-	}
-
-	if scopeVal, ok := m["$scope"]; ok {
-		directive.Scope = ScopesFromConfig(scopeVal)
-	}
-	if input, ok := m["$input"].(string); ok {
-		directive.Input = input
-	}
-	if optional, ok := m["$optional"].(bool); ok {
-		directive.Optional = optional
-	}
-
-	return directive, true
 }
