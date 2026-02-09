@@ -49,8 +49,21 @@ func MobRefFrom(mob *game.Mobile, instance *game.MobileInstance) *MobileRef {
 
 // ObjectRef is the template-facing view of a resolved object.
 type ObjectRef struct {
+	InstanceId  string // Unique instance identifier
 	Name        string
 	Description string
+}
+
+// ObjectRefFrom creates an ObjectRef from a game.Object and its instance.
+func ObjectRefFrom(obj *game.Object, instance *game.ObjectInstance) *ObjectRef {
+	if obj == nil || instance == nil {
+		return nil
+	}
+	return &ObjectRef{
+		InstanceId:  instance.InstanceId,
+		Name:        obj.ShortDesc,
+		Description: obj.Entity.DetailedDesc,
+	}
 }
 
 // TargetRef is a polymorphic target reference that could be a player, mobile, or object.

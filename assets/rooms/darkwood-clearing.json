@@ -8,6 +8,6 @@
         "exits": {
             "west": {"room_id": "darkwood-edge"}
         },
-        "spawns": ["darkwood-deer", "darkwood-wolf"]
+        "mobile_spawns": ["darkwood-deer", "darkwood-wolf"]
     }
 }

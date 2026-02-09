@@ -102,11 +102,26 @@ func FormatFullRoomDescription(world *game.WorldState, room *game.Room, zoneId, 
 	sb.WriteString(room.Description)
 	sb.WriteString("\n")
 
+	// Show objects
+	objs := world.GetObjectsInRoom(zoneId, roomId)
+	if len(objs) > 0 {
+		for _, oId := range objs {
+			if obj := world.Objects().Get(string(oId.ObjectId)); obj != nil {
+				if obj.LongDesc != "" {
+					sb.WriteString(obj.LongDesc)
+				} else {
+					sb.WriteString(fmt.Sprintf("%s is here.", obj.ShortDesc))
+				}
+				sb.WriteString("\n")
+			}
+		}
+	}
+
 	// Show mobs
 	mobs := world.GetMobilesInRoom(zoneId, roomId)
 	if len(mobs) > 0 {
-		for _, mi := range mobs {
-			if mob := world.Mobiles().Get(string(mi.MobileId)); mob != nil {
+		for _, mId := range mobs {
+			if mob := world.Mobiles().Get(string(mId.MobileId)); mob != nil {
 				if mob.LongDesc != "" {
 					sb.WriteString(mob.LongDesc)
 				} else {
@@ -116,8 +131,6 @@ func FormatFullRoomDescription(world *game.WorldState, room *game.Room, zoneId, 
 			}
 		}
 	}
-
-	// TODO: Show objects
 
 	// Show players
 	var playersHere []storage.Identifier

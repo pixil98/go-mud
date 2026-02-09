@@ -17,15 +17,17 @@ type StorageConfig struct {
 	Zones      AssetConfig[*game.Zone]        `json:"zones"`
 	Rooms      AssetConfig[*game.Room]        `json:"rooms"`
 	Mobiles    AssetConfig[*game.Mobile]      `json:"mobiles"`
+	Objects    AssetConfig[*game.Object]      `json:"objects"`
 }
 
 func (c *StorageConfig) validate() error {
 	el := errors.NewErrorList()
-	el.Add(c.Characters.Validate())
-	el.Add(c.Commands.Validate())
-	el.Add(c.Zones.Validate())
-	el.Add(c.Rooms.Validate())
-	el.Add(c.Mobiles.Validate())
+	el.Add(c.Characters.Validate("characters"))
+	el.Add(c.Commands.Validate("commands"))
+	el.Add(c.Zones.Validate("zones"))
+	el.Add(c.Rooms.Validate("rooms"))
+	el.Add(c.Mobiles.Validate("mobiles"))
+	el.Add(c.Objects.Validate("objects"))
 	return el.Err()
 }
 
@@ -33,10 +35,13 @@ type AssetConfig[T storage.ValidatingSpec] struct {
 	Path string `json:"path"`
 }
 
-func (c *AssetConfig[T]) Validate() error {
+func (c *AssetConfig[T]) Validate(name string) error {
+	if c.Path == "" {
+		return fmt.Errorf("%s: path is required", name)
+	}
 	_, err := os.Stat(c.Path)
 	if err != nil {
-		return fmt.Errorf("invalid asset path: %w", err)
+		return fmt.Errorf("%s: invalid path %q: %w", name, c.Path, err)
 	}
 
 	return nil

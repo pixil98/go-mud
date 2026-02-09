@@ -17,8 +17,9 @@ type Room struct {
 	Name        string          `json:"name"`
 	Description string          `json:"description"`
 	ZoneId      string          `json:"zone_id"`
-	Exits       map[string]Exit `json:"exits"`            // direction -> destination
-	Spawns      []string        `json:"spawns,omitempty"` // mobile IDs to spawn; list duplicates for multiple
+	Exits       map[string]Exit `json:"exits"`                    // direction -> destination
+	MobSpawns   []string        `json:"mobile_spawns,omitempty"`  // mobile IDs to spawn; list duplicates for multiple
+	ObjSpawns   []string        `json:"object_spawns,omitempty"`  // object IDs to spawn
 }
 
 // Validate satisfies storage.ValidatingSpec.

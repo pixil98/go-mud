@@ -95,6 +95,28 @@ func (m *mockMobileStore) Save(id string, mobile *game.Mobile) error {
 	return nil
 }
 
+// mockObjectStore implements storage.Storer[*game.Object] for testing
+type mockObjectStore struct {
+	objects map[string]*game.Object
+}
+
+func (m *mockObjectStore) Get(id string) *game.Object {
+	return m.objects[id]
+}
+
+func (m *mockObjectStore) GetAll() map[storage.Identifier]*game.Object {
+	result := make(map[storage.Identifier]*game.Object)
+	for k, v := range m.objects {
+		result[storage.Identifier(k)] = v
+	}
+	return result
+}
+
+func (m *mockObjectStore) Save(id string, object *game.Object) error {
+	m.objects[id] = object
+	return nil
+}
+
 func TestExpandTemplate(t *testing.T) {
 	tests := map[string]struct {
 		tmplStr string

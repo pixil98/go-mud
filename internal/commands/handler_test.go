@@ -380,6 +380,7 @@ func TestHandler_resolveTargets(t *testing.T) {
 				&mockZoneStore{zones: map[string]*game.Zone{}},
 				&mockRoomStore{rooms: map[string]*game.Room{}},
 				&mockMobileStore{mobiles: map[string]*game.Mobile{}},
+				&mockObjectStore{objects: map[string]*game.Object{}},
 			)
 
 			// Add actor
@@ -515,6 +516,7 @@ func TestHandler_expandConfig(t *testing.T) {
 				&mockZoneStore{zones: map[string]*game.Zone{}},
 				&mockRoomStore{rooms: map[string]*game.Room{}},
 				&mockMobileStore{mobiles: map[string]*game.Mobile{}},
+				&mockObjectStore{objects: map[string]*game.Object{}},
 			)
 
 			actorChan := make(chan []byte, 1)

@@ -23,16 +23,20 @@ type WorldState struct {
 	zones   storage.Storer[*Zone]
 	rooms   storage.Storer[*Room]
 	mobiles storage.Storer[*Mobile]
+	objects storage.Storer[*Object]
 
 	// Mobile instances indexed by zone -> room -> instanceId -> instance
 	mobileInstances map[storage.Identifier]map[storage.Identifier]map[string]*MobileInstance
+
+	// Object instances indexed by zone -> room -> instanceId -> instance
+	objectInstances map[storage.Identifier]map[storage.Identifier]map[string]*ObjectInstance
 
 	// Index of rooms by zone for efficient zone resets
 	roomsByZone map[storage.Identifier][]storage.Identifier
 }
 
 // NewWorldState creates a new WorldState.
-func NewWorldState(sub Subscriber, chars storage.Storer[*Character], zones storage.Storer[*Zone], rooms storage.Storer[*Room], mobiles storage.Storer[*Mobile]) *WorldState {
+func NewWorldState(sub Subscriber, chars storage.Storer[*Character], zones storage.Storer[*Zone], rooms storage.Storer[*Room], mobiles storage.Storer[*Mobile], objects storage.Storer[*Object]) *WorldState {
 	// Build index of rooms by zone
 	roomsByZone := make(map[storage.Identifier][]storage.Identifier)
 	for roomId, room := range rooms.GetAll() {
@@ -47,7 +51,9 @@ func NewWorldState(sub Subscriber, chars storage.Storer[*Character], zones stora
 		zones:           zones,
 		rooms:           rooms,
 		mobiles:         mobiles,
+		objects:         objects,
 		mobileInstances: make(map[storage.Identifier]map[storage.Identifier]map[string]*MobileInstance),
+		objectInstances: make(map[storage.Identifier]map[storage.Identifier]map[string]*ObjectInstance),
 		roomsByZone:     roomsByZone,
 	}
 }
@@ -72,6 +78,11 @@ func (w *WorldState) Rooms() storage.Storer[*Room] {
 // Mobiles returns the mobile store.
 func (w *WorldState) Mobiles() storage.Storer[*Mobile] {
 	return w.mobiles
+}
+
+// Objects returns the object store.
+func (w *WorldState) Objects() storage.Storer[*Object] {
+	return w.objects
 }
 
 // SpawnMobile creates a new mobile instance in the specified location.
@@ -113,6 +124,45 @@ func (w *WorldState) GetMobilesInRoom(zoneId, roomId storage.Identifier) []*Mobi
 	return result
 }
 
+// SpawnObject creates a new object instance in the specified location.
+func (w *WorldState) SpawnObject(objectId, zoneId, roomId storage.Identifier) *ObjectInstance {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+
+	// Ensure nested maps exist
+	if w.objectInstances[zoneId] == nil {
+		w.objectInstances[zoneId] = make(map[storage.Identifier]map[string]*ObjectInstance)
+	}
+	if w.objectInstances[zoneId][roomId] == nil {
+		w.objectInstances[zoneId][roomId] = make(map[string]*ObjectInstance)
+	}
+
+	instance := &ObjectInstance{
+		InstanceId: uuid.New().String(),
+		ObjectId:   objectId,
+		ZoneId:     zoneId,
+		RoomId:     roomId,
+	}
+	w.objectInstances[zoneId][roomId][instance.InstanceId] = instance
+	return instance
+}
+
+// GetObjectsInRoom returns all object instances in a room.
+func (w *WorldState) GetObjectsInRoom(zoneId, roomId storage.Identifier) []*ObjectInstance {
+	w.mu.RLock()
+	defer w.mu.RUnlock()
+
+	if w.objectInstances[zoneId] == nil || w.objectInstances[zoneId][roomId] == nil {
+		return nil
+	}
+
+	result := make([]*ObjectInstance, 0, len(w.objectInstances[zoneId][roomId]))
+	for _, oi := range w.objectInstances[zoneId][roomId] {
+		result = append(result, oi)
+	}
+	return result
+}
+
 // ResetZone despawns all mobiles in a zone and respawns them per room definitions.
 // If force is true, bypasses time/occupancy checks and resets immediately.
 func (w *WorldState) ResetZone(zoneId storage.Identifier, force bool) {
@@ -140,19 +190,22 @@ func (w *WorldState) ResetZone(zoneId storage.Identifier, force bool) {
 	w.mu.Lock()
 	defer w.mu.Unlock()
 
-	// Clear all mobile instances in this zone
+	// Clear all mobile and object instances in this zone
 	delete(w.mobileInstances, zoneId)
+	delete(w.objectInstances, zoneId)
 
 	slog.Info("resetting zone", "zone", zoneId, "rooms", len(w.roomsByZone[zoneId]))
 
-	// Respawn mobiles for each room in the zone
+	// Respawn mobiles and objects for each room in the zone
 	for _, roomId := range w.roomsByZone[zoneId] {
 		room := w.rooms.Get(string(roomId))
 		if room == nil {
 			slog.Warn("room not found during zone reset", "zone", zoneId, "room", roomId)
 			continue
 		}
-		for _, mobileId := range room.Spawns {
+
+		// Spawn mobiles
+		for _, mobileId := range room.MobSpawns {
 			if w.mobileInstances[zoneId] == nil {
 				w.mobileInstances[zoneId] = make(map[storage.Identifier]map[string]*MobileInstance)
 			}
@@ -167,6 +220,24 @@ func (w *WorldState) ResetZone(zoneId storage.Identifier, force bool) {
 			}
 			w.mobileInstances[zoneId][roomId][instance.InstanceId] = instance
 			slog.Debug("spawned mobile", "mobile", mobileId, "zone", zoneId, "room", roomId)
+		}
+
+		// Spawn objects
+		for _, objectId := range room.ObjSpawns {
+			if w.objectInstances[zoneId] == nil {
+				w.objectInstances[zoneId] = make(map[storage.Identifier]map[string]*ObjectInstance)
+			}
+			if w.objectInstances[zoneId][roomId] == nil {
+				w.objectInstances[zoneId][roomId] = make(map[string]*ObjectInstance)
+			}
+			instance := &ObjectInstance{
+				InstanceId: uuid.New().String(),
+				ObjectId:   storage.Identifier(objectId),
+				ZoneId:     zoneId,
+				RoomId:     roomId,
+			}
+			w.objectInstances[zoneId][roomId][instance.InstanceId] = instance
+			slog.Debug("spawned object", "object", objectId, "zone", zoneId, "room", roomId)
 		}
 	}
 

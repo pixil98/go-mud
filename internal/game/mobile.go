@@ -37,7 +37,7 @@ func (m *Mobile) Validate() error {
 }
 
 // MobileInstance represents a single spawned instance of a Mobile definition.
-// TODO: Evaluate extracting shared location fields (ZoneId, RoomId) with PlayerState
+// TODO: Evaluate extracting shared location fields (ZoneId, RoomId) with PlayerState and ObjectInstance
 type MobileInstance struct {
 	InstanceId string             // Unique ID: "<mobile-id>-<counter>" e.g., "millbrook-guard-1"
 	MobileId   storage.Identifier // Reference to the Mobile definition

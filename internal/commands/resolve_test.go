@@ -135,7 +135,7 @@ func TestResolver_ResolvePlayer(t *testing.T) {
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
 			charStore := &mockCharStore{chars: tt.chars}
-			world := game.NewWorldState(nil, charStore, &mockZoneStore{zones: map[string]*game.Zone{}}, &mockRoomStore{rooms: map[string]*game.Room{}}, &mockMobileStore{mobiles: map[string]*game.Mobile{}})
+			world := game.NewWorldState(nil, charStore, &mockZoneStore{zones: map[string]*game.Zone{}}, &mockRoomStore{rooms: map[string]*game.Room{}}, &mockMobileStore{mobiles: map[string]*game.Mobile{}}, &mockObjectStore{objects: map[string]*game.Object{}})
 
 			// Add actor
 			actorChan := make(chan []byte, 1)
@@ -323,6 +323,7 @@ func TestResolver_ResolveMob(t *testing.T) {
 				&mockZoneStore{zones: map[string]*game.Zone{}},
 				&mockRoomStore{rooms: tt.rooms},
 				&mockMobileStore{mobiles: tt.mobiles},
+				&mockObjectStore{objects: map[string]*game.Object{}},
 			)
 
 			// Add actor
@@ -463,7 +464,7 @@ func TestResolver_ResolveTarget(t *testing.T) {
 				roomStore.rooms = map[string]*game.Room{}
 			}
 
-			world := game.NewWorldState(nil, charStore, &mockZoneStore{zones: map[string]*game.Zone{}}, roomStore, mobileStore)
+			world := game.NewWorldState(nil, charStore, &mockZoneStore{zones: map[string]*game.Zone{}}, roomStore, mobileStore, &mockObjectStore{objects: map[string]*game.Object{}})
 
 			// Add actor
 			actorChan := make(chan []byte, 1)

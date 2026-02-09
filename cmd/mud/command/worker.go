@@ -45,6 +45,10 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	if err != nil {
 		return nil, fmt.Errorf("creating mobile store: %w", err)
 	}
+	storeObjects, err := cfg.Storage.Objects.BuildFileStore()
+	if err != nil {
+		return nil, fmt.Errorf("creating object store: %w", err)
+	}
 
 	// Setup the nats server
 	natsServer, err := cfg.Nats.buildNatsServer()
@@ -53,7 +57,7 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	}
 
 	// Create world state (must be before command handler since handlers need it)
-	world := game.NewWorldState(natsServer, storeCharacters, storeZones, storeRooms, storeMobiles)
+	world := game.NewWorldState(natsServer, storeCharacters, storeZones, storeRooms, storeMobiles, storeObjects)
 
 	// Spawn initial mobiles in all zones
 	for zoneId := range storeZones.GetAll() {

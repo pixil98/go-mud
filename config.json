@@ -27,6 +27,9 @@
         },
         "mobiles": {
             "path": "./assets/mobiles"
+        },
+        "objects": {
+            "path": "./assets/objects"
         }
     },
     "nats": {

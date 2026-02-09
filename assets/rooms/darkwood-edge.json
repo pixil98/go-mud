@@ -9,6 +9,6 @@
             "west": {"zone_id": "millbrook", "room_id": "millbrook-tavern"},
             "east": {"room_id": "darkwood-clearing"}
         },
-        "spawns": ["darkwood-deer"]
+        "mobile_spawns": ["darkwood-deer"]
     }
 }

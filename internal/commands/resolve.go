@@ -145,7 +145,64 @@ func (r *Resolver) resolveMob(actorState *game.PlayerState, name string, scope S
 
 // resolveObject resolves an object by name within the given scope.
 func (r *Resolver) resolveObject(actorState *game.PlayerState, name string, scope Scope) (*ObjectRef, error) {
-	// TODO: Implement object resolution
+	nameLower := strings.ToLower(name)
+	actorZone, actorRoom := actorState.Location()
+
+	// matchObject checks if an object matches the given name by alias
+	matchObject := func(oi *game.ObjectInstance) *ObjectRef {
+		obj := r.world.Objects().Get(string(oi.ObjectId))
+		if obj == nil {
+			return nil
+		}
+		for _, alias := range obj.Aliases {
+			if strings.ToLower(alias) == nameLower {
+				return ObjectRefFrom(obj, oi)
+			}
+		}
+		return nil
+	}
+
+	// Check inventory scope
+	// TODO: Implement inventory resolution when inventory system is added
+	if scope&ScopeInventory != 0 {
+		// Will check actor's inventory
+	}
+
+	// Check room scope
+	if scope&ScopeRoom != 0 {
+		for _, oi := range r.world.GetObjectsInRoom(actorZone, actorRoom) {
+			if ref := matchObject(oi); ref != nil {
+				return ref, nil
+			}
+		}
+	}
+
+	// Check zone scope (all rooms in current zone)
+	if scope&ScopeZone != 0 {
+		for roomId, room := range r.world.Rooms().GetAll() {
+			if room.ZoneId != string(actorZone) {
+				continue
+			}
+			for _, oi := range r.world.GetObjectsInRoom(actorZone, storage.Identifier(roomId)) {
+				if ref := matchObject(oi); ref != nil {
+					return ref, nil
+				}
+			}
+		}
+	}
+
+	// Check world scope (all rooms in all zones)
+	if scope&ScopeWorld != 0 {
+		for roomId, room := range r.world.Rooms().GetAll() {
+			zoneId := storage.Identifier(room.ZoneId)
+			for _, oi := range r.world.GetObjectsInRoom(zoneId, storage.Identifier(roomId)) {
+				if ref := matchObject(oi); ref != nil {
+					return ref, nil
+				}
+			}
+		}
+	}
+
 	return nil, NewUserError(fmt.Sprintf("Object '%s' not found", name))
 }
 
