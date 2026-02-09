@@ -231,6 +231,10 @@ func TestHandler_parseInputs(t *testing.T) {
 
 type mockHandlerFactory struct{}
 
+func (f *mockHandlerFactory) Spec() *HandlerSpec {
+	return nil
+}
+
 func (f *mockHandlerFactory) ValidateConfig(config map[string]any) error {
 	return nil
 }
@@ -544,6 +548,168 @@ func TestHandler_expandConfig(t *testing.T) {
 				if gotValue != expValue {
 					t.Errorf("config[%q] = %q, expected %q", key, gotValue, expValue)
 				}
+			}
+		})
+	}
+}
+
+func TestHandler_validateSpec(t *testing.T) {
+	tests := map[string]struct {
+		cmd    *Command
+		spec   *HandlerSpec
+		expErr string
+	}{
+		"nil spec passes": {
+			cmd:    &Command{Handler: "test"},
+			spec:   nil,
+			expErr: "",
+		},
+		"empty spec passes": {
+			cmd:    &Command{Handler: "test"},
+			spec:   &HandlerSpec{},
+			expErr: "",
+		},
+		"missing required target": {
+			cmd: &Command{
+				Handler: "test",
+				Targets: []TargetSpec{},
+			},
+			spec: &HandlerSpec{
+				Targets: []TargetRequirement{
+					{Name: "target", Type: TargetTypeObject, Required: true},
+				},
+			},
+			expErr: `missing required target "target"`,
+		},
+		"optional target missing is ok": {
+			cmd: &Command{
+				Handler: "test",
+				Targets: []TargetSpec{},
+			},
+			spec: &HandlerSpec{
+				Targets: []TargetRequirement{
+					{Name: "target", Type: TargetTypeObject, Required: false},
+				},
+			},
+			expErr: "",
+		},
+		"wrong target type": {
+			cmd: &Command{
+				Handler: "test",
+				Targets: []TargetSpec{
+					{Name: "target", Type: TargetTypePlayer, Input: "target"},
+				},
+			},
+			spec: &HandlerSpec{
+				Targets: []TargetRequirement{
+					{Name: "target", Type: TargetTypeObject, Required: true},
+				},
+			},
+			expErr: `target "target": expected type object, got player`,
+		},
+		"extra target not in spec": {
+			cmd: &Command{
+				Handler: "test",
+				Targets: []TargetSpec{
+					{Name: "target", Type: TargetTypeObject, Input: "target"},
+					{Name: "extra", Type: TargetTypeObject, Input: "extra"},
+				},
+			},
+			spec: &HandlerSpec{
+				Targets: []TargetRequirement{
+					{Name: "target", Type: TargetTypeObject, Required: true},
+				},
+			},
+			expErr: `unknown target "extra"`,
+		},
+		"missing required config": {
+			cmd: &Command{
+				Handler: "test",
+				Config:  map[string]any{},
+			},
+			spec: &HandlerSpec{
+				Config: []ConfigRequirement{
+					{Name: "direction", Required: true},
+				},
+			},
+			expErr: `missing required config key "direction"`,
+		},
+		"optional config missing is ok": {
+			cmd: &Command{
+				Handler: "test",
+				Config:  map[string]any{},
+			},
+			spec: &HandlerSpec{
+				Config: []ConfigRequirement{
+					{Name: "optional_key", Required: false},
+				},
+			},
+			expErr: "",
+		},
+		"extra config not in spec": {
+			cmd: &Command{
+				Handler: "test",
+				Config: map[string]any{
+					"direction": "north",
+					"typo_key":  "value",
+				},
+			},
+			spec: &HandlerSpec{
+				Config: []ConfigRequirement{
+					{Name: "direction", Required: true},
+				},
+			},
+			expErr: `unknown config key "typo_key"`,
+		},
+		"valid targets and config": {
+			cmd: &Command{
+				Handler: "test",
+				Targets: []TargetSpec{
+					{Name: "item", Type: TargetTypeObject, Input: "item"},
+					{Name: "recipient", Type: TargetTypePlayer, Input: "recipient"},
+				},
+				Config: map[string]any{
+					"message": "hello",
+				},
+			},
+			spec: &HandlerSpec{
+				Targets: []TargetRequirement{
+					{Name: "item", Type: TargetTypeObject, Required: true},
+					{Name: "recipient", Type: TargetTypePlayer, Required: true},
+				},
+				Config: []ConfigRequirement{
+					{Name: "message", Required: true},
+				},
+			},
+			expErr: "",
+		},
+	}
+
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			h := &Handler{}
+
+			// Skip nil spec
+			if tt.spec == nil {
+				return
+			}
+
+			err := h.validateSpec(tt.cmd, tt.spec)
+
+			if tt.expErr == "" {
+				if err != nil {
+					t.Errorf("unexpected error: %v", err)
+				}
+				return
+			}
+
+			if err == nil {
+				t.Errorf("expected error containing %q, got nil", tt.expErr)
+				return
+			}
+
+			if err.Error() != tt.expErr {
+				t.Errorf("error = %q, expected %q", err.Error(), tt.expErr)
 			}
 		})
 	}

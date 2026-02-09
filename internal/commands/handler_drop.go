@@ -19,6 +19,14 @@ func NewDropHandlerFactory(world *game.WorldState, pub Publisher) *DropHandlerFa
 	return &DropHandlerFactory{world: world, pub: pub}
 }
 
+func (f *DropHandlerFactory) Spec() *HandlerSpec {
+	return &HandlerSpec{
+		Targets: []TargetRequirement{
+			{Name: "target", Type: TargetTypeObject, Required: true},
+		},
+	}
+}
+
 func (f *DropHandlerFactory) ValidateConfig(config map[string]any) error {
 	return nil
 }

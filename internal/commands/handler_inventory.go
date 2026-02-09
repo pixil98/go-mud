@@ -19,6 +19,10 @@ func NewInventoryHandlerFactory(world *game.WorldState, pub Publisher) *Inventor
 	return &InventoryHandlerFactory{world: world, pub: pub}
 }
 
+func (f *InventoryHandlerFactory) Spec() *HandlerSpec {
+	return nil
+}
+
 func (f *InventoryHandlerFactory) ValidateConfig(config map[string]any) error {
 	return nil
 }

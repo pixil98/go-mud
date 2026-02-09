@@ -21,6 +21,14 @@ func NewLookHandlerFactory(world *game.WorldState, pub Publisher) *LookHandlerFa
 	return &LookHandlerFactory{world: world, pub: pub}
 }
 
+func (f *LookHandlerFactory) Spec() *HandlerSpec {
+	return &HandlerSpec{
+		Targets: []TargetRequirement{
+			{Name: "target", Type: TargetTypeTarget, Required: false},
+		},
+	}
+}
+
 func (f *LookHandlerFactory) ValidateConfig(config map[string]any) error {
 	return nil
 }

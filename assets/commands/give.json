@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "give",
+    "spec": {
+        "handler": "give",
+        "targets": [
+            {"name": "item", "type": "object", "scope": ["inventory"], "input": "item"},
+            {"name": "recipient", "type": "player", "scope": ["room"], "input": "recipient"}
+        ],
+        "inputs": [
+            {"name": "item", "type": "string", "required": true},
+            {"name": "recipient", "type": "string", "required": true}
+        ]
+    }
+}

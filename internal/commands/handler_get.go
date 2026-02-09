@@ -20,6 +20,15 @@ func NewGetHandlerFactory(world *game.WorldState, pub Publisher) *GetHandlerFact
 	return &GetHandlerFactory{world: world, pub: pub}
 }
 
+func (f *GetHandlerFactory) Spec() *HandlerSpec {
+	return &HandlerSpec{
+		Targets: []TargetRequirement{
+			{Name: "target", Type: TargetTypeObject, Required: true},
+			{Name: "container", Type: TargetTypeObject, Required: false},
+		},
+	}
+}
+
 func (f *GetHandlerFactory) ValidateConfig(config map[string]any) error {
 	return nil
 }

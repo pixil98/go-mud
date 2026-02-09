@@ -3,7 +3,6 @@
     "id": "look",
     "spec": {
         "handler": "look",
-        "config": {},
         "targets": [
             {"name": "target", "type": "target", "scope": ["room", "inventory"], "input": "target", "optional": true}
         ],

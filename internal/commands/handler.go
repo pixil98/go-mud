@@ -31,11 +31,35 @@ type CommandContext struct {
 // It receives CommandContext with fully expanded config.
 type CommandFunc func(ctx context.Context, cmdCtx *CommandContext) error
 
+// TargetRequirement describes an expected target for a handler.
+type TargetRequirement struct {
+	Name     string     // Target name (must match JSON "name" field)
+	Type     TargetType // Expected type: TargetTypePlayer, TargetTypeObject, etc.
+	Required bool       // If true, target must exist in command JSON
+}
+
+// ConfigRequirement describes an expected config key for a handler.
+type ConfigRequirement struct {
+	Name     string // Config key name
+	Required bool   // If true, config key must exist in command JSON
+}
+
+// HandlerSpec describes the expected targets and config for a handler.
+// Used for validation at command load time.
+type HandlerSpec struct {
+	Targets []TargetRequirement
+	Config  []ConfigRequirement
+}
+
 // HandlerFactory creates CommandFuncs from command configurations.
 // Implementations should expose their expected config structure.
 // Factories that need a Publisher should accept it in their constructor.
 type HandlerFactory interface {
-	// ValidateConfig validates that the config contains required fields.
+	// Spec returns the handler's requirements for validation.
+	// Return nil to skip spec-based validation.
+	Spec() *HandlerSpec
+	// ValidateConfig performs custom validation on the config.
+	// Called after spec validation. Use for conditional logic that Spec can't express.
 	ValidateConfig(config map[string]any) error
 	// Create creates a CommandFunc. Handlers read expanded config from CommandContext.
 	Create() (CommandFunc, error)
@@ -73,6 +97,7 @@ func NewHandler(c storage.Storer[*Command], publisher Publisher, world *game.Wor
 	h.RegisterFactory("inventory", NewInventoryHandlerFactory(world, publisher))
 	h.RegisterFactory("get", NewGetHandlerFactory(world, publisher))
 	h.RegisterFactory("drop", NewDropHandlerFactory(world, publisher))
+	h.RegisterFactory("give", NewGiveHandlerFactory(world, publisher))
 
 	// Compile commands
 	for id, cmd := range c.GetAll() {
@@ -107,6 +132,14 @@ func (h *Handler) compile(id storage.Identifier, cmd *Command) error {
 		return fmt.Errorf("unknown handler %q", cmd.Handler)
 	}
 
+	// Validate against handler spec if provided
+	if spec := factory.Spec(); spec != nil {
+		if err := h.validateSpec(cmd, spec); err != nil {
+			return fmt.Errorf("validating spec: %w", err)
+		}
+	}
+
+	// Run custom validation
 	if err := factory.ValidateConfig(cmd.Config); err != nil {
 		return fmt.Errorf("validating config: %w", err)
 	}
@@ -120,6 +153,65 @@ func (h *Handler) compile(id storage.Identifier, cmd *Command) error {
 		cmd:     cmd,
 		cmdFunc: cmdFunc,
 	}
+	return nil
+}
+
+// validateSpec validates a command against a handler's spec.
+func (h *Handler) validateSpec(cmd *Command, spec *HandlerSpec) error {
+	// Build maps for quick lookup
+	cmdTargets := make(map[string]TargetSpec)
+	for _, t := range cmd.Targets {
+		cmdTargets[t.Name] = t
+	}
+
+	cmdConfig := make(map[string]bool)
+	for k := range cmd.Config {
+		cmdConfig[k] = true
+	}
+
+	// Check required targets exist and types match
+	specTargets := make(map[string]bool)
+	for _, req := range spec.Targets {
+		specTargets[req.Name] = true
+
+		target, exists := cmdTargets[req.Name]
+		if !exists {
+			if req.Required {
+				return fmt.Errorf("missing required target %q", req.Name)
+			}
+			continue
+		}
+
+		// Validate type matches
+		if target.Type != req.Type {
+			return fmt.Errorf("target %q: expected type %s, got %s", req.Name, req.Type.String(), target.Type.String())
+		}
+	}
+
+	// Check for unknown targets
+	for name := range cmdTargets {
+		if !specTargets[name] {
+			return fmt.Errorf("unknown target %q", name)
+		}
+	}
+
+	// Check required config keys exist
+	specConfig := make(map[string]bool)
+	for _, req := range spec.Config {
+		specConfig[req.Name] = true
+
+		if !cmdConfig[req.Name] && req.Required {
+			return fmt.Errorf("missing required config key %q", req.Name)
+		}
+	}
+
+	// Check for unknown config keys
+	for name := range cmdConfig {
+		if !specConfig[name] {
+			return fmt.Errorf("unknown config key %q", name)
+		}
+	}
+
 	return nil
 }
 
@@ -271,7 +363,7 @@ func (h *Handler) resolveTargets(specs []TargetSpec, inputs map[string]any, char
 		}
 
 		// Resolve the target
-		resolved, err := resolver.Resolve(charId, name, EntityType(spec.Type), spec.Scope())
+		resolved, err := resolver.Resolve(charId, name, spec.Type, spec.Scope())
 		if err != nil {
 			return nil, err
 		}

@@ -22,6 +22,10 @@ func NewWhoHandlerFactory(world *game.WorldState, pub Publisher, charInfo plugin
 	return &WhoHandlerFactory{world: world, pub: pub, charInfo: charInfo}
 }
 
+func (f *WhoHandlerFactory) Spec() *HandlerSpec {
+	return nil
+}
+
 func (f *WhoHandlerFactory) ValidateConfig(config map[string]any) error {
 	return nil
 }

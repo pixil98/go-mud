@@ -16,6 +16,14 @@ func NewTitleHandlerFactory(pub Publisher) *TitleHandlerFactory {
 	return &TitleHandlerFactory{pub: pub}
 }
 
+func (f *TitleHandlerFactory) Spec() *HandlerSpec {
+	return &HandlerSpec{
+		Config: []ConfigRequirement{
+			{Name: "new_title", Required: false},
+		},
+	}
+}
+
 func (f *TitleHandlerFactory) ValidateConfig(config map[string]any) error {
 	return nil
 }

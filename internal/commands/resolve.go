@@ -8,15 +8,6 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
-// EntityType defines what kind of entity to resolve.
-type EntityType string
-
-const (
-	EntityPlayer EntityType = "player"
-	EntityMob    EntityType = "mobile"
-	EntityObj    EntityType = "object"
-	EntityTarget EntityType = "target" // Polymorphic: tries player, mobile, object
-)
 
 // Resolver resolves target names to game entities.
 // Used by the framework to process $resolve directives.
@@ -30,19 +21,19 @@ func NewResolver(world *game.WorldState) *Resolver {
 }
 
 // Resolve resolves a target name to an entity based on type and scope.
-// Returns *PlayerRef, *MobileRef, *ObjectRef, or *TargetRef based on entityType.
-func (r *Resolver) Resolve(charId storage.Identifier, name string, entityType EntityType, scope Scope) (any, error) {
-	switch entityType {
-	case EntityPlayer:
+// Returns *PlayerRef, *MobileRef, *ObjectRef, or *TargetRef based on targetType.
+func (r *Resolver) Resolve(charId storage.Identifier, name string, targetType TargetType, scope Scope) (any, error) {
+	switch targetType {
+	case TargetTypePlayer:
 		return r.resolvePlayer(charId, name, scope)
-	case EntityMob:
+	case TargetTypeMobile:
 		return r.resolveMob(charId, name, scope)
-	case EntityObj:
+	case TargetTypeObject:
 		return r.resolveObject(charId, name, scope)
-	case EntityTarget:
+	case TargetTypeTarget:
 		return r.resolveTarget(charId, name, scope)
 	default:
-		return nil, fmt.Errorf("unknown entity type: %s", entityType)
+		return nil, fmt.Errorf("unknown target type: %s", targetType)
 	}
 }
 

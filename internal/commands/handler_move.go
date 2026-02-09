@@ -22,6 +22,14 @@ func NewMoveHandlerFactory(world *game.WorldState, pub Publisher) *MoveHandlerFa
 	return &MoveHandlerFactory{world: world, pub: pub}
 }
 
+func (f *MoveHandlerFactory) Spec() *HandlerSpec {
+	return &HandlerSpec{
+		Config: []ConfigRequirement{
+			{Name: "direction", Required: true},
+		},
+	}
+}
+
 func (f *MoveHandlerFactory) ValidateConfig(config map[string]any) error {
 	direction, ok := config["direction"].(string)
 	if !ok || direction == "" {

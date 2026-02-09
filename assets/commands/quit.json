@@ -2,7 +2,6 @@
     "version": 1,
     "id": "quit",
     "spec": {
-        "handler": "quit",
-        "inputs": []
+        "handler": "quit"
     }
 }

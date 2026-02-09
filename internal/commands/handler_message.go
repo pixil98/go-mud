@@ -20,6 +20,19 @@ func NewMessageHandlerFactory(pub Publisher) *MessageHandlerFactory {
 	return &MessageHandlerFactory{pub: pub}
 }
 
+func (f *MessageHandlerFactory) Spec() *HandlerSpec {
+	// Conditional requirements (e.g., recipient_message required when recipient_channel set)
+	// are handled by ValidateConfig below.
+	return &HandlerSpec{
+		Config: []ConfigRequirement{
+			{Name: "recipient_channel", Required: false},
+			{Name: "recipient_message", Required: false},
+			{Name: "sender_channel", Required: false},
+			{Name: "sender_message", Required: false},
+		},
+	}
+}
+
 func (f *MessageHandlerFactory) ValidateConfig(config map[string]any) error {
 	recipientChannel, _ := config["recipient_channel"].(string)
 	recipientMessage, _ := config["recipient_message"].(string)

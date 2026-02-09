@@ -24,6 +24,33 @@ const (
 	ScopeInventory                   // Objects in actor's inventory
 )
 
+// TargetType represents the type of entity a target resolves to.
+type TargetType string
+
+const (
+	TargetTypePlayer TargetType = "player" // Resolves to a player
+	TargetTypeMobile TargetType = "mobile" // Resolves to a mobile/NPC
+	TargetTypeObject TargetType = "object" // Resolves to an object
+	TargetTypeTarget TargetType = "target" // Polymorphic: tries player, mobile, object
+)
+
+// String returns the canonical string name for known target types.
+// Returns empty string for unknown types, which can be used for validation.
+func (t TargetType) String() string {
+	switch t {
+	case TargetTypePlayer:
+		return "player"
+	case TargetTypeMobile:
+		return "mobile"
+	case TargetTypeObject:
+		return "object"
+	case TargetTypeTarget:
+		return "target"
+	default:
+		return ""
+	}
+}
+
 // InputSpec defines an input parameter that a command accepts from user input.
 type InputSpec struct {
 	Name     string    `json:"name"`
@@ -34,11 +61,11 @@ type InputSpec struct {
 
 // TargetSpec defines a target to be resolved at runtime.
 type TargetSpec struct {
-	Name     string   `json:"name"`               // Name to access in templates (e.g., "target" -> .Targets.target)
-	Type     string   `json:"type"`               // Entity type: player, mob, object, target (polymorphic)
-	Scopes   []string `json:"scope,omitempty"`    // Resolution scopes: room, world, zone, inventory
-	Input    string   `json:"input"`              // Which input provides the name to resolve
-	Optional bool     `json:"optional,omitempty"` // If true, missing input -> nil (no error)
+	Name     string     `json:"name"`               // Name to access in templates (e.g., "target" -> .Targets.target)
+	Type     TargetType `json:"type"`               // Entity type: player, mobile, object, target (polymorphic)
+	Scopes   []string   `json:"scope,omitempty"`    // Resolution scopes: room, world, zone, inventory
+	Input    string     `json:"input"`              // Which input provides the name to resolve
+	Optional bool       `json:"optional,omitempty"` // If true, missing input -> nil (no error)
 }
 
 // Scope returns the combined Scope value from Scopes slice.
@@ -102,15 +129,12 @@ func (c *Command) Validate() error {
 		if target.Name == "" {
 			return fmt.Errorf("target %d: name is required", i)
 		}
+		// Validate target type
 		if target.Type == "" {
 			return fmt.Errorf("target %q: type is required", target.Name)
 		}
-		// Validate target type
-		switch target.Type {
-		case "player", "mobile", "object", "target":
-			// Valid
-		default:
-			return fmt.Errorf("target %q: unknown type %q", target.Name, target.Type)
+		if target.Type.String() == "" {
+			return fmt.Errorf("target %q: unknown type %q", target.Name, string(target.Type))
 		}
 		if target.Input == "" {
 			return fmt.Errorf("target %q: input is required", target.Name)
