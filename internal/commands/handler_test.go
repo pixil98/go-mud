@@ -302,119 +302,70 @@ func TestHandler_RegisterFactory(t *testing.T) {
 	}
 }
 
-func TestHandler_TwoPassConfigExpansion(t *testing.T) {
-	// Tests that $resolve directives are processed in pass 1,
-	// and resolved targets can be used in template expansion in pass 2.
-
+func TestHandler_resolveTargets(t *testing.T) {
 	tests := map[string]struct {
 		chars         map[string]*game.Character
 		onlinePlayers map[string]struct{ zone, room storage.Identifier }
 		actorZone     storage.Identifier
 		actorRoom     storage.Identifier
-		config        map[string]any
+		targetSpecs   []TargetSpec
 		inputs        map[string]any
-		expConfig     map[string]any
+		expTargets    map[string]string // name -> expected resolved name
 		expErr        string
 	}{
-		"resolved target used in template": {
+		"resolve player in world scope": {
 			chars: map[string]*game.Character{
 				"bob": {Name: "Bob", Title: "the Great"},
 			},
 			onlinePlayers: map[string]struct{ zone, room storage.Identifier }{
 				"bob": {"zone1", "room1"},
 			},
-			actorZone: "zone1",
-			actorRoom: "room1",
-			config: map[string]any{
-				"target": map[string]any{
-					"$resolve": "player",
-					"$scope":   "world",
-					"$input":   "target",
-				},
-				"channel": "player-{{ .Config.target.Name | lower }}",
-				"message": "Hello {{ .Config.target.Name }}!",
+			actorZone: "zone2",
+			actorRoom: "room2",
+			targetSpecs: []TargetSpec{
+				{Name: "target", Type: "player", Scope: "world", Input: "target"},
 			},
 			inputs: map[string]any{
 				"target": "bob",
 			},
-			expConfig: map[string]any{
-				"channel": "player-bob",
-				"message": "Hello Bob!",
+			expTargets: map[string]string{
+				"target": "Bob",
 			},
 		},
-		"resolved target with actor and inputs": {
-			chars: map[string]*game.Character{
-				"bob":   {Name: "Bob"},
-				"alice": {Name: "Alice"},
-			},
-			onlinePlayers: map[string]struct{ zone, room storage.Identifier }{
-				"bob": {"zone1", "room1"},
-			},
-			actorZone: "zone1",
-			actorRoom: "room1",
-			config: map[string]any{
-				"target": map[string]any{
-					"$resolve": "player",
-					"$scope":   "world",
-					"$input":   "target",
-				},
-				"message": "{{ .Actor.Name }} tells {{ .Config.target.Name }}, \"{{ .Inputs.text }}\"",
-			},
-			inputs: map[string]any{
-				"target": "bob",
-				"text":   "hello there",
-			},
-			expConfig: map[string]any{
-				"message": `Alice tells Bob, "hello there"`,
-			},
-		},
-		"optional resolve with missing input": {
+		"optional target with missing input": {
 			chars:         map[string]*game.Character{},
 			onlinePlayers: map[string]struct{ zone, room storage.Identifier }{},
 			actorZone:     "zone1",
 			actorRoom:     "room1",
-			config: map[string]any{
-				"target": map[string]any{
-					"$resolve":  "player",
-					"$scope":    "room",
-					"$input":    "target",
-					"$optional": true,
-				},
+			targetSpecs: []TargetSpec{
+				{Name: "target", Type: "target", Scope: "room", Input: "target", Optional: true},
 			},
-			inputs: map[string]any{},
-			expConfig: map[string]any{
-				"target": nil,
-			},
+			inputs:     map[string]any{},
+			expTargets: map[string]string{}, // target should be nil
 		},
-		"required resolve with missing input fails": {
+		"required target with missing input fails": {
 			chars:         map[string]*game.Character{},
 			onlinePlayers: map[string]struct{ zone, room storage.Identifier }{},
 			actorZone:     "zone1",
 			actorRoom:     "room1",
-			config: map[string]any{
-				"target": map[string]any{
-					"$resolve": "player",
-					"$scope":   "world",
-					"$input":   "target",
-				},
+			targetSpecs: []TargetSpec{
+				{Name: "target", Type: "player", Scope: "world", Input: "target"},
 			},
 			inputs: map[string]any{},
 			expErr: "Missing required input: target",
 		},
-		"inputs used directly in template": {
+		"player not found": {
 			chars:         map[string]*game.Character{},
 			onlinePlayers: map[string]struct{ zone, room storage.Identifier }{},
 			actorZone:     "zone1",
 			actorRoom:     "room1",
-			config: map[string]any{
-				"message": "{{ .Actor.Name }} says, \"{{ .Inputs.text }}\"",
+			targetSpecs: []TargetSpec{
+				{Name: "target", Type: "player", Scope: "world", Input: "target"},
 			},
 			inputs: map[string]any{
-				"text": "hello world",
+				"target": "nobody",
 			},
-			expConfig: map[string]any{
-				"message": `Alice says, "hello world"`,
-			},
+			expErr: "Player 'nobody' not found",
 		},
 	}
 
@@ -442,9 +393,7 @@ func TestHandler_TwoPassConfigExpansion(t *testing.T) {
 				_ = world.AddPlayer(storage.Identifier(charId), ch, loc.zone, loc.room)
 			}
 
-			// Pass 1: Process $resolve directives
-			resolver := NewResolver(world)
-			processedConfig, err := h.expandConfig(tt.config, tt.inputs, actorState, resolver)
+			targets, err := h.resolveTargets(tt.targetSpecs, tt.inputs, actorState, world)
 
 			if tt.expErr != "" {
 				if err == nil {
@@ -462,33 +411,137 @@ func TestHandler_TwoPassConfigExpansion(t *testing.T) {
 			}
 
 			if err != nil {
-				t.Fatalf("expandConfig failed: %v", err)
+				t.Fatalf("resolveTargets failed: %v", err)
 			}
 
-			// Build CommandContext for Pass 2
-			actor := tt.chars["alice"]
-			if actor == nil {
-				actor = &game.Character{Name: "Alice"}
-			}
-			cmdCtx := &CommandContext{
-				Actor:   actor,
-				Session: actorState,
-				World:   world,
-				Config:  processedConfig,
-				Inputs:  tt.inputs,
+			// Verify expected targets
+			for name, expName := range tt.expTargets {
+				target := targets[name]
+				if target == nil {
+					t.Errorf("target[%q] is nil, expected %q", name, expName)
+					continue
+				}
+				if target.Name != expName {
+					t.Errorf("target[%q].Name = %q, expected %q", name, target.Name, expName)
+				}
 			}
 
-			// Pass 2: Expand templates
-			expandedConfig, err := h.expandTemplates(processedConfig, cmdCtx)
+			// Check that optional missing targets are nil
+			for _, spec := range tt.targetSpecs {
+				if spec.Optional {
+					if _, hasInput := tt.inputs[spec.Input]; !hasInput {
+						if targets[spec.Name] != nil {
+							t.Errorf("target[%q] should be nil for optional missing input", spec.Name)
+						}
+					}
+				}
+			}
+		})
+	}
+}
+
+func TestHandler_expandConfig(t *testing.T) {
+	tests := map[string]struct {
+		config    map[string]any
+		actor     *game.Character
+		targets   map[string]*TargetRef
+		inputs    map[string]any
+		expConfig map[string]string
+		expErr    string
+	}{
+		"simple input substitution": {
+			config: map[string]any{
+				"message": "{{ .Actor.Name }} says, \"{{ .Inputs.text }}\"",
+			},
+			actor:   &game.Character{Name: "Alice"},
+			targets: map[string]*TargetRef{},
+			inputs: map[string]any{
+				"text": "hello world",
+			},
+			expConfig: map[string]string{
+				"message": `Alice says, "hello world"`,
+			},
+		},
+		"target used in template": {
+			config: map[string]any{
+				"channel": "player-{{ .Targets.target.Name | lower }}",
+				"message": "Hello {{ .Targets.target.Name }}!",
+			},
+			actor: &game.Character{Name: "Alice"},
+			targets: map[string]*TargetRef{
+				"target": {Type: "player", Name: "Bob", Player: &PlayerRef{Name: "Bob"}},
+			},
+			inputs: map[string]any{},
+			expConfig: map[string]string{
+				"channel": "player-bob",
+				"message": "Hello Bob!",
+			},
+		},
+		"actor and target combined": {
+			config: map[string]any{
+				"message": "{{ .Actor.Name }} tells {{ .Targets.target.Name }}, \"{{ .Inputs.text }}\"",
+			},
+			actor: &game.Character{Name: "Alice"},
+			targets: map[string]*TargetRef{
+				"target": {Type: "player", Name: "Bob", Player: &PlayerRef{Name: "Bob"}},
+			},
+			inputs: map[string]any{
+				"text": "hello there",
+			},
+			expConfig: map[string]string{
+				"message": `Alice tells Bob, "hello there"`,
+			},
+		},
+		"static config value": {
+			config: map[string]any{
+				"direction": "north",
+			},
+			actor:   &game.Character{Name: "Alice"},
+			targets: map[string]*TargetRef{},
+			inputs:  map[string]any{},
+			expConfig: map[string]string{
+				"direction": "north",
+			},
+		},
+	}
+
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			h := &Handler{}
+
+			world := game.NewWorldState(
+				nil,
+				&mockCharStore{chars: map[string]*game.Character{}},
+				&mockZoneStore{zones: map[string]*game.Zone{}},
+				&mockRoomStore{rooms: map[string]*game.Room{}},
+				&mockMobileStore{mobiles: map[string]*game.Mobile{}},
+			)
+
+			actorChan := make(chan []byte, 1)
+			_ = world.AddPlayer("alice", actorChan, "zone1", "room1")
+			actorState := world.GetPlayer("alice")
+
+			expandedConfig, err := h.expandConfig(tt.config, tt.actor, actorState, tt.targets, tt.inputs)
+
+			if tt.expErr != "" {
+				if err == nil {
+					t.Fatalf("expected error containing %q, got nil", tt.expErr)
+				}
+				if err.Error() != tt.expErr {
+					t.Errorf("error = %q, expected %q", err.Error(), tt.expErr)
+				}
+				return
+			}
+
 			if err != nil {
-				t.Fatalf("expandTemplates failed: %v", err)
+				t.Fatalf("expandConfig failed: %v", err)
 			}
 
 			// Verify expected config values
 			for key, expValue := range tt.expConfig {
 				gotValue := expandedConfig[key]
 				if gotValue != expValue {
-					t.Errorf("config[%q] = %v, expected %v", key, gotValue, expValue)
+					t.Errorf("config[%q] = %q, expected %q", key, gotValue, expValue)
 				}
 			}
 		})

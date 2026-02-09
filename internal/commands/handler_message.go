@@ -43,10 +43,10 @@ func (f *MessageHandlerFactory) ValidateConfig(config map[string]any) error {
 func (f *MessageHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, cmdCtx *CommandContext) error {
 		// Config values are already expanded by the framework
-		recipientChannel, _ := cmdCtx.Config["recipient_channel"].(string)
-		recipientMessage, _ := cmdCtx.Config["recipient_message"].(string)
-		senderChannel, _ := cmdCtx.Config["sender_channel"].(string)
-		senderMessage, _ := cmdCtx.Config["sender_message"].(string)
+		recipientChannel := cmdCtx.Config["recipient_channel"]
+		recipientMessage := cmdCtx.Config["recipient_message"]
+		senderChannel := cmdCtx.Config["sender_channel"]
+		senderMessage := cmdCtx.Config["sender_message"]
 
 		// Send confirmation to sender if configured
 		if senderChannel != "" {

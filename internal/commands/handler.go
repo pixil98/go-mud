@@ -20,11 +20,11 @@ type ParsedInput struct {
 
 // CommandContext is what handlers receive after config processing.
 type CommandContext struct {
-	Actor   *game.Character   // Character data (name, title, etc.)
-	Session *game.PlayerState // Current session state (location, quit flag, etc.)
+	Actor   *game.Character        // Character data (name, title, etc.)
+	Session *game.PlayerState      // Current session state (location, quit flag, etc.)
 	World   *game.WorldState
-	Config  map[string]any // Config with $resolve directives processed
-	Inputs  map[string]any // Parsed input values keyed by name
+	Targets map[string]*TargetRef  // Resolved targets by name
+	Config  map[string]string      // Expanded config values (all templates resolved)
 }
 
 // CommandFunc is the signature for compiled command functions.
@@ -127,43 +127,40 @@ func (h *Handler) Exec(ctx context.Context, world *game.WorldState, charId stora
 		return NewUserError(fmt.Sprintf("Unknown command: %s", cmdName))
 	}
 
-	// Validate and parse inputs
+	// Parse inputs
 	inputs, err := h.parseInputs(compiled.cmd.Inputs, rawArgs)
 	if err != nil {
 		return err
 	}
 
-	// Build input map for template expansion
+	// Build input map for template expansion and target resolution
 	inputMap := make(map[string]any, len(inputs))
 	for _, input := range inputs {
 		inputMap[input.Spec.Name] = input.Value
 	}
 
-	// Process $resolve directives in config
 	actor := world.Characters().Get(string(charId))
 	session := world.GetPlayer(charId)
-	resolver := NewResolver(world)
 
-	processedConfig, err := h.expandConfig(compiled.cmd.Config, inputMap, session, resolver)
+	// Resolve targets from targets section
+	targets, err := h.resolveTargets(compiled.cmd.Targets, inputMap, session, world)
 	if err != nil {
 		return err
 	}
 
-	// Build context for template expansion
+	// Expand config templates
+	expandedConfig, err := h.expandConfig(compiled.cmd.Config, actor, session, targets, inputMap)
+	if err != nil {
+		return err
+	}
+
 	cmdCtx := &CommandContext{
 		Actor:   actor,
 		Session: session,
 		World:   world,
-		Config:  processedConfig,
-		Inputs:  inputMap,
+		Targets: targets,
+		Config:  expandedConfig,
 	}
-
-	// Expand all template strings in config
-	expandedConfig, err := h.expandTemplates(processedConfig, cmdCtx)
-	if err != nil {
-		return err
-	}
-	cmdCtx.Config = expandedConfig
 
 	return compiled.cmdFunc(ctx, cmdCtx)
 }
@@ -249,140 +246,89 @@ func (h *Handler) parseValue(inputType InputType, raw string) (any, error) {
 	}
 }
 
-// expandConfig processes $resolve directives in config.
-// Strings are passed through unchanged - handlers expand templates themselves.
-func (h *Handler) expandConfig(config map[string]any, inputs map[string]any, actorState *game.PlayerState, resolver *Resolver) (map[string]any, error) {
-	if config == nil {
-		return make(map[string]any), nil
+// resolveTargets resolves all targets from the targets section.
+func (h *Handler) resolveTargets(specs []TargetSpec, inputs map[string]any, session *game.PlayerState, world *game.WorldState) (map[string]*TargetRef, error) {
+	if len(specs) == 0 {
+		return make(map[string]*TargetRef), nil
 	}
 
-	expanded := make(map[string]any, len(config))
+	resolver := NewResolver(world)
+	targets := make(map[string]*TargetRef, len(specs))
 
+	for _, spec := range specs {
+		// Get the input value
+		inputValue, exists := inputs[spec.Input]
+		if !exists || inputValue == nil || inputValue == "" {
+			if spec.Optional {
+				targets[spec.Name] = nil
+				continue
+			}
+			return nil, NewUserError(fmt.Sprintf("Missing required input: %s", spec.Input))
+		}
+
+		name, ok := inputValue.(string)
+		if !ok {
+			return nil, fmt.Errorf("input %q is not a string", spec.Input)
+		}
+
+		// Resolve the target
+		scope := ScopesFromConfig(spec.Scope)
+		resolved, err := resolver.Resolve(session, name, EntityType(spec.Type), scope)
+		if err != nil {
+			return nil, err
+		}
+
+		// Convert to TargetRef
+		switch t := resolved.(type) {
+		case *PlayerRef:
+			targets[spec.Name] = &TargetRef{Type: "player", Name: t.Name, Player: t}
+		case *MobRef:
+			targets[spec.Name] = &TargetRef{Type: "mob", Name: t.Name, Mob: t}
+		case *ItemRef:
+			targets[spec.Name] = &TargetRef{Type: "item", Name: t.Name, Item: t}
+		case *TargetRef:
+			targets[spec.Name] = t
+		default:
+			return nil, fmt.Errorf("unexpected resolved type: %T", resolved)
+		}
+	}
+
+	return targets, nil
+}
+
+// templateContext holds data for template expansion.
+type templateContext struct {
+	Actor   *game.Character
+	Session *game.PlayerState
+	Targets map[string]*TargetRef
+	Inputs  map[string]any
+}
+
+// expandConfig expands all template strings in config and returns map[string]string.
+func (h *Handler) expandConfig(config map[string]any, actor *game.Character, session *game.PlayerState, targets map[string]*TargetRef, inputs map[string]any) (map[string]string, error) {
+	if config == nil {
+		return make(map[string]string), nil
+	}
+
+	tmplCtx := &templateContext{
+		Actor:   actor,
+		Session: session,
+		Targets: targets,
+		Inputs:  inputs,
+	}
+
+	expanded := make(map[string]string, len(config))
 	for key, value := range config {
-		expandedValue, err := h.expandValue(value, inputs, actorState, resolver)
+		str, ok := value.(string)
+		if !ok {
+			return nil, fmt.Errorf("config key %q: expected string, got %T", key, value)
+		}
+		expandedStr, err := ExpandTemplate(str, tmplCtx)
 		if err != nil {
 			return nil, fmt.Errorf("expanding config key %q: %w", key, err)
 		}
-		expanded[key] = expandedValue
+		expanded[key] = expandedStr
 	}
 
 	return expanded, nil
-}
-
-// expandValue processes a single config value, handling $resolve directives.
-// Strings pass through unchanged - handlers expand templates with full context.
-func (h *Handler) expandValue(value any, inputs map[string]any, actorState *game.PlayerState, resolver *Resolver) (any, error) {
-	switch v := value.(type) {
-	case map[string]any:
-		// Check if this is a $resolve directive
-		if directive, ok := IsResolveDirective(v); ok {
-			return h.processResolveDirective(directive, inputs, actorState, resolver)
-		}
-		// Otherwise recursively process the map
-		expanded := make(map[string]any, len(v))
-		for k, val := range v {
-			expandedVal, err := h.expandValue(val, inputs, actorState, resolver)
-			if err != nil {
-				return nil, err
-			}
-			expanded[k] = expandedVal
-		}
-		return expanded, nil
-
-	case []any:
-		// Recursively process array elements
-		expanded := make([]any, len(v))
-		for i, val := range v {
-			expandedVal, err := h.expandValue(val, inputs, actorState, resolver)
-			if err != nil {
-				return nil, err
-			}
-			expanded[i] = expandedVal
-		}
-		return expanded, nil
-
-	default:
-		// Pass through strings, numbers, bools, nil unchanged
-		return value, nil
-	}
-}
-
-// processResolveDirective handles a $resolve directive, resolving the target.
-func (h *Handler) processResolveDirective(directive *ResolveDirective, inputs map[string]any, actorState *game.PlayerState, resolver *Resolver) (any, error) {
-	// Get the input value to resolve
-	var name string
-	if directive.Input != "" {
-		inputValue, exists := inputs[directive.Input]
-		if !exists || inputValue == nil || inputValue == "" {
-			if directive.Optional {
-				return nil, nil
-			}
-			return nil, NewUserError(fmt.Sprintf("Missing required input: %s", directive.Input))
-		}
-		var ok bool
-		name, ok = inputValue.(string)
-		if !ok {
-			return nil, fmt.Errorf("input %q is not a string", directive.Input)
-		}
-	}
-
-	if name == "" {
-		if directive.Optional {
-			return nil, nil
-		}
-		return nil, NewUserError("No target specified")
-	}
-
-	// Resolve the target
-	return resolver.Resolve(actorState, name, directive.Resolve, directive.Scope)
-}
-
-// expandTemplates recursively expands all template strings in config.
-func (h *Handler) expandTemplates(config map[string]any, cmdCtx *CommandContext) (map[string]any, error) {
-	if config == nil {
-		return make(map[string]any), nil
-	}
-
-	expanded := make(map[string]any, len(config))
-	for key, value := range config {
-		expandedValue, err := h.expandTemplateValue(value, cmdCtx)
-		if err != nil {
-			return nil, fmt.Errorf("expanding template for key %q: %w", key, err)
-		}
-		expanded[key] = expandedValue
-	}
-	return expanded, nil
-}
-
-// expandTemplateValue expands templates in a single value.
-func (h *Handler) expandTemplateValue(value any, cmdCtx *CommandContext) (any, error) {
-	switch v := value.(type) {
-	case string:
-		return ExpandTemplate(v, cmdCtx)
-
-	case map[string]any:
-		expanded := make(map[string]any, len(v))
-		for k, val := range v {
-			expandedVal, err := h.expandTemplateValue(val, cmdCtx)
-			if err != nil {
-				return nil, err
-			}
-			expanded[k] = expandedVal
-		}
-		return expanded, nil
-
-	case []any:
-		expanded := make([]any, len(v))
-		for i, val := range v {
-			expandedVal, err := h.expandTemplateValue(val, cmdCtx)
-			if err != nil {
-				return nil, err
-			}
-			expanded[i] = expandedVal
-		}
-		return expanded, nil
-
-	default:
-		return value, nil
-	}
 }

@@ -1,6 +1,8 @@
 package commands
 
-import "github.com/pixil98/go-mud/internal/game"
+import (
+	"github.com/pixil98/go-mud/internal/game"
+)
 
 // Stable template-facing types
 // These types decouple templates from internal game structs.
@@ -8,8 +10,8 @@ import "github.com/pixil98/go-mud/internal/game"
 
 // PlayerRef is the template-facing view of a resolved player.
 type PlayerRef struct {
-	Name  string
-	Title string
+	Name        string
+	Description string
 }
 
 // PlayerRefFrom creates a PlayerRef from a game.Character.
@@ -18,19 +20,21 @@ func PlayerRefFrom(char *game.Character) *PlayerRef {
 		return nil
 	}
 	return &PlayerRef{
-		Name:  char.Name,
-		Title: char.Title,
+		Name:        char.Name,
+		Description: char.Entity.DetailedDesc,
 	}
 }
 
 // MobRef is the template-facing view of a resolved mob.
 type MobRef struct {
-	Name string
+	Name        string
+	Description string
 }
 
 // ItemRef is the template-facing view of a resolved item.
 type ItemRef struct {
-	Name string
+	Name        string
+	Description string
 }
 
 // TargetRef is a polymorphic target reference that could be a player, mob, or item.

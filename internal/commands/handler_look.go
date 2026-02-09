@@ -32,9 +32,8 @@ func (f *LookHandlerFactory) Create() (CommandFunc, error) {
 			return fmt.Errorf("player state not found")
 		}
 
-		// Check if target was resolved (from $resolve directive in config)
-		target := cmdCtx.Config["target"]
-		if target != nil {
+		// Check if target was resolved (from targets section)
+		if target := cmdCtx.Targets["target"]; target != nil {
 			return f.showTarget(cmdCtx, target)
 		}
 
@@ -61,26 +60,40 @@ func (f *LookHandlerFactory) showRoom(cmdCtx *CommandContext) error {
 }
 
 // showTarget displays information about a specific target.
-func (f *LookHandlerFactory) showTarget(cmdCtx *CommandContext, target any) error {
+func (f *LookHandlerFactory) showTarget(cmdCtx *CommandContext, target *TargetRef) error {
 	playerChannel := fmt.Sprintf("player-%s", strings.ToLower(cmdCtx.Actor.Name))
 
-	switch t := target.(type) {
-	case *TargetRef:
-		// TODO: Implement detailed target descriptions
-		msg := fmt.Sprintf("You look at %s.", t.Name)
-		if f.pub != nil {
-			_ = f.pub.Publish(playerChannel, []byte(msg))
-		}
-	case *PlayerRef:
-		msg := fmt.Sprintf("You look at %s.", t.Name)
-		if f.pub != nil {
-			_ = f.pub.Publish(playerChannel, []byte(msg))
-		}
+	var msg string
+	switch target.Type {
+	case "player":
+		msg = f.describePlayer(target.Player)
+	case "mob":
+		msg = f.describeMob(target.Mob)
+	case "item":
+		msg = f.describeItem(target.Item)
 	default:
 		return NewUserError("You can't look at that.")
 	}
 
+	if f.pub != nil {
+		_ = f.pub.Publish(playerChannel, []byte(msg))
+	}
 	return nil
+}
+
+func (f *LookHandlerFactory) describePlayer(player *PlayerRef) string {
+	// TODO: Implement detailed player descriptions
+	return fmt.Sprintf("You look at %s.", player.Name)
+}
+
+func (f *LookHandlerFactory) describeMob(mob *MobRef) string {
+	// TODO: Implement detailed mob descriptions
+	return fmt.Sprintf("You look at %s.", mob.Name)
+}
+
+func (f *LookHandlerFactory) describeItem(item *ItemRef) string {
+	// TODO: Implement detailed item descriptions
+	return fmt.Sprintf("You look at %s.", item.Name)
 }
 
 // FormatFullRoomDescription builds a complete room description including mobs and players.

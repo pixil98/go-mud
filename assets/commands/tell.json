@@ -4,16 +4,14 @@
     "spec": {
         "handler": "message",
         "config": {
-            "target": {
-                "$resolve": "player",
-                "$scope": "world",
-                "$input": "target"
-            },
-            "recipient_channel": "player-{{ .Config.target.Name | lower }}",
+            "recipient_channel": "player-{{ .Targets.target.Name | lower }}",
             "recipient_message": "{{ .Actor.Name }} tells you, \"{{ .Inputs.text }}\"",
             "sender_channel": "player-{{ .Actor.Name | lower }}",
-            "sender_message": "You tell {{ .Config.target.Name }}, \"{{ .Inputs.text }}\""
+            "sender_message": "You tell {{ .Targets.target.Name }}, \"{{ .Inputs.text }}\""
         },
+        "targets": [
+            {"name": "target", "type": "player", "scope": "world", "input": "target"}
+        ],
         "inputs": [
             {"name": "target", "type": "string", "required": true},
             {"name": "text", "type": "string", "required": true, "rest": true}

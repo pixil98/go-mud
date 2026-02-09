@@ -23,10 +23,7 @@ func (f *TitleHandlerFactory) ValidateConfig(config map[string]any) error {
 func (f *TitleHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, cmdCtx *CommandContext) error {
 		// Read new_title from expanded config (input was templated into config)
-		title := ""
-		if t, ok := cmdCtx.Config["new_title"].(string); ok {
-			title = t
-		}
+		title := cmdCtx.Config["new_title"]
 
 		cmdCtx.Actor.Title = title
 

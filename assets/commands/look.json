@@ -3,14 +3,10 @@
     "id": "look",
     "spec": {
         "handler": "look",
-        "config": {
-            "target": {
-                "$resolve": "target",
-                "$scope": "room",
-                "$input": "target",
-                "$optional": true
-            }
-        },
+        "config": {},
+        "targets": [
+            {"name": "target", "type": "target", "scope": "room", "input": "target", "optional": true}
+        ],
         "inputs": [
             {"name": "target", "type": "string", "required": false}
         ]

@@ -38,11 +38,10 @@ func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		// Read direction from expanded config
-		direction, ok := cmdCtx.Config["direction"].(string)
-		if !ok || direction == "" {
+		direction := strings.ToLower(cmdCtx.Config["direction"])
+		if direction == "" {
 			return fmt.Errorf("direction not set in config")
 		}
-		direction = strings.ToLower(direction)
 
 		zoneId, roomId := cmdCtx.Session.Location()
 
@@ -68,12 +67,13 @@ func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 		// Verify destination room exists
 		newRoom := f.world.Rooms().Get(string(destRoomId))
 		if newRoom == nil {
-			return NewUserError("That exit leads nowhere.")
+			return NewUserError("Alas, you cannot go that way...")
 		}
 
 		// Move the player (updates location and subscriptions)
 		cmdCtx.Session.Move(destZone, destRoomId)
 
+		// TODO: we should reuse the look command
 		// Send room description to player
 		playerChannel := fmt.Sprintf("player-%s", strings.ToLower(cmdCtx.Actor.Name))
 		roomDesc := FormatFullRoomDescription(f.world, newRoom, destZone, destRoomId, cmdCtx.Actor.Name)
