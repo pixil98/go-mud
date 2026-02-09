@@ -323,7 +323,7 @@ func TestHandler_resolveTargets(t *testing.T) {
 			actorZone: "zone2",
 			actorRoom: "room2",
 			targetSpecs: []TargetSpec{
-				{Name: "target", Type: "player", ScopeStr: "world", Input: "target"},
+				{Name: "target", Type: "player", Scopes: []string{"world"}, Input: "target"},
 			},
 			inputs: map[string]any{
 				"target": "bob",
@@ -338,7 +338,7 @@ func TestHandler_resolveTargets(t *testing.T) {
 			actorZone:     "zone1",
 			actorRoom:     "room1",
 			targetSpecs: []TargetSpec{
-				{Name: "target", Type: "target", ScopeStr: "room", Input: "target", Optional: true},
+				{Name: "target", Type: "target", Scopes: []string{"room"}, Input: "target", Optional: true},
 			},
 			inputs:     map[string]any{},
 			expTargets: map[string]string{}, // target should be nil
@@ -349,7 +349,7 @@ func TestHandler_resolveTargets(t *testing.T) {
 			actorZone:     "zone1",
 			actorRoom:     "room1",
 			targetSpecs: []TargetSpec{
-				{Name: "target", Type: "player", ScopeStr: "world", Input: "target"},
+				{Name: "target", Type: "player", Scopes: []string{"world"}, Input: "target"},
 			},
 			inputs: map[string]any{},
 			expErr: "Missing required input: target",
@@ -360,7 +360,7 @@ func TestHandler_resolveTargets(t *testing.T) {
 			actorZone:     "zone1",
 			actorRoom:     "room1",
 			targetSpecs: []TargetSpec{
-				{Name: "target", Type: "player", ScopeStr: "world", Input: "target"},
+				{Name: "target", Type: "player", Scopes: []string{"world"}, Input: "target"},
 			},
 			inputs: map[string]any{
 				"target": "nobody",
@@ -386,7 +386,6 @@ func TestHandler_resolveTargets(t *testing.T) {
 			// Add actor
 			actorChan := make(chan []byte, 1)
 			_ = world.AddPlayer("alice", actorChan, tt.actorZone, tt.actorRoom)
-			actorState := world.GetPlayer("alice")
 
 			// Add online players
 			for charId, loc := range tt.onlinePlayers {
@@ -394,7 +393,7 @@ func TestHandler_resolveTargets(t *testing.T) {
 				_ = world.AddPlayer(storage.Identifier(charId), ch, loc.zone, loc.room)
 			}
 
-			targets, err := h.resolveTargets(tt.targetSpecs, tt.inputs, actorState, world)
+			targets, err := h.resolveTargets(tt.targetSpecs, tt.inputs, "alice", world)
 
 			if tt.expErr != "" {
 				if err == nil {

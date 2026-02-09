@@ -5,7 +5,7 @@
         "handler": "look",
         "config": {},
         "targets": [
-            {"name": "target", "type": "target", "scope": "room", "input": "target", "optional": true}
+            {"name": "target", "type": "target", "scope": ["room", "inventory"], "input": "target", "optional": true}
         ],
         "inputs": [
             {"name": "target", "type": "string", "required": false}

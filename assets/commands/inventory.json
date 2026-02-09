@@ -1,0 +1,7 @@
+{
+    "version": 1,
+    "id": "inventory",
+    "spec": {
+        "handler": "inventory"
+    }
+}

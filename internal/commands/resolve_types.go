@@ -24,7 +24,7 @@ func PlayerRefFrom(charId storage.Identifier, char *game.Character) *PlayerRef {
 	return &PlayerRef{
 		CharId:      charId,
 		Name:        char.Name,
-		Description: char.Entity.DetailedDesc,
+		Description: char.DetailedDesc,
 	}
 }
 
@@ -43,7 +43,7 @@ func MobRefFrom(mob *game.Mobile, instance *game.MobileInstance) *MobileRef {
 	return &MobileRef{
 		InstanceId:  instance.InstanceId,
 		Name:        mob.ShortDesc,
-		Description: mob.Entity.DetailedDesc,
+		Description: mob.DetailedDesc,
 	}
 }
 
@@ -62,7 +62,7 @@ func ObjectRefFrom(obj *game.Object, instance *game.ObjectInstance) *ObjectRef {
 	return &ObjectRef{
 		InstanceId:  instance.InstanceId,
 		Name:        obj.ShortDesc,
-		Description: obj.Entity.DetailedDesc,
+		Description: obj.DetailedDesc,
 	}
 }
 

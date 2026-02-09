@@ -70,6 +70,9 @@ func NewHandler(c storage.Storer[*Command], publisher Publisher, world *game.Wor
 	h.RegisterFactory("look", NewLookHandlerFactory(world, publisher))
 	h.RegisterFactory("who", NewWhoHandlerFactory(world, publisher, charInfo))
 	h.RegisterFactory("title", NewTitleHandlerFactory(publisher))
+	h.RegisterFactory("inventory", NewInventoryHandlerFactory(world, publisher))
+	h.RegisterFactory("get", NewGetHandlerFactory(world, publisher))
+	h.RegisterFactory("drop", NewDropHandlerFactory(world, publisher))
 
 	// Compile commands
 	for id, cmd := range c.GetAll() {
@@ -143,7 +146,7 @@ func (h *Handler) Exec(ctx context.Context, world *game.WorldState, charId stora
 	session := world.GetPlayer(charId)
 
 	// Resolve targets from targets section
-	targets, err := h.resolveTargets(compiled.cmd.Targets, inputMap, session, world)
+	targets, err := h.resolveTargets(compiled.cmd.Targets, inputMap, charId, world)
 	if err != nil {
 		return err
 	}
@@ -243,7 +246,7 @@ func (h *Handler) parseValue(inputType InputType, raw string) (any, error) {
 }
 
 // resolveTargets resolves all targets from the targets section.
-func (h *Handler) resolveTargets(specs []TargetSpec, inputs map[string]any, session *game.PlayerState, world *game.WorldState) (map[string]*TargetRef, error) {
+func (h *Handler) resolveTargets(specs []TargetSpec, inputs map[string]any, charId storage.Identifier, world *game.WorldState) (map[string]*TargetRef, error) {
 	if len(specs) == 0 {
 		return make(map[string]*TargetRef), nil
 	}
@@ -268,7 +271,7 @@ func (h *Handler) resolveTargets(specs []TargetSpec, inputs map[string]any, sess
 		}
 
 		// Resolve the target
-		resolved, err := resolver.Resolve(session, name, EntityType(spec.Type), spec.Scope())
+		resolved, err := resolver.Resolve(charId, name, EntityType(spec.Type), spec.Scope())
 		if err != nil {
 			return nil, err
 		}

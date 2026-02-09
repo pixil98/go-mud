@@ -12,6 +12,6 @@
             "down": {"room_id": "millbrook-well"}
         },
         "mobile_spawns": ["millbrook-guard"],
-        "object_spawns": ["millbrook-fountain"]
+        "object_spawns": ["millbrook-fountain", "millbrook-torch"]
     }
 }

@@ -101,8 +101,6 @@ func (w *WorldState) SpawnMobile(mobileId, zoneId, roomId storage.Identifier) *M
 	instance := &MobileInstance{
 		InstanceId: uuid.New().String(),
 		MobileId:   mobileId,
-		ZoneId:     zoneId,
-		RoomId:     roomId,
 	}
 	w.mobileInstances[zoneId][roomId][instance.InstanceId] = instance
 	return instance
@@ -140,8 +138,6 @@ func (w *WorldState) SpawnObject(objectId, zoneId, roomId storage.Identifier) *O
 	instance := &ObjectInstance{
 		InstanceId: uuid.New().String(),
 		ObjectId:   objectId,
-		ZoneId:     zoneId,
-		RoomId:     roomId,
 	}
 	w.objectInstances[zoneId][roomId][instance.InstanceId] = instance
 	return instance
@@ -161,6 +157,40 @@ func (w *WorldState) GetObjectsInRoom(zoneId, roomId storage.Identifier) []*Obje
 		result = append(result, oi)
 	}
 	return result
+}
+
+// RemoveObjectFromRoom removes an object instance from a room.
+// Returns the removed instance, or nil if not found.
+func (w *WorldState) RemoveObjectFromRoom(zoneId, roomId storage.Identifier, instanceId string) *ObjectInstance {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+
+	if w.objectInstances[zoneId] == nil || w.objectInstances[zoneId][roomId] == nil {
+		return nil
+	}
+
+	oi, ok := w.objectInstances[zoneId][roomId][instanceId]
+	if !ok {
+		return nil
+	}
+
+	delete(w.objectInstances[zoneId][roomId], instanceId)
+	return oi
+}
+
+// AddObjectToRoom adds an existing object instance to a room.
+func (w *WorldState) AddObjectToRoom(zoneId, roomId storage.Identifier, obj *ObjectInstance) {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+
+	if w.objectInstances[zoneId] == nil {
+		w.objectInstances[zoneId] = make(map[storage.Identifier]map[string]*ObjectInstance)
+	}
+	if w.objectInstances[zoneId][roomId] == nil {
+		w.objectInstances[zoneId][roomId] = make(map[string]*ObjectInstance)
+	}
+
+	w.objectInstances[zoneId][roomId][obj.InstanceId] = obj
 }
 
 // ResetZone despawns all mobiles in a zone and respawns them per room definitions.
@@ -215,8 +245,6 @@ func (w *WorldState) ResetZone(zoneId storage.Identifier, force bool) {
 			instance := &MobileInstance{
 				InstanceId: uuid.New().String(),
 				MobileId:   storage.Identifier(mobileId),
-				ZoneId:     zoneId,
-				RoomId:     roomId,
 			}
 			w.mobileInstances[zoneId][roomId][instance.InstanceId] = instance
 			slog.Debug("spawned mobile", "mobile", mobileId, "zone", zoneId, "room", roomId)
@@ -233,8 +261,6 @@ func (w *WorldState) ResetZone(zoneId storage.Identifier, force bool) {
 			instance := &ObjectInstance{
 				InstanceId: uuid.New().String(),
 				ObjectId:   storage.Identifier(objectId),
-				ZoneId:     zoneId,
-				RoomId:     roomId,
 			}
 			w.objectInstances[zoneId][roomId][instance.InstanceId] = instance
 			slog.Debug("spawned object", "object", objectId, "zone", zoneId, "room", roomId)

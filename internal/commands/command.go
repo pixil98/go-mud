@@ -34,27 +34,29 @@ type InputSpec struct {
 
 // TargetSpec defines a target to be resolved at runtime.
 type TargetSpec struct {
-	Name      string `json:"name"`               // Name to access in templates (e.g., "target" -> .Targets.target)
-	Type      string `json:"type"`               // Entity type: player, mob, object, target (polymorphic)
-	ScopeStr  string `json:"scope,omitempty"`    // Resolution scope: room, world, zone, inventory
-	Input     string `json:"input"`              // Which input provides the name to resolve
-	Optional  bool   `json:"optional,omitempty"` // If true, missing input -> nil (no error)
+	Name     string   `json:"name"`               // Name to access in templates (e.g., "target" -> .Targets.target)
+	Type     string   `json:"type"`               // Entity type: player, mob, object, target (polymorphic)
+	Scopes   []string `json:"scope,omitempty"`    // Resolution scopes: room, world, zone, inventory
+	Input    string   `json:"input"`              // Which input provides the name to resolve
+	Optional bool     `json:"optional,omitempty"` // If true, missing input -> nil (no error)
 }
 
-// Scope returns the parsed Scope value from ScopeStr.
+// Scope returns the combined Scope value from Scopes slice.
 func (t *TargetSpec) Scope() Scope {
-	switch strings.ToLower(t.ScopeStr) {
-	case "room":
-		return ScopeRoom
-	case "inventory":
-		return ScopeInventory
-	case "world":
-		return ScopeWorld
-	case "zone":
-		return ScopeZone
-	default:
-		return 0
+	var result Scope
+	for _, s := range t.Scopes {
+		switch strings.ToLower(s) {
+		case "room":
+			result |= ScopeRoom
+		case "inventory":
+			result |= ScopeInventory
+		case "world":
+			result |= ScopeWorld
+		case "zone":
+			result |= ScopeZone
+		}
 	}
+	return result
 }
 
 // Command defines a command loaded from JSON.
@@ -117,9 +119,9 @@ func (c *Command) Validate() error {
 		if !validInputs[target.Input] {
 			return fmt.Errorf("target %q: input %q does not exist in inputs", target.Name, target.Input)
 		}
-		// Validate scope if provided
-		if target.ScopeStr != "" && target.Scope() == 0 {
-			return fmt.Errorf("target %q: unknown scope %q", target.Name, target.ScopeStr)
+		// Validate scopes if provided
+		if len(target.Scopes) > 0 && target.Scope() == 0 {
+			return fmt.Errorf("target %q: unknown scopes %v", target.Name, target.Scopes)
 		}
 	}
 

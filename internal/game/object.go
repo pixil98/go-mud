@@ -20,8 +20,6 @@ const (
 // Multiple instances can be spawned from one definition.
 // Object IDs follow the convention <zone>-<name> (e.g., "millbrook-sword").
 type Object struct {
-	Entity
-
 	// Aliases are keywords players can use to target this object (e.g., ["sword", "blade"])
 	Aliases []string `json:"aliases"`
 
@@ -31,6 +29,9 @@ type Object struct {
 	// LongDesc is shown when the object is on the ground in a room
 	// (e.g., "A rusty sword lies discarded in the corner.")
 	LongDesc string `json:"long_desc"`
+
+	// DetailedDesc is shown when a player looks at the object
+	DetailedDesc string `json:"detailed_desc"`
 
 	// TypeStr is the object type from JSON
 	TypeStr string `json:"type"`
@@ -64,10 +65,8 @@ func (o *Object) Validate() error {
 }
 
 // ObjectInstance represents a single spawned instance of an Object definition.
-// TODO: Expand to support inventory/equipment when needed.
+// Location is tracked by the containing structure (room map or inventory).
 type ObjectInstance struct {
 	InstanceId string             // Unique ID
 	ObjectId   storage.Identifier // Reference to the Object definition
-	ZoneId     storage.Identifier // Zone where object is located
-	RoomId     storage.Identifier // Room where object is located
 }

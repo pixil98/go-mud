@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "drop",
+    "spec": {
+        "handler": "drop",
+        "targets": [
+            {"name": "target", "type": "object", "scope": ["inventory"], "input": "item"}
+        ],
+        "inputs": [
+            {"name": "item", "type": "string", "required": true}
+        ]
+    }
+}

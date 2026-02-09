@@ -140,7 +140,6 @@ func TestResolver_ResolvePlayer(t *testing.T) {
 			// Add actor
 			actorChan := make(chan []byte, 1)
 			_ = world.AddPlayer("actor", actorChan, tt.actorZone, tt.actorRoom)
-			actorState := world.GetPlayer("actor")
 
 			// Add other players
 			for charId, loc := range tt.onlinePlayers {
@@ -149,7 +148,7 @@ func TestResolver_ResolvePlayer(t *testing.T) {
 			}
 
 			resolver := NewResolver(world)
-			result, err := resolver.resolvePlayer(actorState, tt.name, tt.scope)
+			result, err := resolver.resolvePlayer("actor", tt.name, tt.scope)
 
 			if tt.expErr != "" {
 				if err == nil {
@@ -329,7 +328,6 @@ func TestResolver_ResolveMob(t *testing.T) {
 			// Add actor
 			actorChan := make(chan []byte, 1)
 			_ = world.AddPlayer("actor", actorChan, tt.actorZone, tt.actorRoom)
-			actorState := world.GetPlayer("actor")
 
 			// Spawn mobs
 			for _, spawn := range tt.spawnedMobs {
@@ -341,7 +339,7 @@ func TestResolver_ResolveMob(t *testing.T) {
 			}
 
 			resolver := NewResolver(world)
-			result, err := resolver.resolveMob(actorState, tt.name, tt.scope)
+			result, err := resolver.resolveMob("actor", tt.name, tt.scope)
 
 			if tt.expErr != "" {
 				if err == nil {
@@ -469,7 +467,6 @@ func TestResolver_ResolveTarget(t *testing.T) {
 			// Add actor
 			actorChan := make(chan []byte, 1)
 			_ = world.AddPlayer("actor", actorChan, tt.actorZone, tt.actorRoom)
-			actorState := world.GetPlayer("actor")
 
 			// Add other players
 			for charId, loc := range tt.onlinePlayers {
@@ -487,7 +484,7 @@ func TestResolver_ResolveTarget(t *testing.T) {
 			}
 
 			resolver := NewResolver(world)
-			result, err := resolver.resolveTarget(actorState, tt.name, tt.scope)
+			result, err := resolver.resolveTarget("actor", tt.name, tt.scope)
 
 			if tt.expErr != "" {
 				if err == nil {

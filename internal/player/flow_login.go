@@ -115,11 +115,9 @@ func (f *loginFlow) newCharacter(rw io.ReadWriter, username string) (*game.Chara
 		}
 
 		return &game.Character{
-			Name:     username,
-			Password: passOne,
-			Entity: game.Entity{
-				DetailedDesc: "A plain unremarkable entity.",
-			},
+			Name:         username,
+			Password:     passOne,
+			DetailedDesc: "A plain, unremarkable adventurer.",
 		}, nil
 	}
 }

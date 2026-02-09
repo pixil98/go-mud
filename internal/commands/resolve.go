@@ -31,33 +31,37 @@ func NewResolver(world *game.WorldState) *Resolver {
 
 // Resolve resolves a target name to an entity based on type and scope.
 // Returns *PlayerRef, *MobileRef, *ObjectRef, or *TargetRef based on entityType.
-func (r *Resolver) Resolve(actorState *game.PlayerState, name string, entityType EntityType, scope Scope) (any, error) {
+func (r *Resolver) Resolve(charId storage.Identifier, name string, entityType EntityType, scope Scope) (any, error) {
 	switch entityType {
 	case EntityPlayer:
-		return r.resolvePlayer(actorState, name, scope)
+		return r.resolvePlayer(charId, name, scope)
 	case EntityMob:
-		return r.resolveMob(actorState, name, scope)
+		return r.resolveMob(charId, name, scope)
 	case EntityObj:
-		return r.resolveObject(actorState, name, scope)
+		return r.resolveObject(charId, name, scope)
 	case EntityTarget:
-		return r.resolveTarget(actorState, name, scope)
+		return r.resolveTarget(charId, name, scope)
 	default:
 		return nil, fmt.Errorf("unknown entity type: %s", entityType)
 	}
 }
 
 // resolvePlayer resolves a player by name within the given scope.
-func (r *Resolver) resolvePlayer(actorState *game.PlayerState, name string, scope Scope) (*PlayerRef, error) {
+func (r *Resolver) resolvePlayer(charId storage.Identifier, name string, scope Scope) (*PlayerRef, error) {
 	nameLower := strings.ToLower(name)
+	actorState := r.world.GetPlayer(charId)
+	if actorState == nil {
+		return nil, fmt.Errorf("actor not found: %s", charId)
+	}
 	actorZone, actorRoom := actorState.Location()
 
-	for charId, char := range r.world.Characters().GetAll() {
+	for targetCharId, char := range r.world.Characters().GetAll() {
 		if strings.ToLower(char.Name) != nameLower {
 			continue
 		}
 
 		// Check if player is online
-		state := r.world.GetPlayer(charId)
+		state := r.world.GetPlayer(targetCharId)
 		if state == nil {
 			continue
 		}
@@ -80,15 +84,19 @@ func (r *Resolver) resolvePlayer(actorState *game.PlayerState, name string, scop
 			continue
 		}
 
-		return PlayerRefFrom(charId, char), nil
+		return PlayerRefFrom(targetCharId, char), nil
 	}
 
 	return nil, NewUserError(fmt.Sprintf("Player '%s' not found", name))
 }
 
 // resolveMob resolves a mob by name within the given scope.
-func (r *Resolver) resolveMob(actorState *game.PlayerState, name string, scope Scope) (*MobileRef, error) {
+func (r *Resolver) resolveMob(charId storage.Identifier, name string, scope Scope) (*MobileRef, error) {
 	nameLower := strings.ToLower(name)
+	actorState := r.world.GetPlayer(charId)
+	if actorState == nil {
+		return nil, fmt.Errorf("actor not found: %s", charId)
+	}
 	actorZone, actorRoom := actorState.Location()
 
 	// matchMob checks if a mob matches the given name by alias
@@ -144,8 +152,12 @@ func (r *Resolver) resolveMob(actorState *game.PlayerState, name string, scope S
 }
 
 // resolveObject resolves an object by name within the given scope.
-func (r *Resolver) resolveObject(actorState *game.PlayerState, name string, scope Scope) (*ObjectRef, error) {
+func (r *Resolver) resolveObject(charId storage.Identifier, name string, scope Scope) (*ObjectRef, error) {
 	nameLower := strings.ToLower(name)
+	actorState := r.world.GetPlayer(charId)
+	if actorState == nil {
+		return nil, fmt.Errorf("actor not found: %s", charId)
+	}
 	actorZone, actorRoom := actorState.Location()
 
 	// matchObject checks if an object matches the given name by alias
@@ -163,9 +175,15 @@ func (r *Resolver) resolveObject(actorState *game.PlayerState, name string, scop
 	}
 
 	// Check inventory scope
-	// TODO: Implement inventory resolution when inventory system is added
 	if scope&ScopeInventory != 0 {
-		// Will check actor's inventory
+		actor := r.world.Characters().Get(string(charId))
+		if actor != nil && actor.Inventory != nil {
+			for _, oi := range actor.Inventory.Items {
+				if ref := matchObject(oi); ref != nil {
+					return ref, nil
+				}
+			}
+		}
 	}
 
 	// Check room scope
@@ -207,9 +225,9 @@ func (r *Resolver) resolveObject(actorState *game.PlayerState, name string, scop
 }
 
 // resolveTarget tries to resolve as player, then mobile, then object.
-func (r *Resolver) resolveTarget(actorState *game.PlayerState, name string, scope Scope) (*TargetRef, error) {
+func (r *Resolver) resolveTarget(charId storage.Identifier, name string, scope Scope) (*TargetRef, error) {
 	// Try player first
-	if player, err := r.resolvePlayer(actorState, name, scope); err == nil {
+	if player, err := r.resolvePlayer(charId, name, scope); err == nil {
 		return &TargetRef{
 			Type:   "player",
 			Player: player,
@@ -218,7 +236,7 @@ func (r *Resolver) resolveTarget(actorState *game.PlayerState, name string, scop
 	}
 
 	// Try mobile
-	if mob, err := r.resolveMob(actorState, name, scope); err == nil {
+	if mob, err := r.resolveMob(charId, name, scope); err == nil {
 		return &TargetRef{
 			Type: "mobile",
 			Mob:  mob,
@@ -227,7 +245,7 @@ func (r *Resolver) resolveTarget(actorState *game.PlayerState, name string, scop
 	}
 
 	// Try object
-	if obj, err := r.resolveObject(actorState, name, scope); err == nil {
+	if obj, err := r.resolveObject(charId, name, scope); err == nil {
 		return &TargetRef{
 			Type: "object",
 			Obj:  obj,

@@ -118,15 +118,15 @@ func TestCommand_Validate(t *testing.T) {
 		"target unknown scope": {
 			cmd: Command{
 				Handler: "test",
-				Targets: []TargetSpec{{Name: "target", Type: "player", ScopeStr: "bogus", Input: "target"}},
+				Targets: []TargetSpec{{Name: "target", Type: "player", Scopes: []string{"bogus"}, Input: "target"}},
 				Inputs:  []InputSpec{{Name: "target", Type: InputTypeString}},
 			},
-			expErr: `target "target": unknown scope "bogus"`,
+			expErr: `target "target": unknown scopes [bogus]`,
 		},
 		"valid target": {
 			cmd: Command{
 				Handler: "test",
-				Targets: []TargetSpec{{Name: "target", Type: "player", ScopeStr: "world", Input: "target"}},
+				Targets: []TargetSpec{{Name: "target", Type: "player", Scopes: []string{"world"}, Input: "target"}},
 				Inputs:  []InputSpec{{Name: "target", Type: InputTypeString}},
 			},
 			expErr: "",
@@ -158,25 +158,30 @@ func TestCommand_Validate(t *testing.T) {
 
 func TestTargetSpec_Scope(t *testing.T) {
 	tests := map[string]struct {
-		scopeStr string
-		exp      Scope
+		scopes []string
+		exp    Scope
 	}{
-		"room":                 {scopeStr: "room", exp: ScopeRoom},
-		"inventory":            {scopeStr: "inventory", exp: ScopeInventory},
-		"world":                {scopeStr: "world", exp: ScopeWorld},
-		"zone":                 {scopeStr: "zone", exp: ScopeZone},
-		"Room uppercase":       {scopeStr: "ROOM", exp: ScopeRoom},
-		"World mixed case":     {scopeStr: "World", exp: ScopeWorld},
-		"unknown returns zero": {scopeStr: "unknown", exp: 0},
-		"empty returns zero":   {scopeStr: "", exp: 0},
+		"room":                   {scopes: []string{"room"}, exp: ScopeRoom},
+		"inventory":              {scopes: []string{"inventory"}, exp: ScopeInventory},
+		"world":                  {scopes: []string{"world"}, exp: ScopeWorld},
+		"zone":                   {scopes: []string{"zone"}, exp: ScopeZone},
+		"Room uppercase":         {scopes: []string{"ROOM"}, exp: ScopeRoom},
+		"World mixed case":       {scopes: []string{"World"}, exp: ScopeWorld},
+		"unknown returns zero":   {scopes: []string{"unknown"}, exp: 0},
+		"empty returns zero":     {scopes: []string{}, exp: 0},
+		"nil returns zero":       {scopes: nil, exp: 0},
+		"room and inventory":     {scopes: []string{"room", "inventory"}, exp: ScopeRoom | ScopeInventory},
+		"world and zone":         {scopes: []string{"world", "zone"}, exp: ScopeWorld | ScopeZone},
+		"all scopes":             {scopes: []string{"room", "inventory", "world", "zone"}, exp: ScopeRoom | ScopeInventory | ScopeWorld | ScopeZone},
+		"mixed with unknown":     {scopes: []string{"room", "bogus"}, exp: ScopeRoom},
 	}
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			spec := TargetSpec{ScopeStr: tt.scopeStr}
+			spec := TargetSpec{Scopes: tt.scopes}
 			got := spec.Scope()
 			if got != tt.exp {
-				t.Errorf("TargetSpec{ScopeStr: %q}.Scope() = %d, expected %d", tt.scopeStr, got, tt.exp)
+				t.Errorf("TargetSpec{Scopes: %v}.Scope() = %d, expected %d", tt.scopes, got, tt.exp)
 			}
 		})
 	}
