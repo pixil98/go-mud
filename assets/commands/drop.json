@@ -3,6 +3,8 @@
     "id": "drop",
     "spec": {
         "handler": "drop",
+        "category": "items",
+        "description": "Drop an item from your inventory.",
         "targets": [
             {"name": "target", "type": "object", "scope": ["inventory"], "input": "item"}
         ],

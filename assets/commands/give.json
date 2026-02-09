@@ -3,6 +3,8 @@
     "id": "give",
     "spec": {
         "handler": "give",
+        "category": "items",
+        "description": "Give an item to another player.",
         "targets": [
             {"name": "item", "type": "object", "scope": ["inventory"], "input": "item"},
             {"name": "recipient", "type": "player", "scope": ["room"], "input": "recipient"}

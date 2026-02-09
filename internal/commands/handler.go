@@ -99,6 +99,7 @@ func NewHandler(c storage.Storer[*Command], publisher Publisher, world *game.Wor
 	h.RegisterFactory("get", NewGetHandlerFactory(world, publisher))
 	h.RegisterFactory("drop", NewDropHandlerFactory(world, publisher))
 	h.RegisterFactory("give", NewGiveHandlerFactory(world, publisher))
+	h.RegisterFactory("help", NewHelpHandlerFactory(c, publisher))
 
 	// Compile commands
 	for id, cmd := range c.GetAll() {
@@ -229,8 +230,14 @@ func (h *Handler) Exec(ctx context.Context, world *game.WorldState, charId stora
 		return err
 	}
 
-	// Build input map for template expansion and target resolution
-	inputMap := make(map[string]any, len(inputs))
+	// Build input map for template expansion and target resolution.
+	// Pre-populate optional inputs with zero values so templates don't render "<no value>".
+	inputMap := make(map[string]any, len(compiled.cmd.Inputs))
+	for _, spec := range compiled.cmd.Inputs {
+		if !spec.Required {
+			inputMap[spec.Name] = ""
+		}
+	}
 	for _, input := range inputs {
 		inputMap[input.Spec.Name] = input.Value
 	}

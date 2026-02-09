@@ -3,6 +3,8 @@
     "id": "say",
     "spec": {
         "handler": "message",
+        "category": "communication",
+        "description": "Say something to everyone in the room.",
         "config": {
             "recipient_channel": "zone-{{ .Session.ZoneId }}-room-{{ .Session.RoomId }}",
             "recipient_message": "{{ .Actor.Name }} says, \"{{ .Inputs.text }}\""

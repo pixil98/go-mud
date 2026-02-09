@@ -3,6 +3,8 @@
     "id": "gossip",
     "spec": {
         "handler": "message",
+        "category": "communication",
+        "description": "Broadcast a message to all online players.",
         "config": {
             "recipient_channel": "world",
             "recipient_message": "{{ .Actor.Name }} gossips, \"{{ .Inputs.text }}\""

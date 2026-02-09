@@ -3,6 +3,8 @@
     "id": "tell",
     "spec": {
         "handler": "message",
+        "category": "communication",
+        "description": "Send a private message to another player.",
         "config": {
             "recipient_channel": "player-{{ .Targets.target.Name | lower }}",
             "recipient_message": "{{ .Actor.Name }} tells you, \"{{ .Inputs.text }}\"",

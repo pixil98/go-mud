@@ -88,10 +88,12 @@ func (t *TargetSpec) Scope() Scope {
 
 // Command defines a command loaded from JSON.
 type Command struct {
-	Handler string         `json:"handler"`
-	Config  map[string]any `json:"config"`  // Config passed to handler, may contain templates
-	Targets []TargetSpec   `json:"targets"` // Targets to resolve at runtime
-	Inputs  []InputSpec    `json:"inputs"`  // User input parameters
+	Handler     string         `json:"handler"`
+	Category    string         `json:"category,omitempty"`    // Grouping for help display
+	Description string         `json:"description,omitempty"` // Short description for help
+	Config      map[string]any `json:"config"`                // Config passed to handler, may contain templates
+	Targets     []TargetSpec   `json:"targets"`               // Targets to resolve at runtime
+	Inputs      []InputSpec    `json:"inputs"`                // User input parameters
 }
 
 func (c *Command) Validate() error {

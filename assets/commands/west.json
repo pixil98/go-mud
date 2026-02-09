@@ -3,6 +3,8 @@
     "id": "west",
     "spec": {
         "handler": "move",
+        "category": "movement",
+        "description": "Move west.",
         "config": {
             "direction": "west"
         }

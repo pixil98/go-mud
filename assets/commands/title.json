@@ -3,6 +3,8 @@
     "id": "title",
     "spec": {
         "handler": "title",
+        "category": "system",
+        "description": "Set or clear your character's title.",
         "config": {
             "new_title": "{{ .Inputs.text }}"
         },

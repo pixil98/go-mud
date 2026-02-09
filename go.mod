@@ -11,6 +11,7 @@ require (
 	github.com/pixil98/go-errors v0.0.0-20260129211429-af839a3eda29
 	github.com/pixil98/go-service v0.0.0-20260129222240-12e23ec56a18
 	github.com/pixil98/go-testutil v0.0.0-20260123222118-fa427b8db36a
+	golang.org/x/crypto v0.47.0
 )
 
 require (
@@ -31,7 +32,6 @@ require (
 	github.com/shopspring/decimal v1.4.0 // indirect
 	github.com/spf13/cast v1.10.0 // indirect
 	github.com/stretchr/testify v1.10.0 // indirect
-	golang.org/x/crypto v0.47.0 // indirect
 	golang.org/x/sys v0.40.0 // indirect
 	golang.org/x/time v0.14.0 // indirect
 )

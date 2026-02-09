@@ -3,6 +3,8 @@
     "id": "get",
     "spec": {
         "handler": "get",
+        "category": "items",
+        "description": "Pick up an item from the room.",
         "targets": [
             {"name": "target", "type": "object", "scope": ["room"], "input": "item"},
             {"name": "container", "type": "object", "scope": ["room"], "input": "from", "optional": true}

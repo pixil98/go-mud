@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "help",
+    "spec": {
+        "handler": "help",
+        "category": "information",
+        "description": "List available commands or get details on a specific command.",
+        "config": {
+            "command": "{{ .Inputs.command }}"
+        },
+        "inputs": [
+            {"name": "command", "type": "string", "required": false}
+        ]
+    }
+}

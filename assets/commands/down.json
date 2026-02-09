@@ -3,6 +3,8 @@
     "id": "down",
     "spec": {
         "handler": "move",
+        "category": "movement",
+        "description": "Move down.",
         "config": {
             "direction": "down"
         }
