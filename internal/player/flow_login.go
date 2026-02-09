@@ -6,6 +6,8 @@ import (
 	"strings"
 	"unicode"
 
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/pixil98/go-mud/internal"
 	"github.com/pixil98/go-mud/internal/game"
 )
@@ -62,7 +64,7 @@ func (f *loginFlow) Run(rw io.ReadWriter) (*game.Character, error) {
 		} else {
 			_, err = internal.Prompt(rw, "Password: ", internal.WithMaxTries(maxPasswordTries), internal.WithValidator(
 				func(str string) (bool, string) {
-					if char.Password != str {
+					if bcrypt.CompareHashAndPassword([]byte(char.Password), []byte(str)) != nil {
 						return false, ""
 					}
 
@@ -114,9 +116,14 @@ func (f *loginFlow) newCharacter(rw io.ReadWriter, username string) (*game.Chara
 			continue
 		}
 
+		hash, err := bcrypt.GenerateFromPassword([]byte(passOne), bcrypt.DefaultCost)
+		if err != nil {
+			return nil, fmt.Errorf("hashing password: %w", err)
+		}
+
 		return &game.Character{
 			Name:         username,
-			Password:     passOne,
+			Password:     string(hash),
 			DetailedDesc: "A plain, unremarkable adventurer.",
 		}, nil
 	}

@@ -7,8 +7,7 @@ type Character struct {
 	// Name is the character's display name
 	Name string `json:"name"`
 
-	// Password is the character's login credential
-	// TODO: make this okay to save (hash it)
+	// Password is the bcrypt-hashed login credential
 	Password string `json:"password"`
 
 	// Title is displayed after the character's name (e.g., "Bob the Brave")
