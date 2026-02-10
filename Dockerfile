@@ -10,12 +10,12 @@ COPY . .
 RUN go build -o /app/mud ./cmd/mud
 
 # Runtime stage
-FROM alpine:3.21
+FROM alpine:latest
 
 WORKDIR /app
 
 COPY --from=build /app/mud .
-COPY config.json .
+COPY config.json /app/config.json
 COPY assets/commands/ assets/commands/
 COPY assets/mobiles/ assets/mobiles/
 COPY assets/objects/ assets/objects/
@@ -24,8 +24,8 @@ COPY assets/races/ assets/races/
 COPY assets/rooms/ assets/rooms/
 COPY assets/zones/ assets/zones/
 
-RUN mkdir -p assets/characters
+VOLUME ["/app/assets/characters"]
 
 EXPOSE 4000
 
-ENTRYPOINT ["/app/mud"]
+ENTRYPOINT ["/app/mud", "--config", "/app/config.json"]
