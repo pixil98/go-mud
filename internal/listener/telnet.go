@@ -80,7 +80,7 @@ func (h *telnetHandler) HandleTelnet(conn *telnet.Connection) {
 		}
 	}()
 
-	h.cFunc(h.connCtx, conn)
+	h.cFunc(h.connCtx, newCRLFReadWriter(conn))
 }
 
 func (h *telnetHandler) Stop() {
