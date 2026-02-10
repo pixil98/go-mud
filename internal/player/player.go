@@ -60,7 +60,7 @@ func (p *Player) Play(ctx context.Context) error {
 
 		case msg := <-p.msgs:
 			// Display NATS message to the player
-			err = p.writeLine("\r\n" + string(msg))
+			err = p.writeLine("\n" + string(msg))
 			if err != nil {
 				return err
 			}
@@ -136,6 +136,6 @@ func (p *Player) prompt() error {
 }
 
 func (p *Player) writeLine(msg string) error {
-	_, err := p.conn.Write([]byte(msg + "\r\n"))
+	_, err := p.conn.Write([]byte(msg + "\n"))
 	return err
 }

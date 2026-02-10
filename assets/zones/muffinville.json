@@ -1,0 +1,8 @@
+{
+    "version": 1,
+    "id": "muffinville",
+    "spec": {
+        "reset_mode": "empty",
+        "lifespan": "24h"
+    }
+}
