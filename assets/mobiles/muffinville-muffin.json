@@ -1,0 +1,10 @@
+{
+    "version": 1,
+    "id": "muffinville-muffin",
+    "spec": {
+        "aliases": ["muffin", "kittercat", "floofybutt"],
+        "short_desc": "Muffin the Kittercat",
+        "long_desc": "The one and only floofybutt Muffin.",
+        "detailed_desc": "She's too perfect to describe. It's just Muffin."
+    }
+}

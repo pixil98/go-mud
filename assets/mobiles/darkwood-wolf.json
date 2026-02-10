@@ -2,7 +2,6 @@
     "version": 1,
     "id": "darkwood-wolf",
     "spec": {
-        "name": "Gray Wolf",
         "aliases": ["wolf", "gray"],
         "short_desc": "a gray wolf",
         "long_desc": "A gray wolf lurks in the shadows, watching intently.",

@@ -15,7 +15,7 @@ const (
 
 // Zone represents a region in the game world that contains rooms.
 type Zone struct {
-	Lifespan  string `json:"lifespan"`   // duration string (e.g., "1m", "30s", "2h")
+	Lifespan  string `json:"lifespan"` // duration string (e.g., "1m", "30s", "2h")
 	ResetMode string `json:"reset_mode"`
 
 	NextReset        time.Time     `json:"-"` // when zone should next reset (runtime only)

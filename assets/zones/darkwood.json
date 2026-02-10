@@ -2,8 +2,6 @@
     "version": 1,
     "id": "darkwood",
     "spec": {
-        "name": "Darkwood Forest",
-        "description": "A dense forest east of Millbrook, known for its tall pines and wandering wildlife.",
         "reset_mode": "lifespan",
         "lifespan": "1m"
     }

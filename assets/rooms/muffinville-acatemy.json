@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "muffinville-acatemy",
+    "spec": {
+        "name": "The Acatemy",
+        "description": "Welcome to The Acatemy, where every lesson is paws-itively rigorous and failure is simply not fur-given: the lecture hall is lined with scratchboards full of whisker-sharp equations, towers of well-thumbed meow-nuscripts, and a stern headmaster’s portrait that seems to judge you with a purr-fectly timed glare. Desks are arranged in a maddening cat-alogue of aisles, inkpots are labeled “purrmanent,” and the final exam sits beneath a glass dome marked DO NOT TOUCH (which, of course, makes it irresistible). Keep your claws on your notes, trust your instincts, and try not to knock anything over—because at The Acatemy, curiosity doesn’t just get the cat… it gets you detention.",
+        "zone_id": "muffinville",
+        "exits": {
+            "south": {"zone_id": "millbrook", "room_id": "millbrook-square"}
+        },
+        "mobile_spawns": ["muffinville-muffin"]
+    }
+}

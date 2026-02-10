@@ -2,7 +2,6 @@
     "version": 1,
     "id": "darkwood-deer",
     "spec": {
-        "name": "Deer",
         "aliases": ["deer", "doe"],
         "short_desc": "a young deer",
         "long_desc": "A young deer grazes peacefully on the forest floor.",

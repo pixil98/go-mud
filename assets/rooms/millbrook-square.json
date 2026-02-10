@@ -9,7 +9,8 @@
             "west": {"room_id": "millbrook-market"},
             "east": {"room_id": "millbrook-tavern"},
             "up": {"room_id": "millbrook-clocktower"},
-            "down": {"room_id": "millbrook-well"}
+            "down": {"room_id": "millbrook-well"},
+            "north": {"zone_id": "muffinville", "room_id": "muffinville-acatemy"}
         },
         "mobile_spawns": ["millbrook-guard"],
         "object_spawns": ["millbrook-fountain", "millbrook-torch"]
