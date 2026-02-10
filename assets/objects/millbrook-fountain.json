@@ -1,0 +1,11 @@
+{
+    "version": 1,
+    "id": "millbrook-fountain",
+    "spec": {
+        "aliases": ["fountain", "stone"],
+        "short_desc": "a weathered stone fountain",
+        "long_desc": "A weathered stone fountain bubbles cheerfully in the center of the square.",
+        "detailed_desc": "This ancient fountain has stood at the heart of Millbrook for generations. Carved from gray granite, it depicts a mermaid holding a conch shell from which water cascades into a circular basin below. The stone is worn smooth by time and countless hands trailing through the cool water. Copper coins glint beneath the surface, wishes made by hopeful townsfolk.",
+        "type": "other"
+    }
+}

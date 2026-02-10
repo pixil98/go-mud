@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "darkwood-edge",
+    "spec": {
+        "name": "Edge of Darkwood",
+        "description": "The cobblestones of the town square give way to a worn dirt path leading into the forest. Tall pines loom ahead, their branches forming a canopy that blocks most of the sunlight. The sounds of the town fade behind you as bird calls echo from the woods.",
+        "zone_id": "darkwood",
+        "exits": {
+            "west": {"zone_id": "millbrook", "room_id": "millbrook-tavern"},
+            "east": {"room_id": "darkwood-clearing"}
+        },
+        "mobile_spawns": ["darkwood-deer"]
+    }
+}

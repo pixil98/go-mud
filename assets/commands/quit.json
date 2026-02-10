@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "quit",
+    "spec": {
+        "handler": "quit",
+        "category": "system",
+        "description": "Save your character and disconnect."
+    }
+}

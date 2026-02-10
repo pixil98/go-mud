@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "male",
+    "spec": {
+        "subjective": "he",
+        "objective": "him",
+        "possessive": {
+            "adjective": "his",
+            "pronoun": "his"
+        },
+        "reflexive": "himself"
+    }
+}

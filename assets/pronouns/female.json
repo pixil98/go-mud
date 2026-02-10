@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "female",
+    "spec": {
+        "subjective": "she",
+        "objective": "her",
+        "possessive": {
+            "adjective": "her",
+            "pronoun": "hers"
+        },
+        "reflexive": "herself"
+    }
+}

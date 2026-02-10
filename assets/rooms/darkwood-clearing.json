@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "darkwood-clearing",
+    "spec": {
+        "name": "Forest Clearing",
+        "description": "A small clearing opens up in the dense forest. Sunlight filters through the gap in the canopy, illuminating a carpet of wildflowers and soft grass. A fallen log provides a natural seat, and you can hear a stream burbling somewhere to the north.",
+        "zone_id": "darkwood",
+        "exits": {
+            "west": {"room_id": "darkwood-edge"}
+        },
+        "mobile_spawns": ["darkwood-deer", "darkwood-wolf"]
+    }
+}

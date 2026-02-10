@@ -1,0 +1,12 @@
+{
+    "version": 1,
+    "id": "millbrook-tunnel",
+    "spec": {
+        "name": "Underground Tunnel",
+        "description": "A narrow passage cuts through the bedrock beneath Millbrook. The walls are slick with moisture, and the only light comes from bioluminescent fungi clinging to the ceiling, casting an eerie blue-green glow. The tunnel stretches into darkness to the south, but that way has collapsed. The old well chamber lies to the north.",
+        "zone_id": "millbrook",
+        "exits": {
+            "north": {"room_id": "millbrook-well"}
+        }
+    }
+}

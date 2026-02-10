@@ -1,0 +1,11 @@
+{
+    "version": 1,
+    "id": "darkwood-deer",
+    "spec": {
+        "name": "Deer",
+        "aliases": ["deer", "doe"],
+        "short_desc": "a young deer",
+        "long_desc": "A young deer grazes peacefully on the forest floor.",
+        "detailed_desc": "This graceful deer has a soft brown coat dappled with white spots. Its large dark eyes watch you warily, ears twitching at every sound. It seems ready to bolt at the first sign of danger."
+    }
+}

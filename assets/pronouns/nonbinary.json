@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "non-binary",
+    "spec": {
+        "subjective": "they",
+        "objective": "them",
+        "possessive": {
+            "adjective": "their",
+            "pronoun": "theirs"
+        },
+        "reflexive": "themselves"
+    }
+}

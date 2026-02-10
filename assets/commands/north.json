@@ -1,0 +1,12 @@
+{
+    "version": 1,
+    "id": "north",
+    "spec": {
+        "handler": "move",
+        "category": "movement",
+        "description": "Move north.",
+        "config": {
+            "direction": "north"
+        }
+    }
+}

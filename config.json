@@ -1,0 +1,44 @@
+{
+    "listeners": [
+        {
+        "protocol": "telnet",
+        "port": 4000
+        }
+    ],
+    "tick_interval": "2s",
+    "storage": {
+        "characters": {
+            "path": "./assets/characters"
+        },
+        "commands": {
+            "path": "./assets/commands"
+        },
+        "pronouns": {
+            "path": "./assets/pronouns"
+        },
+        "races": {
+            "path": "./assets/races"
+        },
+        "zones": {
+            "path": "./assets/zones"
+        },
+        "rooms": {
+            "path": "./assets/rooms"
+        },
+        "mobiles": {
+            "path": "./assets/mobiles"
+        },
+        "objects": {
+            "path": "./assets/objects"
+        }
+    },
+    "nats": {
+        "host": "127.0.0.1",
+        "port": 4223,
+        "start_timeout": "5s"
+    },
+    "player_manager": {
+        "default_zone": "millbrook",
+        "default_room": "millbrook-square"
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "title",
+    "spec": {
+        "handler": "title",
+        "category": "system",
+        "description": "Set or clear your character's title.",
+        "config": {
+            "new_title": "{{ .Inputs.text }}"
+        },
+        "inputs": [
+            {"name": "text", "type": "string", "required": false, "rest": true}
+        ]
+    }
+}

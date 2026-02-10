@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "who",
+    "spec": {
+        "handler": "who",
+        "category": "information",
+        "description": "List all online players."
+    }
+}

@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "millbrook-well",
+    "spec": {
+        "name": "The Old Well",
+        "description": "Stone steps descend into a circular chamber built around an ancient well. The air is cool and damp, carrying the earthy smell of deep water. The well shaft is covered by a heavy iron grate, through which you can hear water dripping far below. A dark tunnel leads south into the earth, while steps ascend north to the town square.",
+        "zone_id": "millbrook",
+        "exits": {
+            "up": {"room_id": "millbrook-square"},
+            "south": {"room_id": "millbrook-tunnel"}
+        }
+    }
+}

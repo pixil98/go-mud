@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "look",
+    "spec": {
+        "handler": "look",
+        "category": "information",
+        "description": "Look at your surroundings or examine something.",
+        "targets": [
+            {"name": "target", "type": "target", "scope": ["room", "inventory"], "input": "target", "optional": true}
+        ],
+        "inputs": [
+            {"name": "target", "type": "string", "required": false}
+        ]
+    }
+}

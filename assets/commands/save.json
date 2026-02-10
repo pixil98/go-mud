@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "save",
+    "spec": {
+        "handler": "save",
+        "category": "system",
+        "description": "Save your character."
+    }
+}

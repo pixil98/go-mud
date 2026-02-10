@@ -1,0 +1,11 @@
+{
+    "version": 1,
+    "id": "darkwood-wolf",
+    "spec": {
+        "name": "Gray Wolf",
+        "aliases": ["wolf", "gray"],
+        "short_desc": "a gray wolf",
+        "long_desc": "A gray wolf lurks in the shadows, watching intently.",
+        "detailed_desc": "This wolf has a thick gray coat and piercing yellow eyes. Lean muscles ripple beneath its fur as it paces silently. It watches you with an unsettling intelligence, neither approaching nor fleeing."
+    }
+}
