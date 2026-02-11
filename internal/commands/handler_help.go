@@ -34,19 +34,17 @@ func (f *HelpHandlerFactory) ValidateConfig(config map[string]any) error {
 
 func (f *HelpHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		playerChannel := fmt.Sprintf("player-%s", strings.ToLower(cmdCtx.Actor.Name))
-
 		command := cmdCtx.Config["command"]
 		if command != "" {
-			return f.showCommand(command, playerChannel)
+			return f.showCommand(command, cmdCtx.Session.CharId)
 		}
 
-		return f.listCommands(playerChannel)
+		return f.listCommands(cmdCtx.Session.CharId)
 	}, nil
 }
 
 // listCommands displays all commands grouped by category.
-func (f *HelpHandlerFactory) listCommands(channel string) error {
+func (f *HelpHandlerFactory) listCommands(charId storage.Identifier) error {
 	all := f.commands.GetAll()
 
 	// Group commands by category
@@ -75,13 +73,13 @@ func (f *HelpHandlerFactory) listCommands(channel string) error {
 	}
 
 	if f.pub != nil {
-		_ = f.pub.Publish(channel, []byte(strings.Join(lines, "\n")))
+		return f.pub.PublishToPlayer(charId, []byte(strings.Join(lines, "\n")))
 	}
 	return nil
 }
 
 // showCommand displays detailed help for a specific command.
-func (f *HelpHandlerFactory) showCommand(name string, channel string) error {
+func (f *HelpHandlerFactory) showCommand(name string, charId storage.Identifier) error {
 	cmd := f.commands.Get(strings.ToLower(name))
 	if cmd == nil {
 		return NewUserError(fmt.Sprintf("Command %q is unknown.", name))
@@ -103,7 +101,7 @@ func (f *HelpHandlerFactory) showCommand(name string, channel string) error {
 	}
 
 	if f.pub != nil {
-		_ = f.pub.Publish(channel, []byte(strings.Join(lines, "\n")))
+		return f.pub.PublishToPlayer(charId, []byte(strings.Join(lines, "\n")))
 	}
 	return nil
 }

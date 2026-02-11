@@ -55,8 +55,7 @@ func (f *DropHandlerFactory) Create() (CommandFunc, error) {
 		if f.pub != nil {
 			obj := f.world.Objects().Get(string(oi.ObjectId))
 			msg := fmt.Sprintf("%s drops %s.", cmdCtx.Actor.Name, obj.ShortDesc)
-			roomChannel := fmt.Sprintf("zone-%s-room-%s", cmdCtx.Session.ZoneId, cmdCtx.Session.RoomId)
-			_ = f.pub.Publish(roomChannel, []byte(msg))
+			return f.pub.PublishToRoom(cmdCtx.Session.ZoneId, cmdCtx.Session.RoomId, []byte(msg))
 		}
 
 		return nil

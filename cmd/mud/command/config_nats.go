@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/pixil98/go-errors"
-	"github.com/pixil98/go-mud/internal/nats"
+	"github.com/pixil98/go-mud/internal/messaging"
 )
 
 type NatsConfig struct {
@@ -27,23 +27,23 @@ func (n *NatsConfig) validate() error {
 	return el.Err()
 }
 
-func (c *NatsConfig) buildNatsServer() (*nats.NatsServer, error) {
-	var opts []nats.NatsServerOpt
+func (c *NatsConfig) buildNatsServer() (*messaging.NatsServer, error) {
+	var opts []messaging.NatsServerOpt
 	if c.StartTimeout != "" {
 		d, err := time.ParseDuration(c.StartTimeout)
 		if err != nil {
 			return nil, fmt.Errorf("parsing start_timeout: %w", err)
 		}
-		opts = append(opts, nats.WithStartTimeout(d))
+		opts = append(opts, messaging.WithStartTimeout(d))
 	}
 	if c.Host != "" {
-		opts = append(opts, nats.WithHost(c.Host))
+		opts = append(opts, messaging.WithHost(c.Host))
 	}
 	if c.Port != 0 {
-		opts = append(opts, nats.WithPort(c.Port))
+		opts = append(opts, messaging.WithPort(c.Port))
 	}
 
-	s, err := nats.NewNatsServer(opts...)
+	s, err := messaging.NewNatsServer(opts...)
 	if err != nil {
 		return nil, err
 	}

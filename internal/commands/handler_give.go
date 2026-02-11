@@ -46,9 +46,7 @@ func (f *GiveHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		// Can't give to yourself
-		// TODO: Consider adding CharId to PlayerState (similar to MobileInstance/ObjectInstance)
-		// so we can compare by ID instead of name
-		if recipient.Player.Name == cmdCtx.Actor.Name {
+		if recipient.Player.CharId == cmdCtx.Session.CharId {
 			return NewUserError("You can't give something to yourself.")
 		}
 
@@ -79,8 +77,7 @@ func (f *GiveHandlerFactory) Create() (CommandFunc, error) {
 		if f.pub != nil {
 			obj := f.world.Objects().Get(string(oi.ObjectId))
 			msg := fmt.Sprintf("%s gives %s to %s.", cmdCtx.Actor.Name, obj.ShortDesc, recipientChar.Name)
-			roomChannel := fmt.Sprintf("zone-%s-room-%s", cmdCtx.Session.ZoneId, cmdCtx.Session.RoomId)
-			_ = f.pub.Publish(roomChannel, []byte(msg))
+			return f.pub.PublishToRoom(cmdCtx.Session.ZoneId, cmdCtx.Session.RoomId, []byte(msg))
 		}
 
 		return nil

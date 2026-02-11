@@ -71,8 +71,18 @@ type compiledCommand struct {
 	cmdFunc CommandFunc
 }
 
-// Publisher provides the ability to publish messages to subjects
+// Publisher provides typed methods for publishing messages to game channels.
 type Publisher interface {
+	// PublishToPlayer sends a message to a specific player's channel.
+	PublishToPlayer(charId storage.Identifier, data []byte) error
+	// PublishToRoom sends a message to all subscribers in a room.
+	PublishToRoom(zoneId, roomId storage.Identifier, data []byte) error
+	// PublishToZone sends a message to all subscribers in a zone.
+	PublishToZone(zoneId storage.Identifier, data []byte) error
+	// PublishToWorld sends a message to all subscribers on the world channel.
+	PublishToWorld(data []byte) error
+	// Publish sends a message to an arbitrary subject.
+	// TODO: Remove once config-driven channels (handler_message) are reworked for plugins.
 	Publish(subject string, data []byte) error
 }
 

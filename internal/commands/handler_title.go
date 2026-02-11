@@ -3,7 +3,6 @@ package commands
 import (
 	"context"
 	"fmt"
-	"strings"
 )
 
 // TitleHandlerFactory creates handlers that set a player's title.
@@ -42,9 +41,8 @@ func (f *TitleHandlerFactory) Create() (CommandFunc, error) {
 			output = fmt.Sprintf("Title set to: %s", title)
 		}
 
-		playerChannel := fmt.Sprintf("player-%s", strings.ToLower(cmdCtx.Actor.Name))
 		if f.pub != nil {
-			_ = f.pub.Publish(playerChannel, []byte(output))
+			return f.pub.PublishToPlayer(cmdCtx.Session.CharId, []byte(output))
 		}
 
 		return nil

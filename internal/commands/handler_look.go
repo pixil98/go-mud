@@ -57,10 +57,9 @@ func (f *LookHandlerFactory) showRoom(cmdCtx *CommandContext) error {
 		return NewUserError("You are in an invalid location.")
 	}
 
-	playerChannel := fmt.Sprintf("player-%s", strings.ToLower(cmdCtx.Actor.Name))
 	roomDesc := FormatFullRoomDescription(f.world, room, zoneId, roomId, cmdCtx.Actor.Name)
 	if f.pub != nil {
-		_ = f.pub.Publish(playerChannel, []byte(roomDesc))
+		return f.pub.PublishToPlayer(cmdCtx.Session.CharId, []byte(roomDesc))
 	}
 
 	return nil
@@ -68,8 +67,6 @@ func (f *LookHandlerFactory) showRoom(cmdCtx *CommandContext) error {
 
 // showTarget displays information about a specific target.
 func (f *LookHandlerFactory) showTarget(cmdCtx *CommandContext, target *TargetRef) error {
-	playerChannel := fmt.Sprintf("player-%s", strings.ToLower(cmdCtx.Actor.Name))
-
 	var msg string
 	switch target.Type {
 	case "player":
@@ -83,7 +80,7 @@ func (f *LookHandlerFactory) showTarget(cmdCtx *CommandContext, target *TargetRe
 	}
 
 	if f.pub != nil {
-		_ = f.pub.Publish(playerChannel, []byte(msg))
+		return f.pub.PublishToPlayer(cmdCtx.Session.CharId, []byte(msg))
 	}
 	return nil
 }

@@ -62,8 +62,7 @@ func (f *GetHandlerFactory) Create() (CommandFunc, error) {
 		if f.pub != nil {
 			obj := f.world.Objects().Get(string(oId.ObjectId))
 			msg := fmt.Sprintf("%s picks up %s.", cmdCtx.Actor.Name, obj.ShortDesc)
-			roomChannel := fmt.Sprintf("zone-%s-room-%s", cmdCtx.Session.ZoneId, cmdCtx.Session.RoomId)
-			_ = f.pub.Publish(roomChannel, []byte(msg))
+			return f.pub.PublishToRoom(cmdCtx.Session.ZoneId, cmdCtx.Session.RoomId, []byte(msg))
 		}
 
 		return nil

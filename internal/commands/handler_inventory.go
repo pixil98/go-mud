@@ -44,9 +44,8 @@ func (f *InventoryHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		output := strings.Join(lines, "\n")
-		playerChannel := fmt.Sprintf("player-%s", strings.ToLower(cmdCtx.Actor.Name))
 		if f.pub != nil {
-			_ = f.pub.Publish(playerChannel, []byte(output))
+			return f.pub.PublishToPlayer(cmdCtx.Session.CharId, []byte(output))
 		}
 
 		return nil

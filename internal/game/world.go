@@ -294,6 +294,7 @@ func (w *WorldState) AddPlayer(charId storage.Identifier, msgs chan []byte, zone
 		subscriber:   w.subscriber,
 		subs:         make(map[string]func()),
 		msgs:         msgs,
+		CharId:       charId,
 		ZoneId:       zoneId,
 		RoomId:       roomId,
 		Quit:         false,
@@ -390,6 +391,8 @@ func (w *WorldState) isZoneOccupied(zoneId storage.Identifier) bool {
 type PlayerState struct {
 	subscriber Subscriber
 	msgs       chan []byte
+
+	CharId storage.Identifier
 
 	// Location
 	ZoneId storage.Identifier

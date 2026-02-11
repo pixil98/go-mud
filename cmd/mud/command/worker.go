@@ -6,6 +6,7 @@ import (
 	"github.com/pixil98/go-mud/internal/commands"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/listener"
+	"github.com/pixil98/go-mud/internal/messaging"
 	"github.com/pixil98/go-mud/internal/plugins"
 	"github.com/pixil98/go-mud/internal/plugins/base"
 	"github.com/pixil98/go-service"
@@ -64,8 +65,11 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 		world.ResetZone(zoneId, true)
 	}
 
+	// Create publisher for command handlers
+	publisher := messaging.NewNatsPublisher(natsServer)
+
 	// Create command handler and compile all commands
-	cmdHandler, err := commands.NewHandler(storeCmds, natsServer, world, pluginManager)
+	cmdHandler, err := commands.NewHandler(storeCmds, publisher, world, pluginManager)
 	if err != nil {
 		return nil, fmt.Errorf("compiling commands: %w", err)
 	}
