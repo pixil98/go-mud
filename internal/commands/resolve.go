@@ -176,6 +176,18 @@ func (r *Resolver) resolveObject(charId storage.Identifier, name string, scope S
 		}
 	}
 
+	// Check equipment scope
+	if scope&ScopeEquipment != 0 {
+		actor := r.world.Characters().Get(string(charId))
+		if actor != nil && actor.Equipment != nil {
+			for _, oi := range actor.Equipment.Slots {
+				if ref := matchObject(oi); ref != nil {
+					return ref, nil
+				}
+			}
+		}
+	}
+
 	// Check room scope
 	if scope&ScopeRoom != 0 {
 		for _, oi := range r.world.GetObjectsInRoom(actorZone, actorRoom) {

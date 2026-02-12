@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "millbrook-ring",
+    "spec": {
+        "aliases": ["ring", "silver"],
+        "short_desc": "a tarnished silver ring",
+        "long_desc": "A tarnished silver ring glints faintly on the ground.",
+        "detailed_desc": "A simple band of silver, darkened with age. Faint engravings circle the outer surface, though the markings have been worn too smooth to read.",
+        "type": "other",
+        "flags": ["wearable"],
+        "wear_slots": ["finger"]
+    }
+}

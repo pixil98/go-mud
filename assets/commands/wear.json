@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "wear",
+    "spec": {
+        "handler": "wear",
+        "category": "items",
+        "description": "Wear an item from your inventory.",
+        "targets": [
+            {"name": "target", "type": "object", "scope": ["inventory"], "input": "item"}
+        ],
+        "inputs": [
+            {"name": "item", "type": "string", "required": true}
+        ]
+    }
+}

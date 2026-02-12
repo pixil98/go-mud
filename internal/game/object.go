@@ -16,6 +16,23 @@ const (
 	ObjectTypeOther
 )
 
+// ObjectFlag defines a boolean property of an object.
+type ObjectFlag int
+
+const (
+	ObjectFlagUnknown ObjectFlag = iota
+	ObjectFlagWearable
+)
+
+func parseObjectFlag(s string) ObjectFlag {
+	switch strings.ToLower(s) {
+	case "wearable":
+		return ObjectFlagWearable
+	default:
+		return ObjectFlagUnknown
+	}
+}
+
 // Object defines a type of object/item loaded from asset files.
 // Multiple instances can be spawned from one definition.
 // Object IDs follow the convention <zone>-<name> (e.g., "millbrook-sword").
@@ -35,6 +52,13 @@ type Object struct {
 
 	// TypeStr is the object type from JSON
 	TypeStr string `json:"type"`
+
+	// Flags are boolean markers for object properties (e.g., "wearable", "container", "nodrop")
+	Flags []string `json:"flags,omitempty"`
+
+	// WearSlots lists the slot types this item can be equipped in (e.g., ["head"], ["finger"],
+	// ["hand_main", "hand_off"]). Only meaningful when the "wearable" flag is set.
+	WearSlots []string `json:"wear_slots,omitempty"`
 }
 
 // Type returns the parsed ObjectType from TypeStr.
@@ -45,6 +69,16 @@ func (o *Object) Type() ObjectType {
 	default:
 		return ObjectTypeUnknown
 	}
+}
+
+// HasFlag returns true if the object has the given flag.
+func (o *Object) HasFlag(flag ObjectFlag) bool {
+	for _, f := range o.Flags {
+		if parseObjectFlag(f) == flag {
+			return true
+		}
+	}
+	return false
 }
 
 // Validate satisfies storage.ValidatingSpec
@@ -60,6 +94,17 @@ func (o *Object) Validate() error {
 		el.Add(fmt.Errorf("object type is required"))
 	} else if o.Type() == ObjectTypeUnknown {
 		el.Add(fmt.Errorf("object type %q is invalid", o.TypeStr))
+	}
+	for _, f := range o.Flags {
+		if parseObjectFlag(f) == ObjectFlagUnknown {
+			el.Add(fmt.Errorf("unknown flag %q", f))
+		}
+	}
+	if o.HasFlag(ObjectFlagWearable) && len(o.WearSlots) == 0 {
+		el.Add(fmt.Errorf("wearable items must have at least one wear_slot"))
+	}
+	if !o.HasFlag(ObjectFlagWearable) && len(o.WearSlots) > 0 {
+		el.Add(fmt.Errorf("wear_slots requires the wearable flag"))
 	}
 	return el.Err()
 }

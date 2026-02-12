@@ -42,5 +42,5 @@ func (m *Mobile) Validate() error {
 type MobileInstance struct {
 	InstanceId string             // Unique ID: "<mobile-id>-<counter>" e.g., "millbrook-guard-1"
 	MobileId   storage.Identifier // Reference to the Mobile definition
-	Inventory  *Inventory         // Items carried by this mobile
+	Actor
 }

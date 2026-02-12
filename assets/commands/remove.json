@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "remove",
+    "spec": {
+        "handler": "remove",
+        "category": "items",
+        "description": "Remove a worn item back to your inventory.",
+        "targets": [
+            {"name": "target", "type": "object", "scope": ["equipment"], "input": "item"}
+        ],
+        "inputs": [
+            {"name": "item", "type": "string", "required": true}
+        ]
+    }
+}

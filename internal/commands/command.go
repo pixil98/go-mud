@@ -22,6 +22,7 @@ const (
 	ScopeZone                        // Players in current zone
 	ScopeRoom                        // Players/mobs/objects in current room
 	ScopeInventory                   // Objects in actor's inventory
+	ScopeEquipment                   // Objects in actor's equipment
 )
 
 // TargetType represents the type of entity a target resolves to.
@@ -77,6 +78,8 @@ func (t *TargetSpec) Scope() Scope {
 			result |= ScopeRoom
 		case "inventory":
 			result |= ScopeInventory
+		case "equipment":
+			result |= ScopeEquipment
 		case "world":
 			result |= ScopeWorld
 		case "zone":

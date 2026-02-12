@@ -98,6 +98,7 @@ func NewHandler(c storage.Storer[*Command], publisher Publisher, world *game.Wor
 
 	// Register built-in handlers
 	h.RegisterFactory("drop", NewDropHandlerFactory(world, publisher))
+	h.RegisterFactory("equipment", NewEquipmentHandlerFactory(world, publisher))
 	h.RegisterFactory("get", NewGetHandlerFactory(world, publisher))
 	h.RegisterFactory("give", NewGiveHandlerFactory(world, publisher))
 	h.RegisterFactory("help", NewHelpHandlerFactory(c, publisher))
@@ -106,8 +107,10 @@ func NewHandler(c storage.Storer[*Command], publisher Publisher, world *game.Wor
 	h.RegisterFactory("message", NewMessageHandlerFactory(publisher))
 	h.RegisterFactory("move", NewMoveHandlerFactory(world, publisher))
 	h.RegisterFactory("quit", NewQuitHandlerFactory(world))
+	h.RegisterFactory("remove", NewRemoveHandlerFactory(world, publisher))
 	h.RegisterFactory("save", NewSaveHandlerFactory(world, publisher))
 	h.RegisterFactory("title", NewTitleHandlerFactory(publisher))
+	h.RegisterFactory("wear", NewWearHandlerFactory(world, publisher))
 	h.RegisterFactory("who", NewWhoHandlerFactory(world, publisher, races))
 
 	// Compile commands
