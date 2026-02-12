@@ -45,21 +45,8 @@ func (inv *Inventory) Remove(instanceId string) *ObjectInstance {
 	return nil
 }
 
-// Get returns an object instance by ID, or nil if not found.
-func (inv *Inventory) Get(instanceId string) *ObjectInstance {
-	return inv.Items[instanceId]
-}
-
-// Contains checks if an object instance is in the inventory.
-func (inv *Inventory) Contains(instanceId string) bool {
-	_, ok := inv.Items[instanceId]
-	return ok
-}
-
 // Equipment holds items equipped by a character or mobile.
 // Keys are slot identifiers (e.g., "head", "body", "finger-1").
-// The slot-capacity system (which slots exist, how many of each type)
-// will be added when equip/unequip commands are built.
 type Equipment struct {
 	Slots map[string]*ObjectInstance `json:"slots,omitempty"`
 }
@@ -81,31 +68,20 @@ func (eq *Equipment) Equip(slot string, obj *ObjectInstance) error {
 	return nil
 }
 
-// Unequip removes and returns the object instance from the given slot.
-// Returns nil if the slot is empty.
-func (eq *Equipment) Unequip(slot string) *ObjectInstance {
-	obj, ok := eq.Slots[slot]
-	if !ok {
-		return nil
-	}
-	delete(eq.Slots, slot)
-	return obj
-}
-
 // GetSlot returns the object instance in the given slot, or nil if empty.
 func (eq *Equipment) GetSlot(slot string) *ObjectInstance {
 	return eq.Slots[slot]
 }
 
-// FindByInstance returns the slot name and object instance for a given instance ID.
-// Returns ("", nil) if not found.
-func (eq *Equipment) FindByInstance(instanceId string) (string, *ObjectInstance) {
+// Remove finds and unequips an object by instance ID.
+func (eq *Equipment) Remove(instanceId string) *ObjectInstance {
 	for slot, obj := range eq.Slots {
 		if obj.InstanceId == instanceId {
-			return slot, obj
+			delete(eq.Slots, slot)
+			return obj
 		}
 	}
-	return "", nil
+	return nil
 }
 
 type pronounPossessive struct {

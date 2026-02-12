@@ -38,22 +38,19 @@ func (f *DropHandlerFactory) Create() (CommandFunc, error) {
 			return NewUserError("Drop what?")
 		}
 
-		// Remove from inventory
-		if cmdCtx.Actor.Inventory == nil {
-			return NewUserError(fmt.Sprintf("You're not carrying %s.", target.Name))
-		}
-
-		oi := cmdCtx.Actor.Inventory.Remove(target.Obj.InstanceId)
+		// Remove from source
+		oi := target.Obj.Source.Remove(target.Obj.InstanceId)
 		if oi == nil {
 			return NewUserError(fmt.Sprintf("You're not carrying %s.", target.Name))
 		}
 
 		// Add to room
-		f.world.AddObjectToRoom(cmdCtx.Session.ZoneId, cmdCtx.Session.RoomId, oi)
+		room := f.world.RoomHolder(cmdCtx.Session.ZoneId, cmdCtx.Session.RoomId)
+		room.Add(oi)
 
 		// Broadcast to room
 		if f.pub != nil {
-			obj := f.world.Objects().Get(string(oi.ObjectId))
+			obj := f.world.Objects().Get(string(target.Obj.ObjectId))
 			msg := fmt.Sprintf("%s drops %s.", cmdCtx.Actor.Name, obj.ShortDesc)
 			return f.pub.PublishToRoom(cmdCtx.Session.ZoneId, cmdCtx.Session.RoomId, []byte(msg))
 		}

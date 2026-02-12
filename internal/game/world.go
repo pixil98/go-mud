@@ -159,9 +159,7 @@ func (w *WorldState) GetObjectsInRoom(zoneId, roomId storage.Identifier) []*Obje
 	return result
 }
 
-// RemoveObjectFromRoom removes an object instance from a room.
-// Returns the removed instance, or nil if not found.
-func (w *WorldState) RemoveObjectFromRoom(zoneId, roomId storage.Identifier, instanceId string) *ObjectInstance {
+func (w *WorldState) removeObjectFromRoom(zoneId, roomId storage.Identifier, instanceId string) *ObjectInstance {
 	w.mu.Lock()
 	defer w.mu.Unlock()
 
@@ -178,8 +176,7 @@ func (w *WorldState) RemoveObjectFromRoom(zoneId, roomId storage.Identifier, ins
 	return oi
 }
 
-// AddObjectToRoom adds an existing object instance to a room.
-func (w *WorldState) AddObjectToRoom(zoneId, roomId storage.Identifier, obj *ObjectInstance) {
+func (w *WorldState) addObjectToRoom(zoneId, roomId storage.Identifier, obj *ObjectInstance) {
 	w.mu.Lock()
 	defer w.mu.Unlock()
 
@@ -191,6 +188,29 @@ func (w *WorldState) AddObjectToRoom(zoneId, roomId storage.Identifier, obj *Obj
 	}
 
 	w.objectInstances[zoneId][roomId][obj.InstanceId] = obj
+}
+
+// RoomObjectHolder wraps a specific room's object storage so it satisfies
+// the ObjectHolder interface defined in the commands package.
+type RoomObjectHolder struct {
+	world  *WorldState
+	zoneId storage.Identifier
+	roomId storage.Identifier
+}
+
+// RoomHolder creates a RoomObjectHolder for the given room.
+func (w *WorldState) RoomHolder(zoneId, roomId storage.Identifier) *RoomObjectHolder {
+	return &RoomObjectHolder{world: w, zoneId: zoneId, roomId: roomId}
+}
+
+// Add places an object instance in this room.
+func (r *RoomObjectHolder) Add(obj *ObjectInstance) {
+	r.world.addObjectToRoom(r.zoneId, r.roomId, obj)
+}
+
+// Remove removes an object instance from this room by instance ID.
+func (r *RoomObjectHolder) Remove(instanceId string) *ObjectInstance {
+	return r.world.removeObjectFromRoom(r.zoneId, r.roomId, instanceId)
 }
 
 // ResetZone despawns all mobiles in a zone and respawns them per room definitions.

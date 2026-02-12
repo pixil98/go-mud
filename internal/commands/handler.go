@@ -81,7 +81,8 @@ type Publisher interface {
 	// PublishToWorld sends a message to all subscribers on the world channel.
 	PublishToWorld(data []byte) error
 	// Publish sends a message to an arbitrary subject.
-	// TODO: Remove once config-driven channels (handler_message) are reworked for plugins.
+	// TODO: Evaluate whether this can be replaced with typed methods now that
+	// plugins won't define custom channels.
 	Publish(subject string, data []byte) error
 }
 

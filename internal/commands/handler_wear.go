@@ -8,13 +8,8 @@ import (
 )
 
 // WearHandlerFactory creates handlers for equipping wearable items.
-// TODO: This handler requires the target to be scoped to "inventory" in the
-// command JSON. If misconfigured (e.g., scoped to "room"), the resolver will
-// find the item but the handler will fail because it looks in inventory.
-// HandlerSpec should be able to express required scopes so this can be
-// validated at compile time rather than failing silently at runtime.
 // Targets:
-//   - target (required): the object to wear (from inventory)
+//   - target (required): the object to wear
 type WearHandlerFactory struct {
 	world *game.WorldState
 	pub   Publisher
@@ -43,17 +38,8 @@ func (f *WearHandlerFactory) Create() (CommandFunc, error) {
 			return NewUserError("Wear what?")
 		}
 
-		// Find the instance in inventory to get the ObjectId
-		if cmdCtx.Actor.Inventory == nil {
-			return NewUserError(fmt.Sprintf("You're not carrying %s.", target.Name))
-		}
-		oi := cmdCtx.Actor.Inventory.Get(target.Obj.InstanceId)
-		if oi == nil {
-			return NewUserError(fmt.Sprintf("You're not carrying %s.", target.Name))
-		}
-
 		// Look up object definition
-		obj := f.world.Objects().Get(string(oi.ObjectId))
+		obj := f.world.Objects().Get(string(target.Obj.ObjectId))
 		if obj == nil {
 			return NewUserError("Wear what?")
 		}
@@ -80,8 +66,11 @@ func (f *WearHandlerFactory) Create() (CommandFunc, error) {
 			return NewUserError("You're already wearing something in that slot.")
 		}
 
-		// Remove from inventory and equip
-		cmdCtx.Actor.Inventory.Remove(target.Obj.InstanceId)
+		// Remove from source and equip
+		oi := target.Obj.Source.Remove(target.Obj.InstanceId)
+		if oi == nil {
+			return NewUserError(fmt.Sprintf("You're not carrying %s.", target.Name))
+		}
 		err := cmdCtx.Actor.Equipment.Equip(slot, oi)
 		if err != nil {
 			// Put it back on failure

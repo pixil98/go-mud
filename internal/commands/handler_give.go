@@ -50,12 +50,8 @@ func (f *GiveHandlerFactory) Create() (CommandFunc, error) {
 			return NewUserError("You can't give something to yourself.")
 		}
 
-		// Remove from actor's inventory
-		if cmdCtx.Actor.Inventory == nil {
-			return NewUserError(fmt.Sprintf("You're not carrying %s.", item.Name))
-		}
-
-		oi := cmdCtx.Actor.Inventory.Remove(item.Obj.InstanceId)
+		// Remove from source
+		oi := item.Obj.Source.Remove(item.Obj.InstanceId)
 		if oi == nil {
 			return NewUserError(fmt.Sprintf("You're not carrying %s.", item.Name))
 		}
@@ -75,7 +71,7 @@ func (f *GiveHandlerFactory) Create() (CommandFunc, error) {
 
 		// Broadcast to room
 		if f.pub != nil {
-			obj := f.world.Objects().Get(string(oi.ObjectId))
+			obj := f.world.Objects().Get(string(item.Obj.ObjectId))
 			msg := fmt.Sprintf("%s gives %s to %s.", cmdCtx.Actor.Name, obj.ShortDesc, recipientChar.Name)
 			return f.pub.PublishToRoom(cmdCtx.Session.ZoneId, cmdCtx.Session.RoomId, []byte(msg))
 		}

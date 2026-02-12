@@ -151,14 +151,14 @@ func (r *Resolver) resolveObject(charId storage.Identifier, name string, scope S
 	actorZone, actorRoom := actorState.Location()
 
 	// matchObject checks if an object matches the given name by alias
-	matchObject := func(oi *game.ObjectInstance) *ObjectRef {
+	matchObject := func(oi *game.ObjectInstance, source ObjectHolder) *ObjectRef {
 		obj := r.world.Objects().Get(string(oi.ObjectId))
 		if obj == nil {
 			return nil
 		}
 		for _, alias := range obj.Aliases {
 			if strings.ToLower(alias) == nameLower {
-				return ObjectRefFrom(obj, oi)
+				return ObjectRefFrom(obj, oi, source)
 			}
 		}
 		return nil
@@ -169,7 +169,7 @@ func (r *Resolver) resolveObject(charId storage.Identifier, name string, scope S
 		actor := r.world.Characters().Get(string(charId))
 		if actor != nil && actor.Inventory != nil {
 			for _, oi := range actor.Inventory.Items {
-				if ref := matchObject(oi); ref != nil {
+				if ref := matchObject(oi, actor.Inventory); ref != nil {
 					return ref, nil
 				}
 			}
@@ -181,7 +181,7 @@ func (r *Resolver) resolveObject(charId storage.Identifier, name string, scope S
 		actor := r.world.Characters().Get(string(charId))
 		if actor != nil && actor.Equipment != nil {
 			for _, oi := range actor.Equipment.Slots {
-				if ref := matchObject(oi); ref != nil {
+				if ref := matchObject(oi, actor.Equipment); ref != nil {
 					return ref, nil
 				}
 			}
@@ -190,8 +190,9 @@ func (r *Resolver) resolveObject(charId storage.Identifier, name string, scope S
 
 	// Check room scope
 	if scope&ScopeRoom != 0 {
+		source := r.world.RoomHolder(actorZone, actorRoom)
 		for _, oi := range r.world.GetObjectsInRoom(actorZone, actorRoom) {
-			if ref := matchObject(oi); ref != nil {
+			if ref := matchObject(oi, source); ref != nil {
 				return ref, nil
 			}
 		}
@@ -203,8 +204,9 @@ func (r *Resolver) resolveObject(charId storage.Identifier, name string, scope S
 			if room.ZoneId != string(actorZone) {
 				continue
 			}
+			source := r.world.RoomHolder(actorZone, storage.Identifier(roomId))
 			for _, oi := range r.world.GetObjectsInRoom(actorZone, storage.Identifier(roomId)) {
-				if ref := matchObject(oi); ref != nil {
+				if ref := matchObject(oi, source); ref != nil {
 					return ref, nil
 				}
 			}
@@ -215,8 +217,9 @@ func (r *Resolver) resolveObject(charId storage.Identifier, name string, scope S
 	if scope&ScopeWorld != 0 {
 		for roomId, room := range r.world.Rooms().GetAll() {
 			zoneId := storage.Identifier(room.ZoneId)
+			source := r.world.RoomHolder(zoneId, storage.Identifier(roomId))
 			for _, oi := range r.world.GetObjectsInRoom(zoneId, storage.Identifier(roomId)) {
-				if ref := matchObject(oi); ref != nil {
+				if ref := matchObject(oi, source); ref != nil {
 					return ref, nil
 				}
 			}

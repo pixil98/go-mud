@@ -12,8 +12,8 @@ import (
 //   - sender_channel (optional): template for sender's channel (for confirmation)
 //   - sender_message (required if sender_channel set): template for sender confirmation
 //
-// TODO: This handler uses raw Publish with config-driven channel names. Rework to use
-// typed Publisher methods once we know more about how plugins will define custom channels.
+// TODO: This handler uses raw Publish with config-driven channel names. Evaluate whether
+// it can use typed Publisher methods now that plugins won't define custom channels.
 type MessageHandlerFactory struct {
 	pub Publisher
 }

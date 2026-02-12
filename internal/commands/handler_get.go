@@ -46,9 +46,9 @@ func (f *GetHandlerFactory) Create() (CommandFunc, error) {
 			return NewUserError("Getting items from containers is not yet supported.")
 		}
 
-		// Remove from room
-		oId := f.world.RemoveObjectFromRoom(cmdCtx.Session.ZoneId, cmdCtx.Session.RoomId, target.Obj.InstanceId)
-		if oId == nil {
+		// Remove from source
+		oi := target.Obj.Source.Remove(target.Obj.InstanceId)
+		if oi == nil {
 			return NewUserError(fmt.Sprintf("You don't see %s here.", target.Name))
 		}
 
@@ -56,11 +56,11 @@ func (f *GetHandlerFactory) Create() (CommandFunc, error) {
 		if cmdCtx.Actor.Inventory == nil {
 			cmdCtx.Actor.Inventory = game.NewInventory()
 		}
-		cmdCtx.Actor.Inventory.Add(oId)
+		cmdCtx.Actor.Inventory.Add(oi)
 
 		// Broadcast to room
 		if f.pub != nil {
-			obj := f.world.Objects().Get(string(oId.ObjectId))
+			obj := f.world.Objects().Get(string(target.Obj.ObjectId))
 			msg := fmt.Sprintf("%s picks up %s.", cmdCtx.Actor.Name, obj.ShortDesc)
 			return f.pub.PublishToRoom(cmdCtx.Session.ZoneId, cmdCtx.Session.RoomId, []byte(msg))
 		}

@@ -8,11 +8,8 @@ import (
 )
 
 // RemoveHandlerFactory creates handlers for unequipping worn items.
-// TODO: This handler requires the target to be scoped to "equipment" in the
-// command JSON. Same scope-coupling issue as WearHandlerFactory — see that
-// handler's TODO for details.
 // Targets:
-//   - target (required): the object to remove (from equipment)
+//   - target (required): the object to remove
 type RemoveHandlerFactory struct {
 	world *game.WorldState
 	pub   Publisher
@@ -41,17 +38,11 @@ func (f *RemoveHandlerFactory) Create() (CommandFunc, error) {
 			return NewUserError("Remove what?")
 		}
 
-		// Find the item in equipment
-		if cmdCtx.Actor.Equipment == nil {
-			return NewUserError(fmt.Sprintf("You're not wearing %s.", target.Name))
-		}
-		slot, oi := cmdCtx.Actor.Equipment.FindByInstance(target.Obj.InstanceId)
+		// Remove from source (equipment)
+		oi := target.Obj.Source.Remove(target.Obj.InstanceId)
 		if oi == nil {
 			return NewUserError(fmt.Sprintf("You're not wearing %s.", target.Name))
 		}
-
-		// Unequip it
-		cmdCtx.Actor.Equipment.Unequip(slot)
 
 		// Add back to inventory
 		if cmdCtx.Actor.Inventory == nil {
@@ -61,7 +52,7 @@ func (f *RemoveHandlerFactory) Create() (CommandFunc, error) {
 
 		// Broadcast to room
 		if f.pub != nil {
-			obj := f.world.Objects().Get(string(oi.ObjectId))
+			obj := f.world.Objects().Get(string(target.Obj.ObjectId))
 			msg := fmt.Sprintf("%s removes %s.", cmdCtx.Actor.Name, obj.ShortDesc)
 			return f.pub.PublishToRoom(cmdCtx.Session.ZoneId, cmdCtx.Session.RoomId, []byte(msg))
 		}
