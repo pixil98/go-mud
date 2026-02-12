@@ -2,11 +2,15 @@
     "version": 1,
     "id": "put",
     "spec": {
-        "handler": "put",
+        "handler": "move_obj",
         "category": "items",
         "description": "Put an item into a container.",
+        "config": {
+            "destination": "container",
+            "message": "{{ .Actor.Name }} puts {{ .Targets.item.Obj.Name }} in {{ .Targets.container.Obj.Name }}."
+        },
         "targets": [
-            {"name": "target", "type": "object", "scope": ["inventory"], "input": "item"},
+            {"name": "item", "type": "object", "scope": ["inventory"], "input": "item"},
             {"name": "container", "type": "object", "scope": ["room","inventory","equipment"], "input": "container"}
         ],
         "inputs": [

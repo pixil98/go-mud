@@ -188,7 +188,7 @@ func (w *WorldState) addObjectToRoom(zoneId, roomId storage.Identifier, obj *Obj
 }
 
 // RoomObjectHolder wraps a specific room's object storage so it satisfies
-// the ObjectHolder interface defined in the commands package.
+// the ObjectHolder and ObjectRemover interfaces defined in the commands package.
 type RoomObjectHolder struct {
 	world  *WorldState
 	zoneId storage.Identifier

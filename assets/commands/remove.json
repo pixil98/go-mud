@@ -2,11 +2,15 @@
     "version": 1,
     "id": "remove",
     "spec": {
-        "handler": "remove",
+        "handler": "move_obj",
         "category": "items",
         "description": "Remove a worn item back to your inventory.",
+        "config": {
+            "destination": "inventory",
+            "message": "{{ .Actor.Name }} removes {{ .Targets.item.Obj.Name }}."
+        },
         "targets": [
-            {"name": "target", "type": "object", "scope": ["equipment"], "input": "item"}
+            {"name": "item", "type": "object", "scope": ["equipment"], "input": "item"}
         ],
         "inputs": [
             {"name": "item", "type": "string", "required": true}

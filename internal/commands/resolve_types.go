@@ -5,12 +5,19 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
-// ObjectHolder is a container that can store and release object instances.
-// Inventory, Equipment, and RoomObjectHolder all satisfy this interface,
+// ObjectRemover can have objects removed from it.
+// Equipment, Inventory, and RoomObjectHolder all satisfy this interface,
 // allowing handlers to remove objects from the source scope without knowing
 // which specific container type it is.
-type ObjectHolder interface {
+type ObjectRemover interface {
 	Remove(instanceId string) *game.ObjectInstance
+}
+
+// ObjectHolder can have objects added and removed.
+// Inventory and RoomObjectHolder satisfy this. Equipment does not (it uses Equip).
+type ObjectHolder interface {
+	ObjectRemover
+	Add(obj *game.ObjectInstance)
 }
 
 // Stable template-facing types
@@ -63,12 +70,12 @@ type ObjectRef struct {
 	ObjectId    storage.Identifier // Reference to the Object definition
 	Name        string
 	Description string
-	Source      ObjectHolder         // Container the object was resolved from
+	Source      ObjectRemover        // Container the object was resolved from
 	Instance    *game.ObjectInstance // Direct reference to the instance
 }
 
 // ObjectRefFrom creates an ObjectRef from a game.Object and its instance.
-func ObjectRefFrom(obj *game.Object, instance *game.ObjectInstance, source ObjectHolder) *ObjectRef {
+func ObjectRefFrom(obj *game.Object, instance *game.ObjectInstance, source ObjectRemover) *ObjectRef {
 	if obj == nil || instance == nil {
 		return nil
 	}

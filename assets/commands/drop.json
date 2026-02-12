@@ -2,11 +2,15 @@
     "version": 1,
     "id": "drop",
     "spec": {
-        "handler": "drop",
+        "handler": "move_obj",
         "category": "items",
         "description": "Drop an item from your inventory.",
+        "config": {
+            "destination": "room",
+            "message": "{{ .Actor.Name }} drops {{ .Targets.item.Obj.Name }}."
+        },
         "targets": [
-            {"name": "target", "type": "object", "scope": ["inventory"], "input": "item"}
+            {"name": "item", "type": "object", "scope": ["inventory"], "input": "item"}
         ],
         "inputs": [
             {"name": "item", "type": "string", "required": true}

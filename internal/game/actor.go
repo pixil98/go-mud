@@ -8,6 +8,9 @@ import (
 )
 
 // Actor holds properties shared between characters and mobiles.
+// TODO: Move Inventory and Equipment off Actor. Players (Character) and mob instances
+// (MobileInstance) should each own their own Inventory/Equipment directly. This will
+// also require supporting mob spawns with equipment/inventory.
 type Actor struct {
 	Pronoun   storage.Identifier `json:"pronoun,omitempty"`
 	Race      storage.Identifier `json:"race,omitempty"`

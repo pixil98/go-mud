@@ -152,7 +152,7 @@ func (r *Resolver) resolveObject(charId storage.Identifier, name string, scope S
 	actorZone, actorRoom := actorState.Location()
 
 	// matchObject checks if an object matches the given name by alias
-	matchObject := func(oi *game.ObjectInstance, source ObjectHolder) *ObjectRef {
+	matchObject := func(oi *game.ObjectInstance, source ObjectRemover) *ObjectRef {
 		obj := r.world.Objects().Get(string(oi.ObjectId))
 		if obj == nil {
 			return nil

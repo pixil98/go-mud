@@ -678,8 +678,8 @@ func TestHandler_expandConfig(t *testing.T) {
 		},
 		"target used in template": {
 			config: map[string]any{
-				"channel": "player-{{ .Targets.target.Name | lower }}",
-				"message": "Hello {{ .Targets.target.Name }}!",
+				"channel": "player-{{ .Targets.target.Player.Name | lower }}",
+				"message": "Hello {{ .Targets.target.Player.Name }}!",
 			},
 			actor: &game.Character{Name: "Alice"},
 			targets: map[string]*TargetRef{
@@ -693,7 +693,7 @@ func TestHandler_expandConfig(t *testing.T) {
 		},
 		"actor and target combined": {
 			config: map[string]any{
-				"message": "{{ .Actor.Name }} tells {{ .Targets.target.Name }}, \"{{ .Inputs.text }}\"",
+				"message": "{{ .Actor.Name }} tells {{ .Targets.target.Player.Name }}, \"{{ .Inputs.text }}\"",
 			},
 			actor: &game.Character{Name: "Alice"},
 			targets: map[string]*TargetRef{

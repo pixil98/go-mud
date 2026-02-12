@@ -2,12 +2,16 @@
     "version": 1,
     "id": "get",
     "spec": {
-        "handler": "get",
+        "handler": "move_obj",
         "category": "items",
         "description": "Pick up an item from the room or a container.",
+        "config": {
+            "destination": "inventory",
+            "message": "{{ if .Targets.container }}{{ .Actor.Name }} gets {{ .Targets.item.Obj.Name }} from {{ .Targets.container.Obj.Name }}.{{ else }}{{ .Actor.Name }} picks up {{ .Targets.item.Obj.Name }}.{{ end }}"
+        },
         "targets": [
             {"name": "container", "type": "object", "scope": ["room"], "input": "from", "optional": true},
-            {"name": "target", "type": "object", "scope": ["room", "contents"], "input": "item", "scope_target": "container"}
+            {"name": "item", "type": "object", "scope": ["room", "contents"], "input": "item", "scope_target": "container"}
         ],
         "inputs": [
             {"name": "item", "type": "string", "required": true},
