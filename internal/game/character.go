@@ -23,8 +23,7 @@ type Character struct {
 	LastZone storage.Identifier `json:"last_zone,omitempty"`
 	LastRoom storage.Identifier `json:"last_room,omitempty"`
 
-	// ExtensionState holds plugin-specific data for this character
-	storage.ExtensionState `json:"ext,omitempty"`
+	Traits
 }
 
 // Validate satisfies storage.ValidatingSpec

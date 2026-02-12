@@ -3,23 +3,23 @@ package commands
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/plugins"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // WhoHandlerFactory creates handlers that list online players.
 type WhoHandlerFactory struct {
-	world    *game.WorldState
-	pub      Publisher
-	charInfo plugins.CharacterInfoProvider
+	world *game.WorldState
+	pub   Publisher
+	races storage.Storer[*game.Race]
 }
 
 // NewWhoHandlerFactory creates a new WhoHandlerFactory.
-func NewWhoHandlerFactory(world *game.WorldState, pub Publisher, charInfo plugins.CharacterInfoProvider) *WhoHandlerFactory {
-	return &WhoHandlerFactory{world: world, pub: pub, charInfo: charInfo}
+func NewWhoHandlerFactory(world *game.WorldState, pub Publisher, races storage.Storer[*game.Race]) *WhoHandlerFactory {
+	return &WhoHandlerFactory{world: world, pub: pub, races: races}
 }
 
 func (f *WhoHandlerFactory) Spec() *HandlerSpec {
@@ -40,13 +40,11 @@ func (f *WhoHandlerFactory) Create() (CommandFunc, error) {
 				return
 			}
 
-			info := f.charInfo.GetCharacterInfo(char, plugins.InfoStyleShort)
-
-			// Build bracket content from plugin info
 			var parts []string
-			for _, v := range info {
-				parts = append(parts, v)
+			if race := f.races.Get(string(char.Race)); race != nil {
+				parts = append(parts, race.Abbreviation)
 			}
+			parts = append(parts, strconv.Itoa(char.Level))
 			bracket := strings.Join(parts, " ")
 
 			lines = append(lines, fmt.Sprintf("[%s] %s %s", bracket, char.Name, char.Title))

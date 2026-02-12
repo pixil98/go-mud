@@ -7,8 +7,7 @@ import (
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/listener"
 	"github.com/pixil98/go-mud/internal/messaging"
-	"github.com/pixil98/go-mud/internal/plugins"
-	"github.com/pixil98/go-mud/internal/plugins/base"
+	"github.com/pixil98/go-mud/internal/storage"
 	"github.com/pixil98/go-service"
 )
 
@@ -16,13 +15,6 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	cfg, ok := config.(*Config)
 	if !ok {
 		return nil, fmt.Errorf("unable to cast config")
-	}
-
-	// Setup Plugins
-	pluginManager := plugins.NewPluginManager()
-	err := pluginManager.Register(&base.BasePlugin{})
-	if err != nil {
-		return nil, err
 	}
 
 	// Create Stores
@@ -50,6 +42,16 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	if err != nil {
 		return nil, fmt.Errorf("creating object store: %w", err)
 	}
+	storePronouns, err := cfg.Storage.Pronouns.BuildFileStore()
+	if err != nil {
+		return nil, fmt.Errorf("creating pronoun store: %w", err)
+	}
+	storeRaces, err := cfg.Storage.Races.BuildFileStore()
+	if err != nil {
+		return nil, fmt.Errorf("creating race store: %w", err)
+	}
+	pronouns := storage.NewSelectableStorer(storePronouns)
+	races := storage.NewSelectableStorer(storeRaces)
 
 	// Setup the nats server
 	natsServer, err := cfg.Nats.buildNatsServer()
@@ -69,13 +71,13 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	publisher := messaging.NewNatsPublisher(natsServer)
 
 	// Create command handler and compile all commands
-	cmdHandler, err := commands.NewHandler(storeCmds, publisher, world, pluginManager)
+	cmdHandler, err := commands.NewHandler(storeCmds, publisher, world, races)
 	if err != nil {
 		return nil, fmt.Errorf("compiling commands: %w", err)
 	}
 
 	// Create player manager
-	playerManager := cfg.PlayerManager.BuildPlayerManager(cmdHandler, pluginManager, world)
+	playerManager := cfg.PlayerManager.BuildPlayerManager(cmdHandler, world, pronouns, races)
 
 	// Create connection manager
 	connectionManager := listener.NewConnectionManager(playerManager)
@@ -92,7 +94,6 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 
 	// Setup the mud driver
 	driver := game.NewMudDriver([]game.Ticker{
-		pluginManager,
 		world,
 	})
 
