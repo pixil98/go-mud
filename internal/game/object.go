@@ -8,24 +8,19 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
-// ObjectType defines the category of an object.
-type ObjectType int
-
-const (
-	ObjectTypeUnknown ObjectType = iota
-	ObjectTypeOther
-)
-
 // ObjectFlag defines a boolean property of an object.
 type ObjectFlag int
 
 const (
 	ObjectFlagUnknown ObjectFlag = iota
+	ObjectFlagContainer
 	ObjectFlagWearable
 )
 
 func parseObjectFlag(s string) ObjectFlag {
 	switch strings.ToLower(s) {
+	case "container":
+		return ObjectFlagContainer
 	case "wearable":
 		return ObjectFlagWearable
 	default:
@@ -61,16 +56,6 @@ type Object struct {
 	WearSlots []string `json:"wear_slots,omitempty"`
 }
 
-// Type returns the parsed ObjectType from TypeStr.
-func (o *Object) Type() ObjectType {
-	switch strings.ToLower(o.TypeStr) {
-	case "other":
-		return ObjectTypeOther
-	default:
-		return ObjectTypeUnknown
-	}
-}
-
 // HasFlag returns true if the object has the given flag.
 func (o *Object) HasFlag(flag ObjectFlag) bool {
 	for _, f := range o.Flags {
@@ -89,11 +74,6 @@ func (o *Object) Validate() error {
 	}
 	if o.ShortDesc == "" {
 		el.Add(fmt.Errorf("object short description is required"))
-	}
-	if o.TypeStr == "" {
-		el.Add(fmt.Errorf("object type is required"))
-	} else if o.Type() == ObjectTypeUnknown {
-		el.Add(fmt.Errorf("object type %q is invalid", o.TypeStr))
 	}
 	for _, f := range o.Flags {
 		if parseObjectFlag(f) == ObjectFlagUnknown {
@@ -114,4 +94,5 @@ func (o *Object) Validate() error {
 type ObjectInstance struct {
 	InstanceId string             // Unique ID
 	ObjectId   storage.Identifier // Reference to the Object definition
+	Contents   *Inventory         // Non-nil for containers; holds objects stored inside
 }

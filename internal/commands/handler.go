@@ -107,6 +107,7 @@ func NewHandler(c storage.Storer[*Command], publisher Publisher, world *game.Wor
 	h.RegisterFactory("look", NewLookHandlerFactory(world, publisher))
 	h.RegisterFactory("message", NewMessageHandlerFactory(publisher))
 	h.RegisterFactory("move", NewMoveHandlerFactory(world, publisher))
+	h.RegisterFactory("put", NewPutHandlerFactory(world, publisher))
 	h.RegisterFactory("quit", NewQuitHandlerFactory(world))
 	h.RegisterFactory("remove", NewRemoveHandlerFactory(world, publisher))
 	h.RegisterFactory("save", NewSaveHandlerFactory(world, publisher))
@@ -383,8 +384,22 @@ func (h *Handler) resolveTargets(specs []TargetSpec, inputs map[string]any, char
 			return nil, fmt.Errorf("input %q is not a string", spec.Input)
 		}
 
+		// Set scope contents if applicable (search inside another resolved target).
+		// When the scope target was resolved, restrict to ScopeContents only so we
+		// don't fall through to room/inventory and pick up the wrong item.
+		// When the scope target was not provided (optional), use all declared scopes.
+		resolver.scopeContents = nil
+		scope := spec.Scope()
+		if spec.ScopeTarget != "" {
+			scopeRef := targets[spec.ScopeTarget]
+			if scopeRef != nil && scopeRef.Obj != nil && scopeRef.Obj.Instance != nil {
+				resolver.scopeContents = scopeRef.Obj.Instance.Contents
+				scope = ScopeContents
+			}
+		}
+
 		// Resolve the target
-		resolved, err := resolver.Resolve(charId, name, spec.Type, spec.Scope())
+		resolved, err := resolver.Resolve(charId, name, spec.Type, scope)
 		if err != nil {
 			return nil, err
 		}

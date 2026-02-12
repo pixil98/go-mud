@@ -1,0 +1,11 @@
+{
+    "version": 1,
+    "id": "millbrook-chest",
+    "spec": {
+        "aliases": ["chest", "wooden"],
+        "short_desc": "a wooden chest",
+        "long_desc": "A sturdy wooden chest sits in the corner.",
+        "detailed_desc": "A well-crafted chest made from thick oak planks, bound with iron straps. The lid opens easily.",
+        "flags": ["container"]
+    }
+}

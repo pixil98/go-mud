@@ -2,6 +2,7 @@ package command
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/pixil98/go-mud/internal/commands"
 	"github.com/pixil98/go-mud/internal/game"
@@ -93,6 +94,14 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	}
 
 	// Setup the mud driver
+	var opts []game.MudDriverOpt
+	if cfg.TickInterval != "" {
+		l, err := time.ParseDuration(cfg.TickInterval)
+		if err != nil {
+			return nil, fmt.Errorf("parsing tick interval %q", cfg.TickInterval)
+		}
+		opts = append(opts, game.WithTickLength(l))
+	}
 	driver := game.NewMudDriver([]game.Ticker{
 		world,
 	})

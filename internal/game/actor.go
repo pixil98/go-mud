@@ -32,6 +32,9 @@ func NewInventory() *Inventory {
 
 // Add adds an object instance to the inventory.
 func (inv *Inventory) Add(obj *ObjectInstance) {
+	if inv.Items == nil {
+		inv.Items = make(map[string]*ObjectInstance)
+	}
 	inv.Items[obj.InstanceId] = obj
 }
 
@@ -61,6 +64,9 @@ func NewEquipment() *Equipment {
 // Equip places an object instance in the given slot.
 // Returns an error if the slot is already occupied.
 func (eq *Equipment) Equip(slot string, obj *ObjectInstance) error {
+	if eq.Slots == nil {
+		eq.Slots = make(map[string]*ObjectInstance)
+	}
 	if _, occupied := eq.Slots[slot]; occupied {
 		return fmt.Errorf("slot %q is already occupied", slot)
 	}

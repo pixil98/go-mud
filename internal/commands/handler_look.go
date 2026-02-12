@@ -95,7 +95,14 @@ func (f *LookHandlerFactory) describeMob(mob *MobileRef) string {
 }
 
 func (f *LookHandlerFactory) describeObj(obj *ObjectRef) string {
-	return obj.Description
+	objDef := f.world.Objects().Get(string(obj.ObjectId))
+	if objDef == nil || !objDef.HasFlag(game.ObjectFlagContainer) {
+		return obj.Description
+	}
+
+	lines := []string{obj.Description, "It contains:"}
+	lines = append(lines, FormatInventoryItems(obj.Instance.Contents, f.world.Objects())...)
+	return strings.Join(lines, "\n")
 }
 
 // FormatFullRoomDescription builds a complete room description including mobs and players.

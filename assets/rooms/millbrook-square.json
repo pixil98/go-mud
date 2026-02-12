@@ -13,6 +13,9 @@
             "north": {"zone_id": "muffinville", "room_id": "muffinville-acatemy"}
         },
         "mobile_spawns": ["millbrook-guard"],
-        "object_spawns": ["millbrook-fountain", "millbrook-torch"]
+        "object_spawns": [
+            {"object_id": "millbrook-fountain"},
+            {"object_id": "millbrook-torch"}
+        ]
     }
 }

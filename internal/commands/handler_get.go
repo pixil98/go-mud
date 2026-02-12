@@ -9,8 +9,8 @@ import (
 
 // GetHandlerFactory creates handlers for picking up objects.
 // Targets:
-//   - target (required): the object to pick up
-//   - container (optional): the container to get from (TODO: implement)
+//   - container (optional): the container to get from
+//   - target (required): the object to pick up (scoped to container when present)
 type GetHandlerFactory struct {
 	world *game.WorldState
 	pub   Publisher
@@ -23,8 +23,8 @@ func NewGetHandlerFactory(world *game.WorldState, pub Publisher) *GetHandlerFact
 func (f *GetHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
-			{Name: "target", Type: TargetTypeObject, Required: true},
 			{Name: "container", Type: TargetTypeObject, Required: false},
+			{Name: "target", Type: TargetTypeObject, Required: true},
 		},
 	}
 }
@@ -40,13 +40,7 @@ func (f *GetHandlerFactory) Create() (CommandFunc, error) {
 			return NewUserError("Get what?")
 		}
 
-		container := cmdCtx.Targets["container"]
-		if container != nil {
-			// TODO: implement getting from containers
-			return NewUserError("Getting items from containers is not yet supported.")
-		}
-
-		// Remove from source
+		// Remove from source (room or container, handled by Source)
 		oi := target.Obj.Source.Remove(target.Obj.InstanceId)
 		if oi == nil {
 			return NewUserError(fmt.Sprintf("You don't see %s here.", target.Name))
@@ -61,7 +55,14 @@ func (f *GetHandlerFactory) Create() (CommandFunc, error) {
 		// Broadcast to room
 		if f.pub != nil {
 			obj := f.world.Objects().Get(string(target.Obj.ObjectId))
-			msg := fmt.Sprintf("%s picks up %s.", cmdCtx.Actor.Name, obj.ShortDesc)
+			container := cmdCtx.Targets["container"]
+			var msg string
+			if container != nil {
+				containerObj := f.world.Objects().Get(string(container.Obj.ObjectId))
+				msg = fmt.Sprintf("%s gets %s from %s.", cmdCtx.Actor.Name, obj.ShortDesc, containerObj.ShortDesc)
+			} else {
+				msg = fmt.Sprintf("%s picks up %s.", cmdCtx.Actor.Name, obj.ShortDesc)
+			}
 			return f.pub.PublishToRoom(cmdCtx.Session.ZoneId, cmdCtx.Session.RoomId, []byte(msg))
 		}
 

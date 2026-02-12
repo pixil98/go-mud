@@ -23,6 +23,7 @@ const (
 	ScopeRoom                        // Players/mobs/objects in current room
 	ScopeInventory                   // Objects in actor's inventory
 	ScopeEquipment                   // Objects in actor's equipment
+	ScopeContents                    // Objects inside another resolved target's contents (requires scope_target)
 )
 
 // TargetType represents the type of entity a target resolves to.
@@ -61,12 +62,16 @@ type InputSpec struct {
 }
 
 // TargetSpec defines a target to be resolved at runtime.
+// When ScopeTarget is set, the referenced target must appear earlier in the targets
+// array so it is resolved first. If the referenced target resolved to an object with
+// contents, this target is resolved exclusively from those contents.
 type TargetSpec struct {
-	Name     string     `json:"name"`               // Name to access in templates (e.g., "target" -> .Targets.target)
-	Type     TargetType `json:"type"`               // Entity type: player, mobile, object, target (polymorphic)
-	Scopes   []string   `json:"scope,omitempty"`    // Resolution scopes: room, world, zone, inventory
-	Input    string     `json:"input"`              // Which input provides the name to resolve
-	Optional bool       `json:"optional,omitempty"` // If true, missing input -> nil (no error)
+	Name        string     `json:"name"`                   // Name to access in templates (e.g., "target" -> .Targets.target)
+	Type        TargetType `json:"type"`                   // Entity type: player, mobile, object, target (polymorphic)
+	Scopes      []string   `json:"scope,omitempty"`        // Resolution scopes: room, world, zone, inventory, equipment, contents
+	Input       string     `json:"input"`                  // Which input provides the name to resolve
+	Optional    bool       `json:"optional,omitempty"`     // If true, missing input -> nil (no error)
+	ScopeTarget string     `json:"scope_target,omitempty"` // Resolve inside this target's contents when present; falls back to normal scopes
 }
 
 // Scope returns the combined Scope value from Scopes slice.
@@ -84,6 +89,8 @@ func (t *TargetSpec) Scope() Scope {
 			result |= ScopeWorld
 		case "zone":
 			result |= ScopeZone
+		case "contents":
+			result |= ScopeContents
 		}
 	}
 	return result
@@ -151,6 +158,28 @@ func (c *Command) Validate() error {
 		// Validate scopes if provided
 		if len(target.Scopes) > 0 && target.Scope() == 0 {
 			return fmt.Errorf("target %q: unknown scopes %v", target.Name, target.Scopes)
+		}
+		// Validate scope_target and contents scope are used together
+		hasContentsScope := target.Scope()&ScopeContents != 0
+		if target.ScopeTarget != "" {
+			if target.Type != TargetTypeObject {
+				return fmt.Errorf("target %q: scope_target is only supported for object targets", target.Name)
+			}
+			if !hasContentsScope {
+				return fmt.Errorf("target %q: scope_target requires \"contents\" in scope", target.Name)
+			}
+			found := false
+			for j := 0; j < i; j++ {
+				if c.Targets[j].Name == target.ScopeTarget {
+					found = true
+					break
+				}
+			}
+			if !found {
+				return fmt.Errorf("target %q: scope_target %q must reference a target declared earlier in the targets array", target.Name, target.ScopeTarget)
+			}
+		} else if hasContentsScope {
+			return fmt.Errorf("target %q: \"contents\" scope requires scope_target to be set", target.Name)
 		}
 	}
 

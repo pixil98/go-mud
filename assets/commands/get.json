@@ -4,10 +4,10 @@
     "spec": {
         "handler": "get",
         "category": "items",
-        "description": "Pick up an item from the room.",
+        "description": "Pick up an item from the room or a container.",
         "targets": [
-            {"name": "target", "type": "object", "scope": ["room"], "input": "item"},
-            {"name": "container", "type": "object", "scope": ["room"], "input": "from", "optional": true}
+            {"name": "container", "type": "object", "scope": ["room"], "input": "from", "optional": true},
+            {"name": "target", "type": "object", "scope": ["room", "contents"], "input": "item", "scope_target": "container"}
         ],
         "inputs": [
             {"name": "item", "type": "string", "required": true},

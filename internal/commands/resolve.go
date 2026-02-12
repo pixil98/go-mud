@@ -11,7 +11,8 @@ import (
 // Resolver resolves target names to game entities.
 // Used by the framework to process $resolve directives.
 type Resolver struct {
-	world *game.WorldState
+	world         *game.WorldState
+	scopeContents *game.Inventory // When set, resolveObject searches exclusively inside this inventory
 }
 
 // NewResolver creates a new Resolver.
@@ -162,6 +163,15 @@ func (r *Resolver) resolveObject(charId storage.Identifier, name string, scope S
 			}
 		}
 		return nil
+	}
+
+	// Check contents scope (inside another resolved target's contents)
+	if scope&ScopeContents != 0 && r.scopeContents != nil {
+		for _, oi := range r.scopeContents.Items {
+			if ref := matchObject(oi, r.scopeContents); ref != nil {
+				return ref, nil
+			}
+		}
 	}
 
 	// Check inventory scope

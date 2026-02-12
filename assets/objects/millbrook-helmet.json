@@ -6,7 +6,6 @@
         "short_desc": "a dented iron helmet",
         "long_desc": "A dented iron helmet lies on the ground.",
         "detailed_desc": "This sturdy iron helmet has seen better days. A large dent mars the left side, and the leather chin strap is frayed but still functional. Despite its wear, it would offer decent protection.",
-        "type": "other",
         "flags": ["wearable"],
         "wear_slots": ["head"]
     }

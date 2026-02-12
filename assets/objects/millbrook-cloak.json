@@ -6,7 +6,6 @@
         "short_desc": "a heavy wool cloak",
         "long_desc": "A heavy wool cloak is draped over a bench.",
         "detailed_desc": "A thick cloak woven from undyed wool, fastened with a simple brass clasp. It smells faintly of wood smoke and lanolin. Practical rather than fashionable, it would keep the chill at bay.",
-        "type": "other",
         "flags": ["wearable"],
         "wear_slots": ["body"]
     }

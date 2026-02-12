@@ -331,7 +331,7 @@ func TestResolver_ResolveMob(t *testing.T) {
 
 			// Spawn mobs
 			for _, spawn := range tt.spawnedMobs {
-				world.SpawnMobile(
+				world.SpawnMobileInstance(
 					storage.Identifier(spawn.mobileId),
 					storage.Identifier(spawn.zoneId),
 					storage.Identifier(spawn.roomId),
@@ -361,6 +361,191 @@ func TestResolver_ResolveMob(t *testing.T) {
 
 			if result.Name != tt.expMobName {
 				t.Errorf("Name = %q, expected %q", result.Name, tt.expMobName)
+			}
+		})
+	}
+}
+
+func TestResolver_ResolveObject(t *testing.T) {
+	tests := map[string]struct {
+		objects       map[string]*game.Object
+		rooms         map[string]*game.Room
+		zones         map[string]*game.Zone
+		actorZone     storage.Identifier
+		actorRoom     storage.Identifier
+		scopeContents *game.Inventory
+		name          string
+		scope         Scope
+		expObjName    string
+		expErr        string
+	}{
+		"room scope finds object in room": {
+			objects: map[string]*game.Object{
+				"sword": {Aliases: []string{"sword"}, ShortDesc: "a rusty sword"},
+			},
+			rooms: map[string]*game.Room{
+				"my-room": {ZoneId: "my-zone", ObjSpawns: []game.ObjectSpawn{{ObjectId: "sword"}}},
+			},
+			zones: map[string]*game.Zone{
+				"my-zone": {ResetMode: "never"},
+			},
+			actorZone:  "my-zone",
+			actorRoom:  "my-room",
+			name:       "sword",
+			scope:      ScopeRoom,
+			expObjName: "a rusty sword",
+		},
+		"room scope rejects object in different room": {
+			objects: map[string]*game.Object{
+				"sword": {Aliases: []string{"sword"}, ShortDesc: "a rusty sword"},
+			},
+			rooms: map[string]*game.Room{
+				"my-room":    {ZoneId: "my-zone"},
+				"other-room": {ZoneId: "my-zone", ObjSpawns: []game.ObjectSpawn{{ObjectId: "sword"}}},
+			},
+			zones: map[string]*game.Zone{
+				"my-zone": {ResetMode: "never"},
+			},
+			actorZone: "my-zone",
+			actorRoom: "my-room",
+			name:      "sword",
+			scope:     ScopeRoom,
+			expErr:    `Object "sword" not found.`,
+		},
+		"contents scope finds object in container": {
+			objects: map[string]*game.Object{
+				"torch": {Aliases: []string{"torch"}, ShortDesc: "a lit torch"},
+			},
+			rooms: map[string]*game.Room{},
+			zones: map[string]*game.Zone{},
+			scopeContents: &game.Inventory{
+				Items: map[string]*game.ObjectInstance{
+					"torch-1": {InstanceId: "torch-1", ObjectId: "torch"},
+				},
+			},
+			actorZone:  "my-zone",
+			actorRoom:  "my-room",
+			name:       "torch",
+			scope:      ScopeContents,
+			expObjName: "a lit torch",
+		},
+		"contents scope with nil inventory finds nothing": {
+			objects: map[string]*game.Object{
+				"torch": {Aliases: []string{"torch"}, ShortDesc: "a lit torch"},
+			},
+			rooms:         map[string]*game.Room{},
+			zones:         map[string]*game.Zone{},
+			scopeContents: nil,
+			actorZone:     "my-zone",
+			actorRoom:     "my-room",
+			name:          "torch",
+			scope:         ScopeContents,
+			expErr:        `Object "torch" not found.`,
+		},
+		"contents scope does not fall through to room": {
+			objects: map[string]*game.Object{
+				"torch": {Aliases: []string{"torch"}, ShortDesc: "a lit torch"},
+			},
+			rooms: map[string]*game.Room{
+				"my-room": {ZoneId: "my-zone", ObjSpawns: []game.ObjectSpawn{{ObjectId: "torch"}}},
+			},
+			zones: map[string]*game.Zone{
+				"my-zone": {ResetMode: "never"},
+			},
+			scopeContents: &game.Inventory{
+				Items: map[string]*game.ObjectInstance{},
+			},
+			actorZone: "my-zone",
+			actorRoom: "my-room",
+			name:      "torch",
+			scope:     ScopeContents, // Only contents, not room
+			expErr:    `Object "torch" not found.`,
+		},
+		"inventory scope finds object in actor inventory": {
+			objects: map[string]*game.Object{
+				"ring": {Aliases: []string{"ring"}, ShortDesc: "a gold ring"},
+			},
+			rooms:      map[string]*game.Room{},
+			zones:      map[string]*game.Zone{},
+			actorZone:  "my-zone",
+			actorRoom:  "my-room",
+			name:       "ring",
+			scope:      ScopeInventory,
+			expObjName: "a gold ring",
+		},
+	}
+
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			// Set up actor with inventory for inventory scope test
+			chars := map[string]*game.Character{
+				"actor": {Name: "Actor"},
+			}
+			if tt.scope&ScopeInventory != 0 {
+				inv := game.NewInventory()
+				// Add objects matching the test to the actor's inventory
+				for instId, oi := range func() map[string]*game.ObjectInstance {
+					m := map[string]*game.ObjectInstance{}
+					for id, obj := range tt.objects {
+						_ = obj
+						inst := &game.ObjectInstance{InstanceId: id + "-1", ObjectId: storage.Identifier(id)}
+						m[inst.InstanceId] = inst
+					}
+					return m
+				}() {
+					_ = instId
+					inv.Add(oi)
+				}
+				chars["actor"] = &game.Character{Name: "Actor", Actor: game.Actor{Inventory: inv}}
+			}
+
+			world := game.NewWorldState(
+				nil,
+				&mockCharStore{chars: chars},
+				&mockZoneStore{zones: func() map[string]*game.Zone {
+					if tt.zones != nil {
+						return tt.zones
+					}
+					return map[string]*game.Zone{}
+				}()},
+				&mockRoomStore{rooms: tt.rooms},
+				&mockMobileStore{mobiles: map[string]*game.Mobile{}},
+				&mockObjectStore{objects: tt.objects},
+			)
+
+			// Add actor
+			actorChan := make(chan []byte, 1)
+			_ = world.AddPlayer("actor", actorChan, tt.actorZone, tt.actorRoom)
+
+			// Spawn room objects via zone reset
+			for zoneId := range tt.zones {
+				world.ResetZone(storage.Identifier(zoneId), true)
+			}
+
+			resolver := NewResolver(world)
+			resolver.scopeContents = tt.scopeContents
+			result, err := resolver.resolveObject("actor", tt.name, tt.scope)
+
+			if tt.expErr != "" {
+				if err == nil {
+					t.Fatalf("expected error containing %q, got nil", tt.expErr)
+				}
+				if !strings.Contains(err.Error(), tt.expErr) {
+					t.Errorf("error %q does not contain %q", err.Error(), tt.expErr)
+				}
+				return
+			}
+
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+
+			if result == nil {
+				t.Fatal("result is nil")
+			}
+
+			if result.Name != tt.expObjName {
+				t.Errorf("Name = %q, expected %q", result.Name, tt.expObjName)
 			}
 		})
 	}
@@ -476,7 +661,8 @@ func TestResolver_ResolveTarget(t *testing.T) {
 
 			// Spawn mobs
 			for _, spawn := range tt.spawnedMobs {
-				world.SpawnMobile(
+				//TODO: This is a sign we need an interface for world
+				world.SpawnMobileInstance(
 					storage.Identifier(spawn.mobileId),
 					storage.Identifier(spawn.zoneId),
 					storage.Identifier(spawn.roomId),

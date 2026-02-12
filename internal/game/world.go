@@ -85,8 +85,8 @@ func (w *WorldState) Objects() storage.Storer[*Object] {
 	return w.objects
 }
 
-// SpawnMobile creates a new mobile instance in the specified location.
-func (w *WorldState) SpawnMobile(mobileId, zoneId, roomId storage.Identifier) *MobileInstance {
+// spawnMobile creates a new mobile instance in the specified location.
+func (w *WorldState) SpawnMobileInstance(mobileId, zoneId, roomId storage.Identifier) *MobileInstance {
 	w.mu.Lock()
 	defer w.mu.Unlock()
 
@@ -103,6 +103,8 @@ func (w *WorldState) SpawnMobile(mobileId, zoneId, roomId storage.Identifier) *M
 		MobileId:   mobileId,
 	}
 	w.mobileInstances[zoneId][roomId][instance.InstanceId] = instance
+
+	slog.Debug("spawned mobile", "mobile", mobileId, "zone", zoneId, "room", roomId)
 	return instance
 }
 
@@ -122,24 +124,19 @@ func (w *WorldState) GetMobilesInRoom(zoneId, roomId storage.Identifier) []*Mobi
 	return result
 }
 
-// SpawnObject creates a new object instance in the specified location.
-func (w *WorldState) SpawnObject(objectId, zoneId, roomId storage.Identifier) *ObjectInstance {
-	w.mu.Lock()
-	defer w.mu.Unlock()
-
-	// Ensure nested maps exist
-	if w.objectInstances[zoneId] == nil {
-		w.objectInstances[zoneId] = make(map[storage.Identifier]map[string]*ObjectInstance)
-	}
-	if w.objectInstances[zoneId][roomId] == nil {
-		w.objectInstances[zoneId][roomId] = make(map[string]*ObjectInstance)
-	}
-
+// spawnObjectInstance creates an ObjectInstance from an ObjectSpawn,
+// recursively spawning any contents for containers.
+func spawnObjectInstance(spawn ObjectSpawn) *ObjectInstance {
 	instance := &ObjectInstance{
 		InstanceId: uuid.New().String(),
-		ObjectId:   objectId,
+		ObjectId:   storage.Identifier(spawn.ObjectId),
 	}
-	w.objectInstances[zoneId][roomId][instance.InstanceId] = instance
+	if len(spawn.Contents) > 0 {
+		instance.Contents = NewInventory()
+		for _, contentSpawn := range spawn.Contents {
+			instance.Contents.Add(spawnObjectInstance(contentSpawn))
+		}
+	}
 	return instance
 }
 
@@ -256,34 +253,20 @@ func (w *WorldState) ResetZone(zoneId storage.Identifier, force bool) {
 
 		// Spawn mobiles
 		for _, mobileId := range room.MobSpawns {
-			if w.mobileInstances[zoneId] == nil {
-				w.mobileInstances[zoneId] = make(map[storage.Identifier]map[string]*MobileInstance)
-			}
-			if w.mobileInstances[zoneId][roomId] == nil {
-				w.mobileInstances[zoneId][roomId] = make(map[string]*MobileInstance)
-			}
-			instance := &MobileInstance{
-				InstanceId: uuid.New().String(),
-				MobileId:   storage.Identifier(mobileId),
-			}
-			w.mobileInstances[zoneId][roomId][instance.InstanceId] = instance
-			slog.Debug("spawned mobile", "mobile", mobileId, "zone", zoneId, "room", roomId)
+			w.SpawnMobileInstance(storage.Identifier(mobileId), zoneId, roomId)
 		}
 
 		// Spawn objects
-		for _, objectId := range room.ObjSpawns {
+		for _, spawn := range room.ObjSpawns {
 			if w.objectInstances[zoneId] == nil {
 				w.objectInstances[zoneId] = make(map[storage.Identifier]map[string]*ObjectInstance)
 			}
 			if w.objectInstances[zoneId][roomId] == nil {
 				w.objectInstances[zoneId][roomId] = make(map[string]*ObjectInstance)
 			}
-			instance := &ObjectInstance{
-				InstanceId: uuid.New().String(),
-				ObjectId:   storage.Identifier(objectId),
-			}
+			instance := spawnObjectInstance(spawn)
 			w.objectInstances[zoneId][roomId][instance.InstanceId] = instance
-			slog.Debug("spawned object", "object", objectId, "zone", zoneId, "room", roomId)
+			slog.Debug("spawned object", "object", spawn.ObjectId, "zone", zoneId, "room", roomId)
 		}
 	}
 

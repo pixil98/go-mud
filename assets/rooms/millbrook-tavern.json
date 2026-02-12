@@ -8,6 +8,9 @@
         "exits": {
             "west": {"room_id": "millbrook-square"},
             "east": {"zone_id": "darkwood", "room_id": "darkwood-edge"}
-        }
+        },
+        "object_spawns": [
+            {"object_id": "millbrook-chest", "contents": [{"object_id": "millbrook-torch"}]}
+        ]
     }
 }

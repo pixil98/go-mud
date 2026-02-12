@@ -56,12 +56,15 @@ func MobRefFrom(mob *game.Mobile, instance *game.MobileInstance) *MobileRef {
 }
 
 // ObjectRef is the template-facing view of a resolved object.
+// TODO: Handlers mutate Instance fields (Inventory, Equipment, Contents) without
+// locking. Consider adding a mutex to container types to make concurrent access safe.
 type ObjectRef struct {
-	InstanceId  string             // Unique instance identifier
-	ObjectId    storage.Identifier // Reference to the Object definition
+	InstanceId  string               // Unique instance identifier
+	ObjectId    storage.Identifier   // Reference to the Object definition
 	Name        string
 	Description string
-	Source      ObjectHolder // Container the object was resolved from
+	Source      ObjectHolder         // Container the object was resolved from
+	Instance    *game.ObjectInstance // Direct reference to the instance
 }
 
 // ObjectRefFrom creates an ObjectRef from a game.Object and its instance.
@@ -75,6 +78,7 @@ func ObjectRefFrom(obj *game.Object, instance *game.ObjectInstance, source Objec
 		Name:        obj.ShortDesc,
 		Description: obj.DetailedDesc,
 		Source:      source,
+		Instance:    instance,
 	}
 }
 
