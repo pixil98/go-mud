@@ -14,6 +14,7 @@ type ObjectFlag int
 const (
 	ObjectFlagUnknown ObjectFlag = iota
 	ObjectFlagContainer
+	ObjectFlagImmobile
 	ObjectFlagWearable
 )
 
@@ -21,6 +22,8 @@ func parseObjectFlag(s string) ObjectFlag {
 	switch strings.ToLower(s) {
 	case "container":
 		return ObjectFlagContainer
+	case "immobile":
+		return ObjectFlagImmobile
 	case "wearable":
 		return ObjectFlagWearable
 	default:

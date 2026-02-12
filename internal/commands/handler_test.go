@@ -425,9 +425,6 @@ func TestHandler_resolveTargets(t *testing.T) {
 					t.Errorf("target[%q] is nil, expected %q", name, expName)
 					continue
 				}
-				if target.Name != expName {
-					t.Errorf("target[%q].Name = %q, expected %q", name, target.Name, expName)
-				}
 			}
 
 			// Check that optional missing targets are nil
@@ -522,8 +519,8 @@ func TestHandler_resolveTargets_scopeTarget(t *testing.T) {
 				"my-room": {
 					ZoneId: "my-zone",
 					ObjSpawns: []game.ObjectSpawn{
-						{ObjectId: "chest"},  // empty container
-						{ObjectId: "sword"},  // sword on the floor
+						{ObjectId: "chest"}, // empty container
+						{ObjectId: "sword"}, // sword on the floor
 					},
 				},
 			},
@@ -567,6 +564,31 @@ func TestHandler_resolveTargets_scopeTarget(t *testing.T) {
 				"from": "chest",
 			},
 			expErr: `Object "torch" not found.`,
+		},
+		"scope_target rejects non-container": {
+			rooms: map[string]*game.Room{
+				"my-room": {
+					ZoneId: "my-zone",
+					ObjSpawns: []game.ObjectSpawn{
+						{ObjectId: "sword"}, // not a container
+						{ObjectId: "torch"},
+					},
+				},
+			},
+			zones: map[string]*game.Zone{
+				"my-zone": {ResetMode: "never"},
+			},
+			actorZone: "my-zone",
+			actorRoom: "my-room",
+			targetSpecs: []TargetSpec{
+				{Name: "container", Type: "object", Scopes: []string{"room"}, Input: "from", Optional: true},
+				{Name: "target", Type: "object", Scopes: []string{"room", "contents"}, Input: "item", ScopeTarget: "container"},
+			},
+			inputs: map[string]any{
+				"item": "torch",
+				"from": "sword",
+			},
+			expErr: `A rusty sword is not a container.`,
 		},
 	}
 
@@ -620,9 +642,6 @@ func TestHandler_resolveTargets_scopeTarget(t *testing.T) {
 					t.Errorf("target[%q] is nil, expected %q", name, expName)
 					continue
 				}
-				if target.Name != expName {
-					t.Errorf("target[%q].Name = %q, expected %q", name, target.Name, expName)
-				}
 			}
 
 			// Check nil targets
@@ -664,7 +683,7 @@ func TestHandler_expandConfig(t *testing.T) {
 			},
 			actor: &game.Character{Name: "Alice"},
 			targets: map[string]*TargetRef{
-				"target": {Type: "player", Name: "Bob", Player: &PlayerRef{Name: "Bob"}},
+				"target": {Type: "player", Player: &PlayerRef{Name: "Bob"}},
 			},
 			inputs: map[string]any{},
 			expConfig: map[string]string{
@@ -678,7 +697,7 @@ func TestHandler_expandConfig(t *testing.T) {
 			},
 			actor: &game.Character{Name: "Alice"},
 			targets: map[string]*TargetRef{
-				"target": {Type: "player", Name: "Bob", Player: &PlayerRef{Name: "Bob"}},
+				"target": {Type: "player", Player: &PlayerRef{Name: "Bob"}},
 			},
 			inputs: map[string]any{
 				"text": "hello there",

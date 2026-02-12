@@ -234,12 +234,11 @@ func (w *WorldState) ResetZone(zoneId storage.Identifier, force bool) {
 		}
 	}
 
-	w.mu.Lock()
-	defer w.mu.Unlock()
-
 	// Clear all mobile and object instances in this zone
+	w.mu.Lock()
 	delete(w.mobileInstances, zoneId)
 	delete(w.objectInstances, zoneId)
+	w.mu.Unlock()
 
 	slog.Info("resetting zone", "zone", zoneId, "rooms", len(w.roomsByZone[zoneId]))
 
@@ -258,14 +257,8 @@ func (w *WorldState) ResetZone(zoneId storage.Identifier, force bool) {
 
 		// Spawn objects
 		for _, spawn := range room.ObjSpawns {
-			if w.objectInstances[zoneId] == nil {
-				w.objectInstances[zoneId] = make(map[storage.Identifier]map[string]*ObjectInstance)
-			}
-			if w.objectInstances[zoneId][roomId] == nil {
-				w.objectInstances[zoneId][roomId] = make(map[string]*ObjectInstance)
-			}
 			instance := spawnObjectInstance(spawn)
-			w.objectInstances[zoneId][roomId][instance.InstanceId] = instance
+			w.addObjectToRoom(zoneId, roomId, instance)
 			slog.Debug("spawned object", "object", spawn.ObjectId, "zone", zoneId, "room", roomId)
 		}
 	}

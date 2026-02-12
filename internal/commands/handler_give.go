@@ -53,7 +53,7 @@ func (f *GiveHandlerFactory) Create() (CommandFunc, error) {
 		// Remove from source
 		oi := item.Obj.Source.Remove(item.Obj.InstanceId)
 		if oi == nil {
-			return NewUserError(fmt.Sprintf("You're not carrying %s.", item.Name))
+			return NewUserError(fmt.Sprintf("You're not carrying %s.", item.Obj.Name))
 		}
 
 		// Add to recipient's inventory
@@ -61,7 +61,7 @@ func (f *GiveHandlerFactory) Create() (CommandFunc, error) {
 		if recipientChar == nil {
 			// Shouldn't happen if resolver worked, but handle gracefully
 			cmdCtx.Actor.Inventory.Add(oi) // Put it back
-			return NewUserError(fmt.Sprintf("%s is no longer here.", recipient.Name))
+			return NewUserError(fmt.Sprintf("%s is no longer here.", recipient.Player.Name))
 		}
 
 		if recipientChar.Inventory == nil {

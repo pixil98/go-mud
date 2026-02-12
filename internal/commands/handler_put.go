@@ -48,13 +48,13 @@ func (f *PutHandlerFactory) Create() (CommandFunc, error) {
 		// Check if the target is actually a container
 		containerObj := f.world.Objects().Get(string(container.Obj.ObjectId))
 		if containerObj == nil || !containerObj.HasFlag(game.ObjectFlagContainer) {
-			return NewUserError(fmt.Sprintf("%s is not a container.", container.Name))
+			return NewUserError(fmt.Sprintf("%s is not a container.", container.Obj.Name))
 		}
 
 		// Remove from source (inventory)
 		oi := target.Obj.Source.Remove(target.Obj.InstanceId)
 		if oi == nil {
-			return NewUserError(fmt.Sprintf("You're not carrying %s.", target.Name))
+			return NewUserError(fmt.Sprintf("You're not carrying %s.", target.Obj.Name))
 		}
 
 		// Initialize container contents if needed

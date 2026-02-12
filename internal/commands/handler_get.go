@@ -11,6 +11,8 @@ import (
 // Targets:
 //   - container (optional): the container to get from
 //   - target (required): the object to pick up (scoped to container when present)
+//
+// TODO: I think this can become a generic moveObj handler as long as both ends are an Inventory. Maybe inventory should be an interface here?
 type GetHandlerFactory struct {
 	world *game.WorldState
 	pub   Publisher
@@ -43,7 +45,11 @@ func (f *GetHandlerFactory) Create() (CommandFunc, error) {
 		// Remove from source (room or container, handled by Source)
 		oi := target.Obj.Source.Remove(target.Obj.InstanceId)
 		if oi == nil {
-			return NewUserError(fmt.Sprintf("You don't see %s here.", target.Name))
+			return NewUserError(fmt.Sprintf("You don't see %s here.", target.Obj.Name))
+		}
+
+		if f.world.Objects().Get(string(target.Obj.ObjectId)).HasFlag(game.ObjectFlagImmobile) {
+			return NewUserError(fmt.Sprintf("You can't seem to move %s.", target.Obj.Name))
 		}
 
 		// Add to inventory

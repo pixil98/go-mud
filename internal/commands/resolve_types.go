@@ -59,8 +59,8 @@ func MobRefFrom(mob *game.Mobile, instance *game.MobileInstance) *MobileRef {
 // TODO: Handlers mutate Instance fields (Inventory, Equipment, Contents) without
 // locking. Consider adding a mutex to container types to make concurrent access safe.
 type ObjectRef struct {
-	InstanceId  string               // Unique instance identifier
-	ObjectId    storage.Identifier   // Reference to the Object definition
+	InstanceId  string             // Unique instance identifier
+	ObjectId    storage.Identifier // Reference to the Object definition
 	Name        string
 	Description string
 	Source      ObjectHolder         // Container the object was resolved from
@@ -88,5 +88,4 @@ type TargetRef struct {
 	Player *PlayerRef // Non-nil if Type == "player"
 	Mob    *MobileRef // Non-nil if Type == "mobile"
 	Obj    *ObjectRef // Non-nil if Type == "object"
-	Name   string     // Always set - the display name for templates
 }

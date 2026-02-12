@@ -393,6 +393,11 @@ func (h *Handler) resolveTargets(specs []TargetSpec, inputs map[string]any, char
 		if spec.ScopeTarget != "" {
 			scopeRef := targets[spec.ScopeTarget]
 			if scopeRef != nil && scopeRef.Obj != nil && scopeRef.Obj.Instance != nil {
+				objDef := world.Objects().Get(string(scopeRef.Obj.ObjectId))
+				if objDef == nil || !objDef.HasFlag(game.ObjectFlagContainer) {
+					name := strings.ToUpper(scopeRef.Obj.Name[:1]) + scopeRef.Obj.Name[1:]
+					return nil, NewUserError(fmt.Sprintf("%s is not a container.", name))
+				}
 				resolver.scopeContents = scopeRef.Obj.Instance.Contents
 				scope = ScopeContents
 			}
@@ -407,11 +412,11 @@ func (h *Handler) resolveTargets(specs []TargetSpec, inputs map[string]any, char
 		// Convert to TargetRef
 		switch t := resolved.(type) {
 		case *PlayerRef:
-			targets[spec.Name] = &TargetRef{Type: "player", Name: t.Name, Player: t}
+			targets[spec.Name] = &TargetRef{Type: "player", Player: t}
 		case *MobileRef:
-			targets[spec.Name] = &TargetRef{Type: "mobile", Name: t.Name, Mob: t}
+			targets[spec.Name] = &TargetRef{Type: "mobile", Mob: t}
 		case *ObjectRef:
-			targets[spec.Name] = &TargetRef{Type: "object", Name: t.Name, Obj: t}
+			targets[spec.Name] = &TargetRef{Type: "object", Obj: t}
 		case *TargetRef:
 			targets[spec.Name] = t
 		default:

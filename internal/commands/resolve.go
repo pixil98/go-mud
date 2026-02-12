@@ -246,7 +246,6 @@ func (r *Resolver) resolveTarget(charId storage.Identifier, name string, scope S
 		return &TargetRef{
 			Type:   "player",
 			Player: player,
-			Name:   player.Name,
 		}, nil
 	}
 
@@ -255,7 +254,6 @@ func (r *Resolver) resolveTarget(charId storage.Identifier, name string, scope S
 		return &TargetRef{
 			Type: "mobile",
 			Mob:  mob,
-			Name: mob.Name,
 		}, nil
 	}
 
@@ -264,7 +262,6 @@ func (r *Resolver) resolveTarget(charId storage.Identifier, name string, scope S
 		return &TargetRef{
 			Type: "object",
 			Obj:  obj,
-			Name: obj.Name,
 		}, nil
 	}
 

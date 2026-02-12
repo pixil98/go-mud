@@ -563,7 +563,6 @@ func TestResolver_ResolveTarget(t *testing.T) {
 		name          string
 		scope         Scope
 		expType       string
-		expName       string
 		expErr        string
 	}{
 		"resolves player as target": {
@@ -579,7 +578,6 @@ func TestResolver_ResolveTarget(t *testing.T) {
 			name:      "bob",
 			scope:     ScopeWorld,
 			expType:   "player",
-			expName:   "Bob",
 		},
 		"resolves mob as target when no player found": {
 			chars:         map[string]*game.Character{},
@@ -598,7 +596,6 @@ func TestResolver_ResolveTarget(t *testing.T) {
 			name:      "guard",
 			scope:     ScopeRoom,
 			expType:   "mobile",
-			expName:   "a burly guard",
 		},
 		"prefers player over mob with same name": {
 			chars: map[string]*game.Character{
@@ -621,7 +618,6 @@ func TestResolver_ResolveTarget(t *testing.T) {
 			name:      "guard",
 			scope:     ScopeRoom,
 			expType:   "player",
-			expName:   "Guard",
 		},
 		"target not found": {
 			chars:         map[string]*game.Character{},
@@ -692,10 +688,6 @@ func TestResolver_ResolveTarget(t *testing.T) {
 
 			if result.Type != tt.expType {
 				t.Errorf("Type = %q, expected %q", result.Type, tt.expType)
-			}
-
-			if result.Name != tt.expName {
-				t.Errorf("Name = %q, expected %q", result.Name, tt.expName)
 			}
 		})
 	}

@@ -41,7 +41,7 @@ func (f *RemoveHandlerFactory) Create() (CommandFunc, error) {
 		// Remove from source (equipment)
 		oi := target.Obj.Source.Remove(target.Obj.InstanceId)
 		if oi == nil {
-			return NewUserError(fmt.Sprintf("You're not wearing %s.", target.Name))
+			return NewUserError(fmt.Sprintf("You're not wearing %s.", target.Obj.Name))
 		}
 
 		// Add back to inventory
