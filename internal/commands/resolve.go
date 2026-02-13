@@ -11,7 +11,8 @@ import (
 // Resolver resolves target names to game entities.
 // Used by the framework to process $resolve directives.
 type Resolver struct {
-	world *game.WorldState
+	world         *game.WorldState
+	scopeContents *game.Inventory // When set, resolveObject searches exclusively inside this inventory
 }
 
 // NewResolver creates a new Resolver.
@@ -151,17 +152,26 @@ func (r *Resolver) resolveObject(charId storage.Identifier, name string, scope S
 	actorZone, actorRoom := actorState.Location()
 
 	// matchObject checks if an object matches the given name by alias
-	matchObject := func(oi *game.ObjectInstance) *ObjectRef {
+	matchObject := func(oi *game.ObjectInstance, source ObjectRemover) *ObjectRef {
 		obj := r.world.Objects().Get(string(oi.ObjectId))
 		if obj == nil {
 			return nil
 		}
 		for _, alias := range obj.Aliases {
 			if strings.ToLower(alias) == nameLower {
-				return ObjectRefFrom(obj, oi)
+				return ObjectRefFrom(obj, oi, source)
 			}
 		}
 		return nil
+	}
+
+	// Check contents scope (inside another resolved target's contents)
+	if scope&ScopeContents != 0 && r.scopeContents != nil {
+		for _, oi := range r.scopeContents.Items {
+			if ref := matchObject(oi, r.scopeContents); ref != nil {
+				return ref, nil
+			}
+		}
 	}
 
 	// Check inventory scope
@@ -169,7 +179,19 @@ func (r *Resolver) resolveObject(charId storage.Identifier, name string, scope S
 		actor := r.world.Characters().Get(string(charId))
 		if actor != nil && actor.Inventory != nil {
 			for _, oi := range actor.Inventory.Items {
-				if ref := matchObject(oi); ref != nil {
+				if ref := matchObject(oi, actor.Inventory); ref != nil {
+					return ref, nil
+				}
+			}
+		}
+	}
+
+	// Check equipment scope
+	if scope&ScopeEquipment != 0 {
+		actor := r.world.Characters().Get(string(charId))
+		if actor != nil && actor.Equipment != nil {
+			for _, item := range actor.Equipment.Items {
+				if ref := matchObject(item.Obj, actor.Equipment); ref != nil {
 					return ref, nil
 				}
 			}
@@ -178,8 +200,9 @@ func (r *Resolver) resolveObject(charId storage.Identifier, name string, scope S
 
 	// Check room scope
 	if scope&ScopeRoom != 0 {
+		source := r.world.RoomHolder(actorZone, actorRoom)
 		for _, oi := range r.world.GetObjectsInRoom(actorZone, actorRoom) {
-			if ref := matchObject(oi); ref != nil {
+			if ref := matchObject(oi, source); ref != nil {
 				return ref, nil
 			}
 		}
@@ -191,8 +214,9 @@ func (r *Resolver) resolveObject(charId storage.Identifier, name string, scope S
 			if room.ZoneId != string(actorZone) {
 				continue
 			}
+			source := r.world.RoomHolder(actorZone, storage.Identifier(roomId))
 			for _, oi := range r.world.GetObjectsInRoom(actorZone, storage.Identifier(roomId)) {
-				if ref := matchObject(oi); ref != nil {
+				if ref := matchObject(oi, source); ref != nil {
 					return ref, nil
 				}
 			}
@@ -203,8 +227,9 @@ func (r *Resolver) resolveObject(charId storage.Identifier, name string, scope S
 	if scope&ScopeWorld != 0 {
 		for roomId, room := range r.world.Rooms().GetAll() {
 			zoneId := storage.Identifier(room.ZoneId)
+			source := r.world.RoomHolder(zoneId, storage.Identifier(roomId))
 			for _, oi := range r.world.GetObjectsInRoom(zoneId, storage.Identifier(roomId)) {
-				if ref := matchObject(oi); ref != nil {
+				if ref := matchObject(oi, source); ref != nil {
 					return ref, nil
 				}
 			}
@@ -221,7 +246,6 @@ func (r *Resolver) resolveTarget(charId storage.Identifier, name string, scope S
 		return &TargetRef{
 			Type:   "player",
 			Player: player,
-			Name:   player.Name,
 		}, nil
 	}
 
@@ -230,7 +254,6 @@ func (r *Resolver) resolveTarget(charId storage.Identifier, name string, scope S
 		return &TargetRef{
 			Type: "mobile",
 			Mob:  mob,
-			Name: mob.Name,
 		}, nil
 	}
 
@@ -239,7 +262,6 @@ func (r *Resolver) resolveTarget(charId storage.Identifier, name string, scope S
 		return &TargetRef{
 			Type: "object",
 			Obj:  obj,
-			Name: obj.Name,
 		}, nil
 	}
 

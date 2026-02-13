@@ -43,8 +43,7 @@ func (f *SaveHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		if f.pub != nil {
-			playerChannel := fmt.Sprintf("player-%s", strings.ToLower(cmdCtx.Actor.Name))
-			_ = f.pub.Publish(playerChannel, []byte("Character saved."))
+			return f.pub.PublishToPlayer(cmdCtx.Session.CharId, []byte("Character saved."))
 		}
 
 		return nil

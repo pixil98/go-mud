@@ -131,6 +131,72 @@ func TestCommand_Validate(t *testing.T) {
 			},
 			expErr: "",
 		},
+		"valid scope_target": {
+			cmd: Command{
+				Handler: "test",
+				Targets: []TargetSpec{
+					{Name: "container", Type: "object", Scopes: []string{"room"}, Input: "from", Optional: true},
+					{Name: "target", Type: "object", Scopes: []string{"room", "contents"}, Input: "item", ScopeTarget: "container"},
+				},
+				Inputs: []InputSpec{
+					{Name: "item", Type: InputTypeString, Required: true},
+					{Name: "from", Type: InputTypeString},
+				},
+			},
+			expErr: "",
+		},
+		"scope_target requires contents scope": {
+			cmd: Command{
+				Handler: "test",
+				Targets: []TargetSpec{
+					{Name: "container", Type: "object", Scopes: []string{"room"}, Input: "from"},
+					{Name: "target", Type: "object", Scopes: []string{"room"}, Input: "item", ScopeTarget: "container"},
+				},
+				Inputs: []InputSpec{
+					{Name: "item", Type: InputTypeString},
+					{Name: "from", Type: InputTypeString},
+				},
+			},
+			expErr: `target "target": scope_target requires "contents" in scope`,
+		},
+		"contents scope requires scope_target": {
+			cmd: Command{
+				Handler: "test",
+				Targets: []TargetSpec{
+					{Name: "target", Type: "object", Scopes: []string{"contents"}, Input: "item"},
+				},
+				Inputs: []InputSpec{
+					{Name: "item", Type: InputTypeString},
+				},
+			},
+			expErr: `target "target": "contents" scope requires scope_target to be set`,
+		},
+		"scope_target must reference earlier target": {
+			cmd: Command{
+				Handler: "test",
+				Targets: []TargetSpec{
+					{Name: "target", Type: "object", Scopes: []string{"contents"}, Input: "item", ScopeTarget: "container"},
+				},
+				Inputs: []InputSpec{
+					{Name: "item", Type: InputTypeString},
+				},
+			},
+			expErr: `target "target": scope_target "container" must reference a target declared earlier in the targets array`,
+		},
+		"scope_target only for object targets": {
+			cmd: Command{
+				Handler: "test",
+				Targets: []TargetSpec{
+					{Name: "container", Type: "object", Scopes: []string{"room"}, Input: "from"},
+					{Name: "target", Type: "player", Scopes: []string{"contents"}, Input: "item", ScopeTarget: "container"},
+				},
+				Inputs: []InputSpec{
+					{Name: "item", Type: InputTypeString},
+					{Name: "from", Type: InputTypeString},
+				},
+			},
+			expErr: `target "target": scope_target is only supported for object targets`,
+		},
 	}
 
 	for name, tt := range tests {
@@ -172,7 +238,9 @@ func TestTargetSpec_Scope(t *testing.T) {
 		"nil returns zero":       {scopes: nil, exp: 0},
 		"room and inventory":     {scopes: []string{"room", "inventory"}, exp: ScopeRoom | ScopeInventory},
 		"world and zone":         {scopes: []string{"world", "zone"}, exp: ScopeWorld | ScopeZone},
-		"all scopes":             {scopes: []string{"room", "inventory", "world", "zone"}, exp: ScopeRoom | ScopeInventory | ScopeWorld | ScopeZone},
+		"equipment":              {scopes: []string{"equipment"}, exp: ScopeEquipment},
+		"contents":               {scopes: []string{"contents"}, exp: ScopeContents},
+		"all scopes":             {scopes: []string{"room", "inventory", "equipment", "contents", "world", "zone"}, exp: ScopeRoom | ScopeInventory | ScopeEquipment | ScopeContents | ScopeWorld | ScopeZone},
 		"mixed with unknown":     {scopes: []string{"room", "bogus"}, exp: ScopeRoom},
 	}
 

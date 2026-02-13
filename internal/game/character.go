@@ -16,15 +16,12 @@ type Character struct {
 	// DetailedDesc is shown when a player looks at this character
 	DetailedDesc string `json:"detailed_desc"`
 
-	// Inventory holds items carried by this character
-	Inventory *Inventory `json:"inventory,omitempty"`
-
 	// Last known location, saved on quit/save for restoring on login
 	LastZone storage.Identifier `json:"last_zone,omitempty"`
 	LastRoom storage.Identifier `json:"last_room,omitempty"`
 
-	// ExtensionState holds plugin-specific data for this character
-	storage.ExtensionState `json:"ext,omitempty"`
+	Actor
+	ActorInstance
 }
 
 // Validate satisfies storage.ValidatingSpec

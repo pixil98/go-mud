@@ -34,6 +34,15 @@ func (l *TelnetListener) Start(ctx context.Context) error {
 		cancelConns: cancelConns,
 	}
 
+	// TODO: Negotiate WONT ECHO and DO LINEMODE on connect so clients enable
+	// local echo and send complete lines (RFC 857, RFC 1184). The current
+	// library (iammegalith/telnet) has a bug in its SB subnegotiation handling
+	// where the body buffer is corrupted across read() calls, breaking
+	// LINEMODE's required MODE ACK. Options:
+	//   1. Fork iammegalith/telnet and fix the subStart local variable in
+	//      connection.go read() to be a field on Connection.
+	//   2. Switch to moodclient/telnet which has proper LINEMODE support but
+	//      is event-driven (no io.ReadWriter), requiring a connection layer rewrite.
 	svr := telnet.NewServer(fmt.Sprintf(":%d", l.port), handler)
 
 	// done signals that Start is returning (either success or failure)

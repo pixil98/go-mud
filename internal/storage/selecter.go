@@ -3,6 +3,7 @@ package storage
 import (
 	"fmt"
 	"io"
+	"slices"
 	"strconv"
 
 	"github.com/pixil98/go-mud/internal"
@@ -36,6 +37,16 @@ func NewSelectableStorer[T validatingSelectable](st Storer[T]) *SelectableStorer
 	for id, val := range s.GetAll() {
 		s.options = append(s.options, option[T]{id: id, val: val})
 	}
+	slices.SortFunc(s.options, func(a, b option[T]) int {
+		sa, sb := a.val.Selector(), b.val.Selector()
+		if sa < sb {
+			return -1
+		}
+		if sa > sb {
+			return 1
+		}
+		return 0
+	})
 	s.build()
 
 	return s

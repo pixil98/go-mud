@@ -82,10 +82,9 @@ func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 		cmdCtx.Session.Move(destZone, destRoomId)
 
 		// Send room description to player
-		playerChannel := fmt.Sprintf("player-%s", strings.ToLower(cmdCtx.Actor.Name))
 		roomDesc := FormatFullRoomDescription(f.world, newRoom, destZone, destRoomId, cmdCtx.Actor.Name)
 		if f.pub != nil {
-			_ = f.pub.Publish(playerChannel, []byte(roomDesc))
+			return f.pub.PublishToPlayer(cmdCtx.Session.CharId, []byte(roomDesc))
 		}
 
 		return nil

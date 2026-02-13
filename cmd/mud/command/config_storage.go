@@ -18,6 +18,8 @@ type StorageConfig struct {
 	Rooms      AssetConfig[*game.Room]        `json:"rooms"`
 	Mobiles    AssetConfig[*game.Mobile]      `json:"mobiles"`
 	Objects    AssetConfig[*game.Object]      `json:"objects"`
+	Pronouns   AssetConfig[*game.Pronoun]     `json:"pronouns"`
+	Races      AssetConfig[*game.Race]        `json:"races"`
 }
 
 func (c *StorageConfig) validate() error {
@@ -28,6 +30,8 @@ func (c *StorageConfig) validate() error {
 	el.Add(c.Rooms.Validate("rooms"))
 	el.Add(c.Mobiles.Validate("mobiles"))
 	el.Add(c.Objects.Validate("objects"))
+	el.Add(c.Pronouns.Validate("pronouns"))
+	el.Add(c.Races.Validate("races"))
 	return el.Err()
 }
 

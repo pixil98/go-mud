@@ -24,6 +24,7 @@ type WorldState struct {
 	rooms   storage.Storer[*Room]
 	mobiles storage.Storer[*Mobile]
 	objects storage.Storer[*Object]
+	races   storage.Storer[*Race]
 
 	// Mobile instances indexed by zone -> room -> instanceId -> instance
 	mobileInstances map[storage.Identifier]map[storage.Identifier]map[string]*MobileInstance
@@ -36,7 +37,7 @@ type WorldState struct {
 }
 
 // NewWorldState creates a new WorldState.
-func NewWorldState(sub Subscriber, chars storage.Storer[*Character], zones storage.Storer[*Zone], rooms storage.Storer[*Room], mobiles storage.Storer[*Mobile], objects storage.Storer[*Object]) *WorldState {
+func NewWorldState(sub Subscriber, chars storage.Storer[*Character], zones storage.Storer[*Zone], rooms storage.Storer[*Room], mobiles storage.Storer[*Mobile], objects storage.Storer[*Object], races storage.Storer[*Race]) *WorldState {
 	// Build index of rooms by zone
 	roomsByZone := make(map[storage.Identifier][]storage.Identifier)
 	for roomId, room := range rooms.GetAll() {
@@ -52,6 +53,7 @@ func NewWorldState(sub Subscriber, chars storage.Storer[*Character], zones stora
 		rooms:           rooms,
 		mobiles:         mobiles,
 		objects:         objects,
+		races:           races,
 		mobileInstances: make(map[storage.Identifier]map[storage.Identifier]map[string]*MobileInstance),
 		objectInstances: make(map[storage.Identifier]map[storage.Identifier]map[string]*ObjectInstance),
 		roomsByZone:     roomsByZone,
@@ -85,8 +87,13 @@ func (w *WorldState) Objects() storage.Storer[*Object] {
 	return w.objects
 }
 
-// SpawnMobile creates a new mobile instance in the specified location.
-func (w *WorldState) SpawnMobile(mobileId, zoneId, roomId storage.Identifier) *MobileInstance {
+// Races returns the race store.
+func (w *WorldState) Races() storage.Storer[*Race] {
+	return w.races
+}
+
+// spawnMobile creates a new mobile instance in the specified location.
+func (w *WorldState) SpawnMobileInstance(mobileId, zoneId, roomId storage.Identifier) *MobileInstance {
 	w.mu.Lock()
 	defer w.mu.Unlock()
 
@@ -103,6 +110,8 @@ func (w *WorldState) SpawnMobile(mobileId, zoneId, roomId storage.Identifier) *M
 		MobileId:   mobileId,
 	}
 	w.mobileInstances[zoneId][roomId][instance.InstanceId] = instance
+
+	slog.Debug("spawned mobile", "mobile", mobileId, "zone", zoneId, "room", roomId)
 	return instance
 }
 
@@ -122,24 +131,19 @@ func (w *WorldState) GetMobilesInRoom(zoneId, roomId storage.Identifier) []*Mobi
 	return result
 }
 
-// SpawnObject creates a new object instance in the specified location.
-func (w *WorldState) SpawnObject(objectId, zoneId, roomId storage.Identifier) *ObjectInstance {
-	w.mu.Lock()
-	defer w.mu.Unlock()
-
-	// Ensure nested maps exist
-	if w.objectInstances[zoneId] == nil {
-		w.objectInstances[zoneId] = make(map[storage.Identifier]map[string]*ObjectInstance)
-	}
-	if w.objectInstances[zoneId][roomId] == nil {
-		w.objectInstances[zoneId][roomId] = make(map[string]*ObjectInstance)
-	}
-
+// spawnObjectInstance creates an ObjectInstance from an ObjectSpawn,
+// recursively spawning any contents for containers.
+func spawnObjectInstance(spawn ObjectSpawn) *ObjectInstance {
 	instance := &ObjectInstance{
 		InstanceId: uuid.New().String(),
-		ObjectId:   objectId,
+		ObjectId:   storage.Identifier(spawn.ObjectId),
 	}
-	w.objectInstances[zoneId][roomId][instance.InstanceId] = instance
+	if len(spawn.Contents) > 0 {
+		instance.Contents = NewInventory()
+		for _, contentSpawn := range spawn.Contents {
+			instance.Contents.Add(spawnObjectInstance(contentSpawn))
+		}
+	}
 	return instance
 }
 
@@ -159,9 +163,7 @@ func (w *WorldState) GetObjectsInRoom(zoneId, roomId storage.Identifier) []*Obje
 	return result
 }
 
-// RemoveObjectFromRoom removes an object instance from a room.
-// Returns the removed instance, or nil if not found.
-func (w *WorldState) RemoveObjectFromRoom(zoneId, roomId storage.Identifier, instanceId string) *ObjectInstance {
+func (w *WorldState) removeObjectFromRoom(zoneId, roomId storage.Identifier, instanceId string) *ObjectInstance {
 	w.mu.Lock()
 	defer w.mu.Unlock()
 
@@ -178,8 +180,7 @@ func (w *WorldState) RemoveObjectFromRoom(zoneId, roomId storage.Identifier, ins
 	return oi
 }
 
-// AddObjectToRoom adds an existing object instance to a room.
-func (w *WorldState) AddObjectToRoom(zoneId, roomId storage.Identifier, obj *ObjectInstance) {
+func (w *WorldState) addObjectToRoom(zoneId, roomId storage.Identifier, obj *ObjectInstance) {
 	w.mu.Lock()
 	defer w.mu.Unlock()
 
@@ -191,6 +192,29 @@ func (w *WorldState) AddObjectToRoom(zoneId, roomId storage.Identifier, obj *Obj
 	}
 
 	w.objectInstances[zoneId][roomId][obj.InstanceId] = obj
+}
+
+// RoomObjectHolder wraps a specific room's object storage so it satisfies
+// the ObjectHolder and ObjectRemover interfaces defined in the commands package.
+type RoomObjectHolder struct {
+	world  *WorldState
+	zoneId storage.Identifier
+	roomId storage.Identifier
+}
+
+// RoomHolder creates a RoomObjectHolder for the given room.
+func (w *WorldState) RoomHolder(zoneId, roomId storage.Identifier) *RoomObjectHolder {
+	return &RoomObjectHolder{world: w, zoneId: zoneId, roomId: roomId}
+}
+
+// Add places an object instance in this room.
+func (r *RoomObjectHolder) Add(obj *ObjectInstance) {
+	r.world.addObjectToRoom(r.zoneId, r.roomId, obj)
+}
+
+// Remove removes an object instance from this room by instance ID.
+func (r *RoomObjectHolder) Remove(instanceId string) *ObjectInstance {
+	return r.world.removeObjectFromRoom(r.zoneId, r.roomId, instanceId)
 }
 
 // ResetZone despawns all mobiles in a zone and respawns them per room definitions.
@@ -217,12 +241,11 @@ func (w *WorldState) ResetZone(zoneId storage.Identifier, force bool) {
 		}
 	}
 
-	w.mu.Lock()
-	defer w.mu.Unlock()
-
 	// Clear all mobile and object instances in this zone
+	w.mu.Lock()
 	delete(w.mobileInstances, zoneId)
 	delete(w.objectInstances, zoneId)
+	w.mu.Unlock()
 
 	slog.Info("resetting zone", "zone", zoneId, "rooms", len(w.roomsByZone[zoneId]))
 
@@ -236,34 +259,14 @@ func (w *WorldState) ResetZone(zoneId storage.Identifier, force bool) {
 
 		// Spawn mobiles
 		for _, mobileId := range room.MobSpawns {
-			if w.mobileInstances[zoneId] == nil {
-				w.mobileInstances[zoneId] = make(map[storage.Identifier]map[string]*MobileInstance)
-			}
-			if w.mobileInstances[zoneId][roomId] == nil {
-				w.mobileInstances[zoneId][roomId] = make(map[string]*MobileInstance)
-			}
-			instance := &MobileInstance{
-				InstanceId: uuid.New().String(),
-				MobileId:   storage.Identifier(mobileId),
-			}
-			w.mobileInstances[zoneId][roomId][instance.InstanceId] = instance
-			slog.Debug("spawned mobile", "mobile", mobileId, "zone", zoneId, "room", roomId)
+			w.SpawnMobileInstance(storage.Identifier(mobileId), zoneId, roomId)
 		}
 
 		// Spawn objects
-		for _, objectId := range room.ObjSpawns {
-			if w.objectInstances[zoneId] == nil {
-				w.objectInstances[zoneId] = make(map[storage.Identifier]map[string]*ObjectInstance)
-			}
-			if w.objectInstances[zoneId][roomId] == nil {
-				w.objectInstances[zoneId][roomId] = make(map[string]*ObjectInstance)
-			}
-			instance := &ObjectInstance{
-				InstanceId: uuid.New().String(),
-				ObjectId:   storage.Identifier(objectId),
-			}
-			w.objectInstances[zoneId][roomId][instance.InstanceId] = instance
-			slog.Debug("spawned object", "object", objectId, "zone", zoneId, "room", roomId)
+		for _, spawn := range room.ObjSpawns {
+			instance := spawnObjectInstance(spawn)
+			w.addObjectToRoom(zoneId, roomId, instance)
+			slog.Debug("spawned object", "object", spawn.ObjectId, "zone", zoneId, "room", roomId)
 		}
 	}
 
@@ -294,6 +297,7 @@ func (w *WorldState) AddPlayer(charId storage.Identifier, msgs chan []byte, zone
 		subscriber:   w.subscriber,
 		subs:         make(map[string]func()),
 		msgs:         msgs,
+		CharId:       charId,
 		ZoneId:       zoneId,
 		RoomId:       roomId,
 		Quit:         false,
@@ -390,6 +394,8 @@ func (w *WorldState) isZoneOccupied(zoneId storage.Identifier) bool {
 type PlayerState struct {
 	subscriber Subscriber
 	msgs       chan []byte
+
+	CharId storage.Identifier
 
 	// Location
 	ZoneId storage.Identifier

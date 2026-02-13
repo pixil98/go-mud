@@ -6,6 +6,14 @@ import (
 	"github.com/pixil98/go-errors"
 )
 
+// ObjectSpawn defines an object to spawn in a room during zone reset.
+// Contents lists objects to spawn inside this container (requires the container flag).
+// Supports nesting — content items can themselves be containers with contents.
+type ObjectSpawn struct {
+	ObjectId string        `json:"object_id"`
+	Contents []ObjectSpawn `json:"contents,omitempty"`
+}
+
 // Exit defines a destination for movement from a room.
 type Exit struct {
 	ZoneId string `json:"zone_id,omitempty"` // Optional; defaults to current zone
@@ -18,8 +26,8 @@ type Room struct {
 	Description string          `json:"description"`
 	ZoneId      string          `json:"zone_id"`
 	Exits       map[string]Exit `json:"exits"`                    // direction -> destination
-	MobSpawns   []string        `json:"mobile_spawns,omitempty"`  // mobile IDs to spawn; list duplicates for multiple
-	ObjSpawns   []string        `json:"object_spawns,omitempty"`  // object IDs to spawn
+	MobSpawns   []string        `json:"mobile_spawns,omitempty"` // mobile IDs to spawn; list duplicates for multiple
+	ObjSpawns   []ObjectSpawn   `json:"object_spawns,omitempty"` // objects to spawn
 }
 
 // Validate satisfies storage.ValidatingSpec.

@@ -7,6 +7,11 @@
         "zone_id": "millbrook",
         "exits": {
             "east": {"room_id": "millbrook-square"}
-        }
+        },
+        "object_spawns": [
+            {"object_id": "millbrook-helmet"},
+            {"object_id": "millbrook-ring"},
+            {"object_id": "millbrook-cloak"}
+        ]
     }
 }

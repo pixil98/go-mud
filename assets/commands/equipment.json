@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "equipment",
+    "spec": {
+        "handler": "equipment",
+        "category": "information",
+        "description": "View the items you are wearing."
+    }
+}

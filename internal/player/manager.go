@@ -8,31 +8,36 @@ import (
 
 	"github.com/pixil98/go-mud/internal/commands"
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/plugins"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
 type PlayerManager struct {
-	cmdHandler    *commands.Handler
-	pluginManager *plugins.PluginManager
-	world         *game.WorldState
+	cmdHandler *commands.Handler
+	world      *game.WorldState
+	pronouns   *storage.SelectableStorer[*game.Pronoun]
+	races      *storage.SelectableStorer[*game.Race]
 
 	loginFlow   *loginFlow
 	defaultZone storage.Identifier
 	defaultRoom storage.Identifier
 }
 
-func NewPlayerManager(cmd *commands.Handler, plugins *plugins.PluginManager, world *game.WorldState, defaultZone, defaultRoom string) *PlayerManager {
-	pm := &PlayerManager{
-		pluginManager: plugins,
-		cmdHandler:    cmd,
-		world:         world,
-		loginFlow:     &loginFlow{world: world},
-		defaultZone:   storage.Identifier(defaultZone),
-		defaultRoom:   storage.Identifier(defaultRoom),
+func NewPlayerManager(
+	cmd *commands.Handler,
+	world *game.WorldState,
+	pronouns *storage.SelectableStorer[*game.Pronoun],
+	races *storage.SelectableStorer[*game.Race],
+	defaultZone, defaultRoom string,
+) *PlayerManager {
+	return &PlayerManager{
+		cmdHandler:  cmd,
+		world:       world,
+		pronouns:    pronouns,
+		races:       races,
+		loginFlow:   &loginFlow{world: world},
+		defaultZone: storage.Identifier(defaultZone),
+		defaultRoom: storage.Identifier(defaultRoom),
 	}
-
-	return pm
 }
 
 // RemovePlayer removes a player from the world state
@@ -46,10 +51,11 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
 		return nil, err
 	}
 
-	err = m.pluginManager.InitCharacter(conn, char)
+	err = m.initCharacter(conn, char)
 	if err != nil {
 		return nil, fmt.Errorf("initializing character: %w", err)
 	}
+
 	// Save the character back to preserve changes
 	err = m.world.Characters().Save(strings.ToLower(char.Name), char)
 	if err != nil {
@@ -105,6 +111,31 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
 	}
 
 	return p, nil
+}
+
+// initCharacter prompts for any missing traits on a character.
+func (m *PlayerManager) initCharacter(rw io.ReadWriter, char *game.Character) error {
+	for char.Pronoun == "" {
+		sel, err := m.pronouns.Prompt(rw, "What are your pronouns?")
+		if err != nil {
+			return fmt.Errorf("selecting pronouns: %w", err)
+		}
+		char.Pronoun = sel
+	}
+
+	for char.Race == "" {
+		sel, err := m.races.Prompt(rw, "What is your race?")
+		if err != nil {
+			return fmt.Errorf("selecting race: %w", err)
+		}
+		char.Race = sel
+	}
+
+	if char.Level == 0 {
+		char.Level = 1
+	}
+
+	return nil
 }
 
 // startingLocation returns the zone and room a character should start in.

@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/plugins"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
@@ -71,8 +70,19 @@ type compiledCommand struct {
 	cmdFunc CommandFunc
 }
 
-// Publisher provides the ability to publish messages to subjects
+// Publisher provides typed methods for publishing messages to game channels.
 type Publisher interface {
+	// PublishToPlayer sends a message to a specific player's channel.
+	PublishToPlayer(charId storage.Identifier, data []byte) error
+	// PublishToRoom sends a message to all subscribers in a room.
+	PublishToRoom(zoneId, roomId storage.Identifier, data []byte) error
+	// PublishToZone sends a message to all subscribers in a zone.
+	PublishToZone(zoneId storage.Identifier, data []byte) error
+	// PublishToWorld sends a message to all subscribers on the world channel.
+	PublishToWorld(data []byte) error
+	// Publish sends a message to an arbitrary subject.
+	// TODO: Evaluate whether this can be replaced with typed methods now that
+	// plugins won't define custom channels.
 	Publish(subject string, data []byte) error
 }
 
@@ -81,25 +91,25 @@ type Handler struct {
 	compiled  map[storage.Identifier]*compiledCommand
 }
 
-func NewHandler(c storage.Storer[*Command], publisher Publisher, world *game.WorldState, charInfo plugins.CharacterInfoProvider) (*Handler, error) {
+func NewHandler(c storage.Storer[*Command], publisher Publisher, world *game.WorldState) (*Handler, error) {
 	h := &Handler{
 		factories: make(map[string]HandlerFactory),
 		compiled:  make(map[storage.Identifier]*compiledCommand),
 	}
 
 	// Register built-in handlers
-	h.RegisterFactory("drop", NewDropHandlerFactory(world, publisher))
-	h.RegisterFactory("get", NewGetHandlerFactory(world, publisher))
-	h.RegisterFactory("give", NewGiveHandlerFactory(world, publisher))
+	h.RegisterFactory("equipment", NewEquipmentHandlerFactory(world, publisher))
 	h.RegisterFactory("help", NewHelpHandlerFactory(c, publisher))
 	h.RegisterFactory("inventory", NewInventoryHandlerFactory(world, publisher))
 	h.RegisterFactory("look", NewLookHandlerFactory(world, publisher))
 	h.RegisterFactory("message", NewMessageHandlerFactory(publisher))
 	h.RegisterFactory("move", NewMoveHandlerFactory(world, publisher))
+	h.RegisterFactory("move_obj", NewMoveObjHandlerFactory(world, publisher))
 	h.RegisterFactory("quit", NewQuitHandlerFactory(world))
 	h.RegisterFactory("save", NewSaveHandlerFactory(world, publisher))
 	h.RegisterFactory("title", NewTitleHandlerFactory(publisher))
-	h.RegisterFactory("who", NewWhoHandlerFactory(world, publisher, charInfo))
+	h.RegisterFactory("wear", NewWearHandlerFactory(world, publisher))
+	h.RegisterFactory("who", NewWhoHandlerFactory(world, publisher))
 
 	// Compile commands
 	for id, cmd := range c.GetAll() {
@@ -370,8 +380,27 @@ func (h *Handler) resolveTargets(specs []TargetSpec, inputs map[string]any, char
 			return nil, fmt.Errorf("input %q is not a string", spec.Input)
 		}
 
+		// Set scope contents if applicable (search inside another resolved target).
+		// When the scope target was resolved, restrict to ScopeContents only so we
+		// don't fall through to room/inventory and pick up the wrong item.
+		// When the scope target was not provided (optional), use all declared scopes.
+		resolver.scopeContents = nil
+		scope := spec.Scope()
+		if spec.ScopeTarget != "" {
+			scopeRef := targets[spec.ScopeTarget]
+			if scopeRef != nil && scopeRef.Obj != nil && scopeRef.Obj.Instance != nil {
+				objDef := world.Objects().Get(string(scopeRef.Obj.ObjectId))
+				if objDef == nil || !objDef.HasFlag(game.ObjectFlagContainer) {
+					name := strings.ToUpper(scopeRef.Obj.Name[:1]) + scopeRef.Obj.Name[1:]
+					return nil, NewUserError(fmt.Sprintf("%s is not a container.", name))
+				}
+				resolver.scopeContents = scopeRef.Obj.Instance.Contents
+				scope = ScopeContents
+			}
+		}
+
 		// Resolve the target
-		resolved, err := resolver.Resolve(charId, name, spec.Type, spec.Scope())
+		resolved, err := resolver.Resolve(charId, name, spec.Type, scope)
 		if err != nil {
 			return nil, err
 		}
@@ -379,11 +408,11 @@ func (h *Handler) resolveTargets(specs []TargetSpec, inputs map[string]any, char
 		// Convert to TargetRef
 		switch t := resolved.(type) {
 		case *PlayerRef:
-			targets[spec.Name] = &TargetRef{Type: "player", Name: t.Name, Player: t}
+			targets[spec.Name] = &TargetRef{Type: "player", Player: t}
 		case *MobileRef:
-			targets[spec.Name] = &TargetRef{Type: "mobile", Name: t.Name, Mob: t}
+			targets[spec.Name] = &TargetRef{Type: "mobile", Mob: t}
 		case *ObjectRef:
-			targets[spec.Name] = &TargetRef{Type: "object", Name: t.Name, Obj: t}
+			targets[spec.Name] = &TargetRef{Type: "object", Obj: t}
 		case *TargetRef:
 			targets[spec.Name] = t
 		default:

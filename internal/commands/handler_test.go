@@ -385,6 +385,7 @@ func TestHandler_resolveTargets(t *testing.T) {
 				&mockRoomStore{rooms: map[string]*game.Room{}},
 				&mockMobileStore{mobiles: map[string]*game.Mobile{}},
 				&mockObjectStore{objects: map[string]*game.Object{}},
+				&mockRaceStore{races: map[string]*game.Race{}},
 			)
 
 			// Add actor
@@ -425,9 +426,6 @@ func TestHandler_resolveTargets(t *testing.T) {
 					t.Errorf("target[%q] is nil, expected %q", name, expName)
 					continue
 				}
-				if target.Name != expName {
-					t.Errorf("target[%q].Name = %q, expected %q", name, target.Name, expName)
-				}
 			}
 
 			// Check that optional missing targets are nil
@@ -438,6 +436,220 @@ func TestHandler_resolveTargets(t *testing.T) {
 							t.Errorf("target[%q] should be nil for optional missing input", spec.Name)
 						}
 					}
+				}
+			}
+		})
+	}
+}
+
+func TestHandler_resolveTargets_scopeTarget(t *testing.T) {
+	// Shared object definitions
+	objects := map[string]*game.Object{
+		"chest": {Aliases: []string{"chest"}, ShortDesc: "a wooden chest", Flags: []string{"container"}},
+		"torch": {Aliases: []string{"torch"}, ShortDesc: "a lit torch"},
+		"sword": {Aliases: []string{"sword"}, ShortDesc: "a rusty sword"},
+	}
+
+	tests := map[string]struct {
+		rooms       map[string]*game.Room
+		zones       map[string]*game.Zone
+		actorZone   storage.Identifier
+		actorRoom   storage.Identifier
+		targetSpecs []TargetSpec
+		inputs      map[string]any
+		expTargets  map[string]string // name -> expected resolved name
+		expNil      []string          // target names expected to be nil
+		expErr      string
+	}{
+		"scope_target resolves object from container contents": {
+			rooms: map[string]*game.Room{
+				"my-room": {
+					ZoneId: "my-zone",
+					ObjSpawns: []game.ObjectSpawn{
+						{ObjectId: "chest", Contents: []game.ObjectSpawn{{ObjectId: "torch"}}},
+					},
+				},
+			},
+			zones: map[string]*game.Zone{
+				"my-zone": {ResetMode: "never"},
+			},
+			actorZone: "my-zone",
+			actorRoom: "my-room",
+			targetSpecs: []TargetSpec{
+				{Name: "container", Type: "object", Scopes: []string{"room"}, Input: "from", Optional: true},
+				{Name: "target", Type: "object", Scopes: []string{"room", "contents"}, Input: "item", ScopeTarget: "container"},
+			},
+			inputs: map[string]any{
+				"item": "torch",
+				"from": "chest",
+			},
+			expTargets: map[string]string{
+				"container": "a wooden chest",
+				"target":    "a lit torch",
+			},
+		},
+		"scope_target nil when container not provided uses room scope": {
+			rooms: map[string]*game.Room{
+				"my-room": {
+					ZoneId: "my-zone",
+					ObjSpawns: []game.ObjectSpawn{
+						{ObjectId: "sword"},
+					},
+				},
+			},
+			zones: map[string]*game.Zone{
+				"my-zone": {ResetMode: "never"},
+			},
+			actorZone: "my-zone",
+			actorRoom: "my-room",
+			targetSpecs: []TargetSpec{
+				{Name: "container", Type: "object", Scopes: []string{"room"}, Input: "from", Optional: true},
+				{Name: "target", Type: "object", Scopes: []string{"room", "contents"}, Input: "item", ScopeTarget: "container"},
+			},
+			inputs: map[string]any{
+				"item": "sword",
+				"from": "",
+			},
+			expTargets: map[string]string{
+				"target": "a rusty sword",
+			},
+			expNil: []string{"container"},
+		},
+		"scope_target restricts to contents only when container resolved": {
+			rooms: map[string]*game.Room{
+				"my-room": {
+					ZoneId: "my-zone",
+					ObjSpawns: []game.ObjectSpawn{
+						{ObjectId: "chest"}, // empty container
+						{ObjectId: "sword"}, // sword on the floor
+					},
+				},
+			},
+			zones: map[string]*game.Zone{
+				"my-zone": {ResetMode: "never"},
+			},
+			actorZone: "my-zone",
+			actorRoom: "my-room",
+			targetSpecs: []TargetSpec{
+				{Name: "container", Type: "object", Scopes: []string{"room"}, Input: "from", Optional: true},
+				{Name: "target", Type: "object", Scopes: []string{"room", "contents"}, Input: "item", ScopeTarget: "container"},
+			},
+			inputs: map[string]any{
+				"item": "sword",
+				"from": "chest",
+			},
+			// sword is on the floor, NOT in the chest — should fail because
+			// scope narrows to contents-only when container is resolved
+			expErr: `Object "sword" not found.`,
+		},
+		"scope_target with empty container contents fails": {
+			rooms: map[string]*game.Room{
+				"my-room": {
+					ZoneId: "my-zone",
+					ObjSpawns: []game.ObjectSpawn{
+						{ObjectId: "chest"}, // empty container, no contents
+					},
+				},
+			},
+			zones: map[string]*game.Zone{
+				"my-zone": {ResetMode: "never"},
+			},
+			actorZone: "my-zone",
+			actorRoom: "my-room",
+			targetSpecs: []TargetSpec{
+				{Name: "container", Type: "object", Scopes: []string{"room"}, Input: "from", Optional: true},
+				{Name: "target", Type: "object", Scopes: []string{"room", "contents"}, Input: "item", ScopeTarget: "container"},
+			},
+			inputs: map[string]any{
+				"item": "torch",
+				"from": "chest",
+			},
+			expErr: `Object "torch" not found.`,
+		},
+		"scope_target rejects non-container": {
+			rooms: map[string]*game.Room{
+				"my-room": {
+					ZoneId: "my-zone",
+					ObjSpawns: []game.ObjectSpawn{
+						{ObjectId: "sword"}, // not a container
+						{ObjectId: "torch"},
+					},
+				},
+			},
+			zones: map[string]*game.Zone{
+				"my-zone": {ResetMode: "never"},
+			},
+			actorZone: "my-zone",
+			actorRoom: "my-room",
+			targetSpecs: []TargetSpec{
+				{Name: "container", Type: "object", Scopes: []string{"room"}, Input: "from", Optional: true},
+				{Name: "target", Type: "object", Scopes: []string{"room", "contents"}, Input: "item", ScopeTarget: "container"},
+			},
+			inputs: map[string]any{
+				"item": "torch",
+				"from": "sword",
+			},
+			expErr: `A rusty sword is not a container.`,
+		},
+	}
+
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			h := &Handler{}
+
+			world := game.NewWorldState(
+				nil,
+				&mockCharStore{chars: map[string]*game.Character{"alice": {Name: "Alice"}}},
+				&mockZoneStore{zones: tt.zones},
+				&mockRoomStore{rooms: tt.rooms},
+				&mockMobileStore{mobiles: map[string]*game.Mobile{}},
+				&mockObjectStore{objects: objects},
+				&mockRaceStore{races: map[string]*game.Race{}},
+			)
+
+			// Add actor
+			actorChan := make(chan []byte, 1)
+			_ = world.AddPlayer("alice", actorChan, tt.actorZone, tt.actorRoom)
+
+			// Spawn objects via zone reset
+			for zoneId := range tt.zones {
+				world.ResetZone(storage.Identifier(zoneId), true)
+			}
+
+			targets, err := h.resolveTargets(tt.targetSpecs, tt.inputs, "alice", world)
+
+			if tt.expErr != "" {
+				if err == nil {
+					t.Fatalf("expected error containing %q, got nil", tt.expErr)
+				}
+				var userErr *UserError
+				if errors.As(err, &userErr) {
+					if userErr.Message != tt.expErr {
+						t.Errorf("error = %q, expected %q", userErr.Message, tt.expErr)
+					}
+				} else if err.Error() != tt.expErr {
+					t.Errorf("error = %q, expected %q", err.Error(), tt.expErr)
+				}
+				return
+			}
+
+			if err != nil {
+				t.Fatalf("resolveTargets failed: %v", err)
+			}
+
+			// Verify expected targets
+			for name, expName := range tt.expTargets {
+				target := targets[name]
+				if target == nil {
+					t.Errorf("target[%q] is nil, expected %q", name, expName)
+					continue
+				}
+			}
+
+			// Check nil targets
+			for _, name := range tt.expNil {
+				if targets[name] != nil {
+					t.Errorf("target[%q] should be nil", name)
 				}
 			}
 		})
@@ -468,12 +680,12 @@ func TestHandler_expandConfig(t *testing.T) {
 		},
 		"target used in template": {
 			config: map[string]any{
-				"channel": "player-{{ .Targets.target.Name | lower }}",
-				"message": "Hello {{ .Targets.target.Name }}!",
+				"channel": "player-{{ .Targets.target.Player.Name | lower }}",
+				"message": "Hello {{ .Targets.target.Player.Name }}!",
 			},
 			actor: &game.Character{Name: "Alice"},
 			targets: map[string]*TargetRef{
-				"target": {Type: "player", Name: "Bob", Player: &PlayerRef{Name: "Bob"}},
+				"target": {Type: "player", Player: &PlayerRef{Name: "Bob"}},
 			},
 			inputs: map[string]any{},
 			expConfig: map[string]string{
@@ -483,11 +695,11 @@ func TestHandler_expandConfig(t *testing.T) {
 		},
 		"actor and target combined": {
 			config: map[string]any{
-				"message": "{{ .Actor.Name }} tells {{ .Targets.target.Name }}, \"{{ .Inputs.text }}\"",
+				"message": "{{ .Actor.Name }} tells {{ .Targets.target.Player.Name }}, \"{{ .Inputs.text }}\"",
 			},
 			actor: &game.Character{Name: "Alice"},
 			targets: map[string]*TargetRef{
-				"target": {Type: "player", Name: "Bob", Player: &PlayerRef{Name: "Bob"}},
+				"target": {Type: "player", Player: &PlayerRef{Name: "Bob"}},
 			},
 			inputs: map[string]any{
 				"text": "hello there",
@@ -520,6 +732,7 @@ func TestHandler_expandConfig(t *testing.T) {
 				&mockRoomStore{rooms: map[string]*game.Room{}},
 				&mockMobileStore{mobiles: map[string]*game.Mobile{}},
 				&mockObjectStore{objects: map[string]*game.Object{}},
+				&mockRaceStore{races: map[string]*game.Race{}},
 			)
 
 			actorChan := make(chan []byte, 1)

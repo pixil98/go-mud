@@ -6,10 +6,10 @@
         "category": "communication",
         "description": "Send a private message to another player.",
         "config": {
-            "recipient_channel": "player-{{ .Targets.target.Name | lower }}",
+            "recipient_channel": "player-{{ .Targets.target.Player.Name | lower }}",
             "recipient_message": "{{ .Actor.Name }} tells you, \"{{ .Inputs.text }}\"",
             "sender_channel": "player-{{ .Actor.Name | lower }}",
-            "sender_message": "You tell {{ .Targets.target.Name }}, \"{{ .Inputs.text }}\""
+            "sender_message": "You tell {{ .Targets.target.Player.Name }}, \"{{ .Inputs.text }}\""
         },
         "targets": [
             {"name": "target", "type": "player", "scope": ["world"], "input": "target"}

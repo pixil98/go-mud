@@ -2,9 +2,14 @@
     "version": 1,
     "id": "give",
     "spec": {
-        "handler": "give",
+        "handler": "move_obj",
         "category": "items",
         "description": "Give an item to another player.",
+        "config": {
+            "destination": "recipient",
+            "message": "{{ .Actor.Name }} gives {{ .Targets.item.Obj.Name }} to {{ .Targets.recipient.Player.Name }}.",
+            "no_self_target": "recipient"
+        },
         "targets": [
             {"name": "item", "type": "object", "scope": ["inventory"], "input": "item"},
             {"name": "recipient", "type": "player", "scope": ["room"], "input": "recipient"}

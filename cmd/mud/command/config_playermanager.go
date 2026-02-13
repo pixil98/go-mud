@@ -7,7 +7,7 @@ import (
 	"github.com/pixil98/go-mud/internal/commands"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/player"
-	"github.com/pixil98/go-mud/internal/plugins"
+	"github.com/pixil98/go-mud/internal/storage"
 )
 
 type PlayerManagerConfig struct {
@@ -28,6 +28,11 @@ func (c *PlayerManagerConfig) validate() error {
 	return el.Err()
 }
 
-func (c *PlayerManagerConfig) BuildPlayerManager(cmdHandler *commands.Handler, pluginManager *plugins.PluginManager, world *game.WorldState) *player.PlayerManager {
-	return player.NewPlayerManager(cmdHandler, pluginManager, world, c.DefaultZone, c.DefaultRoom)
+func (c *PlayerManagerConfig) BuildPlayerManager(
+	cmdHandler *commands.Handler,
+	world *game.WorldState,
+	pronouns *storage.SelectableStorer[*game.Pronoun],
+	races *storage.SelectableStorer[*game.Race],
+) *player.PlayerManager {
+	return player.NewPlayerManager(cmdHandler, world, pronouns, races, c.DefaultZone, c.DefaultRoom)
 }
