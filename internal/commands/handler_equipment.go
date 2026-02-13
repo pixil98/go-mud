@@ -3,7 +3,6 @@ package commands
 import (
 	"context"
 	"fmt"
-	"sort"
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/game"
@@ -29,25 +28,42 @@ func (f *EquipmentHandlerFactory) ValidateConfig(config map[string]any) error {
 
 func (f *EquipmentHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		lines := []string{"You are wearing:"}
+		eq := cmdCtx.Actor.Equipment
 
-		if cmdCtx.Actor.Equipment == nil || len(cmdCtx.Actor.Equipment.Slots) == 0 {
+		// Build the slot list to display: race slots if available, otherwise equipped slots
+		var slots []string
+		if race := f.world.Races().Get(string(cmdCtx.Actor.Race)); race != nil {
+			slots = race.WearSlots
+		}
+		if len(slots) == 0 && eq != nil {
+			for _, item := range eq.Items {
+				slots = append(slots, item.Slot)
+			}
+		}
+
+		lines := []string{"You are wearing:"}
+		if len(slots) == 0 {
 			lines = append(lines, "  Nothing")
 		} else {
-			// Sort slots for consistent output
-			slots := make([]string, 0, len(cmdCtx.Actor.Equipment.Slots))
-			for slot := range cmdCtx.Actor.Equipment.Slots {
-				slots = append(slots, slot)
-			}
-			sort.Strings(slots)
-
+			slotSeen := make(map[string]int)
 			for _, slot := range slots {
-				oi := cmdCtx.Actor.Equipment.Slots[slot]
-				obj := f.world.Objects().Get(string(oi.ObjectId))
-				if obj == nil {
-					continue
+				slotSeen[slot]++
+				desc := "empty"
+				if eq != nil {
+					count := 0
+					for _, item := range eq.Items {
+						if item.Slot == slot {
+							count++
+							if count == slotSeen[slot] {
+								if obj := f.world.Objects().Get(string(item.Obj.ObjectId)); obj != nil {
+									desc = obj.ShortDesc
+								}
+								break
+							}
+						}
+					}
 				}
-				lines = append(lines, fmt.Sprintf("  [%s] %s", slot, obj.ShortDesc))
+				lines = append(lines, fmt.Sprintf("  [%s] %s", slot, desc))
 			}
 		}
 

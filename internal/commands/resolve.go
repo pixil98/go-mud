@@ -190,8 +190,8 @@ func (r *Resolver) resolveObject(charId storage.Identifier, name string, scope S
 	if scope&ScopeEquipment != 0 {
 		actor := r.world.Characters().Get(string(charId))
 		if actor != nil && actor.Equipment != nil {
-			for _, oi := range actor.Equipment.Slots {
-				if ref := matchObject(oi, actor.Equipment); ref != nil {
+			for _, item := range actor.Equipment.Items {
+				if ref := matchObject(item.Obj, actor.Equipment); ref != nil {
 					return ref, nil
 				}
 			}

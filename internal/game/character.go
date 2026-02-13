@@ -21,6 +21,7 @@ type Character struct {
 	LastRoom storage.Identifier `json:"last_room,omitempty"`
 
 	Actor
+	ActorInstance
 }
 
 // Validate satisfies storage.ValidatingSpec

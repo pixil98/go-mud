@@ -24,6 +24,7 @@ type WorldState struct {
 	rooms   storage.Storer[*Room]
 	mobiles storage.Storer[*Mobile]
 	objects storage.Storer[*Object]
+	races   storage.Storer[*Race]
 
 	// Mobile instances indexed by zone -> room -> instanceId -> instance
 	mobileInstances map[storage.Identifier]map[storage.Identifier]map[string]*MobileInstance
@@ -36,7 +37,7 @@ type WorldState struct {
 }
 
 // NewWorldState creates a new WorldState.
-func NewWorldState(sub Subscriber, chars storage.Storer[*Character], zones storage.Storer[*Zone], rooms storage.Storer[*Room], mobiles storage.Storer[*Mobile], objects storage.Storer[*Object]) *WorldState {
+func NewWorldState(sub Subscriber, chars storage.Storer[*Character], zones storage.Storer[*Zone], rooms storage.Storer[*Room], mobiles storage.Storer[*Mobile], objects storage.Storer[*Object], races storage.Storer[*Race]) *WorldState {
 	// Build index of rooms by zone
 	roomsByZone := make(map[storage.Identifier][]storage.Identifier)
 	for roomId, room := range rooms.GetAll() {
@@ -52,6 +53,7 @@ func NewWorldState(sub Subscriber, chars storage.Storer[*Character], zones stora
 		rooms:           rooms,
 		mobiles:         mobiles,
 		objects:         objects,
+		races:           races,
 		mobileInstances: make(map[storage.Identifier]map[storage.Identifier]map[string]*MobileInstance),
 		objectInstances: make(map[storage.Identifier]map[storage.Identifier]map[string]*ObjectInstance),
 		roomsByZone:     roomsByZone,
@@ -83,6 +85,11 @@ func (w *WorldState) Mobiles() storage.Storer[*Mobile] {
 // Objects returns the object store.
 func (w *WorldState) Objects() storage.Storer[*Object] {
 	return w.objects
+}
+
+// Races returns the race store.
+func (w *WorldState) Races() storage.Storer[*Race] {
+	return w.races
 }
 
 // spawnMobile creates a new mobile instance in the specified location.

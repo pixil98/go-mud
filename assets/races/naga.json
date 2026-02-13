@@ -1,19 +1,21 @@
 {
     "version": 1,
-    "id": "halfling-35",
+    "id": "naga-35",
     "spec": {
-        "name": "Halfling",
-        "abbreviation": "Ha",
+        "name": "Naga",
+        "abbreviation": "Na",
         "stats": {
-            "str": -2,
-            "dex": 2
+            "str": 2,
+            "dex": -2
         },
-        "perks": [],
+        "perks": [
+            "darkvision"
+        ],
         "wear_slots": [
             "light", "head", "neck", "neck", "about",
             "body", "arms", "wrist", "wrist", "hands",
             "finger", "finger", "wield", "off_hand", "hold",
-            "waist", "legs", "feet"
+            "waist", "tail"
         ]
     }
 }

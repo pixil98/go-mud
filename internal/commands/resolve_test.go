@@ -135,7 +135,7 @@ func TestResolver_ResolvePlayer(t *testing.T) {
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
 			charStore := &mockCharStore{chars: tt.chars}
-			world := game.NewWorldState(nil, charStore, &mockZoneStore{zones: map[string]*game.Zone{}}, &mockRoomStore{rooms: map[string]*game.Room{}}, &mockMobileStore{mobiles: map[string]*game.Mobile{}}, &mockObjectStore{objects: map[string]*game.Object{}})
+			world := game.NewWorldState(nil, charStore, &mockZoneStore{zones: map[string]*game.Zone{}}, &mockRoomStore{rooms: map[string]*game.Room{}}, &mockMobileStore{mobiles: map[string]*game.Mobile{}}, &mockObjectStore{objects: map[string]*game.Object{}}, &mockRaceStore{races: map[string]*game.Race{}})
 
 			// Add actor
 			actorChan := make(chan []byte, 1)
@@ -323,6 +323,7 @@ func TestResolver_ResolveMob(t *testing.T) {
 				&mockRoomStore{rooms: tt.rooms},
 				&mockMobileStore{mobiles: tt.mobiles},
 				&mockObjectStore{objects: map[string]*game.Object{}},
+				&mockRaceStore{races: map[string]*game.Race{}},
 			)
 
 			// Add actor
@@ -496,7 +497,7 @@ func TestResolver_ResolveObject(t *testing.T) {
 					_ = instId
 					inv.Add(oi)
 				}
-				chars["actor"] = &game.Character{Name: "Actor", Actor: game.Actor{Inventory: inv}}
+				chars["actor"] = &game.Character{Name: "Actor", ActorInstance: game.ActorInstance{Inventory: inv}}
 			}
 
 			world := game.NewWorldState(
@@ -511,6 +512,7 @@ func TestResolver_ResolveObject(t *testing.T) {
 				&mockRoomStore{rooms: tt.rooms},
 				&mockMobileStore{mobiles: map[string]*game.Mobile{}},
 				&mockObjectStore{objects: tt.objects},
+				&mockRaceStore{races: map[string]*game.Race{}},
 			)
 
 			// Add actor
@@ -643,7 +645,7 @@ func TestResolver_ResolveTarget(t *testing.T) {
 				roomStore.rooms = map[string]*game.Room{}
 			}
 
-			world := game.NewWorldState(nil, charStore, &mockZoneStore{zones: map[string]*game.Zone{}}, roomStore, mobileStore, &mockObjectStore{objects: map[string]*game.Object{}})
+			world := game.NewWorldState(nil, charStore, &mockZoneStore{zones: map[string]*game.Zone{}}, roomStore, mobileStore, &mockObjectStore{objects: map[string]*game.Object{}}, &mockRaceStore{races: map[string]*game.Race{}})
 
 			// Add actor
 			actorChan := make(chan []byte, 1)

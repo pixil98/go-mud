@@ -49,20 +49,46 @@ func (f *WearHandlerFactory) Create() (CommandFunc, error) {
 			return NewUserError(fmt.Sprintf("You can't wear %s.", obj.ShortDesc))
 		}
 
+		// Look up the character's race for slot validation
+		var race *game.Race
+		if cmdCtx.Actor.Race != "" {
+			race = f.world.Races().Get(string(cmdCtx.Actor.Race))
+		}
+
 		// Initialize equipment if needed
 		if cmdCtx.Actor.Equipment == nil {
 			cmdCtx.Actor.Equipment = game.NewEquipment()
 		}
 
-		// Find first available slot
+		// Find first wear slot that the race supports and has capacity
 		var slot string
 		for _, s := range obj.WearSlots {
-			if cmdCtx.Actor.Equipment.GetSlot(s) == nil {
+			maxSlots := 0
+			if race != nil {
+				maxSlots = race.SlotCount(s)
+				if maxSlots == 0 {
+					continue // Race doesn't have this slot type
+				}
+			}
+			if cmdCtx.Actor.Equipment.SlotCount(s) < maxSlots || maxSlots == 0 {
 				slot = s
 				break
 			}
 		}
 		if slot == "" {
+			// Distinguish "race can't wear this" from "slots full"
+			if race != nil {
+				hasSlot := false
+				for _, s := range obj.WearSlots {
+					if race.SlotCount(s) > 0 {
+						hasSlot = true
+						break
+					}
+				}
+				if !hasSlot {
+					return NewUserError(fmt.Sprintf("Your body can't wear %s.", obj.ShortDesc))
+				}
+			}
 			return NewUserError("You're already wearing something in that slot.")
 		}
 
@@ -71,7 +97,12 @@ func (f *WearHandlerFactory) Create() (CommandFunc, error) {
 		if oi == nil {
 			return NewUserError(fmt.Sprintf("You're not carrying %s.", target.Obj.Name))
 		}
-		err := cmdCtx.Actor.Equipment.Equip(slot, oi)
+
+		maxSlots := 0
+		if race != nil {
+			maxSlots = race.SlotCount(slot)
+		}
+		err := cmdCtx.Actor.Equipment.Equip(slot, maxSlots, oi)
 		if err != nil {
 			// Put it back on failure
 			cmdCtx.Actor.Inventory.Add(oi)

@@ -61,7 +61,7 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	}
 
 	// Create world state (must be before command handler since handlers need it)
-	world := game.NewWorldState(natsServer, storeCharacters, storeZones, storeRooms, storeMobiles, storeObjects)
+	world := game.NewWorldState(natsServer, storeCharacters, storeZones, storeRooms, storeMobiles, storeObjects, storeRaces)
 
 	// Spawn initial mobiles in all zones
 	for zoneId := range storeZones.GetAll() {
@@ -72,7 +72,7 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	publisher := messaging.NewNatsPublisher(natsServer)
 
 	// Create command handler and compile all commands
-	cmdHandler, err := commands.NewHandler(storeCmds, publisher, world, races)
+	cmdHandler, err := commands.NewHandler(storeCmds, publisher, world)
 	if err != nil {
 		return nil, fmt.Errorf("compiling commands: %w", err)
 	}

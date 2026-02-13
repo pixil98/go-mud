@@ -10,6 +10,12 @@
         },
         "perks": [
             "darkvision"
+        ],
+        "wear_slots": [
+            "light", "head", "neck", "neck", "about",
+            "body", "arms", "wrist", "wrist", "hands",
+            "finger", "finger", "wield", "off_hand", "hold",
+            "waist", "legs", "feet"
         ]
     }
 }

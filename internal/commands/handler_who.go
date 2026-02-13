@@ -14,12 +14,11 @@ import (
 type WhoHandlerFactory struct {
 	world *game.WorldState
 	pub   Publisher
-	races storage.Storer[*game.Race]
 }
 
 // NewWhoHandlerFactory creates a new WhoHandlerFactory.
-func NewWhoHandlerFactory(world *game.WorldState, pub Publisher, races storage.Storer[*game.Race]) *WhoHandlerFactory {
-	return &WhoHandlerFactory{world: world, pub: pub, races: races}
+func NewWhoHandlerFactory(world *game.WorldState, pub Publisher) *WhoHandlerFactory {
+	return &WhoHandlerFactory{world: world, pub: pub}
 }
 
 func (f *WhoHandlerFactory) Spec() *HandlerSpec {
@@ -41,7 +40,7 @@ func (f *WhoHandlerFactory) Create() (CommandFunc, error) {
 			}
 
 			var parts []string
-			if race := f.races.Get(string(char.Race)); race != nil {
+			if race := f.world.Races().Get(string(char.Race)); race != nil {
 				parts = append(parts, race.Abbreviation)
 			}
 			parts = append(parts, strconv.Itoa(char.Level))

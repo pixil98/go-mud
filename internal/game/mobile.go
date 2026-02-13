@@ -23,6 +23,8 @@ type Mobile struct {
 
 	// DetailedDesc is shown when a player looks at the mobile
 	DetailedDesc string `json:"detailed_desc"`
+
+	Actor
 }
 
 // Validate satisfies storage.ValidatingSpec
@@ -42,5 +44,6 @@ func (m *Mobile) Validate() error {
 type MobileInstance struct {
 	InstanceId string             // Unique ID: "<mobile-id>-<counter>" e.g., "millbrook-guard-1"
 	MobileId   storage.Identifier // Reference to the Mobile definition
-	Actor
+
+	ActorInstance
 }
