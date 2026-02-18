@@ -73,7 +73,7 @@ func (f *MoveObjHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		// Remove from source
-		oi := item.Obj.Source.RemoveObj(item.Obj.InstanceId)
+		oi := item.Obj.source.RemoveObj(item.Obj.InstanceId)
 		if oi == nil {
 			return NewUserError(fmt.Sprintf("You don't have %s.", item.Obj.Name))
 		}
@@ -123,7 +123,7 @@ func (f *MoveObjHandlerFactory) holderForTarget(ref *TargetRef) (ObjectHolder, e
 	}
 
 	if ref.Mob != nil {
-		return ref.Mob.Instance.Inventory, nil
+		return ref.Mob.instance.Inventory, nil
 	}
 
 	if ref.Obj != nil {
@@ -132,7 +132,7 @@ func (f *MoveObjHandlerFactory) holderForTarget(ref *TargetRef) (ObjectHolder, e
 			name := strings.ToUpper(ref.Obj.Name[:1]) + ref.Obj.Name[1:]
 			return nil, NewUserError(fmt.Sprintf("%s is not a container.", name))
 		}
-		return ref.Obj.Instance.Contents, nil
+		return ref.Obj.instance.Contents, nil
 	}
 
 	return nil, fmt.Errorf("target has no player, mobile, or object")

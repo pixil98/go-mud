@@ -93,11 +93,11 @@ func (f *LookHandlerFactory) describeMob(mob *MobileRef) string {
 }
 
 func (f *LookHandlerFactory) describeObj(obj *ObjectRef) string {
-	if obj.Instance == nil || obj.Instance.Definition == nil || !obj.Instance.Definition.HasFlag(game.ObjectFlagContainer) {
+	if obj.instance == nil || obj.instance.Definition == nil || !obj.instance.Definition.HasFlag(game.ObjectFlagContainer) {
 		return obj.Description
 	}
 
 	lines := []string{obj.Description, "It contains:"}
-	lines = append(lines, FormatInventoryItems(obj.Instance.Contents)...)
+	lines = append(lines, FormatInventoryItems(obj.instance.Contents)...)
 	return strings.Join(lines, "\n")
 }

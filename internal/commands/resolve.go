@@ -70,7 +70,7 @@ type MobileRef struct {
 	InstanceId  string
 	Name        string
 	Description string
-	Instance    *game.MobileInstance
+	instance    *game.MobileInstance
 }
 
 func MobRefFromInstance(mi *game.MobileInstance) *MobileRef {
@@ -81,7 +81,7 @@ func MobRefFromInstance(mi *game.MobileInstance) *MobileRef {
 		InstanceId:  mi.InstanceId,
 		Name:        mi.Definition.ShortDesc,
 		Description: mi.Definition.DetailedDesc,
-		Instance:    mi,
+		instance:    mi,
 	}
 }
 
@@ -91,8 +91,8 @@ type ObjectRef struct {
 	ObjectId    storage.Identifier
 	Name        string
 	Description string
-	Source      ObjectRemover
-	Instance    *game.ObjectInstance
+	source      ObjectRemover
+	instance    *game.ObjectInstance
 }
 
 func ObjRefFromInstance(oi *game.ObjectInstance, source ObjectRemover) *ObjectRef {
@@ -104,8 +104,8 @@ func ObjRefFromInstance(oi *game.ObjectInstance, source ObjectRemover) *ObjectRe
 		ObjectId:    oi.ObjectId,
 		Name:        oi.Definition.ShortDesc,
 		Description: oi.Definition.DetailedDesc,
-		Source:      source,
-		Instance:    oi,
+		source:      source,
+		instance:    oi,
 	}
 }
 
@@ -239,19 +239,19 @@ func containerSpaces(spec TargetSpec, targets map[string]*TargetRef) ([]SearchSp
 	}
 
 	scopeRef := targets[spec.ScopeTarget]
-	if scopeRef == nil || scopeRef.Obj == nil || scopeRef.Obj.Instance == nil {
+	if scopeRef == nil || scopeRef.Obj == nil || scopeRef.Obj.instance == nil {
 		// Scope target not resolved (likely optional) — fall through to normal scopes
 		return nil, false, nil
 	}
 
 	// Validate it's a container
-	if scopeRef.Obj.Instance.Definition == nil || !scopeRef.Obj.Instance.Definition.HasFlag(game.ObjectFlagContainer) {
+	if scopeRef.Obj.instance.Definition == nil || !scopeRef.Obj.instance.Definition.HasFlag(game.ObjectFlagContainer) {
 		capName := strings.ToUpper(scopeRef.Obj.Name[:1]) + scopeRef.Obj.Name[1:]
 		return nil, false, NewUserError(fmt.Sprintf("%s is not a container.", capName))
 	}
 
 	// Resolve exclusively from container contents
-	contents := scopeRef.Obj.Instance.Contents
+	contents := scopeRef.Obj.instance.Contents
 	if contents == nil {
 		return []SearchSpace{}, true, nil
 	}

@@ -279,10 +279,10 @@ func TestFindTarget_Object(t *testing.T) {
 			if result.Obj.Name != tt.expObjName {
 				t.Errorf("Name = %q, expected %q", result.Obj.Name, tt.expObjName)
 			}
-			if tt.expSource && result.Obj.Source == nil {
+			if tt.expSource && result.Obj.source == nil {
 				t.Error("Source is nil, expected non-nil")
 			}
-			if !tt.expSource && result.Obj.Source != nil {
+			if !tt.expSource && result.Obj.source != nil {
 				t.Error("Source is non-nil, expected nil")
 			}
 		})

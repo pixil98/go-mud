@@ -93,7 +93,7 @@ func (f *WearHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		// Remove from source and equip
-		oi := target.Obj.Source.RemoveObj(target.Obj.InstanceId)
+		oi := target.Obj.source.RemoveObj(target.Obj.InstanceId)
 		if oi == nil {
 			return NewUserError(fmt.Sprintf("You're not carrying %s.", target.Obj.Name))
 		}
