@@ -3,11 +3,9 @@ package commands
 import (
 	"context"
 	"fmt"
-	"sort"
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // LookHandlerFactory creates handlers that display the current room.
@@ -24,7 +22,7 @@ func NewLookHandlerFactory(world *game.WorldState, pub Publisher) *LookHandlerFa
 func (f *LookHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
-			{Name: "target", Type: TargetTypeTarget, Required: false},
+			{Name: "target", Type: TargetTypePlayer | TargetTypeMobile | TargetTypeObject, Required: false},
 		},
 	}
 }
@@ -52,12 +50,12 @@ func (f *LookHandlerFactory) Create() (CommandFunc, error) {
 func (f *LookHandlerFactory) showRoom(cmdCtx *CommandContext) error {
 	zoneId, roomId := cmdCtx.Session.Location()
 
-	room := f.world.Rooms().Get(string(roomId))
-	if room == nil {
+	ri := f.world.Instances()[zoneId].GetRoom(roomId)
+	if ri == nil {
 		return NewUserError("You are in an invalid location.")
 	}
 
-	roomDesc := FormatFullRoomDescription(f.world, room, zoneId, roomId, cmdCtx.Actor.Name)
+	roomDesc := ri.Describe(cmdCtx.Actor.Name)
 	if f.pub != nil {
 		return f.pub.PublishToPlayer(cmdCtx.Session.CharId, []byte(roomDesc))
 	}
@@ -69,11 +67,11 @@ func (f *LookHandlerFactory) showRoom(cmdCtx *CommandContext) error {
 func (f *LookHandlerFactory) showTarget(cmdCtx *CommandContext, target *TargetRef) error {
 	var msg string
 	switch target.Type {
-	case "player":
+	case TargetTypePlayer:
 		msg = f.describePlayer(target.Player)
-	case "mobile":
+	case TargetTypeMobile:
 		msg = f.describeMob(target.Mob)
-	case "object":
+	case TargetTypeObject:
 		msg = f.describeObj(target.Obj)
 	default:
 		return NewUserError("You can't look at that.")
@@ -85,7 +83,7 @@ func (f *LookHandlerFactory) showTarget(cmdCtx *CommandContext, target *TargetRe
 	return nil
 }
 
-// TODO show inventory and condition
+// TODO: should these functions just be moved to the respective target's instance structs?
 func (f *LookHandlerFactory) describePlayer(player *PlayerRef) string {
 	return player.Description
 }
@@ -95,91 +93,11 @@ func (f *LookHandlerFactory) describeMob(mob *MobileRef) string {
 }
 
 func (f *LookHandlerFactory) describeObj(obj *ObjectRef) string {
-	objDef := f.world.Objects().Get(string(obj.ObjectId))
-	if objDef == nil || !objDef.HasFlag(game.ObjectFlagContainer) {
+	if obj.Instance == nil || obj.Instance.Definition == nil || !obj.Instance.Definition.HasFlag(game.ObjectFlagContainer) {
 		return obj.Description
 	}
 
 	lines := []string{obj.Description, "It contains:"}
-	lines = append(lines, FormatInventoryItems(obj.Instance.Contents, f.world.Objects())...)
+	lines = append(lines, FormatInventoryItems(obj.Instance.Contents)...)
 	return strings.Join(lines, "\n")
-}
-
-// FormatFullRoomDescription builds a complete room description including mobs and players.
-// actorName is excluded from the player list (so you don't see "You are here").
-func FormatFullRoomDescription(world *game.WorldState, room *game.Room, zoneId, roomId storage.Identifier, actorName string) string {
-	var sb strings.Builder
-	sb.WriteString(room.Name)
-	sb.WriteString("\n")
-	sb.WriteString(room.Description)
-	sb.WriteString("\n")
-
-	// Show objects
-	objs := world.GetObjectsInRoom(zoneId, roomId)
-	if len(objs) > 0 {
-		for _, oId := range objs {
-			if obj := world.Objects().Get(string(oId.ObjectId)); obj != nil {
-				if obj.LongDesc != "" {
-					sb.WriteString(obj.LongDesc)
-				} else {
-					sb.WriteString(fmt.Sprintf("%s is here.", obj.ShortDesc))
-				}
-				sb.WriteString("\n")
-			}
-		}
-	}
-
-	// Show mobs
-	mobs := world.GetMobilesInRoom(zoneId, roomId)
-	if len(mobs) > 0 {
-		for _, mId := range mobs {
-			if mob := world.Mobiles().Get(string(mId.MobileId)); mob != nil {
-				if mob.LongDesc != "" {
-					sb.WriteString(mob.LongDesc)
-				} else {
-					sb.WriteString(fmt.Sprintf("%s is here.", mob.ShortDesc))
-				}
-				sb.WriteString("\n")
-			}
-		}
-	}
-
-	// Show players
-	var playersHere []storage.Identifier
-	world.ForEachPlayer(func(charId storage.Identifier, state game.PlayerState) {
-		pZone, pRoom := state.Location()
-		if pZone == zoneId && pRoom == roomId {
-			if char := world.Characters().Get(string(charId)); char != nil {
-				if char.Name != actorName {
-					playersHere = append(playersHere, charId)
-				}
-			}
-		}
-	})
-	if len(playersHere) > 0 {
-		for _, charId := range playersHere {
-			name := string(charId) // fallback to ID
-			if char := world.Characters().Get(string(charId)); char != nil {
-				name = char.Name
-			}
-			sb.WriteString(fmt.Sprintf("%s is here.\n", name))
-		}
-	}
-
-	sb.WriteString("\n")
-	sb.WriteString(formatExits(room.Exits))
-
-	return sb.String()
-}
-
-func formatExits(exits map[string]game.Exit) string {
-	if len(exits) == 0 {
-		return "[Exits: none]"
-	}
-	dirs := make([]string, 0, len(exits))
-	for dir := range exits {
-		dirs = append(dirs, dir)
-	}
-	sort.Strings(dirs)
-	return fmt.Sprintf("[Exits: %s]", strings.Join(dirs, ", "))
 }

@@ -53,14 +53,14 @@ func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 
 		zoneId, roomId := cmdCtx.Session.Location()
 
-		// Look up current room
-		currentRoom := f.world.Rooms().Get(string(roomId))
-		if currentRoom == nil {
+		// Look up current room instance
+		fromRoom := f.world.Instances()[zoneId].GetRoom(roomId)
+		if fromRoom == nil {
 			return NewUserError("You are in an invalid location.")
 		}
 
 		// Check if exit exists
-		exit, exists := currentRoom.Exits[direction]
+		exit, exists := fromRoom.Definition.Exits[direction]
 		if !exists {
 			return NewUserError(fmt.Sprintf("You cannot go %s from here.", direction))
 		}
@@ -72,17 +72,17 @@ func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 		}
 		destRoomId := storage.Identifier(exit.RoomId)
 
-		// Verify destination room exists
-		newRoom := f.world.Rooms().Get(string(destRoomId))
-		if newRoom == nil {
+		// Get destination room instance
+		toRoom := f.world.Instances()[destZone].GetRoom(destRoomId)
+		if toRoom == nil {
 			return NewUserError("Alas, you cannot go that way...")
 		}
 
-		// Move the player (updates location and subscriptions)
-		cmdCtx.Session.Move(destZone, destRoomId)
+		// Move the player (updates location, subscriptions, and room player lists)
+		cmdCtx.Session.Move(fromRoom, toRoom)
 
 		// Send room description to player
-		roomDesc := FormatFullRoomDescription(f.world, newRoom, destZone, destRoomId, cmdCtx.Actor.Name)
+		roomDesc := toRoom.Describe(cmdCtx.Actor.Name)
 		if f.pub != nil {
 			return f.pub.PublishToPlayer(cmdCtx.Session.CharId, []byte(roomDesc))
 		}

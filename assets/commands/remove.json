@@ -10,7 +10,7 @@
             "message": "{{ .Actor.Name }} removes {{ .Targets.item.Obj.Name }}."
         },
         "targets": [
-            {"name": "item", "type": "object", "scope": ["equipment"], "input": "item"}
+            {"name": "item", "type": ["object"], "scope": ["equipment"], "input": "item"}
         ],
         "inputs": [
             {"name": "item", "type": "string", "required": true}

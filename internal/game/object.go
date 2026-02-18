@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/google/uuid"
 	"github.com/pixil98/go-errors"
 	"github.com/pixil98/go-mud/internal/storage"
 )
@@ -59,6 +60,17 @@ type Object struct {
 	WearSlots []string `json:"wear_slots,omitempty"`
 }
 
+// MatchName returns true if name matches any of this object's aliases (case-insensitive).
+func (o *Object) MatchName(name string) bool {
+	nameLower := strings.ToLower(name)
+	for _, alias := range o.Aliases {
+		if strings.ToLower(alias) == nameLower {
+			return true
+		}
+	}
+	return false
+}
+
 // HasFlag returns true if the object has the given flag.
 func (o *Object) HasFlag(flag ObjectFlag) bool {
 	for _, f := range o.Flags {
@@ -97,5 +109,20 @@ func (o *Object) Validate() error {
 type ObjectInstance struct {
 	InstanceId string             // Unique ID
 	ObjectId   storage.Identifier // Reference to the Object definition
+	Definition *Object            `json:"-" `
 	Contents   *Inventory         // Non-nil for containers; holds objects stored inside
+}
+
+// NewObjectInstance creates an ObjectInstance linked to its definition.
+// Containers are initialized with an empty Contents inventory.
+func NewObjectInstance(objectId storage.Identifier, def *Object) *ObjectInstance {
+	oi := &ObjectInstance{
+		InstanceId: uuid.New().String(),
+		ObjectId:   objectId,
+		Definition: def,
+	}
+	if def != nil && def.HasFlag(ObjectFlagContainer) {
+		oi.Contents = NewInventory()
+	}
+	return oi
 }

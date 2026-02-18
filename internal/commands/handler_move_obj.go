@@ -73,13 +73,13 @@ func (f *MoveObjHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		// Remove from source
-		oi := item.Obj.Source.Remove(item.Obj.InstanceId)
+		oi := item.Obj.Source.RemoveObj(item.Obj.InstanceId)
 		if oi == nil {
 			return NewUserError(fmt.Sprintf("You don't have %s.", item.Obj.Name))
 		}
 
 		// Move
-		dest.Add(oi)
+		dest.AddObj(oi)
 
 		// Broadcast to room
 		if f.pub != nil {
@@ -99,42 +99,31 @@ func (f *MoveObjHandlerFactory) resolveDestination(cmdCtx *CommandContext) (Obje
 
 	switch dest {
 	case "inventory":
-		if cmdCtx.Actor.Inventory == nil {
-			cmdCtx.Actor.Inventory = game.NewInventory()
-		}
 		return cmdCtx.Actor.Inventory, nil
 
 	case "room":
-		return f.world.RoomHolder(cmdCtx.Session.ZoneId, cmdCtx.Session.RoomId), nil
+		return f.world.Instances()[cmdCtx.Session.ZoneId].GetRoom(cmdCtx.Session.RoomId), nil
 
 	default:
-		ref := cmdCtx.Targets[dest]
-		if ref == nil {
-			return nil, NewUserError(fmt.Sprintf("Target %q not found.", dest))
-		}
-		return f.holderForTarget(ref)
+		return f.holderForTarget(cmdCtx.Targets[dest])
 	}
 }
 
 // holderForTarget returns an ObjectHolder for a resolved target.
 // For player targets, returns their character's inventory.
 // For object targets, validates the container flag and returns contents.
-// For mobile targets, returns their inventory (once supported).
+// For mobile targets, returns their inventory.
 func (f *MoveObjHandlerFactory) holderForTarget(ref *TargetRef) (ObjectHolder, error) {
 	if ref.Player != nil {
 		char := f.world.Characters().Get(string(ref.Player.CharId))
 		if char == nil {
 			return nil, NewUserError(fmt.Sprintf("%s is no longer here.", ref.Player.Name))
 		}
-		if char.Inventory == nil {
-			char.Inventory = game.NewInventory()
-		}
 		return char.Inventory, nil
 	}
 
 	if ref.Mob != nil {
-		// TODO: MobileInstance needs an Inventory field to support this
-		return nil, NewUserError("You can't do that.")
+		return ref.Mob.Instance.Inventory, nil
 	}
 
 	if ref.Obj != nil {
@@ -142,9 +131,6 @@ func (f *MoveObjHandlerFactory) holderForTarget(ref *TargetRef) (ObjectHolder, e
 		if objDef == nil || !objDef.HasFlag(game.ObjectFlagContainer) {
 			name := strings.ToUpper(ref.Obj.Name[:1]) + ref.Obj.Name[1:]
 			return nil, NewUserError(fmt.Sprintf("%s is not a container.", name))
-		}
-		if ref.Obj.Instance.Contents == nil {
-			ref.Obj.Instance.Contents = game.NewInventory()
 		}
 		return ref.Obj.Instance.Contents, nil
 	}

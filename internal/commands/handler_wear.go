@@ -93,7 +93,7 @@ func (f *WearHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		// Remove from source and equip
-		oi := target.Obj.Source.Remove(target.Obj.InstanceId)
+		oi := target.Obj.Source.RemoveObj(target.Obj.InstanceId)
 		if oi == nil {
 			return NewUserError(fmt.Sprintf("You're not carrying %s.", target.Obj.Name))
 		}
@@ -105,7 +105,7 @@ func (f *WearHandlerFactory) Create() (CommandFunc, error) {
 		err := cmdCtx.Actor.Equipment.Equip(slot, maxSlots, oi)
 		if err != nil {
 			// Put it back on failure
-			cmdCtx.Actor.Inventory.Add(oi)
+			cmdCtx.Actor.Inventory.AddObj(oi)
 			return NewUserError("You're already wearing something in that slot.")
 		}
 

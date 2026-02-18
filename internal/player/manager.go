@@ -56,6 +56,9 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
 		return nil, fmt.Errorf("initializing character: %w", err)
 	}
 
+	// Populate Definition pointers on inventory/equipment items loaded from storage
+	char.PopulateDefinitions(m.world.Objects())
+
 	// Save the character back to preserve changes
 	err = m.world.Characters().Save(strings.ToLower(char.Name), char)
 	if err != nil {

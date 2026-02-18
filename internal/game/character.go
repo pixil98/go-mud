@@ -1,6 +1,10 @@
 package game
 
-import "github.com/pixil98/go-mud/internal/storage"
+import (
+	"strings"
+
+	"github.com/pixil98/go-mud/internal/storage"
+)
 
 // Character represents a player character in the game.
 type Character struct {
@@ -22,6 +26,42 @@ type Character struct {
 
 	Actor
 	ActorInstance
+}
+
+// MatchName returns true if name matches this character's name (case-insensitive).
+func (c *Character) MatchName(name string) bool {
+	return strings.EqualFold(c.Name, name)
+}
+
+// PopulateDefinitions sets the Definition pointer on all ObjectInstances
+// in the character's inventory and equipment. Call after loading from storage.
+func (c *Character) PopulateDefinitions(objDefs storage.Storer[*Object]) {
+	if c.Inventory != nil {
+		for _, oi := range c.Inventory.Items {
+			populateObjDefinition(oi, objDefs)
+		}
+	}
+	if c.Equipment != nil {
+		for _, slot := range c.Equipment.Items {
+			if slot.Obj != nil {
+				populateObjDefinition(slot.Obj, objDefs)
+			}
+		}
+	}
+}
+
+// populateObjDefinition links an ObjectInstance to its definition and
+// ensures containers have a non-nil Contents inventory.
+func populateObjDefinition(oi *ObjectInstance, objDefs storage.Storer[*Object]) {
+	oi.Definition = objDefs.Get(string(oi.ObjectId))
+	if oi.Definition != nil && oi.Definition.HasFlag(ObjectFlagContainer) && oi.Contents == nil {
+		oi.Contents = NewInventory()
+	}
+	if oi.Contents != nil {
+		for _, ci := range oi.Contents.Items {
+			populateObjDefinition(ci, objDefs)
+		}
+	}
 }
 
 // Validate satisfies storage.ValidatingSpec

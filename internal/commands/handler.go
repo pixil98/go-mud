@@ -195,8 +195,8 @@ func (h *Handler) validateSpec(cmd *Command, spec *HandlerSpec) error {
 		}
 
 		// Validate type matches
-		if target.Type != req.Type {
-			return fmt.Errorf("target %q: expected type %s, got %s", req.Name, req.Type.String(), target.Type.String())
+		if target.TargetType() != req.Type {
+			return fmt.Errorf("target %q: expected type %s, got %s", req.Name, req.Type, target.TargetType())
 		}
 	}
 
@@ -256,7 +256,8 @@ func (h *Handler) Exec(ctx context.Context, world *game.WorldState, charId stora
 	session := world.GetPlayer(charId)
 
 	// Resolve targets from targets section
-	targets, err := h.resolveTargets(compiled.cmd.Targets, inputMap, charId, world)
+	resolver := NewTargetResolver(NewWorldScopes(world))
+	targets, err := resolver.ResolveSpecs(compiled.cmd.Targets, inputMap, actor, session)
 	if err != nil {
 		return err
 	}
@@ -353,74 +354,6 @@ func (h *Handler) parseValue(inputType InputType, raw string) (any, error) {
 	default:
 		return nil, fmt.Errorf("unknown parameter type %q", inputType)
 	}
-}
-
-// resolveTargets resolves all targets from the targets section.
-func (h *Handler) resolveTargets(specs []TargetSpec, inputs map[string]any, charId storage.Identifier, world *game.WorldState) (map[string]*TargetRef, error) {
-	if len(specs) == 0 {
-		return make(map[string]*TargetRef), nil
-	}
-
-	resolver := NewResolver(world)
-	targets := make(map[string]*TargetRef, len(specs))
-
-	for _, spec := range specs {
-		// Get the input value
-		inputValue, exists := inputs[spec.Input]
-		if !exists || inputValue == nil || inputValue == "" {
-			if spec.Optional {
-				targets[spec.Name] = nil
-				continue
-			}
-			return nil, NewUserError(fmt.Sprintf("Input %q is required.", spec.Input))
-		}
-
-		name, ok := inputValue.(string)
-		if !ok {
-			return nil, fmt.Errorf("input %q is not a string", spec.Input)
-		}
-
-		// Set scope contents if applicable (search inside another resolved target).
-		// When the scope target was resolved, restrict to ScopeContents only so we
-		// don't fall through to room/inventory and pick up the wrong item.
-		// When the scope target was not provided (optional), use all declared scopes.
-		resolver.scopeContents = nil
-		scope := spec.Scope()
-		if spec.ScopeTarget != "" {
-			scopeRef := targets[spec.ScopeTarget]
-			if scopeRef != nil && scopeRef.Obj != nil && scopeRef.Obj.Instance != nil {
-				objDef := world.Objects().Get(string(scopeRef.Obj.ObjectId))
-				if objDef == nil || !objDef.HasFlag(game.ObjectFlagContainer) {
-					name := strings.ToUpper(scopeRef.Obj.Name[:1]) + scopeRef.Obj.Name[1:]
-					return nil, NewUserError(fmt.Sprintf("%s is not a container.", name))
-				}
-				resolver.scopeContents = scopeRef.Obj.Instance.Contents
-				scope = ScopeContents
-			}
-		}
-
-		// Resolve the target
-		resolved, err := resolver.Resolve(charId, name, spec.Type, scope)
-		if err != nil {
-			return nil, err
-		}
-
-		// Convert to TargetRef
-		switch t := resolved.(type) {
-		case *PlayerRef:
-			targets[spec.Name] = &TargetRef{Type: "player", Player: t}
-		case *MobileRef:
-			targets[spec.Name] = &TargetRef{Type: "mobile", Mob: t}
-		case *ObjectRef:
-			targets[spec.Name] = &TargetRef{Type: "object", Obj: t}
-		case *TargetRef:
-			targets[spec.Name] = t
-		default:
-			return nil, fmt.Errorf("unexpected resolved type: %T", resolved)
-		}
-	}
-
-	return targets, nil
 }
 
 // templateContext holds data for template expansion.

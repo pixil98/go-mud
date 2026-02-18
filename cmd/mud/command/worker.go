@@ -63,9 +63,9 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	// Create world state (must be before command handler since handlers need it)
 	world := game.NewWorldState(natsServer, storeCharacters, storeZones, storeRooms, storeMobiles, storeObjects, storeRaces)
 
-	// Spawn initial mobiles in all zones
-	for zoneId := range storeZones.GetAll() {
-		world.ResetZone(zoneId, true)
+	// Spawn initial mobiles and objects in all zones
+	for _, zi := range world.Instances() {
+		zi.Reset(true, storeMobiles, storeObjects)
 	}
 
 	// Create publisher for command handlers

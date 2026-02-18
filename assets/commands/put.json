@@ -10,8 +10,8 @@
             "message": "{{ .Actor.Name }} puts {{ .Targets.item.Obj.Name }} in {{ .Targets.container.Obj.Name }}."
         },
         "targets": [
-            {"name": "item", "type": "object", "scope": ["inventory"], "input": "item"},
-            {"name": "container", "type": "object", "scope": ["room","inventory","equipment"], "input": "container"}
+            {"name": "item", "type": ["object"], "scope": ["inventory"], "input": "item"},
+            {"name": "container", "type": ["object"], "scope": ["room","inventory","equipment"], "input": "container"}
         ],
         "inputs": [
             {"name": "item", "type": "string", "required": true},

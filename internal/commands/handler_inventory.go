@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // InventoryHandlerFactory creates handlers that list the player's inventory.
@@ -31,7 +30,7 @@ func (f *InventoryHandlerFactory) ValidateConfig(config map[string]any) error {
 func (f *InventoryHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, cmdCtx *CommandContext) error {
 		lines := []string{"You are carrying:"}
-		lines = append(lines, FormatInventoryItems(cmdCtx.Actor.Inventory, f.world.Objects())...)
+		lines = append(lines, FormatInventoryItems(cmdCtx.Actor.Inventory)...)
 
 		output := strings.Join(lines, "\n")
 		if f.pub != nil {
@@ -44,17 +43,16 @@ func (f *InventoryHandlerFactory) Create() (CommandFunc, error) {
 
 // FormatInventoryItems returns indented lines describing items in an inventory.
 // Returns ["  Nothing"] if the inventory is nil or empty.
-func FormatInventoryItems(inv *game.Inventory, objects storage.Storer[*game.Object]) []string {
+func FormatInventoryItems(inv *game.Inventory) []string {
 	if inv == nil || len(inv.Items) == 0 {
 		return []string{"  Nothing"}
 	}
 	var lines []string
 	for _, oi := range inv.Items {
-		obj := objects.Get(string(oi.ObjectId))
-		if obj == nil {
+		if oi.Definition == nil {
 			continue
 		}
-		lines = append(lines, fmt.Sprintf("  %s", obj.ShortDesc))
+		lines = append(lines, fmt.Sprintf("  %s", oi.Definition.ShortDesc))
 	}
 	if len(lines) == 0 {
 		return []string{"  Nothing"}

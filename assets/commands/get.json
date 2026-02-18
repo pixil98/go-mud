@@ -10,8 +10,8 @@
             "message": "{{ if .Targets.container }}{{ .Actor.Name }} gets {{ .Targets.item.Obj.Name }} from {{ .Targets.container.Obj.Name }}.{{ else }}{{ .Actor.Name }} picks up {{ .Targets.item.Obj.Name }}.{{ end }}"
         },
         "targets": [
-            {"name": "container", "type": "object", "scope": ["room"], "input": "from", "optional": true},
-            {"name": "item", "type": "object", "scope": ["room", "contents"], "input": "item", "scope_target": "container"}
+            {"name": "container", "type": ["object"], "scope": ["room"], "input": "from", "optional": true},
+            {"name": "item", "type": ["object"], "scope": ["room", "contents"], "input": "item", "scope_target": "container"}
         ],
         "inputs": [
             {"name": "item", "type": "string", "required": true},

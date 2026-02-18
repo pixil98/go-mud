@@ -12,7 +12,7 @@
             "sender_message": "You tell {{ .Targets.target.Player.Name }}, \"{{ .Inputs.text }}\""
         },
         "targets": [
-            {"name": "target", "type": "player", "scope": ["world"], "input": "target"}
+            {"name": "target", "type": ["player"], "scope": ["world"], "input": "target"}
         ],
         "inputs": [
             {"name": "target", "type": "string", "required": true},

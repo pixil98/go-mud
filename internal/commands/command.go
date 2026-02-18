@@ -3,6 +3,9 @@ package commands
 import (
 	"fmt"
 	"strings"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 // InputType represents the type of a command input parameter.
@@ -18,6 +21,7 @@ const (
 type Scope int
 
 const (
+	ScopeNone      Scope = 0
 	ScopeWorld     Scope = 1 << iota // All online players
 	ScopeZone                        // Players in current zone
 	ScopeRoom                        // Players/mobs/objects in current room
@@ -27,30 +31,33 @@ const (
 )
 
 // TargetType represents the type of entity a target resolves to.
-type TargetType string
+// Can be combined with bitwise OR for polymorphic resolution.
+type TargetType int
 
 const (
-	TargetTypePlayer TargetType = "player" // Resolves to a player
-	TargetTypeMobile TargetType = "mobile" // Resolves to a mobile/NPC
-	TargetTypeObject TargetType = "object" // Resolves to an object
-	TargetTypeTarget TargetType = "target" // Polymorphic: tries player, mobile, object
+	TargetTypePlayer TargetType = 1 << iota // Resolves to a player
+	TargetTypeMobile                        // Resolves to a mobile/NPC
+	TargetTypeObject                        // Resolves to an object
 )
 
-// String returns the canonical string name for known target types.
-// Returns empty string for unknown types, which can be used for validation.
-func (t TargetType) String() string {
-	switch t {
+// String returns the lowercase name of a single target type, or "target" for combined types.
+func (tt TargetType) String() string {
+	switch tt {
 	case TargetTypePlayer:
 		return "player"
 	case TargetTypeMobile:
 		return "mobile"
 	case TargetTypeObject:
 		return "object"
-	case TargetTypeTarget:
-		return "target"
 	default:
-		return ""
+		return "target"
 	}
+}
+
+// Label returns a human-readable label for the target type.
+// Used in "not found" error messages. Combined types return "Target".
+func (tt TargetType) Label() string {
+	return cases.Title(language.English).String(tt.String())
 }
 
 // InputSpec defines an input parameter that a command accepts from user input.
@@ -66,12 +73,28 @@ type InputSpec struct {
 // array so it is resolved first. If the referenced target resolved to an object with
 // contents, this target is resolved exclusively from those contents.
 type TargetSpec struct {
-	Name        string     `json:"name"`                   // Name to access in templates (e.g., "target" -> .Targets.target)
-	Type        TargetType `json:"type"`                   // Entity type: player, mobile, object, target (polymorphic)
-	Scopes      []string   `json:"scope,omitempty"`        // Resolution scopes: room, world, zone, inventory, equipment, contents
-	Input       string     `json:"input"`                  // Which input provides the name to resolve
-	Optional    bool       `json:"optional,omitempty"`     // If true, missing input -> nil (no error)
-	ScopeTarget string     `json:"scope_target,omitempty"` // Resolve inside this target's contents when present; falls back to normal scopes
+	Name        string   `json:"name"`                   // Name to access in templates (e.g., "target" -> .Targets.target)
+	Types       []string `json:"type"`                   // Entity types: player, mobile, object (combinable like scope)
+	Scopes      []string `json:"scope,omitempty"`        // Resolution scopes: room, world, zone, inventory, equipment, contents
+	Input       string   `json:"input"`                  // Which input provides the name to resolve
+	Optional    bool     `json:"optional,omitempty"`     // If true, missing input -> nil (no error)
+	ScopeTarget string   `json:"scope_target,omitempty"` // Resolve inside this target's contents when present; falls back to normal scopes
+}
+
+// TargetType returns the combined TargetType value from Types slice.
+func (t *TargetSpec) TargetType() TargetType {
+	var result TargetType
+	for _, s := range t.Types {
+		switch strings.ToLower(s) {
+		case "player":
+			result |= TargetTypePlayer
+		case "mobile":
+			result |= TargetTypeMobile
+		case "object":
+			result |= TargetTypeObject
+		}
+	}
+	return result
 }
 
 // Scope returns the combined Scope value from Scopes slice.
@@ -142,11 +165,11 @@ func (c *Command) Validate() error {
 			return fmt.Errorf("target %d: name is required", i)
 		}
 		// Validate target type
-		if target.Type == "" {
+		if len(target.Types) == 0 {
 			return fmt.Errorf("target %q: type is required", target.Name)
 		}
-		if target.Type.String() == "" {
-			return fmt.Errorf("target %q: unknown type %q", target.Name, string(target.Type))
+		if target.TargetType() == 0 {
+			return fmt.Errorf("target %q: unknown types %v", target.Name, target.Types)
 		}
 		if target.Input == "" {
 			return fmt.Errorf("target %q: input is required", target.Name)
@@ -162,7 +185,7 @@ func (c *Command) Validate() error {
 		// Validate scope_target and contents scope are used together
 		hasContentsScope := target.Scope()&ScopeContents != 0
 		if target.ScopeTarget != "" {
-			if target.Type != TargetTypeObject {
+			if target.TargetType() != TargetTypeObject {
 				return fmt.Errorf("target %q: scope_target is only supported for object targets", target.Name)
 			}
 			if !hasContentsScope {

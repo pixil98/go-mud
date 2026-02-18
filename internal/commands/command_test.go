@@ -78,7 +78,7 @@ func TestCommand_Validate(t *testing.T) {
 		"target missing name": {
 			cmd: Command{
 				Handler: "test",
-				Targets: []TargetSpec{{Type: "player", Input: "target"}},
+				Targets: []TargetSpec{{Types: []string{"player"}, Input: "target"}},
 				Inputs:  []InputSpec{{Name: "target", Type: InputTypeString}},
 			},
 			expErr: "target 0: name is required",
@@ -94,15 +94,15 @@ func TestCommand_Validate(t *testing.T) {
 		"target unknown type": {
 			cmd: Command{
 				Handler: "test",
-				Targets: []TargetSpec{{Name: "target", Type: "bogus", Input: "target"}},
+				Targets: []TargetSpec{{Name: "target", Types: []string{"bogus"}, Input: "target"}},
 				Inputs:  []InputSpec{{Name: "target", Type: InputTypeString}},
 			},
-			expErr: `target "target": unknown type "bogus"`,
+			expErr: `target "target": unknown types [bogus]`,
 		},
 		"target missing input": {
 			cmd: Command{
 				Handler: "test",
-				Targets: []TargetSpec{{Name: "target", Type: "player"}},
+				Targets: []TargetSpec{{Name: "target", Types: []string{"player"}}},
 				Inputs:  []InputSpec{{Name: "target", Type: InputTypeString}},
 			},
 			expErr: `target "target": input is required`,
@@ -110,7 +110,7 @@ func TestCommand_Validate(t *testing.T) {
 		"target input does not exist": {
 			cmd: Command{
 				Handler: "test",
-				Targets: []TargetSpec{{Name: "target", Type: "player", Input: "nonexistent"}},
+				Targets: []TargetSpec{{Name: "target", Types: []string{"player"}, Input: "nonexistent"}},
 				Inputs:  []InputSpec{{Name: "target", Type: InputTypeString}},
 			},
 			expErr: `target "target": input "nonexistent" does not exist in inputs`,
@@ -118,7 +118,7 @@ func TestCommand_Validate(t *testing.T) {
 		"target unknown scope": {
 			cmd: Command{
 				Handler: "test",
-				Targets: []TargetSpec{{Name: "target", Type: "player", Scopes: []string{"bogus"}, Input: "target"}},
+				Targets: []TargetSpec{{Name: "target", Types: []string{"player"}, Scopes: []string{"bogus"}, Input: "target"}},
 				Inputs:  []InputSpec{{Name: "target", Type: InputTypeString}},
 			},
 			expErr: `target "target": unknown scopes [bogus]`,
@@ -126,7 +126,7 @@ func TestCommand_Validate(t *testing.T) {
 		"valid target": {
 			cmd: Command{
 				Handler: "test",
-				Targets: []TargetSpec{{Name: "target", Type: "player", Scopes: []string{"world"}, Input: "target"}},
+				Targets: []TargetSpec{{Name: "target", Types: []string{"player"}, Scopes: []string{"world"}, Input: "target"}},
 				Inputs:  []InputSpec{{Name: "target", Type: InputTypeString}},
 			},
 			expErr: "",
@@ -135,8 +135,8 @@ func TestCommand_Validate(t *testing.T) {
 			cmd: Command{
 				Handler: "test",
 				Targets: []TargetSpec{
-					{Name: "container", Type: "object", Scopes: []string{"room"}, Input: "from", Optional: true},
-					{Name: "target", Type: "object", Scopes: []string{"room", "contents"}, Input: "item", ScopeTarget: "container"},
+					{Name: "container", Types: []string{"object"}, Scopes: []string{"room"}, Input: "from", Optional: true},
+					{Name: "target", Types: []string{"object"}, Scopes: []string{"room", "contents"}, Input: "item", ScopeTarget: "container"},
 				},
 				Inputs: []InputSpec{
 					{Name: "item", Type: InputTypeString, Required: true},
@@ -149,8 +149,8 @@ func TestCommand_Validate(t *testing.T) {
 			cmd: Command{
 				Handler: "test",
 				Targets: []TargetSpec{
-					{Name: "container", Type: "object", Scopes: []string{"room"}, Input: "from"},
-					{Name: "target", Type: "object", Scopes: []string{"room"}, Input: "item", ScopeTarget: "container"},
+					{Name: "container", Types: []string{"object"}, Scopes: []string{"room"}, Input: "from"},
+					{Name: "target", Types: []string{"object"}, Scopes: []string{"room"}, Input: "item", ScopeTarget: "container"},
 				},
 				Inputs: []InputSpec{
 					{Name: "item", Type: InputTypeString},
@@ -163,7 +163,7 @@ func TestCommand_Validate(t *testing.T) {
 			cmd: Command{
 				Handler: "test",
 				Targets: []TargetSpec{
-					{Name: "target", Type: "object", Scopes: []string{"contents"}, Input: "item"},
+					{Name: "target", Types: []string{"object"}, Scopes: []string{"contents"}, Input: "item"},
 				},
 				Inputs: []InputSpec{
 					{Name: "item", Type: InputTypeString},
@@ -175,7 +175,7 @@ func TestCommand_Validate(t *testing.T) {
 			cmd: Command{
 				Handler: "test",
 				Targets: []TargetSpec{
-					{Name: "target", Type: "object", Scopes: []string{"contents"}, Input: "item", ScopeTarget: "container"},
+					{Name: "target", Types: []string{"object"}, Scopes: []string{"contents"}, Input: "item", ScopeTarget: "container"},
 				},
 				Inputs: []InputSpec{
 					{Name: "item", Type: InputTypeString},
@@ -187,8 +187,8 @@ func TestCommand_Validate(t *testing.T) {
 			cmd: Command{
 				Handler: "test",
 				Targets: []TargetSpec{
-					{Name: "container", Type: "object", Scopes: []string{"room"}, Input: "from"},
-					{Name: "target", Type: "player", Scopes: []string{"contents"}, Input: "item", ScopeTarget: "container"},
+					{Name: "container", Types: []string{"object"}, Scopes: []string{"room"}, Input: "from"},
+					{Name: "target", Types: []string{"player"}, Scopes: []string{"contents"}, Input: "item", ScopeTarget: "container"},
 				},
 				Inputs: []InputSpec{
 					{Name: "item", Type: InputTypeString},
@@ -227,21 +227,21 @@ func TestTargetSpec_Scope(t *testing.T) {
 		scopes []string
 		exp    Scope
 	}{
-		"room":                   {scopes: []string{"room"}, exp: ScopeRoom},
-		"inventory":              {scopes: []string{"inventory"}, exp: ScopeInventory},
-		"world":                  {scopes: []string{"world"}, exp: ScopeWorld},
-		"zone":                   {scopes: []string{"zone"}, exp: ScopeZone},
-		"Room uppercase":         {scopes: []string{"ROOM"}, exp: ScopeRoom},
-		"World mixed case":       {scopes: []string{"World"}, exp: ScopeWorld},
-		"unknown returns zero":   {scopes: []string{"unknown"}, exp: 0},
-		"empty returns zero":     {scopes: []string{}, exp: 0},
-		"nil returns zero":       {scopes: nil, exp: 0},
-		"room and inventory":     {scopes: []string{"room", "inventory"}, exp: ScopeRoom | ScopeInventory},
-		"world and zone":         {scopes: []string{"world", "zone"}, exp: ScopeWorld | ScopeZone},
-		"equipment":              {scopes: []string{"equipment"}, exp: ScopeEquipment},
-		"contents":               {scopes: []string{"contents"}, exp: ScopeContents},
-		"all scopes":             {scopes: []string{"room", "inventory", "equipment", "contents", "world", "zone"}, exp: ScopeRoom | ScopeInventory | ScopeEquipment | ScopeContents | ScopeWorld | ScopeZone},
-		"mixed with unknown":     {scopes: []string{"room", "bogus"}, exp: ScopeRoom},
+		"room":                 {scopes: []string{"room"}, exp: ScopeRoom},
+		"inventory":            {scopes: []string{"inventory"}, exp: ScopeInventory},
+		"world":                {scopes: []string{"world"}, exp: ScopeWorld},
+		"zone":                 {scopes: []string{"zone"}, exp: ScopeZone},
+		"Room uppercase":       {scopes: []string{"ROOM"}, exp: ScopeRoom},
+		"World mixed case":     {scopes: []string{"World"}, exp: ScopeWorld},
+		"unknown returns zero": {scopes: []string{"unknown"}, exp: 0},
+		"empty returns zero":   {scopes: []string{}, exp: 0},
+		"nil returns zero":     {scopes: nil, exp: 0},
+		"room and inventory":   {scopes: []string{"room", "inventory"}, exp: ScopeRoom | ScopeInventory},
+		"world and zone":       {scopes: []string{"world", "zone"}, exp: ScopeWorld | ScopeZone},
+		"equipment":            {scopes: []string{"equipment"}, exp: ScopeEquipment},
+		"contents":             {scopes: []string{"contents"}, exp: ScopeContents},
+		"all scopes":           {scopes: []string{"room", "inventory", "equipment", "contents", "world", "zone"}, exp: ScopeRoom | ScopeInventory | ScopeEquipment | ScopeContents | ScopeWorld | ScopeZone},
+		"mixed with unknown":   {scopes: []string{"room", "bogus"}, exp: ScopeRoom},
 	}
 
 	for name, tt := range tests {
@@ -250,6 +250,46 @@ func TestTargetSpec_Scope(t *testing.T) {
 			got := spec.Scope()
 			if got != tt.exp {
 				t.Errorf("TargetSpec{Scopes: %v}.Scope() = %d, expected %d", tt.scopes, got, tt.exp)
+			}
+		})
+	}
+}
+
+func TestTargetType_Label(t *testing.T) {
+	tests := map[string]struct {
+		tt  TargetType
+		exp string
+	}{
+		"player":   {TargetTypePlayer, "Player"},
+		"mobile":   {TargetTypeMobile, "Mobile"},
+		"object":   {TargetTypeObject, "Object"},
+		"combined": {TargetTypePlayer | TargetTypeMobile, "Target"},
+	}
+
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			if got := tt.tt.Label(); got != tt.exp {
+				t.Errorf("Label() = %q, expected %q", got, tt.exp)
+			}
+		})
+	}
+}
+
+func TestTargetType_String(t *testing.T) {
+	tests := map[string]struct {
+		tt  TargetType
+		exp string
+	}{
+		"player":   {TargetTypePlayer, "player"},
+		"mobile":   {TargetTypeMobile, "mobile"},
+		"object":   {TargetTypeObject, "object"},
+		"combined": {TargetTypePlayer | TargetTypeMobile, "target"},
+	}
+
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			if got := tt.tt.String(); got != tt.exp {
+				t.Errorf("String() = %q, expected %q", got, tt.exp)
 			}
 		})
 	}

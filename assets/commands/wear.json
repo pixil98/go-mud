@@ -6,7 +6,7 @@
         "category": "items",
         "description": "Wear an item from your inventory.",
         "targets": [
-            {"name": "target", "type": "object", "scope": ["inventory"], "input": "item"}
+            {"name": "target", "type": ["object"], "scope": ["inventory"], "input": "item"}
         ],
         "inputs": [
             {"name": "item", "type": "string", "required": true}

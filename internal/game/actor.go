@@ -101,7 +101,7 @@ func NewInventory() *Inventory {
 }
 
 // Add adds an object instance to the inventory.
-func (inv *Inventory) Add(obj *ObjectInstance) {
+func (inv *Inventory) AddObj(obj *ObjectInstance) {
 	if inv.Items == nil {
 		inv.Items = make(map[string]*ObjectInstance)
 	}
@@ -110,10 +110,21 @@ func (inv *Inventory) Add(obj *ObjectInstance) {
 
 // Remove removes an object instance from the inventory.
 // Returns the removed instance, or nil if not found.
-func (inv *Inventory) Remove(instanceId string) *ObjectInstance {
+func (inv *Inventory) RemoveObj(instanceId string) *ObjectInstance {
 	if obj, ok := inv.Items[instanceId]; ok {
 		delete(inv.Items, instanceId)
 		return obj
+	}
+	return nil
+}
+
+// FindObj searches inventory items for one whose definition matches the given alias.
+// Returns nil if not found.
+func (inv *Inventory) FindObj(name string) *ObjectInstance {
+	for _, oi := range inv.Items {
+		if oi.Definition.MatchName(name) {
+			return oi
+		}
 	}
 	return nil
 }
@@ -157,8 +168,22 @@ func (eq *Equipment) SlotCount(slot string) int {
 	return count
 }
 
+// FindObj searches equipped items for one whose definition matches the given alias.
+// Returns nil if not found.
+func (eq *Equipment) FindObj(name string) *ObjectInstance {
+	for _, slot := range eq.Items {
+		if slot.Obj == nil {
+			continue
+		}
+		if slot.Obj.Definition.MatchName(name) {
+			return slot.Obj
+		}
+	}
+	return nil
+}
+
 // Remove finds and unequips an object by instance ID.
-func (eq *Equipment) Remove(instanceId string) *ObjectInstance {
+func (eq *Equipment) RemoveObj(instanceId string) *ObjectInstance {
 	for i, item := range eq.Items {
 		if item.Obj.InstanceId == instanceId {
 			eq.Items = append(eq.Items[:i], eq.Items[i+1:]...)

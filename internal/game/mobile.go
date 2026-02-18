@@ -2,6 +2,7 @@ package game
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/pixil98/go-errors"
 	"github.com/pixil98/go-mud/internal/storage"
@@ -27,6 +28,17 @@ type Mobile struct {
 	Actor
 }
 
+// MatchName returns true if name matches any of this mobile's aliases (case-insensitive).
+func (m *Mobile) MatchName(name string) bool {
+	nameLower := strings.ToLower(name)
+	for _, alias := range m.Aliases {
+		if strings.ToLower(alias) == nameLower {
+			return true
+		}
+	}
+	return false
+}
+
 // Validate satisfies storage.ValidatingSpec
 func (m *Mobile) Validate() error {
 	el := errors.NewErrorList()
@@ -44,6 +56,7 @@ func (m *Mobile) Validate() error {
 type MobileInstance struct {
 	InstanceId string             // Unique ID: "<mobile-id>-<counter>" e.g., "millbrook-guard-1"
 	MobileId   storage.Identifier // Reference to the Mobile definition
+	Definition *Mobile
 
 	ActorInstance
 }
