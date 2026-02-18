@@ -41,10 +41,6 @@ func (f *MoveHandlerFactory) ValidateConfig(config map[string]any) error {
 
 func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		if cmdCtx.Session == nil {
-			return fmt.Errorf("player state not found")
-		}
-
 		// Read direction from expanded config
 		direction := strings.ToLower(cmdCtx.Config["direction"])
 		if direction == "" {

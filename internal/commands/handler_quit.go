@@ -30,9 +30,7 @@ func (f *QuitHandlerFactory) Create() (CommandFunc, error) {
 			return fmt.Errorf("saving character on quit: %w", err)
 		}
 
-		if cmdCtx.Session != nil {
-			cmdCtx.Session.Quit = true
-		}
+		cmdCtx.Session.Quit = true
 		return nil
 	}, nil
 }

@@ -103,6 +103,11 @@ func (w *WorldState) GetPlayer(charId storage.Identifier) *PlayerState {
 
 // AddPlayer registers a new player in the world state and adds them to the room instance.
 func (w *WorldState) AddPlayer(charId storage.Identifier, msgs chan []byte, zoneId storage.Identifier, roomId storage.Identifier) error {
+	char := w.Characters().Get(string(charId))
+	if char == nil {
+		return fmt.Errorf("character %s not found", charId)
+	}
+
 	w.mu.Lock()
 	if _, exists := w.players[charId]; exists {
 		w.mu.Unlock()
@@ -114,7 +119,7 @@ func (w *WorldState) AddPlayer(charId storage.Identifier, msgs chan []byte, zone
 		subs:         make(map[string]func()),
 		msgs:         msgs,
 		CharId:       charId,
-		Character:    w.Characters().Get(string(charId)),
+		Character:    char,
 		ZoneId:       zoneId,
 		RoomId:       roomId,
 		Quit:         false,

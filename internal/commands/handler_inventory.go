@@ -49,9 +49,6 @@ func FormatInventoryItems(inv *game.Inventory) []string {
 	}
 	var lines []string
 	for _, oi := range inv.Items {
-		if oi.Definition == nil {
-			continue
-		}
 		lines = append(lines, fmt.Sprintf("  %s", oi.Definition.ShortDesc))
 	}
 	if len(lines) == 0 {

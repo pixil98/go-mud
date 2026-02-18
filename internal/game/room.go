@@ -190,9 +190,6 @@ func (ri *RoomInstance) Describe(actorName string) string {
 
 	// Show objects
 	for _, oi := range ri.objects.Items {
-		if oi.Definition == nil {
-			continue
-		}
 		if oi.Definition.LongDesc != "" {
 			sb.WriteString(oi.Definition.LongDesc)
 		} else {
@@ -204,9 +201,6 @@ func (ri *RoomInstance) Describe(actorName string) string {
 	ri.mu.RLock()
 	// Show mobs
 	for _, mi := range ri.mobiles {
-		if mi.Definition == nil {
-			continue
-		}
 		if mi.Definition.LongDesc != "" {
 			sb.WriteString(mi.Definition.LongDesc)
 		} else {
@@ -217,7 +211,7 @@ func (ri *RoomInstance) Describe(actorName string) string {
 
 	// Show other players
 	for _, ps := range ri.players {
-		if ps.Character != nil && ps.Character.Name != actorName {
+		if ps.Character.Name != actorName {
 			sb.WriteString(fmt.Sprintf("%s is here.\n", ps.Character.Name))
 		}
 	}
