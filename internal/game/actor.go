@@ -2,17 +2,76 @@ package game
 
 import (
 	"fmt"
+	"sort"
+	"strings"
 	"sync"
 
 	"github.com/pixil98/go-errors"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
+// StatLine is a single line in a stat section.
+type StatLine struct {
+	Value  string
+	Center bool
+}
+
+// StatSection is a labeled group of stat lines.
+type StatSection struct {
+	Header string
+	Lines  []StatLine
+}
+
 // Actor holds properties shared between characters and mobiles.
 type Actor struct {
 	Pronoun storage.Identifier `json:"pronoun,omitempty"`
 	Race    storage.Identifier `json:"race,omitempty"`
 	Level   int                `json:"level,omitempty"`
+}
+
+// statSections returns the shared stat display: an identity subtitle
+// (race, level, pronouns), stats, and perks. Character and Mobile
+// prepend their own name line to the first section.
+func (a *Actor) statSections(races storage.Storer[*Race], pronouns storage.Storer[*Pronoun]) []StatSection {
+	var parts []string
+	race := races.Get(string(a.Race))
+	if race != nil {
+		parts = append(parts, race.Name)
+	}
+	parts = append(parts, fmt.Sprintf("Level %d", a.Level))
+	if pronoun := pronouns.Get(string(a.Pronoun)); pronoun != nil {
+		parts = append(parts, pronoun.Selector())
+	}
+
+	sections := []StatSection{
+		{Lines: []StatLine{{Value: strings.Join(parts, " | "), Center: true}}},
+	}
+
+	if race != nil && len(race.Stats) > 0 {
+		keys := make([]string, 0, len(race.Stats))
+		for k := range race.Stats {
+			keys = append(keys, k)
+		}
+		sort.Strings(keys)
+		var statParts []string
+		for _, k := range keys {
+			statParts = append(statParts, fmt.Sprintf("%s: %d", strings.ToUpper(k), race.Stats[k]))
+		}
+		sections = append(sections, StatSection{
+			Header: "Stats",
+			Lines:  []StatLine{{Value: "  " + strings.Join(statParts, "  ")}},
+		})
+	}
+
+	if race != nil && len(race.Perks) > 0 {
+		var lines []StatLine
+		for _, p := range race.Perks {
+			lines = append(lines, StatLine{Value: "  " + p})
+		}
+		sections = append(sections, StatSection{Header: "Perks", Lines: lines})
+	}
+
+	return sections
 }
 
 type pronounPossessive struct {

@@ -107,6 +107,7 @@ func NewHandler(c storage.Storer[*Command], publisher Publisher, world *game.Wor
 	h.RegisterFactory("move_obj", NewMoveObjHandlerFactory(world, publisher))
 	h.RegisterFactory("quit", NewQuitHandlerFactory(world))
 	h.RegisterFactory("save", NewSaveHandlerFactory(world, publisher))
+	h.RegisterFactory("score", NewScoreHandlerFactory(world, publisher))
 	h.RegisterFactory("title", NewTitleHandlerFactory(publisher))
 	h.RegisterFactory("wear", NewWearHandlerFactory(world, publisher))
 	h.RegisterFactory("who", NewWhoHandlerFactory(world, publisher))

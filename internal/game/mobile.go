@@ -28,6 +28,13 @@ type Mobile struct {
 	Actor
 }
 
+// StatSections returns the mobile's stat display sections.
+func (m *Mobile) StatSections(races storage.Storer[*Race], pronouns storage.Storer[*Pronoun]) []StatSection {
+	sections := m.Actor.statSections(races, pronouns)
+	sections[0].Lines = append([]StatLine{{Value: m.ShortDesc, Center: true}}, sections[0].Lines...)
+	return sections
+}
+
 // MatchName returns true if name matches any of this mobile's aliases (case-insensitive).
 func (m *Mobile) MatchName(name string) bool {
 	nameLower := strings.ToLower(name)

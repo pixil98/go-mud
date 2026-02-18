@@ -21,14 +21,15 @@ type WorldState struct {
 	zones   storage.Storer[*Zone]
 	rooms   storage.Storer[*Room]
 	mobiles storage.Storer[*Mobile]
-	objects storage.Storer[*Object]
-	races   storage.Storer[*Race]
+	objects  storage.Storer[*Object]
+	pronouns storage.Storer[*Pronoun]
+	races    storage.Storer[*Race]
 
 	instances map[storage.Identifier]*ZoneInstance
 }
 
 // NewWorldState creates a new WorldState with zone and room instances initialized.
-func NewWorldState(sub Subscriber, chars storage.Storer[*Character], zones storage.Storer[*Zone], rooms storage.Storer[*Room], mobiles storage.Storer[*Mobile], objects storage.Storer[*Object], races storage.Storer[*Race]) *WorldState {
+func NewWorldState(sub Subscriber, chars storage.Storer[*Character], zones storage.Storer[*Zone], rooms storage.Storer[*Room], mobiles storage.Storer[*Mobile], objects storage.Storer[*Object], pronouns storage.Storer[*Pronoun], races storage.Storer[*Race]) *WorldState {
 	// Build zone instances
 	instances := make(map[storage.Identifier]*ZoneInstance)
 	for zoneId, zone := range zones.GetAll() {
@@ -51,6 +52,7 @@ func NewWorldState(sub Subscriber, chars storage.Storer[*Character], zones stora
 		rooms:      rooms,
 		mobiles:    mobiles,
 		objects:    objects,
+		pronouns:   pronouns,
 		races:      races,
 		instances:  instances,
 	}
@@ -81,6 +83,11 @@ func (w *WorldState) Mobiles() storage.Storer[*Mobile] {
 // Objects returns the object store.
 func (w *WorldState) Objects() storage.Storer[*Object] {
 	return w.objects
+}
+
+// Pronouns returns the pronoun store.
+func (w *WorldState) Pronouns() storage.Storer[*Pronoun] {
+	return w.pronouns
 }
 
 // Races returns the race store.

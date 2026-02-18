@@ -28,6 +28,18 @@ type Character struct {
 	ActorInstance
 }
 
+// StatSections returns the character's stat display sections.
+func (c *Character) StatSections(races storage.Storer[*Race], pronouns storage.Storer[*Pronoun]) []StatSection {
+	sections := c.Actor.statSections(races, pronouns)
+
+	name := c.Name
+	if c.Title != "" {
+		name = c.Name + " " + c.Title
+	}
+	sections[0].Lines = append([]StatLine{{Value: name, Center: true}}, sections[0].Lines...)
+	return sections
+}
+
 // MatchName returns true if name matches this character's name (case-insensitive).
 func (c *Character) MatchName(name string) bool {
 	return strings.EqualFold(c.Name, name)

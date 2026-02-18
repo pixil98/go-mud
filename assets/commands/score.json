@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "score",
+    "spec": {
+        "handler": "score",
+        "category": "information",
+        "description": "Display your character sheet."
+    }
+}
