@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sort"
 	"strings"
+	"sync"
 
 	"github.com/google/uuid"
 	"github.com/pixil98/go-errors"
@@ -60,10 +61,13 @@ func (r *Room) Validate() error {
 }
 
 // RoomInstance holds the runtime state for a room — spawned mobs, objects, and players.
+// The mutex protects the players and mobiles maps. Object operations delegate to
+// the objects Inventory, which handles its own locking.
 type RoomInstance struct {
 	RoomId     storage.Identifier
 	Definition *Room
 
+	mu      sync.RWMutex
 	mobiles map[string]*MobileInstance
 	objects *Inventory
 	players map[storage.Identifier]*PlayerState
@@ -83,19 +87,24 @@ func NewRoomInstance(roomId storage.Identifier, def *Room) *RoomInstance {
 // Reset clears all mobs and objects and respawns them from the room definition.
 // Players are preserved.
 func (ri *RoomInstance) Reset(mobiles storage.Storer[*Mobile], objects storage.Storer[*Object]) {
+	ri.mu.Lock()
 	ri.mobiles = make(map[string]*MobileInstance)
-	ri.objects = NewInventory()
-
 	for _, mobileId := range ri.Definition.MobSpawns {
-		ri.SpawnMob(storage.Identifier(mobileId), mobiles.Get(mobileId))
+		ri.spawnMob(storage.Identifier(mobileId), mobiles.Get(mobileId))
 	}
+	ri.mu.Unlock()
+
+	ri.objects.Clear()
 	for _, spawn := range ri.Definition.ObjSpawns {
-		ri.AddObj(ri.spawnObjectInstance(spawn, objects))
+		ri.AddObj(ri.spawnObj(spawn, objects))
 	}
 }
 
 // FindMob searches room mobs for one whose definition matches the given name.
 func (ri *RoomInstance) FindMob(name string) *MobileInstance {
+	ri.mu.RLock()
+	defer ri.mu.RUnlock()
+
 	for _, mi := range ri.mobiles {
 		if mi.Definition.MatchName(name) {
 			return mi
@@ -104,8 +113,9 @@ func (ri *RoomInstance) FindMob(name string) *MobileInstance {
 	return nil
 }
 
-// SpawnMob creates a new MobileInstance and adds it to the room.
-func (ri *RoomInstance) SpawnMob(mobileId storage.Identifier, def *Mobile) *MobileInstance {
+// spawnMob creates a new MobileInstance and adds it to the room.
+// Caller must hold the write lock.
+func (ri *RoomInstance) spawnMob(mobileId storage.Identifier, def *Mobile) *MobileInstance {
 	mi := &MobileInstance{
 		InstanceId: uuid.New().String(),
 		MobileId:   mobileId,
@@ -115,12 +125,12 @@ func (ri *RoomInstance) SpawnMob(mobileId storage.Identifier, def *Mobile) *Mobi
 	return mi
 }
 
-// spawnObjectInstance creates an ObjectInstance from an ObjectSpawn,
+// spawnObj creates an ObjectInstance from an ObjectSpawn,
 // recursively spawning any contents for containers.
-func (ri *RoomInstance) spawnObjectInstance(spawn ObjectSpawn, objDefs storage.Storer[*Object]) *ObjectInstance {
+func (ri *RoomInstance) spawnObj(spawn ObjectSpawn, objDefs storage.Storer[*Object]) *ObjectInstance {
 	instance := NewObjectInstance(storage.Identifier(spawn.ObjectId), objDefs.Get(spawn.ObjectId))
 	for _, contentSpawn := range spawn.Contents {
-		instance.Contents.AddObj(ri.spawnObjectInstance(contentSpawn, objDefs))
+		instance.Contents.AddObj(ri.spawnObj(contentSpawn, objDefs))
 	}
 	return instance
 }
@@ -142,6 +152,9 @@ func (ri *RoomInstance) RemoveObj(instanceId string) *ObjectInstance {
 
 // FindPlayer searches room players for one whose character name matches the given name.
 func (ri *RoomInstance) FindPlayer(name string) *PlayerState {
+	ri.mu.RLock()
+	defer ri.mu.RUnlock()
+
 	for _, ps := range ri.players {
 		if ps.Character.MatchName(name) {
 			return ps
@@ -152,11 +165,17 @@ func (ri *RoomInstance) FindPlayer(name string) *PlayerState {
 
 // AddPlayer adds a player to the room.
 func (ri *RoomInstance) AddPlayer(charId storage.Identifier, ps *PlayerState) {
+	ri.mu.Lock()
+	defer ri.mu.Unlock()
+
 	ri.players[charId] = ps
 }
 
 // RemovePlayer removes a player from the room.
 func (ri *RoomInstance) RemovePlayer(charId storage.Identifier) {
+	ri.mu.Lock()
+	defer ri.mu.Unlock()
+
 	delete(ri.players, charId)
 }
 
@@ -182,6 +201,7 @@ func (ri *RoomInstance) Describe(actorName string) string {
 		sb.WriteString("\n")
 	}
 
+	ri.mu.RLock()
 	// Show mobs
 	for _, mi := range ri.mobiles {
 		if mi.Definition == nil {
@@ -201,6 +221,7 @@ func (ri *RoomInstance) Describe(actorName string) string {
 			sb.WriteString(fmt.Sprintf("%s is here.\n", ps.Character.Name))
 		}
 	}
+	ri.mu.RUnlock()
 
 	sb.WriteString("\n")
 	sb.WriteString(formatExits(ri.Definition.Exits))
@@ -208,9 +229,12 @@ func (ri *RoomInstance) Describe(actorName string) string {
 	return sb.String()
 }
 
-// Players returns all players in the room.
-func (ri *RoomInstance) Players() map[storage.Identifier]*PlayerState {
-	return ri.players
+// PlayerCount returns the number of players in the room.
+func (ri *RoomInstance) PlayerCount() int {
+	ri.mu.RLock()
+	defer ri.mu.RUnlock()
+
+	return len(ri.players)
 }
 
 func formatExits(exits map[string]Exit) string {

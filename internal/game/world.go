@@ -104,9 +104,8 @@ func (w *WorldState) GetPlayer(charId storage.Identifier) *PlayerState {
 // AddPlayer registers a new player in the world state and adds them to the room instance.
 func (w *WorldState) AddPlayer(charId storage.Identifier, msgs chan []byte, zoneId storage.Identifier, roomId storage.Identifier) error {
 	w.mu.Lock()
-	defer w.mu.Unlock()
-
 	if _, exists := w.players[charId]; exists {
+		w.mu.Unlock()
 		return ErrPlayerExists
 	}
 
@@ -122,23 +121,27 @@ func (w *WorldState) AddPlayer(charId storage.Identifier, msgs chan []byte, zone
 		LastActivity: time.Now(),
 	}
 	w.players[charId] = ps
-	w.instances[zoneId].GetRoom(roomId).AddPlayer(charId, ps)
+	room := w.instances[zoneId].GetRoom(roomId)
+	w.mu.Unlock()
 
+	room.AddPlayer(charId, ps)
 	return nil
 }
 
 // RemovePlayer removes a player from the world state and from the room instance.
 func (w *WorldState) RemovePlayer(charId storage.Identifier) error {
 	w.mu.Lock()
-	defer w.mu.Unlock()
-
 	ps, exists := w.players[charId]
 	if !exists {
+		w.mu.Unlock()
 		return ErrPlayerNotFound
 	}
 
-	w.instances[ps.ZoneId].GetRoom(ps.RoomId).RemovePlayer(charId)
+	room := w.instances[ps.ZoneId].GetRoom(ps.RoomId)
 	delete(w.players, charId)
+	w.mu.Unlock()
+
+	room.RemovePlayer(charId)
 	return nil
 }
 

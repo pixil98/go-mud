@@ -108,7 +108,7 @@ func (z *ZoneInstance) Reset(force bool, mobiles storage.Storer[*Mobile], object
 // IsOccupied returns true if any players are in any room of this zone.
 func (z *ZoneInstance) IsOccupied() bool {
 	for _, ri := range z.rooms {
-		if len(ri.Players()) > 0 {
+		if ri.PlayerCount() > 0 {
 			return true
 		}
 	}

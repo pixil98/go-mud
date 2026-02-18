@@ -2,6 +2,7 @@ package game
 
 import (
 	"fmt"
+	"sync"
 
 	"github.com/pixil98/go-errors"
 	"github.com/pixil98/go-mud/internal/storage"
@@ -87,8 +88,10 @@ type ActorInstance struct {
 }
 
 // Inventory holds object instances carried by a character or mobile.
+// All methods are safe for concurrent use.
 // TODO: Add stackable item support (keyed by ObjectId with count) for commodities.
 type Inventory struct {
+	mu sync.RWMutex
 	// Items maps instance IDs to object instances
 	Items map[string]*ObjectInstance `json:"items,omitempty"`
 }
@@ -100,17 +103,23 @@ func NewInventory() *Inventory {
 	}
 }
 
-// Add adds an object instance to the inventory.
+// AddObj adds an object instance to the inventory.
 func (inv *Inventory) AddObj(obj *ObjectInstance) {
+	inv.mu.Lock()
+	defer inv.mu.Unlock()
+
 	if inv.Items == nil {
 		inv.Items = make(map[string]*ObjectInstance)
 	}
 	inv.Items[obj.InstanceId] = obj
 }
 
-// Remove removes an object instance from the inventory.
+// RemoveObj removes an object instance from the inventory.
 // Returns the removed instance, or nil if not found.
 func (inv *Inventory) RemoveObj(instanceId string) *ObjectInstance {
+	inv.mu.Lock()
+	defer inv.mu.Unlock()
+
 	if obj, ok := inv.Items[instanceId]; ok {
 		delete(inv.Items, instanceId)
 		return obj
@@ -121,12 +130,23 @@ func (inv *Inventory) RemoveObj(instanceId string) *ObjectInstance {
 // FindObj searches inventory items for one whose definition matches the given alias.
 // Returns nil if not found.
 func (inv *Inventory) FindObj(name string) *ObjectInstance {
+	inv.mu.RLock()
+	defer inv.mu.RUnlock()
+
 	for _, oi := range inv.Items {
 		if oi.Definition.MatchName(name) {
 			return oi
 		}
 	}
 	return nil
+}
+
+// Clear removes all items.
+func (inv *Inventory) Clear() {
+	inv.mu.Lock()
+	defer inv.mu.Unlock()
+
+	inv.Items = make(map[string]*ObjectInstance)
 }
 
 // EquipSlot pairs a slot type name with the equipped object instance.
@@ -137,7 +157,9 @@ type EquipSlot struct {
 
 // Equipment holds items equipped by a character or mobile.
 // Multiple items may share the same slot type (e.g., two rings in "finger").
+// All methods are safe for concurrent use.
 type Equipment struct {
+	mu    sync.RWMutex
 	Items []EquipSlot `json:"items,omitempty"`
 }
 
@@ -150,15 +172,19 @@ func NewEquipment() *Equipment {
 // can occupy that slot type (0 means no limit). Returns an error if the slot
 // is already at capacity.
 func (eq *Equipment) Equip(slot string, maxSlots int, obj *ObjectInstance) error {
-	if maxSlots > 0 && eq.SlotCount(slot) >= maxSlots {
+	eq.mu.Lock()
+	defer eq.mu.Unlock()
+
+	if maxSlots > 0 && eq.slotCount(slot) >= maxSlots {
 		return fmt.Errorf("no available %q slot", slot)
 	}
 	eq.Items = append(eq.Items, EquipSlot{Slot: slot, Obj: obj})
 	return nil
 }
 
-// SlotCount returns how many items are equipped in the given slot type.
-func (eq *Equipment) SlotCount(slot string) int {
+// slotCount returns how many items are equipped in the given slot type.
+// Caller must hold at least a read lock.
+func (eq *Equipment) slotCount(slot string) int {
 	count := 0
 	for _, item := range eq.Items {
 		if item.Slot == slot {
@@ -168,9 +194,20 @@ func (eq *Equipment) SlotCount(slot string) int {
 	return count
 }
 
+// SlotCount returns how many items are equipped in the given slot type.
+func (eq *Equipment) SlotCount(slot string) int {
+	eq.mu.RLock()
+	defer eq.mu.RUnlock()
+
+	return eq.slotCount(slot)
+}
+
 // FindObj searches equipped items for one whose definition matches the given alias.
 // Returns nil if not found.
 func (eq *Equipment) FindObj(name string) *ObjectInstance {
+	eq.mu.RLock()
+	defer eq.mu.RUnlock()
+
 	for _, slot := range eq.Items {
 		if slot.Obj == nil {
 			continue
@@ -182,8 +219,11 @@ func (eq *Equipment) FindObj(name string) *ObjectInstance {
 	return nil
 }
 
-// Remove finds and unequips an object by instance ID.
+// RemoveObj finds and unequips an object by instance ID.
 func (eq *Equipment) RemoveObj(instanceId string) *ObjectInstance {
+	eq.mu.Lock()
+	defer eq.mu.Unlock()
+
 	for i, item := range eq.Items {
 		if item.Obj.InstanceId == instanceId {
 			eq.Items = append(eq.Items[:i], eq.Items[i+1:]...)
