@@ -25,6 +25,12 @@ type Mobile struct {
 	// DetailedDesc is shown when a player looks at the mobile
 	DetailedDesc string `json:"detailed_desc"`
 
+	// Inventory is the mobile's starting inventory
+	Inventory []ObjectSpawn `json:"inventory,omitempty"`
+
+	// Equipment is the mobile's starting equipment
+	Equipment map[string]ObjectSpawn `json:"equipment,omitempty"`
+
 	Actor
 }
 
@@ -37,7 +43,17 @@ func (m *Mobile) StatSections() []StatSection {
 
 // Resolve resolves foreign keys from the dictionary.
 func (m *Mobile) Resolve(dict *Dictionary) error {
-	return m.Actor.Resolve(dict)
+	el := errors.NewErrorList()
+	for i := range m.Inventory {
+		el.Add(m.Inventory[i].Resolve(dict.Objects))
+	}
+	for k := range m.Equipment {
+		eq := m.Equipment[k]
+		el.Add(eq.Resolve(dict.Objects))
+		m.Equipment[k] = eq
+	}
+	el.Add(m.Actor.Resolve(dict))
+	return el.Err()
 }
 
 // MatchName returns true if name matches any of this mobile's aliases (case-insensitive).

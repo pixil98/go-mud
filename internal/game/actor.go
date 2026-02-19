@@ -162,19 +162,21 @@ type ActorInstance struct {
 	Equipment *Equipment `json:"equipment,omitempty"`
 }
 
+
+
 // Inventory holds object instances carried by a character or mobile.
 // All methods are safe for concurrent use.
 // TODO: Add stackable item support (keyed by ObjectId with count) for commodities.
 type Inventory struct {
 	mu sync.RWMutex
-	// Objects maps instance IDs to object instances
-	Objects map[string]*ObjectInstance `json:"objects,omitempty"`
+	// Objs maps instance IDs to object instances
+	Objs map[string]*ObjectInstance `json:"objects,omitempty"`
 }
 
 // NewInventory creates an empty inventory.
 func NewInventory() *Inventory {
 	return &Inventory{
-		Objects: make(map[string]*ObjectInstance),
+		Objs: make(map[string]*ObjectInstance),
 	}
 }
 
@@ -183,10 +185,10 @@ func (inv *Inventory) AddObj(obj *ObjectInstance) {
 	inv.mu.Lock()
 	defer inv.mu.Unlock()
 
-	if inv.Objects == nil {
-		inv.Objects = make(map[string]*ObjectInstance)
+	if inv.Objs == nil {
+		inv.Objs = make(map[string]*ObjectInstance)
 	}
-	inv.Objects[obj.InstanceId] = obj
+	inv.Objs[obj.InstanceId] = obj
 }
 
 // RemoveObj removes an object instance from the inventory.
@@ -195,8 +197,8 @@ func (inv *Inventory) RemoveObj(instanceId string) *ObjectInstance {
 	inv.mu.Lock()
 	defer inv.mu.Unlock()
 
-	if obj, ok := inv.Objects[instanceId]; ok {
-		delete(inv.Objects, instanceId)
+	if obj, ok := inv.Objs[instanceId]; ok {
+		delete(inv.Objs, instanceId)
 		return obj
 	}
 	return nil
@@ -208,7 +210,7 @@ func (inv *Inventory) FindObj(name string) *ObjectInstance {
 	inv.mu.RLock()
 	defer inv.mu.RUnlock()
 
-	for _, oi := range inv.Objects {
+	for _, oi := range inv.Objs {
 		if oi.Object.Id().MatchName(name) {
 			return oi
 		}
@@ -221,7 +223,7 @@ func (inv *Inventory) Clear() {
 	inv.mu.Lock()
 	defer inv.mu.Unlock()
 
-	inv.Objects = make(map[string]*ObjectInstance)
+	inv.Objs = make(map[string]*ObjectInstance)
 }
 
 // EquipSlot pairs a slot type name with the equipped object instance.
@@ -234,8 +236,8 @@ type EquipSlot struct {
 // Multiple items may share the same slot type (e.g., two rings in "finger").
 // All methods are safe for concurrent use.
 type Equipment struct {
-	mu    sync.RWMutex
-	Items []EquipSlot `json:"items,omitempty"`
+	mu   sync.RWMutex
+	Objs []EquipSlot `json:"slots,omitempty"`
 }
 
 // NewEquipment creates an empty equipment set.
@@ -253,7 +255,7 @@ func (eq *Equipment) Equip(slot string, maxSlots int, obj *ObjectInstance) error
 	if maxSlots > 0 && eq.slotCount(slot) >= maxSlots {
 		return fmt.Errorf("no available %q slot", slot)
 	}
-	eq.Items = append(eq.Items, EquipSlot{Slot: slot, Obj: obj})
+	eq.Objs = append(eq.Objs, EquipSlot{Slot: slot, Obj: obj})
 	return nil
 }
 
@@ -261,7 +263,7 @@ func (eq *Equipment) Equip(slot string, maxSlots int, obj *ObjectInstance) error
 // Caller must hold at least a read lock.
 func (eq *Equipment) slotCount(slot string) int {
 	count := 0
-	for _, item := range eq.Items {
+	for _, item := range eq.Objs {
 		if item.Slot == slot {
 			count++
 		}
@@ -283,7 +285,7 @@ func (eq *Equipment) FindObj(name string) *ObjectInstance {
 	eq.mu.RLock()
 	defer eq.mu.RUnlock()
 
-	for _, slot := range eq.Items {
+	for _, slot := range eq.Objs {
 		if slot.Obj == nil {
 			continue
 		}
@@ -299,9 +301,9 @@ func (eq *Equipment) RemoveObj(instanceId string) *ObjectInstance {
 	eq.mu.Lock()
 	defer eq.mu.Unlock()
 
-	for i, item := range eq.Items {
+	for i, item := range eq.Objs {
 		if item.Obj.InstanceId == instanceId {
-			eq.Items = append(eq.Items[:i], eq.Items[i+1:]...)
+			eq.Objs = append(eq.Objs[:i], eq.Objs[i+1:]...)
 			return item.Obj
 		}
 	}

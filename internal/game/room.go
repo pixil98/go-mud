@@ -11,26 +11,9 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
-// ObjectSpawn defines an object to spawn in a room during zone reset.
-// Contents lists objects to spawn inside this container (requires the container flag).
-// Supports nesting — content items can themselves be containers with contents.
-type ObjectSpawn struct {
-	ObjectId storage.SmartIdentifier[*Object] `json:"object_id"`
-	Contents []ObjectSpawn                    `json:"contents,omitempty"`
-}
-
-func (s *ObjectSpawn) Resolve(objects storage.Storer[*Object]) error {
-	el := errors.NewErrorList()
-	el.Add(s.ObjectId.Resolve(objects))
-	for i := range s.Contents {
-		el.Add(s.Contents[i].Resolve(objects))
-	}
-	return el.Err()
-}
-
 // Exit defines a destination for movement from a room.
 type Exit struct {
-	Zone storage.SmartIdentifier[*Zone] `json:"zone_id,omitempty"` // Optional; defaults to current zone
+	Zone storage.SmartIdentifier[*Zone] `json:"zone_id"` // Optional; defaults to current zone
 	Room storage.SmartIdentifier[*Room] `json:"room_id"`
 }
 
@@ -39,9 +22,9 @@ type Room struct {
 	Name        string                             `json:"name"`
 	Description string                             `json:"description"`
 	Zone        storage.SmartIdentifier[*Zone]     `json:"zone_id"`
-	Exits       map[string]Exit                    `json:"exits"`                   // direction -> destination
-	MobSpawns   []storage.SmartIdentifier[*Mobile] `json:"mobile_spawns,omitempty"` // mobile IDs to spawn; list duplicates for multiple
-	ObjSpawns   []ObjectSpawn                      `json:"object_spawns,omitempty"` // objects to spawn
+	Exits       map[string]Exit                    `json:"exits"`         // direction -> destination
+	MobSpawns   []storage.SmartIdentifier[*Mobile] `json:"mobile_spawns"` // mobile IDs to spawn; list duplicates for multiple
+	ObjSpawns   []ObjectSpawn                      `json:"object_spawns"` // objects to spawn
 }
 
 // Validate satisfies storage.ValidatingSpec.
@@ -123,7 +106,7 @@ func (ri *RoomInstance) Reset() {
 
 	ri.objects.Clear()
 	for _, spawn := range ri.Definition.ObjSpawns {
-		ri.AddObj(ri.spawnObj(spawn))
+		ri.AddObj(spawn.Spawn())
 	}
 }
 
@@ -146,19 +129,20 @@ func (ri *RoomInstance) spawnMob(mob storage.SmartIdentifier[*Mobile]) *MobileIn
 	mi := &MobileInstance{
 		InstanceId: uuid.New().String(),
 		Mobile:     mob,
+		ActorInstance: ActorInstance{
+			Inventory: NewInventory(),
+			Equipment: NewEquipment(),
+		},
+	}
+	def := mob.Id()
+	for _, spawn := range def.Inventory {
+		mi.Inventory.AddObj(spawn.Spawn())
+	}
+	for slot, spawn := range def.Equipment {
+		mi.Equipment.Equip(slot, 0, spawn.Spawn())
 	}
 	ri.mobiles[mi.InstanceId] = mi
 	return mi
-}
-
-// spawnObj creates an ObjectInstance from an ObjectSpawn,
-// recursively spawning any contents for containers.
-func (ri *RoomInstance) spawnObj(spawn ObjectSpawn) *ObjectInstance {
-	instance := NewObjectInstance(spawn.ObjectId)
-	for _, contentSpawn := range spawn.Contents {
-		instance.Contents.AddObj(ri.spawnObj(contentSpawn))
-	}
-	return instance
 }
 
 // FindObj searches room objects for one whose definition matches the given name.
@@ -215,7 +199,7 @@ func (ri *RoomInstance) Describe(actorName string) string {
 	sb.WriteString("\n")
 
 	// Show objects
-	for _, oi := range ri.objects.Objects {
+	for _, oi := range ri.objects.Objs {
 		if oi.Object.Id().LongDesc != "" {
 			sb.WriteString(oi.Object.Id().LongDesc)
 		} else {

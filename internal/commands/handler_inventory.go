@@ -43,11 +43,11 @@ func (f *InventoryHandlerFactory) Create() (CommandFunc, error) {
 // FormatInventoryItems returns indented lines describing items in an inventory.
 // Returns ["  Nothing"] if the inventory is nil or empty.
 func FormatInventoryItems(inv *game.Inventory) []string {
-	if inv == nil || len(inv.Objects) == 0 {
+	if inv == nil || len(inv.Objs) == 0 {
 		return []string{"  Nothing"}
 	}
 	var lines []string
-	for _, oi := range inv.Objects {
+	for _, oi := range inv.Objs {
 		lines = append(lines, fmt.Sprintf("  %s", oi.Object.Id().ShortDesc))
 	}
 	if len(lines) == 0 {

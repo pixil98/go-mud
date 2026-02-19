@@ -80,11 +80,21 @@ func (f *LookHandlerFactory) showTarget(cmdCtx *CommandContext, target *TargetRe
 
 // TODO: should these functions just be moved to the respective target's instance structs?
 func (f *LookHandlerFactory) describePlayer(player *PlayerRef) string {
-	return player.Description
+	lines := []string{player.Description}
+	if eqLines := FormatEquippedItems(player.session.Character.Equipment); eqLines != nil {
+		lines = append(lines, "Equipped:")
+		lines = append(lines, eqLines...)
+	}
+	return strings.Join(lines, "\n")
 }
 
 func (f *LookHandlerFactory) describeMob(mob *MobileRef) string {
-	return mob.Description
+	lines := []string{mob.Description}
+	if eqLines := FormatEquippedItems(mob.instance.Equipment); eqLines != nil {
+		lines = append(lines, "Equipped:")
+		lines = append(lines, eqLines...)
+	}
+	return strings.Join(lines, "\n")
 }
 
 func (f *LookHandlerFactory) describeObj(obj *ObjectRef) string {

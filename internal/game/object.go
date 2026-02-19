@@ -1,6 +1,7 @@
 package game
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -107,7 +108,7 @@ func (o *Object) Validate() error {
 // ObjectInstance represents a single spawned instance of an Object definition.
 // Location is tracked by the containing structure (room map or inventory).
 type ObjectInstance struct {
-	InstanceId string                           `json:"instance_id"` // Unique ID
+	InstanceId string                           `json:"-"` // Unique ID
 	Object     storage.SmartIdentifier[*Object] `json:"object_id"`
 	Contents   *Inventory                       `json:"contents,omitempty"` // Non-nil for containers; holds objects stored inside
 }
@@ -121,6 +122,43 @@ func NewObjectInstance(obj storage.SmartIdentifier[*Object]) *ObjectInstance {
 	}
 	if oi.Object.Id().HasFlag(ObjectFlagContainer) {
 		oi.Contents = NewInventory()
+	}
+	return oi
+}
+
+func (oi *ObjectInstance) UnmarshalJSON(b []byte) error {
+	type Alias ObjectInstance
+	err := json.Unmarshal(b, (*Alias)(oi))
+	if err != nil {
+		return err
+	}
+	oi.InstanceId = uuid.New().String()
+	return nil
+}
+
+// ObjectSpawn defines an object to spawn in a room during zone reset.
+// Contents lists objects to spawn inside this container (requires the container flag).
+// Supports nesting — content items can themselves be containers with contents.
+type ObjectSpawn struct {
+	Object   storage.SmartIdentifier[*Object] `json:"object_id"`
+	Contents []ObjectSpawn                    `json:"contents,omitempty"`
+}
+
+func (s *ObjectSpawn) Resolve(objs storage.Storer[*Object]) error {
+	el := errors.NewErrorList()
+	el.Add(s.Object.Resolve(objs))
+	for i := range s.Contents {
+		el.Add(s.Contents[i].Resolve(objs))
+	}
+	return el.Err()
+}
+
+// Spawn creates an ObjectInstance from an ObjectSpawn,
+// recursively spawning any contents for containers.
+func (s *ObjectSpawn) Spawn() *ObjectInstance {
+	oi := NewObjectInstance(s.Object)
+	for _, contentSpawn := range s.Contents {
+		oi.Contents.AddObj(contentSpawn.Spawn())
 	}
 	return oi
 }
