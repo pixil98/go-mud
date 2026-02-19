@@ -48,7 +48,7 @@ func (f *EquipmentHandlerFactory) Create() (CommandFunc, error) {
 }
 
 func formatSlotLine(slot string, desc string) string {
-	return fmt.Sprintf("  [%s] %s", slot, desc)
+	return fmt.Sprintf("  <%s>\t%s", slot, desc)
 }
 
 // FormatEquipmentSlots returns indented lines for every slot in the list,
