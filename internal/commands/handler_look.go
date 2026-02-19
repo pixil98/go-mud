@@ -88,7 +88,7 @@ func (f *LookHandlerFactory) describeMob(mob *MobileRef) string {
 }
 
 func (f *LookHandlerFactory) describeObj(obj *ObjectRef) string {
-	if !obj.instance.Definition.HasFlag(game.ObjectFlagContainer) {
+	if !obj.instance.Object.Id().HasFlag(game.ObjectFlagContainer) {
 		return obj.Description
 	}
 

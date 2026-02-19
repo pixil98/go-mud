@@ -3,29 +3,19 @@ package commands
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/storage"
 )
-
-// saveCharacter persists the character's current session state (location, inventory, etc.)
-// to the character store. Shared by save and quit handlers.
-func saveCharacter(world *game.WorldState, cmdCtx *CommandContext) error {
-	zoneId, roomId := cmdCtx.Session.Location()
-	cmdCtx.Actor.LastZone = zoneId
-	cmdCtx.Actor.LastRoom = roomId
-
-	return world.Characters().Save(strings.ToLower(cmdCtx.Actor.Name), cmdCtx.Actor)
-}
 
 // SaveHandlerFactory creates handlers that persist the player's character.
 type SaveHandlerFactory struct {
-	world *game.WorldState
+	chars storage.Storer[*game.Character]
 	pub   Publisher
 }
 
-func NewSaveHandlerFactory(world *game.WorldState, pub Publisher) *SaveHandlerFactory {
-	return &SaveHandlerFactory{world: world, pub: pub}
+func NewSaveHandlerFactory(chars storage.Storer[*game.Character], pub Publisher) *SaveHandlerFactory {
+	return &SaveHandlerFactory{chars: chars, pub: pub}
 }
 
 func (f *SaveHandlerFactory) Spec() *HandlerSpec {
@@ -38,7 +28,7 @@ func (f *SaveHandlerFactory) ValidateConfig(config map[string]any) error {
 
 func (f *SaveHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		if err := saveCharacter(f.world, cmdCtx); err != nil {
+		if err := saveCharacter(f.chars, cmdCtx.Session); err != nil {
 			return fmt.Errorf("saving character: %w", err)
 		}
 
@@ -48,4 +38,14 @@ func (f *SaveHandlerFactory) Create() (CommandFunc, error) {
 
 		return nil
 	}, nil
+}
+
+// saveCharacter persists the character's current session state (location, inventory, etc.)
+// to the character store. Shared by save and quit handlers.
+func saveCharacter(chars storage.Storer[*game.Character], session *game.PlayerState) error {
+	zoneId, roomId := session.Location()
+	session.Character.LastZone = zoneId
+	session.Character.LastRoom = roomId
+
+	return chars.Save(string(session.CharId), session.Character)
 }

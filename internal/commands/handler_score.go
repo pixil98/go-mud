@@ -12,12 +12,11 @@ const scoreBoxWidth = 40
 
 // ScoreHandlerFactory creates handlers that display character/mobile stats.
 type ScoreHandlerFactory struct {
-	world *game.WorldState
-	pub   Publisher
+	pub Publisher
 }
 
-func NewScoreHandlerFactory(world *game.WorldState, pub Publisher) *ScoreHandlerFactory {
-	return &ScoreHandlerFactory{world: world, pub: pub}
+func NewScoreHandlerFactory(pub Publisher) *ScoreHandlerFactory {
+	return &ScoreHandlerFactory{pub: pub}
 }
 
 func (f *ScoreHandlerFactory) Spec() *HandlerSpec {
@@ -51,13 +50,9 @@ func (f *ScoreHandlerFactory) resolveSections(cmdCtx *CommandContext) ([]game.St
 	if target := cmdCtx.Targets["target"]; target != nil {
 		switch target.Type {
 		case TargetTypePlayer:
-			char := f.world.Characters().Get(string(target.Player.CharId))
-			if char == nil {
-				return nil, NewUserError(fmt.Sprintf("%s is no longer here.", target.Player.Name))
-			}
-			return char.StatSections(), nil
+			return target.Player.session.Character.StatSections(), nil
 		case TargetTypeMobile:
-			return target.Mob.instance.Definition.StatSections(), nil
+			return target.Mob.instance.Mobile.Id().StatSections(), nil
 		}
 	}
 

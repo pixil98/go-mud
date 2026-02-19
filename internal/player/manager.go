@@ -29,13 +29,13 @@ func NewPlayerManager(cmd *commands.Handler, world *game.WorldState, dict *game.
 		cmdHandler:  cmd,
 		world:       world,
 		dict:        dict,
-		loginFlow:   &loginFlow{world: world},
+		loginFlow:   &loginFlow{chars: dict.Characters},
 		defaultZone: storage.Identifier(defaultZone),
 		defaultRoom: storage.Identifier(defaultRoom),
 	}
 
-	pm.races = &storage.SelectableStorer[*game.Race]{Storer: dict.Races}
-	pm.pronouns = &storage.SelectableStorer[*game.Pronoun]{Storer: dict.Pronouns}
+	pm.races = storage.NewSelectableStorer(dict.Races)
+	pm.pronouns = storage.NewSelectableStorer(dict.Pronouns)
 
 	return pm
 }
@@ -62,7 +62,7 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
 	}
 
 	// Save the character back to preserve changes
-	err = m.world.Characters().Save(strings.ToLower(char.Name), char)
+	err = m.dict.Characters.Save(strings.ToLower(char.Name), char)
 	if err != nil {
 		return nil, fmt.Errorf("saving character: %w", err)
 	}
@@ -81,7 +81,7 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
 	startZone, startRoom := m.startingLocation(char)
 
 	// Register player in world state
-	err = m.world.AddPlayer(charId, p.msgs, startZone, startRoom)
+	err = m.world.AddPlayer(charId, m.dict.Characters.Get(charId.String()), p.msgs, startZone, startRoom)
 	if err != nil {
 		return nil, fmt.Errorf("registering player in world: %w", err)
 	}
@@ -120,20 +120,20 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
 
 // initCharacter prompts for any missing traits on a character.
 func (m *PlayerManager) initCharacter(rw io.ReadWriter, char *game.Character) error {
-	for char.PronounId == "" {
+	for char.Pronoun.Get() == "" {
 		sel, err := m.pronouns.Prompt(rw, "What are your pronouns?")
 		if err != nil {
 			return fmt.Errorf("selecting pronouns: %w", err)
 		}
-		char.PronounId = sel
+		char.Pronoun = storage.NewSmartIdentifier[*game.Pronoun](string(sel))
 	}
 
-	for char.RaceId == "" {
+	for char.Race.Get() == "" {
 		sel, err := m.races.Prompt(rw, "What is your race?")
 		if err != nil {
 			return fmt.Errorf("selecting race: %w", err)
 		}
-		char.RaceId = sel
+		char.Race = storage.NewSmartIdentifier[*game.Race](string(sel))
 	}
 
 	if char.Level == 0 {
@@ -151,19 +151,19 @@ func (m *PlayerManager) startingLocation(char *game.Character) (storage.Identifi
 	}
 
 	// Verify zone exists
-	if m.world.Zones().Get(string(char.LastZone)) == nil {
+	if m.dict.Zones.Get(string(char.LastZone)) == nil {
 		slog.Warn("saved zone not found, using default", "char", char.Name, "zone", char.LastZone)
 		return m.defaultZone, m.defaultRoom
 	}
 
 	// Verify room exists and is in the saved zone
-	room := m.world.Rooms().Get(string(char.LastRoom))
+	room := m.dict.Rooms.Get(string(char.LastRoom))
 	if room == nil {
 		slog.Warn("saved room not found, using default", "char", char.Name, "room", char.LastRoom)
 		return m.defaultZone, m.defaultRoom
 	}
-	if room.ZoneId != string(char.LastZone) {
-		slog.Warn("saved room not in saved zone, using default", "char", char.Name, "zone", char.LastZone, "room", char.LastRoom, "room_zone", room.ZoneId)
+	if room.Zone.Get() != string(char.LastZone) {
+		slog.Warn("saved room not in saved zone, using default", "char", char.Name, "zone", char.LastZone, "room", char.LastRoom, "room_zone", room.Zone.Get())
 		return m.defaultZone, m.defaultRoom
 	}
 

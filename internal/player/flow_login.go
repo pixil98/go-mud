@@ -10,12 +10,13 @@ import (
 
 	"github.com/pixil98/go-mud/internal"
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/storage"
 )
 
 const maxPasswordTries = 3
 
 type loginFlow struct {
-	world *game.WorldState
+	chars storage.Storer[*game.Character]
 }
 
 func (f *loginFlow) Run(rw io.ReadWriter) (*game.Character, error) {
@@ -48,7 +49,7 @@ func (f *loginFlow) Run(rw io.ReadWriter) (*game.Character, error) {
 		}
 
 		// Look up the character
-		char := f.world.Characters().Get(strings.ToLower(username))
+		char := f.chars.Get(strings.ToLower(username))
 
 		// Must be a new character
 		if char == nil {
@@ -121,10 +122,6 @@ func (f *loginFlow) newCharacter(rw io.ReadWriter, username string) (*game.Chara
 			return nil, fmt.Errorf("hashing password: %w", err)
 		}
 
-		return &game.Character{
-			Name:         username,
-			Password:     string(hash),
-			DetailedDesc: "A plain, unremarkable adventurer.",
-		}, nil
+		return game.NewCharacter(username, string(hash)), nil
 	}
 }

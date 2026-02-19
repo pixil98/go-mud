@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // --- Mock finders ---
@@ -27,7 +28,7 @@ func (f *mockFinder) FindPlayer(name string) *game.PlayerState {
 
 func (f *mockFinder) FindMob(name string) *game.MobileInstance {
 	for _, mi := range f.mobs {
-		if mi.Definition != nil && mi.Definition.MatchName(name) {
+		if mi.Mobile.Id() != nil && mi.Mobile.Id().MatchName(name) {
 			return mi
 		}
 	}
@@ -36,7 +37,7 @@ func (f *mockFinder) FindMob(name string) *game.MobileInstance {
 
 func (f *mockFinder) FindObj(name string) *game.ObjectInstance {
 	for _, oi := range f.objects {
-		if oi.Definition != nil && oi.Definition.MatchName(name) {
+		if oi.Object.Id() != nil && oi.Object.Id().MatchName(name) {
 			return oi
 		}
 	}
@@ -150,8 +151,7 @@ func TestFindTarget_Player(t *testing.T) {
 func TestFindTarget_Mobile(t *testing.T) {
 	guard := &game.MobileInstance{
 		InstanceId: "guard-1",
-		MobileId:   "guard",
-		Definition: &game.Mobile{Aliases: []string{"guard", "soldier"}, ShortDesc: "a burly guard"},
+		Mobile:     storage.NewResolvedSmartIdentifier("guard", &game.Mobile{Aliases: []string{"guard", "soldier"}, ShortDesc: "a burly guard"}),
 	}
 
 	tests := map[string]struct {
@@ -211,8 +211,7 @@ func TestFindTarget_Mobile(t *testing.T) {
 func TestFindTarget_Object(t *testing.T) {
 	sword := &game.ObjectInstance{
 		InstanceId: "sword-1",
-		ObjectId:   "sword",
-		Definition: &game.Object{Aliases: []string{"sword"}, ShortDesc: "a rusty sword"},
+		Object:     storage.NewResolvedSmartIdentifier("sword", &game.Object{Aliases: []string{"sword"}, ShortDesc: "a rusty sword"}),
 	}
 
 	tests := map[string]struct {
@@ -296,8 +295,7 @@ func TestFindTarget_Combined(t *testing.T) {
 	}
 	guard := &game.MobileInstance{
 		InstanceId: "guard-1",
-		MobileId:   "guard",
-		Definition: &game.Mobile{Aliases: []string{"guard"}, ShortDesc: "a burly guard"},
+		Mobile:     storage.NewResolvedSmartIdentifier("guard", &game.Mobile{Aliases: []string{"guard"}, ShortDesc: "a burly guard"}),
 	}
 
 	tests := map[string]struct {
@@ -358,7 +356,7 @@ func TestFindTarget_TypeFiltering(t *testing.T) {
 			"bob": {CharId: "bob", Character: &game.Character{Name: "Bob"}},
 		},
 		mobs: map[string]*game.MobileInstance{
-			"bob-1": {InstanceId: "bob-1", Definition: &game.Mobile{Aliases: []string{"bob"}, ShortDesc: "a mob named bob"}},
+			"bob-1": {InstanceId: "bob-1", Mobile: storage.NewResolvedSmartIdentifier("bob", &game.Mobile{Aliases: []string{"bob"}, ShortDesc: "a mob named bob"})},
 		},
 	}
 	spaces := []SearchSpace{{Finder: finder}}
@@ -487,9 +485,9 @@ func TestResolveSpecs_ScopeTarget(t *testing.T) {
 	torchDef := &game.Object{Aliases: []string{"torch"}, ShortDesc: "a lit torch"}
 	swordDef := &game.Object{Aliases: []string{"sword"}, ShortDesc: "a rusty sword"}
 
-	torch := &game.ObjectInstance{InstanceId: "torch-1", ObjectId: "torch", Definition: torchDef}
+	torch := &game.ObjectInstance{InstanceId: "torch-1", Object: storage.NewResolvedSmartIdentifier("torch", torchDef)}
 	chestWithTorch := &game.ObjectInstance{
-		InstanceId: "chest-1", ObjectId: "chest", Definition: chestDef,
+		InstanceId: "chest-1", Object: storage.NewResolvedSmartIdentifier("chest", chestDef),
 		Contents: func() *game.Inventory {
 			inv := game.NewInventory()
 			inv.AddObj(torch)
@@ -497,10 +495,10 @@ func TestResolveSpecs_ScopeTarget(t *testing.T) {
 		}(),
 	}
 	emptyChest := &game.ObjectInstance{
-		InstanceId: "chest-1", ObjectId: "chest", Definition: chestDef,
+		InstanceId: "chest-1", Object: storage.NewResolvedSmartIdentifier("chest", chestDef),
 	}
 	swordObj := &game.ObjectInstance{
-		InstanceId: "sword-1", ObjectId: "sword", Definition: swordDef,
+		InstanceId: "sword-1", Object: storage.NewResolvedSmartIdentifier("sword", swordDef),
 	}
 
 	tests := map[string]struct {
@@ -541,7 +539,7 @@ func TestResolveSpecs_ScopeTarget(t *testing.T) {
 		},
 		"empty container contents not found": {
 			roomObjects: []*game.ObjectInstance{
-				{InstanceId: "chest-2", ObjectId: "chest", Definition: chestDef,
+				{InstanceId: "chest-2", Object: storage.NewResolvedSmartIdentifier("chest", chestDef),
 					Contents: game.NewInventory()},
 			},
 			specs: []TargetSpec{

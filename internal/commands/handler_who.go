@@ -34,16 +34,11 @@ func (f *WhoHandlerFactory) Create() (CommandFunc, error) {
 		var lines []string
 
 		f.world.ForEachPlayer(func(charId storage.Identifier, state game.PlayerState) {
-			char := f.world.Characters().Get(string(charId))
-			if char == nil {
-				return
-			}
-
-			parts := []string{char.Race.Abbreviation}
-			parts = append(parts, strconv.Itoa(char.Level))
+			parts := []string{state.Character.Race.Id().Abbreviation}
+			parts = append(parts, strconv.Itoa(state.Character.Level))
 			bracket := strings.Join(parts, " ")
 
-			lines = append(lines, fmt.Sprintf("[%s] %s %s", bracket, char.Name, char.Title))
+			lines = append(lines, fmt.Sprintf("[%s] %s %s", bracket, state.Character.Name, state.Character.Title))
 		})
 
 		output := "Players Online:\n" + strings.Join(lines, "\n")

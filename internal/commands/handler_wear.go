@@ -11,12 +11,11 @@ import (
 // Targets:
 //   - target (required): the object to wear
 type WearHandlerFactory struct {
-	world *game.WorldState
-	pub   Publisher
+	pub Publisher
 }
 
-func NewWearHandlerFactory(world *game.WorldState, pub Publisher) *WearHandlerFactory {
-	return &WearHandlerFactory{world: world, pub: pub}
+func NewWearHandlerFactory(pub Publisher) *WearHandlerFactory {
+	return &WearHandlerFactory{pub: pub}
 }
 
 func (f *WearHandlerFactory) Spec() *HandlerSpec {
@@ -39,14 +38,14 @@ func (f *WearHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		// Use resolved object definition
-		obj := target.Obj.instance.Definition
+		obj := target.Obj.instance.Object.Id()
 
 		// Check if the item is wearable
 		if !obj.HasFlag(game.ObjectFlagWearable) {
 			return NewUserError(fmt.Sprintf("You can't wear %s.", obj.ShortDesc))
 		}
 
-		race := cmdCtx.Actor.Race
+		race := cmdCtx.Actor.Race.Id()
 
 		// Initialize equipment if needed
 		if cmdCtx.Actor.Equipment == nil {

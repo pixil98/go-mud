@@ -66,9 +66,8 @@ func (m *Mobile) Validate() error {
 // MobileInstance represents a single spawned instance of a Mobile definition.
 // Location is tracked by the containing structure (room map).
 type MobileInstance struct {
-	InstanceId string             // Unique ID: "<mobile-id>-<counter>" e.g., "millbrook-guard-1"
-	MobileId   storage.Identifier // Reference to the Mobile definition
-	Definition *Mobile
+	InstanceId string
+	Mobile     storage.SmartIdentifier[*Mobile]
 
 	ActorInstance
 }

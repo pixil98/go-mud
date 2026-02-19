@@ -52,6 +52,7 @@ type PlayerRef struct {
 	CharId      storage.Identifier
 	Name        string
 	Description string
+	session     *game.PlayerState
 }
 
 func PlayerRefFromState(ps *game.PlayerState) *PlayerRef {
@@ -62,6 +63,7 @@ func PlayerRefFromState(ps *game.PlayerState) *PlayerRef {
 		CharId:      ps.CharId,
 		Name:        ps.Character.Name,
 		Description: ps.Character.DetailedDesc,
+		session:     ps,
 	}
 }
 
@@ -74,13 +76,13 @@ type MobileRef struct {
 }
 
 func MobRefFromInstance(mi *game.MobileInstance) *MobileRef {
-	if mi == nil || mi.Definition == nil {
+	if mi == nil || mi.Mobile.Id() == nil {
 		return nil
 	}
 	return &MobileRef{
 		InstanceId:  mi.InstanceId,
-		Name:        mi.Definition.ShortDesc,
-		Description: mi.Definition.DetailedDesc,
+		Name:        mi.Mobile.Id().ShortDesc,
+		Description: mi.Mobile.Id().DetailedDesc,
 		instance:    mi,
 	}
 }
@@ -88,7 +90,6 @@ func MobRefFromInstance(mi *game.MobileInstance) *MobileRef {
 // ObjectRef is the template-facing view of a resolved object.
 type ObjectRef struct {
 	InstanceId  string
-	ObjectId    storage.Identifier
 	Name        string
 	Description string
 	source      ObjectRemover
@@ -96,14 +97,13 @@ type ObjectRef struct {
 }
 
 func ObjRefFromInstance(oi *game.ObjectInstance, source ObjectRemover) *ObjectRef {
-	if oi == nil || oi.Definition == nil {
+	if oi == nil || oi.Object.Id() == nil {
 		return nil
 	}
 	return &ObjectRef{
 		InstanceId:  oi.InstanceId,
-		ObjectId:    oi.ObjectId,
-		Name:        oi.Definition.ShortDesc,
-		Description: oi.Definition.DetailedDesc,
+		Name:        oi.Object.Id().ShortDesc,
+		Description: oi.Object.Id().DetailedDesc,
 		source:      source,
 		instance:    oi,
 	}
@@ -245,7 +245,7 @@ func containerSpaces(spec TargetSpec, targets map[string]*TargetRef) ([]SearchSp
 	}
 
 	// Validate it's a container
-	if scopeRef.Obj.instance.Definition == nil || !scopeRef.Obj.instance.Definition.HasFlag(game.ObjectFlagContainer) {
+	if !scopeRef.Obj.instance.Object.Id().HasFlag(game.ObjectFlagContainer) {
 		capName := strings.ToUpper(scopeRef.Obj.Name[:1]) + scopeRef.Obj.Name[1:]
 		return nil, false, NewUserError(fmt.Sprintf("%s is not a container.", capName))
 	}

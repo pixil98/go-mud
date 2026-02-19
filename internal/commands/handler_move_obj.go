@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // MoveObjHandlerFactory creates handlers that move objects between holders.
@@ -15,10 +16,11 @@ import (
 //   - no_self_target (optional): target name to prevent self-targeting
 type MoveObjHandlerFactory struct {
 	world *game.WorldState
+	chars storage.Storer[*game.Character]
 	pub   Publisher
 }
 
-func NewMoveObjHandlerFactory(world *game.WorldState, pub Publisher) *MoveObjHandlerFactory {
+func NewMoveObjHandlerFactory(world *game.WorldState, chars storage.Storer[*game.Character], pub Publisher) *MoveObjHandlerFactory {
 	return &MoveObjHandlerFactory{world: world, pub: pub}
 }
 
@@ -53,7 +55,7 @@ func (f *MoveObjHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		// Check immobile flag
-		if item.Obj.instance.Definition.HasFlag(game.ObjectFlagImmobile) {
+		if item.Obj.instance.Object.Id().HasFlag(game.ObjectFlagImmobile) {
 			return NewUserError(fmt.Sprintf("You can't seem to move %s.", item.Obj.Name))
 		}
 
@@ -114,7 +116,7 @@ func (f *MoveObjHandlerFactory) resolveDestination(cmdCtx *CommandContext) (Obje
 // For mobile targets, returns their inventory.
 func (f *MoveObjHandlerFactory) holderForTarget(ref *TargetRef) (ObjectHolder, error) {
 	if ref.Player != nil {
-		char := f.world.Characters().Get(string(ref.Player.CharId))
+		char := f.chars.Get(string(ref.Player.CharId))
 		if char == nil {
 			return nil, NewUserError(fmt.Sprintf("%s is no longer here.", ref.Player.Name))
 		}
@@ -126,7 +128,7 @@ func (f *MoveObjHandlerFactory) holderForTarget(ref *TargetRef) (ObjectHolder, e
 	}
 
 	if ref.Obj != nil {
-		if !ref.Obj.instance.Definition.HasFlag(game.ObjectFlagContainer) {
+		if !ref.Obj.instance.Object.Id().HasFlag(game.ObjectFlagContainer) {
 			name := strings.ToUpper(ref.Obj.Name[:1]) + ref.Obj.Name[1:]
 			return nil, NewUserError(fmt.Sprintf("%s is not a container.", name))
 		}

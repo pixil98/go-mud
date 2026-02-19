@@ -27,5 +27,11 @@ func (d *Dictionary) Resolve() error {
 			return fmt.Errorf("mobile %s: %w", id, err)
 		}
 	}
+
+	for id, room := range d.Rooms.GetAll() {
+		if err := room.Resolve(d); err != nil {
+			return fmt.Errorf("mobile %s: %w", id, err)
+		}
+	}
 	return nil
 }

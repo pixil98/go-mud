@@ -10,13 +10,12 @@ import (
 
 // InventoryHandlerFactory creates handlers that list the player's inventory.
 type InventoryHandlerFactory struct {
-	world *game.WorldState
-	pub   Publisher
+	pub Publisher
 }
 
 // NewInventoryHandlerFactory creates a new InventoryHandlerFactory.
-func NewInventoryHandlerFactory(world *game.WorldState, pub Publisher) *InventoryHandlerFactory {
-	return &InventoryHandlerFactory{world: world, pub: pub}
+func NewInventoryHandlerFactory(pub Publisher) *InventoryHandlerFactory {
+	return &InventoryHandlerFactory{pub: pub}
 }
 
 func (f *InventoryHandlerFactory) Spec() *HandlerSpec {
@@ -44,12 +43,12 @@ func (f *InventoryHandlerFactory) Create() (CommandFunc, error) {
 // FormatInventoryItems returns indented lines describing items in an inventory.
 // Returns ["  Nothing"] if the inventory is nil or empty.
 func FormatInventoryItems(inv *game.Inventory) []string {
-	if inv == nil || len(inv.Items) == 0 {
+	if inv == nil || len(inv.Objects) == 0 {
 		return []string{"  Nothing"}
 	}
 	var lines []string
-	for _, oi := range inv.Items {
-		lines = append(lines, fmt.Sprintf("  %s", oi.Definition.ShortDesc))
+	for _, oi := range inv.Objects {
+		lines = append(lines, fmt.Sprintf("  %s", oi.Object.Id().ShortDesc))
 	}
 	if len(lines) == 0 {
 		return []string{"  Nothing"}

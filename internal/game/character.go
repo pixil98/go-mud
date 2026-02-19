@@ -28,6 +28,18 @@ type Character struct {
 	ActorInstance
 }
 
+func NewCharacter(name string, pass string) *Character {
+	return &Character{
+		Name:     name,
+		Password: pass,
+		Title:    "A plain, unremarkable adventurer.",
+		ActorInstance: ActorInstance{
+			Inventory: NewInventory(),
+			Equipment: NewEquipment(),
+		},
+	}
+}
+
 // StatSections returns the character's stat display sections.
 func (c *Character) StatSections() []StatSection {
 	sections := c.Actor.statSections()
@@ -52,32 +64,41 @@ func (c *Character) Resolve(dict *Dictionary) error {
 	}
 
 	if c.Inventory != nil {
-		for _, oi := range c.Inventory.Items {
-			populateObjDefinition(oi, dict.Objects)
+		for _, oi := range c.Inventory.Objects {
+			if err := resolveObj(oi, dict.Objects); err != nil {
+				return err
+			}
 		}
 	}
 	if c.Equipment != nil {
 		for _, slot := range c.Equipment.Items {
 			if slot.Obj != nil {
-				populateObjDefinition(slot.Obj, dict.Objects)
+				if err := resolveObj(slot.Obj, dict.Objects); err != nil {
+					return err
+				}
 			}
 		}
 	}
 	return nil
 }
 
-// populateObjDefinition links an ObjectInstance to its definition and
+// resolveObj resolves an ObjectInstance's SmartIdentifier and
 // ensures containers have a non-nil Contents inventory.
-func populateObjDefinition(oi *ObjectInstance, objDefs storage.Storer[*Object]) {
-	oi.Definition = objDefs.Get(string(oi.ObjectId))
-	if oi.Definition != nil && oi.Definition.HasFlag(ObjectFlagContainer) && oi.Contents == nil {
+func resolveObj(oi *ObjectInstance, objDefs storage.Storer[*Object]) error {
+	if err := oi.Object.Resolve(objDefs); err != nil {
+		return err
+	}
+	if oi.Object.Id().HasFlag(ObjectFlagContainer) && oi.Contents == nil {
 		oi.Contents = NewInventory()
 	}
 	if oi.Contents != nil {
-		for _, ci := range oi.Contents.Items {
-			populateObjDefinition(ci, objDefs)
+		for _, ci := range oi.Contents.Objects {
+			if err := resolveObj(ci, objDefs); err != nil {
+				return err
+			}
 		}
 	}
+	return nil
 }
 
 // Validate satisfies storage.ValidatingSpec

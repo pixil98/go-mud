@@ -79,7 +79,7 @@ func (z *ZoneInstance) AddRoom(roomId storage.Identifier, ri *RoomInstance) {
 
 // Reset checks reset conditions and respawns mobs/objects if appropriate.
 // If force is true, bypasses time/occupancy checks.
-func (z *ZoneInstance) Reset(force bool, mobiles storage.Storer[*Mobile], objects storage.Storer[*Object]) {
+func (z *ZoneInstance) Reset(force bool) {
 	now := time.Now()
 
 	if !force {
@@ -95,7 +95,7 @@ func (z *ZoneInstance) Reset(force bool, mobiles storage.Storer[*Mobile], object
 	}
 
 	for _, ri := range z.rooms {
-		ri.Reset(mobiles, objects)
+		ri.Reset()
 	}
 
 	if z.lifespanDuration > 0 {
