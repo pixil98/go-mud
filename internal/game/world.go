@@ -20,11 +20,15 @@ type WorldState struct {
 }
 
 // NewWorldState creates a new WorldState with zone and room instances initialized.
-func NewWorldState(sub Subscriber, zones storage.Storer[*Zone], rooms storage.Storer[*Room]) *WorldState {
+func NewWorldState(sub Subscriber, zones storage.Storer[*Zone], rooms storage.Storer[*Room]) (*WorldState, error) {
 	// Build zone instances
 	instances := make(map[storage.Identifier]*ZoneInstance)
 	for zoneId, zone := range zones.GetAll() {
-		instances[zoneId] = NewZoneInstance(zoneId, zone)
+		zi, err := NewZoneInstance(zoneId, zone)
+		if err != nil {
+			return nil, err
+		}
+		instances[zoneId] = zi
 	}
 
 	// Build room instances and add to their zones
@@ -39,7 +43,7 @@ func NewWorldState(sub Subscriber, zones storage.Storer[*Zone], rooms storage.St
 		subscriber: sub,
 		players:    make(map[storage.Identifier]*PlayerState),
 		instances:  instances,
-	}
+	}, nil
 }
 
 // Instances returns all zone instances.

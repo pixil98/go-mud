@@ -64,12 +64,20 @@ type ZoneInstance struct {
 	rooms map[storage.Identifier]*RoomInstance
 }
 
-func NewZoneInstance(zoneId storage.Identifier, def *Zone) *ZoneInstance {
-	return &ZoneInstance{
+func NewZoneInstance(zoneId storage.Identifier, def *Zone) (*ZoneInstance, error) {
+	zi := &ZoneInstance{
 		ZoneId:     zoneId,
 		Definition: def,
 		rooms:      make(map[storage.Identifier]*RoomInstance),
 	}
+	if def.Lifespan != "" {
+		d, err := time.ParseDuration(def.Lifespan)
+		if err != nil {
+			return nil, fmt.Errorf("zone %q: invalid lifespan %q: %w", zoneId, def.Lifespan, err)
+		}
+		zi.lifespanDuration = d
+	}
+	return zi, nil
 }
 
 // AddRoom adds a room instance to the zone.
