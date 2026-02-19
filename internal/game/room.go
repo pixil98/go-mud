@@ -27,12 +27,7 @@ type Room struct {
 	ObjSpawns   []ObjectSpawn                      `json:"object_spawns"` // objects to spawn
 }
 
-// Validate satisfies storage.ValidatingSpec.
-// TODO: Add cross-reference validation to ensure:
-// - The room's zone_id references an existing zone
-// - All exit destinations (zone_id + room_id) reference existing rooms
-// This would require access to the zone and room stores, possibly via a
-// ValidateWithStores(zones, rooms) method or a post-load validation pass.
+// Validate a room definition
 func (r *Room) Validate() error {
 	el := errors.NewErrorList()
 

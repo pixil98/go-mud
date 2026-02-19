@@ -117,7 +117,7 @@ func resolveObj(oi *ObjectInstance, objDefs storage.Storer[*Object]) error {
 	return nil
 }
 
-// Validate satisfies storage.ValidatingSpec
+// Validate a character definition
 // TODO: We should validate some things here
 func (c *Character) Validate() error {
 	return nil
