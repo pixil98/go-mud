@@ -16,19 +16,11 @@ type WorldState struct {
 	subscriber Subscriber
 	players    map[storage.Identifier]*PlayerState
 
-	// Stores for looking up entities
-	chars   storage.Storer[*Character]
-	zones   storage.Storer[*Zone]
-	rooms   storage.Storer[*Room]
-	mobiles storage.Storer[*Mobile]
-	objects storage.Storer[*Object]
-	races   storage.Storer[*Race]
-
 	instances map[storage.Identifier]*ZoneInstance
 }
 
 // NewWorldState creates a new WorldState with zone and room instances initialized.
-func NewWorldState(sub Subscriber, chars storage.Storer[*Character], zones storage.Storer[*Zone], rooms storage.Storer[*Room], mobiles storage.Storer[*Mobile], objects storage.Storer[*Object], races storage.Storer[*Race]) *WorldState {
+func NewWorldState(sub Subscriber, zones storage.Storer[*Zone], rooms storage.Storer[*Room]) *WorldState {
 	// Build zone instances
 	instances := make(map[storage.Identifier]*ZoneInstance)
 	for zoneId, zone := range zones.GetAll() {
@@ -37,7 +29,7 @@ func NewWorldState(sub Subscriber, chars storage.Storer[*Character], zones stora
 
 	// Build room instances and add to their zones
 	for roomId, room := range rooms.GetAll() {
-		zoneId := storage.Identifier(room.ZoneId)
+		zoneId := storage.Identifier(room.Zone.Get())
 		if zi, ok := instances[zoneId]; ok {
 			zi.AddRoom(roomId, NewRoomInstance(roomId, room))
 		}
@@ -46,46 +38,8 @@ func NewWorldState(sub Subscriber, chars storage.Storer[*Character], zones stora
 	return &WorldState{
 		subscriber: sub,
 		players:    make(map[storage.Identifier]*PlayerState),
-		chars:      chars,
-		zones:      zones,
-		rooms:      rooms,
-		mobiles:    mobiles,
-		objects:    objects,
-		races:      races,
 		instances:  instances,
 	}
-}
-
-// --- WorldState Methods (manage the collection) ---
-
-// Characters returns the character store.
-func (w *WorldState) Characters() storage.Storer[*Character] {
-	return w.chars
-}
-
-// Zones returns the zone store.
-func (w *WorldState) Zones() storage.Storer[*Zone] {
-	return w.zones
-}
-
-// Rooms returns the room store.
-func (w *WorldState) Rooms() storage.Storer[*Room] {
-	return w.rooms
-}
-
-// Mobiles returns the mobile store.
-func (w *WorldState) Mobiles() storage.Storer[*Mobile] {
-	return w.mobiles
-}
-
-// Objects returns the object store.
-func (w *WorldState) Objects() storage.Storer[*Object] {
-	return w.objects
-}
-
-// Races returns the race store.
-func (w *WorldState) Races() storage.Storer[*Race] {
-	return w.races
 }
 
 // Instances returns all zone instances.
@@ -102,11 +56,10 @@ func (w *WorldState) GetPlayer(charId storage.Identifier) *PlayerState {
 }
 
 // AddPlayer registers a new player in the world state and adds them to the room instance.
-func (w *WorldState) AddPlayer(charId storage.Identifier, msgs chan []byte, zoneId storage.Identifier, roomId storage.Identifier) error {
+func (w *WorldState) AddPlayer(charId storage.Identifier, char *Character, msgs chan []byte, zoneId storage.Identifier, roomId storage.Identifier) error {
 	w.mu.Lock()
-	defer w.mu.Unlock()
-
 	if _, exists := w.players[charId]; exists {
+		w.mu.Unlock()
 		return ErrPlayerExists
 	}
 
@@ -115,30 +68,34 @@ func (w *WorldState) AddPlayer(charId storage.Identifier, msgs chan []byte, zone
 		subs:         make(map[string]func()),
 		msgs:         msgs,
 		CharId:       charId,
-		Character:    w.Characters().Get(string(charId)),
+		Character:    char,
 		ZoneId:       zoneId,
 		RoomId:       roomId,
 		Quit:         false,
 		LastActivity: time.Now(),
 	}
 	w.players[charId] = ps
-	w.instances[zoneId].GetRoom(roomId).AddPlayer(charId, ps)
+	room := w.instances[zoneId].GetRoom(roomId)
+	w.mu.Unlock()
 
+	room.AddPlayer(charId, ps)
 	return nil
 }
 
 // RemovePlayer removes a player from the world state and from the room instance.
 func (w *WorldState) RemovePlayer(charId storage.Identifier) error {
 	w.mu.Lock()
-	defer w.mu.Unlock()
-
 	ps, exists := w.players[charId]
 	if !exists {
+		w.mu.Unlock()
 		return ErrPlayerNotFound
 	}
 
-	w.instances[ps.ZoneId].GetRoom(ps.RoomId).RemovePlayer(charId)
+	room := w.instances[ps.ZoneId].GetRoom(ps.RoomId)
 	delete(w.players, charId)
+	w.mu.Unlock()
+
+	room.RemovePlayer(charId)
 	return nil
 }
 
@@ -191,7 +148,7 @@ type Subscriber interface {
 // Tick processes zone resets based on their reset mode and lifespan.
 func (w *WorldState) Tick(ctx context.Context) error {
 	for _, zi := range w.instances {
-		zi.Reset(false, w.mobiles, w.objects)
+		zi.Reset(false)
 	}
 	return nil
 }
@@ -225,7 +182,7 @@ func (p *PlayerState) Location() (zoneId, roomId storage.Identifier) {
 // and updates room instance player lists.
 func (p *PlayerState) Move(fromRoom, toRoom *RoomInstance) {
 	prevZone, prevRoom := p.ZoneId, p.RoomId
-	toZoneId := storage.Identifier(toRoom.Definition.ZoneId)
+	toZoneId := storage.Identifier(toRoom.Definition.Zone.Get())
 	toRoomId := toRoom.RoomId
 
 	// Update room player lists

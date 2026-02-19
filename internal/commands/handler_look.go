@@ -2,7 +2,6 @@ package commands
 
 import (
 	"context"
-	"fmt"
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/game"
@@ -33,10 +32,6 @@ func (f *LookHandlerFactory) ValidateConfig(config map[string]any) error {
 
 func (f *LookHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		if cmdCtx.Session == nil {
-			return fmt.Errorf("player state not found")
-		}
-
 		// Check if target was resolved (from targets section)
 		if target := cmdCtx.Targets["target"]; target != nil {
 			return f.showTarget(cmdCtx, target)
@@ -93,7 +88,7 @@ func (f *LookHandlerFactory) describeMob(mob *MobileRef) string {
 }
 
 func (f *LookHandlerFactory) describeObj(obj *ObjectRef) string {
-	if obj.instance == nil || obj.instance.Definition == nil || !obj.instance.Definition.HasFlag(game.ObjectFlagContainer) {
+	if !obj.instance.Object.Id().HasFlag(game.ObjectFlagContainer) {
 		return obj.Description
 	}
 

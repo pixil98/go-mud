@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sort"
 	"strings"
+	"sync"
 
 	"github.com/google/uuid"
 	"github.com/pixil98/go-errors"
@@ -14,24 +15,33 @@ import (
 // Contents lists objects to spawn inside this container (requires the container flag).
 // Supports nesting — content items can themselves be containers with contents.
 type ObjectSpawn struct {
-	ObjectId string        `json:"object_id"`
-	Contents []ObjectSpawn `json:"contents,omitempty"`
+	ObjectId storage.SmartIdentifier[*Object] `json:"object_id"`
+	Contents []ObjectSpawn                    `json:"contents,omitempty"`
+}
+
+func (s *ObjectSpawn) Resolve(objects storage.Storer[*Object]) error {
+	el := errors.NewErrorList()
+	el.Add(s.ObjectId.Resolve(objects))
+	for i := range s.Contents {
+		el.Add(s.Contents[i].Resolve(objects))
+	}
+	return el.Err()
 }
 
 // Exit defines a destination for movement from a room.
 type Exit struct {
-	ZoneId string `json:"zone_id,omitempty"` // Optional; defaults to current zone
-	RoomId string `json:"room_id"`
+	Zone storage.SmartIdentifier[*Zone] `json:"zone_id,omitempty"` // Optional; defaults to current zone
+	Room storage.SmartIdentifier[*Room] `json:"room_id"`
 }
 
 // Room represents a location within a zone.
 type Room struct {
-	Name        string          `json:"name"`
-	Description string          `json:"description"`
-	ZoneId      string          `json:"zone_id"`
-	Exits       map[string]Exit `json:"exits"`                   // direction -> destination
-	MobSpawns   []string        `json:"mobile_spawns,omitempty"` // mobile IDs to spawn; list duplicates for multiple
-	ObjSpawns   []ObjectSpawn   `json:"object_spawns,omitempty"` // objects to spawn
+	Name        string                             `json:"name"`
+	Description string                             `json:"description"`
+	Zone        storage.SmartIdentifier[*Zone]     `json:"zone_id"`
+	Exits       map[string]Exit                    `json:"exits"`                   // direction -> destination
+	MobSpawns   []storage.SmartIdentifier[*Mobile] `json:"mobile_spawns,omitempty"` // mobile IDs to spawn; list duplicates for multiple
+	ObjSpawns   []ObjectSpawn                      `json:"object_spawns,omitempty"` // objects to spawn
 }
 
 // Validate satisfies storage.ValidatingSpec.
@@ -46,24 +56,45 @@ func (r *Room) Validate() error {
 	if r.Name == "" {
 		el.Add(fmt.Errorf("room name is required"))
 	}
-	if r.ZoneId == "" {
-		el.Add(fmt.Errorf("zone_id is required"))
-	}
+	el.Add(r.Zone.Validate())
 
 	for dir, exit := range r.Exits {
-		if exit.RoomId == "" {
-			el.Add(fmt.Errorf("exit %s: room_id is required", dir))
+		if err := exit.Room.Validate(); err != nil {
+			el.Add(fmt.Errorf("exit %s: %w", dir, err))
 		}
 	}
 
 	return el.Err()
 }
 
+func (r *Room) Resolve(dict *Dictionary) error {
+	el := errors.NewErrorList()
+	el.Add(r.Zone.Resolve(dict.Zones))
+	for dir, exit := range r.Exits {
+		el.Add(exit.Room.Resolve(dict.Rooms))
+		if exit.Zone.Get() != "" {
+			el.Add(exit.Zone.Resolve(dict.Zones))
+			r.Exits[dir] = exit
+		}
+	}
+
+	for i := range r.MobSpawns {
+		el.Add(r.MobSpawns[i].Resolve(dict.Mobiles))
+	}
+	for i := range r.ObjSpawns {
+		el.Add(r.ObjSpawns[i].Resolve(dict.Objects))
+	}
+	return el.Err()
+}
+
 // RoomInstance holds the runtime state for a room — spawned mobs, objects, and players.
+// The mutex protects the players and mobiles maps. Object operations delegate to
+// the objects Inventory, which handles its own locking.
 type RoomInstance struct {
 	RoomId     storage.Identifier
 	Definition *Room
 
+	mu      sync.RWMutex
 	mobiles map[string]*MobileInstance
 	objects *Inventory
 	players map[storage.Identifier]*PlayerState
@@ -82,45 +113,50 @@ func NewRoomInstance(roomId storage.Identifier, def *Room) *RoomInstance {
 
 // Reset clears all mobs and objects and respawns them from the room definition.
 // Players are preserved.
-func (ri *RoomInstance) Reset(mobiles storage.Storer[*Mobile], objects storage.Storer[*Object]) {
+func (ri *RoomInstance) Reset() {
+	ri.mu.Lock()
 	ri.mobiles = make(map[string]*MobileInstance)
-	ri.objects = NewInventory()
-
-	for _, mobileId := range ri.Definition.MobSpawns {
-		ri.SpawnMob(storage.Identifier(mobileId), mobiles.Get(mobileId))
+	for _, mob := range ri.Definition.MobSpawns {
+		ri.spawnMob(mob)
 	}
+	ri.mu.Unlock()
+
+	ri.objects.Clear()
 	for _, spawn := range ri.Definition.ObjSpawns {
-		ri.AddObj(ri.spawnObjectInstance(spawn, objects))
+		ri.AddObj(ri.spawnObj(spawn))
 	}
 }
 
 // FindMob searches room mobs for one whose definition matches the given name.
 func (ri *RoomInstance) FindMob(name string) *MobileInstance {
+	ri.mu.RLock()
+	defer ri.mu.RUnlock()
+
 	for _, mi := range ri.mobiles {
-		if mi.Definition.MatchName(name) {
+		if mi.Mobile.Id().MatchName(name) {
 			return mi
 		}
 	}
 	return nil
 }
 
-// SpawnMob creates a new MobileInstance and adds it to the room.
-func (ri *RoomInstance) SpawnMob(mobileId storage.Identifier, def *Mobile) *MobileInstance {
+// spawnMob creates a new MobileInstance and adds it to the room.
+// Caller must hold the write lock.
+func (ri *RoomInstance) spawnMob(mob storage.SmartIdentifier[*Mobile]) *MobileInstance {
 	mi := &MobileInstance{
 		InstanceId: uuid.New().String(),
-		MobileId:   mobileId,
-		Definition: def,
+		Mobile:     mob,
 	}
 	ri.mobiles[mi.InstanceId] = mi
 	return mi
 }
 
-// spawnObjectInstance creates an ObjectInstance from an ObjectSpawn,
+// spawnObj creates an ObjectInstance from an ObjectSpawn,
 // recursively spawning any contents for containers.
-func (ri *RoomInstance) spawnObjectInstance(spawn ObjectSpawn, objDefs storage.Storer[*Object]) *ObjectInstance {
-	instance := NewObjectInstance(storage.Identifier(spawn.ObjectId), objDefs.Get(spawn.ObjectId))
+func (ri *RoomInstance) spawnObj(spawn ObjectSpawn) *ObjectInstance {
+	instance := NewObjectInstance(spawn.ObjectId)
 	for _, contentSpawn := range spawn.Contents {
-		instance.Contents.AddObj(ri.spawnObjectInstance(contentSpawn, objDefs))
+		instance.Contents.AddObj(ri.spawnObj(contentSpawn))
 	}
 	return instance
 }
@@ -142,6 +178,9 @@ func (ri *RoomInstance) RemoveObj(instanceId string) *ObjectInstance {
 
 // FindPlayer searches room players for one whose character name matches the given name.
 func (ri *RoomInstance) FindPlayer(name string) *PlayerState {
+	ri.mu.RLock()
+	defer ri.mu.RUnlock()
+
 	for _, ps := range ri.players {
 		if ps.Character.MatchName(name) {
 			return ps
@@ -152,11 +191,17 @@ func (ri *RoomInstance) FindPlayer(name string) *PlayerState {
 
 // AddPlayer adds a player to the room.
 func (ri *RoomInstance) AddPlayer(charId storage.Identifier, ps *PlayerState) {
+	ri.mu.Lock()
+	defer ri.mu.Unlock()
+
 	ri.players[charId] = ps
 }
 
 // RemovePlayer removes a player from the room.
 func (ri *RoomInstance) RemovePlayer(charId storage.Identifier) {
+	ri.mu.Lock()
+	defer ri.mu.Unlock()
+
 	delete(ri.players, charId)
 }
 
@@ -170,37 +215,33 @@ func (ri *RoomInstance) Describe(actorName string) string {
 	sb.WriteString("\n")
 
 	// Show objects
-	for _, oi := range ri.objects.Items {
-		if oi.Definition == nil {
-			continue
-		}
-		if oi.Definition.LongDesc != "" {
-			sb.WriteString(oi.Definition.LongDesc)
+	for _, oi := range ri.objects.Objects {
+		if oi.Object.Id().LongDesc != "" {
+			sb.WriteString(oi.Object.Id().LongDesc)
 		} else {
-			sb.WriteString(fmt.Sprintf("%s is here.", oi.Definition.ShortDesc))
+			sb.WriteString(fmt.Sprintf("%s is here.", oi.Object.Id().ShortDesc))
 		}
 		sb.WriteString("\n")
 	}
 
+	ri.mu.RLock()
 	// Show mobs
 	for _, mi := range ri.mobiles {
-		if mi.Definition == nil {
-			continue
-		}
-		if mi.Definition.LongDesc != "" {
-			sb.WriteString(mi.Definition.LongDesc)
+		if mi.Mobile.Id().LongDesc != "" {
+			sb.WriteString(mi.Mobile.Id().LongDesc)
 		} else {
-			sb.WriteString(fmt.Sprintf("%s is here.", mi.Definition.ShortDesc))
+			sb.WriteString(fmt.Sprintf("%s is here.", mi.Mobile.Id().ShortDesc))
 		}
 		sb.WriteString("\n")
 	}
 
 	// Show other players
 	for _, ps := range ri.players {
-		if ps.Character != nil && ps.Character.Name != actorName {
+		if ps.Character.Name != actorName {
 			sb.WriteString(fmt.Sprintf("%s is here.\n", ps.Character.Name))
 		}
 	}
+	ri.mu.RUnlock()
 
 	sb.WriteString("\n")
 	sb.WriteString(formatExits(ri.Definition.Exits))
@@ -208,9 +249,12 @@ func (ri *RoomInstance) Describe(actorName string) string {
 	return sb.String()
 }
 
-// Players returns all players in the room.
-func (ri *RoomInstance) Players() map[storage.Identifier]*PlayerState {
-	return ri.players
+// PlayerCount returns the number of players in the room.
+func (ri *RoomInstance) PlayerCount() int {
+	ri.mu.RLock()
+	defer ri.mu.RUnlock()
+
+	return len(ri.players)
 }
 
 func formatExits(exits map[string]Exit) string {

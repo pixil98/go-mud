@@ -41,10 +41,6 @@ func (f *MoveHandlerFactory) ValidateConfig(config map[string]any) error {
 
 func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		if cmdCtx.Session == nil {
-			return fmt.Errorf("player state not found")
-		}
-
 		// Read direction from expanded config
 		direction := strings.ToLower(cmdCtx.Config["direction"])
 		if direction == "" {
@@ -66,11 +62,11 @@ func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		// Determine destination zone (default to current if not specified)
-		destZone := storage.Identifier(exit.ZoneId)
-		if exit.ZoneId == "" {
+		destZone := storage.Identifier(exit.Zone.Get())
+		if exit.Zone.Get() == "" {
 			destZone = zoneId
 		}
-		destRoomId := storage.Identifier(exit.RoomId)
+		destRoomId := storage.Identifier(exit.Room.Get())
 
 		// Get destination room instance
 		toRoom := f.world.Instances()[destZone].GetRoom(destRoomId)

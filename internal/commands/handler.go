@@ -89,30 +89,33 @@ type Publisher interface {
 type Handler struct {
 	factories map[string]HandlerFactory
 	compiled  map[storage.Identifier]*compiledCommand
+	dict      *game.Dictionary
 }
 
-func NewHandler(c storage.Storer[*Command], publisher Publisher, world *game.WorldState) (*Handler, error) {
+func NewHandler(cmds storage.Storer[*Command], dict *game.Dictionary, publisher Publisher, world *game.WorldState) (*Handler, error) {
 	h := &Handler{
 		factories: make(map[string]HandlerFactory),
 		compiled:  make(map[storage.Identifier]*compiledCommand),
+		dict:      dict,
 	}
 
 	// Register built-in handlers
-	h.RegisterFactory("equipment", NewEquipmentHandlerFactory(world, publisher))
-	h.RegisterFactory("help", NewHelpHandlerFactory(c, publisher))
-	h.RegisterFactory("inventory", NewInventoryHandlerFactory(world, publisher))
+	h.RegisterFactory("equipment", NewEquipmentHandlerFactory(publisher))
+	h.RegisterFactory("help", NewHelpHandlerFactory(cmds, publisher))
+	h.RegisterFactory("inventory", NewInventoryHandlerFactory(publisher))
 	h.RegisterFactory("look", NewLookHandlerFactory(world, publisher))
 	h.RegisterFactory("message", NewMessageHandlerFactory(publisher))
 	h.RegisterFactory("move", NewMoveHandlerFactory(world, publisher))
-	h.RegisterFactory("move_obj", NewMoveObjHandlerFactory(world, publisher))
-	h.RegisterFactory("quit", NewQuitHandlerFactory(world))
-	h.RegisterFactory("save", NewSaveHandlerFactory(world, publisher))
+	h.RegisterFactory("move_obj", NewMoveObjHandlerFactory(world, dict.Characters, publisher))
+	h.RegisterFactory("quit", NewQuitHandlerFactory(dict.Characters))
+	h.RegisterFactory("save", NewSaveHandlerFactory(dict.Characters, publisher))
+	h.RegisterFactory("score", NewScoreHandlerFactory(publisher))
 	h.RegisterFactory("title", NewTitleHandlerFactory(publisher))
-	h.RegisterFactory("wear", NewWearHandlerFactory(world, publisher))
+	h.RegisterFactory("wear", NewWearHandlerFactory(publisher))
 	h.RegisterFactory("who", NewWhoHandlerFactory(world, publisher))
 
 	// Compile commands
-	for id, cmd := range c.GetAll() {
+	for id, cmd := range cmds.GetAll() {
 		err := h.compile(id, cmd)
 		if err != nil {
 			return nil, fmt.Errorf("compiling command %q: %w", id, err)
@@ -252,7 +255,7 @@ func (h *Handler) Exec(ctx context.Context, world *game.WorldState, charId stora
 		inputMap[input.Spec.Name] = input.Value
 	}
 
-	actor := world.Characters().Get(string(charId))
+	actor := h.dict.Characters.Get(string(charId))
 	session := world.GetPlayer(charId)
 
 	// Resolve targets from targets section

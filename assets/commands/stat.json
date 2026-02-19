@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "stat",
+    "spec": {
+        "handler": "score",
+        "category": "information",
+        "description": "View the stats of a player or mobile.",
+        "targets": [
+            {"name": "target", "type": ["player", "mobile"], "scope": ["room"], "input": "target"}
+        ],
+        "inputs": [
+            {"name": "target", "type": "string", "required": true}
+        ]
+    }
+}

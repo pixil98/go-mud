@@ -91,7 +91,7 @@ func TestNewSelectableStorer(t *testing.T) {
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
 			mock := &mockSelectableStorer{records: tt.records}
-			ss := NewSelectableStorer[*mockSelectableSpec](mock)
+			ss := NewSelectableStorer(mock)
 
 			testutil.AssertEqual(t, "option count", len(ss.options), tt.expOptCount)
 
@@ -111,7 +111,7 @@ func TestSelectableStorer_Select(t *testing.T) {
 		"item-c": {name: "Gamma", valid: true},
 	}
 	mock := &mockSelectableStorer{records: records}
-	ss := NewSelectableStorer[*mockSelectableSpec](mock)
+	ss := NewSelectableStorer(mock)
 
 	tests := map[string]struct {
 		index    int
@@ -168,7 +168,7 @@ func TestSelectableStorer_Select(t *testing.T) {
 
 func TestSelectableStorer_Select_Empty(t *testing.T) {
 	mock := &mockSelectableStorer{records: map[Identifier]*mockSelectableSpec{}}
-	ss := NewSelectableStorer[*mockSelectableSpec](mock)
+	ss := NewSelectableStorer(mock)
 
 	result := ss.Select(1)
 	testutil.AssertEqual(t, "result", result, Identifier(""))
@@ -195,7 +195,7 @@ func TestSelectableStorer_Build(t *testing.T) {
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
 			mock := &mockSelectableStorer{records: tt.records}
-			ss := NewSelectableStorer[*mockSelectableSpec](mock)
+			ss := NewSelectableStorer(mock)
 
 			testutil.AssertEqual(t, "output rows", len(ss.output), tt.expOutputRows)
 		})
@@ -208,7 +208,7 @@ func TestSelectableStorer_Prompt(t *testing.T) {
 		"item-b": {name: "Beta", valid: true},
 	}
 	mock := &mockSelectableStorer{records: records}
-	ss := NewSelectableStorer[*mockSelectableSpec](mock)
+	ss := NewSelectableStorer(mock)
 
 	tests := map[string]struct {
 		input    string
@@ -272,7 +272,7 @@ func TestSelectableStorer_Prompt_InvalidThenValid(t *testing.T) {
 		"item-a": {name: "Alpha", valid: true},
 	}
 	mock := &mockSelectableStorer{records: records}
-	ss := NewSelectableStorer[*mockSelectableSpec](mock)
+	ss := NewSelectableStorer(mock)
 
 	// First invalid input, then valid
 	rw := &mockReadWriter{

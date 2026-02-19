@@ -2,16 +2,92 @@ package game
 
 import (
 	"fmt"
+	"sort"
+	"strings"
+	"sync"
 
 	"github.com/pixil98/go-errors"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
+// StatLine is a single line in a stat section.
+type StatLine struct {
+	Value  string
+	Center bool
+}
+
+// StatSection is a labeled group of stat lines.
+type StatSection struct {
+	Header string
+	Lines  []StatLine
+}
+
 // Actor holds properties shared between characters and mobiles.
 type Actor struct {
-	Pronoun storage.Identifier `json:"pronoun,omitempty"`
-	Race    storage.Identifier `json:"race,omitempty"`
-	Level   int                `json:"level,omitempty"`
+	Pronoun storage.SmartIdentifier[*Pronoun] `json:"pronoun,omitempty"`
+	Race    storage.SmartIdentifier[*Race]    `json:"race,omitempty"`
+	Level   int                               `json:"level,omitempty"`
+}
+
+// Resolve resolves foreign keys from the dictionary.
+// Empty identifiers are skipped (valid for characters that haven't selected yet).
+// Returns an error if a non-empty identifier doesn't resolve to a record.
+func (a *Actor) Resolve(dict *Dictionary) error {
+	if a.Race.Get() != "" {
+		if err := a.Race.Resolve(dict.Races); err != nil {
+			return err
+		}
+	}
+	if a.Pronoun.Get() != "" {
+		if err := a.Pronoun.Resolve(dict.Pronouns); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// statSections returns the shared stat display: an identity subtitle
+// (race, level, pronouns), stats, and perks. Character and Mobile
+// prepend their own name line to the first section.
+func (a *Actor) statSections() []StatSection {
+	var parts []string
+	if a.Race.Id() != nil {
+		parts = append(parts, a.Race.Id().Name)
+	}
+	parts = append(parts, fmt.Sprintf("Level %d", a.Level))
+	if a.Pronoun.Id() != nil {
+		parts = append(parts, a.Pronoun.Id().Selector())
+	}
+
+	sections := []StatSection{
+		{Lines: []StatLine{{Value: strings.Join(parts, " | "), Center: true}}},
+	}
+
+	if a.Race.Id() != nil && len(a.Race.Id().Stats) > 0 {
+		keys := make([]string, 0, len(a.Race.Id().Stats))
+		for k := range a.Race.Id().Stats {
+			keys = append(keys, k)
+		}
+		sort.Strings(keys)
+		var statParts []string
+		for _, k := range keys {
+			statParts = append(statParts, fmt.Sprintf("%s: %d", strings.ToUpper(k), a.Race.Id().Stats[k]))
+		}
+		sections = append(sections, StatSection{
+			Header: "Stats",
+			Lines:  []StatLine{{Value: "  " + strings.Join(statParts, "  ")}},
+		})
+	}
+
+	if a.Race.Id() != nil && len(a.Race.Id().Perks) > 0 {
+		var lines []StatLine
+		for _, p := range a.Race.Id().Perks {
+			lines = append(lines, StatLine{Value: "  " + p})
+		}
+		sections = append(sections, StatSection{Header: "Perks", Lines: lines})
+	}
+
+	return sections
 }
 
 type pronounPossessive struct {
@@ -87,32 +163,40 @@ type ActorInstance struct {
 }
 
 // Inventory holds object instances carried by a character or mobile.
+// All methods are safe for concurrent use.
 // TODO: Add stackable item support (keyed by ObjectId with count) for commodities.
 type Inventory struct {
-	// Items maps instance IDs to object instances
-	Items map[string]*ObjectInstance `json:"items,omitempty"`
+	mu sync.RWMutex
+	// Objects maps instance IDs to object instances
+	Objects map[string]*ObjectInstance `json:"objects,omitempty"`
 }
 
 // NewInventory creates an empty inventory.
 func NewInventory() *Inventory {
 	return &Inventory{
-		Items: make(map[string]*ObjectInstance),
+		Objects: make(map[string]*ObjectInstance),
 	}
 }
 
-// Add adds an object instance to the inventory.
+// AddObj adds an object instance to the inventory.
 func (inv *Inventory) AddObj(obj *ObjectInstance) {
-	if inv.Items == nil {
-		inv.Items = make(map[string]*ObjectInstance)
+	inv.mu.Lock()
+	defer inv.mu.Unlock()
+
+	if inv.Objects == nil {
+		inv.Objects = make(map[string]*ObjectInstance)
 	}
-	inv.Items[obj.InstanceId] = obj
+	inv.Objects[obj.InstanceId] = obj
 }
 
-// Remove removes an object instance from the inventory.
+// RemoveObj removes an object instance from the inventory.
 // Returns the removed instance, or nil if not found.
 func (inv *Inventory) RemoveObj(instanceId string) *ObjectInstance {
-	if obj, ok := inv.Items[instanceId]; ok {
-		delete(inv.Items, instanceId)
+	inv.mu.Lock()
+	defer inv.mu.Unlock()
+
+	if obj, ok := inv.Objects[instanceId]; ok {
+		delete(inv.Objects, instanceId)
 		return obj
 	}
 	return nil
@@ -121,12 +205,23 @@ func (inv *Inventory) RemoveObj(instanceId string) *ObjectInstance {
 // FindObj searches inventory items for one whose definition matches the given alias.
 // Returns nil if not found.
 func (inv *Inventory) FindObj(name string) *ObjectInstance {
-	for _, oi := range inv.Items {
-		if oi.Definition.MatchName(name) {
+	inv.mu.RLock()
+	defer inv.mu.RUnlock()
+
+	for _, oi := range inv.Objects {
+		if oi.Object.Id().MatchName(name) {
 			return oi
 		}
 	}
 	return nil
+}
+
+// Clear removes all items.
+func (inv *Inventory) Clear() {
+	inv.mu.Lock()
+	defer inv.mu.Unlock()
+
+	inv.Objects = make(map[string]*ObjectInstance)
 }
 
 // EquipSlot pairs a slot type name with the equipped object instance.
@@ -137,7 +232,9 @@ type EquipSlot struct {
 
 // Equipment holds items equipped by a character or mobile.
 // Multiple items may share the same slot type (e.g., two rings in "finger").
+// All methods are safe for concurrent use.
 type Equipment struct {
+	mu    sync.RWMutex
 	Items []EquipSlot `json:"items,omitempty"`
 }
 
@@ -150,15 +247,19 @@ func NewEquipment() *Equipment {
 // can occupy that slot type (0 means no limit). Returns an error if the slot
 // is already at capacity.
 func (eq *Equipment) Equip(slot string, maxSlots int, obj *ObjectInstance) error {
-	if maxSlots > 0 && eq.SlotCount(slot) >= maxSlots {
+	eq.mu.Lock()
+	defer eq.mu.Unlock()
+
+	if maxSlots > 0 && eq.slotCount(slot) >= maxSlots {
 		return fmt.Errorf("no available %q slot", slot)
 	}
 	eq.Items = append(eq.Items, EquipSlot{Slot: slot, Obj: obj})
 	return nil
 }
 
-// SlotCount returns how many items are equipped in the given slot type.
-func (eq *Equipment) SlotCount(slot string) int {
+// slotCount returns how many items are equipped in the given slot type.
+// Caller must hold at least a read lock.
+func (eq *Equipment) slotCount(slot string) int {
 	count := 0
 	for _, item := range eq.Items {
 		if item.Slot == slot {
@@ -168,22 +269,36 @@ func (eq *Equipment) SlotCount(slot string) int {
 	return count
 }
 
+// SlotCount returns how many items are equipped in the given slot type.
+func (eq *Equipment) SlotCount(slot string) int {
+	eq.mu.RLock()
+	defer eq.mu.RUnlock()
+
+	return eq.slotCount(slot)
+}
+
 // FindObj searches equipped items for one whose definition matches the given alias.
 // Returns nil if not found.
 func (eq *Equipment) FindObj(name string) *ObjectInstance {
+	eq.mu.RLock()
+	defer eq.mu.RUnlock()
+
 	for _, slot := range eq.Items {
 		if slot.Obj == nil {
 			continue
 		}
-		if slot.Obj.Definition.MatchName(name) {
+		if slot.Obj.Object.Id().MatchName(name) {
 			return slot.Obj
 		}
 	}
 	return nil
 }
 
-// Remove finds and unequips an object by instance ID.
+// RemoveObj finds and unequips an object by instance ID.
 func (eq *Equipment) RemoveObj(instanceId string) *ObjectInstance {
+	eq.mu.Lock()
+	defer eq.mu.Unlock()
+
 	for i, item := range eq.Items {
 		if item.Obj.InstanceId == instanceId {
 			eq.Items = append(eq.Items[:i], eq.Items[i+1:]...)

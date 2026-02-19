@@ -28,6 +28,18 @@ type Mobile struct {
 	Actor
 }
 
+// StatSections returns the mobile's stat display sections.
+func (m *Mobile) StatSections() []StatSection {
+	sections := m.Actor.statSections()
+	sections[0].Lines = append([]StatLine{{Value: m.ShortDesc, Center: true}}, sections[0].Lines...)
+	return sections
+}
+
+// Resolve resolves foreign keys from the dictionary.
+func (m *Mobile) Resolve(dict *Dictionary) error {
+	return m.Actor.Resolve(dict)
+}
+
 // MatchName returns true if name matches any of this mobile's aliases (case-insensitive).
 func (m *Mobile) MatchName(name string) bool {
 	nameLower := strings.ToLower(name)
@@ -54,9 +66,8 @@ func (m *Mobile) Validate() error {
 // MobileInstance represents a single spawned instance of a Mobile definition.
 // Location is tracked by the containing structure (room map).
 type MobileInstance struct {
-	InstanceId string             // Unique ID: "<mobile-id>-<counter>" e.g., "millbrook-guard-1"
-	MobileId   storage.Identifier // Reference to the Mobile definition
-	Definition *Mobile
+	InstanceId string
+	Mobile     storage.SmartIdentifier[*Mobile]
 
 	ActorInstance
 }

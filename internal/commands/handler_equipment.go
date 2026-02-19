@@ -4,18 +4,15 @@ import (
 	"context"
 	"fmt"
 	"strings"
-
-	"github.com/pixil98/go-mud/internal/game"
 )
 
 // EquipmentHandlerFactory creates handlers that list the player's equipped items.
 type EquipmentHandlerFactory struct {
-	world *game.WorldState
-	pub   Publisher
+	pub Publisher
 }
 
-func NewEquipmentHandlerFactory(world *game.WorldState, pub Publisher) *EquipmentHandlerFactory {
-	return &EquipmentHandlerFactory{world: world, pub: pub}
+func NewEquipmentHandlerFactory(pub Publisher) *EquipmentHandlerFactory {
+	return &EquipmentHandlerFactory{pub: pub}
 }
 
 func (f *EquipmentHandlerFactory) Spec() *HandlerSpec {
@@ -31,10 +28,7 @@ func (f *EquipmentHandlerFactory) Create() (CommandFunc, error) {
 		eq := cmdCtx.Actor.Equipment
 
 		// Build the slot list to display: race slots if available, otherwise equipped slots
-		var slots []string
-		if race := f.world.Races().Get(string(cmdCtx.Actor.Race)); race != nil {
-			slots = race.WearSlots
-		}
+		slots := cmdCtx.Actor.Race.Id().WearSlots
 		if len(slots) == 0 && eq != nil {
 			for _, item := range eq.Items {
 				slots = append(slots, item.Slot)
@@ -55,9 +49,7 @@ func (f *EquipmentHandlerFactory) Create() (CommandFunc, error) {
 						if item.Slot == slot {
 							count++
 							if count == slotSeen[slot] {
-								if obj := f.world.Objects().Get(string(item.Obj.ObjectId)); obj != nil {
-									desc = obj.ShortDesc
-								}
+								desc = item.Obj.Object.Id().ShortDesc
 								break
 							}
 						}

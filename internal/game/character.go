@@ -28,40 +28,77 @@ type Character struct {
 	ActorInstance
 }
 
+func NewCharacter(name string, pass string) *Character {
+	return &Character{
+		Name:     name,
+		Password: pass,
+		Title:    "A plain, unremarkable adventurer.",
+		ActorInstance: ActorInstance{
+			Inventory: NewInventory(),
+			Equipment: NewEquipment(),
+		},
+	}
+}
+
+// StatSections returns the character's stat display sections.
+func (c *Character) StatSections() []StatSection {
+	sections := c.Actor.statSections()
+
+	name := c.Name
+	if c.Title != "" {
+		name = c.Name + " " + c.Title
+	}
+	sections[0].Lines = append([]StatLine{{Value: name, Center: true}}, sections[0].Lines...)
+	return sections
+}
+
 // MatchName returns true if name matches this character's name (case-insensitive).
 func (c *Character) MatchName(name string) bool {
 	return strings.EqualFold(c.Name, name)
 }
 
-// PopulateDefinitions sets the Definition pointer on all ObjectInstances
-// in the character's inventory and equipment. Call after loading from storage.
-func (c *Character) PopulateDefinitions(objDefs storage.Storer[*Object]) {
+// Resolve resolves all foreign keys on the character from the dictionary.
+func (c *Character) Resolve(dict *Dictionary) error {
+	if err := c.Actor.Resolve(dict); err != nil {
+		return err
+	}
+
 	if c.Inventory != nil {
-		for _, oi := range c.Inventory.Items {
-			populateObjDefinition(oi, objDefs)
+		for _, oi := range c.Inventory.Objects {
+			if err := resolveObj(oi, dict.Objects); err != nil {
+				return err
+			}
 		}
 	}
 	if c.Equipment != nil {
 		for _, slot := range c.Equipment.Items {
 			if slot.Obj != nil {
-				populateObjDefinition(slot.Obj, objDefs)
+				if err := resolveObj(slot.Obj, dict.Objects); err != nil {
+					return err
+				}
 			}
 		}
 	}
+	return nil
 }
 
-// populateObjDefinition links an ObjectInstance to its definition and
+// resolveObj resolves an ObjectInstance's SmartIdentifier and
 // ensures containers have a non-nil Contents inventory.
-func populateObjDefinition(oi *ObjectInstance, objDefs storage.Storer[*Object]) {
-	oi.Definition = objDefs.Get(string(oi.ObjectId))
-	if oi.Definition != nil && oi.Definition.HasFlag(ObjectFlagContainer) && oi.Contents == nil {
+func resolveObj(oi *ObjectInstance, objDefs storage.Storer[*Object]) error {
+	if err := oi.Object.Resolve(objDefs); err != nil {
+		return err
+	}
+	if oi.Object.Id().HasFlag(ObjectFlagContainer) && oi.Contents == nil {
 		oi.Contents = NewInventory()
 	}
 	if oi.Contents != nil {
-		for _, ci := range oi.Contents.Items {
-			populateObjDefinition(ci, objDefs)
+		for _, ci := range oi.Contents.Objects {
+			if err := resolveObj(ci, objDefs); err != nil {
+				return err
+			}
 		}
 	}
+	return nil
 }
 
 // Validate satisfies storage.ValidatingSpec

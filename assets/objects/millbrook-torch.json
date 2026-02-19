@@ -5,6 +5,8 @@
         "aliases": ["torch", "light"],
         "short_desc": "a flickering torch",
         "long_desc": "A torch lies here, its flame still burning.",
-        "detailed_desc": "A sturdy wooden torch wrapped in oil-soaked rags. The flame dances and crackles, casting warm light and shifting shadows."
+        "detailed_desc": "A sturdy wooden torch wrapped in oil-soaked rags. The flame dances and crackles, casting warm light and shifting shadows.",
+        "flags": ["wearable"],
+        "wear_slots": ["light"]
     }
 }

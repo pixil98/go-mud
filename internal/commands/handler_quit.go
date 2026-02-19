@@ -5,15 +5,16 @@ import (
 	"fmt"
 
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // QuitHandlerFactory creates handlers that save and quit.
 type QuitHandlerFactory struct {
-	world *game.WorldState
+	chars storage.Storer[*game.Character]
 }
 
-func NewQuitHandlerFactory(world *game.WorldState) *QuitHandlerFactory {
-	return &QuitHandlerFactory{world: world}
+func NewQuitHandlerFactory(chars storage.Storer[*game.Character]) *QuitHandlerFactory {
+	return &QuitHandlerFactory{chars: chars}
 }
 
 func (f *QuitHandlerFactory) Spec() *HandlerSpec {
@@ -26,13 +27,11 @@ func (f *QuitHandlerFactory) ValidateConfig(config map[string]any) error {
 
 func (f *QuitHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		if err := saveCharacter(f.world, cmdCtx); err != nil {
+		if err := saveCharacter(f.chars, cmdCtx.Session); err != nil {
 			return fmt.Errorf("saving character on quit: %w", err)
 		}
 
-		if cmdCtx.Session != nil {
-			cmdCtx.Session.Quit = true
-		}
+		cmdCtx.Session.Quit = true
 		return nil
 	}, nil
 }

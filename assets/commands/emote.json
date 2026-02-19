@@ -1,0 +1,16 @@
+{
+    "version": 1,
+    "id": "emote",
+    "spec": {
+        "handler": "message",
+        "category": "communication",
+        "description": "Emote something to everyone in the room.",
+        "config": {
+            "recipient_channel": "zone-{{ .Session.ZoneId }}-room-{{ .Session.RoomId }}",
+            "recipient_message": "{{ .Actor.Name }} {{ .Inputs.text }}"
+        },
+        "inputs": [
+            {"name": "text", "type": "string", "required": true, "rest": true}
+        ]
+    }
+}

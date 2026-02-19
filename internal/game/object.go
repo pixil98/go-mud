@@ -107,21 +107,19 @@ func (o *Object) Validate() error {
 // ObjectInstance represents a single spawned instance of an Object definition.
 // Location is tracked by the containing structure (room map or inventory).
 type ObjectInstance struct {
-	InstanceId string             // Unique ID
-	ObjectId   storage.Identifier // Reference to the Object definition
-	Definition *Object            `json:"-" `
-	Contents   *Inventory         // Non-nil for containers; holds objects stored inside
+	InstanceId string                           `json:"instance_id"` // Unique ID
+	Object     storage.SmartIdentifier[*Object] `json:"object_id"`
+	Contents   *Inventory                       `json:"contents,omitempty"` // Non-nil for containers; holds objects stored inside
 }
 
 // NewObjectInstance creates an ObjectInstance linked to its definition.
 // Containers are initialized with an empty Contents inventory.
-func NewObjectInstance(objectId storage.Identifier, def *Object) *ObjectInstance {
+func NewObjectInstance(obj storage.SmartIdentifier[*Object]) *ObjectInstance {
 	oi := &ObjectInstance{
 		InstanceId: uuid.New().String(),
-		ObjectId:   objectId,
-		Definition: def,
+		Object:     obj,
 	}
-	if def != nil && def.HasFlag(ObjectFlagContainer) {
+	if oi.Object.Id().HasFlag(ObjectFlagContainer) {
 		oi.Contents = NewInventory()
 	}
 	return oi
