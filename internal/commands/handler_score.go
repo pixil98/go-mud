@@ -48,9 +48,6 @@ func (f *ScoreHandlerFactory) Create() (CommandFunc, error) {
 }
 
 func (f *ScoreHandlerFactory) resolveSections(cmdCtx *CommandContext) ([]game.StatSection, error) {
-	races := f.world.Races()
-	pronouns := f.world.Pronouns()
-
 	if target := cmdCtx.Targets["target"]; target != nil {
 		switch target.Type {
 		case TargetTypePlayer:
@@ -58,13 +55,13 @@ func (f *ScoreHandlerFactory) resolveSections(cmdCtx *CommandContext) ([]game.St
 			if char == nil {
 				return nil, NewUserError(fmt.Sprintf("%s is no longer here.", target.Player.Name))
 			}
-			return char.StatSections(races, pronouns), nil
+			return char.StatSections(), nil
 		case TargetTypeMobile:
-			return target.Mob.instance.Definition.StatSections(races, pronouns), nil
+			return target.Mob.instance.Definition.StatSections(), nil
 		}
 	}
 
-	return cmdCtx.Actor.StatSections(races, pronouns), nil
+	return cmdCtx.Actor.StatSections(), nil
 }
 
 // --- Box rendering ---

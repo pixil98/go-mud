@@ -29,10 +29,15 @@ type Mobile struct {
 }
 
 // StatSections returns the mobile's stat display sections.
-func (m *Mobile) StatSections(races storage.Storer[*Race], pronouns storage.Storer[*Pronoun]) []StatSection {
-	sections := m.Actor.statSections(races, pronouns)
+func (m *Mobile) StatSections() []StatSection {
+	sections := m.Actor.statSections()
 	sections[0].Lines = append([]StatLine{{Value: m.ShortDesc, Center: true}}, sections[0].Lines...)
 	return sections
+}
+
+// Resolve resolves foreign keys from the dictionary.
+func (m *Mobile) Resolve(dict *Dictionary) error {
+	return m.Actor.Resolve(dict)
 }
 
 // MatchName returns true if name matches any of this mobile's aliases (case-insensitive).

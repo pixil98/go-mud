@@ -24,38 +24,60 @@ type StatSection struct {
 
 // Actor holds properties shared between characters and mobiles.
 type Actor struct {
-	Pronoun storage.Identifier `json:"pronoun,omitempty"`
-	Race    storage.Identifier `json:"race,omitempty"`
-	Level   int                `json:"level,omitempty"`
+	PronounId storage.Identifier `json:"pronoun,omitempty"`
+	RaceId    storage.Identifier `json:"race,omitempty"`
+	Level     int                `json:"level,omitempty"`
+
+	// Resolved references (populated post-load, not serialized)
+	Race    *Race    `json:"-"`
+	Pronoun *Pronoun `json:"-"`
+}
+
+// Resolve resolves foreign keys from the dictionary.
+// Empty identifiers are skipped (valid for characters that haven't selected yet).
+// Returns an error if a non-empty identifier doesn't resolve to a record.
+func (a *Actor) Resolve(dict *Dictionary) error {
+	if a.RaceId != "" {
+		a.Race = dict.Races.Get(string(a.RaceId))
+		if a.Race == nil {
+			return fmt.Errorf("race %q not found", a.RaceId)
+		}
+	}
+	if a.PronounId != "" {
+		a.Pronoun = dict.Pronouns.Get(string(a.PronounId))
+		if a.Pronoun == nil {
+			return fmt.Errorf("pronoun %q not found", a.PronounId)
+		}
+	}
+	return nil
 }
 
 // statSections returns the shared stat display: an identity subtitle
 // (race, level, pronouns), stats, and perks. Character and Mobile
 // prepend their own name line to the first section.
-func (a *Actor) statSections(races storage.Storer[*Race], pronouns storage.Storer[*Pronoun]) []StatSection {
+func (a *Actor) statSections() []StatSection {
 	var parts []string
-	race := races.Get(string(a.Race))
-	if race != nil {
-		parts = append(parts, race.Name)
+	if a.Race != nil {
+		parts = append(parts, a.Race.Name)
 	}
 	parts = append(parts, fmt.Sprintf("Level %d", a.Level))
-	if pronoun := pronouns.Get(string(a.Pronoun)); pronoun != nil {
-		parts = append(parts, pronoun.Selector())
+	if a.Pronoun != nil {
+		parts = append(parts, a.Pronoun.Selector())
 	}
 
 	sections := []StatSection{
 		{Lines: []StatLine{{Value: strings.Join(parts, " | "), Center: true}}},
 	}
 
-	if race != nil && len(race.Stats) > 0 {
-		keys := make([]string, 0, len(race.Stats))
-		for k := range race.Stats {
+	if a.Race != nil && len(a.Race.Stats) > 0 {
+		keys := make([]string, 0, len(a.Race.Stats))
+		for k := range a.Race.Stats {
 			keys = append(keys, k)
 		}
 		sort.Strings(keys)
 		var statParts []string
 		for _, k := range keys {
-			statParts = append(statParts, fmt.Sprintf("%s: %d", strings.ToUpper(k), race.Stats[k]))
+			statParts = append(statParts, fmt.Sprintf("%s: %d", strings.ToUpper(k), a.Race.Stats[k]))
 		}
 		sections = append(sections, StatSection{
 			Header: "Stats",
@@ -63,9 +85,9 @@ func (a *Actor) statSections(races storage.Storer[*Race], pronouns storage.Store
 		})
 	}
 
-	if race != nil && len(race.Perks) > 0 {
+	if a.Race != nil && len(a.Race.Perks) > 0 {
 		var lines []StatLine
-		for _, p := range race.Perks {
+		for _, p := range a.Race.Perks {
 			lines = append(lines, StatLine{Value: "  " + p})
 		}
 		sections = append(sections, StatSection{Header: "Perks", Lines: lines})

@@ -22,6 +22,53 @@ type StorageConfig struct {
 	Races      AssetConfig[*game.Race]        `json:"races"`
 }
 
+func (c *StorageConfig) BuildDictionary() (*game.Dictionary, error) {
+	chars, err := c.Characters.BuildFileStore()
+	if err != nil {
+		return nil, fmt.Errorf("creating character store: %w", err)
+	}
+	zones, err := c.Zones.BuildFileStore()
+	if err != nil {
+		return nil, fmt.Errorf("creating zone store: %w", err)
+	}
+	rooms, err := c.Rooms.BuildFileStore()
+	if err != nil {
+		return nil, fmt.Errorf("creating room store: %w", err)
+	}
+	mobiles, err := c.Mobiles.BuildFileStore()
+	if err != nil {
+		return nil, fmt.Errorf("creating mobile store: %w", err)
+	}
+	objects, err := c.Objects.BuildFileStore()
+	if err != nil {
+		return nil, fmt.Errorf("creating object store: %w", err)
+	}
+	pronouns, err := c.Pronouns.BuildFileStore()
+	if err != nil {
+		return nil, fmt.Errorf("creating pronoun store: %w", err)
+	}
+	races, err := c.Races.BuildFileStore()
+	if err != nil {
+		return nil, fmt.Errorf("creating race store: %w", err)
+	}
+
+	dict := &game.Dictionary{
+		Characters: chars,
+		Zones:      zones,
+		Rooms:      rooms,
+		Mobiles:    mobiles,
+		Objects:    objects,
+		Pronouns:   pronouns,
+		Races:      races,
+	}
+
+	if err := dict.Resolve(); err != nil {
+		return nil, fmt.Errorf("resolving references: %w", err)
+	}
+
+	return dict, nil
+}
+
 func (c *StorageConfig) validate() error {
 	el := errors.NewErrorList()
 	el.Add(c.Characters.Validate("characters"))

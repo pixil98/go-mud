@@ -16,28 +16,21 @@ type WorldState struct {
 	subscriber Subscriber
 	players    map[storage.Identifier]*PlayerState
 
-	// Stores for looking up entities
-	chars   storage.Storer[*Character]
-	zones   storage.Storer[*Zone]
-	rooms   storage.Storer[*Room]
-	mobiles storage.Storer[*Mobile]
-	objects  storage.Storer[*Object]
-	pronouns storage.Storer[*Pronoun]
-	races    storage.Storer[*Race]
+	Dict *Dictionary
 
 	instances map[storage.Identifier]*ZoneInstance
 }
 
 // NewWorldState creates a new WorldState with zone and room instances initialized.
-func NewWorldState(sub Subscriber, chars storage.Storer[*Character], zones storage.Storer[*Zone], rooms storage.Storer[*Room], mobiles storage.Storer[*Mobile], objects storage.Storer[*Object], pronouns storage.Storer[*Pronoun], races storage.Storer[*Race]) *WorldState {
+func NewWorldState(sub Subscriber, dict *Dictionary) *WorldState {
 	// Build zone instances
 	instances := make(map[storage.Identifier]*ZoneInstance)
-	for zoneId, zone := range zones.GetAll() {
+	for zoneId, zone := range dict.Zones.GetAll() {
 		instances[zoneId] = NewZoneInstance(zoneId, zone)
 	}
 
 	// Build room instances and add to their zones
-	for roomId, room := range rooms.GetAll() {
+	for roomId, room := range dict.Rooms.GetAll() {
 		zoneId := storage.Identifier(room.ZoneId)
 		if zi, ok := instances[zoneId]; ok {
 			zi.AddRoom(roomId, NewRoomInstance(roomId, room))
@@ -47,13 +40,7 @@ func NewWorldState(sub Subscriber, chars storage.Storer[*Character], zones stora
 	return &WorldState{
 		subscriber: sub,
 		players:    make(map[storage.Identifier]*PlayerState),
-		chars:      chars,
-		zones:      zones,
-		rooms:      rooms,
-		mobiles:    mobiles,
-		objects:    objects,
-		pronouns:   pronouns,
-		races:      races,
+		Dict:       dict,
 		instances:  instances,
 	}
 }
@@ -62,37 +49,37 @@ func NewWorldState(sub Subscriber, chars storage.Storer[*Character], zones stora
 
 // Characters returns the character store.
 func (w *WorldState) Characters() storage.Storer[*Character] {
-	return w.chars
+	return w.Dict.Characters
 }
 
 // Zones returns the zone store.
 func (w *WorldState) Zones() storage.Storer[*Zone] {
-	return w.zones
+	return w.Dict.Zones
 }
 
 // Rooms returns the room store.
 func (w *WorldState) Rooms() storage.Storer[*Room] {
-	return w.rooms
+	return w.Dict.Rooms
 }
 
 // Mobiles returns the mobile store.
 func (w *WorldState) Mobiles() storage.Storer[*Mobile] {
-	return w.mobiles
+	return w.Dict.Mobiles
 }
 
 // Objects returns the object store.
 func (w *WorldState) Objects() storage.Storer[*Object] {
-	return w.objects
+	return w.Dict.Objects
 }
 
 // Pronouns returns the pronoun store.
 func (w *WorldState) Pronouns() storage.Storer[*Pronoun] {
-	return w.pronouns
+	return w.Dict.Pronouns
 }
 
 // Races returns the race store.
 func (w *WorldState) Races() storage.Storer[*Race] {
-	return w.races
+	return w.Dict.Races
 }
 
 // Instances returns all zone instances.
@@ -206,7 +193,7 @@ type Subscriber interface {
 // Tick processes zone resets based on their reset mode and lifespan.
 func (w *WorldState) Tick(ctx context.Context) error {
 	for _, zi := range w.instances {
-		zi.Reset(false, w.mobiles, w.objects)
+		zi.Reset(false, w.Dict.Mobiles, w.Dict.Objects)
 	}
 	return nil
 }

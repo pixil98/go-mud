@@ -8,7 +8,6 @@ import (
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/listener"
 	"github.com/pixil98/go-mud/internal/messaging"
-	"github.com/pixil98/go-mud/internal/storage"
 	"github.com/pixil98/go-service"
 )
 
@@ -18,41 +17,17 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 		return nil, fmt.Errorf("unable to cast config")
 	}
 
-	// Create Stores
-	storeCharacters, err := cfg.Storage.Characters.BuildFileStore()
+	// Build dictionary of all game stores
+	dict, err := cfg.Storage.BuildDictionary()
 	if err != nil {
-		return nil, fmt.Errorf("creating character store: %w", err)
+		return nil, fmt.Errorf("building dictionary: %w", err)
 	}
+
+	// Build command store separately (not a game type)
 	storeCmds, err := cfg.Storage.Commands.BuildFileStore()
 	if err != nil {
 		return nil, fmt.Errorf("creating command store: %w", err)
 	}
-	storeZones, err := cfg.Storage.Zones.BuildFileStore()
-	if err != nil {
-		return nil, fmt.Errorf("creating zone store: %w", err)
-	}
-	storeRooms, err := cfg.Storage.Rooms.BuildFileStore()
-	if err != nil {
-		return nil, fmt.Errorf("creating room store: %w", err)
-	}
-	storeMobiles, err := cfg.Storage.Mobiles.BuildFileStore()
-	if err != nil {
-		return nil, fmt.Errorf("creating mobile store: %w", err)
-	}
-	storeObjects, err := cfg.Storage.Objects.BuildFileStore()
-	if err != nil {
-		return nil, fmt.Errorf("creating object store: %w", err)
-	}
-	storePronouns, err := cfg.Storage.Pronouns.BuildFileStore()
-	if err != nil {
-		return nil, fmt.Errorf("creating pronoun store: %w", err)
-	}
-	storeRaces, err := cfg.Storage.Races.BuildFileStore()
-	if err != nil {
-		return nil, fmt.Errorf("creating race store: %w", err)
-	}
-	pronouns := storage.NewSelectableStorer(storePronouns)
-	races := storage.NewSelectableStorer(storeRaces)
 
 	// Setup the nats server
 	natsServer, err := cfg.Nats.buildNatsServer()
@@ -61,11 +36,11 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	}
 
 	// Create world state (must be before command handler since handlers need it)
-	world := game.NewWorldState(natsServer, storeCharacters, storeZones, storeRooms, storeMobiles, storeObjects, storePronouns, storeRaces)
+	world := game.NewWorldState(natsServer, dict)
 
 	// Spawn initial mobiles and objects in all zones
 	for _, zi := range world.Instances() {
-		zi.Reset(true, storeMobiles, storeObjects)
+		zi.Reset(true, dict.Mobiles, dict.Objects)
 	}
 
 	// Create publisher for command handlers
@@ -78,7 +53,7 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	}
 
 	// Create player manager
-	playerManager := cfg.PlayerManager.BuildPlayerManager(cmdHandler, world, pronouns, races)
+	playerManager := cfg.PlayerManager.BuildPlayerManager(cmdHandler, world, dict)
 
 	// Create connection manager
 	connectionManager := listener.NewConnectionManager(playerManager)

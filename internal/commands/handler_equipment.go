@@ -31,10 +31,7 @@ func (f *EquipmentHandlerFactory) Create() (CommandFunc, error) {
 		eq := cmdCtx.Actor.Equipment
 
 		// Build the slot list to display: race slots if available, otherwise equipped slots
-		var slots []string
-		if race := f.world.Races().Get(string(cmdCtx.Actor.Race)); race != nil {
-			slots = race.WearSlots
-		}
+		slots := cmdCtx.Actor.Race.WearSlots
 		if len(slots) == 0 && eq != nil {
 			for _, item := range eq.Items {
 				slots = append(slots, item.Slot)
@@ -55,9 +52,7 @@ func (f *EquipmentHandlerFactory) Create() (CommandFunc, error) {
 						if item.Slot == slot {
 							count++
 							if count == slotSeen[slot] {
-								if obj := f.world.Objects().Get(string(item.Obj.ObjectId)); obj != nil {
-									desc = obj.ShortDesc
-								}
+								desc = item.Obj.Definition.ShortDesc
 								break
 							}
 						}

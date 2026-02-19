@@ -39,10 +39,7 @@ func (f *WhoHandlerFactory) Create() (CommandFunc, error) {
 				return
 			}
 
-			var parts []string
-			if race := f.world.Races().Get(string(char.Race)); race != nil {
-				parts = append(parts, race.Abbreviation)
-			}
+			parts := []string{char.Race.Abbreviation}
 			parts = append(parts, strconv.Itoa(char.Level))
 			bracket := strings.Join(parts, " ")
 

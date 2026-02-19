@@ -53,8 +53,7 @@ func (f *MoveObjHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		// Check immobile flag
-		obj := f.world.Objects().Get(string(item.Obj.ObjectId))
-		if obj != nil && obj.HasFlag(game.ObjectFlagImmobile) {
+		if item.Obj.instance.Definition.HasFlag(game.ObjectFlagImmobile) {
 			return NewUserError(fmt.Sprintf("You can't seem to move %s.", item.Obj.Name))
 		}
 
@@ -127,8 +126,7 @@ func (f *MoveObjHandlerFactory) holderForTarget(ref *TargetRef) (ObjectHolder, e
 	}
 
 	if ref.Obj != nil {
-		objDef := f.world.Objects().Get(string(ref.Obj.ObjectId))
-		if objDef == nil || !objDef.HasFlag(game.ObjectFlagContainer) {
+		if !ref.Obj.instance.Definition.HasFlag(game.ObjectFlagContainer) {
 			name := strings.ToUpper(ref.Obj.Name[:1]) + ref.Obj.Name[1:]
 			return nil, NewUserError(fmt.Sprintf("%s is not a container.", name))
 		}

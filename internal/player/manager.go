@@ -14,30 +14,30 @@ import (
 type PlayerManager struct {
 	cmdHandler *commands.Handler
 	world      *game.WorldState
-	pronouns   *storage.SelectableStorer[*game.Pronoun]
-	races      *storage.SelectableStorer[*game.Race]
+	dict       *game.Dictionary
 
 	loginFlow   *loginFlow
 	defaultZone storage.Identifier
 	defaultRoom storage.Identifier
+
+	pronouns *storage.SelectableStorer[*game.Pronoun]
+	races    *storage.SelectableStorer[*game.Race]
 }
 
-func NewPlayerManager(
-	cmd *commands.Handler,
-	world *game.WorldState,
-	pronouns *storage.SelectableStorer[*game.Pronoun],
-	races *storage.SelectableStorer[*game.Race],
-	defaultZone, defaultRoom string,
-) *PlayerManager {
-	return &PlayerManager{
+func NewPlayerManager(cmd *commands.Handler, world *game.WorldState, dict *game.Dictionary, defaultZone, defaultRoom string) *PlayerManager {
+	pm := &PlayerManager{
 		cmdHandler:  cmd,
 		world:       world,
-		pronouns:    pronouns,
-		races:       races,
+		dict:        dict,
 		loginFlow:   &loginFlow{world: world},
 		defaultZone: storage.Identifier(defaultZone),
 		defaultRoom: storage.Identifier(defaultRoom),
 	}
+
+	pm.races = &storage.SelectableStorer[*game.Race]{Storer: dict.Races}
+	pm.pronouns = &storage.SelectableStorer[*game.Pronoun]{Storer: dict.Pronouns}
+
+	return pm
 }
 
 // RemovePlayer removes a player from the world state
@@ -56,8 +56,10 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
 		return nil, fmt.Errorf("initializing character: %w", err)
 	}
 
-	// Populate Definition pointers on inventory/equipment items loaded from storage
-	char.PopulateDefinitions(m.world.Objects())
+	// Resolve foreign keys on the character
+	if err := char.Resolve(m.dict); err != nil {
+		return nil, fmt.Errorf("resolving character references: %w", err)
+	}
 
 	// Save the character back to preserve changes
 	err = m.world.Characters().Save(strings.ToLower(char.Name), char)
@@ -118,20 +120,20 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
 
 // initCharacter prompts for any missing traits on a character.
 func (m *PlayerManager) initCharacter(rw io.ReadWriter, char *game.Character) error {
-	for char.Pronoun == "" {
+	for char.PronounId == "" {
 		sel, err := m.pronouns.Prompt(rw, "What are your pronouns?")
 		if err != nil {
 			return fmt.Errorf("selecting pronouns: %w", err)
 		}
-		char.Pronoun = sel
+		char.PronounId = sel
 	}
 
-	for char.Race == "" {
+	for char.RaceId == "" {
 		sel, err := m.races.Prompt(rw, "What is your race?")
 		if err != nil {
 			return fmt.Errorf("selecting race: %w", err)
 		}
-		char.Race = sel
+		char.RaceId = sel
 	}
 
 	if char.Level == 0 {

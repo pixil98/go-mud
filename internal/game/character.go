@@ -29,8 +29,8 @@ type Character struct {
 }
 
 // StatSections returns the character's stat display sections.
-func (c *Character) StatSections(races storage.Storer[*Race], pronouns storage.Storer[*Pronoun]) []StatSection {
-	sections := c.Actor.statSections(races, pronouns)
+func (c *Character) StatSections() []StatSection {
+	sections := c.Actor.statSections()
 
 	name := c.Name
 	if c.Title != "" {
@@ -45,21 +45,25 @@ func (c *Character) MatchName(name string) bool {
 	return strings.EqualFold(c.Name, name)
 }
 
-// PopulateDefinitions sets the Definition pointer on all ObjectInstances
-// in the character's inventory and equipment. Call after loading from storage.
-func (c *Character) PopulateDefinitions(objDefs storage.Storer[*Object]) {
+// Resolve resolves all foreign keys on the character from the dictionary.
+func (c *Character) Resolve(dict *Dictionary) error {
+	if err := c.Actor.Resolve(dict); err != nil {
+		return err
+	}
+
 	if c.Inventory != nil {
 		for _, oi := range c.Inventory.Items {
-			populateObjDefinition(oi, objDefs)
+			populateObjDefinition(oi, dict.Objects)
 		}
 	}
 	if c.Equipment != nil {
 		for _, slot := range c.Equipment.Items {
 			if slot.Obj != nil {
-				populateObjDefinition(slot.Obj, objDefs)
+				populateObjDefinition(slot.Obj, dict.Objects)
 			}
 		}
 	}
+	return nil
 }
 
 // populateObjDefinition links an ObjectInstance to its definition and
