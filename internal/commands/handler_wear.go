@@ -38,14 +38,14 @@ func (f *WearHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		// Use resolved object definition
-		obj := target.Obj.instance.Object.Id()
+		obj := target.Obj.instance.Object.Get()
 
 		// Check if the item is wearable
 		if !obj.HasFlag(game.ObjectFlagWearable) {
 			return NewUserError(fmt.Sprintf("You can't wear %s.", obj.ShortDesc))
 		}
 
-		race := cmdCtx.Actor.Race.Id()
+		race := cmdCtx.Actor.Race.Get()
 
 		// Initialize equipment if needed
 		if cmdCtx.Actor.Equipment == nil {

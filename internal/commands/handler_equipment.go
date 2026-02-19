@@ -28,7 +28,7 @@ func (f *EquipmentHandlerFactory) ValidateConfig(config map[string]any) error {
 func (f *EquipmentHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, cmdCtx *CommandContext) error {
 		// Build the slot list to display: race slots if available, otherwise equipped slots
-		slots := cmdCtx.Actor.Race.Id().WearSlots
+		slots := cmdCtx.Actor.Race.Get().WearSlots
 		if len(slots) == 0 && cmdCtx.Actor.Equipment != nil {
 			for _, item := range cmdCtx.Actor.Equipment.Objs {
 				slots = append(slots, item.Slot)
@@ -68,7 +68,7 @@ func FormatEquipmentSlots(eq *game.Equipment, slots []string) []string {
 				if item.Slot == slot {
 					count++
 					if count == slotSeen[slot] {
-						desc = item.Obj.Object.Id().ShortDesc
+						desc = item.Obj.Object.Get().ShortDesc
 						break
 					}
 				}
@@ -87,7 +87,7 @@ func FormatEquippedItems(eq *game.Equipment) []string {
 	}
 	var lines []string
 	for _, item := range eq.Objs {
-		lines = append(lines, formatSlotLine(item.Slot, item.Obj.Object.Id().ShortDesc))
+		lines = append(lines, formatSlotLine(item.Slot, item.Obj.Object.Get().ShortDesc))
 	}
 	return lines
 }

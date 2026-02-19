@@ -103,7 +103,7 @@ func (f *LookHandlerFactory) describeMob(mob *MobileRef) string {
 func (f *LookHandlerFactory) describeObj(obj *ObjectRef) string {
 	lines := []string{obj.Description}
 
-	if obj.instance.Object.Id().HasFlag(game.ObjectFlagContainer) {
+	if obj.instance.Object.Get().HasFlag(game.ObjectFlagContainer) {
 		lines = append(lines, "")
 		lines = append(lines, "It contains:")
 		lines = append(lines, FormatInventoryItems(obj.instance.Contents)...)

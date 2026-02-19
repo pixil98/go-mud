@@ -50,7 +50,7 @@ func (r *Room) Resolve(dict *Dictionary) error {
 	el.Add(r.Zone.Resolve(dict.Zones))
 	for dir, exit := range r.Exits {
 		el.Add(exit.Room.Resolve(dict.Rooms))
-		if exit.Zone.Get() != "" {
+		if exit.Zone.Id() != "" {
 			el.Add(exit.Zone.Resolve(dict.Zones))
 			r.Exits[dir] = exit
 		}
@@ -91,7 +91,7 @@ func NewRoomInstance(roomId storage.Identifier, def *Room) *RoomInstance {
 
 // Reset clears all mobs and objects and respawns them from the room definition.
 // Players are preserved.
-func (ri *RoomInstance) Reset() {
+func (ri *RoomInstance) Reset() error {
 	ri.mu.Lock()
 	ri.mobiles = make(map[string]*MobileInstance)
 	for _, mob := range ri.Definition.MobSpawns {
@@ -101,8 +101,13 @@ func (ri *RoomInstance) Reset() {
 
 	ri.objects.Clear()
 	for _, spawn := range ri.Definition.ObjSpawns {
-		ri.AddObj(spawn.Spawn())
+		oi, err := spawn.Spawn()
+		if err != nil {
+			return fmt.Errorf("resetting room %q: %w", ri.RoomId, err)
+		}
+		ri.AddObj(oi)
 	}
+	return nil
 }
 
 // FindMob searches room mobs for one whose definition matches the given name.
@@ -111,7 +116,7 @@ func (ri *RoomInstance) FindMob(name string) *MobileInstance {
 	defer ri.mu.RUnlock()
 
 	for _, mi := range ri.mobiles {
-		if mi.Mobile.Id().MatchName(name) {
+		if mi.Mobile.Get().MatchName(name) {
 			return mi
 		}
 	}
@@ -120,7 +125,7 @@ func (ri *RoomInstance) FindMob(name string) *MobileInstance {
 
 // spawnMob creates a new MobileInstance and adds it to the room.
 // Caller must hold the write lock.
-func (ri *RoomInstance) spawnMob(mob storage.SmartIdentifier[*Mobile]) *MobileInstance {
+func (ri *RoomInstance) spawnMob(mob storage.SmartIdentifier[*Mobile]) (*MobileInstance, error) {
 	mi := &MobileInstance{
 		InstanceId: uuid.New().String(),
 		Mobile:     mob,
@@ -129,15 +134,23 @@ func (ri *RoomInstance) spawnMob(mob storage.SmartIdentifier[*Mobile]) *MobileIn
 			Equipment: NewEquipment(),
 		},
 	}
-	def := mob.Id()
+	def := mob.Get()
 	for _, spawn := range def.Inventory {
-		mi.Inventory.AddObj(spawn.Spawn())
+		oi, err := spawn.Spawn()
+		if err != nil {
+			return nil, fmt.Errorf("spawning %q: %w", mob.Id(), err)
+		}
+		mi.Inventory.AddObj(oi)
 	}
 	for slot, spawn := range def.Equipment {
-		mi.Equipment.Equip(slot, 0, spawn.Spawn())
+		oi, err := spawn.Spawn()
+		if err != nil {
+			return nil, fmt.Errorf("spawning %q: %w", mob.Id(), err)
+		}
+		mi.Equipment.Equip(slot, 0, oi)
 	}
 	ri.mobiles[mi.InstanceId] = mi
-	return mi
+	return mi, nil
 }
 
 // FindObj searches room objects for one whose definition matches the given name.
@@ -195,10 +208,10 @@ func (ri *RoomInstance) Describe(actorName string) string {
 
 	// Show objects
 	for _, oi := range ri.objects.Objs {
-		if oi.Object.Id().LongDesc != "" {
-			sb.WriteString(oi.Object.Id().LongDesc)
+		if oi.Object.Get().LongDesc != "" {
+			sb.WriteString(oi.Object.Get().LongDesc)
 		} else {
-			sb.WriteString(fmt.Sprintf("%s is here.", oi.Object.Id().ShortDesc))
+			sb.WriteString(fmt.Sprintf("%s is here.", oi.Object.Get().ShortDesc))
 		}
 		sb.WriteString("\n")
 	}
@@ -206,10 +219,10 @@ func (ri *RoomInstance) Describe(actorName string) string {
 	ri.mu.RLock()
 	// Show mobs
 	for _, mi := range ri.mobiles {
-		if mi.Mobile.Id().LongDesc != "" {
-			sb.WriteString(mi.Mobile.Id().LongDesc)
+		if mi.Mobile.Get().LongDesc != "" {
+			sb.WriteString(mi.Mobile.Get().LongDesc)
 		} else {
-			sb.WriteString(fmt.Sprintf("%s is here.", mi.Mobile.Id().ShortDesc))
+			sb.WriteString(fmt.Sprintf("%s is here.", mi.Mobile.Get().ShortDesc))
 		}
 		sb.WriteString("\n")
 	}

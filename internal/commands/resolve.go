@@ -69,13 +69,13 @@ type MobileRef struct {
 }
 
 func MobRefFromInstance(mi *game.MobileInstance) *MobileRef {
-	if mi == nil || mi.Mobile.Id() == nil {
+	if mi == nil || mi.Mobile.Get() == nil {
 		return nil
 	}
 	return &MobileRef{
 		InstanceId:  mi.InstanceId,
-		Name:        mi.Mobile.Id().ShortDesc,
-		Description: mi.Mobile.Id().DetailedDesc,
+		Name:        mi.Mobile.Get().ShortDesc,
+		Description: mi.Mobile.Get().DetailedDesc,
 		instance:    mi,
 	}
 }
@@ -90,13 +90,13 @@ type ObjectRef struct {
 }
 
 func ObjRefFromInstance(oi *game.ObjectInstance, source ObjectRemover) *ObjectRef {
-	if oi == nil || oi.Object.Id() == nil {
+	if oi == nil || oi.Object.Get() == nil {
 		return nil
 	}
 	return &ObjectRef{
 		InstanceId:  oi.InstanceId,
-		Name:        oi.Object.Id().ShortDesc,
-		Description: oi.Object.Id().DetailedDesc,
+		Name:        oi.Object.Get().ShortDesc,
+		Description: oi.Object.Get().DetailedDesc,
 		source:      source,
 		instance:    oi,
 	}
@@ -271,7 +271,7 @@ func containerSpaces(spec TargetSpec, targets map[string]*TargetRef) ([]SearchSp
 	}
 
 	// Validate it's a container
-	if !scopeRef.Obj.instance.Object.Id().HasFlag(game.ObjectFlagContainer) {
+	if !scopeRef.Obj.instance.Object.Get().HasFlag(game.ObjectFlagContainer) {
 		capName := strings.ToUpper(scopeRef.Obj.Name[:1]) + scopeRef.Obj.Name[1:]
 		return nil, false, NewUserError(fmt.Sprintf("%s is not a container.", capName))
 	}

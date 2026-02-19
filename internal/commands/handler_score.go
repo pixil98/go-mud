@@ -52,7 +52,7 @@ func (f *ScoreHandlerFactory) resolveSections(cmdCtx *CommandContext) ([]game.St
 		case TargetTypePlayer:
 			return target.Player.session.Character.StatSections(), nil
 		case TargetTypeMobile:
-			return target.Mob.instance.Mobile.Id().StatSections(), nil
+			return target.Mob.instance.Mobile.Get().StatSections(), nil
 		}
 	}
 

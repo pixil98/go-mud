@@ -113,19 +113,6 @@ type ObjectInstance struct {
 	Contents   *Inventory                       `json:"contents,omitempty"` // Non-nil for containers; holds objects stored inside
 }
 
-// NewObjectInstance creates an ObjectInstance linked to its definition.
-// Containers are initialized with an empty Contents inventory.
-func NewObjectInstance(obj storage.SmartIdentifier[*Object]) *ObjectInstance {
-	oi := &ObjectInstance{
-		InstanceId: uuid.New().String(),
-		Object:     obj,
-	}
-	if oi.Object.Id().HasFlag(ObjectFlagContainer) {
-		oi.Contents = NewInventory()
-	}
-	return oi
-}
-
 func (oi *ObjectInstance) UnmarshalJSON(b []byte) error {
 	type Alias ObjectInstance
 	err := json.Unmarshal(b, (*Alias)(oi))
@@ -133,6 +120,43 @@ func (oi *ObjectInstance) UnmarshalJSON(b []byte) error {
 		return err
 	}
 	oi.InstanceId = uuid.New().String()
+	return nil
+}
+
+// NewObjectInstance creates an ObjectInstance linked to its definition.
+// Containers are initialized with an empty Contents inventory.
+func NewObjectInstance(obj storage.SmartIdentifier[*Object]) (*ObjectInstance, error) {
+	if obj.Get() == nil {
+		return nil, fmt.Errorf("unable create %q from unresolved object", obj.Id())
+	}
+
+	oi := &ObjectInstance{
+		InstanceId: uuid.New().String(),
+		Object:     obj,
+	}
+	if oi.Object.Get().HasFlag(ObjectFlagContainer) {
+		oi.Contents = NewInventory()
+	}
+	return oi, nil
+}
+
+// Resolve resolves this instance's object definition and recursively resolves
+// any contents. Containers are initialized with an empty Contents inventory
+// if they don't already have one.
+func (oi *ObjectInstance) Resolve(objs storage.Storer[*Object]) error {
+	if err := oi.Object.Resolve(objs); err != nil {
+		return err
+	}
+	if oi.Object.Get().HasFlag(ObjectFlagContainer) && oi.Contents == nil {
+		oi.Contents = NewInventory()
+	}
+	if oi.Contents != nil {
+		for _, ci := range oi.Contents.Objs {
+			if err := ci.Resolve(objs); err != nil {
+				return err
+			}
+		}
+	}
 	return nil
 }
 
@@ -155,10 +179,18 @@ func (s *ObjectSpawn) Resolve(objs storage.Storer[*Object]) error {
 
 // Spawn creates an ObjectInstance from an ObjectSpawn,
 // recursively spawning any contents for containers.
-func (s *ObjectSpawn) Spawn() *ObjectInstance {
-	oi := NewObjectInstance(s.Object)
-	for _, contentSpawn := range s.Contents {
-		oi.Contents.AddObj(contentSpawn.Spawn())
+func (s *ObjectSpawn) Spawn() (*ObjectInstance, error) {
+	oi, err := NewObjectInstance(s.Object)
+	if err != nil {
+		return nil, fmt.Errorf("spawning: %w", err)
 	}
-	return oi
+
+	for _, contentSpawn := range s.Contents {
+		soi, err := contentSpawn.Spawn()
+		if err != nil {
+			return nil, err
+		}
+		oi.Contents.AddObj(soi)
+	}
+	return oi, nil
 }

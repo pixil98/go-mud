@@ -29,7 +29,7 @@ func NewWorldState(sub Subscriber, zones storage.Storer[*Zone], rooms storage.St
 
 	// Build room instances and add to their zones
 	for roomId, room := range rooms.GetAll() {
-		zoneId := storage.Identifier(room.Zone.Get())
+		zoneId := storage.Identifier(room.Zone.Id())
 		if zi, ok := instances[zoneId]; ok {
 			zi.AddRoom(roomId, NewRoomInstance(roomId, room))
 		}
@@ -148,7 +148,10 @@ type Subscriber interface {
 // Tick processes zone resets based on their reset mode and lifespan.
 func (w *WorldState) Tick(ctx context.Context) error {
 	for _, zi := range w.instances {
-		zi.Reset(false)
+		err := zi.Reset(false)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
@@ -182,7 +185,7 @@ func (p *PlayerState) Location() (zoneId, roomId storage.Identifier) {
 // and updates room instance player lists.
 func (p *PlayerState) Move(fromRoom, toRoom *RoomInstance) {
 	prevZone, prevRoom := p.ZoneId, p.RoomId
-	toZoneId := storage.Identifier(toRoom.Definition.Zone.Get())
+	toZoneId := storage.Identifier(toRoom.Definition.Zone.Id())
 	toRoomId := toRoom.RoomId
 
 	// Update room player lists

@@ -33,12 +33,12 @@ type Actor struct {
 // Empty identifiers are skipped (valid for characters that haven't selected yet).
 // Returns an error if a non-empty identifier doesn't resolve to a record.
 func (a *Actor) Resolve(dict *Dictionary) error {
-	if a.Race.Get() != "" {
+	if a.Race.Id() != "" {
 		if err := a.Race.Resolve(dict.Races); err != nil {
 			return err
 		}
 	}
-	if a.Pronoun.Get() != "" {
+	if a.Pronoun.Id() != "" {
 		if err := a.Pronoun.Resolve(dict.Pronouns); err != nil {
 			return err
 		}
@@ -51,27 +51,27 @@ func (a *Actor) Resolve(dict *Dictionary) error {
 // prepend their own name line to the first section.
 func (a *Actor) statSections() []StatSection {
 	var parts []string
-	if a.Race.Id() != nil {
-		parts = append(parts, a.Race.Id().Name)
+	if a.Race.Get() != nil {
+		parts = append(parts, a.Race.Get().Name)
 	}
 	parts = append(parts, fmt.Sprintf("Level %d", a.Level))
-	if a.Pronoun.Id() != nil {
-		parts = append(parts, a.Pronoun.Id().Selector())
+	if a.Pronoun.Get() != nil {
+		parts = append(parts, a.Pronoun.Get().Selector())
 	}
 
 	sections := []StatSection{
 		{Lines: []StatLine{{Value: strings.Join(parts, " | "), Center: true}}},
 	}
 
-	if a.Race.Id() != nil && len(a.Race.Id().Stats) > 0 {
-		keys := make([]string, 0, len(a.Race.Id().Stats))
-		for k := range a.Race.Id().Stats {
+	if a.Race.Get() != nil && len(a.Race.Get().Stats) > 0 {
+		keys := make([]string, 0, len(a.Race.Get().Stats))
+		for k := range a.Race.Get().Stats {
 			keys = append(keys, k)
 		}
 		sort.Strings(keys)
 		var statParts []string
 		for _, k := range keys {
-			statParts = append(statParts, fmt.Sprintf("%s: %d", strings.ToUpper(k), a.Race.Id().Stats[k]))
+			statParts = append(statParts, fmt.Sprintf("%s: %d", strings.ToUpper(k), a.Race.Get().Stats[k]))
 		}
 		sections = append(sections, StatSection{
 			Header: "Stats",
@@ -79,9 +79,9 @@ func (a *Actor) statSections() []StatSection {
 		})
 	}
 
-	if a.Race.Id() != nil && len(a.Race.Id().Perks) > 0 {
+	if a.Race.Get() != nil && len(a.Race.Get().Perks) > 0 {
 		var lines []StatLine
-		for _, p := range a.Race.Id().Perks {
+		for _, p := range a.Race.Get().Perks {
 			lines = append(lines, StatLine{Value: "  " + p})
 		}
 		sections = append(sections, StatSection{Header: "Perks", Lines: lines})
@@ -162,8 +162,6 @@ type ActorInstance struct {
 	Equipment *Equipment `json:"equipment,omitempty"`
 }
 
-
-
 // Inventory holds object instances carried by a character or mobile.
 // All methods are safe for concurrent use.
 // TODO: Add stackable item support (keyed by ObjectId with count) for commodities.
@@ -211,7 +209,7 @@ func (inv *Inventory) FindObj(name string) *ObjectInstance {
 	defer inv.mu.RUnlock()
 
 	for _, oi := range inv.Objs {
-		if oi.Object.Id().MatchName(name) {
+		if oi.Object.Get().MatchName(name) {
 			return oi
 		}
 	}
@@ -289,7 +287,7 @@ func (eq *Equipment) FindObj(name string) *ObjectInstance {
 		if slot.Obj == nil {
 			continue
 		}
-		if slot.Obj.Object.Id().MatchName(name) {
+		if slot.Obj.Object.Get().MatchName(name) {
 			return slot.Obj
 		}
 	}

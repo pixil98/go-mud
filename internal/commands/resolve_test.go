@@ -28,7 +28,7 @@ func (f *mockFinder) FindPlayer(name string) *game.PlayerState {
 
 func (f *mockFinder) FindMob(name string) *game.MobileInstance {
 	for _, mi := range f.mobs {
-		if mi.Mobile.Id() != nil && mi.Mobile.Id().MatchName(name) {
+		if mi.Mobile.Get() != nil && mi.Mobile.Get().MatchName(name) {
 			return mi
 		}
 	}
@@ -37,7 +37,7 @@ func (f *mockFinder) FindMob(name string) *game.MobileInstance {
 
 func (f *mockFinder) FindObj(name string) *game.ObjectInstance {
 	for _, oi := range f.objects {
-		if oi.Object.Id() != nil && oi.Object.Id().MatchName(name) {
+		if oi.Object.Get() != nil && oi.Object.Get().MatchName(name) {
 			return oi
 		}
 	}

@@ -40,7 +40,10 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 
 	// Spawn initial mobiles and objects in all zones
 	for _, zi := range world.Instances() {
-		zi.Reset(true)
+		err := zi.Reset(true)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	// Create publisher for command handlers

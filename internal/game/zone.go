@@ -79,23 +79,26 @@ func (z *ZoneInstance) AddRoom(roomId storage.Identifier, ri *RoomInstance) {
 
 // Reset checks reset conditions and respawns mobs/objects if appropriate.
 // If force is true, bypasses time/occupancy checks.
-func (z *ZoneInstance) Reset(force bool) {
+func (z *ZoneInstance) Reset(force bool) error {
 	now := time.Now()
 
 	if !force {
 		if z.Definition.ResetMode == ZoneResetNever {
-			return
+			return nil
 		}
 		if now.Before(z.nextReset) {
-			return
+			return nil
 		}
 		if z.Definition.ResetMode == ZoneResetEmpty && z.IsOccupied() {
-			return
+			return nil
 		}
 	}
 
 	for _, ri := range z.rooms {
-		ri.Reset()
+		err := ri.Reset()
+		if err != nil {
+			return fmt.Errorf("resetting zone %q: %w", z.ZoneId, err)
+		}
 	}
 
 	if z.lifespanDuration > 0 {
@@ -103,6 +106,8 @@ func (z *ZoneInstance) Reset(force bool) {
 	}
 
 	slog.Info("zone reset complete", "zone", z.ZoneId, "rooms", len(z.rooms))
+
+	return nil
 }
 
 // IsOccupied returns true if any players are in any room of this zone.

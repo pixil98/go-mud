@@ -81,7 +81,7 @@ func (c *Character) Resolve(dict *Dictionary) error {
 
 	if c.Inventory != nil {
 		for _, oi := range c.Inventory.Objs {
-			if err := resolveObj(oi, dict.Objects); err != nil {
+			if err := oi.Resolve(dict.Objects); err != nil {
 				return err
 			}
 		}
@@ -89,28 +89,9 @@ func (c *Character) Resolve(dict *Dictionary) error {
 	if c.Equipment != nil {
 		for _, slot := range c.Equipment.Objs {
 			if slot.Obj != nil {
-				if err := resolveObj(slot.Obj, dict.Objects); err != nil {
+				if err := slot.Obj.Resolve(dict.Objects); err != nil {
 					return err
 				}
-			}
-		}
-	}
-	return nil
-}
-
-// resolveObj resolves an ObjectInstance's SmartIdentifier and
-// ensures containers have a non-nil Contents inventory.
-func resolveObj(oi *ObjectInstance, objDefs storage.Storer[*Object]) error {
-	if err := oi.Object.Resolve(objDefs); err != nil {
-		return err
-	}
-	if oi.Object.Id().HasFlag(ObjectFlagContainer) && oi.Contents == nil {
-		oi.Contents = NewInventory()
-	}
-	if oi.Contents != nil {
-		for _, ci := range oi.Contents.Objs {
-			if err := resolveObj(ci, objDefs); err != nil {
-				return err
 			}
 		}
 	}

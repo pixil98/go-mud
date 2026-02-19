@@ -89,10 +89,10 @@ func (id *SmartIdentifier[T]) Resolve(st Storer[T]) error {
 	return nil
 }
 
-func (id SmartIdentifier[T]) Get() string {
+func (id SmartIdentifier[T]) Id() string {
 	return id.key
 }
 
-func (id SmartIdentifier[T]) Id() T {
+func (id SmartIdentifier[T]) Get() T {
 	return id.val
 }

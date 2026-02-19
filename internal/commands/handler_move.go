@@ -62,11 +62,11 @@ func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		// Determine destination zone (default to current if not specified)
-		destZone := storage.Identifier(exit.Zone.Get())
-		if exit.Zone.Get() == "" {
+		destZone := storage.Identifier(exit.Zone.Id())
+		if exit.Zone.Id() == "" {
 			destZone = zoneId
 		}
-		destRoomId := storage.Identifier(exit.Room.Get())
+		destRoomId := storage.Identifier(exit.Room.Id())
 
 		// Get destination room instance
 		toRoom := f.world.Instances()[destZone].GetRoom(destRoomId)
