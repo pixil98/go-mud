@@ -12,11 +12,11 @@
             "sender_message": "You tell {{ .Targets.target.Player.Name }}, \"{{ .Inputs.text }}\""
         },
         "targets": [
-            {"name": "target", "type": ["player"], "scope": ["world"], "input": "target"}
+            {"name": "target", "type": ["player"], "scope": ["world"], "input": "target", "not_found": "There's nobody called '{{ .Inputs.target }}' online."}
         ],
         "inputs": [
-            {"name": "target", "type": "string", "required": true},
-            {"name": "text", "type": "string", "required": true, "rest": true}
+            {"name": "target", "type": "string", "required": true, "missing": "Tell whom?"},
+            {"name": "text", "type": "string", "required": true, "rest": true, "missing": "Tell them what?"}
         ]
     }
 }

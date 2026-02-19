@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -197,6 +198,22 @@ func TestCommand_Validate(t *testing.T) {
 			},
 			expErr: `target "target": scope_target is only supported for object targets`,
 		},
+		"valid not_found template": {
+			cmd: Command{
+				Handler: "test",
+				Targets: []TargetSpec{{Name: "target", Types: []string{"player"}, Scopes: []string{"room"}, Input: "who", NotFound: "You don't see '{{ .Inputs.who }}' here."}},
+				Inputs:  []InputSpec{{Name: "who", Type: InputTypeString}},
+			},
+			expErr: "",
+		},
+		"invalid not_found template": {
+			cmd: Command{
+				Handler: "test",
+				Targets: []TargetSpec{{Name: "target", Types: []string{"player"}, Scopes: []string{"room"}, Input: "who", NotFound: "{{ .Bad }"}},
+				Inputs:  []InputSpec{{Name: "who", Type: InputTypeString}},
+			},
+			expErr: `target "target": invalid not_found template:`,
+		},
 	}
 
 	for name, tt := range tests {
@@ -215,8 +232,8 @@ func TestCommand_Validate(t *testing.T) {
 				return
 			}
 
-			if err.Error() != tt.expErr {
-				t.Errorf("error = %q, expected %q", err.Error(), tt.expErr)
+			if !strings.Contains(err.Error(), tt.expErr) {
+				t.Errorf("error = %q, expected to contain %q", err.Error(), tt.expErr)
 			}
 		})
 	}

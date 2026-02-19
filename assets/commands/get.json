@@ -11,10 +11,10 @@
         },
         "targets": [
             {"name": "destination", "type": ["object"], "scope": ["room"], "input": "from", "optional": true},
-            {"name": "item", "type": ["object"], "scope": ["room", "contents"], "input": "item", "scope_target": "destination"}
+            {"name": "item", "type": ["object"], "scope": ["room", "contents"], "input": "item", "scope_target": "destination", "not_found": "You don't see '{{ .Inputs.item }}' here."}
         ],
         "inputs": [
-            {"name": "item", "type": "string", "required": true},
+            {"name": "item", "type": "string", "required": true, "missing": "Get what?"},
             {"name": "from", "type": "string", "required": false}
         ]
     }

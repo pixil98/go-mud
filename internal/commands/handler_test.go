@@ -180,6 +180,21 @@ func TestHandler_parseInputs(t *testing.T) {
 			rawArgs: []string{"notanumber"},
 			expErr:  `"notanumber" is not a valid number.`,
 		},
+		"required input missing with custom message": {
+			specs: []InputSpec{
+				{Name: "item", Type: InputTypeString, Required: true, Missing: "Get what?"},
+			},
+			rawArgs: nil,
+			expErr:  "Get what?",
+		},
+		"required input missing custom message second arg": {
+			specs: []InputSpec{
+				{Name: "item", Type: InputTypeString, Required: true},
+				{Name: "recipient", Type: InputTypeString, Required: true, Missing: "Give to whom?"},
+			},
+			rawArgs: []string{"sword"},
+			expErr:  "Give to whom?",
+		},
 	}
 
 	for name, tt := range tests {

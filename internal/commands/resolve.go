@@ -187,6 +187,11 @@ func NewTargetResolver(scopes TargetScopes) *TargetResolver {
 	return &TargetResolver{scopes: scopes}
 }
 
+// notFoundContext is the template context for TargetSpec.NotFound templates.
+type notFoundContext struct {
+	Inputs map[string]any // All parsed player inputs
+}
+
 // ResolveSpecs resolves all targets from the command's targets section.
 // Specs are processed in order so that scope_target references to earlier
 // targets work correctly. Inputs are assumed to have been validated by parseInputs.
@@ -212,7 +217,7 @@ func (r *TargetResolver) ResolveSpecs(specs []TargetSpec, inputs map[string]any,
 		if spaces, handled, err := containerSpaces(spec, targets); err != nil {
 			return nil, err
 		} else if handled {
-			ref, err := FindTarget(name, spec.TargetType(), spaces)
+			ref, err := findWithNotFound(name, spec, spaces, inputs)
 			if err != nil {
 				return nil, err
 			}
@@ -227,7 +232,7 @@ func (r *TargetResolver) ResolveSpecs(specs []TargetSpec, inputs map[string]any,
 			return nil, err
 		}
 
-		ref, err := FindTarget(name, spec.TargetType(), spaces)
+		ref, err := findWithNotFound(name, spec, spaces, inputs)
 		if err != nil {
 			return nil, err
 		}
@@ -235,6 +240,20 @@ func (r *TargetResolver) ResolveSpecs(specs []TargetSpec, inputs map[string]any,
 	}
 
 	return targets, nil
+}
+
+// findWithNotFound wraps FindTarget and replaces the default error with the
+// spec's NotFound template when one is configured.
+func findWithNotFound(name string, spec TargetSpec, spaces []SearchSpace, inputs map[string]any) (*TargetRef, error) {
+	ref, err := FindTarget(name, spec.TargetType(), spaces)
+	if err != nil && spec.NotFound != "" {
+		msg, tmplErr := ExpandTemplate(spec.NotFound, &notFoundContext{Inputs: inputs})
+		if tmplErr != nil {
+			return nil, fmt.Errorf("expanding not_found template for target %q: %w", spec.Name, tmplErr)
+		}
+		return nil, NewUserError(msg)
+	}
+	return ref, err
 }
 
 // containerSpaces checks if a spec has a scope_target and returns container-only

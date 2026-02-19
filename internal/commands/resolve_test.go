@@ -436,6 +436,14 @@ func TestResolveSpecs(t *testing.T) {
 			spaces: []SearchSpace{{Finder: &mockFinder{}}},
 			expErr: `Player "nobody" not found.`,
 		},
+		"not found with custom message": {
+			specs: []TargetSpec{
+				{Name: "target", Types: []string{"player"}, Scopes: []string{"world"}, Input: "who", NotFound: "You don't see '{{ .Inputs.who }}' here."},
+			},
+			inputs: map[string]any{"who": "nobody"},
+			spaces: []SearchSpace{{Finder: &mockFinder{}}},
+			expErr: "You don't see 'nobody' here.",
+		},
 	}
 
 	actor := &game.Character{Name: "Actor"}
