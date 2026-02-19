@@ -197,8 +197,8 @@ func (h *Handler) validateSpec(cmd *Command, spec *HandlerSpec) error {
 			continue
 		}
 
-		// Validate type matches
-		if target.TargetType() != req.Type {
+		// Validate command types are a subset of spec types
+		if target.TargetType()&req.Type != target.TargetType() {
 			return fmt.Errorf("target %q: expected type %s, got %s", req.Name, req.Type, target.TargetType())
 		}
 	}

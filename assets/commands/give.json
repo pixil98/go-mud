@@ -4,15 +4,15 @@
     "spec": {
         "handler": "move_obj",
         "category": "items",
-        "description": "Give an item to another player.",
+        "description": "Give an item to another player or mobile.",
         "config": {
-            "destination": "recipient",
-            "message": "{{ .Actor.Name }} gives {{ .Targets.item.Obj.Name }} to {{ .Targets.recipient.Player.Name }}.",
-            "no_self_target": "recipient"
+            "destination": "destination",
+            "message": "{{ .Actor.Name }} gives {{ .Targets.item.Obj.Name }} to {{ .Targets.destination.Name }}.",
+            "no_self_target": "destination"
         },
         "targets": [
             {"name": "item", "type": ["object"], "scope": ["inventory"], "input": "item"},
-            {"name": "recipient", "type": ["player"], "scope": ["room"], "input": "recipient"}
+            {"name": "destination", "type": ["player", "mobile"], "scope": ["room"], "input": "recipient"}
         ],
         "inputs": [
             {"name": "item", "type": "string", "required": true},

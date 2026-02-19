@@ -38,13 +38,6 @@ type ObjectRemover interface {
 	RemoveObj(instanceId string) *game.ObjectInstance
 }
 
-// ObjectHolder can have objects added and removed.
-// Inventory and RoomInstance satisfy this. Equipment does not (it uses Equip).
-type ObjectHolder interface {
-	ObjectRemover
-	AddObj(obj *game.ObjectInstance)
-}
-
 // --- Ref types ---
 
 // PlayerRef is the template-facing view of a resolved player.
@@ -115,6 +108,20 @@ type TargetRef struct {
 	Player *PlayerRef // Non-nil if Type == "player"
 	Mob    *MobileRef // Non-nil if Type == "mobile"
 	Obj    *ObjectRef // Non-nil if Type == "object"
+}
+
+// Name returns the display name of the target regardless of type.
+func (r *TargetRef) Name() string {
+	switch {
+	case r.Player != nil:
+		return r.Player.Name
+	case r.Mob != nil:
+		return r.Mob.Name
+	case r.Obj != nil:
+		return r.Obj.Name
+	default:
+		return ""
+	}
 }
 
 // --- SearchSpace and FindTarget ---

@@ -6,12 +6,12 @@
         "category": "items",
         "description": "Put an item into a container.",
         "config": {
-            "destination": "container",
-            "message": "{{ .Actor.Name }} puts {{ .Targets.item.Obj.Name }} in {{ .Targets.container.Obj.Name }}."
+            "destination": "destination",
+            "message": "{{ .Actor.Name }} puts {{ .Targets.item.Obj.Name }} in {{ .Targets.destination.Name }}."
         },
         "targets": [
             {"name": "item", "type": ["object"], "scope": ["inventory"], "input": "item"},
-            {"name": "container", "type": ["object"], "scope": ["room","inventory","equipment"], "input": "container"}
+            {"name": "destination", "type": ["object"], "scope": ["room","inventory","equipment"], "input": "container"}
         ],
         "inputs": [
             {"name": "item", "type": "string", "required": true},

@@ -457,6 +457,20 @@ func TestHandler_validateSpec(t *testing.T) {
 			},
 			expErr: `target "target": expected type object, got player`,
 		},
+		"target type subset of spec is ok": {
+			cmd: &Command{
+				Handler: "test",
+				Targets: []TargetSpec{
+					{Name: "target", Types: []string{"object"}, Input: "target"},
+				},
+			},
+			spec: &HandlerSpec{
+				Targets: []TargetRequirement{
+					{Name: "target", Type: TargetTypePlayer | TargetTypeMobile | TargetTypeObject, Required: true},
+				},
+			},
+			expErr: "",
+		},
 		"extra target not in spec": {
 			cmd: &Command{
 				Handler: "test",
