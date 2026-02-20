@@ -55,8 +55,7 @@ func (z *Zone) Validate() error {
 }
 
 type ZoneInstance struct {
-	ZoneId     storage.Identifier
-	Definition *Zone
+	Zone storage.SmartIdentifier[*Zone]
 
 	nextReset        time.Time     // when zone should next reset (runtime only)
 	lifespanDuration time.Duration // parsed lifespan
@@ -64,45 +63,61 @@ type ZoneInstance struct {
 	rooms map[storage.Identifier]*RoomInstance
 }
 
-func NewZoneInstance(zoneId storage.Identifier, def *Zone) *ZoneInstance {
-	return &ZoneInstance{
-		ZoneId:     zoneId,
-		Definition: def,
-		rooms:      make(map[storage.Identifier]*RoomInstance),
+func NewZoneInstance(zone storage.SmartIdentifier[*Zone]) (*ZoneInstance, error) {
+	def := zone.Get()
+	if def == nil {
+		return nil, fmt.Errorf("unable to create instance from unresolved zone %q", zone.Id())
 	}
+	zi := &ZoneInstance{
+		Zone:  zone,
+		rooms: make(map[storage.Identifier]*RoomInstance),
+	}
+	if def.Lifespan != "" {
+		d, err := time.ParseDuration(def.Lifespan)
+		if err != nil {
+			return nil, fmt.Errorf("zone %q: invalid lifespan %q: %w", zone.Id(), def.Lifespan, err)
+		}
+		zi.lifespanDuration = d
+	}
+	return zi, nil
 }
 
 // AddRoom adds a room instance to the zone.
-func (z *ZoneInstance) AddRoom(roomId storage.Identifier, ri *RoomInstance) {
-	z.rooms[roomId] = ri
+func (z *ZoneInstance) AddRoom(ri *RoomInstance) {
+	z.rooms[storage.Identifier(ri.Room.Id())] = ri
 }
 
 // Reset checks reset conditions and respawns mobs/objects if appropriate.
 // If force is true, bypasses time/occupancy checks.
-func (z *ZoneInstance) Reset(force bool) {
+func (z *ZoneInstance) Reset(force bool) error {
 	now := time.Now()
 
 	if !force {
-		if z.Definition.ResetMode == ZoneResetNever {
-			return
+		if z.Zone.Get().ResetMode == ZoneResetNever {
+			return nil
 		}
 		if now.Before(z.nextReset) {
-			return
+			return nil
 		}
-		if z.Definition.ResetMode == ZoneResetEmpty && z.IsOccupied() {
-			return
+		if z.Zone.Get().ResetMode == ZoneResetEmpty && z.IsOccupied() {
+			return nil
 		}
 	}
 
 	for _, ri := range z.rooms {
-		ri.Reset()
+		err := ri.Reset()
+		if err != nil {
+			return fmt.Errorf("resetting zone %q: %w", z.Zone.Id(), err)
+		}
 	}
 
 	if z.lifespanDuration > 0 {
 		z.nextReset = now.Add(z.lifespanDuration)
 	}
 
-	slog.Info("zone reset complete", "zone", z.ZoneId, "rooms", len(z.rooms))
+	slog.Info("zone reset complete", "zone", z.Zone.Id(), "rooms", len(z.rooms))
+
+	return nil
 }
 
 // IsOccupied returns true if any players are in any room of this zone.

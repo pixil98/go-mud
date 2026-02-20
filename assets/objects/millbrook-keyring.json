@@ -1,0 +1,10 @@
+{
+    "version": 1,
+    "id": "millbrook-keyring",
+    "spec": {
+        "aliases": ["keyring", "keys", "ring"],
+        "short_desc": "a heavy iron keyring",
+        "long_desc": "A heavy iron keyring lies here, its keys clinking softly.",
+        "detailed_desc": "A thick iron ring holds half a dozen mismatched keys of various sizes. One is stamped with the Millbrook crest, likely for the town gate. The rest are unmarked and well-worn from use."
+    }
+}

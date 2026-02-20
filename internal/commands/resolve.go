@@ -38,13 +38,6 @@ type ObjectRemover interface {
 	RemoveObj(instanceId string) *game.ObjectInstance
 }
 
-// ObjectHolder can have objects added and removed.
-// Inventory and RoomInstance satisfy this. Equipment does not (it uses Equip).
-type ObjectHolder interface {
-	ObjectRemover
-	AddObj(obj *game.ObjectInstance)
-}
-
 // --- Ref types ---
 
 // PlayerRef is the template-facing view of a resolved player.
@@ -76,13 +69,13 @@ type MobileRef struct {
 }
 
 func MobRefFromInstance(mi *game.MobileInstance) *MobileRef {
-	if mi == nil || mi.Mobile.Id() == nil {
+	if mi == nil || mi.Mobile.Get() == nil {
 		return nil
 	}
 	return &MobileRef{
 		InstanceId:  mi.InstanceId,
-		Name:        mi.Mobile.Id().ShortDesc,
-		Description: mi.Mobile.Id().DetailedDesc,
+		Name:        mi.Mobile.Get().ShortDesc,
+		Description: mi.Mobile.Get().DetailedDesc,
 		instance:    mi,
 	}
 }
@@ -97,13 +90,13 @@ type ObjectRef struct {
 }
 
 func ObjRefFromInstance(oi *game.ObjectInstance, source ObjectRemover) *ObjectRef {
-	if oi == nil || oi.Object.Id() == nil {
+	if oi == nil || oi.Object.Get() == nil {
 		return nil
 	}
 	return &ObjectRef{
 		InstanceId:  oi.InstanceId,
-		Name:        oi.Object.Id().ShortDesc,
-		Description: oi.Object.Id().DetailedDesc,
+		Name:        oi.Object.Get().ShortDesc,
+		Description: oi.Object.Get().DetailedDesc,
 		source:      source,
 		instance:    oi,
 	}
@@ -115,6 +108,20 @@ type TargetRef struct {
 	Player *PlayerRef // Non-nil if Type == "player"
 	Mob    *MobileRef // Non-nil if Type == "mobile"
 	Obj    *ObjectRef // Non-nil if Type == "object"
+}
+
+// Name returns the display name of the target regardless of type.
+func (r *TargetRef) Name() string {
+	switch {
+	case r.Player != nil:
+		return r.Player.Name
+	case r.Mob != nil:
+		return r.Mob.Name
+	case r.Obj != nil:
+		return r.Obj.Name
+	default:
+		return ""
+	}
 }
 
 // --- SearchSpace and FindTarget ---
@@ -180,6 +187,11 @@ func NewTargetResolver(scopes TargetScopes) *TargetResolver {
 	return &TargetResolver{scopes: scopes}
 }
 
+// notFoundContext is the template context for TargetSpec.NotFound templates.
+type notFoundContext struct {
+	Inputs map[string]any // All parsed player inputs
+}
+
 // ResolveSpecs resolves all targets from the command's targets section.
 // Specs are processed in order so that scope_target references to earlier
 // targets work correctly. Inputs are assumed to have been validated by parseInputs.
@@ -205,7 +217,7 @@ func (r *TargetResolver) ResolveSpecs(specs []TargetSpec, inputs map[string]any,
 		if spaces, handled, err := containerSpaces(spec, targets); err != nil {
 			return nil, err
 		} else if handled {
-			ref, err := FindTarget(name, spec.TargetType(), spaces)
+			ref, err := findWithNotFound(name, spec, spaces, inputs)
 			if err != nil {
 				return nil, err
 			}
@@ -220,7 +232,7 @@ func (r *TargetResolver) ResolveSpecs(specs []TargetSpec, inputs map[string]any,
 			return nil, err
 		}
 
-		ref, err := FindTarget(name, spec.TargetType(), spaces)
+		ref, err := findWithNotFound(name, spec, spaces, inputs)
 		if err != nil {
 			return nil, err
 		}
@@ -228,6 +240,20 @@ func (r *TargetResolver) ResolveSpecs(specs []TargetSpec, inputs map[string]any,
 	}
 
 	return targets, nil
+}
+
+// findWithNotFound wraps FindTarget and replaces the default error with the
+// spec's NotFound template when one is configured.
+func findWithNotFound(name string, spec TargetSpec, spaces []SearchSpace, inputs map[string]any) (*TargetRef, error) {
+	ref, err := FindTarget(name, spec.TargetType(), spaces)
+	if err != nil && spec.NotFound != "" {
+		msg, tmplErr := ExpandTemplate(spec.NotFound, &notFoundContext{Inputs: inputs})
+		if tmplErr != nil {
+			return nil, fmt.Errorf("expanding not_found template for target %q: %w", spec.Name, tmplErr)
+		}
+		return nil, NewUserError(msg)
+	}
+	return ref, err
 }
 
 // containerSpaces checks if a spec has a scope_target and returns container-only
@@ -245,7 +271,7 @@ func containerSpaces(spec TargetSpec, targets map[string]*TargetRef) ([]SearchSp
 	}
 
 	// Validate it's a container
-	if !scopeRef.Obj.instance.Object.Id().HasFlag(game.ObjectFlagContainer) {
+	if !scopeRef.Obj.instance.Object.Get().HasFlag(game.ObjectFlagContainer) {
 		capName := strings.ToUpper(scopeRef.Obj.Name[:1]) + scopeRef.Obj.Name[1:]
 		return nil, false, NewUserError(fmt.Sprintf("%s is not a container.", capName))
 	}

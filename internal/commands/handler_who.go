@@ -34,7 +34,7 @@ func (f *WhoHandlerFactory) Create() (CommandFunc, error) {
 		var lines []string
 
 		f.world.ForEachPlayer(func(charId storage.Identifier, state game.PlayerState) {
-			parts := []string{state.Character.Race.Id().Abbreviation}
+			parts := []string{state.Character.Race.Get().Abbreviation}
 			parts = append(parts, strconv.Itoa(state.Character.Level))
 			bracket := strings.Join(parts, " ")
 

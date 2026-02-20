@@ -3,7 +3,9 @@ package commands
 import (
 	"fmt"
 	"strings"
+	"text/template"
 
+	"github.com/Masterminds/sprig/v3"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 )
@@ -65,7 +67,8 @@ type InputSpec struct {
 	Name     string    `json:"name"`
 	Type     InputType `json:"type"`
 	Required bool      `json:"required"`
-	Rest     bool      `json:"rest"` // If true, captures all remaining input
+	Rest     bool      `json:"rest"`              // If true, captures all remaining input
+	Missing  string    `json:"missing,omitempty"` // Custom error when required input is absent (e.g., "Get what?")
 }
 
 // TargetSpec defines a target to be resolved at runtime.
@@ -79,6 +82,7 @@ type TargetSpec struct {
 	Input       string   `json:"input"`                  // Which input provides the name to resolve
 	Optional    bool     `json:"optional,omitempty"`     // If true, missing input -> nil (no error)
 	ScopeTarget string   `json:"scope_target,omitempty"` // Resolve inside this target's contents when present; falls back to normal scopes
+	NotFound    string   `json:"not_found,omitempty"`    // Custom template for "not found" error; supports {{ .Input }}
 }
 
 // TargetType returns the combined TargetType value from Types slice.
@@ -203,6 +207,13 @@ func (c *Command) Validate() error {
 			}
 		} else if hasContentsScope {
 			return fmt.Errorf("target %q: \"contents\" scope requires scope_target to be set", target.Name)
+		}
+
+		// Validate not_found template syntax
+		if target.NotFound != "" {
+			if _, err := template.New("").Funcs(sprig.TxtFuncMap()).Parse(target.NotFound); err != nil {
+				return fmt.Errorf("target %q: invalid not_found template: %w", target.Name, err)
+			}
 		}
 	}
 

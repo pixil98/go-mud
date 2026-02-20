@@ -9,6 +9,12 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
+// ObjectHolder can have objects added and removed.
+type ObjectHolder interface {
+	ObjectRemover
+	AddObj(obj *game.ObjectInstance)
+}
+
 // MoveObjHandlerFactory creates handlers that move objects between holders.
 // Config:
 //   - destination (required): "inventory", "room", or a target name
@@ -28,8 +34,7 @@ func (f *MoveObjHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
 			{Name: "item", Type: TargetTypeObject, Required: true},
-			{Name: "container", Type: TargetTypeObject, Required: false},
-			{Name: "recipient", Type: TargetTypePlayer, Required: false},
+			{Name: "destination", Type: TargetTypePlayer | TargetTypeMobile | TargetTypeObject, Required: false},
 		},
 		Config: []ConfigRequirement{
 			{Name: "destination", Required: true},
@@ -55,7 +60,7 @@ func (f *MoveObjHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		// Check immobile flag
-		if item.Obj.instance.Object.Id().HasFlag(game.ObjectFlagImmobile) {
+		if item.Obj.instance.Object.Get().HasFlag(game.ObjectFlagImmobile) {
 			return NewUserError(fmt.Sprintf("You can't seem to move %s.", item.Obj.Name))
 		}
 
@@ -128,7 +133,7 @@ func (f *MoveObjHandlerFactory) holderForTarget(ref *TargetRef) (ObjectHolder, e
 	}
 
 	if ref.Obj != nil {
-		if !ref.Obj.instance.Object.Id().HasFlag(game.ObjectFlagContainer) {
+		if !ref.Obj.instance.Object.Get().HasFlag(game.ObjectFlagContainer) {
 			name := strings.ToUpper(ref.Obj.Name[:1]) + ref.Obj.Name[1:]
 			return nil, NewUserError(fmt.Sprintf("%s is not a container.", name))
 		}

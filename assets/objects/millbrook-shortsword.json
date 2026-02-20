@@ -1,0 +1,12 @@
+{
+    "version": 1,
+    "id": "millbrook-shortsword",
+    "spec": {
+        "aliases": ["sword", "shortsword", "blade"],
+        "short_desc": "a short sword",
+        "long_desc": "A short sword lies here, its blade gleaming faintly.",
+        "detailed_desc": "A well-balanced short sword with a double-edged steel blade. The leather-wrapped grip is worn smooth from use, and the simple crossguard bears the stamp of a Millbrook smithy.",
+        "flags": ["wearable"],
+        "wear_slots": ["wield"]
+    }
+}

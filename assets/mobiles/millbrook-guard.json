@@ -3,8 +3,17 @@
     "id": "millbrook-guard",
     "spec": {
         "aliases": ["guard", "town"],
+        "race": "human-35",
         "short_desc": "the town guard",
         "long_desc": "A burly town guard in chain mail stands here, watching the square.",
-        "detailed_desc": "This guard is a tall, broad-shouldered man wearing well-maintained chain mail over a leather jerkin. A short sword hangs at his hip, and his watchful eyes scan the square for any signs of trouble. The insignia of Millbrook is emblazoned on his tabard."
+        "detailed_desc": "This guard is a tall, broad-shouldered man wearing well-maintained chain mail over a leather jerkin. A short sword hangs at his hip, and his watchful eyes scan the square for any signs of trouble. The insignia of Millbrook is emblazoned on his tabard.",
+        "inventory": [
+            {"object_id": "millbrook-keyring"}
+        ],
+        "equipment": {
+            "head": {"object_id": "millbrook-helmet"},
+            "body": {"object_id": "millbrook-chainmail"},
+            "wield": {"object_id": "millbrook-shortsword"}
+        }
     }
 }

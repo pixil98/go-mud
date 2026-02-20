@@ -2,6 +2,7 @@ package commands
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/game"
@@ -80,19 +81,32 @@ func (f *LookHandlerFactory) showTarget(cmdCtx *CommandContext, target *TargetRe
 
 // TODO: should these functions just be moved to the respective target's instance structs?
 func (f *LookHandlerFactory) describePlayer(player *PlayerRef) string {
-	return player.Description
+	lines := []string{player.Description}
+	if eqLines := FormatEquippedItems(player.session.Character.Equipment); eqLines != nil {
+		lines = append(lines, "")
+		lines = append(lines, fmt.Sprintf("%s is using:", player.Name))
+		lines = append(lines, eqLines...)
+	}
+	return strings.Join(lines, "\n")
 }
 
 func (f *LookHandlerFactory) describeMob(mob *MobileRef) string {
-	return mob.Description
+	lines := []string{mob.Description}
+	if eqLines := FormatEquippedItems(mob.instance.Equipment); eqLines != nil {
+		lines = append(lines, "")
+		lines = append(lines, fmt.Sprintf("%s is using:", mob.Name))
+		lines = append(lines, eqLines...)
+	}
+	return strings.Join(lines, "\n")
 }
 
 func (f *LookHandlerFactory) describeObj(obj *ObjectRef) string {
-	if !obj.instance.Object.Id().HasFlag(game.ObjectFlagContainer) {
-		return obj.Description
-	}
+	lines := []string{obj.Description}
 
-	lines := []string{obj.Description, "It contains:"}
-	lines = append(lines, FormatInventoryItems(obj.instance.Contents)...)
+	if obj.instance.Object.Get().HasFlag(game.ObjectFlagContainer) {
+		lines = append(lines, "")
+		lines = append(lines, "It contains:")
+		lines = append(lines, FormatInventoryItems(obj.instance.Contents)...)
+	}
 	return strings.Join(lines, "\n")
 }

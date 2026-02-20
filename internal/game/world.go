@@ -20,18 +20,26 @@ type WorldState struct {
 }
 
 // NewWorldState creates a new WorldState with zone and room instances initialized.
-func NewWorldState(sub Subscriber, zones storage.Storer[*Zone], rooms storage.Storer[*Room]) *WorldState {
+func NewWorldState(sub Subscriber, zones storage.Storer[*Zone], rooms storage.Storer[*Room]) (*WorldState, error) {
 	// Build zone instances
 	instances := make(map[storage.Identifier]*ZoneInstance)
 	for zoneId, zone := range zones.GetAll() {
-		instances[zoneId] = NewZoneInstance(zoneId, zone)
+		zi, err := NewZoneInstance(storage.NewResolvedSmartIdentifier(string(zoneId), zone))
+		if err != nil {
+			return nil, err
+		}
+		instances[zoneId] = zi
 	}
 
 	// Build room instances and add to their zones
 	for roomId, room := range rooms.GetAll() {
-		zoneId := storage.Identifier(room.Zone.Get())
+		zoneId := storage.Identifier(room.Zone.Id())
 		if zi, ok := instances[zoneId]; ok {
-			zi.AddRoom(roomId, NewRoomInstance(roomId, room))
+			ri, err := NewRoomInstance(storage.NewResolvedSmartIdentifier(string(roomId), room))
+			if err != nil {
+				return nil, err
+			}
+			zi.AddRoom(ri)
 		}
 	}
 
@@ -39,7 +47,7 @@ func NewWorldState(sub Subscriber, zones storage.Storer[*Zone], rooms storage.St
 		subscriber: sub,
 		players:    make(map[storage.Identifier]*PlayerState),
 		instances:  instances,
-	}
+	}, nil
 }
 
 // Instances returns all zone instances.
@@ -148,7 +156,10 @@ type Subscriber interface {
 // Tick processes zone resets based on their reset mode and lifespan.
 func (w *WorldState) Tick(ctx context.Context) error {
 	for _, zi := range w.instances {
-		zi.Reset(false)
+		err := zi.Reset(false)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
@@ -182,8 +193,8 @@ func (p *PlayerState) Location() (zoneId, roomId storage.Identifier) {
 // and updates room instance player lists.
 func (p *PlayerState) Move(fromRoom, toRoom *RoomInstance) {
 	prevZone, prevRoom := p.ZoneId, p.RoomId
-	toZoneId := storage.Identifier(toRoom.Definition.Zone.Get())
-	toRoomId := toRoom.RoomId
+	toZoneId := storage.Identifier(toRoom.Room.Get().Zone.Id())
+	toRoomId := storage.Identifier(toRoom.Room.Id())
 
 	// Update room player lists
 	fromRoom.RemovePlayer(p.CharId)

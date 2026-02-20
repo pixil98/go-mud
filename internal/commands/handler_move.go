@@ -56,17 +56,17 @@ func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		// Check if exit exists
-		exit, exists := fromRoom.Definition.Exits[direction]
+		exit, exists := fromRoom.Room.Get().Exits[direction]
 		if !exists {
 			return NewUserError(fmt.Sprintf("You cannot go %s from here.", direction))
 		}
 
 		// Determine destination zone (default to current if not specified)
-		destZone := storage.Identifier(exit.Zone.Get())
-		if exit.Zone.Get() == "" {
+		destZone := storage.Identifier(exit.Zone.Id())
+		if exit.Zone.Id() == "" {
 			destZone = zoneId
 		}
-		destRoomId := storage.Identifier(exit.Room.Get())
+		destRoomId := storage.Identifier(exit.Room.Id())
 
 		// Get destination room instance
 		toRoom := f.world.Instances()[destZone].GetRoom(destRoomId)

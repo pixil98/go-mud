@@ -120,7 +120,7 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
 
 // initCharacter prompts for any missing traits on a character.
 func (m *PlayerManager) initCharacter(rw io.ReadWriter, char *game.Character) error {
-	for char.Pronoun.Get() == "" {
+	for char.Pronoun.Id() == "" {
 		sel, err := m.pronouns.Prompt(rw, "What are your pronouns?")
 		if err != nil {
 			return fmt.Errorf("selecting pronouns: %w", err)
@@ -128,7 +128,7 @@ func (m *PlayerManager) initCharacter(rw io.ReadWriter, char *game.Character) er
 		char.Pronoun = storage.NewSmartIdentifier[*game.Pronoun](string(sel))
 	}
 
-	for char.Race.Get() == "" {
+	for char.Race.Id() == "" {
 		sel, err := m.races.Prompt(rw, "What is your race?")
 		if err != nil {
 			return fmt.Errorf("selecting race: %w", err)
@@ -162,8 +162,8 @@ func (m *PlayerManager) startingLocation(char *game.Character) (storage.Identifi
 		slog.Warn("saved room not found, using default", "char", char.Name, "room", char.LastRoom)
 		return m.defaultZone, m.defaultRoom
 	}
-	if room.Zone.Get() != string(char.LastZone) {
-		slog.Warn("saved room not in saved zone, using default", "char", char.Name, "zone", char.LastZone, "room", char.LastRoom, "room_zone", room.Zone.Get())
+	if room.Zone.Id() != string(char.LastZone) {
+		slog.Warn("saved room not in saved zone, using default", "char", char.Name, "zone", char.LastZone, "room", char.LastRoom, "room_zone", room.Zone.Id())
 		return m.defaultZone, m.defaultRoom
 	}
 

@@ -197,8 +197,8 @@ func (h *Handler) validateSpec(cmd *Command, spec *HandlerSpec) error {
 			continue
 		}
 
-		// Validate type matches
-		if target.TargetType() != req.Type {
+		// Validate command types are a subset of spec types
+		if target.TargetType()&req.Type != target.TargetType() {
 			return fmt.Errorf("target %q: expected type %s, got %s", req.Name, req.Type, target.TargetType())
 		}
 	}
@@ -293,6 +293,9 @@ func (h *Handler) parseInputs(specs []InputSpec, rawArgs []string) ([]ParsedInpu
 	}
 
 	if len(rawArgs) < requiredCount {
+		if specs[len(rawArgs)].Missing != "" {
+			return nil, NewUserError(specs[len(rawArgs)].Missing)
+		}
 		return nil, NewUserError(fmt.Sprintf("Expected at least %d argument(s), got %d.", requiredCount, len(rawArgs)))
 	}
 
@@ -311,6 +314,9 @@ func (h *Handler) parseInputs(specs []InputSpec, rawArgs []string) ([]ParsedInpu
 		if argIndex >= len(rawArgs) {
 			// No more input - this input must be optional
 			if spec.Required {
+				if spec.Missing != "" {
+					return nil, NewUserError(spec.Missing)
+				}
 				return nil, NewUserError(fmt.Sprintf("Parameter %q is required.", spec.Name))
 			}
 			continue

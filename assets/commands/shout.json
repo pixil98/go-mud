@@ -1,0 +1,16 @@
+{
+    "version": 1,
+    "id": "shout",
+    "spec": {
+        "handler": "message",
+        "category": "communication",
+        "description": "Shout something to everyone in the zone.",
+        "config": {
+            "recipient_channel": "zone-{{ .Session.ZoneId }}",
+            "recipient_message": "{{ .Actor.Name }} shouts, \"{{ .Inputs.text }}\""
+        },
+        "inputs": [
+            {"name": "text", "type": "string", "required": true, "rest": true, "missing": "Shout what?"}
+        ]
+    }
+}

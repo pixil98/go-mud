@@ -10,10 +10,10 @@
             "message": "{{ .Actor.Name }} removes {{ .Targets.item.Obj.Name }}."
         },
         "targets": [
-            {"name": "item", "type": ["object"], "scope": ["equipment"], "input": "item"}
+            {"name": "item", "type": ["object"], "scope": ["equipment"], "input": "item", "not_found": "You aren't wearing anything called '{{ .Inputs.item }}'."}
         ],
         "inputs": [
-            {"name": "item", "type": "string", "required": true}
+            {"name": "item", "type": "string", "required": true, "missing": "Remove what?"}
         ]
     }
 }

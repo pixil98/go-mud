@@ -10,7 +10,7 @@
             "recipient_message": "{{ .Actor.Name }} says, \"{{ .Inputs.text }}\""
         },
         "inputs": [
-            {"name": "text", "type": "string", "required": true, "rest": true}
+            {"name": "text", "type": "string", "required": true, "rest": true, "missing": "Say what?"}
         ]
     }
 }

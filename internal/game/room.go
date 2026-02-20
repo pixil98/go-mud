@@ -11,26 +11,9 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
-// ObjectSpawn defines an object to spawn in a room during zone reset.
-// Contents lists objects to spawn inside this container (requires the container flag).
-// Supports nesting — content items can themselves be containers with contents.
-type ObjectSpawn struct {
-	ObjectId storage.SmartIdentifier[*Object] `json:"object_id"`
-	Contents []ObjectSpawn                    `json:"contents,omitempty"`
-}
-
-func (s *ObjectSpawn) Resolve(objects storage.Storer[*Object]) error {
-	el := errors.NewErrorList()
-	el.Add(s.ObjectId.Resolve(objects))
-	for i := range s.Contents {
-		el.Add(s.Contents[i].Resolve(objects))
-	}
-	return el.Err()
-}
-
 // Exit defines a destination for movement from a room.
 type Exit struct {
-	Zone storage.SmartIdentifier[*Zone] `json:"zone_id,omitempty"` // Optional; defaults to current zone
+	Zone storage.SmartIdentifier[*Zone] `json:"zone_id"` // Optional; defaults to current zone
 	Room storage.SmartIdentifier[*Room] `json:"room_id"`
 }
 
@@ -39,17 +22,12 @@ type Room struct {
 	Name        string                             `json:"name"`
 	Description string                             `json:"description"`
 	Zone        storage.SmartIdentifier[*Zone]     `json:"zone_id"`
-	Exits       map[string]Exit                    `json:"exits"`                   // direction -> destination
-	MobSpawns   []storage.SmartIdentifier[*Mobile] `json:"mobile_spawns,omitempty"` // mobile IDs to spawn; list duplicates for multiple
-	ObjSpawns   []ObjectSpawn                      `json:"object_spawns,omitempty"` // objects to spawn
+	Exits       map[string]Exit                    `json:"exits"`         // direction -> destination
+	MobSpawns   []storage.SmartIdentifier[*Mobile] `json:"mobile_spawns"` // mobile IDs to spawn; list duplicates for multiple
+	ObjSpawns   []ObjectSpawn                      `json:"object_spawns"` // objects to spawn
 }
 
-// Validate satisfies storage.ValidatingSpec.
-// TODO: Add cross-reference validation to ensure:
-// - The room's zone_id references an existing zone
-// - All exit destinations (zone_id + room_id) reference existing rooms
-// This would require access to the zone and room stores, possibly via a
-// ValidateWithStores(zones, rooms) method or a post-load validation pass.
+// Validate a room definition
 func (r *Room) Validate() error {
 	el := errors.NewErrorList()
 
@@ -72,7 +50,7 @@ func (r *Room) Resolve(dict *Dictionary) error {
 	el.Add(r.Zone.Resolve(dict.Zones))
 	for dir, exit := range r.Exits {
 		el.Add(exit.Room.Resolve(dict.Rooms))
-		if exit.Zone.Get() != "" {
+		if exit.Zone.Id() != "" {
 			el.Add(exit.Zone.Resolve(dict.Zones))
 			r.Exits[dir] = exit
 		}
@@ -91,8 +69,7 @@ func (r *Room) Resolve(dict *Dictionary) error {
 // The mutex protects the players and mobiles maps. Object operations delegate to
 // the objects Inventory, which handles its own locking.
 type RoomInstance struct {
-	RoomId     storage.Identifier
-	Definition *Room
+	Room storage.SmartIdentifier[*Room]
 
 	mu      sync.RWMutex
 	mobiles map[string]*MobileInstance
@@ -100,31 +77,39 @@ type RoomInstance struct {
 	players map[storage.Identifier]*PlayerState
 }
 
-// NewRoomInstance creates an empty RoomInstance.
-func NewRoomInstance(roomId storage.Identifier, def *Room) *RoomInstance {
-	return &RoomInstance{
-		RoomId:     roomId,
-		Definition: def,
-		mobiles:    make(map[string]*MobileInstance),
-		objects:    NewInventory(),
-		players:    make(map[storage.Identifier]*PlayerState),
+// NewRoomInstance creates a RoomInstance from a resolved SmartIdentifier.
+func NewRoomInstance(room storage.SmartIdentifier[*Room]) (*RoomInstance, error) {
+	if room.Get() == nil {
+		return nil, fmt.Errorf("unable to create instance from unresolved room %q", room.Id())
 	}
+	return &RoomInstance{
+		Room:    room,
+		mobiles: make(map[string]*MobileInstance),
+		objects: NewInventory(),
+		players: make(map[storage.Identifier]*PlayerState),
+	}, nil
 }
 
 // Reset clears all mobs and objects and respawns them from the room definition.
 // Players are preserved.
-func (ri *RoomInstance) Reset() {
+func (ri *RoomInstance) Reset() error {
+	def := ri.Room.Get()
 	ri.mu.Lock()
 	ri.mobiles = make(map[string]*MobileInstance)
-	for _, mob := range ri.Definition.MobSpawns {
+	for _, mob := range def.MobSpawns {
 		ri.spawnMob(mob)
 	}
 	ri.mu.Unlock()
 
 	ri.objects.Clear()
-	for _, spawn := range ri.Definition.ObjSpawns {
-		ri.AddObj(ri.spawnObj(spawn))
+	for _, spawn := range def.ObjSpawns {
+		oi, err := spawn.Spawn()
+		if err != nil {
+			return fmt.Errorf("resetting room %q: %w", ri.Room.Id(), err)
+		}
+		ri.AddObj(oi)
 	}
+	return nil
 }
 
 // FindMob searches room mobs for one whose definition matches the given name.
@@ -133,7 +118,7 @@ func (ri *RoomInstance) FindMob(name string) *MobileInstance {
 	defer ri.mu.RUnlock()
 
 	for _, mi := range ri.mobiles {
-		if mi.Mobile.Id().MatchName(name) {
+		if mi.Mobile.Get().MatchName(name) {
 			return mi
 		}
 	}
@@ -142,23 +127,32 @@ func (ri *RoomInstance) FindMob(name string) *MobileInstance {
 
 // spawnMob creates a new MobileInstance and adds it to the room.
 // Caller must hold the write lock.
-func (ri *RoomInstance) spawnMob(mob storage.SmartIdentifier[*Mobile]) *MobileInstance {
+func (ri *RoomInstance) spawnMob(mob storage.SmartIdentifier[*Mobile]) (*MobileInstance, error) {
 	mi := &MobileInstance{
 		InstanceId: uuid.New().String(),
 		Mobile:     mob,
+		ActorInstance: ActorInstance{
+			Inventory: NewInventory(),
+			Equipment: NewEquipment(),
+		},
+	}
+	def := mob.Get()
+	for _, spawn := range def.Inventory {
+		oi, err := spawn.Spawn()
+		if err != nil {
+			return nil, fmt.Errorf("spawning %q: %w", mob.Id(), err)
+		}
+		mi.Inventory.AddObj(oi)
+	}
+	for slot, spawn := range def.Equipment {
+		oi, err := spawn.Spawn()
+		if err != nil {
+			return nil, fmt.Errorf("spawning %q: %w", mob.Id(), err)
+		}
+		mi.Equipment.Equip(slot, 0, oi)
 	}
 	ri.mobiles[mi.InstanceId] = mi
-	return mi
-}
-
-// spawnObj creates an ObjectInstance from an ObjectSpawn,
-// recursively spawning any contents for containers.
-func (ri *RoomInstance) spawnObj(spawn ObjectSpawn) *ObjectInstance {
-	instance := NewObjectInstance(spawn.ObjectId)
-	for _, contentSpawn := range spawn.Contents {
-		instance.Contents.AddObj(ri.spawnObj(contentSpawn))
-	}
-	return instance
+	return mi, nil
 }
 
 // FindObj searches room objects for one whose definition matches the given name.
@@ -209,17 +203,18 @@ func (ri *RoomInstance) RemovePlayer(charId storage.Identifier) {
 // actorName is excluded from the player list.
 func (ri *RoomInstance) Describe(actorName string) string {
 	var sb strings.Builder
-	sb.WriteString(ri.Definition.Name)
+	def := ri.Room.Get()
+	sb.WriteString(def.Name)
 	sb.WriteString("\n")
-	sb.WriteString(ri.Definition.Description)
+	sb.WriteString(def.Description)
 	sb.WriteString("\n")
 
 	// Show objects
-	for _, oi := range ri.objects.Objects {
-		if oi.Object.Id().LongDesc != "" {
-			sb.WriteString(oi.Object.Id().LongDesc)
+	for _, oi := range ri.objects.Objs {
+		if oi.Object.Get().LongDesc != "" {
+			sb.WriteString(oi.Object.Get().LongDesc)
 		} else {
-			sb.WriteString(fmt.Sprintf("%s is here.", oi.Object.Id().ShortDesc))
+			sb.WriteString(fmt.Sprintf("%s is here.", oi.Object.Get().ShortDesc))
 		}
 		sb.WriteString("\n")
 	}
@@ -227,10 +222,10 @@ func (ri *RoomInstance) Describe(actorName string) string {
 	ri.mu.RLock()
 	// Show mobs
 	for _, mi := range ri.mobiles {
-		if mi.Mobile.Id().LongDesc != "" {
-			sb.WriteString(mi.Mobile.Id().LongDesc)
+		if mi.Mobile.Get().LongDesc != "" {
+			sb.WriteString(mi.Mobile.Get().LongDesc)
 		} else {
-			sb.WriteString(fmt.Sprintf("%s is here.", mi.Mobile.Id().ShortDesc))
+			sb.WriteString(fmt.Sprintf("%s is here.", mi.Mobile.Get().ShortDesc))
 		}
 		sb.WriteString("\n")
 	}
@@ -244,7 +239,7 @@ func (ri *RoomInstance) Describe(actorName string) string {
 	ri.mu.RUnlock()
 
 	sb.WriteString("\n")
-	sb.WriteString(formatExits(ri.Definition.Exits))
+	sb.WriteString(formatExits(def.Exits))
 
 	return sb.String()
 }
