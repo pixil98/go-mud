@@ -81,6 +81,7 @@ func (w *WorldState) AddPlayer(charId storage.Identifier, char *Character, msgs 
 		RoomId:       roomId,
 		Quit:         false,
 		LastActivity: time.Now(),
+		done:         make(chan struct{}),
 	}
 	w.players[charId] = ps
 	room := w.instances[zoneId].GetRoom(roomId)
@@ -182,6 +183,27 @@ type PlayerState struct {
 	// Session state
 	Quit         bool
 	LastActivity time.Time
+
+	// Connection management: closed to signal the active Play() goroutine to exit.
+	done chan struct{}
+
+	// Linkless state: player's connection dropped but they remain in the world.
+	Linkless   bool
+	LinklessAt time.Time
+}
+
+// Flags returns display labels for the player's current state (e.g., "linkless").
+func (p *PlayerState) Flags() []string {
+	var flags []string
+	if p.Linkless {
+		flags = append(flags, "linkless")
+	}
+	return flags
+}
+
+// Done returns the channel that is closed when this session is evicted by a reconnection.
+func (p *PlayerState) Done() <-chan struct{} {
+	return p.done
 }
 
 // Location returns the player's current zone and room.
@@ -255,4 +277,30 @@ func (p *PlayerState) UnsubscribeAll() {
 		unsub()
 		delete(p.subs, name)
 	}
+}
+
+// Kick closes the done channel, signaling the active Play() goroutine to exit.
+func (p *PlayerState) Kick() {
+	close(p.done)
+}
+
+// Reattach swaps the msgs channel and done channel for a reconnecting player.
+// It unsubscribes all old NATS subscriptions (their closures reference the old msgs channel),
+// clears the linkless flag, and creates a fresh done channel.
+// The caller is responsible for re-subscribing to NATS channels after this call.
+func (p *PlayerState) Reattach(msgs chan []byte) {
+	p.UnsubscribeAll()
+	p.msgs = msgs
+	p.done = make(chan struct{})
+	p.Linkless = false
+	p.LinklessAt = time.Time{}
+	p.LastActivity = time.Now()
+}
+
+// MarkLinkless sets the player as linkless and unsubscribes all NATS subscriptions
+// to prevent channel fill-up while they have no active connection.
+func (p *PlayerState) MarkLinkless() {
+	p.Linkless = true
+	p.LinklessAt = time.Now()
+	p.UnsubscribeAll()
 }

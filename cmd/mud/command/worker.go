@@ -83,7 +83,8 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 		}
 		opts = append(opts, game.WithTickLength(l))
 	}
-	driver := game.NewMudDriver([]game.Ticker{world}, opts...)
+	sessionTicker := game.NewSessionTicker(world, dict.Characters, publisher)
+	driver := game.NewMudDriver([]game.Ticker{world, sessionTicker}, opts...)
 
 	// Create a worker list
 	return service.WorkerList{

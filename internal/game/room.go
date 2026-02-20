@@ -233,7 +233,7 @@ func (ri *RoomInstance) Describe(actorName string) string {
 	// Show other players
 	for _, ps := range ri.players {
 		if ps.Character.Name != actorName {
-			sb.WriteString(fmt.Sprintf("%s is here.\n", ps.Character.Name))
+			sb.WriteString(fmt.Sprintf("%s is here.%s\n", ps.Character.Name, formatFlags(ps.Flags())))
 		}
 	}
 	ri.mu.RUnlock()
@@ -250,6 +250,14 @@ func (ri *RoomInstance) PlayerCount() int {
 	defer ri.mu.RUnlock()
 
 	return len(ri.players)
+}
+
+func formatFlags(flags []string) string {
+	var s string
+	for _, f := range flags {
+		s += " (" + f + ")"
+	}
+	return s
 }
 
 func formatExits(exits map[string]Exit) string {
