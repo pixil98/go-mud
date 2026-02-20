@@ -69,8 +69,7 @@ func (r *Room) Resolve(dict *Dictionary) error {
 // The mutex protects the players and mobiles maps. Object operations delegate to
 // the objects Inventory, which handles its own locking.
 type RoomInstance struct {
-	RoomId     storage.Identifier
-	Definition *Room
+	Room storage.SmartIdentifier[*Room]
 
 	mu      sync.RWMutex
 	mobiles map[string]*MobileInstance
@@ -78,32 +77,35 @@ type RoomInstance struct {
 	players map[storage.Identifier]*PlayerState
 }
 
-// NewRoomInstance creates an empty RoomInstance.
-func NewRoomInstance(roomId storage.Identifier, def *Room) *RoomInstance {
-	return &RoomInstance{
-		RoomId:     roomId,
-		Definition: def,
-		mobiles:    make(map[string]*MobileInstance),
-		objects:    NewInventory(),
-		players:    make(map[storage.Identifier]*PlayerState),
+// NewRoomInstance creates a RoomInstance from a resolved SmartIdentifier.
+func NewRoomInstance(room storage.SmartIdentifier[*Room]) (*RoomInstance, error) {
+	if room.Get() == nil {
+		return nil, fmt.Errorf("unable to create instance from unresolved room %q", room.Id())
 	}
+	return &RoomInstance{
+		Room:    room,
+		mobiles: make(map[string]*MobileInstance),
+		objects: NewInventory(),
+		players: make(map[storage.Identifier]*PlayerState),
+	}, nil
 }
 
 // Reset clears all mobs and objects and respawns them from the room definition.
 // Players are preserved.
 func (ri *RoomInstance) Reset() error {
+	def := ri.Room.Get()
 	ri.mu.Lock()
 	ri.mobiles = make(map[string]*MobileInstance)
-	for _, mob := range ri.Definition.MobSpawns {
+	for _, mob := range def.MobSpawns {
 		ri.spawnMob(mob)
 	}
 	ri.mu.Unlock()
 
 	ri.objects.Clear()
-	for _, spawn := range ri.Definition.ObjSpawns {
+	for _, spawn := range def.ObjSpawns {
 		oi, err := spawn.Spawn()
 		if err != nil {
-			return fmt.Errorf("resetting room %q: %w", ri.RoomId, err)
+			return fmt.Errorf("resetting room %q: %w", ri.Room.Id(), err)
 		}
 		ri.AddObj(oi)
 	}
@@ -201,9 +203,10 @@ func (ri *RoomInstance) RemovePlayer(charId storage.Identifier) {
 // actorName is excluded from the player list.
 func (ri *RoomInstance) Describe(actorName string) string {
 	var sb strings.Builder
-	sb.WriteString(ri.Definition.Name)
+	def := ri.Room.Get()
+	sb.WriteString(def.Name)
 	sb.WriteString("\n")
-	sb.WriteString(ri.Definition.Description)
+	sb.WriteString(def.Description)
 	sb.WriteString("\n")
 
 	// Show objects
@@ -236,7 +239,7 @@ func (ri *RoomInstance) Describe(actorName string) string {
 	ri.mu.RUnlock()
 
 	sb.WriteString("\n")
-	sb.WriteString(formatExits(ri.Definition.Exits))
+	sb.WriteString(formatExits(def.Exits))
 
 	return sb.String()
 }

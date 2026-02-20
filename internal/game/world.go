@@ -24,7 +24,7 @@ func NewWorldState(sub Subscriber, zones storage.Storer[*Zone], rooms storage.St
 	// Build zone instances
 	instances := make(map[storage.Identifier]*ZoneInstance)
 	for zoneId, zone := range zones.GetAll() {
-		zi, err := NewZoneInstance(zoneId, zone)
+		zi, err := NewZoneInstance(storage.NewResolvedSmartIdentifier(string(zoneId), zone))
 		if err != nil {
 			return nil, err
 		}
@@ -35,7 +35,11 @@ func NewWorldState(sub Subscriber, zones storage.Storer[*Zone], rooms storage.St
 	for roomId, room := range rooms.GetAll() {
 		zoneId := storage.Identifier(room.Zone.Id())
 		if zi, ok := instances[zoneId]; ok {
-			zi.AddRoom(roomId, NewRoomInstance(roomId, room))
+			ri, err := NewRoomInstance(storage.NewResolvedSmartIdentifier(string(roomId), room))
+			if err != nil {
+				return nil, err
+			}
+			zi.AddRoom(ri)
 		}
 	}
 
@@ -189,8 +193,8 @@ func (p *PlayerState) Location() (zoneId, roomId storage.Identifier) {
 // and updates room instance player lists.
 func (p *PlayerState) Move(fromRoom, toRoom *RoomInstance) {
 	prevZone, prevRoom := p.ZoneId, p.RoomId
-	toZoneId := storage.Identifier(toRoom.Definition.Zone.Id())
-	toRoomId := toRoom.RoomId
+	toZoneId := storage.Identifier(toRoom.Room.Get().Zone.Id())
+	toRoomId := storage.Identifier(toRoom.Room.Id())
 
 	// Update room player lists
 	fromRoom.RemovePlayer(p.CharId)

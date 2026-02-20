@@ -56,7 +56,7 @@ func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		// Check if exit exists
-		exit, exists := fromRoom.Definition.Exits[direction]
+		exit, exists := fromRoom.Room.Get().Exits[direction]
 		if !exists {
 			return NewUserError(fmt.Sprintf("You cannot go %s from here.", direction))
 		}
