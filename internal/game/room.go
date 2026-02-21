@@ -8,6 +8,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/pixil98/go-errors"
+	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
@@ -204,42 +205,39 @@ func (ri *RoomInstance) RemovePlayer(charId storage.Identifier) {
 func (ri *RoomInstance) Describe(actorName string) string {
 	var sb strings.Builder
 	def := ri.Room.Get()
-	sb.WriteString(def.Name)
+	sb.WriteString(display.Colorize(display.Yellow, def.Name))
 	sb.WriteString("\n")
-	sb.WriteString(def.Description)
+	sb.WriteString(display.Wrap(def.Description))
+	sb.WriteString("\n")
+	sb.WriteString(display.Colorize(display.Cyan, formatExits(def.Exits)))
 	sb.WriteString("\n")
 
 	// Show objects
 	for _, oi := range ri.objects.Objs {
-		if oi.Object.Get().LongDesc != "" {
-			sb.WriteString(oi.Object.Get().LongDesc)
-		} else {
-			sb.WriteString(fmt.Sprintf("%s is here.", oi.Object.Get().ShortDesc))
+		desc := oi.Object.Get().LongDesc
+		if desc == "" {
+			desc = fmt.Sprintf("%s is here.", oi.Object.Get().ShortDesc)
 		}
-		sb.WriteString("\n")
+		sb.WriteString(fmt.Sprintf("%s\n", display.Colorize(display.Green, desc)))
 	}
 
 	ri.mu.RLock()
 	// Show mobs
 	for _, mi := range ri.mobiles {
-		if mi.Mobile.Get().LongDesc != "" {
-			sb.WriteString(mi.Mobile.Get().LongDesc)
-		} else {
-			sb.WriteString(fmt.Sprintf("%s is here.", mi.Mobile.Get().ShortDesc))
+		desc := mi.Mobile.Get().LongDesc
+		if desc == "" {
+			desc = fmt.Sprintf("%s is here.", mi.Mobile.Get().ShortDesc)
 		}
-		sb.WriteString("\n")
+		sb.WriteString(fmt.Sprintf("%s\n", display.Colorize(display.Yellow, desc)))
 	}
 
 	// Show other players
 	for _, ps := range ri.players {
 		if ps.Character.Name != actorName {
-			sb.WriteString(fmt.Sprintf("%s is here.\n", ps.Character.Name))
+			sb.WriteString(display.Colorize(display.Yellow, fmt.Sprintf("%s is here.%s\n", ps.Character.Name, formatFlags(ps.Flags()))))
 		}
 	}
 	ri.mu.RUnlock()
-
-	sb.WriteString("\n")
-	sb.WriteString(formatExits(def.Exits))
 
 	return sb.String()
 }
@@ -250,6 +248,14 @@ func (ri *RoomInstance) PlayerCount() int {
 	defer ri.mu.RUnlock()
 
 	return len(ri.players)
+}
+
+func formatFlags(flags []string) string {
+	var s string
+	for _, f := range flags {
+		s += " (" + f + ")"
+	}
+	return s
 }
 
 func formatExits(exits map[string]Exit) string {

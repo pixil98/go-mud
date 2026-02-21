@@ -16,7 +16,15 @@ func newCRLFReadWriter(rw io.ReadWriter) io.ReadWriter {
 }
 
 func (c *crlfWriter) Read(p []byte) (int, error) {
-	return c.rw.Read(p)
+	n, err := c.rw.Read(p)
+	if n > 0 {
+		// Normalize line endings: \r\n → \n, then standalone \r → \n.
+		// Telnet sends \r\n, SSH with a PTY sends just \r.
+		data := bytes.ReplaceAll(p[:n], []byte("\r\n"), []byte("\n"))
+		data = bytes.ReplaceAll(data, []byte("\r"), []byte("\n"))
+		n = copy(p, data)
+	}
+	return n, err
 }
 
 func (c *crlfWriter) Write(p []byte) (int, error) {

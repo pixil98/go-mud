@@ -1,15 +1,36 @@
 package player
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"io"
 	"log/slog"
 	"strings"
+	"time"
 
 	"github.com/pixil98/go-mud/internal/commands"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
 )
+
+const (
+	DefaultLinklessTimeout = 5 * time.Minute
+	DefaultIdleTimeout     = 15 * time.Minute
+)
+
+// PlayerManagerOpt configures optional PlayerManager settings.
+type PlayerManagerOpt func(*PlayerManager)
+
+// WithLinklessTimeout sets how long a linkless player remains in the world before being removed.
+func WithLinklessTimeout(d time.Duration) PlayerManagerOpt {
+	return func(pm *PlayerManager) { pm.linklessTimeout = d }
+}
+
+// WithIdleTimeout sets how long an idle connected player can remain before being kicked.
+func WithIdleTimeout(d time.Duration) PlayerManagerOpt {
+	return func(pm *PlayerManager) { pm.idleTimeout = d }
+}
 
 type PlayerManager struct {
 	cmdHandler *commands.Handler
@@ -22,30 +43,90 @@ type PlayerManager struct {
 
 	pronouns *storage.SelectableStorer[*game.Pronoun]
 	races    *storage.SelectableStorer[*game.Race]
+
+	linklessTimeout time.Duration
+	idleTimeout     time.Duration
 }
 
-func NewPlayerManager(cmd *commands.Handler, world *game.WorldState, dict *game.Dictionary, defaultZone, defaultRoom string) *PlayerManager {
+func NewPlayerManager(cmd *commands.Handler, world *game.WorldState, dict *game.Dictionary, defaultZone, defaultRoom string, opts ...PlayerManagerOpt) *PlayerManager {
 	pm := &PlayerManager{
-		cmdHandler:  cmd,
-		world:       world,
-		dict:        dict,
-		loginFlow:   &loginFlow{chars: dict.Characters},
-		defaultZone: storage.Identifier(defaultZone),
-		defaultRoom: storage.Identifier(defaultRoom),
+		cmdHandler:      cmd,
+		world:           world,
+		dict:            dict,
+		loginFlow:       &loginFlow{chars: dict.Characters},
+		defaultZone:     storage.Identifier(defaultZone),
+		defaultRoom:     storage.Identifier(defaultRoom),
+		linklessTimeout: DefaultLinklessTimeout,
+		idleTimeout:     DefaultIdleTimeout,
 	}
 
 	pm.races = storage.NewSelectableStorer(dict.Races)
 	pm.pronouns = storage.NewSelectableStorer(dict.Pronouns)
 
+	for _, opt := range opts {
+		opt(pm)
+	}
+
 	return pm
 }
 
-// RemovePlayer removes a player from the world state
-func (m *PlayerManager) RemovePlayer(charId string) {
-	_ = m.world.RemovePlayer(storage.Identifier(charId))
+// Tick checks all players for linkless and idle timeouts.
+// Linkless players past the timeout are saved and removed from the world.
+// Idle connected players are marked linkless and kicked, dropping their connection.
+func (m *PlayerManager) Tick(ctx context.Context) error {
+	now := time.Now()
+	var linklessExpired []storage.Identifier
+	var idleExpired []storage.Identifier
+
+	m.world.ForEachPlayer(func(charId storage.Identifier, ps game.PlayerState) {
+		if ps.Linkless {
+			if now.Sub(ps.LinklessAt) >= m.linklessTimeout {
+				linklessExpired = append(linklessExpired, charId)
+			}
+		} else if now.Sub(ps.LastActivity) >= m.idleTimeout {
+			idleExpired = append(idleExpired, charId)
+		}
+	})
+
+	for _, charId := range linklessExpired {
+		ps := m.world.GetPlayer(charId)
+		if ps == nil {
+			continue
+		}
+		saveCharacterFromState(m.dict.Characters, ps)
+		ps.UnsubscribeAll()
+		_ = m.world.RemovePlayer(charId)
+		slog.Info("linkless player removed", "charId", charId)
+	}
+
+	for _, charId := range idleExpired {
+		ps := m.world.GetPlayer(charId)
+		if ps == nil {
+			continue
+		}
+		saveCharacterFromState(m.dict.Characters, ps)
+		ps.MarkLinkless()
+		ps.Kick()
+		slog.Info("idle player kicked", "charId", charId)
+	}
+
+	return nil
 }
 
-func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
+// RunSession handles the full player lifecycle: login, play, and cleanup.
+func (m *PlayerManager) RunSession(ctx context.Context, conn io.ReadWriter) error {
+	p, err := m.newPlayer(conn)
+	if err != nil {
+		_, _ = conn.Write([]byte("Failed to setup player session.\n"))
+		return err
+	}
+
+	playErr := p.Play(ctx)
+	m.handleSessionEnd(p.Id(), playErr)
+	return playErr
+}
+
+func (m *PlayerManager) newPlayer(conn io.ReadWriter) (*Player, error) {
 	char, err := m.loginFlow.Run(conn)
 	if err != nil {
 		return nil, err
@@ -68,54 +149,92 @@ func (m *PlayerManager) NewPlayer(conn io.ReadWriter) (*Player, error) {
 	}
 
 	charId := storage.Identifier(strings.ToLower(char.Name))
+	msgs := make(chan []byte, 100)
+	var zoneId, roomId storage.Identifier
+
+	if ps := m.world.GetPlayer(charId); ps != nil {
+		// Player already in world — kick old connection and reattach
+		slog.Info("player reconnecting", "charId", charId)
+		ps.Kick()
+		time.Sleep(10 * time.Millisecond)
+		ps.Reattach(msgs)
+		zoneId, roomId = ps.Location()
+		_, _ = conn.Write([]byte("Reconnecting...\n"))
+	} else {
+		// Fresh login
+		zoneId, roomId = m.startingLocation(char)
+		err = m.world.AddPlayer(charId, m.dict.Characters.Get(charId.String()), msgs, zoneId, roomId)
+		if err != nil {
+			return nil, fmt.Errorf("registering player in world: %w", err)
+		}
+	}
+
+	ps := m.world.GetPlayer(charId)
 
 	p := &Player{
 		conn:       conn,
 		charId:     charId,
 		world:      m.world,
 		cmdHandler: m.cmdHandler,
-		msgs:       make(chan []byte, 100),
+		msgs:       msgs,
+		done:       ps.Done(),
 	}
 
-	// Determine starting location: use saved location if valid, otherwise defaults
-	startZone, startRoom := m.startingLocation(char)
-
-	// Register player in world state
-	err = m.world.AddPlayer(charId, m.dict.Characters.Get(charId.String()), p.msgs, startZone, startRoom)
-	if err != nil {
-		return nil, fmt.Errorf("registering player in world: %w", err)
-	}
-
-	// Subscribe to player-specific channel
-	err = p.world.GetPlayer(charId).Subscribe(fmt.Sprintf("player-%s", p.Id()))
-	if err != nil {
-		// Clean up world state on failure
+	if err := m.subscribePlayer(ps, charId, zoneId, roomId); err != nil {
 		_ = m.world.RemovePlayer(charId)
-		return nil, fmt.Errorf("subscribing to player channel: %w", err)
-	}
-
-	// Subscribe to world channel (for gossip, etc.)
-	err = p.world.GetPlayer(charId).Subscribe("world")
-	if err != nil {
-		_ = m.world.RemovePlayer(charId)
-		return nil, fmt.Errorf("subscribing to world channel: %w", err)
-	}
-
-	// Subscribe to zone channel
-	err = p.world.GetPlayer(charId).Subscribe(fmt.Sprintf("zone-%s", startZone))
-	if err != nil {
-		_ = m.world.RemovePlayer(charId)
-		return nil, fmt.Errorf("subscribing to zone channel: %w", err)
-	}
-
-	// Subscribe to room channel
-	err = p.world.GetPlayer(charId).Subscribe(fmt.Sprintf("zone-%s-room-%s", startZone, startRoom))
-	if err != nil {
-		_ = m.world.RemovePlayer(charId)
-		return nil, fmt.Errorf("subscribing to room channel: %w", err)
+		return nil, fmt.Errorf("subscribing player: %w", err)
 	}
 
 	return p, nil
+}
+
+// HandleSessionEnd handles a player's Play() loop ending. It examines the error and
+// player state to determine whether to remove the player, mark them linkless, or do nothing.
+func (m *PlayerManager) handleSessionEnd(charId string, playErr error) {
+	if errors.Is(playErr, game.ErrPlayerReconnected) {
+		return
+	}
+
+	id := storage.Identifier(charId)
+	ps := m.world.GetPlayer(id)
+	if ps == nil {
+		return
+	}
+
+	if ps.Quit {
+		ps.UnsubscribeAll()
+		_ = m.world.RemovePlayer(id)
+		slog.Info("player quit", "charId", charId)
+	} else {
+		saveCharacterFromState(m.dict.Characters, ps)
+		ps.MarkLinkless()
+		slog.Info("player went linkless", "charId", charId)
+	}
+}
+
+// subscribePlayer subscribes the player to the standard NATS channels.
+func (m *PlayerManager) subscribePlayer(ps *game.PlayerState, charId storage.Identifier, zoneId, roomId storage.Identifier) error {
+	if err := ps.Subscribe(fmt.Sprintf("player-%s", charId)); err != nil {
+		return fmt.Errorf("subscribing to player channel: %w", err)
+	}
+	if err := ps.Subscribe("world"); err != nil {
+		return fmt.Errorf("subscribing to world channel: %w", err)
+	}
+	if err := ps.Subscribe(fmt.Sprintf("zone-%s", zoneId)); err != nil {
+		return fmt.Errorf("subscribing to zone channel: %w", err)
+	}
+	if err := ps.Subscribe(fmt.Sprintf("zone-%s-room-%s", zoneId, roomId)); err != nil {
+		return fmt.Errorf("subscribing to room channel: %w", err)
+	}
+	return nil
+}
+
+// saveCharacterFromState persists the character's current location to the store.
+func saveCharacterFromState(chars storage.Storer[*game.Character], ps *game.PlayerState) {
+	zoneId, roomId := ps.Location()
+	ps.Character.LastZone = zoneId
+	ps.Character.LastRoom = roomId
+	_ = chars.Save(string(ps.CharId), ps.Character)
 }
 
 // initCharacter prompts for any missing traits on a character.

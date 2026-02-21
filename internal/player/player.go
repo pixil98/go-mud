@@ -20,6 +20,7 @@ type Player struct {
 	cmdHandler *commands.Handler
 
 	msgs chan []byte
+	done <-chan struct{}
 }
 
 // Id returns the player's unique identifier (lowercase character name)
@@ -40,9 +41,6 @@ func (p *Player) Play(ctx context.Context) error {
 		close(inputChan)
 	}()
 
-	// Ensure subscriptions are cleaned up on exit
-	defer p.world.GetPlayer(p.charId).UnsubscribeAll()
-
 	// Show the player their current room on login
 	err := p.cmdHandler.Exec(ctx, p.world, p.charId, "look")
 	if err != nil {
@@ -58,6 +56,15 @@ func (p *Player) Play(ctx context.Context) error {
 		case <-ctx.Done():
 			return ctx.Err()
 
+		case <-p.done:
+			ps := p.world.GetPlayer(p.charId)
+			if ps != nil && ps.Linkless {
+				_ = p.writeLine("\nDisconnected for inactivity.")
+			} else {
+				_ = p.writeLine("\nAnother connection has taken over your session.")
+			}
+			return game.ErrPlayerReconnected
+
 		case msg := <-p.msgs:
 			// Display NATS message to the player
 			err = p.writeLine("\n" + string(msg))
@@ -71,7 +78,8 @@ func (p *Player) Play(ctx context.Context) error {
 
 		case line, ok := <-inputChan:
 			if !ok {
-				// Input channel closed, check for scanner error
+				// Input channel closed (connection lost).
+				// Don't clean up subscriptions — caller decides (linkless vs quit).
 				select {
 				case err := <-inputErrChan:
 					return err
@@ -79,6 +87,9 @@ func (p *Player) Play(ctx context.Context) error {
 					return nil
 				}
 			}
+
+			// Any input resets the idle timer.
+			p.world.MarkPlayerActive(p.charId)
 
 			line = strings.TrimSpace(line)
 			if line == "" {
@@ -119,6 +130,8 @@ func (p *Player) Play(ctx context.Context) error {
 			}
 			if state.Quit {
 				p.writeLine("Goodbye!")
+				// Quit handler already saved and unsubscribed isn't needed
+				// — HandleSessionEnd will remove the player from the world.
 				return nil
 			}
 

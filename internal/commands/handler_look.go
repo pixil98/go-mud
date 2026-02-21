@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
 )
 
@@ -81,7 +82,7 @@ func (f *LookHandlerFactory) showTarget(cmdCtx *CommandContext, target *TargetRe
 
 // TODO: should these functions just be moved to the respective target's instance structs?
 func (f *LookHandlerFactory) describePlayer(player *PlayerRef) string {
-	lines := []string{player.Description}
+	lines := []string{display.Wrap(player.Description)}
 	if eqLines := FormatEquippedItems(player.session.Character.Equipment); eqLines != nil {
 		lines = append(lines, "")
 		lines = append(lines, fmt.Sprintf("%s is using:", player.Name))
@@ -91,7 +92,7 @@ func (f *LookHandlerFactory) describePlayer(player *PlayerRef) string {
 }
 
 func (f *LookHandlerFactory) describeMob(mob *MobileRef) string {
-	lines := []string{mob.Description}
+	lines := []string{display.Wrap(mob.Description)}
 	if eqLines := FormatEquippedItems(mob.instance.Equipment); eqLines != nil {
 		lines = append(lines, "")
 		lines = append(lines, fmt.Sprintf("%s is using:", mob.Name))
@@ -101,7 +102,7 @@ func (f *LookHandlerFactory) describeMob(mob *MobileRef) string {
 }
 
 func (f *LookHandlerFactory) describeObj(obj *ObjectRef) string {
-	lines := []string{obj.Description}
+	lines := []string{display.Wrap(obj.Description)}
 
 	if obj.instance.Object.Get().HasFlag(game.ObjectFlagContainer) {
 		lines = append(lines, "")

@@ -19,23 +19,7 @@ func NewConnectionManager(pm *player.PlayerManager) *ConnectionManager {
 }
 
 func (m *ConnectionManager) AcceptConnection(ctx context.Context, conn io.ReadWriter) {
-	//TODO thread ctx though this for timeouts
-	p, err := m.pm.NewPlayer(conn)
-	if err != nil {
-		slog.WarnContext(ctx, "creating player instance", "error", err)
-		_, err := conn.Write([]byte("Failed to setup player session."))
-		if err != nil {
-			slog.WarnContext(ctx, "writing err to player", "error", err)
-		}
-
-		return
+	if err := m.pm.RunSession(ctx, conn); err != nil {
+		slog.WarnContext(ctx, "player session", "error", err)
 	}
-
-	err = p.Play(ctx)
-	if err != nil {
-		slog.WarnContext(ctx, "playing", "error", err)
-	}
-
-	// Remove player from active players when they disconnect
-	m.pm.RemovePlayer(p.Id())
 }
