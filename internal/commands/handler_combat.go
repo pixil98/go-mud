@@ -32,12 +32,11 @@ func (f *KillHandlerFactory) ValidateConfig(config map[string]any) error {
 
 func (f *KillHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		target := cmdCtx.Targets["target"]
-
-		attackerID := fmt.Sprintf("player:%s", cmdCtx.Session.CharId)
-		if f.combat.IsInCombat(attackerID) {
+		if cmdCtx.Session.InCombat {
 			return NewUserError("You're already fighting!")
 		}
+
+		target := cmdCtx.Targets["target"]
 
 		mi := target.Mob.instance
 		attacker := &game.PlayerCombatant{
