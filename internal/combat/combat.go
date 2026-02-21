@@ -3,10 +3,14 @@ package combat
 import (
 	"context"
 	"fmt"
+	"log/slog"
+	"strings"
 	"sync"
+
+	"github.com/pixil98/go-mud/internal/display"
 )
 
-// Side identifies which team a combatant is on for retargeting.
+// Side identifies which team a combatant is on.
 type Side int
 
 const (
@@ -40,148 +44,147 @@ type EventHandler interface {
 	OnDeath(victim Combatant, zoneID, roomID string)
 }
 
-// Fighter is one entry in the combat list.
+// Fighter is one entry in a fight.
 type Fighter struct {
-	Combatant Combatant
-	Target    Combatant
-	ZoneID    string
-	RoomID    string
+	Combatant
+	Target Combatant
 }
 
-// Manager tracks all active combatants and processes combat rounds.
+// Fight represents a single engagement between two sides in a room.
+type Fight struct {
+	ZoneID string
+	RoomID string
+	SideA  []*Fighter
+	SideB  []*Fighter
+}
+
+// Manager tracks all active fights and processes combat rounds.
 type Manager struct {
-	mu       sync.Mutex
-	pub      MessagePublisher
-	handler  EventHandler
-	fighters map[string]*Fighter
+	mu         sync.Mutex
+	pub        MessagePublisher
+	handler    EventHandler
+	combatants map[string]*Fight              // combatant ID -> their fight
+	fights     map[string]map[string][]*Fight // zone -> room -> fights
 }
 
 // NewManager creates a new combat Manager.
 func NewManager(pub MessagePublisher, handler EventHandler) *Manager {
 	return &Manager{
-		pub:      pub,
-		handler:  handler,
-		fighters: make(map[string]*Fighter),
+		pub:        pub,
+		handler:    handler,
+		combatants: make(map[string]*Fight),
+		fights:     make(map[string]map[string][]*Fight),
 	}
-}
-
-// IsInCombat returns true if the given combatant ID is in the fighter list.
-func (m *Manager) IsInCombat(id string) bool {
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	_, ok := m.fighters[id]
-	return ok
 }
 
 // GetFighter returns the Fighter for the given combatant ID, or nil.
 func (m *Manager) GetFighter(id string) *Fighter {
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	return m.fighters[id]
+	fight, ok := m.combatants[id]
+	if !ok {
+		return nil
+	}
+	if f := findFighter(fight.SideA, id); f != nil {
+		return f
+	}
+	return findFighter(fight.SideB, id)
 }
 
-// StartCombat adds an attacker to the combat list targeting the given target.
-// If the target is not already fighting, it is also added targeting the attacker.
+// StartCombat begins combat between attacker and target in the given room.
+// If the target is already in a fight, the attacker joins the opposite side.
 func (m *Manager) StartCombat(attacker, target Combatant, zoneID, roomID string) error {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 
 	attackerID := attacker.CombatID()
-	if _, exists := m.fighters[attackerID]; exists {
+	if _, exists := m.combatants[attackerID]; exists {
 		return fmt.Errorf("already in combat")
 	}
 
-	m.fighters[attackerID] = &Fighter{
-		Combatant: attacker,
-		Target:    target,
-		ZoneID:    zoneID,
-		RoomID:    roomID,
-	}
-	attacker.SetInCombat(true)
+	af := &Fighter{Combatant: attacker, Target: target}
 
 	targetID := target.CombatID()
-	if _, exists := m.fighters[targetID]; !exists {
-		m.fighters[targetID] = &Fighter{
-			Combatant: target,
-			Target:    attacker,
-			ZoneID:    zoneID,
-			RoomID:    roomID,
+	if fight, exists := m.combatants[targetID]; exists {
+		// Join the opposite side of the target's existing fight.
+		if isOnSideA(fight, targetID) {
+			fight.SideB = append(fight.SideB, af)
+		} else {
+			fight.SideA = append(fight.SideA, af)
 		}
+		m.combatants[attackerID] = fight
+	} else {
+		// Create a new fight.
+		tf := &Fighter{Combatant: target, Target: attacker}
+		fight := &Fight{
+			ZoneID: zoneID,
+			RoomID: roomID,
+			SideA:  []*Fighter{af},
+			SideB:  []*Fighter{tf},
+		}
+		m.combatants[attackerID] = fight
+		m.combatants[targetID] = fight
+		m.addFight(fight)
 		target.SetInCombat(true)
 	}
 
+	attacker.SetInCombat(true)
 	return nil
 }
 
-// StopCombat removes a combatant from combat by ID.
-func (m *Manager) StopCombat(id string) {
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	m.stopFighting(id)
-}
-
-// StopAllInRoom removes all fighters in the given room.
-func (m *Manager) StopAllInRoom(zoneID, roomID string) {
-	m.mu.Lock()
-	defer m.mu.Unlock()
-
-	for id, f := range m.fighters {
-		if f.ZoneID == zoneID && f.RoomID == roomID {
-			m.stopFighting(id)
-		}
-	}
-}
-
-func (m *Manager) stopFighting(id string) {
-	fighter, ok := m.fighters[id]
-	if !ok {
-		return
-	}
-	fighter.Combatant.SetInCombat(false)
-	delete(m.fighters, id)
-}
-
-// Tick processes one combat round. Called every tick by the MudDriver.
+// Tick processes one combat round.
 func (m *Manager) Tick(ctx context.Context) error {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 
-	if len(m.fighters) == 0 {
-		return nil
-	}
-
-	// Snapshot keys for safe iteration during removal.
-	keys := make([]string, 0, len(m.fighters))
-	for k := range m.fighters {
-		keys = append(keys, k)
-	}
-
-	for _, key := range keys {
-		fighter, ok := m.fighters[key]
-		if !ok {
-			continue
-		}
-		if !fighter.Combatant.IsAlive() {
-			continue
-		}
-
-		if fighter.Target == nil || !fighter.Target.IsAlive() {
-			m.retarget(fighter)
-			if fighter.Target == nil {
-				m.stopFighting(key)
-				continue
+	for _, rooms := range m.fights {
+		for _, fights := range rooms {
+			for _, fight := range fights {
+				msgs := m.processFight(fight)
+				deathMsgs := m.processFightDeaths(fight)
+				msgs = append(msgs, deathMsgs...)
+				if len(msgs) > 0 {
+					m.pub.SendToRoom(fight.ZoneID, fight.RoomID, strings.Join(msgs, "\n"))
+				}
 			}
 		}
-
-		m.performAttack(fighter)
 	}
 
-	m.processDeaths()
-
+	m.cleanupFights()
 	return nil
 }
 
-func (m *Manager) performAttack(fighter *Fighter) {
+func (m *Manager) processFight(fight *Fight) []string {
+	var msgs []string
+	for _, f := range fight.SideA {
+		if msg := m.processAttack(f, fight); msg != "" {
+			msgs = append(msgs, msg)
+		}
+	}
+	for _, f := range fight.SideB {
+		if msg := m.processAttack(f, fight); msg != "" {
+			msgs = append(msgs, msg)
+		}
+	}
+	return msgs
+}
+
+func (m *Manager) processAttack(fighter *Fighter, fight *Fight) string {
+	if !fighter.Combatant.IsAlive() {
+		return ""
+	}
+
+	if fighter.Target == nil || !fighter.Target.IsAlive() {
+		fighter.Target = m.pickTarget(fighter, fight)
+		if fighter.Target == nil {
+			return ""
+		}
+	}
+
+	slog.Debug("performing attack",
+		"zone", fight.ZoneID, "room", fight.RoomID,
+		"name", fighter.Combatant.CombatName())
+
 	attacker := fighter.Combatant
 	target := fighter.Target
 
@@ -195,79 +198,161 @@ func (m *Manager) performAttack(fighter *Fighter) {
 	}
 
 	verb := DamageVerb(damage)
-	msg := fmt.Sprintf("%s %s %s!", attacker.CombatName(), verb, target.CombatName())
-	m.pub.SendToRoom(fighter.ZoneID, fighter.RoomID, msg)
+	return fmt.Sprintf("%s %s %s!", display.Capitalize(attacker.CombatName()), verb, target.CombatName())
 }
 
-func (m *Manager) processDeaths() {
-	var deadKeys []string
-	for key, fighter := range m.fighters {
-		if !fighter.Combatant.IsAlive() {
-			deadKeys = append(deadKeys, key)
+func (m *Manager) pickTarget(fighter *Fighter, fight *Fight) Combatant {
+	enemies := fight.SideB
+	if !isOnSideA(fight, fighter.CombatID()) {
+		enemies = fight.SideA
+	}
+	return pickLiving(enemies)
+}
+
+func (m *Manager) processFightDeaths(fight *Fight) []string {
+	var dead []Combatant
+	for _, f := range fight.SideA {
+		if !f.Combatant.IsAlive() {
+			dead = append(dead, f.Combatant)
+		}
+	}
+	for _, f := range fight.SideB {
+		if !f.Combatant.IsAlive() {
+			dead = append(dead, f.Combatant)
 		}
 	}
 
-	for _, key := range deadKeys {
-		fighter := m.fighters[key]
-		victim := fighter.Combatant
+	if len(dead) == 0 {
+		return nil
+	}
 
-		m.handler.OnDeath(victim, fighter.ZoneID, fighter.RoomID)
-		m.stopFighting(key)
+	// First pass: remove dead from fight sides and update all combat state.
+	// This must complete before OnDeath so that side effects (e.g. room
+	// descriptions sent during player respawn) reflect the correct state.
+	deadSet := make(map[string]bool, len(dead))
+	var msgs []string
+	for _, victim := range dead {
+		id := victim.CombatID()
+		deadSet[id] = true
+		msgs = append(msgs, display.Colorize(display.Red, fmt.Sprintf("%s is dead! R.I.P.", display.Capitalize(victim.CombatName()))))
+		fight.SideA = removeFighter(fight.SideA, id)
+		fight.SideB = removeFighter(fight.SideB, id)
+		victim.SetInCombat(false)
+		delete(m.combatants, id)
+	}
 
-		// Clear target references to the dead combatant.
-		for _, f := range m.fighters {
-			if f.Target == victim {
-				f.Target = nil
+	// If either side is now empty, end combat for the remaining side.
+	if len(fight.SideA) == 0 || len(fight.SideB) == 0 {
+		for _, f := range fight.SideA {
+			f.Combatant.SetInCombat(false)
+			delete(m.combatants, f.CombatID())
+		}
+		for _, f := range fight.SideB {
+			f.Combatant.SetInCombat(false)
+			delete(m.combatants, f.CombatID())
+		}
+		fight.SideA = nil
+		fight.SideB = nil
+	} else {
+		// Retarget fighters whose target died or is missing.
+		for _, f := range fight.SideA {
+			if f.Target == nil || deadSet[f.Target.CombatID()] {
+				f.Target = pickLiving(fight.SideB)
+			}
+		}
+		for _, f := range fight.SideB {
+			if f.Target == nil || deadSet[f.Target.CombatID()] {
+				f.Target = pickLiving(fight.SideA)
 			}
 		}
 	}
 
-	// Retarget pass: any fighter with nil target.
-	for key, f := range m.fighters {
-		if f.Target == nil {
-			m.retarget(f)
-			if f.Target == nil {
-				m.stopFighting(key)
+	// Second pass: handle death effects (corpse creation, player respawn).
+	// Runs after all combat state is cleaned up so room descriptions
+	// generated by OnDeath show the correct InCombat flags.
+	for _, victim := range dead {
+		m.handler.OnDeath(victim, fight.ZoneID, fight.RoomID)
+	}
+
+	return msgs
+}
+
+// cleanupFights removes fights where either side is empty and stops all
+// remaining combatants in those fights.
+func (m *Manager) cleanupFights() {
+	for zoneID, rooms := range m.fights {
+		for roomID, fights := range rooms {
+			var active []*Fight
+			for _, fight := range fights {
+				if len(fight.SideA) == 0 || len(fight.SideB) == 0 {
+					for _, f := range fight.SideA {
+						f.Combatant.SetInCombat(false)
+						delete(m.combatants, f.CombatID())
+					}
+					for _, f := range fight.SideB {
+						f.Combatant.SetInCombat(false)
+						delete(m.combatants, f.CombatID())
+					}
+				} else {
+					active = append(active, fight)
+				}
+			}
+			if len(active) == 0 {
+				delete(rooms, roomID)
+			} else {
+				rooms[roomID] = active
 			}
 		}
+		if len(rooms) == 0 {
+			delete(m.fights, zoneID)
+		}
 	}
 }
 
-// retarget picks a new target from the same fight. To keep disjoint fights
-// separate, it only considers enemies that are targeting an ally of the fighter
-// (i.e. someone connected to the same engagement).
-func (m *Manager) retarget(fighter *Fighter) {
-	allies := m.fightAllies(fighter)
-
-	for _, other := range m.fighters {
-		if other.Combatant.CombatSide() == fighter.Combatant.CombatSide() {
-			continue
-		}
-		if other.ZoneID != fighter.ZoneID || other.RoomID != fighter.RoomID {
-			continue
-		}
-		if !other.Combatant.IsAlive() {
-			continue
-		}
-		// Only retarget to enemies connected to our fight.
-		if other.Target != nil && allies[other.Target.CombatID()] {
-			fighter.Target = other.Combatant
-			return
-		}
+func (m *Manager) addFight(fight *Fight) {
+	if m.fights[fight.ZoneID] == nil {
+		m.fights[fight.ZoneID] = make(map[string][]*Fight)
 	}
-
-	fighter.Target = nil
+	m.fights[fight.ZoneID][fight.RoomID] = append(m.fights[fight.ZoneID][fight.RoomID], fight)
 }
 
-// fightAllies returns the set of combatant IDs on the same side in the same
-// room as the given fighter, including the fighter itself.
-func (m *Manager) fightAllies(fighter *Fighter) map[string]bool {
-	allies := map[string]bool{fighter.Combatant.CombatID(): true}
-	for _, f := range m.fighters {
-		if f.Combatant.CombatSide() == fighter.Combatant.CombatSide() &&
-			f.ZoneID == fighter.ZoneID && f.RoomID == fighter.RoomID {
-			allies[f.Combatant.CombatID()] = true
+func isOnSideA(fight *Fight, id string) bool {
+	return findFighter(fight.SideA, id) != nil
+}
+
+func findFighter(fighters []*Fighter, id string) *Fighter {
+	for _, f := range fighters {
+		if f.CombatID() == id {
+			return f
 		}
 	}
-	return allies
+	return nil
+}
+
+func removeFighter(fighters []*Fighter, id string) []*Fighter {
+	for i, f := range fighters {
+		if f.CombatID() == id {
+			return append(fighters[:i], fighters[i+1:]...)
+		}
+	}
+	return fighters
+}
+
+func filterAlive(fighters []*Fighter) []*Fighter {
+	var alive []*Fighter
+	for _, f := range fighters {
+		if f.Combatant.IsAlive() {
+			alive = append(alive, f)
+		}
+	}
+	return alive
+}
+
+func pickLiving(fighters []*Fighter) Combatant {
+	for _, f := range fighters {
+		if f.Combatant.IsAlive() {
+			return f.Combatant
+		}
+	}
+	return nil
 }

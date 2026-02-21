@@ -341,7 +341,7 @@ func (ri *RoomInstance) Describe(actorName string) string {
 	}
 	ri.mu.RUnlock()
 
-	return sb.String()
+	return strings.TrimRight(sb.String(), "\n")
 }
 
 // RemoveMob removes a mobile instance from the room by instance ID.

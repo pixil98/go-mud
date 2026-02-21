@@ -153,6 +153,6 @@ func (p *Player) prompt() error {
 }
 
 func (p *Player) writeLine(msg string) error {
-	_, err := p.conn.Write([]byte(msg + "\n"))
+	_, err := p.conn.Write([]byte(msg + "\n\n"))
 	return err
 }
