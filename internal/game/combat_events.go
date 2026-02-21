@@ -40,10 +40,6 @@ func (h *CombatEventHandler) onMobDeath(mob *MobCombatant, zoneID, roomID string
 	zone := storage.Identifier(zoneID)
 	room := storage.Identifier(roomID)
 
-	// Broadcast death message
-	msg := fmt.Sprintf("%s is dead! R.I.P.", def.ShortDesc)
-	_ = h.pub.PublishToRoom(zone, room, []byte(msg))
-
 	// Create corpse object definition
 	corpseAliases := append([]string{"corpse"}, def.Aliases...)
 	corpseDef := &Object{
@@ -87,10 +83,6 @@ func (h *CombatEventHandler) onMobDeath(mob *MobCombatant, zoneID, roomID string
 func (h *CombatEventHandler) onPlayerDeath(pc *PlayerCombatant, zoneID, roomID string) {
 	zone := storage.Identifier(zoneID)
 	room := storage.Identifier(roomID)
-
-	// Broadcast death message to room
-	msg := fmt.Sprintf("%s has been slain!", pc.Character.Name)
-	_ = h.pub.PublishToRoom(zone, room, []byte(msg))
 
 	// Send personal message
 	_ = h.pub.PublishToPlayer(pc.CharId, []byte("You have been slain! You awaken in a familiar place..."))
