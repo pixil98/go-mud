@@ -59,7 +59,10 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	}
 
 	// Create player manager
-	playerManager := cfg.PlayerManager.BuildPlayerManager(cmdHandler, world, dict)
+	playerManager, err := cfg.PlayerManager.BuildPlayerManager(cmdHandler, world, dict)
+	if err != nil {
+		return nil, fmt.Errorf("creating player manager: %w", err)
+	}
 
 	// Create connection manager
 	connectionManager := listener.NewConnectionManager(playerManager)
@@ -83,8 +86,7 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 		}
 		opts = append(opts, game.WithTickLength(l))
 	}
-	sessionTicker := game.NewSessionTicker(world, dict.Characters, publisher)
-	driver := game.NewMudDriver([]game.Ticker{world, sessionTicker}, opts...)
+	driver := game.NewMudDriver([]game.Ticker{world, playerManager}, opts...)
 
 	// Create a worker list
 	return service.WorkerList{

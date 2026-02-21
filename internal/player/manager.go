@@ -14,6 +14,24 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
+const (
+	DefaultLinklessTimeout = 5 * time.Minute
+	DefaultIdleTimeout     = 15 * time.Minute
+)
+
+// PlayerManagerOpt configures optional PlayerManager settings.
+type PlayerManagerOpt func(*PlayerManager)
+
+// WithLinklessTimeout sets how long a linkless player remains in the world before being removed.
+func WithLinklessTimeout(d time.Duration) PlayerManagerOpt {
+	return func(pm *PlayerManager) { pm.linklessTimeout = d }
+}
+
+// WithIdleTimeout sets how long an idle connected player can remain before being kicked.
+func WithIdleTimeout(d time.Duration) PlayerManagerOpt {
+	return func(pm *PlayerManager) { pm.idleTimeout = d }
+}
+
 type PlayerManager struct {
 	cmdHandler *commands.Handler
 	world      *game.WorldState
@@ -25,22 +43,74 @@ type PlayerManager struct {
 
 	pronouns *storage.SelectableStorer[*game.Pronoun]
 	races    *storage.SelectableStorer[*game.Race]
+
+	linklessTimeout time.Duration
+	idleTimeout     time.Duration
 }
 
-func NewPlayerManager(cmd *commands.Handler, world *game.WorldState, dict *game.Dictionary, defaultZone, defaultRoom string) *PlayerManager {
+func NewPlayerManager(cmd *commands.Handler, world *game.WorldState, dict *game.Dictionary, defaultZone, defaultRoom string, opts ...PlayerManagerOpt) *PlayerManager {
 	pm := &PlayerManager{
-		cmdHandler:  cmd,
-		world:       world,
-		dict:        dict,
-		loginFlow:   &loginFlow{chars: dict.Characters},
-		defaultZone: storage.Identifier(defaultZone),
-		defaultRoom: storage.Identifier(defaultRoom),
+		cmdHandler:      cmd,
+		world:           world,
+		dict:            dict,
+		loginFlow:       &loginFlow{chars: dict.Characters},
+		defaultZone:     storage.Identifier(defaultZone),
+		defaultRoom:     storage.Identifier(defaultRoom),
+		linklessTimeout: DefaultLinklessTimeout,
+		idleTimeout:     DefaultIdleTimeout,
 	}
 
 	pm.races = storage.NewSelectableStorer(dict.Races)
 	pm.pronouns = storage.NewSelectableStorer(dict.Pronouns)
 
+	for _, opt := range opts {
+		opt(pm)
+	}
+
 	return pm
+}
+
+// Tick checks all players for linkless and idle timeouts.
+// Linkless players past the timeout are saved and removed from the world.
+// Idle connected players are marked linkless and kicked, dropping their connection.
+func (m *PlayerManager) Tick(ctx context.Context) error {
+	now := time.Now()
+	var linklessExpired []storage.Identifier
+	var idleExpired []storage.Identifier
+
+	m.world.ForEachPlayer(func(charId storage.Identifier, ps game.PlayerState) {
+		if ps.Linkless {
+			if now.Sub(ps.LinklessAt) >= m.linklessTimeout {
+				linklessExpired = append(linklessExpired, charId)
+			}
+		} else if now.Sub(ps.LastActivity) >= m.idleTimeout {
+			idleExpired = append(idleExpired, charId)
+		}
+	})
+
+	for _, charId := range linklessExpired {
+		ps := m.world.GetPlayer(charId)
+		if ps == nil {
+			continue
+		}
+		saveCharacterFromState(m.dict.Characters, ps)
+		ps.UnsubscribeAll()
+		_ = m.world.RemovePlayer(charId)
+		slog.Info("linkless player removed", "charId", charId)
+	}
+
+	for _, charId := range idleExpired {
+		ps := m.world.GetPlayer(charId)
+		if ps == nil {
+			continue
+		}
+		saveCharacterFromState(m.dict.Characters, ps)
+		ps.MarkLinkless()
+		ps.Kick()
+		slog.Info("idle player kicked", "charId", charId)
+	}
+
+	return nil
 }
 
 // RunSession handles the full player lifecycle: login, play, and cleanup.

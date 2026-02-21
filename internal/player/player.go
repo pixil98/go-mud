@@ -57,9 +57,12 @@ func (p *Player) Play(ctx context.Context) error {
 			return ctx.Err()
 
 		case <-p.done:
-			// Session evicted by a reconnecting client.
-			// Do NOT clean up subscriptions — the new session handles that.
-			_ = p.writeLine("\nAnother connection has taken over your session.")
+			ps := p.world.GetPlayer(p.charId)
+			if ps != nil && ps.Linkless {
+				_ = p.writeLine("\nDisconnected for inactivity.")
+			} else {
+				_ = p.writeLine("\nAnother connection has taken over your session.")
+			}
 			return game.ErrPlayerReconnected
 
 		case msg := <-p.msgs:

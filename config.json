@@ -1,8 +1,12 @@
 {
     "listeners": [
         {
-        "protocol": "telnet",
-        "port": 4000
+            "protocol": "telnet",
+            "port": 4000
+        },
+        {
+            "protocol": "ssh",
+            "port": 4022
         }
     ],
     "tick_interval": "2s",
@@ -39,6 +43,8 @@
     },
     "player_manager": {
         "default_zone": "millbrook",
-        "default_room": "millbrook-square"
+        "default_room": "millbrook-square",
+        "linkless_timeout": "5m",
+        "idle_timeout": "15m"
     }
 }
