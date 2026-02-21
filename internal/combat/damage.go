@@ -28,7 +28,7 @@ var damageMessages = []struct {
 	{4, "tickles"},
 	{6, "barely hurts"},
 	{10, "hits"},
-	{14, "hits hard"},
+	{14, "strikes"},
 	{19, "pummels"},
 	{24, "thrashes"},
 	{30, "mauls"},
