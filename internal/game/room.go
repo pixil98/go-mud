@@ -207,7 +207,7 @@ func (ri *RoomInstance) Describe(actorName string) string {
 	def := ri.Room.Get()
 	sb.WriteString(display.Colorize(display.Yellow, def.Name))
 	sb.WriteString("\n")
-	sb.WriteString(def.Description)
+	sb.WriteString(display.Wrap(def.Description))
 	sb.WriteString("\n")
 	sb.WriteString(display.Colorize(display.Cyan, formatExits(def.Exits)))
 	sb.WriteString("\n")
@@ -238,8 +238,6 @@ func (ri *RoomInstance) Describe(actorName string) string {
 		}
 	}
 	ri.mu.RUnlock()
-
-	sb.WriteString("\n")
 
 	return sb.String()
 }
