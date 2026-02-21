@@ -27,6 +27,10 @@ func (f *QuitHandlerFactory) ValidateConfig(config map[string]any) error {
 
 func (f *QuitHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, cmdCtx *CommandContext) error {
+		if cmdCtx.Session.InCombat {
+			return NewUserError("You can't quit while fighting!")
+		}
+
 		if err := saveCharacter(f.chars, cmdCtx.Session); err != nil {
 			return fmt.Errorf("saving character on quit: %w", err)
 		}

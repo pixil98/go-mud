@@ -41,6 +41,10 @@ func (f *MoveHandlerFactory) ValidateConfig(config map[string]any) error {
 
 func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, cmdCtx *CommandContext) error {
+		if cmdCtx.Session.InCombat {
+			return NewUserError("You can't move while fighting! (You could try to flee...)")
+		}
+
 		// Read direction from expanded config
 		direction := strings.ToLower(cmdCtx.Config["direction"])
 		if direction == "" {

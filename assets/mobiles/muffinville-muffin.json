@@ -5,6 +5,12 @@
         "aliases": ["muffin", "kittercat", "floofybutt"],
         "short_desc": "Muffin the Kittercat",
         "long_desc": "The one and only floofybutt Muffin.",
-        "detailed_desc": "She's too perfect to describe. It's just Muffin."
+        "detailed_desc": "She's too perfect to describe. It's just Muffin.",
+        "max_hp": 500,
+        "ac": 20,
+        "attack_mod": 10,
+        "damage_dice": 3,
+        "damage_sides": 8,
+        "damage_mod": 5
     }
 }

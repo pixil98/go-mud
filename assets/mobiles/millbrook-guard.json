@@ -14,6 +14,12 @@
             "head": {"object_id": "millbrook-helmet"},
             "body": {"object_id": "millbrook-chainmail"},
             "wield": {"object_id": "millbrook-shortsword"}
-        }
+        },
+        "max_hp": 50,
+        "ac": 16,
+        "attack_mod": 5,
+        "damage_dice": 1,
+        "damage_sides": 8,
+        "damage_mod": 3
     }
 }

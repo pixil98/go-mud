@@ -176,6 +176,7 @@ type PlayerState struct {
 
 	// Session state
 	Quit         bool
+	InCombat     bool
 	LastActivity time.Time
 
 	// Connection management: closed to signal the active Play() goroutine to exit.
@@ -189,6 +190,9 @@ type PlayerState struct {
 // Flags returns display labels for the player's current state (e.g., "linkless").
 func (p *PlayerState) Flags() []string {
 	var flags []string
+	if p.InCombat {
+		flags = append(flags, "fighting")
+	}
 	if p.Linkless {
 		flags = append(flags, "linkless")
 	}
