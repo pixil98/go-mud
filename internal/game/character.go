@@ -2,6 +2,7 @@ package game
 
 import (
 	"encoding/json"
+	"fmt"
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/storage"
@@ -44,6 +45,7 @@ func (c *Character) UnmarshalJSON(b []byte) error {
 }
 
 func NewCharacter(name string, pass string) *Character {
+	maxHP := 20 + (1 * 8) // level 1
 	return &Character{
 		Name:         name,
 		Password:     pass,
@@ -52,6 +54,8 @@ func NewCharacter(name string, pass string) *Character {
 		ActorInstance: ActorInstance{
 			Inventory: NewInventory(),
 			Equipment: NewEquipment(),
+			MaxHP:     maxHP,
+			CurrentHP: maxHP,
 		},
 	}
 }
@@ -65,6 +69,14 @@ func (c *Character) StatSections() []StatSection {
 		name = c.Name + " " + c.Title
 	}
 	sections[0].Lines = append([]StatLine{{Value: name, Center: true}}, sections[0].Lines...)
+
+	sections = append(sections, StatSection{
+		Header: "Vitals",
+		Lines: []StatLine{
+			{Value: fmt.Sprintf("  HP: %d/%d", c.CurrentHP, c.MaxHP)},
+		},
+	})
+
 	return sections
 }
 

@@ -160,6 +160,9 @@ func (r *Race) Selector() string {
 type ActorInstance struct {
 	Inventory *Inventory `json:"inventory,omitempty"`
 	Equipment *Equipment `json:"equipment,omitempty"`
+
+	MaxHP     int `json:"max_hp,omitempty"`
+	CurrentHP int `json:"current_hp,omitempty"`
 }
 
 // Inventory holds object instances carried by a character or mobile.

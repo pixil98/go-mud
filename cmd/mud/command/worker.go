@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/pixil98/go-mud/internal/combat"
 	"github.com/pixil98/go-mud/internal/commands"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/listener"
 	"github.com/pixil98/go-mud/internal/messaging"
+	"github.com/pixil98/go-mud/internal/storage"
 	"github.com/pixil98/go-service"
 )
 
@@ -52,8 +54,16 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	// Create publisher for command handlers
 	publisher := messaging.NewNatsPublisher(natsServer)
 
+	// Create combat manager
+	defaultZone := cfg.PlayerManager.DefaultZone
+	defaultRoom := cfg.PlayerManager.DefaultRoom
+	combatPub := game.NewCombatMessagePublisher(publisher)
+	combatEvents := game.NewCombatEventHandler(world, publisher,
+		storage.Identifier(defaultZone), storage.Identifier(defaultRoom))
+	combatManager := combat.NewManager(combatPub, combatEvents)
+
 	// Create command handler and compile all commands
-	cmdHandler, err := commands.NewHandler(storeCmds, dict, publisher, world)
+	cmdHandler, err := commands.NewHandler(storeCmds, dict, publisher, world, combatManager)
 	if err != nil {
 		return nil, fmt.Errorf("compiling commands: %w", err)
 	}
@@ -86,7 +96,7 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 		}
 		opts = append(opts, game.WithTickLength(l))
 	}
-	driver := game.NewMudDriver([]game.Ticker{world, playerManager}, opts...)
+	driver := game.NewMudDriver([]game.Ticker{world, playerManager, combatManager}, opts...)
 
 	// Create a worker list
 	return service.WorkerList{

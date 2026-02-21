@@ -221,15 +221,17 @@ func (ri *RoomInstance) FindMob(name string) *MobileInstance {
 // spawnMob creates a new MobileInstance and adds it to the room.
 // Caller must hold the write lock.
 func (ri *RoomInstance) spawnMob(mob storage.SmartIdentifier[*Mobile]) (*MobileInstance, error) {
+	def := mob.Get()
 	mi := &MobileInstance{
 		InstanceId: uuid.New().String(),
 		Mobile:     mob,
 		ActorInstance: ActorInstance{
 			Inventory: NewInventory(),
 			Equipment: NewEquipment(),
+			MaxHP:     def.MaxHP,
+			CurrentHP: def.MaxHP,
 		},
 	}
-	def := mob.Get()
 	for _, spawn := range def.Inventory {
 		oi, err := spawn.Spawn()
 		if err != nil {
@@ -305,11 +307,11 @@ func (ri *RoomInstance) Describe(actorName string) string {
 
 	var sb strings.Builder
 	def := ri.Room.Get()
-	sb.WriteString(display.Colorize(display.Colors.Yellow, def.Name))
+	sb.WriteString(display.Colorize(display.Color.Yellow, def.Name))
 	sb.WriteString("\n")
 	sb.WriteString(display.Wrap(def.Description))
 	sb.WriteString("\n")
-	sb.WriteString(display.Colorize(display.Colors.Cyan, formatExits(def.Exits, exitClosed, exitLocked)))
+	sb.WriteString(display.Colorize(display.Color.Cyan, formatExits(def.Exits, exitClosed, exitLocked)))
 	sb.WriteString("\n")
 
 	// Show objects
@@ -318,7 +320,7 @@ func (ri *RoomInstance) Describe(actorName string) string {
 		if desc == "" {
 			desc = fmt.Sprintf("%s is here.", oi.Object.Get().ShortDesc)
 		}
-		sb.WriteString(fmt.Sprintf("%s\n", display.Colorize(display.Colors.Green, desc)))
+		sb.WriteString(fmt.Sprintf("%s\n", display.Colorize(display.Color.Green, desc)))
 	}
 
 	ri.mu.RLock()
@@ -328,18 +330,31 @@ func (ri *RoomInstance) Describe(actorName string) string {
 		if desc == "" {
 			desc = fmt.Sprintf("%s is here.", mi.Mobile.Get().ShortDesc)
 		}
-		sb.WriteString(fmt.Sprintf("%s\n", display.Colorize(display.Colors.Yellow, desc)))
+		sb.WriteString(fmt.Sprintf("%s%s\n", display.Colorize(display.Color.Yellow, desc), formatFlags(mi.Flags())))
 	}
 
 	// Show other players
 	for _, ps := range ri.players {
 		if ps.Character.Name != actorName {
-			sb.WriteString(display.Colorize(display.Colors.Yellow, fmt.Sprintf("%s is here.%s\n", ps.Character.Name, formatFlags(ps.Flags()))))
+			sb.WriteString(display.Colorize(display.Color.Yellow, fmt.Sprintf("%s is here.%s\n", ps.Character.Name, formatFlags(ps.Flags()))))
 		}
 	}
 	ri.mu.RUnlock()
 
 	return sb.String()
+}
+
+// RemoveMob removes a mobile instance from the room by instance ID.
+// Returns the removed instance, or nil if not found.
+func (ri *RoomInstance) RemoveMob(instanceId string) *MobileInstance {
+	ri.mu.Lock()
+	defer ri.mu.Unlock()
+
+	if mi, ok := ri.mobiles[instanceId]; ok {
+		delete(ri.mobiles, instanceId)
+		return mi
+	}
+	return nil
 }
 
 // PlayerCount returns the number of players in the room.

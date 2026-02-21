@@ -144,7 +144,11 @@ func (p *Player) Play(ctx context.Context) error {
 }
 
 func (p *Player) prompt() error {
-	_, err := p.conn.Write([]byte("> "))
+	prompt := "> "
+	if ps := p.world.GetPlayer(p.charId); ps != nil {
+		prompt = fmt.Sprintf("[%d/%dHP] > ", ps.Character.CurrentHP, ps.Character.MaxHP)
+	}
+	_, err := p.conn.Write([]byte(prompt))
 	return err
 }
 

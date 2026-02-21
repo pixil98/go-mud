@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/pixil98/go-mud/internal/combat"
 	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
@@ -73,11 +74,9 @@ type compiledCommand struct {
 }
 
 // Publisher provides typed methods for publishing messages to game channels.
+// TODO no one seems to use these methods
 type Publisher interface {
-	// PublishToPlayer sends a message to a specific player's channel.
-	PublishToPlayer(charId storage.Identifier, data []byte) error
-	// PublishToRoom sends a message to all subscribers in a room.
-	PublishToRoom(zoneId, roomId storage.Identifier, data []byte) error
+	game.Publisher
 	// PublishToZone sends a message to all subscribers in a zone.
 	PublishToZone(zoneId storage.Identifier, data []byte) error
 	// PublishToWorld sends a message to all subscribers on the world channel.
@@ -94,7 +93,7 @@ type Handler struct {
 	dict      *game.Dictionary
 }
 
-func NewHandler(cmds storage.Storer[*Command], dict *game.Dictionary, publisher Publisher, world *game.WorldState) (*Handler, error) {
+func NewHandler(cmds storage.Storer[*Command], dict *game.Dictionary, publisher Publisher, world *game.WorldState, combat *combat.Manager) (*Handler, error) {
 	h := &Handler{
 		factories: make(map[string]HandlerFactory),
 		compiled:  make(map[storage.Identifier]*compiledCommand),
@@ -106,6 +105,7 @@ func NewHandler(cmds storage.Storer[*Command], dict *game.Dictionary, publisher 
 	h.RegisterFactory("equipment", NewEquipmentHandlerFactory(publisher))
 	h.RegisterFactory("help", NewHelpHandlerFactory(cmds, publisher))
 	h.RegisterFactory("inventory", NewInventoryHandlerFactory(publisher))
+	h.RegisterFactory("kill", NewKillHandlerFactory(combat, publisher))
 	h.RegisterFactory("look", NewLookHandlerFactory(world, publisher))
 	h.RegisterFactory("message", NewMessageHandlerFactory(publisher))
 	h.RegisterFactory("move", NewMoveHandlerFactory(world, publisher))
@@ -457,7 +457,7 @@ func (h *Handler) expandConfig(config map[string]any, actor *game.Character, ses
 		Session: session,
 		Targets: targets,
 		Inputs:  inputs,
-		Color:   display.Colors,
+		Color:   display.Color,
 	}
 
 	expanded := make(map[string]string, len(config))
