@@ -88,6 +88,9 @@ func (p *Player) Play(ctx context.Context) error {
 				}
 			}
 
+			// Any input resets the idle timer.
+			p.world.MarkPlayerActive(p.charId)
+
 			line = strings.TrimSpace(line)
 			if line == "" {
 				err = p.prompt()

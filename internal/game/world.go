@@ -122,20 +122,14 @@ func (w *WorldState) SetPlayerQuit(charId storage.Identifier, quit bool) error {
 	return nil
 }
 
-// UpdatePlayer applies a mutation function to player state.
-// The function receives a pointer to the player state and can modify it directly.
-func (w *WorldState) UpdatePlayer(charId storage.Identifier, fn func(*PlayerState)) error {
+// MarkPlayerActive resets the player's idle timer.
+func (w *WorldState) MarkPlayerActive(charId storage.Identifier) {
 	w.mu.Lock()
 	defer w.mu.Unlock()
 
-	p, exists := w.players[charId]
-	if !exists {
-		return ErrPlayerNotFound
+	if p, ok := w.players[charId]; ok {
+		p.LastActivity = time.Now()
 	}
-
-	fn(p)
-	p.LastActivity = time.Now()
-	return nil
 }
 
 // ForEachPlayer calls the given function for each player.
