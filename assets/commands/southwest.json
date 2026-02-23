@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "southwest",
+    "spec": {
+        "handler": "move",
+        "category": "movement",
+        "description": "Move southwest.",
+        "priority": 10,
+        "aliases": ["sw"],
+        "config": {
+            "direction": "southwest"
+        }
+    }
+}

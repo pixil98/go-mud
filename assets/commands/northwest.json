@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "northwest",
+    "spec": {
+        "handler": "move",
+        "category": "movement",
+        "description": "Move northwest.",
+        "priority": 10,
+        "aliases": ["nw"],
+        "config": {
+            "direction": "northwest"
+        }
+    }
+}

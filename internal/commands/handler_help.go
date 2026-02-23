@@ -85,11 +85,23 @@ func (f *HelpHandlerFactory) showCommand(name string, charId storage.Identifier)
 		return NewUserError(fmt.Sprintf("Command %q is unknown.", name))
 	}
 
-	lines := []string{fmt.Sprintf("%s: %s", strings.ToLower(name), cmd.Description)}
+	cmdName := strings.ToLower(name)
 
-	// Build usage line from inputs
+	lines := []string{
+		"NAME",
+		fmt.Sprintf("    %s - %s", cmdName, cmd.Description),
+	}
+
+	if len(cmd.Aliases) > 0 {
+		lower := make([]string, len(cmd.Aliases))
+		for i, a := range cmd.Aliases {
+			lower[i] = strings.ToLower(a)
+		}
+		lines = append(lines, "", "ALIASES", fmt.Sprintf("    %s", strings.Join(lower, ", ")))
+	}
+
 	if len(cmd.Inputs) > 0 {
-		parts := []string{strings.ToLower(name)}
+		parts := []string{cmdName}
 		for _, input := range cmd.Inputs {
 			if input.Required {
 				parts = append(parts, fmt.Sprintf("<%s>", input.Name))
@@ -97,7 +109,7 @@ func (f *HelpHandlerFactory) showCommand(name string, charId storage.Identifier)
 				parts = append(parts, fmt.Sprintf("[%s]", input.Name))
 			}
 		}
-		lines = append(lines, fmt.Sprintf("Usage: %s", strings.Join(parts, " ")))
+		lines = append(lines, "", "SYNOPSIS", fmt.Sprintf("    %s", strings.Join(parts, " ")))
 	}
 
 	if f.pub != nil {

@@ -165,10 +165,23 @@ func (h *Handler) compile(id storage.Identifier, cmd *Command) error {
 		return fmt.Errorf("creating handler: %w", err)
 	}
 
-	h.compiled[id] = &compiledCommand{
+	cc := &compiledCommand{
 		cmd:     cmd,
 		cmdFunc: cmdFunc,
 	}
+	if _, exists := h.compiled[id]; exists {
+		return fmt.Errorf("command %q conflicts with an already registered command or alias", id)
+	}
+	h.compiled[id] = cc
+
+	for _, alias := range cmd.Aliases {
+		aliasId := storage.Identifier(strings.ToLower(alias))
+		if _, exists := h.compiled[aliasId]; exists {
+			return fmt.Errorf("alias %q conflicts with an existing command or alias", alias)
+		}
+		h.compiled[aliasId] = cc
+	}
+
 	return nil
 }
 

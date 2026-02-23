@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "northeast",
+    "spec": {
+        "handler": "move",
+        "category": "movement",
+        "description": "Move northeast.",
+        "priority": 10,
+        "aliases": ["ne"],
+        "config": {
+            "direction": "northeast"
+        }
+    }
+}
