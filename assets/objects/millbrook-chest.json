@@ -5,7 +5,14 @@
         "aliases": ["chest", "wooden"],
         "short_desc": "a wooden chest",
         "long_desc": "A sturdy wooden chest sits in the corner.",
-        "detailed_desc": "A well-crafted chest made from thick oak planks, bound with iron straps. The lid opens easily.",
-        "flags": ["container","immobile"]
+        "detailed_desc": "A well-crafted chest made from thick oak planks, bound with iron straps. A heavy lock secures the lid.",
+        "flags": ["container","immobile"],
+        "closure": {
+            "closed": true,
+            "lock": {
+                "key_id": "millbrook-tavern-key",
+                "locked": true
+            }
+        }
     }
 }

@@ -1,0 +1,10 @@
+{
+    "version": 1,
+    "id": "millbrook-tavern-key",
+    "spec": {
+        "aliases": ["key", "brass"],
+        "short_desc": "a brass key",
+        "long_desc": "A small brass key lies on the ground.",
+        "detailed_desc": "A tarnished brass key with a simple tooth pattern."
+    }
+}

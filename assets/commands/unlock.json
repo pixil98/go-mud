@@ -1,0 +1,16 @@
+{
+    "version": 1,
+    "id": "unlock",
+    "spec": {
+        "handler": "closure",
+        "category": "interaction",
+        "description": "Unlock a door or container.",
+        "config": {
+            "action": "unlock",
+            "target": "{{ .Inputs.target }}"
+        },
+        "inputs": [
+            {"name": "target", "type": "string", "required": true, "missing": "Unlock what?"}
+        ]
+    }
+}

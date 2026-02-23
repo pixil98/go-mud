@@ -125,13 +125,30 @@ func objRefFromInstance(oi *game.ObjectInstance, source ObjectRemover) *ObjectRe
 	}
 }
 
+// ClosureName returns a capitalized display name for the object's closure.
+// Uses the closure's Name if set, otherwise falls back to the object's ShortDesc.
+func (r *ObjectRef) ClosureName() string {
+	def := r.instance.Object.Get()
+	name := r.Name
+	if def.Closure != nil && def.Closure.Name != "" {
+		name = def.Closure.Name
+	}
+	return strings.ToUpper(name[:1]) + name[1:]
+}
+
 // Describe returns a detailed description of the object, including container contents.
 func (r *ObjectRef) Describe() string {
 	lines := []string{display.Wrap(r.Description)}
 	if r.instance.Object.Get().HasFlag(game.ObjectFlagContainer) {
 		lines = append(lines, "")
-		lines = append(lines, "It contains:")
-		lines = append(lines, FormatInventoryItems(r.instance.Contents)...)
+		if r.instance.Locked {
+			lines = append(lines, "It is locked.")
+		} else if r.instance.Closed {
+			lines = append(lines, "It is closed.")
+		} else {
+			lines = append(lines, "It contains:")
+			lines = append(lines, FormatInventoryItems(r.instance.Contents)...)
+		}
 	}
 	return strings.Join(lines, "\n")
 }
@@ -308,6 +325,14 @@ func containerSpaces(spec TargetSpec, targets map[string]*TargetRef) ([]SearchSp
 	if !scopeRef.Obj.instance.Object.Get().HasFlag(game.ObjectFlagContainer) {
 		capName := strings.ToUpper(scopeRef.Obj.Name[:1]) + scopeRef.Obj.Name[1:]
 		return nil, false, NewUserError(fmt.Sprintf("%s is not a container.", capName))
+	}
+
+	// Check closure state
+	if scopeRef.Obj.instance.Locked {
+		return nil, false, NewUserError(fmt.Sprintf("%s is locked.", scopeRef.Obj.ClosureName()))
+	}
+	if scopeRef.Obj.instance.Closed {
+		return nil, false, NewUserError(fmt.Sprintf("%s is closed.", scopeRef.Obj.ClosureName()))
 	}
 
 	// Resolve exclusively from container contents

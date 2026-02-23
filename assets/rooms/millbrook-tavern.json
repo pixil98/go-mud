@@ -7,7 +7,18 @@
         "zone_id": "millbrook",
         "exits": {
             "west": {"room_id": "millbrook-square"},
-            "east": {"zone_id": "darkwood", "room_id": "darkwood-edge"}
+            "east": {
+                "zone_id": "darkwood",
+                "room_id": "darkwood-edge",
+                "closure": {
+                    "name": "back door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "millbrook-tavern-key",
+                        "locked": true
+                    }
+                }
+            }
         },
         "object_spawns": [
             {"object_id": "millbrook-chest", "contents": [{"object_id": "millbrook-torch"}]}

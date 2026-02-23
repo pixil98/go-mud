@@ -137,6 +137,12 @@ func (f *MoveObjHandlerFactory) holderForTarget(ref *TargetRef) (ObjectHolder, e
 			name := strings.ToUpper(ref.Obj.Name[:1]) + ref.Obj.Name[1:]
 			return nil, NewUserError(fmt.Sprintf("%s is not a container.", name))
 		}
+		if ref.Obj.instance.Locked {
+			return nil, NewUserError(fmt.Sprintf("%s is locked.", ref.Obj.ClosureName()))
+		}
+		if ref.Obj.instance.Closed {
+			return nil, NewUserError(fmt.Sprintf("%s is closed.", ref.Obj.ClosureName()))
+		}
 		return ref.Obj.instance.Contents, nil
 	}
 

@@ -102,6 +102,7 @@ func NewHandler(cmds storage.Storer[*Command], dict *game.Dictionary, publisher 
 	}
 
 	// Register built-in handlers
+	h.RegisterFactory("closure", NewClosureHandlerFactory(world, publisher))
 	h.RegisterFactory("equipment", NewEquipmentHandlerFactory(publisher))
 	h.RegisterFactory("help", NewHelpHandlerFactory(cmds, publisher))
 	h.RegisterFactory("inventory", NewInventoryHandlerFactory(publisher))
