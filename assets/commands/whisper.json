@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "whisper",
+    "spec": {
+        "handler": "message",
+        "category": "communication",
+        "description": "Whisper a private message to someone in the room.",
+        "config": {
+            "recipient_channel": "player-{{ .Targets.target.Player.Name | lower }}",
+            "recipient_message": "{{ .Actor.Name }} whispers to you, \"{{ .Inputs.text }}\"",
+            "sender_channel": "player-{{ .Actor.Name | lower }}",
+            "sender_message": "You whisper to {{ .Targets.target.Player.Name }}, \"{{ .Inputs.text }}\""
+        },
+        "targets": [
+            {"name": "target", "type": ["player"], "scope": ["room"], "input": "target", "not_found": "You don't see '{{ .Inputs.target }}' here."}
+        ],
+        "inputs": [
+            {"name": "target", "type": "string", "required": true, "missing": "Whisper to whom?"},
+            {"name": "text", "type": "string", "required": true, "rest": true, "missing": "Whisper what?"}
+        ]
+    }
+}

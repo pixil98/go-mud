@@ -205,11 +205,11 @@ func (ri *RoomInstance) RemovePlayer(charId storage.Identifier) {
 func (ri *RoomInstance) Describe(actorName string) string {
 	var sb strings.Builder
 	def := ri.Room.Get()
-	sb.WriteString(display.Colorize(display.Yellow, def.Name))
+	sb.WriteString(display.Colorize(display.Colors.Yellow, def.Name))
 	sb.WriteString("\n")
 	sb.WriteString(display.Wrap(def.Description))
 	sb.WriteString("\n")
-	sb.WriteString(display.Colorize(display.Cyan, formatExits(def.Exits)))
+	sb.WriteString(display.Colorize(display.Colors.Cyan, formatExits(def.Exits)))
 	sb.WriteString("\n")
 
 	// Show objects
@@ -218,7 +218,7 @@ func (ri *RoomInstance) Describe(actorName string) string {
 		if desc == "" {
 			desc = fmt.Sprintf("%s is here.", oi.Object.Get().ShortDesc)
 		}
-		sb.WriteString(fmt.Sprintf("%s\n", display.Colorize(display.Green, desc)))
+		sb.WriteString(fmt.Sprintf("%s\n", display.Colorize(display.Colors.Green, desc)))
 	}
 
 	ri.mu.RLock()
@@ -228,13 +228,13 @@ func (ri *RoomInstance) Describe(actorName string) string {
 		if desc == "" {
 			desc = fmt.Sprintf("%s is here.", mi.Mobile.Get().ShortDesc)
 		}
-		sb.WriteString(fmt.Sprintf("%s\n", display.Colorize(display.Yellow, desc)))
+		sb.WriteString(fmt.Sprintf("%s\n", display.Colorize(display.Colors.Yellow, desc)))
 	}
 
 	// Show other players
 	for _, ps := range ri.players {
 		if ps.Character.Name != actorName {
-			sb.WriteString(display.Colorize(display.Yellow, fmt.Sprintf("%s is here.%s\n", ps.Character.Name, formatFlags(ps.Flags()))))
+			sb.WriteString(display.Colorize(display.Colors.Yellow, fmt.Sprintf("%s is here.%s\n", ps.Character.Name, formatFlags(ps.Flags()))))
 		}
 	}
 	ri.mu.RUnlock()

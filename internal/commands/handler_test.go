@@ -583,6 +583,17 @@ func TestHandler_expandConfig(t *testing.T) {
 				"direction": "north",
 			},
 		},
+		"color in template": {
+			config: map[string]any{
+				"message": "{{ .Color.Red }}hello{{ .Color.Reset }}",
+			},
+			actor:   &game.Character{},
+			targets: map[string]*TargetRef{},
+			inputs:  map[string]any{},
+			expConfig: map[string]string{
+				"message": "\033[31mhello\033[0m",
+			},
+		},
 	}
 
 	for name, tt := range tests {

@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
 )
@@ -441,6 +442,7 @@ type templateContext struct {
 	Session *game.PlayerState
 	Targets map[string]*TargetRef
 	Inputs  map[string]any
+	Color   *display.Palette
 }
 
 // expandConfig expands all template strings in config and returns map[string]string.
@@ -454,6 +456,7 @@ func (h *Handler) expandConfig(config map[string]any, actor *game.Character, ses
 		Session: session,
 		Targets: targets,
 		Inputs:  inputs,
+		Color:   display.Colors,
 	}
 
 	expanded := make(map[string]string, len(config))
