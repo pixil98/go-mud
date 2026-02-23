@@ -28,7 +28,7 @@ func (f *SaveHandlerFactory) ValidateConfig(config map[string]any) error {
 
 func (f *SaveHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		if err := saveCharacter(f.chars, cmdCtx.Session); err != nil {
+		if err := cmdCtx.Session.SaveCharacter(f.chars); err != nil {
 			return fmt.Errorf("saving character: %w", err)
 		}
 
@@ -38,14 +38,4 @@ func (f *SaveHandlerFactory) Create() (CommandFunc, error) {
 
 		return nil
 	}, nil
-}
-
-// saveCharacter persists the character's current session state (location, inventory, etc.)
-// to the character store. Shared by save and quit handlers.
-func saveCharacter(chars storage.Storer[*game.Character], session *game.PlayerState) error {
-	zoneId, roomId := session.Location()
-	session.Character.LastZone = zoneId
-	session.Character.LastRoom = roomId
-
-	return chars.Save(string(session.CharId), session.Character)
 }

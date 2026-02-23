@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
 )
@@ -40,6 +41,18 @@ type ObjectRemover interface {
 
 // --- Ref types ---
 
+// describeActor returns a detailed description for a player or mob,
+// including equipped items if any.
+func describeActor(description, name string, eq *game.Equipment) string {
+	lines := []string{display.Wrap(description)}
+	if eqLines := FormatEquippedItems(eq); eqLines != nil {
+		lines = append(lines, "")
+		lines = append(lines, fmt.Sprintf("%s is using:", name))
+		lines = append(lines, eqLines...)
+	}
+	return strings.Join(lines, "\n")
+}
+
 // PlayerRef is the template-facing view of a resolved player.
 type PlayerRef struct {
 	CharId      storage.Identifier
@@ -48,7 +61,7 @@ type PlayerRef struct {
 	session     *game.PlayerState
 }
 
-func PlayerRefFromState(ps *game.PlayerState) *PlayerRef {
+func playerRefFromState(ps *game.PlayerState) *PlayerRef {
 	if ps == nil || ps.Character == nil {
 		return nil
 	}
@@ -60,6 +73,11 @@ func PlayerRefFromState(ps *game.PlayerState) *PlayerRef {
 	}
 }
 
+// Describe returns a detailed description of the player, including equipped items.
+func (r *PlayerRef) Describe() string {
+	return describeActor(r.Description, r.Name, r.session.Character.Equipment)
+}
+
 // MobileRef is the template-facing view of a resolved mob.
 type MobileRef struct {
 	InstanceId  string
@@ -68,7 +86,7 @@ type MobileRef struct {
 	instance    *game.MobileInstance
 }
 
-func MobRefFromInstance(mi *game.MobileInstance) *MobileRef {
+func mobRefFromInstance(mi *game.MobileInstance) *MobileRef {
 	if mi == nil || mi.Mobile.Get() == nil {
 		return nil
 	}
@@ -80,6 +98,11 @@ func MobRefFromInstance(mi *game.MobileInstance) *MobileRef {
 	}
 }
 
+// Describe returns a detailed description of the mob, including equipped items.
+func (r *MobileRef) Describe() string {
+	return describeActor(r.Description, r.Name, r.instance.Equipment)
+}
+
 // ObjectRef is the template-facing view of a resolved object.
 type ObjectRef struct {
 	InstanceId  string
@@ -89,7 +112,7 @@ type ObjectRef struct {
 	instance    *game.ObjectInstance
 }
 
-func ObjRefFromInstance(oi *game.ObjectInstance, source ObjectRemover) *ObjectRef {
+func objRefFromInstance(oi *game.ObjectInstance, source ObjectRemover) *ObjectRef {
 	if oi == nil || oi.Object.Get() == nil {
 		return nil
 	}
@@ -100,6 +123,17 @@ func ObjRefFromInstance(oi *game.ObjectInstance, source ObjectRemover) *ObjectRe
 		source:      source,
 		instance:    oi,
 	}
+}
+
+// Describe returns a detailed description of the object, including container contents.
+func (r *ObjectRef) Describe() string {
+	lines := []string{display.Wrap(r.Description)}
+	if r.instance.Object.Get().HasFlag(game.ObjectFlagContainer) {
+		lines = append(lines, "")
+		lines = append(lines, "It contains:")
+		lines = append(lines, FormatInventoryItems(r.instance.Contents)...)
+	}
+	return strings.Join(lines, "\n")
 }
 
 // TargetRef is a polymorphic target reference that could be a player, mobile, or object.
@@ -142,7 +176,7 @@ func FindTarget(name string, tt TargetType, spaces []SearchSpace) (*TargetRef, e
 			if ps := sp.Finder.FindPlayer(name); ps != nil {
 				return &TargetRef{
 					Type:   TargetTypePlayer,
-					Player: PlayerRefFromState(ps),
+					Player: playerRefFromState(ps),
 				}, nil
 			}
 		}
@@ -150,7 +184,7 @@ func FindTarget(name string, tt TargetType, spaces []SearchSpace) (*TargetRef, e
 			if mi := sp.Finder.FindMob(name); mi != nil {
 				return &TargetRef{
 					Type: TargetTypeMobile,
-					Mob:  MobRefFromInstance(mi),
+					Mob:  mobRefFromInstance(mi),
 				}, nil
 			}
 		}
@@ -158,7 +192,7 @@ func FindTarget(name string, tt TargetType, spaces []SearchSpace) (*TargetRef, e
 			if oi := sp.Finder.FindObj(name); oi != nil {
 				return &TargetRef{
 					Type: TargetTypeObject,
-					Obj:  ObjRefFromInstance(oi, sp.Remover),
+					Obj:  objRefFromInstance(oi, sp.Remover),
 				}, nil
 			}
 		}

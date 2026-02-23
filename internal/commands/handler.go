@@ -108,7 +108,7 @@ func NewHandler(cmds storage.Storer[*Command], dict *game.Dictionary, publisher 
 	h.RegisterFactory("message", NewMessageHandlerFactory(publisher))
 	h.RegisterFactory("move", NewMoveHandlerFactory(world, publisher))
 	h.RegisterFactory("move_obj", NewMoveObjHandlerFactory(world, dict.Characters, publisher))
-	h.RegisterFactory("quit", NewQuitHandlerFactory(dict.Characters))
+	h.RegisterFactory("quit", NewQuitHandlerFactory())
 	h.RegisterFactory("save", NewSaveHandlerFactory(dict.Characters, publisher))
 	h.RegisterFactory("score", NewScoreHandlerFactory(publisher))
 	h.RegisterFactory("title", NewTitleHandlerFactory(publisher))

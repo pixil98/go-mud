@@ -93,7 +93,9 @@ func (m *PlayerManager) Tick(ctx context.Context) error {
 		if ps == nil {
 			continue
 		}
-		saveCharacterFromState(m.dict.Characters, ps)
+		if err := ps.SaveCharacter(m.dict.Characters); err != nil {
+			slog.Warn("failed to save linkless player", "charId", charId, "error", err)
+		}
 		ps.UnsubscribeAll()
 		_ = m.world.RemovePlayer(charId)
 		slog.Info("linkless player removed", "charId", charId)
@@ -104,7 +106,7 @@ func (m *PlayerManager) Tick(ctx context.Context) error {
 		if ps == nil {
 			continue
 		}
-		saveCharacterFromState(m.dict.Characters, ps)
+		// Save happens in handleSessionEnd after the kick triggers Play() to exit.
 		ps.MarkLinkless()
 		ps.Kick()
 		slog.Info("idle player kicked", "charId", charId)
@@ -201,12 +203,15 @@ func (m *PlayerManager) handleSessionEnd(charId string, playErr error) {
 		return
 	}
 
+	if err := ps.SaveCharacter(m.dict.Characters); err != nil {
+		slog.Warn("failed to save player on session end", "charId", charId, "error", err)
+	}
+
 	if ps.Quit {
 		ps.UnsubscribeAll()
 		_ = m.world.RemovePlayer(id)
 		slog.Info("player quit", "charId", charId)
 	} else {
-		saveCharacterFromState(m.dict.Characters, ps)
 		ps.MarkLinkless()
 		slog.Info("player went linkless", "charId", charId)
 	}
@@ -227,14 +232,6 @@ func (m *PlayerManager) subscribePlayer(ps *game.PlayerState, charId storage.Ide
 		return fmt.Errorf("subscribing to room channel: %w", err)
 	}
 	return nil
-}
-
-// saveCharacterFromState persists the character's current location to the store.
-func saveCharacterFromState(chars storage.Storer[*game.Character], ps *game.PlayerState) {
-	zoneId, roomId := ps.Location()
-	ps.Character.LastZone = zoneId
-	ps.Character.LastRoom = roomId
-	_ = chars.Save(string(ps.CharId), ps.Character)
 }
 
 // initCharacter prompts for any missing traits on a character.
