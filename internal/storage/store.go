@@ -98,11 +98,20 @@ func (s *FileStore[T]) Save(id string, o T) error {
 		return fmt.Errorf("marshalling json: %w", err)
 	}
 
-	err = os.WriteFile(s.filePath(asset.Id()), jsonData, 0644)
-	if err != nil {
-		return fmt.Errorf("writing file: %w", err)
-	}
+	return atomicWrite(s.filePath(asset.Id()), jsonData, 0644)
+}
 
+// atomicWrite writes data to a temp file then renames it to the target path.
+// This prevents partial or empty files if the process is interrupted.
+func atomicWrite(path string, data []byte, perm os.FileMode) error {
+	tmp := path + ".tmp"
+	if err := os.WriteFile(tmp, data, perm); err != nil {
+		return fmt.Errorf("writing temp file: %w", err)
+	}
+	if err := os.Rename(tmp, path); err != nil {
+		_ = os.Remove(tmp)
+		return fmt.Errorf("renaming temp file: %w", err)
+	}
 	return nil
 }
 
