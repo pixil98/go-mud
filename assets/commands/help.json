@@ -5,6 +5,7 @@
         "handler": "help",
         "category": "information",
         "description": "List available commands or get details on a specific command.",
+        "priority": 5,
         "config": {
             "command": "{{ .Inputs.command }}"
         },

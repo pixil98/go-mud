@@ -5,6 +5,7 @@
         "handler": "move",
         "category": "movement",
         "description": "Move up.",
+        "priority": 10,
         "config": {
             "direction": "up"
         }

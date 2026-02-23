@@ -3,6 +3,7 @@ package commands
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -230,11 +231,67 @@ func (h *Handler) validateSpec(cmd *Command, spec *HandlerSpec) error {
 	return nil
 }
 
+// resolve finds the compiled command for a given input string.
+// It tries an exact match first, then falls back to prefix matching
+// with priority-based disambiguation.
+func (h *Handler) resolve(input string) (*compiledCommand, error) {
+	id := storage.Identifier(strings.ToLower(input))
+
+	// Exact match always wins.
+	if compiled, ok := h.compiled[id]; ok {
+		return compiled, nil
+	}
+
+	// Prefix match: find all commands whose ID starts with the input.
+	type match struct {
+		id       storage.Identifier
+		compiled *compiledCommand
+	}
+	var matches []match
+	bestPriority := 0
+	first := true
+
+	for cmdId, compiled := range h.compiled {
+		if strings.HasPrefix(string(cmdId), string(id)) {
+			p := compiled.cmd.Priority
+			if first || p > bestPriority {
+				bestPriority = p
+				first = false
+			}
+			matches = append(matches, match{id: cmdId, compiled: compiled})
+		}
+	}
+
+	if len(matches) == 0 {
+		return nil, NewUserError(fmt.Sprintf("Command %q is unknown.", input))
+	}
+
+	// Filter to only the highest-priority matches.
+	var best []match
+	for _, m := range matches {
+		if m.compiled.cmd.Priority == bestPriority {
+			best = append(best, m)
+		}
+	}
+
+	if len(best) == 1 {
+		return best[0].compiled, nil
+	}
+
+	// Ambiguous — list the matching commands alphabetically.
+	names := make([]string, len(best))
+	for i, m := range best {
+		names[i] = string(m.id)
+	}
+	sort.Strings(names)
+	return nil, NewUserError(fmt.Sprintf("Did you mean: %s?", strings.Join(names, ", ")))
+}
+
 // Exec executes a command with the given arguments.
 func (h *Handler) Exec(ctx context.Context, world *game.WorldState, charId storage.Identifier, cmdName string, rawArgs ...string) error {
-	compiled, ok := h.compiled[storage.Identifier(strings.ToLower(cmdName))]
-	if !ok {
-		return NewUserError(fmt.Sprintf("Command %q is unknown.", cmdName))
+	compiled, err := h.resolve(cmdName)
+	if err != nil {
+		return err
 	}
 
 	// Parse inputs

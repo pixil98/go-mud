@@ -128,6 +128,7 @@ type Command struct {
 	Handler     string         `json:"handler"`
 	Category    string         `json:"category,omitempty"`    // Grouping for help display
 	Description string         `json:"description,omitempty"` // Short description for help
+	Priority    int            `json:"priority,omitempty"`    // Higher values win prefix-match ties (default 0)
 	Config      map[string]any `json:"config"`                // Config passed to handler, may contain templates
 	Targets     []TargetSpec   `json:"targets"`               // Targets to resolve at runtime
 	Inputs      []InputSpec    `json:"inputs"`                // User input parameters

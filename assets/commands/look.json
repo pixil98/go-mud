@@ -5,6 +5,7 @@
         "handler": "look",
         "category": "information",
         "description": "Look at your surroundings or examine something.",
+        "priority": 10,
         "targets": [
             {"name": "target", "type": ["player", "mobile", "object"], "scope": ["room", "inventory"], "input": "target", "optional": true, "not_found": "You don't see '{{ .Inputs.target }}' here."}
         ],

@@ -5,6 +5,7 @@
         "handler": "move_obj",
         "category": "items",
         "description": "Pick up an item from the room or a container.",
+        "priority": 5,
         "config": {
             "destination": "inventory",
             "message": "{{ if .Targets.destination }}{{ .Actor.Name }} gets {{ .Targets.item.Obj.Name }} from {{ .Targets.destination.Name }}.{{ else }}{{ .Actor.Name }} picks up {{ .Targets.item.Obj.Name }}.{{ end }}"

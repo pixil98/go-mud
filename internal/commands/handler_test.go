@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/storage"
 )
 
 func TestHandler_parseValue(t *testing.T) {
@@ -238,6 +239,94 @@ func TestHandler_parseInputs(t *testing.T) {
 				if input.Spec.Name != expected.Spec.Name {
 					t.Errorf("input[%d].Spec.Name = %q, expected %q", i, input.Spec.Name, expected.Spec.Name)
 				}
+			}
+		})
+	}
+}
+
+func TestHandler_resolve(t *testing.T) {
+	mkCmd := func(priority int) *compiledCommand {
+		return &compiledCommand{cmd: &Command{Priority: priority}}
+	}
+
+	h := &Handler{
+		compiled: map[storage.Identifier]*compiledCommand{
+			"alpha": mkCmd(10),
+			"apple": mkCmd(0),
+			"beta":  mkCmd(5),
+			"bat":   mkCmd(5),
+			"gamma": mkCmd(0),
+		},
+	}
+
+	tests := map[string]struct {
+		input  string
+		expId  storage.Identifier
+		expErr string
+	}{
+		"exact match": {
+			input: "gamma",
+			expId: "gamma",
+		},
+		"exact match case insensitive": {
+			input: "GAMMA",
+			expId: "gamma",
+		},
+		"exact match wins over higher priority prefix": {
+			input: "apple",
+			expId: "apple",
+		},
+		"prefix single match": {
+			input: "g",
+			expId: "gamma",
+		},
+		"prefix with priority tiebreak": {
+			input: "a",
+			expId: "alpha",
+		},
+		"prefix ambiguous same priority": {
+			input:  "b",
+			expErr: "Did you mean: bat, beta?",
+		},
+		"no match": {
+			input:  "zzz",
+			expErr: `Command "zzz" is unknown.`,
+		},
+	}
+
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			got, err := h.resolve(tt.input)
+
+			if tt.expErr != "" {
+				if err == nil {
+					t.Fatalf("expected error %q, got nil", tt.expErr)
+				}
+				var userErr *UserError
+				if errors.As(err, &userErr) {
+					if userErr.Message != tt.expErr {
+						t.Errorf("error = %q, expected %q", userErr.Message, tt.expErr)
+					}
+				} else {
+					t.Errorf("expected UserError, got %T: %v", err, err)
+				}
+				return
+			}
+
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+
+			// Find which ID maps to the returned compiled command.
+			var foundId storage.Identifier
+			for id, cc := range h.compiled {
+				if cc == got {
+					foundId = id
+					break
+				}
+			}
+			if foundId != tt.expId {
+				t.Errorf("resolved to %q, expected %q", foundId, tt.expId)
 			}
 		})
 	}
