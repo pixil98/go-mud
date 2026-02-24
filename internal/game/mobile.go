@@ -40,6 +40,10 @@ type Mobile struct {
 	DamageDice  int `json:"damage_dice,omitempty"`
 	DamageSides int `json:"damage_sides,omitempty"`
 	DamageMod   int `json:"damage_mod,omitempty"`
+
+	// ExpReward overrides the base XP awarded when this mobile is killed.
+	// If 0, base XP is calculated from the mobile's level.
+	ExpReward int `json:"exp_reward,omitempty"`
 }
 
 // StatSections returns the mobile's stat display sections.

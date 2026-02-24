@@ -4,6 +4,7 @@
     "spec": {
         "handler": "kill",
         "category": "combat",
+        "priority": 5,
         "description": "Attack a mobile in the room.",
         "targets": [
             {

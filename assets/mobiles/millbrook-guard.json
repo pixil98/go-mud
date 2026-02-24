@@ -15,6 +15,7 @@
             "body": {"object_id": "millbrook-chainmail"},
             "wield": {"object_id": "millbrook-shortsword"}
         },
+        "level": 5,
         "max_hp": 50,
         "ac": 16,
         "attack_mod": 5,

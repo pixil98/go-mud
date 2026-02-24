@@ -6,6 +6,7 @@
         "short_desc": "Muffin the Kittercat",
         "long_desc": "The one and only floofybutt Muffin.",
         "detailed_desc": "She's too perfect to describe. It's just Muffin.",
+        "level": 20,
         "max_hp": 500,
         "ac": 20,
         "attack_mod": 10,

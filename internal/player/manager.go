@@ -253,7 +253,7 @@ func (m *PlayerManager) initCharacter(rw io.ReadWriter, char *game.Character) er
 	}
 
 	if char.Level == 0 {
-		char.Level = 1
+		char.Gain()
 	}
 
 	if char.BaseStats == nil {

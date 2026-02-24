@@ -3,6 +3,7 @@ package game
 import (
 	"encoding/json"
 	"fmt"
+	"math/rand/v2"
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/storage"
@@ -60,6 +61,9 @@ type Character struct {
 	// BaseStats holds the character's base ability scores before modifiers.
 	BaseStats map[StatKey]Stat `json:"base_stats,omitempty"`
 
+	// Experience is the character's total accumulated experience points.
+	Experience int `json:"experience,omitempty"`
+
 	Actor
 	ActorInstance
 }
@@ -75,6 +79,10 @@ func (c *Character) UnmarshalJSON(b []byte) error {
 	if c.Equipment == nil {
 		c.Equipment = NewEquipment()
 	}
+	// Migration: characters saved before the leveling system default to level 1.
+	if c.Level == 0 {
+		c.Level = 1
+	}
 	return nil
 }
 
@@ -85,6 +93,9 @@ func NewCharacter(name string, pass string) *Character {
 		Password:     pass,
 		Title:        "the Newbie",
 		DetailedDesc: "A plain, unremarkable adventurer.",
+		Actor: Actor{
+			Level: 1,
+		},
 		ActorInstance: ActorInstance{
 			Inventory: NewInventory(),
 			Equipment: NewEquipment(),
@@ -162,6 +173,24 @@ func (c *Character) StatSections() []StatSection {
 		},
 	})
 
+	// Experience section
+	if c.Level >= MaxLevel {
+		sections = append(sections, StatSection{
+			Header: "Experience",
+			Lines: []StatLine{
+				{Value: fmt.Sprintf("  XP: %d  (MAX LEVEL)", c.Experience)},
+			},
+		})
+	} else {
+		tnl := ExpToNextLevel(c.Level, c.Experience)
+		sections = append(sections, StatSection{
+			Header: "Experience",
+			Lines: []StatLine{
+				{Value: fmt.Sprintf("  XP: %d  TNL: %d", c.Experience, tnl)},
+			},
+		})
+	}
+
 	// Vitals section
 	sections = append(sections, StatSection{
 		Header: "Vitals",
@@ -171,6 +200,22 @@ func (c *Character) StatSections() []StatSection {
 	})
 
 	return sections
+}
+
+// Gain advances the character to the next level, increasing stats accordingly.
+// The caller must check ExpToNextLevel before calling this.
+func (c *Character) Gain() {
+	c.Level++
+
+	// HP gain: 1d8 + CON modifier (minimum 1)
+	stats := c.EffectiveStats()
+	conMod := stats[StatCON].Mod()
+	hpGain := rand.IntN(8) + 1 + conMod
+	if hpGain < 1 {
+		hpGain = 1
+	}
+	c.MaxHP += hpGain
+	c.CurrentHP = c.MaxHP
 }
 
 // MatchName returns true if name matches this character's name (case-insensitive).
