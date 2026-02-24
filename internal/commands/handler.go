@@ -3,9 +3,11 @@ package commands
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strconv"
 	"strings"
 
+	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
 )
@@ -100,6 +102,7 @@ func NewHandler(cmds storage.Storer[*Command], dict *game.Dictionary, publisher 
 	}
 
 	// Register built-in handlers
+	h.RegisterFactory("closure", NewClosureHandlerFactory(world, publisher))
 	h.RegisterFactory("equipment", NewEquipmentHandlerFactory(publisher))
 	h.RegisterFactory("help", NewHelpHandlerFactory(cmds, publisher))
 	h.RegisterFactory("inventory", NewInventoryHandlerFactory(publisher))
@@ -107,7 +110,7 @@ func NewHandler(cmds storage.Storer[*Command], dict *game.Dictionary, publisher 
 	h.RegisterFactory("message", NewMessageHandlerFactory(publisher))
 	h.RegisterFactory("move", NewMoveHandlerFactory(world, publisher))
 	h.RegisterFactory("move_obj", NewMoveObjHandlerFactory(world, dict.Characters, publisher))
-	h.RegisterFactory("quit", NewQuitHandlerFactory(dict.Characters))
+	h.RegisterFactory("quit", NewQuitHandlerFactory())
 	h.RegisterFactory("save", NewSaveHandlerFactory(dict.Characters, publisher))
 	h.RegisterFactory("score", NewScoreHandlerFactory(publisher))
 	h.RegisterFactory("title", NewTitleHandlerFactory(publisher))
@@ -164,10 +167,23 @@ func (h *Handler) compile(id storage.Identifier, cmd *Command) error {
 		return fmt.Errorf("creating handler: %w", err)
 	}
 
-	h.compiled[id] = &compiledCommand{
+	cc := &compiledCommand{
 		cmd:     cmd,
 		cmdFunc: cmdFunc,
 	}
+	if _, exists := h.compiled[id]; exists {
+		return fmt.Errorf("command %q conflicts with an already registered command or alias", id)
+	}
+	h.compiled[id] = cc
+
+	for _, alias := range cmd.Aliases {
+		aliasId := storage.Identifier(strings.ToLower(alias))
+		if _, exists := h.compiled[aliasId]; exists {
+			return fmt.Errorf("alias %q conflicts with an existing command or alias", alias)
+		}
+		h.compiled[aliasId] = cc
+	}
+
 	return nil
 }
 
@@ -230,11 +246,67 @@ func (h *Handler) validateSpec(cmd *Command, spec *HandlerSpec) error {
 	return nil
 }
 
+// resolve finds the compiled command for a given input string.
+// It tries an exact match first, then falls back to prefix matching
+// with priority-based disambiguation.
+func (h *Handler) resolve(input string) (*compiledCommand, error) {
+	id := storage.Identifier(strings.ToLower(input))
+
+	// Exact match always wins.
+	if compiled, ok := h.compiled[id]; ok {
+		return compiled, nil
+	}
+
+	// Prefix match: find all commands whose ID starts with the input.
+	type match struct {
+		id       storage.Identifier
+		compiled *compiledCommand
+	}
+	var matches []match
+	bestPriority := 0
+	first := true
+
+	for cmdId, compiled := range h.compiled {
+		if strings.HasPrefix(string(cmdId), string(id)) {
+			p := compiled.cmd.Priority
+			if first || p > bestPriority {
+				bestPriority = p
+				first = false
+			}
+			matches = append(matches, match{id: cmdId, compiled: compiled})
+		}
+	}
+
+	if len(matches) == 0 {
+		return nil, NewUserError(fmt.Sprintf("Command %q is unknown.", input))
+	}
+
+	// Filter to only the highest-priority matches.
+	var best []match
+	for _, m := range matches {
+		if m.compiled.cmd.Priority == bestPriority {
+			best = append(best, m)
+		}
+	}
+
+	if len(best) == 1 {
+		return best[0].compiled, nil
+	}
+
+	// Ambiguous — list the matching commands alphabetically.
+	names := make([]string, len(best))
+	for i, m := range best {
+		names[i] = string(m.id)
+	}
+	sort.Strings(names)
+	return nil, NewUserError(fmt.Sprintf("Did you mean: %s?", strings.Join(names, ", ")))
+}
+
 // Exec executes a command with the given arguments.
 func (h *Handler) Exec(ctx context.Context, world *game.WorldState, charId storage.Identifier, cmdName string, rawArgs ...string) error {
-	compiled, ok := h.compiled[storage.Identifier(strings.ToLower(cmdName))]
-	if !ok {
-		return NewUserError(fmt.Sprintf("Command %q is unknown.", cmdName))
+	compiled, err := h.resolve(cmdName)
+	if err != nil {
+		return err
 	}
 
 	// Parse inputs
@@ -371,6 +443,7 @@ type templateContext struct {
 	Session *game.PlayerState
 	Targets map[string]*TargetRef
 	Inputs  map[string]any
+	Color   *display.Palette
 }
 
 // expandConfig expands all template strings in config and returns map[string]string.
@@ -384,6 +457,7 @@ func (h *Handler) expandConfig(config map[string]any, actor *game.Character, ses
 		Session: session,
 		Targets: targets,
 		Inputs:  inputs,
+		Color:   display.Colors,
 	}
 
 	expanded := make(map[string]string, len(config))

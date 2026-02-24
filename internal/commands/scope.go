@@ -10,8 +10,9 @@ type objectOnlyFinder struct {
 	ObjectFinder
 }
 
-func (f objectOnlyFinder) FindPlayer(string) *game.PlayerState { return nil }
-func (f objectOnlyFinder) FindMob(string) *game.MobileInstance { return nil }
+func (f objectOnlyFinder) FindPlayer(string) *game.PlayerState    { return nil }
+func (f objectOnlyFinder) FindMob(string) *game.MobileInstance   { return nil }
+func (f objectOnlyFinder) FindExit(string) (string, *game.Exit)  { return "", nil }
 
 // WorldScopes implements TargetScopes using *game.WorldState.
 // It translates scope flags into the correct search spaces by looking up

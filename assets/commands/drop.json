@@ -5,6 +5,7 @@
         "handler": "move_obj",
         "category": "items",
         "description": "Drop an item from your inventory.",
+        "priority": 5,
         "config": {
             "destination": "room",
             "message": "{{ .Actor.Name }} drops {{ .Targets.item.Obj.Name }}."

@@ -7,9 +7,9 @@
         "description": "Send a private message to another player.",
         "config": {
             "recipient_channel": "player-{{ .Targets.target.Player.Name | lower }}",
-            "recipient_message": "{{ .Actor.Name }} tells you, \"{{ .Inputs.text }}\"",
+            "recipient_message": "{{ .Color.Red }}{{ .Actor.Name }} tells you, \"{{ .Inputs.text }}\"{{ .Color.Reset }}",
             "sender_channel": "player-{{ .Actor.Name | lower }}",
-            "sender_message": "You tell {{ .Targets.target.Player.Name }}, \"{{ .Inputs.text }}\""
+            "sender_message": "{{ .Color.Red }}You tell {{ .Targets.target.Player.Name }}, \"{{ .Inputs.text }}\"{{ .Color.Reset }}"
         },
         "targets": [
             {"name": "target", "type": ["player"], "scope": ["world"], "input": "target", "not_found": "There's nobody called '{{ .Inputs.target }}' online."}

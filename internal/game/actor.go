@@ -216,6 +216,20 @@ func (inv *Inventory) FindObj(name string) *ObjectInstance {
 	return nil
 }
 
+// FindObjByDef searches for an object whose definition ID matches defId.
+// Returns nil if not found.
+func (inv *Inventory) FindObjByDef(defId string) *ObjectInstance {
+	inv.mu.RLock()
+	defer inv.mu.RUnlock()
+
+	for _, oi := range inv.Objs {
+		if oi.Object.Id() == defId {
+			return oi
+		}
+	}
+	return nil
+}
+
 // Clear removes all items.
 func (inv *Inventory) Clear() {
 	inv.mu.Lock()

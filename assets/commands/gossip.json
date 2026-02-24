@@ -7,7 +7,7 @@
         "description": "Broadcast a message to all online players.",
         "config": {
             "recipient_channel": "world",
-            "recipient_message": "{{ .Actor.Name }} gossips, \"{{ .Inputs.text }}\""
+            "recipient_message": "{{ .Color.Yellow }}{{ .Actor.Name }} gossips, \"{{ .Inputs.text }}\"{{ .Color.Reset }}"
         },
         "inputs": [
             {"name": "text", "type": "string", "required": true, "rest": true, "missing": "Gossip what?"}

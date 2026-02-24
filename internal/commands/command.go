@@ -26,7 +26,7 @@ const (
 	ScopeNone      Scope = 0
 	ScopeWorld     Scope = 1 << iota // All online players
 	ScopeZone                        // Players in current zone
-	ScopeRoom                        // Players/mobs/objects in current room
+	ScopeRoom                        // Players/mobs/objects/exits in current room
 	ScopeInventory                   // Objects in actor's inventory
 	ScopeEquipment                   // Objects in actor's equipment
 	ScopeContents                    // Objects inside another resolved target's contents (requires scope_target)
@@ -40,6 +40,7 @@ const (
 	TargetTypePlayer TargetType = 1 << iota // Resolves to a player
 	TargetTypeMobile                        // Resolves to a mobile/NPC
 	TargetTypeObject                        // Resolves to an object
+	TargetTypeExit                          // Resolves to a room exit
 )
 
 // String returns the lowercase name of a single target type, or "target" for combined types.
@@ -51,6 +52,8 @@ func (tt TargetType) String() string {
 		return "mobile"
 	case TargetTypeObject:
 		return "object"
+	case TargetTypeExit:
+		return "exit"
 	default:
 		return "target"
 	}
@@ -96,6 +99,8 @@ func (t *TargetSpec) TargetType() TargetType {
 			result |= TargetTypeMobile
 		case "object":
 			result |= TargetTypeObject
+		case "exit":
+			result |= TargetTypeExit
 		}
 	}
 	return result
@@ -128,6 +133,8 @@ type Command struct {
 	Handler     string         `json:"handler"`
 	Category    string         `json:"category,omitempty"`    // Grouping for help display
 	Description string         `json:"description,omitempty"` // Short description for help
+	Priority    int            `json:"priority,omitempty"`    // Higher values win prefix-match ties (default 0)
+	Aliases     []string       `json:"aliases,omitempty"`     // Alternative names that resolve to this command (e.g., "nw" for "northwest")
 	Config      map[string]any `json:"config"`                // Config passed to handler, may contain templates
 	Targets     []TargetSpec   `json:"targets"`               // Targets to resolve at runtime
 	Inputs      []InputSpec    `json:"inputs"`                // User input parameters

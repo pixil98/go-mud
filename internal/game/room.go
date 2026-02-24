@@ -2,6 +2,7 @@ package game
 
 import (
 	"fmt"
+	"maps"
 	"sort"
 	"strings"
 	"sync"
@@ -14,8 +15,9 @@ import (
 
 // Exit defines a destination for movement from a room.
 type Exit struct {
-	Zone storage.SmartIdentifier[*Zone] `json:"zone_id"` // Optional; defaults to current zone
-	Room storage.SmartIdentifier[*Room] `json:"room_id"`
+	Zone    storage.SmartIdentifier[*Zone] `json:"zone_id"` // Optional; defaults to current zone
+	Room    storage.SmartIdentifier[*Room] `json:"room_id"`
+	Closure *Closure                       `json:"closure,omitempty"` // Optional open/close/lock barrier
 }
 
 // Room represents a location within a zone.
@@ -41,6 +43,14 @@ func (r *Room) Validate() error {
 		if err := exit.Room.Validate(); err != nil {
 			el.Add(fmt.Errorf("exit %s: %w", dir, err))
 		}
+		if exit.Closure != nil {
+			if exit.Closure.Name == "" {
+				el.Add(fmt.Errorf("exit %s closure: name is required", dir))
+			}
+			if err := exit.Closure.Validate(); err != nil {
+				el.Add(fmt.Errorf("exit %s closure: %w", dir, err))
+			}
+		}
 	}
 
 	return el.Err()
@@ -53,8 +63,11 @@ func (r *Room) Resolve(dict *Dictionary) error {
 		el.Add(exit.Room.Resolve(dict.Rooms))
 		if exit.Zone.Id() != "" {
 			el.Add(exit.Zone.Resolve(dict.Zones))
-			r.Exits[dir] = exit
 		}
+		if exit.Closure != nil {
+			el.Add(exit.Closure.Resolve(dict.Objects))
+		}
+		r.Exits[dir] = exit
 	}
 
 	for i := range r.MobSpawns {
@@ -67,15 +80,17 @@ func (r *Room) Resolve(dict *Dictionary) error {
 }
 
 // RoomInstance holds the runtime state for a room — spawned mobs, objects, and players.
-// The mutex protects the players and mobiles maps. Object operations delegate to
-// the objects Inventory, which handles its own locking.
+// The mutex protects the players, mobiles, and exit closure state. Object operations
+// delegate to the objects Inventory, which handles its own locking.
 type RoomInstance struct {
 	Room storage.SmartIdentifier[*Room]
 
-	mu      sync.RWMutex
-	mobiles map[string]*MobileInstance
-	objects *Inventory
-	players map[storage.Identifier]*PlayerState
+	mu         sync.RWMutex
+	mobiles    map[string]*MobileInstance
+	objects    *Inventory
+	players    map[storage.Identifier]*PlayerState
+	exitClosed map[string]bool // runtime closed state for exits with a Closure
+	exitLocked map[string]bool // runtime locked state for exits with a Lock
 }
 
 // NewRoomInstance creates a RoomInstance from a resolved SmartIdentifier.
@@ -83,17 +98,77 @@ func NewRoomInstance(room storage.SmartIdentifier[*Room]) (*RoomInstance, error)
 	if room.Get() == nil {
 		return nil, fmt.Errorf("unable to create instance from unresolved room %q", room.Id())
 	}
-	return &RoomInstance{
-		Room:    room,
-		mobiles: make(map[string]*MobileInstance),
-		objects: NewInventory(),
-		players: make(map[storage.Identifier]*PlayerState),
-	}, nil
+	ri := &RoomInstance{
+		Room:       room,
+		mobiles:    make(map[string]*MobileInstance),
+		objects:    NewInventory(),
+		players:    make(map[storage.Identifier]*PlayerState),
+		exitClosed: make(map[string]bool),
+		exitLocked: make(map[string]bool),
+	}
+	ri.initExitClosures()
+	return ri, nil
+}
+
+// initExitClosures populates exitClosed/exitLocked from exit definitions.
+// Caller must hold the write lock or call before the instance is shared.
+func (ri *RoomInstance) initExitClosures() {
+	ri.exitClosed = make(map[string]bool)
+	ri.exitLocked = make(map[string]bool)
+	for dir, exit := range ri.Room.Get().Exits {
+		if exit.Closure != nil {
+			ri.exitClosed[dir] = exit.Closure.Closed
+			if exit.Closure.Lock != nil {
+				ri.exitLocked[dir] = exit.Closure.Lock.Locked
+			}
+		}
+	}
+}
+
+// IsExitClosed returns whether the exit in the given direction is closed.
+// Returns false if the direction has no closure.
+func (ri *RoomInstance) IsExitClosed(direction string) bool {
+	ri.mu.RLock()
+	defer ri.mu.RUnlock()
+	return ri.exitClosed[direction]
+}
+
+// SetExitClosed sets the closed state for a direction.
+func (ri *RoomInstance) SetExitClosed(direction string, closed bool) {
+	ri.mu.Lock()
+	defer ri.mu.Unlock()
+	ri.exitClosed[direction] = closed
+}
+
+// IsExitLocked returns whether the exit in the given direction is locked.
+// Returns false if the direction has no lock.
+func (ri *RoomInstance) IsExitLocked(direction string) bool {
+	ri.mu.RLock()
+	defer ri.mu.RUnlock()
+	return ri.exitLocked[direction]
+}
+
+// SetExitLocked sets the locked state for a direction.
+func (ri *RoomInstance) SetExitLocked(direction string, locked bool) {
+	ri.mu.Lock()
+	defer ri.mu.Unlock()
+	ri.exitLocked[direction] = locked
+}
+
+// ExitClosure returns the Closure definition for the given direction, or nil.
+func (ri *RoomInstance) ExitClosure(direction string) *Closure {
+	exit, ok := ri.Room.Get().Exits[direction]
+	if !ok {
+		return nil
+	}
+	return exit.Closure
 }
 
 // Reset clears all mobs and objects and respawns them from the room definition.
-// Players are preserved.
+// Players are preserved. Exit closure state is restored to definition defaults.
 func (ri *RoomInstance) Reset() error {
+	ri.initExitClosures()
+
 	def := ri.Room.Get()
 	ri.mu.Lock()
 	ri.mobiles = make(map[string]*MobileInstance)
@@ -111,6 +186,23 @@ func (ri *RoomInstance) Reset() error {
 		ri.AddObj(oi)
 	}
 	return nil
+}
+
+// FindExit looks up an exit by direction key or closure name (case-insensitive).
+// Returns the direction key and a pointer to the exit, or ("", nil) if not found.
+func (ri *RoomInstance) FindExit(name string) (string, *Exit) {
+	name = strings.ToLower(name)
+	// Match by direction key first
+	if exit, ok := ri.Room.Get().Exits[name]; ok {
+		return name, &exit
+	}
+	// Fall back to matching by closure name
+	for dir, exit := range ri.Room.Get().Exits {
+		if exit.Closure != nil && strings.EqualFold(exit.Closure.Name, name) {
+			return dir, &exit
+		}
+	}
+	return "", nil
 }
 
 // FindMob searches room mobs for one whose definition matches the given name.
@@ -203,13 +295,21 @@ func (ri *RoomInstance) RemovePlayer(charId storage.Identifier) {
 // Describe returns the full room description including objects, mobs, players, and exits.
 // actorName is excluded from the player list.
 func (ri *RoomInstance) Describe(actorName string) string {
+	// Snapshot exit closure state under the lock
+	ri.mu.RLock()
+	exitClosed := make(map[string]bool, len(ri.exitClosed))
+	maps.Copy(exitClosed, ri.exitClosed)
+	exitLocked := make(map[string]bool, len(ri.exitLocked))
+	maps.Copy(exitLocked, ri.exitLocked)
+	ri.mu.RUnlock()
+
 	var sb strings.Builder
 	def := ri.Room.Get()
-	sb.WriteString(display.Colorize(display.Yellow, def.Name))
+	sb.WriteString(display.Colorize(display.Colors.Yellow, def.Name))
 	sb.WriteString("\n")
 	sb.WriteString(display.Wrap(def.Description))
 	sb.WriteString("\n")
-	sb.WriteString(display.Colorize(display.Cyan, formatExits(def.Exits)))
+	sb.WriteString(display.Colorize(display.Colors.Cyan, formatExits(def.Exits, exitClosed, exitLocked)))
 	sb.WriteString("\n")
 
 	// Show objects
@@ -218,7 +318,7 @@ func (ri *RoomInstance) Describe(actorName string) string {
 		if desc == "" {
 			desc = fmt.Sprintf("%s is here.", oi.Object.Get().ShortDesc)
 		}
-		sb.WriteString(fmt.Sprintf("%s\n", display.Colorize(display.Green, desc)))
+		sb.WriteString(fmt.Sprintf("%s\n", display.Colorize(display.Colors.Green, desc)))
 	}
 
 	ri.mu.RLock()
@@ -228,13 +328,13 @@ func (ri *RoomInstance) Describe(actorName string) string {
 		if desc == "" {
 			desc = fmt.Sprintf("%s is here.", mi.Mobile.Get().ShortDesc)
 		}
-		sb.WriteString(fmt.Sprintf("%s\n", display.Colorize(display.Yellow, desc)))
+		sb.WriteString(fmt.Sprintf("%s\n", display.Colorize(display.Colors.Yellow, desc)))
 	}
 
 	// Show other players
 	for _, ps := range ri.players {
 		if ps.Character.Name != actorName {
-			sb.WriteString(display.Colorize(display.Yellow, fmt.Sprintf("%s is here.%s\n", ps.Character.Name, formatFlags(ps.Flags()))))
+			sb.WriteString(display.Colorize(display.Colors.Yellow, fmt.Sprintf("%s is here.%s\n", ps.Character.Name, formatFlags(ps.Flags()))))
 		}
 	}
 	ri.mu.RUnlock()
@@ -258,13 +358,19 @@ func formatFlags(flags []string) string {
 	return s
 }
 
-func formatExits(exits map[string]Exit) string {
+func formatExits(exits map[string]Exit, exitClosed, exitLocked map[string]bool) string {
 	if len(exits) == 0 {
 		return "[Exits: none]"
 	}
 	dirs := make([]string, 0, len(exits))
 	for dir := range exits {
-		dirs = append(dirs, dir)
+		label := dir
+		if exitLocked[dir] {
+			label += " (locked)"
+		} else if exitClosed[dir] {
+			label += " (closed)"
+		}
+		dirs = append(dirs, label)
 	}
 	sort.Strings(dirs)
 	return fmt.Sprintf("[Exits: %s]", strings.Join(dirs, ", "))

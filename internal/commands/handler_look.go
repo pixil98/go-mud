@@ -2,10 +2,7 @@ package commands
 
 import (
 	"context"
-	"fmt"
-	"strings"
 
-	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
 )
 
@@ -65,11 +62,11 @@ func (f *LookHandlerFactory) showTarget(cmdCtx *CommandContext, target *TargetRe
 	var msg string
 	switch target.Type {
 	case TargetTypePlayer:
-		msg = f.describePlayer(target.Player)
+		msg = target.Player.Describe()
 	case TargetTypeMobile:
-		msg = f.describeMob(target.Mob)
+		msg = target.Mob.Describe()
 	case TargetTypeObject:
-		msg = f.describeObj(target.Obj)
+		msg = target.Obj.Describe()
 	default:
 		return NewUserError("You can't look at that.")
 	}
@@ -78,36 +75,4 @@ func (f *LookHandlerFactory) showTarget(cmdCtx *CommandContext, target *TargetRe
 		return f.pub.PublishToPlayer(cmdCtx.Session.CharId, []byte(msg))
 	}
 	return nil
-}
-
-// TODO: should these functions just be moved to the respective target's instance structs?
-func (f *LookHandlerFactory) describePlayer(player *PlayerRef) string {
-	lines := []string{display.Wrap(player.Description)}
-	if eqLines := FormatEquippedItems(player.session.Character.Equipment); eqLines != nil {
-		lines = append(lines, "")
-		lines = append(lines, fmt.Sprintf("%s is using:", player.Name))
-		lines = append(lines, eqLines...)
-	}
-	return strings.Join(lines, "\n")
-}
-
-func (f *LookHandlerFactory) describeMob(mob *MobileRef) string {
-	lines := []string{display.Wrap(mob.Description)}
-	if eqLines := FormatEquippedItems(mob.instance.Equipment); eqLines != nil {
-		lines = append(lines, "")
-		lines = append(lines, fmt.Sprintf("%s is using:", mob.Name))
-		lines = append(lines, eqLines...)
-	}
-	return strings.Join(lines, "\n")
-}
-
-func (f *LookHandlerFactory) describeObj(obj *ObjectRef) string {
-	lines := []string{display.Wrap(obj.Description)}
-
-	if obj.instance.Object.Get().HasFlag(game.ObjectFlagContainer) {
-		lines = append(lines, "")
-		lines = append(lines, "It contains:")
-		lines = append(lines, FormatInventoryItems(obj.instance.Contents)...)
-	}
-	return strings.Join(lines, "\n")
 }

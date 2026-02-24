@@ -59,6 +59,9 @@ type Object struct {
 	// WearSlots lists the slot types this item can be equipped in (e.g., ["head"], ["finger"],
 	// ["hand_main", "hand_off"]). Only meaningful when the "wearable" flag is set.
 	WearSlots []string `json:"wear_slots,omitempty"`
+
+	// Closure defines open/close/lock behavior. Only meaningful when the "container" flag is set.
+	Closure *Closure `json:"closure,omitempty"`
 }
 
 // MatchName returns true if name matches any of this object's aliases (case-insensitive).
@@ -102,7 +105,21 @@ func (o *Object) Validate() error {
 	if !o.HasFlag(ObjectFlagWearable) && len(o.WearSlots) > 0 {
 		el.Add(fmt.Errorf("wear_slots requires the wearable flag"))
 	}
+	if o.Closure != nil {
+		if !o.HasFlag(ObjectFlagContainer) {
+			el.Add(fmt.Errorf("closure requires the container flag"))
+		}
+		el.Add(o.Closure.Validate())
+	}
 	return el.Err()
+}
+
+// Resolve resolves foreign key references on the object definition.
+func (o *Object) Resolve(dict *Dictionary) error {
+	if o.Closure != nil {
+		return o.Closure.Resolve(dict.Objects)
+	}
+	return nil
 }
 
 // ObjectInstance represents a single spawned instance of an Object definition.
@@ -111,6 +128,8 @@ type ObjectInstance struct {
 	InstanceId string                           `json:"-"` // Unique ID
 	Object     storage.SmartIdentifier[*Object] `json:"object_id"`
 	Contents   *Inventory                       `json:"contents,omitempty"` // Non-nil for containers; holds objects stored inside
+	Closed     bool                             `json:"closed,omitempty"`  // Runtime open/closed state for containers with a Closure
+	Locked     bool                             `json:"locked,omitempty"`  // Runtime lock state for containers with a Lock
 }
 
 func (oi *ObjectInstance) UnmarshalJSON(b []byte) error {
@@ -130,12 +149,19 @@ func NewObjectInstance(obj storage.SmartIdentifier[*Object]) (*ObjectInstance, e
 		return nil, fmt.Errorf("unable create %q from unresolved object", obj.Id())
 	}
 
+	def := obj.Get()
 	oi := &ObjectInstance{
 		InstanceId: uuid.New().String(),
 		Object:     obj,
 	}
-	if oi.Object.Get().HasFlag(ObjectFlagContainer) {
+	if def.HasFlag(ObjectFlagContainer) {
 		oi.Contents = NewInventory()
+		if def.Closure != nil {
+			oi.Closed = def.Closure.Closed
+			if def.Closure.Lock != nil {
+				oi.Locked = def.Closure.Lock.Locked
+			}
+		}
 	}
 	return oi, nil
 }

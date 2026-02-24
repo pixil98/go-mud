@@ -1,13 +1,14 @@
 {
     "version": 1,
-    "id": "up",
+    "id": "northwest",
     "spec": {
         "handler": "move",
         "category": "movement",
-        "description": "Move up.",
+        "description": "Move northwest.",
         "priority": 10,
+        "aliases": ["nw"],
         "config": {
-            "direction": "up"
+            "direction": "northwest"
         }
     }
 }

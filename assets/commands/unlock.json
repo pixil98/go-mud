@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "unlock",
+    "spec": {
+        "handler": "closure",
+        "category": "interaction",
+        "description": "Unlock a door or container.",
+        "config": {
+            "action": "unlock"
+        },
+        "targets": [
+            {
+                "name": "target",
+                "type": ["object", "exit"],
+                "scope": ["inventory", "room"],
+                "input": "target",
+                "not_found": "You don't see '{{ .Inputs.target }}' to unlock."
+            }
+        ],
+        "inputs": [
+            {"name": "target", "type": "string", "required": true, "missing": "Unlock what?"}
+        ]
+    }
+}

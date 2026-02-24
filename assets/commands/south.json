@@ -5,6 +5,7 @@
         "handler": "move",
         "category": "movement",
         "description": "Move south.",
+        "priority": 10,
         "config": {
             "direction": "south"
         }

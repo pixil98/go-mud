@@ -2,9 +2,11 @@ package commands
 
 import (
 	"errors"
+	"strings"
 	"testing"
 
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/storage"
 )
 
 func TestHandler_parseValue(t *testing.T) {
@@ -243,6 +245,103 @@ func TestHandler_parseInputs(t *testing.T) {
 	}
 }
 
+func TestHandler_resolve(t *testing.T) {
+	mkCmd := func(priority int) *compiledCommand {
+		return &compiledCommand{cmd: &Command{Priority: priority}}
+	}
+
+	// delta has an alias "dd" — both keys share the same compiledCommand.
+	deltaCmd := mkCmd(0)
+
+	h := &Handler{
+		compiled: map[storage.Identifier]*compiledCommand{
+			"alpha": mkCmd(10),
+			"apple": mkCmd(0),
+			"beta":  mkCmd(5),
+			"bat":   mkCmd(5),
+			"gamma": mkCmd(0),
+			"delta": deltaCmd,
+			"dd":    deltaCmd,
+		},
+	}
+
+	tests := map[string]struct {
+		input  string
+		expCmd *compiledCommand
+		expErr string
+	}{
+		"exact match": {
+			input:  "gamma",
+			expCmd: h.compiled["gamma"],
+		},
+		"exact match case insensitive": {
+			input:  "GAMMA",
+			expCmd: h.compiled["gamma"],
+		},
+		"exact match wins over higher priority prefix": {
+			input:  "apple",
+			expCmd: h.compiled["apple"],
+		},
+		"prefix single match": {
+			input:  "g",
+			expCmd: h.compiled["gamma"],
+		},
+		"prefix with priority tiebreak": {
+			input:  "a",
+			expCmd: h.compiled["alpha"],
+		},
+		"prefix ambiguous same priority": {
+			input:  "b",
+			expErr: "Did you mean: bat, beta?",
+		},
+		"no match": {
+			input:  "zzz",
+			expErr: `Command "zzz" is unknown.`,
+		},
+		"alias exact match": {
+			input:  "dd",
+			expCmd: deltaCmd,
+		},
+		"alias case insensitive": {
+			input:  "DD",
+			expCmd: deltaCmd,
+		},
+		"primary name still works with alias": {
+			input:  "delta",
+			expCmd: deltaCmd,
+		},
+	}
+
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			got, err := h.resolve(tt.input)
+
+			if tt.expErr != "" {
+				if err == nil {
+					t.Fatalf("expected error %q, got nil", tt.expErr)
+				}
+				var userErr *UserError
+				if errors.As(err, &userErr) {
+					if userErr.Message != tt.expErr {
+						t.Errorf("error = %q, expected %q", userErr.Message, tt.expErr)
+					}
+				} else {
+					t.Errorf("expected UserError, got %T: %v", err, err)
+				}
+				return
+			}
+
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+
+			if got != tt.expCmd {
+				t.Errorf("resolved to wrong command")
+			}
+		})
+	}
+}
+
 type mockHandlerFactory struct{}
 
 func (f *mockHandlerFactory) Spec() *HandlerSpec {
@@ -255,6 +354,107 @@ func (f *mockHandlerFactory) ValidateConfig(config map[string]any) error {
 
 func (f *mockHandlerFactory) Create() (CommandFunc, error) {
 	return nil, nil
+}
+
+func TestHandler_compile(t *testing.T) {
+	factory := &mockHandlerFactory{}
+
+	tests := map[string]struct {
+		preCompile []struct {
+			id  string
+			cmd *Command
+		}
+		id     string
+		cmd    *Command
+		expErr string
+		expIds []string // IDs expected in compiled map after success
+	}{
+		"basic command": {
+			id:     "alpha",
+			cmd:    &Command{Handler: "mock"},
+			expIds: []string{"alpha"},
+		},
+		"command with aliases": {
+			id:     "northwest",
+			cmd:    &Command{Handler: "mock", Aliases: []string{"nw"}},
+			expIds: []string{"northwest", "nw"},
+		},
+		"alias conflicts with existing command": {
+			preCompile: []struct {
+				id  string
+				cmd *Command
+			}{
+				{id: "aa", cmd: &Command{Handler: "mock"}},
+			},
+			id:     "alpha",
+			cmd:    &Command{Handler: "mock", Aliases: []string{"aa"}},
+			expErr: `alias "aa" conflicts`,
+		},
+		"alias conflicts with earlier alias": {
+			preCompile: []struct {
+				id  string
+				cmd *Command
+			}{
+				{id: "alpha", cmd: &Command{Handler: "mock", Aliases: []string{"aa"}}},
+			},
+			id:     "beta",
+			cmd:    &Command{Handler: "mock", Aliases: []string{"aa"}},
+			expErr: `alias "aa" conflicts`,
+		},
+		"command name conflicts with earlier alias": {
+			preCompile: []struct {
+				id  string
+				cmd *Command
+			}{
+				{id: "alpha", cmd: &Command{Handler: "mock", Aliases: []string{"beta"}}},
+			},
+			id:     "beta",
+			cmd:    &Command{Handler: "mock"},
+			expErr: `command "beta" conflicts`,
+		},
+		"unknown handler": {
+			id:     "alpha",
+			cmd:    &Command{Handler: "nonexistent"},
+			expErr: `unknown handler "nonexistent"`,
+		},
+	}
+
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			h := &Handler{
+				factories: map[string]HandlerFactory{"mock": factory},
+				compiled:  make(map[storage.Identifier]*compiledCommand),
+			}
+
+			for _, pre := range tt.preCompile {
+				if err := h.compile(storage.Identifier(pre.id), pre.cmd); err != nil {
+					t.Fatalf("pre-compile %q failed: %v", pre.id, err)
+				}
+			}
+
+			err := h.compile(storage.Identifier(tt.id), tt.cmd)
+
+			if tt.expErr != "" {
+				if err == nil {
+					t.Fatalf("expected error containing %q, got nil", tt.expErr)
+				}
+				if !strings.Contains(err.Error(), tt.expErr) {
+					t.Errorf("error = %q, expected to contain %q", err.Error(), tt.expErr)
+				}
+				return
+			}
+
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+
+			for _, expId := range tt.expIds {
+				if _, ok := h.compiled[storage.Identifier(expId)]; !ok {
+					t.Errorf("expected %q in compiled map", expId)
+				}
+			}
+		})
+	}
 }
 
 func TestHandler_RegisterFactory(t *testing.T) {
@@ -381,6 +581,17 @@ func TestHandler_expandConfig(t *testing.T) {
 			inputs:  map[string]any{},
 			expConfig: map[string]string{
 				"direction": "north",
+			},
+		},
+		"color in template": {
+			config: map[string]any{
+				"message": "{{ .Color.Red }}hello{{ .Color.Reset }}",
+			},
+			actor:   &game.Character{},
+			targets: map[string]*TargetRef{},
+			inputs:  map[string]any{},
+			expConfig: map[string]string{
+				"message": "\033[31mhello\033[0m",
 			},
 		},
 	}

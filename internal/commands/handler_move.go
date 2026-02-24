@@ -61,6 +61,16 @@ func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 			return NewUserError(fmt.Sprintf("You cannot go %s from here.", direction))
 		}
 
+		// Check if exit is blocked by a closure
+		if exit.Closure != nil {
+			if fromRoom.IsExitLocked(direction) {
+				return NewUserError(fmt.Sprintf("The %s is locked.", exit.Closure.Name))
+			}
+			if fromRoom.IsExitClosed(direction) {
+				return NewUserError(fmt.Sprintf("The %s is closed.", exit.Closure.Name))
+			}
+		}
+
 		// Determine destination zone (default to current if not specified)
 		destZone := storage.Identifier(exit.Zone.Id())
 		if exit.Zone.Id() == "" {

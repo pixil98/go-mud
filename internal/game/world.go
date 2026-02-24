@@ -291,6 +291,14 @@ func (p *PlayerState) Reattach(msgs chan []byte) {
 	p.LastActivity = time.Now()
 }
 
+// SaveCharacter persists the character's current session state (location, inventory, etc.)
+// to the character store.
+func (ps *PlayerState) SaveCharacter(chars storage.Storer[*Character]) error {
+	ps.Character.LastZone = ps.ZoneId
+	ps.Character.LastRoom = ps.RoomId
+	return chars.Save(string(ps.CharId), ps.Character)
+}
+
 // MarkLinkless sets the player as linkless and unsubscribes all NATS subscriptions
 // to prevent channel fill-up while they have no active connection.
 func (p *PlayerState) MarkLinkless() {

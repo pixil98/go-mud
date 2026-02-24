@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "close",
+    "spec": {
+        "handler": "closure",
+        "category": "interaction",
+        "description": "Close a door or container.",
+        "config": {
+            "action": "close"
+        },
+        "targets": [
+            {
+                "name": "target",
+                "type": ["object", "exit"],
+                "scope": ["inventory", "room"],
+                "input": "target",
+                "not_found": "You don't see '{{ .Inputs.target }}' to close."
+            }
+        ],
+        "inputs": [
+            {"name": "target", "type": "string", "required": true, "missing": "Close what?"}
+        ]
+    }
+}

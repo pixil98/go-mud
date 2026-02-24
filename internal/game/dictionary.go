@@ -28,9 +28,15 @@ func (d *Dictionary) Resolve() error {
 		}
 	}
 
+	for id, obj := range d.Objects.GetAll() {
+		if err := obj.Resolve(d); err != nil {
+			return fmt.Errorf("object %s: %w", id, err)
+		}
+	}
+
 	for id, room := range d.Rooms.GetAll() {
 		if err := room.Resolve(d); err != nil {
-			return fmt.Errorf("mobile %s: %w", id, err)
+			return fmt.Errorf("room %s: %w", id, err)
 		}
 	}
 	return nil

@@ -4,6 +4,7 @@
     "spec": {
         "handler": "inventory",
         "category": "information",
-        "description": "View the items you are carrying."
+        "description": "View the items you are carrying.",
+        "priority": 10
     }
 }
