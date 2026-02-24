@@ -14,11 +14,11 @@ import (
 //   - direction (required): the direction to move (north, south, east, west, up, down)
 type MoveHandlerFactory struct {
 	world *game.WorldState
-	pub   Publisher
+	pub   game.Publisher
 }
 
 // NewMoveHandlerFactory creates a new MoveHandlerFactory with access to world state.
-func NewMoveHandlerFactory(world *game.WorldState, pub Publisher) *MoveHandlerFactory {
+func NewMoveHandlerFactory(world *game.WorldState, pub game.Publisher) *MoveHandlerFactory {
 	return &MoveHandlerFactory{world: world, pub: pub}
 }
 
@@ -94,7 +94,7 @@ func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 		// Send room description to player
 		roomDesc := toRoom.Describe(cmdCtx.Actor.Name)
 		if f.pub != nil {
-			return f.pub.PublishToPlayer(cmdCtx.Session.CharId, []byte(roomDesc))
+			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.CharId), nil, []byte(roomDesc))
 		}
 
 		return nil

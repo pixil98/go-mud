@@ -3,15 +3,17 @@ package commands
 import (
 	"context"
 	"fmt"
+
+	"github.com/pixil98/go-mud/internal/game"
 )
 
 // TitleHandlerFactory creates handlers that set a player's title.
 type TitleHandlerFactory struct {
-	pub Publisher
+	pub game.Publisher
 }
 
 // NewTitleHandlerFactory creates a new TitleHandlerFactory.
-func NewTitleHandlerFactory(pub Publisher) *TitleHandlerFactory {
+func NewTitleHandlerFactory(pub game.Publisher) *TitleHandlerFactory {
 	return &TitleHandlerFactory{pub: pub}
 }
 
@@ -42,7 +44,7 @@ func (f *TitleHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		if f.pub != nil {
-			return f.pub.PublishToPlayer(cmdCtx.Session.CharId, []byte(output))
+			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.CharId), nil, []byte(output))
 		}
 
 		return nil

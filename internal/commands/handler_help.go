@@ -6,17 +6,18 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // HelpHandlerFactory creates handlers that display command help.
 type HelpHandlerFactory struct {
 	commands storage.Storer[*Command]
-	pub      Publisher
+	pub      game.Publisher
 }
 
 // NewHelpHandlerFactory creates a new HelpHandlerFactory.
-func NewHelpHandlerFactory(commands storage.Storer[*Command], pub Publisher) *HelpHandlerFactory {
+func NewHelpHandlerFactory(commands storage.Storer[*Command], pub game.Publisher) *HelpHandlerFactory {
 	return &HelpHandlerFactory{commands: commands, pub: pub}
 }
 
@@ -73,7 +74,7 @@ func (f *HelpHandlerFactory) listCommands(charId storage.Identifier) error {
 	}
 
 	if f.pub != nil {
-		return f.pub.PublishToPlayer(charId, []byte(strings.Join(lines, "\n")))
+		return f.pub.Publish(game.SinglePlayer(charId), nil, []byte(strings.Join(lines, "\n")))
 	}
 	return nil
 }
@@ -113,7 +114,7 @@ func (f *HelpHandlerFactory) showCommand(name string, charId storage.Identifier)
 	}
 
 	if f.pub != nil {
-		return f.pub.PublishToPlayer(charId, []byte(strings.Join(lines, "\n")))
+		return f.pub.Publish(game.SinglePlayer(charId), nil, []byte(strings.Join(lines, "\n")))
 	}
 	return nil
 }

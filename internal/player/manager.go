@@ -78,7 +78,7 @@ func (m *PlayerManager) Tick(ctx context.Context) error {
 	var linklessExpired []storage.Identifier
 	var idleExpired []storage.Identifier
 
-	m.world.ForEachPlayer(func(charId storage.Identifier, ps game.PlayerState) {
+	m.world.ForEachPlayer(func(charId storage.Identifier, ps *game.PlayerState) {
 		if ps.Linkless {
 			if now.Sub(ps.LinklessAt) >= m.linklessTimeout {
 				linklessExpired = append(linklessExpired, charId)
@@ -182,7 +182,7 @@ func (m *PlayerManager) newPlayer(conn io.ReadWriter) (*Player, error) {
 		done:       ps.Done(),
 	}
 
-	if err := m.subscribePlayer(ps, charId, zoneId, roomId); err != nil {
+	if err := m.subscribePlayer(ps, charId); err != nil {
 		_ = m.world.RemovePlayer(charId)
 		return nil, fmt.Errorf("subscribing player: %w", err)
 	}
@@ -217,19 +217,10 @@ func (m *PlayerManager) handleSessionEnd(charId string, playErr error) {
 	}
 }
 
-// subscribePlayer subscribes the player to the standard NATS channels.
-func (m *PlayerManager) subscribePlayer(ps *game.PlayerState, charId storage.Identifier, zoneId, roomId storage.Identifier) error {
+// subscribePlayer subscribes the player to their individual NATS channel.
+func (m *PlayerManager) subscribePlayer(ps *game.PlayerState, charId storage.Identifier) error {
 	if err := ps.Subscribe(fmt.Sprintf("player-%s", charId)); err != nil {
 		return fmt.Errorf("subscribing to player channel: %w", err)
-	}
-	if err := ps.Subscribe("world"); err != nil {
-		return fmt.Errorf("subscribing to world channel: %w", err)
-	}
-	if err := ps.Subscribe(fmt.Sprintf("zone-%s", zoneId)); err != nil {
-		return fmt.Errorf("subscribing to zone channel: %w", err)
-	}
-	if err := ps.Subscribe(fmt.Sprintf("zone-%s-room-%s", zoneId, roomId)); err != nil {
-		return fmt.Errorf("subscribing to room channel: %w", err)
 	}
 	return nil
 }

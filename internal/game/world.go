@@ -132,14 +132,12 @@ func (w *WorldState) MarkPlayerActive(charId storage.Identifier) {
 	}
 }
 
-// ForEachPlayer calls the given function for each player.
-// The function receives a copy of the player state.
-func (w *WorldState) ForEachPlayer(fn func(storage.Identifier, PlayerState)) {
-	w.mu.RLock()
-	defer w.mu.RUnlock()
-
-	for id, p := range w.players {
-		fn(id, *p)
+// ForEachPlayer calls fn for each player in the world while holding the lock.
+func (w *WorldState) ForEachPlayer(fn func(storage.Identifier, *PlayerState)) {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	for id, ps := range w.players {
+		fn(id, ps)
 	}
 }
 
@@ -158,7 +156,7 @@ func (w *WorldState) Tick(ctx context.Context) error {
 	}
 
 	// Regenerate out-of-combat entities.
-	w.ForEachPlayer(func(_ storage.Identifier, ps PlayerState) {
+	w.ForEachPlayer(func(_ storage.Identifier, ps *PlayerState) {
 		if !ps.InCombat && ps.Character.CurrentHP < ps.Character.MaxHP {
 			ps.Character.Regenerate(1)
 		}
@@ -228,32 +226,16 @@ func (p *PlayerState) Location() (zoneId, roomId storage.Identifier) {
 	return p.ZoneId, p.RoomId
 }
 
-// Move updates the player's location, manages zone/room subscriptions,
-// and updates room instance player lists.
+// Move updates the player's location and room instance player lists.
 func (p *PlayerState) Move(fromRoom, toRoom *RoomInstance) {
-	prevZone, prevRoom := p.ZoneId, p.RoomId
 	toZoneId := storage.Identifier(toRoom.Room.Get().Zone.Id())
 	toRoomId := storage.Identifier(toRoom.Room.Id())
 
-	// Update room player lists
 	fromRoom.RemovePlayer(p.CharId)
 	toRoom.AddPlayer(p.CharId, p)
 
-	// Update location
 	p.ZoneId = toZoneId
 	p.RoomId = toRoomId
-
-	// Update zone subscription if zone changed
-	if toZoneId != prevZone {
-		p.Unsubscribe(fmt.Sprintf("zone-%s", prevZone))
-		_ = p.Subscribe(fmt.Sprintf("zone-%s", toZoneId))
-	}
-
-	// Update room subscription if zone or room changed
-	if toZoneId != prevZone || toRoomId != prevRoom {
-		p.Unsubscribe(fmt.Sprintf("zone-%s-room-%s", prevZone, prevRoom))
-		_ = p.Subscribe(fmt.Sprintf("zone-%s-room-%s", toZoneId, toRoomId))
-	}
 }
 
 // Subscribe adds a new subscription

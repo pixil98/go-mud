@@ -6,15 +6,16 @@ import (
 
 	"github.com/pixil98/go-mud/internal/combat"
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // KillHandlerFactory creates handlers for the kill command.
 type KillHandlerFactory struct {
 	combat *combat.Manager
-	pub    Publisher
+	pub    game.Publisher
 }
 
-func NewKillHandlerFactory(combat *combat.Manager, pub Publisher) *KillHandlerFactory {
+func NewKillHandlerFactory(combat *combat.Manager, pub game.Publisher) *KillHandlerFactory {
 	return &KillHandlerFactory{combat: combat, pub: pub}
 }
 
@@ -39,12 +40,12 @@ func (f *KillHandlerFactory) Create() (CommandFunc, error) {
 		target := cmdCtx.Targets["target"]
 
 		mi := target.Mob.instance
-		attacker := &game.PlayerCombatant{
+		attacker := &combat.PlayerCombatant{
 			CharId:    cmdCtx.Session.CharId,
 			Player:    cmdCtx.Session,
 			Character: cmdCtx.Actor,
 		}
-		defender := &game.MobCombatant{Instance: mi}
+		defender := &combat.MobCombatant{Instance: mi}
 
 		zoneID, roomID := cmdCtx.Session.Location()
 		err := f.combat.StartCombat(attacker, defender, string(zoneID), string(roomID))
@@ -52,8 +53,12 @@ func (f *KillHandlerFactory) Create() (CommandFunc, error) {
 			return NewUserError(err.Error())
 		}
 
-		msg := fmt.Sprintf("%s attacks %s!", cmdCtx.Actor.Name, mi.Mobile.Get().ShortDesc)
-		_ = f.pub.PublishToRoom(zoneID, roomID, []byte(msg))
+		_ = f.pub.Publish(game.SinglePlayer(cmdCtx.Session.CharId), nil,
+			[]byte(fmt.Sprintf("You attack %s!", mi.Mobile.Get().ShortDesc)))
+
+		room := cmdCtx.World.Instances()[zoneID].GetRoom(roomID)
+		roomMsg := fmt.Sprintf("%s attacks %s!", cmdCtx.Actor.Name, mi.Mobile.Get().ShortDesc)
+		_ = f.pub.Publish(room, []storage.Identifier{cmdCtx.Session.CharId}, []byte(roomMsg))
 
 		return nil
 	}, nil

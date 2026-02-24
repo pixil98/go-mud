@@ -8,7 +8,8 @@
         "priority": 5,
         "config": {
             "destination": "room",
-            "message": "{{ .Actor.Name }} drops {{ .Targets.item.Obj.Name }}."
+            "self_message": "You drop {{ .Targets.item.Obj.Name }}.",
+            "room_message": "{{ .Actor.Name }} drops {{ .Targets.item.Obj.Name }}."
         },
         "targets": [
             {"name": "item", "type": ["object"], "scope": ["inventory"], "input": "item", "not_found": "You aren't carrying anything called '{{ .Inputs.item }}'."}

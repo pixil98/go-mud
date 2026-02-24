@@ -1,22 +1,22 @@
-package game
+package combat
 
 import (
 	"fmt"
 
 	"github.com/google/uuid"
-	"github.com/pixil98/go-mud/internal/combat"
+	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
-// CombatEventHandler implements combat.EventHandler with game-level death logic.
+// CombatEventHandler handles combat events that require game-level death logic.
 type CombatEventHandler struct {
-	world       *WorldState
-	pub         Publisher
+	world       *game.WorldState
+	pub         game.Publisher
 	defaultZone storage.Identifier
 	defaultRoom storage.Identifier
 }
 
-func NewCombatEventHandler(world *WorldState, pub Publisher, defaultZone, defaultRoom storage.Identifier) *CombatEventHandler {
+func NewCombatEventHandler(world *game.WorldState, pub game.Publisher, defaultZone, defaultRoom storage.Identifier) *CombatEventHandler {
 	return &CombatEventHandler{
 		world:       world,
 		pub:         pub,
@@ -25,7 +25,7 @@ func NewCombatEventHandler(world *WorldState, pub Publisher, defaultZone, defaul
 	}
 }
 
-func (h *CombatEventHandler) OnDeath(dctx combat.DeathContext) {
+func (h *CombatEventHandler) OnDeath(dctx DeathContext) {
 	switch v := dctx.Victim.(type) {
 	case *MobCombatant:
 		h.onMobDeath(v, dctx)
@@ -34,7 +34,7 @@ func (h *CombatEventHandler) OnDeath(dctx combat.DeathContext) {
 	}
 }
 
-func (h *CombatEventHandler) onMobDeath(mob *MobCombatant, dctx combat.DeathContext) {
+func (h *CombatEventHandler) onMobDeath(mob *MobCombatant, dctx DeathContext) {
 	mi := mob.Instance
 	def := mi.Mobile.Get()
 	zone := storage.Identifier(dctx.ZoneID)
@@ -42,7 +42,7 @@ func (h *CombatEventHandler) onMobDeath(mob *MobCombatant, dctx combat.DeathCont
 
 	// Create corpse object definition
 	corpseAliases := append([]string{"corpse"}, def.Aliases...)
-	corpseDef := &Object{
+	corpseDef := &game.Object{
 		Aliases:      corpseAliases,
 		ShortDesc:    fmt.Sprintf("the corpse of %s", def.ShortDesc),
 		LongDesc:     fmt.Sprintf("The corpse of %s lies here.", def.ShortDesc),
@@ -51,12 +51,12 @@ func (h *CombatEventHandler) onMobDeath(mob *MobCombatant, dctx combat.DeathCont
 	}
 
 	corpseId := fmt.Sprintf("corpse-%s", mi.InstanceId)
-	corpseSmartId := storage.NewResolvedSmartIdentifier[*Object](corpseId, corpseDef)
+	corpseSmartId := storage.NewResolvedSmartIdentifier[*game.Object](corpseId, corpseDef)
 
-	corpse := &ObjectInstance{
+	corpse := &game.ObjectInstance{
 		InstanceId: uuid.New().String(),
 		Object:     corpseSmartId,
-		Contents:   NewInventory(),
+		Contents:   game.NewInventory(),
 	}
 
 	// Transfer inventory to corpse
@@ -84,18 +84,18 @@ func (h *CombatEventHandler) onMobDeath(mob *MobCombatant, dctx combat.DeathCont
 	h.awardExperience(mob, dctx)
 }
 
-func (h *CombatEventHandler) awardExperience(mob *MobCombatant, dctx combat.DeathContext) {
+func (h *CombatEventHandler) awardExperience(mob *MobCombatant, dctx DeathContext) {
 	def := mob.Instance.Mobile.Get()
 	mobLevel := def.Level
 	baseExp := def.ExpReward
 
 	// Build participant list from opponents (the winners).
-	var participants []XPParticipant
+	var participants []game.XPParticipant
 	for _, opp := range dctx.Opponents {
-		if opp.CombatSide() != combat.SidePlayer {
+		if opp.CombatSide() != SidePlayer {
 			continue
 		}
-		participants = append(participants, XPParticipant{
+		participants = append(participants, game.XPParticipant{
 			CombatID: opp.CombatID(),
 			Level:    opp.Level(),
 			Damage:   dctx.DamageBy[opp.CombatID()],
@@ -106,7 +106,7 @@ func (h *CombatEventHandler) awardExperience(mob *MobCombatant, dctx combat.Deat
 		return
 	}
 
-	awards := CalculateXPAwards(mobLevel, baseExp, participants)
+	awards := game.CalculateXPAwards(mobLevel, baseExp, participants)
 
 	for _, award := range awards {
 		// Find the matching opponent to get the PlayerCombatant.
@@ -122,21 +122,21 @@ func (h *CombatEventHandler) awardExperience(mob *MobCombatant, dctx combat.Deat
 			pc.Character.Experience += award.Amount
 
 			msg := fmt.Sprintf("You receive %d experience points.", award.Amount)
-			if ExpToNextLevel(pc.Character.Level, pc.Character.Experience) <= 0 {
+			if game.ExpToNextLevel(pc.Character.Level, pc.Character.Experience) <= 0 {
 				msg += " You feel ready to advance!"
 			}
-			_ = h.pub.PublishToPlayer(pc.CharId, []byte(msg))
+			_ = h.pub.Publish(game.SinglePlayer(pc.CharId), nil, []byte(msg))
 			break
 		}
 	}
 }
 
-func (h *CombatEventHandler) onPlayerDeath(pc *PlayerCombatant, dctx combat.DeathContext) {
+func (h *CombatEventHandler) onPlayerDeath(pc *PlayerCombatant, dctx DeathContext) {
 	zone := storage.Identifier(dctx.ZoneID)
 	room := storage.Identifier(dctx.RoomID)
 
 	// Send personal message
-	_ = h.pub.PublishToPlayer(pc.CharId, []byte("You have been slain! You awaken in a familiar place..."))
+	_ = h.pub.Publish(game.SinglePlayer(pc.CharId), nil, []byte("You have been slain! You awaken in a familiar place..."))
 
 	// Restore HP
 	pc.Character.CurrentHP = pc.Character.MaxHP
@@ -149,23 +149,6 @@ func (h *CombatEventHandler) onPlayerDeath(pc *PlayerCombatant, dctx combat.Deat
 
 		// Show new room
 		roomDesc := toRoom.Describe(pc.Character.Name)
-		_ = h.pub.PublishToPlayer(pc.CharId, []byte(roomDesc))
+		_ = h.pub.Publish(game.SinglePlayer(pc.CharId), nil, []byte(roomDesc))
 	}
-}
-
-// CombatMessagePublisher adapts game.Publisher to combat.MessagePublisher.
-type CombatMessagePublisher struct {
-	pub Publisher
-}
-
-func NewCombatMessagePublisher(pub Publisher) *CombatMessagePublisher {
-	return &CombatMessagePublisher{pub: pub}
-}
-
-func (p *CombatMessagePublisher) SendToRoom(zoneID, roomID string, msg string) {
-	_ = p.pub.PublishToRoom(storage.Identifier(zoneID), storage.Identifier(roomID), []byte(msg))
-}
-
-func (p *CombatMessagePublisher) SendToPlayer(id string, msg string) {
-	_ = p.pub.PublishToPlayer(storage.Identifier(id), []byte(msg))
 }

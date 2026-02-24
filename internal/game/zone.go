@@ -121,6 +121,13 @@ func (z *ZoneInstance) Reset(force bool, instances map[storage.Identifier]*ZoneI
 	return nil
 }
 
+// ForEachPlayer yields each player across all rooms in the zone.
+func (z *ZoneInstance) ForEachPlayer(fn func(storage.Identifier, *PlayerState)) {
+	for _, ri := range z.rooms {
+		ri.ForEachPlayer(fn)
+	}
+}
+
 // IsOccupied returns true if any players are in any room of this zone.
 func (z *ZoneInstance) IsOccupied() bool {
 	for _, ri := range z.rooms {

@@ -5,7 +5,7 @@
         "handler": "move",
         "category": "movement",
         "description": "Move northwest.",
-        "priority": 10,
+        "priority": 9,
         "aliases": ["nw"],
         "config": {
             "direction": "northwest"

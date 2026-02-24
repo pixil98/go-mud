@@ -6,7 +6,8 @@
         "category": "communication",
         "description": "Broadcast a message to all online players.",
         "config": {
-            "recipient_channel": "world",
+            "scope": "world",
+            "sender_message": "{{ .Color.Yellow }}You gossip, \"{{ .Inputs.text }}\"{{ .Color.Reset }}",
             "recipient_message": "{{ .Color.Yellow }}{{ .Actor.Name }} gossips, \"{{ .Inputs.text }}\"{{ .Color.Reset }}"
         },
         "inputs": [

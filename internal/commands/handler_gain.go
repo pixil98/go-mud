@@ -9,10 +9,10 @@ import (
 
 // GainHandlerFactory creates handlers for the gain (level up) command.
 type GainHandlerFactory struct {
-	pub Publisher
+	pub game.Publisher
 }
 
-func NewGainHandlerFactory(pub Publisher) *GainHandlerFactory {
+func NewGainHandlerFactory(pub game.Publisher) *GainHandlerFactory {
 	return &GainHandlerFactory{pub: pub}
 }
 
@@ -48,7 +48,7 @@ func (f *GainHandlerFactory) Create() (CommandFunc, error) {
 		msg := fmt.Sprintf("Congratulations! You have advanced to level %d!", char.Level)
 
 		if f.pub != nil {
-			return f.pub.PublishToPlayer(cmdCtx.Session.CharId, []byte(msg))
+			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.CharId), nil, []byte(msg))
 		}
 		return nil
 	}, nil

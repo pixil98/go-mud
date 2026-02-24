@@ -73,27 +73,13 @@ type compiledCommand struct {
 	cmdFunc CommandFunc
 }
 
-// Publisher provides typed methods for publishing messages to game channels.
-// TODO no one seems to use these methods
-type Publisher interface {
-	game.Publisher
-	// PublishToZone sends a message to all subscribers in a zone.
-	PublishToZone(zoneId storage.Identifier, data []byte) error
-	// PublishToWorld sends a message to all subscribers on the world channel.
-	PublishToWorld(data []byte) error
-	// Publish sends a message to an arbitrary subject.
-	// TODO: Evaluate whether this can be replaced with typed methods now that
-	// plugins won't define custom channels.
-	Publish(subject string, data []byte) error
-}
-
 type Handler struct {
 	factories map[string]HandlerFactory
 	compiled  map[storage.Identifier]*compiledCommand
 	dict      *game.Dictionary
 }
 
-func NewHandler(cmds storage.Storer[*Command], dict *game.Dictionary, publisher Publisher, world *game.WorldState, combat *combat.Manager) (*Handler, error) {
+func NewHandler(cmds storage.Storer[*Command], dict *game.Dictionary, publisher game.Publisher, world *game.WorldState, combat *combat.Manager) (*Handler, error) {
 	h := &Handler{
 		factories: make(map[string]HandlerFactory),
 		compiled:  make(map[storage.Identifier]*compiledCommand),

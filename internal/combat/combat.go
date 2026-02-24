@@ -8,6 +8,8 @@ import (
 	"sync"
 
 	"github.com/pixil98/go-mud/internal/display"
+	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // Side identifies which team a combatant is on.
@@ -37,12 +39,6 @@ type Combatant interface {
 	ApplyDamage(int)
 	SetInCombat(bool)
 	Level() int
-}
-
-// MessagePublisher sends combat messages.
-type MessagePublisher interface {
-	SendToRoom(zoneID, roomID string, msg string)
-	SendToPlayer(id string, msg string)
 }
 
 // DeathContext provides fight information to the event handler when a combatant dies.
@@ -104,16 +100,18 @@ func (s fightSide) opposite() fightSide {
 // Manager tracks all active fights and processes combat rounds.
 type Manager struct {
 	mu         sync.Mutex
-	pub        MessagePublisher
+	pub        game.Publisher
+	world      *game.WorldState
 	handler    EventHandler
 	combatants map[string]*Fight              // combatant ID -> their fight
 	fights     map[string]map[string][]*Fight // zone -> room -> fights
 }
 
 // NewManager creates a new combat Manager.
-func NewManager(pub MessagePublisher, handler EventHandler) *Manager {
+func NewManager(pub game.Publisher, world *game.WorldState, handler EventHandler) *Manager {
 	return &Manager{
 		pub:        pub,
+		world:      world,
 		handler:    handler,
 		combatants: make(map[string]*Fight),
 		fights:     make(map[string]map[string][]*Fight),
@@ -185,7 +183,10 @@ func (m *Manager) Tick(ctx context.Context) error {
 				deathMsgs := m.processFightDeaths(fight)
 				msgs = append(msgs, deathMsgs...)
 				if len(msgs) > 0 {
-					m.pub.SendToRoom(fight.ZoneID, fight.RoomID, strings.Join(msgs, "\n"))
+					ri := m.world.Instances()[storage.Identifier(fight.ZoneID)].GetRoom(storage.Identifier(fight.RoomID))
+					if err := m.pub.Publish(ri, nil, []byte(strings.Join(msgs, "\n"))); err != nil {
+						return fmt.Errorf("publishing combat messages: %w", err)
+					}
 				}
 			}
 		}

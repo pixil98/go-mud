@@ -6,7 +6,8 @@
         "category": "communication",
         "description": "Say something to everyone in the room.",
         "config": {
-            "recipient_channel": "zone-{{ .Session.ZoneId }}-room-{{ .Session.RoomId }}",
+            "scope": "room",
+            "sender_message": "You say, \"{{ .Inputs.text }}\"",
             "recipient_message": "{{ .Actor.Name }} says, \"{{ .Inputs.text }}\""
         },
         "inputs": [

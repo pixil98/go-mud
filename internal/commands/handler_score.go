@@ -12,10 +12,10 @@ const scoreBoxWidth = 40
 
 // ScoreHandlerFactory creates handlers that display character/mobile stats.
 type ScoreHandlerFactory struct {
-	pub Publisher
+	pub game.Publisher
 }
 
-func NewScoreHandlerFactory(pub Publisher) *ScoreHandlerFactory {
+func NewScoreHandlerFactory(pub game.Publisher) *ScoreHandlerFactory {
 	return &ScoreHandlerFactory{pub: pub}
 }
 
@@ -40,7 +40,7 @@ func (f *ScoreHandlerFactory) Create() (CommandFunc, error) {
 
 		output := renderBox(sections, scoreBoxWidth)
 		if f.pub != nil {
-			return f.pub.PublishToPlayer(cmdCtx.Session.CharId, []byte(output))
+			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.CharId), nil, []byte(output))
 		}
 		return nil
 	}, nil

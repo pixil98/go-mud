@@ -8,7 +8,8 @@
         "priority": 5,
         "config": {
             "destination": "inventory",
-            "message": "{{ if .Targets.destination }}{{ .Actor.Name }} gets {{ .Targets.item.Obj.Name }} from {{ .Targets.destination.Name }}.{{ else }}{{ .Actor.Name }} picks up {{ .Targets.item.Obj.Name }}.{{ end }}"
+            "self_message": "{{ if .Targets.destination }}You get {{ .Targets.item.Obj.Name }} from {{ .Targets.destination.Name }}.{{ else }}You pick up {{ .Targets.item.Obj.Name }}.{{ end }}",
+            "room_message": "{{ if .Targets.destination }}{{ .Actor.Name }} gets {{ .Targets.item.Obj.Name }} from {{ .Targets.destination.Name }}.{{ else }}{{ .Actor.Name }} picks up {{ .Targets.item.Obj.Name }}.{{ end }}"
         },
         "targets": [
             {"name": "destination", "type": ["object"], "scope": ["room"], "input": "from", "optional": true},

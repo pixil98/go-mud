@@ -10,10 +10,10 @@ import (
 
 // EquipmentHandlerFactory creates handlers that list the player's equipped items.
 type EquipmentHandlerFactory struct {
-	pub Publisher
+	pub game.Publisher
 }
 
-func NewEquipmentHandlerFactory(pub Publisher) *EquipmentHandlerFactory {
+func NewEquipmentHandlerFactory(pub game.Publisher) *EquipmentHandlerFactory {
 	return &EquipmentHandlerFactory{pub: pub}
 }
 
@@ -40,7 +40,7 @@ func (f *EquipmentHandlerFactory) Create() (CommandFunc, error) {
 
 		output := strings.Join(lines, "\n")
 		if f.pub != nil {
-			return f.pub.PublishToPlayer(cmdCtx.Session.CharId, []byte(output))
+			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.CharId), nil, []byte(output))
 		}
 
 		return nil

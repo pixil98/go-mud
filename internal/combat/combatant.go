@@ -1,35 +1,35 @@
-package game
+package combat
 
 import (
 	"fmt"
 
-	"github.com/pixil98/go-mud/internal/combat"
+	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // PlayerCombatant adapts a PlayerState for the combat system.
 type PlayerCombatant struct {
 	CharId    storage.Identifier
-	Player    *PlayerState
-	Character *Character
+	Player    *game.PlayerState
+	Character *game.Character
 }
 
-func (c *PlayerCombatant) CombatID() string       { return fmt.Sprintf("player:%s", c.CharId) }
-func (c *PlayerCombatant) CombatName() string      { return c.Character.Name }
-func (c *PlayerCombatant) CombatSide() combat.Side { return combat.SidePlayer }
-func (c *PlayerCombatant) IsAlive() bool           { return c.Character.CurrentHP > 0 }
+func (c *PlayerCombatant) CombatID() string   { return fmt.Sprintf("player:%s", c.CharId) }
+func (c *PlayerCombatant) CombatName() string { return c.Character.Name }
+func (c *PlayerCombatant) CombatSide() Side   { return SidePlayer }
+func (c *PlayerCombatant) IsAlive() bool      { return c.Character.CurrentHP > 0 }
 
 func (c *PlayerCombatant) AC() int {
 	stats := c.Character.EffectiveStats()
-	return 10 + stats[StatDEX].Mod() + c.Character.Equipment.ACBonus()
+	return 10 + stats[game.StatDEX].Mod() + c.Character.Equipment.ACBonus()
 }
 
-func (c *PlayerCombatant) Attacks() []combat.Attack {
+func (c *PlayerCombatant) Attacks() []Attack {
 	stats := c.Character.EffectiveStats()
-	strMod := stats[StatSTR].Mod()
+	strMod := stats[game.StatSTR].Mod()
 	attackMod := strMod + c.Character.Level/2
 
-	var attacks []combat.Attack
+	var attacks []Attack
 	for _, slot := range c.Character.Equipment.Objs {
 		if slot.Slot != "wield" || slot.Obj == nil {
 			continue
@@ -42,7 +42,7 @@ func (c *PlayerCombatant) Attacks() []combat.Attack {
 		if sides == 0 {
 			sides = 4
 		}
-		attacks = append(attacks, combat.Attack{
+		attacks = append(attacks, Attack{
 			Mod:         attackMod,
 			DamageDice:  dice,
 			DamageSides: sides,
@@ -52,7 +52,7 @@ func (c *PlayerCombatant) Attacks() []combat.Attack {
 
 	// Unarmed fallback
 	if len(attacks) == 0 {
-		attacks = append(attacks, combat.Attack{
+		attacks = append(attacks, Attack{
 			Mod:         attackMod,
 			DamageDice:  1,
 			DamageSides: 4,
@@ -77,19 +77,19 @@ func (c *PlayerCombatant) Level() int { return c.Character.Level }
 
 // MobCombatant adapts a MobileInstance for the combat system.
 type MobCombatant struct {
-	Instance *MobileInstance
+	Instance *game.MobileInstance
 }
 
-func (c *MobCombatant) CombatID() string       { return fmt.Sprintf("mob:%s", c.Instance.InstanceId) }
-func (c *MobCombatant) CombatName() string      { return c.Instance.Mobile.Get().ShortDesc }
-func (c *MobCombatant) CombatSide() combat.Side { return combat.SideMob }
-func (c *MobCombatant) IsAlive() bool           { return c.Instance.CurrentHP > 0 }
+func (c *MobCombatant) CombatID() string   { return fmt.Sprintf("mob:%s", c.Instance.InstanceId) }
+func (c *MobCombatant) CombatName() string { return c.Instance.Mobile.Get().ShortDesc }
+func (c *MobCombatant) CombatSide() Side   { return SideMob }
+func (c *MobCombatant) IsAlive() bool      { return c.Instance.CurrentHP > 0 }
 
 func (c *MobCombatant) AC() int { return c.Instance.Mobile.Get().AC }
 
-func (c *MobCombatant) Attacks() []combat.Attack {
+func (c *MobCombatant) Attacks() []Attack {
 	def := c.Instance.Mobile.Get()
-	return []combat.Attack{{
+	return []Attack{{
 		Mod:         def.AttackMod,
 		DamageDice:  def.DamageDice,
 		DamageSides: def.DamageSides,

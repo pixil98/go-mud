@@ -57,10 +57,9 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	// Create combat manager
 	defaultZone := cfg.PlayerManager.DefaultZone
 	defaultRoom := cfg.PlayerManager.DefaultRoom
-	combatPub := game.NewCombatMessagePublisher(publisher)
-	combatEvents := game.NewCombatEventHandler(world, publisher,
+	combatEvents := combat.NewCombatEventHandler(world, publisher,
 		storage.Identifier(defaultZone), storage.Identifier(defaultRoom))
-	combatManager := combat.NewManager(combatPub, combatEvents)
+	combatManager := combat.NewManager(publisher, world, combatEvents)
 
 	// Create command handler and compile all commands
 	cmdHandler, err := commands.NewHandler(storeCmds, dict, publisher, world, combatManager)

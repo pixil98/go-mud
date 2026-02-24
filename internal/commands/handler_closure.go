@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // ClosureHandlerFactory creates handlers for open/close/lock/unlock commands.
@@ -16,10 +17,10 @@ import (
 //   - target (required): an exit or container object resolved by the command system
 type ClosureHandlerFactory struct {
 	world *game.WorldState
-	pub   Publisher
+	pub   game.Publisher
 }
 
-func NewClosureHandlerFactory(world *game.WorldState, pub Publisher) *ClosureHandlerFactory {
+func NewClosureHandlerFactory(world *game.WorldState, pub game.Publisher) *ClosureHandlerFactory {
 	return &ClosureHandlerFactory{world: world, pub: pub}
 }
 
@@ -210,8 +211,10 @@ func (f *ClosureHandlerFactory) publish(cmdCtx *CommandContext, selfMsg, roomMsg
 	if f.pub == nil {
 		return nil
 	}
-	if err := f.pub.PublishToPlayer(cmdCtx.Session.CharId, []byte(selfMsg)); err != nil {
+	if err := f.pub.Publish(game.SinglePlayer(cmdCtx.Session.CharId), nil, []byte(selfMsg)); err != nil {
 		return err
 	}
-	return f.pub.PublishToRoom(cmdCtx.Session.ZoneId, cmdCtx.Session.RoomId, []byte(roomMsg))
+	zoneId, roomId := cmdCtx.Session.Location()
+	room := cmdCtx.World.Instances()[zoneId].GetRoom(roomId)
+	return f.pub.Publish(room, []storage.Identifier{cmdCtx.Session.CharId}, []byte(roomMsg))
 }

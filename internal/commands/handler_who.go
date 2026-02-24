@@ -13,11 +13,11 @@ import (
 // WhoHandlerFactory creates handlers that list online players.
 type WhoHandlerFactory struct {
 	world *game.WorldState
-	pub   Publisher
+	pub   game.Publisher
 }
 
 // NewWhoHandlerFactory creates a new WhoHandlerFactory.
-func NewWhoHandlerFactory(world *game.WorldState, pub Publisher) *WhoHandlerFactory {
+func NewWhoHandlerFactory(world *game.WorldState, pub game.Publisher) *WhoHandlerFactory {
 	return &WhoHandlerFactory{world: world, pub: pub}
 }
 
@@ -33,7 +33,7 @@ func (f *WhoHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, cmdCtx *CommandContext) error {
 		var lines []string
 
-		f.world.ForEachPlayer(func(charId storage.Identifier, state game.PlayerState) {
+		f.world.ForEachPlayer(func(charId storage.Identifier, state *game.PlayerState) {
 			if state.Linkless {
 				return
 			}
@@ -46,7 +46,7 @@ func (f *WhoHandlerFactory) Create() (CommandFunc, error) {
 
 		output := "Players Online:\n" + strings.Join(lines, "\n")
 		if f.pub != nil {
-			return f.pub.PublishToPlayer(cmdCtx.Session.CharId, []byte(output))
+			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.CharId), nil, []byte(output))
 		}
 
 		return nil

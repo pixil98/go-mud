@@ -418,6 +418,15 @@ func (ri *RoomInstance) RemoveMob(instanceId string) *MobileInstance {
 	return nil
 }
 
+// ForEachPlayer calls fn for each player in the room while holding the lock.
+func (ri *RoomInstance) ForEachPlayer(fn func(storage.Identifier, *PlayerState)) {
+	ri.mu.Lock()
+	defer ri.mu.Unlock()
+	for id, ps := range ri.players {
+		fn(id, ps)
+	}
+}
+
 // PlayerCount returns the number of players in the room.
 func (ri *RoomInstance) PlayerCount() int {
 	ri.mu.RLock()
