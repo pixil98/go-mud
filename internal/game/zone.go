@@ -167,3 +167,6 @@ func (z *ZoneInstance) FindObj(name string) *ObjectInstance {
 	}
 	return nil
 }
+
+// FindExit always returns ("", nil) — exits are only meaningful in room scope.
+func (z *ZoneInstance) FindExit(string) (string, *Exit) { return "", nil }

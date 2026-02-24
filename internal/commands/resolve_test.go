@@ -15,6 +15,7 @@ type mockFinder struct {
 	players map[string]*game.PlayerState
 	mobs    map[string]*game.MobileInstance
 	objects map[string]*game.ObjectInstance
+	exits   map[string]game.Exit
 }
 
 func (f *mockFinder) FindPlayer(name string) *game.PlayerState {
@@ -42,6 +43,14 @@ func (f *mockFinder) FindObj(name string) *game.ObjectInstance {
 		}
 	}
 	return nil
+}
+
+func (f *mockFinder) FindExit(name string) (string, *game.Exit) {
+	name = strings.ToLower(name)
+	if exit, ok := f.exits[name]; ok {
+		return name, &exit
+	}
+	return "", nil
 }
 
 // mockRemover tracks removed instance IDs.
@@ -345,6 +354,84 @@ func TestFindTarget_Combined(t *testing.T) {
 			}
 			if result.Type != tt.expType {
 				t.Errorf("Type = %q, expected %q", result.Type, tt.expType)
+			}
+		})
+	}
+}
+
+func TestFindTarget_Exit(t *testing.T) {
+	tests := map[string]struct {
+		spaces       []SearchSpace
+		name         string
+		expDirection string
+		expErr       string
+	}{
+		"finds exit": {
+			spaces: []SearchSpace{{Finder: &mockFinder{
+				exits: map[string]game.Exit{"north": {}},
+			}}},
+			name:         "north",
+			expDirection: "north",
+		},
+		"case insensitive": {
+			spaces: []SearchSpace{{Finder: &mockFinder{
+				exits: map[string]game.Exit{"north": {}},
+			}}},
+			name:         "NORTH",
+			expDirection: "north",
+		},
+		"not found": {
+			spaces: []SearchSpace{{Finder: &mockFinder{}}},
+			name:   "north",
+			expErr: `Exit "north" not found.`,
+		},
+		"prefers object over exit": {
+			spaces: []SearchSpace{{Finder: &mockFinder{
+				objects: map[string]*game.ObjectInstance{
+					"door-1": {InstanceId: "door-1", Object: storage.NewResolvedSmartIdentifier("door", &game.Object{Aliases: []string{"north"}, ShortDesc: "a door"})},
+				},
+				exits: map[string]game.Exit{"north": {}},
+			}}},
+			name:    "north",
+			expDirection: "",
+		},
+	}
+
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			targetType := TargetTypeExit
+			if tt.expDirection == "" && tt.expErr == "" {
+				// "prefers object over exit" case
+				targetType = TargetTypeObject | TargetTypeExit
+			}
+			result, err := FindTarget(tt.name, targetType, tt.spaces)
+
+			if tt.expErr != "" {
+				if err == nil {
+					t.Fatalf("expected error %q, got nil", tt.expErr)
+				}
+				if !strings.Contains(err.Error(), tt.expErr) {
+					t.Errorf("error %q does not contain %q", err.Error(), tt.expErr)
+				}
+				return
+			}
+
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+
+			if tt.expDirection != "" {
+				if result.Type != TargetTypeExit {
+					t.Errorf("Type = %q, expected %q", result.Type.String(), TargetTypeExit.String())
+				}
+				if result.Exit.Direction != tt.expDirection {
+					t.Errorf("Direction = %q, expected %q", result.Exit.Direction, tt.expDirection)
+				}
+			} else {
+				// "prefers object over exit" — should resolve as object
+				if result.Type != TargetTypeObject {
+					t.Errorf("Type = %q, expected %q", result.Type.String(), TargetTypeObject.String())
+				}
 			}
 		})
 	}

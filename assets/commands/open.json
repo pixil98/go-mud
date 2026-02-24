@@ -6,9 +6,17 @@
         "category": "interaction",
         "description": "Open a door or container.",
         "config": {
-            "action": "open",
-            "target": "{{ .Inputs.target }}"
+            "action": "open"
         },
+        "targets": [
+            {
+                "name": "target",
+                "type": ["object", "exit"],
+                "scope": ["inventory", "room"],
+                "input": "target",
+                "not_found": "You don't see '{{ .Inputs.target }}' to open."
+            }
+        ],
         "inputs": [
             {"name": "target", "type": "string", "required": true, "missing": "Open what?"}
         ]

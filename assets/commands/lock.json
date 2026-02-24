@@ -6,9 +6,17 @@
         "category": "interaction",
         "description": "Lock a door or container.",
         "config": {
-            "action": "lock",
-            "target": "{{ .Inputs.target }}"
+            "action": "lock"
         },
+        "targets": [
+            {
+                "name": "target",
+                "type": ["object", "exit"],
+                "scope": ["inventory", "room"],
+                "input": "target",
+                "not_found": "You don't see '{{ .Inputs.target }}' to lock."
+            }
+        ],
         "inputs": [
             {"name": "target", "type": "string", "required": true, "missing": "Lock what?"}
         ]

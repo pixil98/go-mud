@@ -23,12 +23,17 @@ type MobileFinder interface {
 	FindMob(string) *game.MobileInstance
 }
 
+type ExitFinder interface {
+	FindExit(string) (string, *game.Exit)
+}
+
 // TargetFinder combines all finder interfaces.
 // RoomInstance and ZoneInstance satisfy this.
 type TargetFinder interface {
 	PlayerFinder
 	ObjectFinder
 	MobileFinder
+	ExitFinder
 }
 
 // --- Source interfaces ---
@@ -153,12 +158,26 @@ func (r *ObjectRef) Describe() string {
 	return strings.Join(lines, "\n")
 }
 
-// TargetRef is a polymorphic target reference that could be a player, mobile, or object.
+// ExitRef is the template-facing view of a resolved exit.
+type ExitRef struct {
+	Direction string     // Direction key (e.g., "north", "south")
+	exit      *game.Exit // The exit definition
+}
+
+func exitRefFrom(direction string, exit *game.Exit) *ExitRef {
+	return &ExitRef{
+		Direction: direction,
+		exit:      exit,
+	}
+}
+
+// TargetRef is a polymorphic target reference that could be a player, mobile, object, or exit.
 type TargetRef struct {
-	Type   TargetType // "player", "mobile", or "object"
+	Type   TargetType // "player", "mobile", "object", or "exit"
 	Player *PlayerRef // Non-nil if Type == "player"
 	Mob    *MobileRef // Non-nil if Type == "mobile"
 	Obj    *ObjectRef // Non-nil if Type == "object"
+	Exit   *ExitRef   // Non-nil if Type == "exit"
 }
 
 // Name returns the display name of the target regardless of type.
@@ -170,6 +189,8 @@ func (r *TargetRef) Name() string {
 		return r.Mob.Name
 	case r.Obj != nil:
 		return r.Obj.Name
+	case r.Exit != nil:
+		return r.Exit.Direction
 	default:
 		return ""
 	}
@@ -185,8 +206,8 @@ type SearchSpace struct {
 }
 
 // FindTarget searches spaces in order for the first matching target.
-// It checks player, then mobile, then object within each space, filtering
-// by the allowed target types. Returns the first match.
+// It checks player, then mobile, then object, then exit within each space,
+// filtering by the allowed target types. Returns the first match.
 func FindTarget(name string, tt TargetType, spaces []SearchSpace) (*TargetRef, error) {
 	for _, sp := range spaces {
 		if tt&TargetTypePlayer != 0 {
@@ -210,6 +231,14 @@ func FindTarget(name string, tt TargetType, spaces []SearchSpace) (*TargetRef, e
 				return &TargetRef{
 					Type: TargetTypeObject,
 					Obj:  objRefFromInstance(oi, sp.Remover),
+				}, nil
+			}
+		}
+		if tt&TargetTypeExit != 0 {
+			if dir, exit := sp.Finder.FindExit(name); exit != nil {
+				return &TargetRef{
+					Type: TargetTypeExit,
+					Exit: exitRefFrom(dir, exit),
 				}, nil
 			}
 		}

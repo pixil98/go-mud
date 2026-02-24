@@ -132,6 +132,22 @@ func TestCommand_Validate(t *testing.T) {
 			},
 			expErr: "",
 		},
+		"valid exit target": {
+			cmd: Command{
+				Handler: "test",
+				Targets: []TargetSpec{{Name: "target", Types: []string{"exit"}, Scopes: []string{"room"}, Input: "direction"}},
+				Inputs:  []InputSpec{{Name: "direction", Type: InputTypeString}},
+			},
+			expErr: "",
+		},
+		"valid combined object and exit target": {
+			cmd: Command{
+				Handler: "test",
+				Targets: []TargetSpec{{Name: "target", Types: []string{"object", "exit"}, Scopes: []string{"room"}, Input: "target"}},
+				Inputs:  []InputSpec{{Name: "target", Type: InputTypeString}},
+			},
+			expErr: "",
+		},
 		"valid scope_target": {
 			cmd: Command{
 				Handler: "test",
@@ -280,6 +296,7 @@ func TestTargetType_Label(t *testing.T) {
 		"player":   {TargetTypePlayer, "Player"},
 		"mobile":   {TargetTypeMobile, "Mobile"},
 		"object":   {TargetTypeObject, "Object"},
+		"exit":     {TargetTypeExit, "Exit"},
 		"combined": {TargetTypePlayer | TargetTypeMobile, "Target"},
 	}
 
@@ -300,6 +317,7 @@ func TestTargetType_String(t *testing.T) {
 		"player":   {TargetTypePlayer, "player"},
 		"mobile":   {TargetTypeMobile, "mobile"},
 		"object":   {TargetTypeObject, "object"},
+		"exit":     {TargetTypeExit, "exit"},
 		"combined": {TargetTypePlayer | TargetTypeMobile, "target"},
 	}
 

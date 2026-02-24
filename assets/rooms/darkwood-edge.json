@@ -10,7 +10,7 @@
                 "zone_id": "millbrook",
                 "room_id": "millbrook-tavern",
                 "closure": {
-                    "name": "back door",
+                    "name": "door",
                     "closed": true,
                     "lock": {
                         "key_id": "millbrook-tavern-key",

@@ -2,6 +2,7 @@ package game
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/pixil98/go-errors"
 	"github.com/pixil98/go-mud/internal/storage"
@@ -13,7 +14,6 @@ import (
 // where it falls back to the object's ShortDesc.
 type Closure struct {
 	// Name is the display label for the barrier (e.g., "door", "gate", "lid").
-	// Required on exits; optional on containers.
 	Name string `json:"name,omitempty"`
 
 	// Closed is whether the barrier starts closed. Default: open (false).
@@ -26,6 +26,9 @@ type Closure struct {
 // Validate checks that any lock is valid and consistent with the closure state.
 func (c *Closure) Validate() error {
 	el := errors.NewErrorList()
+	if c.Name != "" && strings.Contains(c.Name, " ") {
+		el.Add(fmt.Errorf("closure name %q must be a single word", c.Name))
+	}
 	if c.Lock != nil {
 		el.Add(c.Lock.Validate())
 		if c.Lock.Locked && !c.Closed {

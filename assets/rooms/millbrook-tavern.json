@@ -11,7 +11,7 @@
                 "zone_id": "darkwood",
                 "room_id": "darkwood-edge",
                 "closure": {
-                    "name": "back door",
+                    "name": "door",
                     "closed": true,
                     "lock": {
                         "key_id": "millbrook-tavern-key",
@@ -21,7 +21,8 @@
             }
         },
         "object_spawns": [
-            {"object_id": "millbrook-chest", "contents": [{"object_id": "millbrook-torch"}]}
+            {"object_id": "millbrook-chest", "contents": [{"object_id": "millbrook-torch"}]},
+            {"object_id": "millbrook-tavern-key"}
         ]
     }
 }

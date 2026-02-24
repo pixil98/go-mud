@@ -15,7 +15,7 @@ import (
 
 // Exit defines a destination for movement from a room.
 type Exit struct {
-	Zone    storage.SmartIdentifier[*Zone] `json:"zone_id"`          // Optional; defaults to current zone
+	Zone    storage.SmartIdentifier[*Zone] `json:"zone_id"` // Optional; defaults to current zone
 	Room    storage.SmartIdentifier[*Room] `json:"room_id"`
 	Closure *Closure                       `json:"closure,omitempty"` // Optional open/close/lock barrier
 }
@@ -167,10 +167,11 @@ func (ri *RoomInstance) ExitClosure(direction string) *Closure {
 // Reset clears all mobs and objects and respawns them from the room definition.
 // Players are preserved. Exit closure state is restored to definition defaults.
 func (ri *RoomInstance) Reset() error {
+	ri.initExitClosures()
+
 	def := ri.Room.Get()
 	ri.mu.Lock()
 	ri.mobiles = make(map[string]*MobileInstance)
-	ri.initExitClosures()
 	for _, mob := range def.MobSpawns {
 		ri.spawnMob(mob)
 	}
@@ -185,6 +186,23 @@ func (ri *RoomInstance) Reset() error {
 		ri.AddObj(oi)
 	}
 	return nil
+}
+
+// FindExit looks up an exit by direction key or closure name (case-insensitive).
+// Returns the direction key and a pointer to the exit, or ("", nil) if not found.
+func (ri *RoomInstance) FindExit(name string) (string, *Exit) {
+	name = strings.ToLower(name)
+	// Match by direction key first
+	if exit, ok := ri.Room.Get().Exits[name]; ok {
+		return name, &exit
+	}
+	// Fall back to matching by closure name
+	for dir, exit := range ri.Room.Get().Exits {
+		if exit.Closure != nil && strings.EqualFold(exit.Closure.Name, name) {
+			return dir, &exit
+		}
+	}
+	return "", nil
 }
 
 // FindMob searches room mobs for one whose definition matches the given name.
