@@ -4,7 +4,7 @@
     "spec": {
         "name": "Elf",
         "abbreviation": "El",
-        "stats": {
+        "stat_mods": {
             "dex": 2,
             "con": -2
         },

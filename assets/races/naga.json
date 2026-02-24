@@ -4,7 +4,7 @@
     "spec": {
         "name": "Naga",
         "abbreviation": "Na",
-        "stats": {
+        "stat_mods": {
             "str": 2,
             "dex": -2
         },

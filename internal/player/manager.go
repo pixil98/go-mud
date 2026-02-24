@@ -256,6 +256,10 @@ func (m *PlayerManager) initCharacter(rw io.ReadWriter, char *game.Character) er
 		char.Level = 1
 	}
 
+	if char.BaseStats == nil {
+		char.BaseStats = game.DefaultBaseStats()
+	}
+
 	return nil
 }
 

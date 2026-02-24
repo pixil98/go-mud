@@ -156,6 +156,25 @@ func (w *WorldState) Tick(ctx context.Context) error {
 			return err
 		}
 	}
+
+	// Regenerate out-of-combat entities.
+	w.ForEachPlayer(func(_ storage.Identifier, ps PlayerState) {
+		if !ps.InCombat && ps.Character.CurrentHP < ps.Character.MaxHP {
+			ps.Character.Regenerate(1)
+		}
+	})
+	for _, zi := range w.instances {
+		for _, ri := range zi.rooms {
+			ri.mu.RLock()
+			for _, mi := range ri.mobiles {
+				if !mi.InCombat && mi.CurrentHP < mi.MaxHP {
+					mi.Regenerate(1)
+				}
+			}
+			ri.mu.RUnlock()
+		}
+	}
+
 	return nil
 }
 

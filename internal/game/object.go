@@ -62,6 +62,13 @@ type Object struct {
 
 	// Closure defines open/close/lock behavior. Only meaningful when the "container" flag is set.
 	Closure *Closure `json:"closure,omitempty"`
+
+	// Combat stats for equipment
+	ACBonus     int             `json:"ac_bonus,omitempty"`
+	DamageDice  int             `json:"damage_dice,omitempty"`
+	DamageSides int             `json:"damage_sides,omitempty"`
+	DamageMod   int             `json:"damage_mod,omitempty"`
+	StatMods    map[StatKey]int `json:"stat_mods,omitempty"`
 }
 
 // MatchName returns true if name matches any of this object's aliases (case-insensitive).
@@ -128,8 +135,8 @@ type ObjectInstance struct {
 	InstanceId string                           `json:"-"` // Unique ID
 	Object     storage.SmartIdentifier[*Object] `json:"object_id"`
 	Contents   *Inventory                       `json:"contents,omitempty"` // Non-nil for containers; holds objects stored inside
-	Closed     bool                             `json:"closed,omitempty"`  // Runtime open/closed state for containers with a Closure
-	Locked     bool                             `json:"locked,omitempty"`  // Runtime lock state for containers with a Lock
+	Closed     bool                             `json:"closed,omitempty"`   // Runtime open/closed state for containers with a Closure
+	Locked     bool                             `json:"locked,omitempty"`   // Runtime lock state for containers with a Lock
 }
 
 func (oi *ObjectInstance) UnmarshalJSON(b []byte) error {

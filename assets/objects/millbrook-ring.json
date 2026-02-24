@@ -3,10 +3,11 @@
     "id": "millbrook-ring",
     "spec": {
         "aliases": ["ring", "silver"],
-        "short_desc": "a tarnished silver ring",
-        "long_desc": "A tarnished silver ring glints faintly on the ground.",
-        "detailed_desc": "A simple band of silver, darkened with age. Faint engravings circle the outer surface, though the markings have been worn too smooth to read.",
+        "short_desc": "a silver ring of might",
+        "long_desc": "A silver ring pulses faintly with inner warmth on the ground.",
+        "detailed_desc": "A polished silver band inscribed with runes of strength. It feels warm to the touch, and your grip tightens involuntarily when you hold it.",
         "flags": ["wearable"],
-        "wear_slots": ["finger"]
+        "wear_slots": ["finger"],
+        "stat_mods": {"str": 2}
     }
 }

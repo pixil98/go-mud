@@ -18,6 +18,14 @@ const (
 	SideMob
 )
 
+// Attack describes a single attack a combatant can make per round.
+type Attack struct {
+	Mod         int // added to d20 roll
+	DamageDice  int // number of dice
+	DamageSides int // sides per die
+	DamageMod   int // added to damage roll
+}
+
 // Combatant is anything that can participate in combat.
 type Combatant interface {
 	CombatID() string
@@ -25,10 +33,7 @@ type Combatant interface {
 	CombatSide() Side
 	IsAlive() bool
 	AC() int
-	AttackMod() int
-	DamageDice() int
-	DamageSides() int
-	DamageMod() int
+	Attacks() []Attack
 	ApplyDamage(int)
 	SetInCombat(bool)
 }
@@ -58,6 +63,21 @@ type Fight struct {
 	SideB  []*Fighter
 }
 
+// fightSide identifies one of the two sides in a fight.
+type fightSide int
+
+const (
+	sideA fightSide = iota
+	sideB
+)
+
+func (s fightSide) opposite() fightSide {
+	if s == sideA {
+		return sideB
+	}
+	return sideA
+}
+
 // Manager tracks all active fights and processes combat rounds.
 type Manager struct {
 	mu         sync.Mutex
@@ -85,10 +105,10 @@ func (m *Manager) GetFighter(id string) *Fighter {
 	if !ok {
 		return nil
 	}
-	if f := findFighter(fight.SideA, id); f != nil {
+	if f := fight.findFighter(sideA, id); f != nil {
 		return f
 	}
-	return findFighter(fight.SideB, id)
+	return fight.findFighter(sideB, id)
 }
 
 // StartCombat begins combat between attacker and target in the given room.
@@ -107,11 +127,8 @@ func (m *Manager) StartCombat(attacker, target Combatant, zoneID, roomID string)
 	targetID := target.CombatID()
 	if fight, exists := m.combatants[targetID]; exists {
 		// Join the opposite side of the target's existing fight.
-		if isOnSideA(fight, targetID) {
-			fight.SideB = append(fight.SideB, af)
-		} else {
-			fight.SideA = append(fight.SideA, af)
-		}
+		joinSide := fight.sideOf(targetID).opposite()
+		*fight.side(joinSide) = append(*fight.side(joinSide), af)
 		m.combatants[attackerID] = fight
 	} else {
 		// Create a new fight.
@@ -140,7 +157,7 @@ func (m *Manager) Tick(ctx context.Context) error {
 	for _, rooms := range m.fights {
 		for _, fights := range rooms {
 			for _, fight := range fights {
-				msgs := m.processFight(fight)
+				msgs := fight.Process()
 				deathMsgs := m.processFightDeaths(fight)
 				msgs = append(msgs, deathMsgs...)
 				if len(msgs) > 0 {
@@ -154,59 +171,59 @@ func (m *Manager) Tick(ctx context.Context) error {
 	return nil
 }
 
-func (m *Manager) processFight(fight *Fight) []string {
+// Process runs one round of combat for this fight, returning combat messages.
+func (f *Fight) Process() []string {
 	var msgs []string
-	for _, f := range fight.SideA {
-		if msg := m.processAttack(f, fight); msg != "" {
-			msgs = append(msgs, msg)
-		}
+	for _, fighter := range f.SideA {
+		msgs = append(msgs, f.processAttacks(fighter)...)
 	}
-	for _, f := range fight.SideB {
-		if msg := m.processAttack(f, fight); msg != "" {
-			msgs = append(msgs, msg)
-		}
+	for _, fighter := range f.SideB {
+		msgs = append(msgs, f.processAttacks(fighter)...)
 	}
 	return msgs
 }
 
-func (m *Manager) processAttack(fighter *Fighter, fight *Fight) string {
+func (f *Fight) processAttacks(fighter *Fighter) []string {
 	if !fighter.Combatant.IsAlive() {
-		return ""
+		return nil
 	}
 
 	if fighter.Target == nil || !fighter.Target.IsAlive() {
-		fighter.Target = m.pickTarget(fighter, fight)
+		fighter.Target = f.pickTarget(fighter)
 		if fighter.Target == nil {
-			return ""
+			return nil
 		}
 	}
 
 	slog.Debug("performing attack",
-		"zone", fight.ZoneID, "room", fight.RoomID,
+		"zone", f.ZoneID, "room", f.RoomID,
 		"name", fighter.Combatant.CombatName())
 
 	attacker := fighter.Combatant
 	target := fighter.Target
-
-	attackRoll := RollAttack(attacker.AttackMod())
 	targetAC := target.AC()
 
-	var damage int
-	if attackRoll >= targetAC {
-		damage = RollDamage(attacker.DamageDice(), attacker.DamageSides(), attacker.DamageMod())
-		target.ApplyDamage(damage)
-	}
+	var msgs []string
+	for _, atk := range attacker.Attacks() {
+		if !target.IsAlive() {
+			break
+		}
 
-	verb := DamageVerb(damage)
-	return fmt.Sprintf("%s %s %s!", display.Capitalize(attacker.CombatName()), verb, target.CombatName())
+		attackRoll := RollAttack(atk.Mod)
+		var damage int
+		if attackRoll >= targetAC {
+			damage = RollDamage(atk.DamageDice, atk.DamageSides, atk.DamageMod)
+			target.ApplyDamage(damage)
+		}
+
+		verb := DamageVerb(damage)
+		msgs = append(msgs, fmt.Sprintf("%s %s %s!", display.Capitalize(attacker.CombatName()), verb, target.CombatName()))
+	}
+	return msgs
 }
 
-func (m *Manager) pickTarget(fighter *Fighter, fight *Fight) Combatant {
-	enemies := fight.SideB
-	if !isOnSideA(fight, fighter.CombatID()) {
-		enemies = fight.SideA
-	}
-	return pickLiving(enemies)
+func (f *Fight) pickTarget(fighter *Fighter) Combatant {
+	return f.pickLiving(f.sideOf(fighter.CombatID()).opposite())
 }
 
 func (m *Manager) processFightDeaths(fight *Fight) []string {
@@ -234,9 +251,8 @@ func (m *Manager) processFightDeaths(fight *Fight) []string {
 	for _, victim := range dead {
 		id := victim.CombatID()
 		deadSet[id] = true
-		msgs = append(msgs, display.Colorize(display.Red, fmt.Sprintf("%s is dead! R.I.P.", display.Capitalize(victim.CombatName()))))
-		fight.SideA = removeFighter(fight.SideA, id)
-		fight.SideB = removeFighter(fight.SideB, id)
+		msgs = append(msgs, display.Colorize(display.Color.Red, fmt.Sprintf("%s is dead! R.I.P.", display.Capitalize(victim.CombatName()))))
+		fight.removeFighter(id)
 		victim.SetInCombat(false)
 		delete(m.combatants, id)
 	}
@@ -257,12 +273,12 @@ func (m *Manager) processFightDeaths(fight *Fight) []string {
 		// Retarget fighters whose target died or is missing.
 		for _, f := range fight.SideA {
 			if f.Target == nil || deadSet[f.Target.CombatID()] {
-				f.Target = pickLiving(fight.SideB)
+				f.Target = fight.pickLiving(sideB)
 			}
 		}
 		for _, f := range fight.SideB {
 			if f.Target == nil || deadSet[f.Target.CombatID()] {
-				f.Target = pickLiving(fight.SideA)
+				f.Target = fight.pickLiving(sideA)
 			}
 		}
 	}
@@ -316,42 +332,45 @@ func (m *Manager) addFight(fight *Fight) {
 	m.fights[fight.ZoneID][fight.RoomID] = append(m.fights[fight.ZoneID][fight.RoomID], fight)
 }
 
-func isOnSideA(fight *Fight, id string) bool {
-	return findFighter(fight.SideA, id) != nil
+func (f *Fight) side(s fightSide) *[]*Fighter {
+	if s == sideA {
+		return &f.SideA
+	}
+	return &f.SideB
 }
 
-func findFighter(fighters []*Fighter, id string) *Fighter {
-	for _, f := range fighters {
-		if f.CombatID() == id {
-			return f
+func (f *Fight) sideOf(id string) fightSide {
+	if f.findFighter(sideA, id) != nil {
+		return sideA
+	}
+	return sideB
+}
+
+func (f *Fight) findFighter(s fightSide, id string) *Fighter {
+	for _, ft := range *f.side(s) {
+		if ft.CombatID() == id {
+			return ft
 		}
 	}
 	return nil
 }
 
-func removeFighter(fighters []*Fighter, id string) []*Fighter {
-	for i, f := range fighters {
-		if f.CombatID() == id {
-			return append(fighters[:i], fighters[i+1:]...)
+func (f *Fight) removeFighter(id string) {
+	for _, s := range [2]fightSide{sideA, sideB} {
+		side := f.side(s)
+		for i, ft := range *side {
+			if ft.CombatID() == id {
+				*side = append((*side)[:i], (*side)[i+1:]...)
+				return
+			}
 		}
 	}
-	return fighters
 }
 
-func filterAlive(fighters []*Fighter) []*Fighter {
-	var alive []*Fighter
-	for _, f := range fighters {
-		if f.Combatant.IsAlive() {
-			alive = append(alive, f)
-		}
-	}
-	return alive
-}
-
-func pickLiving(fighters []*Fighter) Combatant {
-	for _, f := range fighters {
-		if f.Combatant.IsAlive() {
-			return f.Combatant
+func (f *Fight) pickLiving(s fightSide) Combatant {
+	for _, ft := range *f.side(s) {
+		if ft.Combatant.IsAlive() {
+			return ft.Combatant
 		}
 	}
 	return nil

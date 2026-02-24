@@ -7,6 +7,8 @@
         "long_desc": "A short sword lies here, its blade gleaming faintly.",
         "detailed_desc": "A well-balanced short sword with a double-edged steel blade. The leather-wrapped grip is worn smooth from use, and the simple crossguard bears the stamp of a Millbrook smithy.",
         "flags": ["wearable"],
-        "wear_slots": ["wield"]
+        "wear_slots": ["wield"],
+        "damage_dice": 1,
+        "damage_sides": 6
     }
 }
