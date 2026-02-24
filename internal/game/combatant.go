@@ -73,6 +73,8 @@ func (c *PlayerCombatant) SetInCombat(v bool) {
 	c.Player.InCombat = v
 }
 
+func (c *PlayerCombatant) Level() int { return c.Character.Level }
+
 // MobCombatant adapts a MobileInstance for the combat system.
 type MobCombatant struct {
 	Instance *MobileInstance
@@ -105,3 +107,5 @@ func (c *MobCombatant) ApplyDamage(dmg int) {
 func (c *MobCombatant) SetInCombat(v bool) {
 	c.Instance.InCombat = v
 }
+
+func (c *MobCombatant) Level() int { return c.Instance.Mobile.Get().Level }
