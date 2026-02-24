@@ -164,13 +164,74 @@ func (ri *RoomInstance) ExitClosure(direction string) *Closure {
 	return exit.Closure
 }
 
+// FindOtherSide looks up the destination room of an exit and finds the
+// reverse exit that leads back to sourceZone/sourceRoom.
+// Returns the destination RoomInstance and the direction of the reverse exit,
+// or (nil, "") if no matching reverse exit with a closure is found.
+func FindOtherSide(exit Exit, sourceZone, sourceRoom storage.Identifier, instances map[storage.Identifier]*ZoneInstance) (*RoomInstance, string) {
+	destZone := storage.Identifier(exit.Zone.Id())
+	if destZone == "" {
+		destZone = sourceZone
+	}
+	zi, ok := instances[destZone]
+	if !ok {
+		return nil, ""
+	}
+	destRoomInst := zi.GetRoom(storage.Identifier(exit.Room.Id()))
+	if destRoomInst == nil {
+		return nil, ""
+	}
+
+	for dir, otherExit := range destRoomInst.Room.Get().Exits {
+		if otherExit.Closure == nil {
+			continue
+		}
+		otherDestZone := storage.Identifier(otherExit.Zone.Id())
+		if otherDestZone == "" {
+			otherDestZone = destZone
+		}
+		if otherDestZone == sourceZone && storage.Identifier(otherExit.Room.Id()) == sourceRoom {
+			return destRoomInst, dir
+		}
+	}
+	return nil, ""
+}
+
 // Reset clears all mobs and objects and respawns them from the room definition.
 // Players are preserved. Exit closure state is restored to definition defaults.
-func (ri *RoomInstance) Reset() error {
+// If instances is non-nil, cross-zone door state is also synchronized.
+func (ri *RoomInstance) Reset(instances map[storage.Identifier]*ZoneInstance) error {
+	ri.mu.Lock()
 	ri.initExitClosures()
 
+	// Synchronize the other side of any cross-zone exits.
+	if instances != nil {
+		def := ri.Room.Get()
+		thisZone := storage.Identifier(def.Zone.Id())
+		thisRoom := storage.Identifier(ri.Room.Id())
+
+		for _, exit := range def.Exits {
+			if exit.Closure == nil {
+				continue
+			}
+			if exit.Closure.Closed == false {
+				continue
+			}
+			destZone := storage.Identifier(exit.Zone.Id())
+			if destZone == "" || destZone == thisZone {
+				continue // same zone, handled by its own reset
+			}
+			if otherRoom, otherDir := FindOtherSide(exit, thisZone, thisRoom, instances); otherRoom != nil {
+				otherExit := otherRoom.Room.Get().Exits[otherDir]
+				otherRoom.SetExitClosed(otherDir, otherExit.Closure.Closed)
+				if otherExit.Closure.Lock != nil {
+					otherRoom.SetExitLocked(otherDir, otherExit.Closure.Lock.Locked)
+				}
+			}
+		}
+	}
+
 	def := ri.Room.Get()
-	ri.mu.Lock()
 	ri.mobiles = make(map[string]*MobileInstance)
 	for _, mob := range def.MobSpawns {
 		ri.spawnMob(mob)

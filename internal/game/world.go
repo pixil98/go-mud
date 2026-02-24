@@ -151,7 +151,7 @@ type Subscriber interface {
 // Tick processes zone resets based on their reset mode and lifespan.
 func (w *WorldState) Tick(ctx context.Context) error {
 	for _, zi := range w.instances {
-		err := zi.Reset(false)
+		err := zi.Reset(false, w.instances)
 		if err != nil {
 			return err
 		}

@@ -89,7 +89,8 @@ func (z *ZoneInstance) AddRoom(ri *RoomInstance) {
 
 // Reset checks reset conditions and respawns mobs/objects if appropriate.
 // If force is true, bypasses time/occupancy checks.
-func (z *ZoneInstance) Reset(force bool) error {
+// instances is the full set of zone instances for cross-zone door synchronization.
+func (z *ZoneInstance) Reset(force bool, instances map[storage.Identifier]*ZoneInstance) error {
 	now := time.Now()
 
 	if !force {
@@ -105,7 +106,7 @@ func (z *ZoneInstance) Reset(force bool) error {
 	}
 
 	for _, ri := range z.rooms {
-		err := ri.Reset()
+		err := ri.Reset(instances)
 		if err != nil {
 			return fmt.Errorf("resetting zone %q: %w", z.Zone.Id(), err)
 		}

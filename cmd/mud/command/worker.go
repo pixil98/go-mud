@@ -45,7 +45,7 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 
 	// Spawn initial mobiles and objects in all zones
 	for _, zi := range world.Instances() {
-		err := zi.Reset(true)
+		err := zi.Reset(true, world.Instances())
 		if err != nil {
 			return nil, err
 		}
