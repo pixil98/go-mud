@@ -15,19 +15,13 @@ type ValidatingSpec interface {
 	Validate() error
 }
 
-type Identifier string
-
-func (id Identifier) String() string {
-	return string(id)
-}
-
 type Asset[T ValidatingSpec] struct {
-	Version    uint       `json:"version"`
-	Identifier Identifier `json:"id"`
-	Spec       T          `json:"spec"`
+	Version    uint   `json:"version"`
+	Identifier string `json:"id"`
+	Spec       T      `json:"spec"`
 }
 
-func (c *Asset[T]) Id() Identifier {
+func (c *Asset[T]) Id() string {
 	return c.Identifier
 }
 
@@ -42,7 +36,7 @@ func (a *Asset[T]) Validate() error {
 		el.Add(fmt.Errorf("id must be set"))
 	}
 
-	if !identifierPattern.MatchString(a.Identifier.String()) {
+	if !identifierPattern.MatchString(a.Identifier) {
 		el.Add(fmt.Errorf("id must be alphanumeric"))
 	}
 

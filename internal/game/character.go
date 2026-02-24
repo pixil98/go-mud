@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"math/rand/v2"
 	"strings"
-
-	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // StatKey identifies an ability score.
@@ -55,8 +53,8 @@ type Character struct {
 	DetailedDesc string `json:"detailed_desc"`
 
 	// Last known location, saved on quit/save for restoring on login
-	LastZone storage.Identifier `json:"last_zone,omitempty"`
-	LastRoom storage.Identifier `json:"last_room,omitempty"`
+	LastZone string `json:"last_zone,omitempty"`
+	LastRoom string `json:"last_room,omitempty"`
 
 	// BaseStats holds the character's base ability scores before modifiers.
 	BaseStats map[StatKey]Stat `json:"base_stats,omitempty"`

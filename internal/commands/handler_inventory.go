@@ -33,7 +33,7 @@ func (f *InventoryHandlerFactory) Create() (CommandFunc, error) {
 
 		output := strings.Join(lines, "\n")
 		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.CharId), nil, []byte(output))
+			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(output))
 		}
 
 		return nil

@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // MoveHandlerFactory creates handlers that move players between rooms.
@@ -76,11 +75,11 @@ func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		// Determine destination zone (default to current if not specified)
-		destZone := storage.Identifier(exit.Zone.Id())
-		if exit.Zone.Id() == "" {
+		destZone := exit.Zone.Id()
+		if destZone == "" {
 			destZone = zoneId
 		}
-		destRoomId := storage.Identifier(exit.Room.Id())
+		destRoomId := exit.Room.Id()
 
 		// Get destination room instance
 		toRoom := f.world.Instances()[destZone].GetRoom(destRoomId)
@@ -94,7 +93,7 @@ func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 		// Send room description to player
 		roomDesc := toRoom.Describe(cmdCtx.Actor.Name)
 		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.CharId), nil, []byte(roomDesc))
+			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(roomDesc))
 		}
 
 		return nil

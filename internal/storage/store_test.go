@@ -53,7 +53,7 @@ func TestNewFileStore_WithExistingAssets(t *testing.T) {
 	for _, a := range assets {
 		asset := Asset[*mockStoreSpec]{
 			Version:    1,
-			Identifier: Identifier(a.id),
+			Identifier: a.id,
 			Spec:       a.spec,
 		}
 		data, _ := json.Marshal(asset)
@@ -184,7 +184,7 @@ func TestNewFileStore_IgnoresNonJSONFiles(t *testing.T) {
 func TestFileStore_Get(t *testing.T) {
 	tmpDir := t.TempDir()
 	store, _ := NewFileStore[*mockStoreSpec](tmpDir)
-	store.records = map[Identifier]*mockStoreSpec{
+	store.records = map[string]*mockStoreSpec{
 		"existing": {Name: "Test", Value: 42},
 	}
 
@@ -232,21 +232,21 @@ func TestFileStore_Get(t *testing.T) {
 
 func TestFileStore_GetAll(t *testing.T) {
 	tests := map[string]struct {
-		records  map[Identifier]*mockStoreSpec
+		records  map[string]*mockStoreSpec
 		expCount int
 	}{
 		"empty records": {
-			records:  map[Identifier]*mockStoreSpec{},
+			records:  map[string]*mockStoreSpec{},
 			expCount: 0,
 		},
 		"single record": {
-			records: map[Identifier]*mockStoreSpec{
+			records: map[string]*mockStoreSpec{
 				"one": {Name: "One", Value: 1},
 			},
 			expCount: 1,
 		},
 		"multiple records": {
-			records: map[Identifier]*mockStoreSpec{
+			records: map[string]*mockStoreSpec{
 				"one":   {Name: "One", Value: 1},
 				"two":   {Name: "Two", Value: 2},
 				"three": {Name: "Three", Value: 3},
@@ -312,7 +312,7 @@ func TestFileStore_Save(t *testing.T) {
 	}
 
 	testutil.AssertEqual(t, "asset version", asset.Version, uint(1))
-	testutil.AssertEqual(t, "asset id", asset.Identifier, Identifier("test-id"))
+	testutil.AssertEqual(t, "asset id", asset.Identifier, "test-id")
 	testutil.AssertEqual(t, "spec name", asset.Spec.Name, "TestItem")
 	testutil.AssertEqual(t, "spec value", asset.Spec.Value, 100)
 }

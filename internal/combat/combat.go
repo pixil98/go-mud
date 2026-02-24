@@ -9,7 +9,6 @@ import (
 
 	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // Side identifies which team a combatant is on.
@@ -183,7 +182,7 @@ func (m *Manager) Tick(ctx context.Context) error {
 				deathMsgs := m.processFightDeaths(fight)
 				msgs = append(msgs, deathMsgs...)
 				if len(msgs) > 0 {
-					ri := m.world.Instances()[storage.Identifier(fight.ZoneID)].GetRoom(storage.Identifier(fight.RoomID))
+					ri := m.world.Instances()[fight.ZoneID].GetRoom(fight.RoomID)
 					if err := m.pub.Publish(ri, nil, []byte(strings.Join(msgs, "\n"))); err != nil {
 						return fmt.Errorf("publishing combat messages: %w", err)
 					}

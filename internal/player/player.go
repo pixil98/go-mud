@@ -10,12 +10,11 @@ import (
 
 	"github.com/pixil98/go-mud/internal/commands"
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/storage"
 )
 
 type Player struct {
 	conn       io.ReadWriter
-	charId     storage.Identifier
+	charId     string
 	world      *game.WorldState
 	cmdHandler *commands.Handler
 
@@ -146,7 +145,7 @@ func (p *Player) Play(ctx context.Context) error {
 func (p *Player) prompt() error {
 	prompt := "> "
 	if ps := p.world.GetPlayer(p.charId); ps != nil {
-		prompt = fmt.Sprintf("[%d/%dHP] > ", ps.Character.CurrentHP, ps.Character.MaxHP)
+		prompt = fmt.Sprintf("[%d/%dHP] > ", ps.Character.Get().CurrentHP, ps.Character.Get().MaxHP)
 	}
 	_, err := p.conn.Write([]byte(prompt))
 	return err

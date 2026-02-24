@@ -33,7 +33,7 @@ func (f *SaveHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.CharId), nil, []byte("Character saved."))
+			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte("Character saved."))
 		}
 
 		return nil

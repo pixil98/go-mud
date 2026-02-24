@@ -12,11 +12,11 @@ import (
 type CombatEventHandler struct {
 	world       *game.WorldState
 	pub         game.Publisher
-	defaultZone storage.Identifier
-	defaultRoom storage.Identifier
+	defaultZone string
+	defaultRoom string
 }
 
-func NewCombatEventHandler(world *game.WorldState, pub game.Publisher, defaultZone, defaultRoom storage.Identifier) *CombatEventHandler {
+func NewCombatEventHandler(world *game.WorldState, pub game.Publisher, defaultZone, defaultRoom string) *CombatEventHandler {
 	return &CombatEventHandler{
 		world:       world,
 		pub:         pub,
@@ -37,8 +37,6 @@ func (h *CombatEventHandler) OnDeath(dctx DeathContext) {
 func (h *CombatEventHandler) onMobDeath(mob *MobCombatant, dctx DeathContext) {
 	mi := mob.Instance
 	def := mi.Mobile.Get()
-	zone := storage.Identifier(dctx.ZoneID)
-	room := storage.Identifier(dctx.RoomID)
 
 	// Create corpse object definition
 	corpseAliases := append([]string{"corpse"}, def.Aliases...)
@@ -74,7 +72,7 @@ func (h *CombatEventHandler) onMobDeath(mob *MobCombatant, dctx DeathContext) {
 	}
 
 	// Place corpse in room and remove mob
-	ri := h.world.Instances()[zone].GetRoom(room)
+	ri := h.world.Instances()[dctx.ZoneID].GetRoom(dctx.RoomID)
 	if ri != nil {
 		ri.AddObj(corpse)
 		ri.RemoveMob(mi.InstanceId)
@@ -119,36 +117,35 @@ func (h *CombatEventHandler) awardExperience(mob *MobCombatant, dctx DeathContex
 				break
 			}
 
-			pc.Character.Experience += award.Amount
+			char := pc.Character.Get()
+			char.Experience += award.Amount
 
 			msg := fmt.Sprintf("You receive %d experience points.", award.Amount)
-			if game.ExpToNextLevel(pc.Character.Level, pc.Character.Experience) <= 0 {
+			if game.ExpToNextLevel(char.Level, char.Experience) <= 0 {
 				msg += " You feel ready to advance!"
 			}
-			_ = h.pub.Publish(game.SinglePlayer(pc.CharId), nil, []byte(msg))
+			_ = h.pub.Publish(game.SinglePlayer(pc.Character.Id()), nil, []byte(msg))
 			break
 		}
 	}
 }
 
 func (h *CombatEventHandler) onPlayerDeath(pc *PlayerCombatant, dctx DeathContext) {
-	zone := storage.Identifier(dctx.ZoneID)
-	room := storage.Identifier(dctx.RoomID)
-
 	// Send personal message
-	_ = h.pub.Publish(game.SinglePlayer(pc.CharId), nil, []byte("You have been slain! You awaken in a familiar place..."))
+	_ = h.pub.Publish(game.SinglePlayer(pc.Character.Id()), nil, []byte("You have been slain! You awaken in a familiar place..."))
 
 	// Restore HP
-	pc.Character.CurrentHP = pc.Character.MaxHP
+	char := pc.Character.Get()
+	char.CurrentHP = char.MaxHP
 
 	// Move to default spawn
-	fromRoom := h.world.Instances()[zone].GetRoom(room)
+	fromRoom := h.world.Instances()[dctx.ZoneID].GetRoom(dctx.RoomID)
 	toRoom := h.world.Instances()[h.defaultZone].GetRoom(h.defaultRoom)
 	if fromRoom != nil && toRoom != nil {
 		pc.Player.Move(fromRoom, toRoom)
 
 		// Show new room
-		roomDesc := toRoom.Describe(pc.Character.Name)
-		_ = h.pub.Publish(game.SinglePlayer(pc.CharId), nil, []byte(roomDesc))
+		roomDesc := toRoom.Describe(char.Name)
+		_ = h.pub.Publish(game.SinglePlayer(pc.Character.Id()), nil, []byte(roomDesc))
 	}
 }

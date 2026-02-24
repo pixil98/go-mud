@@ -69,7 +69,7 @@ func (f *MoveObjHandlerFactory) Create() (CommandFunc, error) {
 		// Check self-targeting if configured
 		if noSelf := cmdCtx.Config["no_self_target"]; noSelf != "" {
 			ref := cmdCtx.Targets[noSelf]
-			if ref != nil && ref.Player != nil && ref.Player.CharId == cmdCtx.Session.CharId {
+			if ref != nil && ref.Player != nil && ref.Player.CharId == cmdCtx.Session.Character.Id() {
 				return NewUserError("You can't give something to yourself.")
 			}
 		}
@@ -90,10 +90,10 @@ func (f *MoveObjHandlerFactory) Create() (CommandFunc, error) {
 		dest.AddObj(oi)
 
 		if f.pub != nil {
-			exclude := []storage.Identifier{cmdCtx.Session.CharId}
+			exclude := []string{cmdCtx.Session.Character.Id()}
 
 			if selfMsg := cmdCtx.Config["self_message"]; selfMsg != "" {
-				_ = f.pub.Publish(game.SinglePlayer(cmdCtx.Session.CharId), nil, []byte(selfMsg))
+				_ = f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(selfMsg))
 			}
 
 			if targetMsg := cmdCtx.Config["target_message"]; targetMsg != "" {
@@ -135,7 +135,7 @@ func (f *MoveObjHandlerFactory) resolveDestination(cmdCtx *CommandContext) (Obje
 // For mobile targets, returns their inventory.
 func (f *MoveObjHandlerFactory) holderForTarget(ref *TargetRef) (ObjectHolder, error) {
 	if ref.Player != nil {
-		char := f.chars.Get(string(ref.Player.CharId))
+		char := f.chars.Get(ref.Player.CharId)
 		if char == nil {
 			return nil, NewUserError(fmt.Sprintf("%s is no longer here.", ref.Player.Name))
 		}

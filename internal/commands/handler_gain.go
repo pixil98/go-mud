@@ -48,7 +48,7 @@ func (f *GainHandlerFactory) Create() (CommandFunc, error) {
 		msg := fmt.Sprintf("Congratulations! You have advanced to level %d!", char.Level)
 
 		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.CharId), nil, []byte(msg))
+			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(msg))
 		}
 		return nil
 	}, nil

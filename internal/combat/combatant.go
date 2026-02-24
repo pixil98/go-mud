@@ -9,28 +9,29 @@ import (
 
 // PlayerCombatant adapts a PlayerState for the combat system.
 type PlayerCombatant struct {
-	CharId    storage.Identifier
+	Character storage.SmartIdentifier[*game.Character]
 	Player    *game.PlayerState
-	Character *game.Character
 }
 
-func (c *PlayerCombatant) CombatID() string   { return fmt.Sprintf("player:%s", c.CharId) }
-func (c *PlayerCombatant) CombatName() string { return c.Character.Name }
+func (c *PlayerCombatant) CombatID() string   { return fmt.Sprintf("player:%s", c.Character.Id()) }
+func (c *PlayerCombatant) CombatName() string { return c.Character.Get().Name }
 func (c *PlayerCombatant) CombatSide() Side   { return SidePlayer }
-func (c *PlayerCombatant) IsAlive() bool      { return c.Character.CurrentHP > 0 }
+func (c *PlayerCombatant) IsAlive() bool      { return c.Character.Get().CurrentHP > 0 }
 
 func (c *PlayerCombatant) AC() int {
-	stats := c.Character.EffectiveStats()
-	return 10 + stats[game.StatDEX].Mod() + c.Character.Equipment.ACBonus()
+	char := c.Character.Get()
+	stats := char.EffectiveStats()
+	return 10 + stats[game.StatDEX].Mod() + char.Equipment.ACBonus()
 }
 
 func (c *PlayerCombatant) Attacks() []Attack {
-	stats := c.Character.EffectiveStats()
+	char := c.Character.Get()
+	stats := char.EffectiveStats()
 	strMod := stats[game.StatSTR].Mod()
-	attackMod := strMod + c.Character.Level/2
+	attackMod := strMod + char.Level/2
 
 	var attacks []Attack
-	for _, slot := range c.Character.Equipment.Objs {
+	for _, slot := range char.Equipment.Objs {
 		if slot.Slot != "wield" || slot.Obj == nil {
 			continue
 		}
@@ -63,9 +64,10 @@ func (c *PlayerCombatant) Attacks() []Attack {
 }
 
 func (c *PlayerCombatant) ApplyDamage(dmg int) {
-	c.Character.CurrentHP -= dmg
-	if c.Character.CurrentHP < 0 {
-		c.Character.CurrentHP = 0
+	char := c.Character.Get()
+	char.CurrentHP -= dmg
+	if char.CurrentHP < 0 {
+		char.CurrentHP = 0
 	}
 }
 
@@ -73,7 +75,7 @@ func (c *PlayerCombatant) SetInCombat(v bool) {
 	c.Player.InCombat = v
 }
 
-func (c *PlayerCombatant) Level() int { return c.Character.Level }
+func (c *PlayerCombatant) Level() int { return c.Character.Get().Level }
 
 // MobCombatant adapts a MobileInstance for the combat system.
 type MobCombatant struct {

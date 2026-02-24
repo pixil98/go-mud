@@ -29,19 +29,19 @@ func (s *mockSelectableSpec) Selector() string {
 
 // mockSelectableStorer implements Storer[*mockSelectableSpec] for testing
 type mockSelectableStorer struct {
-	records map[Identifier]*mockSelectableSpec
+	records map[string]*mockSelectableSpec
 }
 
 func (m *mockSelectableStorer) Save(id string, o *mockSelectableSpec) error {
-	m.records[Identifier(id)] = o
+	m.records[id] = o
 	return nil
 }
 
 func (m *mockSelectableStorer) Get(id string) *mockSelectableSpec {
-	return m.records[Identifier(id)]
+	return m.records[id]
 }
 
-func (m *mockSelectableStorer) GetAll() map[Identifier]*mockSelectableSpec {
+func (m *mockSelectableStorer) GetAll() map[string]*mockSelectableSpec {
 	return m.records
 }
 
@@ -61,24 +61,24 @@ func (m *mockReadWriter) Write(p []byte) (n int, err error) {
 
 func TestNewSelectableStorer(t *testing.T) {
 	tests := map[string]struct {
-		records     map[Identifier]*mockSelectableSpec
+		records     map[string]*mockSelectableSpec
 		expOptCount int
 		expNonEmpty bool
 	}{
 		"empty store": {
-			records:     map[Identifier]*mockSelectableSpec{},
+			records:     map[string]*mockSelectableSpec{},
 			expOptCount: 0,
 			expNonEmpty: false,
 		},
 		"single item": {
-			records: map[Identifier]*mockSelectableSpec{
+			records: map[string]*mockSelectableSpec{
 				"item-1": {name: "Item One", valid: true},
 			},
 			expOptCount: 1,
 			expNonEmpty: true,
 		},
 		"multiple items": {
-			records: map[Identifier]*mockSelectableSpec{
+			records: map[string]*mockSelectableSpec{
 				"item-1": {name: "Item One", valid: true},
 				"item-2": {name: "Item Two", valid: true},
 				"item-3": {name: "Item Three", valid: true},
@@ -105,7 +105,7 @@ func TestNewSelectableStorer(t *testing.T) {
 }
 
 func TestSelectableStorer_Select(t *testing.T) {
-	records := map[Identifier]*mockSelectableSpec{
+	records := map[string]*mockSelectableSpec{
 		"item-a": {name: "Alpha", valid: true},
 		"item-b": {name: "Beta", valid: true},
 		"item-c": {name: "Gamma", valid: true},
@@ -152,7 +152,7 @@ func TestSelectableStorer_Select(t *testing.T) {
 			result := ss.Select(tt.index)
 
 			if tt.expEmpty {
-				testutil.AssertEqual(t, "result", result, Identifier(""))
+				testutil.AssertEqual(t, "result", result, "")
 			} else {
 				if result == "" {
 					t.Errorf("expected non-empty identifier, got empty")
@@ -167,24 +167,24 @@ func TestSelectableStorer_Select(t *testing.T) {
 }
 
 func TestSelectableStorer_Select_Empty(t *testing.T) {
-	mock := &mockSelectableStorer{records: map[Identifier]*mockSelectableSpec{}}
+	mock := &mockSelectableStorer{records: map[string]*mockSelectableSpec{}}
 	ss := NewSelectableStorer(mock)
 
 	result := ss.Select(1)
-	testutil.AssertEqual(t, "result", result, Identifier(""))
+	testutil.AssertEqual(t, "result", result, "")
 }
 
 func TestSelectableStorer_Build(t *testing.T) {
 	tests := map[string]struct {
-		records       map[Identifier]*mockSelectableSpec
+		records       map[string]*mockSelectableSpec
 		expOutputRows int
 	}{
 		"empty produces default rows": {
-			records:       map[Identifier]*mockSelectableSpec{},
+			records:       map[string]*mockSelectableSpec{},
 			expOutputRows: defaultSelectorRowCount,
 		},
 		"few items produces default rows": {
-			records: map[Identifier]*mockSelectableSpec{
+			records: map[string]*mockSelectableSpec{
 				"a": {name: "A", valid: true},
 				"b": {name: "B", valid: true},
 			},
@@ -203,7 +203,7 @@ func TestSelectableStorer_Build(t *testing.T) {
 }
 
 func TestSelectableStorer_Prompt(t *testing.T) {
-	records := map[Identifier]*mockSelectableSpec{
+	records := map[string]*mockSelectableSpec{
 		"item-a": {name: "Alpha", valid: true},
 		"item-b": {name: "Beta", valid: true},
 	}
@@ -249,7 +249,7 @@ func TestSelectableStorer_Prompt(t *testing.T) {
 			}
 
 			if tt.expEmpty {
-				testutil.AssertEqual(t, "result", result, Identifier(""))
+				testutil.AssertEqual(t, "result", result, "")
 			} else {
 				if result == "" {
 					t.Errorf("expected non-empty identifier")
@@ -268,7 +268,7 @@ func TestSelectableStorer_Prompt(t *testing.T) {
 }
 
 func TestSelectableStorer_Prompt_InvalidThenValid(t *testing.T) {
-	records := map[Identifier]*mockSelectableSpec{
+	records := map[string]*mockSelectableSpec{
 		"item-a": {name: "Alpha", valid: true},
 	}
 	mock := &mockSelectableStorer{records: records}

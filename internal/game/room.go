@@ -88,7 +88,7 @@ type RoomInstance struct {
 	mu         sync.RWMutex
 	mobiles    map[string]*MobileInstance
 	objects    *Inventory
-	players    map[storage.Identifier]*PlayerState
+	players    map[string]*PlayerState
 	exitClosed map[string]bool // runtime closed state for exits with a Closure
 	exitLocked map[string]bool // runtime locked state for exits with a Lock
 }
@@ -102,7 +102,7 @@ func NewRoomInstance(room storage.SmartIdentifier[*Room]) (*RoomInstance, error)
 		Room:       room,
 		mobiles:    make(map[string]*MobileInstance),
 		objects:    NewInventory(),
-		players:    make(map[storage.Identifier]*PlayerState),
+		players:    make(map[string]*PlayerState),
 		exitClosed: make(map[string]bool),
 		exitLocked: make(map[string]bool),
 	}
@@ -168,8 +168,8 @@ func (ri *RoomInstance) ExitClosure(direction string) *Closure {
 // reverse exit that leads back to sourceZone/sourceRoom.
 // Returns the destination RoomInstance and the direction of the reverse exit,
 // or (nil, "") if no matching reverse exit with a closure is found.
-func FindOtherSide(exit Exit, sourceZone, sourceRoom storage.Identifier, instances map[storage.Identifier]*ZoneInstance) (*RoomInstance, string) {
-	destZone := storage.Identifier(exit.Zone.Id())
+func FindOtherSide(exit Exit, sourceZone, sourceRoom string, instances map[string]*ZoneInstance) (*RoomInstance, string) {
+	destZone := exit.Zone.Id()
 	if destZone == "" {
 		destZone = sourceZone
 	}
@@ -177,7 +177,7 @@ func FindOtherSide(exit Exit, sourceZone, sourceRoom storage.Identifier, instanc
 	if !ok {
 		return nil, ""
 	}
-	destRoomInst := zi.GetRoom(storage.Identifier(exit.Room.Id()))
+	destRoomInst := zi.GetRoom(exit.Room.Id())
 	if destRoomInst == nil {
 		return nil, ""
 	}
@@ -186,11 +186,11 @@ func FindOtherSide(exit Exit, sourceZone, sourceRoom storage.Identifier, instanc
 		if otherExit.Closure == nil {
 			continue
 		}
-		otherDestZone := storage.Identifier(otherExit.Zone.Id())
+		otherDestZone := otherExit.Zone.Id()
 		if otherDestZone == "" {
 			otherDestZone = destZone
 		}
-		if otherDestZone == sourceZone && storage.Identifier(otherExit.Room.Id()) == sourceRoom {
+		if otherDestZone == sourceZone && otherExit.Room.Id() == sourceRoom {
 			return destRoomInst, dir
 		}
 	}
@@ -200,15 +200,15 @@ func FindOtherSide(exit Exit, sourceZone, sourceRoom storage.Identifier, instanc
 // Reset clears all mobs and objects and respawns them from the room definition.
 // Players are preserved. Exit closure state is restored to definition defaults.
 // If instances is non-nil, cross-zone door state is also synchronized.
-func (ri *RoomInstance) Reset(instances map[storage.Identifier]*ZoneInstance) error {
+func (ri *RoomInstance) Reset(instances map[string]*ZoneInstance) error {
 	ri.mu.Lock()
 	ri.initExitClosures()
 
 	// Synchronize the other side of any cross-zone exits.
 	if instances != nil {
 		def := ri.Room.Get()
-		thisZone := storage.Identifier(def.Zone.Id())
-		thisRoom := storage.Identifier(ri.Room.Id())
+		thisZone := def.Zone.Id()
+		thisRoom := ri.Room.Id()
 
 		for _, exit := range def.Exits {
 			if exit.Closure == nil {
@@ -217,7 +217,7 @@ func (ri *RoomInstance) Reset(instances map[storage.Identifier]*ZoneInstance) er
 			if exit.Closure.Closed == false {
 				continue
 			}
-			destZone := storage.Identifier(exit.Zone.Id())
+			destZone := exit.Zone.Id()
 			if destZone == "" || destZone == thisZone {
 				continue // same zone, handled by its own reset
 			}
@@ -332,7 +332,7 @@ func (ri *RoomInstance) FindPlayer(name string) *PlayerState {
 	defer ri.mu.RUnlock()
 
 	for _, ps := range ri.players {
-		if ps.Character.MatchName(name) {
+		if ps.Character.Get().MatchName(name) {
 			return ps
 		}
 	}
@@ -340,7 +340,7 @@ func (ri *RoomInstance) FindPlayer(name string) *PlayerState {
 }
 
 // AddPlayer adds a player to the room.
-func (ri *RoomInstance) AddPlayer(charId storage.Identifier, ps *PlayerState) {
+func (ri *RoomInstance) AddPlayer(charId string, ps *PlayerState) {
 	ri.mu.Lock()
 	defer ri.mu.Unlock()
 
@@ -348,7 +348,7 @@ func (ri *RoomInstance) AddPlayer(charId storage.Identifier, ps *PlayerState) {
 }
 
 // RemovePlayer removes a player from the room.
-func (ri *RoomInstance) RemovePlayer(charId storage.Identifier) {
+func (ri *RoomInstance) RemovePlayer(charId string) {
 	ri.mu.Lock()
 	defer ri.mu.Unlock()
 
@@ -396,8 +396,8 @@ func (ri *RoomInstance) Describe(actorName string) string {
 
 	// Show other players
 	for _, ps := range ri.players {
-		if ps.Character.Name != actorName {
-			sb.WriteString(display.Colorize(display.Color.Yellow, fmt.Sprintf("%s is here.%s\n", ps.Character.Name, formatFlags(ps.Flags()))))
+		if ps.Character.Get().Name != actorName {
+			sb.WriteString(display.Colorize(display.Color.Yellow, fmt.Sprintf("%s is here.%s\n", ps.Character.Get().Name, formatFlags(ps.Flags()))))
 		}
 	}
 	ri.mu.RUnlock()
@@ -419,7 +419,7 @@ func (ri *RoomInstance) RemoveMob(instanceId string) *MobileInstance {
 }
 
 // ForEachPlayer calls fn for each player in the room while holding the lock.
-func (ri *RoomInstance) ForEachPlayer(fn func(storage.Identifier, *PlayerState)) {
+func (ri *RoomInstance) ForEachPlayer(fn func(string, *PlayerState)) {
 	ri.mu.Lock()
 	defer ri.mu.Unlock()
 	for id, ps := range ri.players {

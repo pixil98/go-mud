@@ -6,7 +6,6 @@ import (
 
 	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // --- Finder interfaces ---
@@ -86,27 +85,24 @@ func describeActor(description, name string, actor *game.ActorInstance) string {
 
 // PlayerRef is the template-facing view of a resolved player.
 type PlayerRef struct {
-	CharId      storage.Identifier
+	CharId      string
 	Name        string
 	Description string
 	session     *game.PlayerState
 }
 
 func playerRefFromState(ps *game.PlayerState) *PlayerRef {
-	if ps == nil || ps.Character == nil {
-		return nil
-	}
 	return &PlayerRef{
-		CharId:      ps.CharId,
-		Name:        ps.Character.Name,
-		Description: ps.Character.DetailedDesc,
+		CharId:      ps.Character.Id(),
+		Name:        ps.Character.Get().Name,
+		Description: ps.Character.Get().DetailedDesc,
 		session:     ps,
 	}
 }
 
 // Describe returns a detailed description of the player, including equipped items.
 func (r *PlayerRef) Describe() string {
-	return describeActor(r.Description, r.Name, &r.session.Character.ActorInstance)
+	return describeActor(r.Description, r.Name, &r.session.Character.Get().ActorInstance)
 }
 
 // MobileRef is the template-facing view of a resolved mob.

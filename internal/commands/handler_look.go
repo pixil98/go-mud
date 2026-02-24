@@ -51,7 +51,7 @@ func (f *LookHandlerFactory) showRoom(cmdCtx *CommandContext) error {
 
 	roomDesc := ri.Describe(cmdCtx.Actor.Name)
 	if f.pub != nil {
-		return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.CharId), nil, []byte(roomDesc))
+		return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(roomDesc))
 	}
 
 	return nil
@@ -72,7 +72,7 @@ func (f *LookHandlerFactory) showTarget(cmdCtx *CommandContext, target *TargetRe
 	}
 
 	if f.pub != nil {
-		return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.CharId), nil, []byte(msg))
+		return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(msg))
 	}
 	return nil
 }

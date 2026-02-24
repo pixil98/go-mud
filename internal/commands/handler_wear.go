@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // WearHandlerFactory creates handlers for equipping wearable items.
@@ -96,7 +95,7 @@ func (f *WearHandlerFactory) Create() (CommandFunc, error) {
 
 		// Send self message
 		selfMsg := fmt.Sprintf("You wear %s.", obj.ShortDesc)
-		if err := f.pub.Publish(game.SinglePlayer(cmdCtx.Session.CharId), nil, []byte(selfMsg)); err != nil {
+		if err := f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(selfMsg)); err != nil {
 			return err
 		}
 
@@ -104,6 +103,6 @@ func (f *WearHandlerFactory) Create() (CommandFunc, error) {
 		roomMsg := fmt.Sprintf("%s wears %s.", cmdCtx.Actor.Name, obj.ShortDesc)
 		zoneId, roomId := cmdCtx.Session.Location()
 		room := cmdCtx.World.Instances()[zoneId].GetRoom(roomId)
-		return f.pub.Publish(room, []storage.Identifier{cmdCtx.Session.CharId}, []byte(roomMsg))
+		return f.pub.Publish(room, []string{cmdCtx.Session.Character.Id()}, []byte(roomMsg))
 	}, nil
 }

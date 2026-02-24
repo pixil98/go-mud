@@ -75,14 +75,14 @@ type compiledCommand struct {
 
 type Handler struct {
 	factories map[string]HandlerFactory
-	compiled  map[storage.Identifier]*compiledCommand
+	compiled  map[string]*compiledCommand
 	dict      *game.Dictionary
 }
 
 func NewHandler(cmds storage.Storer[*Command], dict *game.Dictionary, publisher game.Publisher, world *game.WorldState, combat *combat.Manager) (*Handler, error) {
 	h := &Handler{
 		factories: make(map[string]HandlerFactory),
-		compiled:  make(map[storage.Identifier]*compiledCommand),
+		compiled:  make(map[string]*compiledCommand),
 		dict:      dict,
 	}
 
@@ -131,7 +131,7 @@ func (h *Handler) RegisterFactory(name string, factory HandlerFactory) error {
 	return nil
 }
 
-func (h *Handler) compile(id storage.Identifier, cmd *Command) error {
+func (h *Handler) compile(id string, cmd *Command) error {
 	factory, ok := h.factories[cmd.Handler]
 	if !ok {
 		return fmt.Errorf("unknown handler %q", cmd.Handler)
@@ -164,7 +164,7 @@ func (h *Handler) compile(id storage.Identifier, cmd *Command) error {
 	h.compiled[id] = cc
 
 	for _, alias := range cmd.Aliases {
-		aliasId := storage.Identifier(strings.ToLower(alias))
+		aliasId := strings.ToLower(alias)
 		if _, exists := h.compiled[aliasId]; exists {
 			return fmt.Errorf("alias %q conflicts with an existing command or alias", alias)
 		}
@@ -237,7 +237,7 @@ func (h *Handler) validateSpec(cmd *Command, spec *HandlerSpec) error {
 // It tries an exact match first, then falls back to prefix matching
 // with priority-based disambiguation.
 func (h *Handler) resolve(input string) (*compiledCommand, error) {
-	id := storage.Identifier(strings.ToLower(input))
+	id := strings.ToLower(input)
 
 	// Exact match always wins.
 	if compiled, ok := h.compiled[id]; ok {
@@ -246,7 +246,7 @@ func (h *Handler) resolve(input string) (*compiledCommand, error) {
 
 	// Prefix match: find all commands whose ID starts with the input.
 	type match struct {
-		id       storage.Identifier
+		id       string
 		compiled *compiledCommand
 	}
 	var matches []match
@@ -254,7 +254,7 @@ func (h *Handler) resolve(input string) (*compiledCommand, error) {
 	first := true
 
 	for cmdId, compiled := range h.compiled {
-		if strings.HasPrefix(string(cmdId), string(id)) {
+		if strings.HasPrefix(cmdId, id) {
 			p := compiled.cmd.Priority
 			if first || p > bestPriority {
 				bestPriority = p
@@ -283,14 +283,14 @@ func (h *Handler) resolve(input string) (*compiledCommand, error) {
 	// Ambiguous — list the matching commands alphabetically.
 	names := make([]string, len(best))
 	for i, m := range best {
-		names[i] = string(m.id)
+		names[i] = m.id
 	}
 	sort.Strings(names)
 	return nil, NewUserError(fmt.Sprintf("Did you mean: %s?", strings.Join(names, ", ")))
 }
 
 // Exec executes a command with the given arguments.
-func (h *Handler) Exec(ctx context.Context, world *game.WorldState, charId storage.Identifier, cmdName string, rawArgs ...string) error {
+func (h *Handler) Exec(ctx context.Context, world *game.WorldState, charId string, cmdName string, rawArgs ...string) error {
 	compiled, err := h.resolve(cmdName)
 	if err != nil {
 		return err
@@ -314,7 +314,7 @@ func (h *Handler) Exec(ctx context.Context, world *game.WorldState, charId stora
 		inputMap[input.Spec.Name] = input.Value
 	}
 
-	actor := h.dict.Characters.Get(string(charId))
+	actor := h.dict.Characters.Get(charId)
 	session := world.GetPlayer(charId)
 
 	// Resolve targets from targets section

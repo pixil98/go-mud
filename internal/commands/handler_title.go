@@ -44,7 +44,7 @@ func (f *TitleHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.CharId), nil, []byte(output))
+			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(output))
 		}
 
 		return nil

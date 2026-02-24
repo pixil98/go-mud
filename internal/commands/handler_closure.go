@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // ClosureHandlerFactory creates handlers for open/close/lock/unlock commands.
@@ -211,10 +210,10 @@ func (f *ClosureHandlerFactory) publish(cmdCtx *CommandContext, selfMsg, roomMsg
 	if f.pub == nil {
 		return nil
 	}
-	if err := f.pub.Publish(game.SinglePlayer(cmdCtx.Session.CharId), nil, []byte(selfMsg)); err != nil {
+	if err := f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(selfMsg)); err != nil {
 		return err
 	}
 	zoneId, roomId := cmdCtx.Session.Location()
 	room := cmdCtx.World.Instances()[zoneId].GetRoom(roomId)
-	return f.pub.Publish(room, []storage.Identifier{cmdCtx.Session.CharId}, []byte(roomMsg))
+	return f.pub.Publish(room, []string{cmdCtx.Session.Character.Id()}, []byte(roomMsg))
 }

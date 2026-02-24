@@ -14,15 +14,15 @@ import (
 type WorldState struct {
 	mu         sync.RWMutex
 	subscriber Subscriber
-	players    map[storage.Identifier]*PlayerState
+	players    map[string]*PlayerState
 
-	instances map[storage.Identifier]*ZoneInstance
+	instances map[string]*ZoneInstance
 }
 
 // NewWorldState creates a new WorldState with zone and room instances initialized.
 func NewWorldState(sub Subscriber, zones storage.Storer[*Zone], rooms storage.Storer[*Room]) (*WorldState, error) {
 	// Build zone instances
-	instances := make(map[storage.Identifier]*ZoneInstance)
+	instances := make(map[string]*ZoneInstance)
 	for zoneId, zone := range zones.GetAll() {
 		zi, err := NewZoneInstance(storage.NewResolvedSmartIdentifier(string(zoneId), zone))
 		if err != nil {
@@ -33,7 +33,7 @@ func NewWorldState(sub Subscriber, zones storage.Storer[*Zone], rooms storage.St
 
 	// Build room instances and add to their zones
 	for roomId, room := range rooms.GetAll() {
-		zoneId := storage.Identifier(room.Zone.Id())
+		zoneId := room.Zone.Id()
 		if zi, ok := instances[zoneId]; ok {
 			ri, err := NewRoomInstance(storage.NewResolvedSmartIdentifier(string(roomId), room))
 			if err != nil {
@@ -45,18 +45,18 @@ func NewWorldState(sub Subscriber, zones storage.Storer[*Zone], rooms storage.St
 
 	return &WorldState{
 		subscriber: sub,
-		players:    make(map[storage.Identifier]*PlayerState),
+		players:    make(map[string]*PlayerState),
 		instances:  instances,
 	}, nil
 }
 
 // Instances returns all zone instances.
-func (w *WorldState) Instances() map[storage.Identifier]*ZoneInstance {
+func (w *WorldState) Instances() map[string]*ZoneInstance {
 	return w.instances
 }
 
 // GetPlayer returns the player state. Returns nil if player not found.
-func (w *WorldState) GetPlayer(charId storage.Identifier) *PlayerState {
+func (w *WorldState) GetPlayer(charId string) *PlayerState {
 	w.mu.RLock()
 	defer w.mu.RUnlock()
 
@@ -64,9 +64,9 @@ func (w *WorldState) GetPlayer(charId storage.Identifier) *PlayerState {
 }
 
 // AddPlayer registers a new player in the world state and adds them to the room instance.
-func (w *WorldState) AddPlayer(charId storage.Identifier, char *Character, msgs chan []byte, zoneId storage.Identifier, roomId storage.Identifier) error {
+func (w *WorldState) AddPlayer(char storage.SmartIdentifier[*Character], msgs chan []byte, zoneId string, roomId string) error {
 	w.mu.Lock()
-	if _, exists := w.players[charId]; exists {
+	if _, exists := w.players[char.Id()]; exists {
 		w.mu.Unlock()
 		return ErrPlayerExists
 	}
@@ -75,7 +75,6 @@ func (w *WorldState) AddPlayer(charId storage.Identifier, char *Character, msgs 
 		subscriber:   w.subscriber,
 		subs:         make(map[string]func()),
 		msgs:         msgs,
-		CharId:       charId,
 		Character:    char,
 		ZoneId:       zoneId,
 		RoomId:       roomId,
@@ -83,16 +82,16 @@ func (w *WorldState) AddPlayer(charId storage.Identifier, char *Character, msgs 
 		LastActivity: time.Now(),
 		done:         make(chan struct{}),
 	}
-	w.players[charId] = ps
+	w.players[char.Id()] = ps
 	room := w.instances[zoneId].GetRoom(roomId)
 	w.mu.Unlock()
 
-	room.AddPlayer(charId, ps)
+	room.AddPlayer(char.Id(), ps)
 	return nil
 }
 
 // RemovePlayer removes a player from the world state and from the room instance.
-func (w *WorldState) RemovePlayer(charId storage.Identifier) error {
+func (w *WorldState) RemovePlayer(charId string) error {
 	w.mu.Lock()
 	ps, exists := w.players[charId]
 	if !exists {
@@ -109,7 +108,7 @@ func (w *WorldState) RemovePlayer(charId storage.Identifier) error {
 }
 
 // SetPlayerQuit sets the quit flag for a player.
-func (w *WorldState) SetPlayerQuit(charId storage.Identifier, quit bool) error {
+func (w *WorldState) SetPlayerQuit(charId string, quit bool) error {
 	w.mu.Lock()
 	defer w.mu.Unlock()
 
@@ -123,7 +122,7 @@ func (w *WorldState) SetPlayerQuit(charId storage.Identifier, quit bool) error {
 }
 
 // MarkPlayerActive resets the player's idle timer.
-func (w *WorldState) MarkPlayerActive(charId storage.Identifier) {
+func (w *WorldState) MarkPlayerActive(charId string) {
 	w.mu.Lock()
 	defer w.mu.Unlock()
 
@@ -133,7 +132,7 @@ func (w *WorldState) MarkPlayerActive(charId storage.Identifier) {
 }
 
 // ForEachPlayer calls fn for each player in the world while holding the lock.
-func (w *WorldState) ForEachPlayer(fn func(storage.Identifier, *PlayerState)) {
+func (w *WorldState) ForEachPlayer(fn func(string, *PlayerState)) {
 	w.mu.Lock()
 	defer w.mu.Unlock()
 	for id, ps := range w.players {
@@ -156,9 +155,9 @@ func (w *WorldState) Tick(ctx context.Context) error {
 	}
 
 	// Regenerate out-of-combat entities.
-	w.ForEachPlayer(func(_ storage.Identifier, ps *PlayerState) {
-		if !ps.InCombat && ps.Character.CurrentHP < ps.Character.MaxHP {
-			ps.Character.Regenerate(1)
+	w.ForEachPlayer(func(_ string, ps *PlayerState) {
+		if !ps.InCombat && ps.Character.Get().CurrentHP < ps.Character.Get().MaxHP {
+			ps.Character.Get().Regenerate(1)
 		}
 	})
 	for _, zi := range w.instances {
@@ -181,12 +180,11 @@ type PlayerState struct {
 	subscriber Subscriber
 	msgs       chan []byte
 
-	CharId    storage.Identifier
-	Character *Character
+	Character storage.SmartIdentifier[*Character]
 
 	// Location
-	ZoneId storage.Identifier
-	RoomId storage.Identifier
+	ZoneId string
+	RoomId string
 
 	// Subscriptions
 	subs map[string]func()
@@ -222,17 +220,17 @@ func (p *PlayerState) Done() <-chan struct{} {
 }
 
 // Location returns the player's current zone and room.
-func (p *PlayerState) Location() (zoneId, roomId storage.Identifier) {
+func (p *PlayerState) Location() (zoneId, roomId string) {
 	return p.ZoneId, p.RoomId
 }
 
 // Move updates the player's location and room instance player lists.
 func (p *PlayerState) Move(fromRoom, toRoom *RoomInstance) {
-	toZoneId := storage.Identifier(toRoom.Room.Get().Zone.Id())
-	toRoomId := storage.Identifier(toRoom.Room.Id())
+	toZoneId := toRoom.Room.Get().Zone.Id()
+	toRoomId := toRoom.Room.Id()
 
-	fromRoom.RemovePlayer(p.CharId)
-	toRoom.AddPlayer(p.CharId, p)
+	fromRoom.RemovePlayer(p.Character.Id())
+	toRoom.AddPlayer(p.Character.Id(), p)
 
 	p.ZoneId = toZoneId
 	p.RoomId = toRoomId
@@ -305,9 +303,9 @@ func (p *PlayerState) Reattach(msgs chan []byte) {
 // SaveCharacter persists the character's current session state (location, inventory, etc.)
 // to the character store.
 func (ps *PlayerState) SaveCharacter(chars storage.Storer[*Character]) error {
-	ps.Character.LastZone = ps.ZoneId
-	ps.Character.LastRoom = ps.RoomId
-	return chars.Save(string(ps.CharId), ps.Character)
+	ps.Character.Get().LastZone = ps.ZoneId
+	ps.Character.Get().LastRoom = ps.RoomId
+	return chars.Save(string(ps.Character.Id()), ps.Character.Get())
 }
 
 // MarkLinkless sets the player as linkless and unsubscribes all NATS subscriptions

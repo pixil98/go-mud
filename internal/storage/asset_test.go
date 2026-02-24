@@ -129,26 +129,26 @@ func TestAsset_Validate(t *testing.T) {
 
 func TestIdentifier_String(t *testing.T) {
 	tests := map[string]struct {
-		id  Identifier
+		id  string
 		exp string
 	}{
 		"simple identifier": {
-			id:  Identifier("test"),
+			id:  "test",
 			exp: "test",
 		},
 		"empty identifier": {
-			id:  Identifier(""),
+			id:  "",
 			exp: "",
 		},
 		"identifier with hyphen": {
-			id:  Identifier("test-id-123"),
+			id:  "test-id-123",
 			exp: "test-id-123",
 		},
 	}
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			got := tt.id.String()
+			got := tt.id
 			if got != tt.exp {
 				t.Errorf("got %q, expected %q", got, tt.exp)
 			}

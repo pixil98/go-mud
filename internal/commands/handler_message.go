@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // MessageHandlerFactory creates handlers that publish messages to scoped groups.
@@ -55,16 +54,16 @@ func (f *MessageHandlerFactory) Create() (CommandFunc, error) {
 
 		// Send 2nd-person message to actor if configured
 		if senderMessage != "" {
-			if err := f.pub.Publish(game.SinglePlayer(cmdCtx.Session.CharId), nil, []byte(senderMessage)); err != nil {
+			if err := f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(senderMessage)); err != nil {
 				return err
 			}
 		}
 
 		// Send message to scope targets, excluding actor only if they got a sender_message
 		zoneId, roomId := cmdCtx.Session.Location()
-		var exclude []storage.Identifier
+		var exclude []string
 		if senderMessage != "" {
-			exclude = []storage.Identifier{cmdCtx.Session.CharId}
+			exclude = []string{cmdCtx.Session.Character.Id()}
 		}
 
 		switch scope {

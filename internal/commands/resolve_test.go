@@ -20,7 +20,7 @@ type mockFinder struct {
 
 func (f *mockFinder) FindPlayer(name string) *game.PlayerState {
 	for _, ps := range f.players {
-		if ps.Character != nil && ps.Character.MatchName(name) {
+		if ps.Character.Get().MatchName(name) {
 			return ps
 		}
 	}
@@ -76,8 +76,7 @@ func (s *mockScopes) SpacesFor(Scope, *game.Character, *game.PlayerState) ([]Sea
 
 func TestFindTarget_Player(t *testing.T) {
 	bob := &game.PlayerState{
-		CharId:    "bob",
-		Character: &game.Character{Name: "Bob"},
+		Character: storage.NewResolvedSmartIdentifier("bob", &game.Character{Name: "Bob"}),
 	}
 
 	tests := map[string]struct {
@@ -122,7 +121,7 @@ func TestFindTarget_Player(t *testing.T) {
 			spaces: []SearchSpace{
 				{Finder: &mockFinder{players: map[string]*game.PlayerState{"bob": bob}}},
 				{Finder: &mockFinder{players: map[string]*game.PlayerState{
-					"bob2": {CharId: "bob2", Character: &game.Character{Name: "Bob2"}},
+					"bob2": {Character: storage.NewResolvedSmartIdentifier("bob2", &game.Character{Name: "Bob2"})},
 				}}},
 			},
 			name:          "bob",
@@ -299,8 +298,7 @@ func TestFindTarget_Object(t *testing.T) {
 
 func TestFindTarget_Combined(t *testing.T) {
 	bob := &game.PlayerState{
-		CharId:    "bob",
-		Character: &game.Character{Name: "Bob"},
+		Character: storage.NewResolvedSmartIdentifier("bob", &game.Character{Name: "Bob"}),
 	}
 	guard := &game.MobileInstance{
 		InstanceId: "guard-1",
@@ -392,7 +390,7 @@ func TestFindTarget_Exit(t *testing.T) {
 				},
 				exits: map[string]game.Exit{"north": {}},
 			}}},
-			name:    "north",
+			name:         "north",
 			expDirection: "",
 		},
 	}
@@ -440,7 +438,7 @@ func TestFindTarget_Exit(t *testing.T) {
 func TestFindTarget_TypeFiltering(t *testing.T) {
 	finder := &mockFinder{
 		players: map[string]*game.PlayerState{
-			"bob": {CharId: "bob", Character: &game.Character{Name: "Bob"}},
+			"bob": {Character: storage.NewResolvedSmartIdentifier("bob", &game.Character{Name: "Bob"})},
 		},
 		mobs: map[string]*game.MobileInstance{
 			"bob-1": {InstanceId: "bob-1", Mobile: storage.NewResolvedSmartIdentifier("bob", &game.Mobile{Aliases: []string{"bob"}, ShortDesc: "a mob named bob"})},
@@ -462,8 +460,7 @@ func TestFindTarget_TypeFiltering(t *testing.T) {
 
 func TestResolveSpecs(t *testing.T) {
 	bob := &game.PlayerState{
-		CharId:    "bob",
-		Character: &game.Character{Name: "Bob"},
+		Character: storage.NewResolvedSmartIdentifier("bob", &game.Character{Name: "Bob"}),
 	}
 	finder := &mockFinder{
 		players: map[string]*game.PlayerState{"bob": bob},
@@ -534,7 +531,7 @@ func TestResolveSpecs(t *testing.T) {
 	}
 
 	actor := &game.Character{Name: "Actor"}
-	session := &game.PlayerState{CharId: "actor", Character: actor}
+	session := &game.PlayerState{Character: storage.NewResolvedSmartIdentifier("actor", actor)}
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
@@ -656,7 +653,7 @@ func TestResolveSpecs_ScopeTarget(t *testing.T) {
 	}
 
 	actor := &game.Character{Name: "Actor"}
-	session := &game.PlayerState{CharId: "actor", Character: actor}
+	session := &game.PlayerState{Character: storage.NewResolvedSmartIdentifier("actor", actor)}
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {

@@ -9,7 +9,6 @@ import (
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/listener"
 	"github.com/pixil98/go-mud/internal/messaging"
-	"github.com/pixil98/go-mud/internal/storage"
 	"github.com/pixil98/go-service"
 )
 
@@ -57,8 +56,7 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	// Create combat manager
 	defaultZone := cfg.PlayerManager.DefaultZone
 	defaultRoom := cfg.PlayerManager.DefaultRoom
-	combatEvents := combat.NewCombatEventHandler(world, publisher,
-		storage.Identifier(defaultZone), storage.Identifier(defaultRoom))
+	combatEvents := combat.NewCombatEventHandler(world, publisher, defaultZone, defaultRoom)
 	combatManager := combat.NewManager(publisher, world, combatEvents)
 
 	// Create command handler and compile all commands
