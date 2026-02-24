@@ -156,29 +156,6 @@ func (a *ActorInstance) Regenerate(amount int) {
 	}
 }
 
-// Condition returns a description of the actor's health based on HP percentage.
-func (a *ActorInstance) Condition() string {
-	if a.MaxHP <= 0 {
-		return "is in excellent condition"
-	}
-	pct := (a.CurrentHP * 100) / a.MaxHP
-	switch {
-	case pct >= 100:
-		return "is in excellent condition"
-	case pct >= 90:
-		return "has a few scratches"
-	case pct >= 75:
-		return "has some small wounds"
-	case pct >= 50:
-		return "has quite a few wounds"
-	case pct >= 30:
-		return "has some big nasty wounds"
-	case pct >= 15:
-		return "looks pretty hurt"
-	default:
-		return "is in awful condition"
-	}
-}
 
 // Inventory holds object instances carried by a character or mobile.
 // All methods are safe for concurrent use.

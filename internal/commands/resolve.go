@@ -46,13 +46,39 @@ type ObjectRemover interface {
 
 // --- Ref types ---
 
+// actorCondition returns a description of an actor's health based on HP percentage.
+func actorCondition(currentHP, maxHP int) string {
+	if maxHP <= 0 {
+		return "is in excellent condition"
+	}
+	pct := (currentHP * 100) / maxHP
+	switch {
+	case pct >= 100:
+		return "is in excellent condition"
+	case pct >= 90:
+		return "has a few scratches"
+	case pct >= 75:
+		return "has some small wounds"
+	case pct >= 50:
+		return "has quite a few wounds"
+	case pct >= 30:
+		return "has some big nasty wounds"
+	case pct >= 15:
+		return "looks pretty hurt"
+	default:
+		return "is in awful condition"
+	}
+}
+
 // describeActor returns a detailed description for a player or mob,
-// including equipped items if any.
-func describeActor(description, name string, eq *game.Equipment) string {
+// including condition and equipped items.
+func describeActor(description, name string, actor *game.ActorInstance) string {
+	cName := display.Capitalize(name)
 	lines := []string{display.Wrap(description)}
-	if eqLines := FormatEquippedItems(eq); eqLines != nil {
+	lines = append(lines, fmt.Sprintf("%s %s.", cName, actorCondition(actor.CurrentHP, actor.MaxHP)))
+	if eqLines := FormatEquippedItems(actor.Equipment); eqLines != nil {
 		lines = append(lines, "")
-		lines = append(lines, fmt.Sprintf("%s is using:", name))
+		lines = append(lines, fmt.Sprintf("%s is using:", cName))
 		lines = append(lines, eqLines...)
 	}
 	return strings.Join(lines, "\n")
@@ -80,7 +106,7 @@ func playerRefFromState(ps *game.PlayerState) *PlayerRef {
 
 // Describe returns a detailed description of the player, including equipped items.
 func (r *PlayerRef) Describe() string {
-	return describeActor(r.Description, r.Name, r.session.Character.Equipment)
+	return describeActor(r.Description, r.Name, &r.session.Character.ActorInstance)
 }
 
 // MobileRef is the template-facing view of a resolved mob.
@@ -105,7 +131,7 @@ func mobRefFromInstance(mi *game.MobileInstance) *MobileRef {
 
 // Describe returns a detailed description of the mob, including equipped items.
 func (r *MobileRef) Describe() string {
-	return describeActor(r.Description, r.Name, r.instance.Equipment)
+	return describeActor(r.Description, r.Name, &r.instance.ActorInstance)
 }
 
 // ObjectRef is the template-facing view of a resolved object.
