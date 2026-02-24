@@ -279,8 +279,14 @@ func (p *PlayerState) UnsubscribeAll() {
 }
 
 // Kick closes the done channel, signaling the active Play() goroutine to exit.
+// It is safe to call multiple times; subsequent calls are no-ops.
 func (p *PlayerState) Kick() {
-	close(p.done)
+	select {
+	case <-p.done:
+		// already closed
+	default:
+		close(p.done)
+	}
 }
 
 // Reattach swaps the msgs channel and done channel for a reconnecting player.
