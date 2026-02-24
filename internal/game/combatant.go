@@ -18,11 +18,49 @@ func (c *PlayerCombatant) CombatID() string       { return fmt.Sprintf("player:%
 func (c *PlayerCombatant) CombatName() string      { return c.Character.Name }
 func (c *PlayerCombatant) CombatSide() combat.Side { return combat.SidePlayer }
 func (c *PlayerCombatant) IsAlive() bool           { return c.Character.CurrentHP > 0 }
-func (c *PlayerCombatant) AC() int                 { return 10 }
-func (c *PlayerCombatant) AttackMod() int          { return c.Character.Level / 2 }
-func (c *PlayerCombatant) DamageDice() int         { return 1 }
-func (c *PlayerCombatant) DamageSides() int        { return 4 }
-func (c *PlayerCombatant) DamageMod() int          { return 0 }
+
+func (c *PlayerCombatant) AC() int {
+	stats := c.Character.EffectiveStats()
+	return 10 + stats[StatDEX].Mod() + c.Character.Equipment.ACBonus()
+}
+
+func (c *PlayerCombatant) Attacks() []combat.Attack {
+	stats := c.Character.EffectiveStats()
+	strMod := stats[StatSTR].Mod()
+	attackMod := strMod + c.Character.Level/2
+
+	var attacks []combat.Attack
+	for _, slot := range c.Character.Equipment.Objs {
+		if slot.Slot != "wield" || slot.Obj == nil {
+			continue
+		}
+		def := slot.Obj.Object.Get()
+		dice, sides := def.DamageDice, def.DamageSides
+		if dice == 0 {
+			dice = 1
+		}
+		if sides == 0 {
+			sides = 4
+		}
+		attacks = append(attacks, combat.Attack{
+			Mod:         attackMod,
+			DamageDice:  dice,
+			DamageSides: sides,
+			DamageMod:   strMod + def.DamageMod,
+		})
+	}
+
+	// Unarmed fallback
+	if len(attacks) == 0 {
+		attacks = append(attacks, combat.Attack{
+			Mod:         attackMod,
+			DamageDice:  1,
+			DamageSides: 4,
+			DamageMod:   strMod,
+		})
+	}
+	return attacks
+}
 
 func (c *PlayerCombatant) ApplyDamage(dmg int) {
 	c.Character.CurrentHP -= dmg
@@ -45,11 +83,17 @@ func (c *MobCombatant) CombatName() string      { return c.Instance.Mobile.Get()
 func (c *MobCombatant) CombatSide() combat.Side { return combat.SideMob }
 func (c *MobCombatant) IsAlive() bool           { return c.Instance.CurrentHP > 0 }
 
-func (c *MobCombatant) AC() int          { return c.Instance.Mobile.Get().AC }
-func (c *MobCombatant) AttackMod() int   { return c.Instance.Mobile.Get().AttackMod }
-func (c *MobCombatant) DamageDice() int  { return c.Instance.Mobile.Get().DamageDice }
-func (c *MobCombatant) DamageSides() int { return c.Instance.Mobile.Get().DamageSides }
-func (c *MobCombatant) DamageMod() int   { return c.Instance.Mobile.Get().DamageMod }
+func (c *MobCombatant) AC() int { return c.Instance.Mobile.Get().AC }
+
+func (c *MobCombatant) Attacks() []combat.Attack {
+	def := c.Instance.Mobile.Get()
+	return []combat.Attack{{
+		Mod:         def.AttackMod,
+		DamageDice:  def.DamageDice,
+		DamageSides: def.DamageSides,
+		DamageMod:   def.DamageMod,
+	}}
+}
 
 func (c *MobCombatant) ApplyDamage(dmg int) {
 	c.Instance.CurrentHP -= dmg
