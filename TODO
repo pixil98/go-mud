@@ -1,0 +1,3 @@
+# TODOs
+- The `You receive 60 experience points.` message displays before the R.I.P. message. It should display in the same block after the R.I.P. message.
+- Storage.Identifier is used in a lot of places, but in all meaningful ways has been replaced with SmartIdentifier and is just causing a lot of type casting. We should remove it and just use strings.
