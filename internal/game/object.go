@@ -44,14 +44,10 @@ type Object struct {
 	ShortDesc string `json:"short_desc"`
 
 	// LongDesc is shown when the object is on the ground in a room
-	// (e.g., "A rusty sword lies discarded in the corner.")
 	LongDesc string `json:"long_desc"`
 
 	// DetailedDesc is shown when a player looks at the object
 	DetailedDesc string `json:"detailed_desc"`
-
-	// TypeStr is the object type from JSON
-	TypeStr string `json:"type"`
 
 	// Flags are boolean markers for object properties (e.g., "wearable", "container", "nodrop")
 	Flags []string `json:"flags,omitempty"`
