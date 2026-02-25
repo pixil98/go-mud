@@ -2,7 +2,6 @@ package game
 
 import (
 	"fmt"
-	"sort"
 	"strings"
 	"sync"
 
@@ -63,22 +62,6 @@ func (a *Actor) statSections() []StatSection {
 		{Lines: []StatLine{{Value: strings.Join(parts, " | "), Center: true}}},
 	}
 
-	if a.Race.Get() != nil && len(a.Race.Get().Stats) > 0 {
-		keys := make([]string, 0, len(a.Race.Get().Stats))
-		for k := range a.Race.Get().Stats {
-			keys = append(keys, k)
-		}
-		sort.Strings(keys)
-		var statParts []string
-		for _, k := range keys {
-			statParts = append(statParts, fmt.Sprintf("%s: %d", strings.ToUpper(k), a.Race.Get().Stats[k]))
-		}
-		sections = append(sections, StatSection{
-			Header: "Stats",
-			Lines:  []StatLine{{Value: "  " + strings.Join(statParts, "  ")}},
-		})
-	}
-
 	if a.Race.Get() != nil && len(a.Race.Get().Perks) > 0 {
 		var lines []StatLine
 		for _, p := range a.Race.Get().Perks {
@@ -119,7 +102,7 @@ func (p *Pronoun) Selector() string {
 type Race struct {
 	Name         string         `json:"name"`
 	Abbreviation string         `json:"abbreviation"`
-	Stats        map[string]int `json:"stats"`
+	StatMods     map[StatKey]int `json:"stat_mods"`
 	Perks        []string       `json:"perks"`
 	WearSlots    []string       `json:"wear_slots,omitempty"`
 }
@@ -160,7 +143,19 @@ func (r *Race) Selector() string {
 type ActorInstance struct {
 	Inventory *Inventory `json:"inventory,omitempty"`
 	Equipment *Equipment `json:"equipment,omitempty"`
+
+	MaxHP     int `json:"max_hp,omitempty"`
+	CurrentHP int `json:"current_hp,omitempty"`
 }
+
+// Regenerate heals the actor by the given amount, capping at MaxHP.
+func (a *ActorInstance) Regenerate(amount int) {
+	a.CurrentHP += amount
+	if a.CurrentHP > a.MaxHP {
+		a.CurrentHP = a.MaxHP
+	}
+}
+
 
 // Inventory holds object instances carried by a character or mobile.
 // All methods are safe for concurrent use.
@@ -306,6 +301,36 @@ func (eq *Equipment) FindObj(name string) *ObjectInstance {
 		}
 	}
 	return nil
+}
+
+// ACBonus returns the total AC bonus from all equipped items.
+func (eq *Equipment) ACBonus() int {
+	eq.mu.RLock()
+	defer eq.mu.RUnlock()
+
+	total := 0
+	for _, slot := range eq.Objs {
+		if slot.Obj != nil {
+			total += slot.Obj.Object.Get().ACBonus
+		}
+	}
+	return total
+}
+
+// StatBonuses returns the combined stat modifiers from all equipped items.
+func (eq *Equipment) StatBonuses() map[StatKey]int {
+	eq.mu.RLock()
+	defer eq.mu.RUnlock()
+
+	bonuses := make(map[StatKey]int)
+	for _, slot := range eq.Objs {
+		if slot.Obj != nil {
+			for k, v := range slot.Obj.Object.Get().StatMods {
+				bonuses[k] += v
+			}
+		}
+	}
+	return bonuses
 }
 
 // RemoveObj finds and unequips an object by instance ID.

@@ -12,12 +12,12 @@ import (
 type Storer[T ValidatingSpec] interface {
 	Save(string, T) error
 	Get(string) T
-	GetAll() map[Identifier]T
+	GetAll() map[string]T
 }
 
 type FileStore[T ValidatingSpec] struct {
 	path    string
-	records map[Identifier]T
+	records map[string]T
 
 	mu sync.RWMutex
 }
@@ -25,7 +25,7 @@ type FileStore[T ValidatingSpec] struct {
 func NewFileStore[T ValidatingSpec](path string) (*FileStore[T], error) {
 	s := &FileStore[T]{
 		path:    path,
-		records: map[Identifier]T{},
+		records: map[string]T{},
 	}
 
 	err := s.load()
@@ -41,7 +41,7 @@ func (s *FileStore[T]) load() error {
 	defer s.mu.Unlock()
 
 	// Clear existing records when loading
-	s.records = map[Identifier]T{}
+	s.records = map[string]T{}
 
 	err := filepath.Walk(s.path, func(path string, info os.FileInfo, walkErr error) error {
 		if walkErr != nil {
@@ -84,12 +84,12 @@ func (s *FileStore[T]) Save(id string, o T) error {
 	defer s.mu.Unlock()
 
 	// Update cached value
-	s.records[Identifier(id)] = o
+	s.records[id] = o
 
 	// Save asset to file
 	asset := &Asset[T]{
 		Version:    1,
-		Identifier: Identifier(id),
+		Identifier: id,
 		Spec:       o,
 	}
 
@@ -119,7 +119,7 @@ func (s *FileStore[T]) Get(id string) T {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 
-	val, ok := s.records[Identifier(id)]
+	val, ok := s.records[id]
 
 	if !ok {
 		//TODO: maybe this should error(?) I wouldn't want to kill the server for it though
@@ -130,11 +130,11 @@ func (s *FileStore[T]) Get(id string) T {
 	return val
 }
 
-func (s *FileStore[T]) GetAll() map[Identifier]T {
+func (s *FileStore[T]) GetAll() map[string]T {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 
-	vals := map[Identifier]T{}
+	vals := map[string]T{}
 	for id, v := range s.records {
 		vals[id] = v
 	}
@@ -142,7 +142,7 @@ func (s *FileStore[T]) GetAll() map[Identifier]T {
 	return vals
 }
 
-func (s *FileStore[T]) filePath(id Identifier) string {
+func (s *FileStore[T]) filePath(id string) string {
 	return filepath.Join(s.path, fmt.Sprintf("%s.json", id))
 }
 

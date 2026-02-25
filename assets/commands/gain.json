@@ -1,0 +1,10 @@
+{
+    "version": 1,
+    "id": "gain",
+    "spec": {
+        "handler": "gain",
+        "category": "advancement",
+        "priority": 5,
+        "description": "Level up when you have enough experience."
+    }
+}

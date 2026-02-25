@@ -27,7 +27,7 @@ type SelectableStorer[T validatingSelectable] struct {
 }
 
 type option[T validatingSelectable] struct {
-	id  Identifier
+	id  string
 	val T
 }
 
@@ -82,7 +82,7 @@ func (s *SelectableStorer[T]) build() {
 	s.output = rows
 }
 
-func (s *SelectableStorer[T]) Prompt(rw io.ReadWriter, prompt string) (Identifier, error) {
+func (s *SelectableStorer[T]) Prompt(rw io.ReadWriter, prompt string) (string, error) {
 
 	_, err := fmt.Fprintf(rw, "%s\n", prompt)
 	if err != nil {
@@ -124,7 +124,7 @@ func (s *SelectableStorer[T]) Prompt(rw io.ReadWriter, prompt string) (Identifie
 	return s.Select(i), nil
 }
 
-func (s *SelectableStorer[T]) Select(i int) Identifier {
+func (s *SelectableStorer[T]) Select(i int) string {
 	if i < 1 || i > len(s.options) {
 		return ""
 	}

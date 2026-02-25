@@ -23,10 +23,10 @@ type ObjectHolder interface {
 type MoveObjHandlerFactory struct {
 	world *game.WorldState
 	chars storage.Storer[*game.Character]
-	pub   Publisher
+	pub   game.Publisher
 }
 
-func NewMoveObjHandlerFactory(world *game.WorldState, chars storage.Storer[*game.Character], pub Publisher) *MoveObjHandlerFactory {
+func NewMoveObjHandlerFactory(world *game.WorldState, chars storage.Storer[*game.Character], pub game.Publisher) *MoveObjHandlerFactory {
 	return &MoveObjHandlerFactory{world: world, pub: pub}
 }
 
@@ -38,7 +38,9 @@ func (f *MoveObjHandlerFactory) Spec() *HandlerSpec {
 		},
 		Config: []ConfigRequirement{
 			{Name: "destination", Required: true},
-			{Name: "message", Required: true},
+			{Name: "room_message", Required: true},
+			{Name: "self_message", Required: false},
+			{Name: "target_message", Required: false},
 			{Name: "no_self_target", Required: false},
 		},
 	}
@@ -67,7 +69,7 @@ func (f *MoveObjHandlerFactory) Create() (CommandFunc, error) {
 		// Check self-targeting if configured
 		if noSelf := cmdCtx.Config["no_self_target"]; noSelf != "" {
 			ref := cmdCtx.Targets[noSelf]
-			if ref != nil && ref.Player != nil && ref.Player.CharId == cmdCtx.Session.CharId {
+			if ref != nil && ref.Player != nil && ref.Player.CharId == cmdCtx.Session.Character.Id() {
 				return NewUserError("You can't give something to yourself.")
 			}
 		}
@@ -87,10 +89,22 @@ func (f *MoveObjHandlerFactory) Create() (CommandFunc, error) {
 		// Move
 		dest.AddObj(oi)
 
-		// Broadcast to room
 		if f.pub != nil {
-			msg := cmdCtx.Config["message"]
-			return f.pub.PublishToRoom(cmdCtx.Session.ZoneId, cmdCtx.Session.RoomId, []byte(msg))
+			exclude := []string{cmdCtx.Session.Character.Id()}
+
+			if selfMsg := cmdCtx.Config["self_message"]; selfMsg != "" {
+				_ = f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(selfMsg))
+			}
+
+			if targetMsg := cmdCtx.Config["target_message"]; targetMsg != "" {
+				if ref := cmdCtx.Targets[cmdCtx.Config["destination"]]; ref != nil && ref.Type == TargetTypePlayer {
+					_ = f.pub.Publish(game.SinglePlayer(ref.Player.CharId), nil, []byte(targetMsg))
+					exclude = append(exclude, ref.Player.CharId)
+				}
+			}
+
+			room := cmdCtx.World.Instances()[cmdCtx.Session.ZoneId].GetRoom(cmdCtx.Session.RoomId)
+			_ = f.pub.Publish(room, exclude, []byte(cmdCtx.Config["room_message"]))
 		}
 
 		return nil
@@ -121,7 +135,7 @@ func (f *MoveObjHandlerFactory) resolveDestination(cmdCtx *CommandContext) (Obje
 // For mobile targets, returns their inventory.
 func (f *MoveObjHandlerFactory) holderForTarget(ref *TargetRef) (ObjectHolder, error) {
 	if ref.Player != nil {
-		char := f.chars.Get(string(ref.Player.CharId))
+		char := f.chars.Get(ref.Player.CharId)
 		if char == nil {
 			return nil, NewUserError(fmt.Sprintf("%s is no longer here.", ref.Player.Name))
 		}

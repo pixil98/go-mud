@@ -7,7 +7,9 @@
         "description": "Give an item to another player or mobile.",
         "config": {
             "destination": "destination",
-            "message": "{{ .Actor.Name }} gives {{ .Targets.item.Obj.Name }} to {{ .Targets.destination.Name }}.",
+            "self_message": "You give {{ .Targets.item.Obj.Name }} to {{ .Targets.destination.Name }}.",
+            "target_message": "{{ .Actor.Name }} gives you {{ .Targets.item.Obj.Name }}.",
+            "room_message": "{{ .Actor.Name }} gives {{ .Targets.item.Obj.Name }} to {{ .Targets.destination.Name }}.",
             "no_self_target": "destination"
         },
         "targets": [

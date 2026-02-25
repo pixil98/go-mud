@@ -2,7 +2,7 @@
     "version": 1,
     "id": "millbrook-guard",
     "spec": {
-        "aliases": ["guard", "town"],
+        "aliases": ["burly", "guard", "town"],
         "race": "human-35",
         "short_desc": "the town guard",
         "long_desc": "A burly town guard in chain mail stands here, watching the square.",
@@ -14,6 +14,13 @@
             "head": {"object_id": "millbrook-helmet"},
             "body": {"object_id": "millbrook-chainmail"},
             "wield": {"object_id": "millbrook-shortsword"}
-        }
+        },
+        "level": 5,
+        "max_hp": 50,
+        "ac": 16,
+        "attack_mod": 5,
+        "damage_dice": 1,
+        "damage_sides": 8,
+        "damage_mod": 3
     }
 }

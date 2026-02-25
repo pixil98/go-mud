@@ -6,7 +6,7 @@
         "category": "communication",
         "description": "Emote something to everyone in the room.",
         "config": {
-            "recipient_channel": "zone-{{ .Session.ZoneId }}-room-{{ .Session.RoomId }}",
+            "scope": "room",
             "recipient_message": "{{ .Actor.Name }} {{ .Inputs.text }}"
         },
         "inputs": [

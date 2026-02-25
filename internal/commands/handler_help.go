@@ -6,17 +6,18 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // HelpHandlerFactory creates handlers that display command help.
 type HelpHandlerFactory struct {
 	commands storage.Storer[*Command]
-	pub      Publisher
+	pub      game.Publisher
 }
 
 // NewHelpHandlerFactory creates a new HelpHandlerFactory.
-func NewHelpHandlerFactory(commands storage.Storer[*Command], pub Publisher) *HelpHandlerFactory {
+func NewHelpHandlerFactory(commands storage.Storer[*Command], pub game.Publisher) *HelpHandlerFactory {
 	return &HelpHandlerFactory{commands: commands, pub: pub}
 }
 
@@ -36,15 +37,15 @@ func (f *HelpHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, cmdCtx *CommandContext) error {
 		command := cmdCtx.Config["command"]
 		if command != "" {
-			return f.showCommand(command, cmdCtx.Session.CharId)
+			return f.showCommand(command, cmdCtx.Session.Character.Id())
 		}
 
-		return f.listCommands(cmdCtx.Session.CharId)
+		return f.listCommands(cmdCtx.Session.Character.Id())
 	}, nil
 }
 
 // listCommands displays all commands grouped by category.
-func (f *HelpHandlerFactory) listCommands(charId storage.Identifier) error {
+func (f *HelpHandlerFactory) listCommands(charId string) error {
 	all := f.commands.GetAll()
 
 	// Group commands by category
@@ -54,7 +55,7 @@ func (f *HelpHandlerFactory) listCommands(charId storage.Identifier) error {
 		if category == "" {
 			category = "other"
 		}
-		groups[category] = append(groups[category], string(id))
+		groups[category] = append(groups[category], id)
 	}
 
 	// Sort categories and commands within each category
@@ -73,13 +74,13 @@ func (f *HelpHandlerFactory) listCommands(charId storage.Identifier) error {
 	}
 
 	if f.pub != nil {
-		return f.pub.PublishToPlayer(charId, []byte(strings.Join(lines, "\n")))
+		return f.pub.Publish(game.SinglePlayer(charId), nil, []byte(strings.Join(lines, "\n")))
 	}
 	return nil
 }
 
 // showCommand displays detailed help for a specific command.
-func (f *HelpHandlerFactory) showCommand(name string, charId storage.Identifier) error {
+func (f *HelpHandlerFactory) showCommand(name string, charId string) error {
 	cmd := f.commands.Get(strings.ToLower(name))
 	if cmd == nil {
 		return NewUserError(fmt.Sprintf("Command %q is unknown.", name))
@@ -113,7 +114,7 @@ func (f *HelpHandlerFactory) showCommand(name string, charId storage.Identifier)
 	}
 
 	if f.pub != nil {
-		return f.pub.PublishToPlayer(charId, []byte(strings.Join(lines, "\n")))
+		return f.pub.Publish(game.SinglePlayer(charId), nil, []byte(strings.Join(lines, "\n")))
 	}
 	return nil
 }

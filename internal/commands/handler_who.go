@@ -7,17 +7,16 @@ import (
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // WhoHandlerFactory creates handlers that list online players.
 type WhoHandlerFactory struct {
 	world *game.WorldState
-	pub   Publisher
+	pub   game.Publisher
 }
 
 // NewWhoHandlerFactory creates a new WhoHandlerFactory.
-func NewWhoHandlerFactory(world *game.WorldState, pub Publisher) *WhoHandlerFactory {
+func NewWhoHandlerFactory(world *game.WorldState, pub game.Publisher) *WhoHandlerFactory {
 	return &WhoHandlerFactory{world: world, pub: pub}
 }
 
@@ -33,20 +32,21 @@ func (f *WhoHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, cmdCtx *CommandContext) error {
 		var lines []string
 
-		f.world.ForEachPlayer(func(charId storage.Identifier, state game.PlayerState) {
+		f.world.ForEachPlayer(func(charId string, state *game.PlayerState) {
 			if state.Linkless {
 				return
 			}
-			parts := []string{state.Character.Race.Get().Abbreviation}
-			parts = append(parts, strconv.Itoa(state.Character.Level))
+			char := state.Character.Get()
+			parts := []string{char.Race.Get().Abbreviation}
+			parts = append(parts, strconv.Itoa(char.Level))
 			bracket := strings.Join(parts, " ")
 
-			lines = append(lines, fmt.Sprintf("[%s] %s %s", bracket, state.Character.Name, state.Character.Title))
+			lines = append(lines, fmt.Sprintf("[%s] %s %s", bracket, char.Name, char.Title))
 		})
 
 		output := "Players Online:\n" + strings.Join(lines, "\n")
 		if f.pub != nil {
-			return f.pub.PublishToPlayer(cmdCtx.Session.CharId, []byte(output))
+			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(output))
 		}
 
 		return nil

@@ -7,7 +7,8 @@
         "description": "Remove a worn item back to your inventory.",
         "config": {
             "destination": "inventory",
-            "message": "{{ .Actor.Name }} removes {{ .Targets.item.Obj.Name }}."
+            "self_message": "You remove {{ .Targets.item.Obj.Name }}.",
+            "room_message": "{{ .Actor.Name }} removes {{ .Targets.item.Obj.Name }}."
         },
         "targets": [
             {"name": "item", "type": ["object"], "scope": ["equipment"], "input": "item", "not_found": "You aren't wearing anything called '{{ .Inputs.item }}'."}

@@ -6,7 +6,8 @@
         "category": "communication",
         "description": "Shout something to everyone in the zone.",
         "config": {
-            "recipient_channel": "zone-{{ .Session.ZoneId }}",
+            "scope": "zone",
+            "sender_message": "{{ .Color.Yellow }}You shout, \"{{ .Inputs.text }}\"{{ .Color.Reset }}",
             "recipient_message": "{{ .Color.Yellow }}{{ .Actor.Name }} shouts, \"{{ .Inputs.text }}\"{{ .Color.Reset }}"
         },
         "inputs": [

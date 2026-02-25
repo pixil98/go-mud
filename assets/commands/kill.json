@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "kill",
+    "spec": {
+        "handler": "kill",
+        "category": "combat",
+        "priority": 5,
+        "description": "Attack a mobile in the room.",
+        "targets": [
+            {
+                "name": "target",
+                "type": ["mobile"],
+                "scope": ["room"],
+                "input": "target",
+                "not_found": "You don't see '{{ .Inputs.target }}' here."
+            }
+        ],
+        "inputs": [
+            {
+                "name": "target",
+                "type": "string",
+                "required": true,
+                "missing": "Kill what?"
+            }
+        ]
+    }
+}

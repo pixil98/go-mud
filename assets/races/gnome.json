@@ -4,7 +4,7 @@
     "spec": {
         "name": "Gnome",
         "abbreviation": "Gn",
-        "stats": {
+        "stat_mods": {
             "str": -2,
             "con": 2
         },

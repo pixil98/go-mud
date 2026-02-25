@@ -60,7 +60,7 @@ type ZoneInstance struct {
 	nextReset        time.Time     // when zone should next reset (runtime only)
 	lifespanDuration time.Duration // parsed lifespan
 
-	rooms map[storage.Identifier]*RoomInstance
+	rooms map[string]*RoomInstance
 }
 
 func NewZoneInstance(zone storage.SmartIdentifier[*Zone]) (*ZoneInstance, error) {
@@ -70,7 +70,7 @@ func NewZoneInstance(zone storage.SmartIdentifier[*Zone]) (*ZoneInstance, error)
 	}
 	zi := &ZoneInstance{
 		Zone:  zone,
-		rooms: make(map[storage.Identifier]*RoomInstance),
+		rooms: make(map[string]*RoomInstance),
 	}
 	if def.Lifespan != "" {
 		d, err := time.ParseDuration(def.Lifespan)
@@ -84,12 +84,13 @@ func NewZoneInstance(zone storage.SmartIdentifier[*Zone]) (*ZoneInstance, error)
 
 // AddRoom adds a room instance to the zone.
 func (z *ZoneInstance) AddRoom(ri *RoomInstance) {
-	z.rooms[storage.Identifier(ri.Room.Id())] = ri
+	z.rooms[ri.Room.Id()] = ri
 }
 
 // Reset checks reset conditions and respawns mobs/objects if appropriate.
 // If force is true, bypasses time/occupancy checks.
-func (z *ZoneInstance) Reset(force bool) error {
+// instances is the full set of zone instances for cross-zone door synchronization.
+func (z *ZoneInstance) Reset(force bool, instances map[string]*ZoneInstance) error {
 	now := time.Now()
 
 	if !force {
@@ -105,7 +106,7 @@ func (z *ZoneInstance) Reset(force bool) error {
 	}
 
 	for _, ri := range z.rooms {
-		err := ri.Reset()
+		err := ri.Reset(instances)
 		if err != nil {
 			return fmt.Errorf("resetting zone %q: %w", z.Zone.Id(), err)
 		}
@@ -120,6 +121,13 @@ func (z *ZoneInstance) Reset(force bool) error {
 	return nil
 }
 
+// ForEachPlayer yields each player across all rooms in the zone.
+func (z *ZoneInstance) ForEachPlayer(fn func(string, *PlayerState)) {
+	for _, ri := range z.rooms {
+		ri.ForEachPlayer(fn)
+	}
+}
+
 // IsOccupied returns true if any players are in any room of this zone.
 func (z *ZoneInstance) IsOccupied() bool {
 	for _, ri := range z.rooms {
@@ -130,7 +138,7 @@ func (z *ZoneInstance) IsOccupied() bool {
 	return false
 }
 
-func (z *ZoneInstance) GetRoom(roomId storage.Identifier) *RoomInstance {
+func (z *ZoneInstance) GetRoom(roomId string) *RoomInstance {
 	return z.rooms[roomId]
 }
 

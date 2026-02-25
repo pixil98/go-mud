@@ -254,7 +254,7 @@ func TestHandler_resolve(t *testing.T) {
 	deltaCmd := mkCmd(0)
 
 	h := &Handler{
-		compiled: map[storage.Identifier]*compiledCommand{
+		compiled: map[string]*compiledCommand{
 			"alpha": mkCmd(10),
 			"apple": mkCmd(0),
 			"beta":  mkCmd(5),
@@ -423,16 +423,16 @@ func TestHandler_compile(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			h := &Handler{
 				factories: map[string]HandlerFactory{"mock": factory},
-				compiled:  make(map[storage.Identifier]*compiledCommand),
+				compiled:  make(map[string]*compiledCommand),
 			}
 
 			for _, pre := range tt.preCompile {
-				if err := h.compile(storage.Identifier(pre.id), pre.cmd); err != nil {
+				if err := h.compile(pre.id, pre.cmd); err != nil {
 					t.Fatalf("pre-compile %q failed: %v", pre.id, err)
 				}
 			}
 
-			err := h.compile(storage.Identifier(tt.id), tt.cmd)
+			err := h.compile(tt.id, tt.cmd)
 
 			if tt.expErr != "" {
 				if err == nil {
@@ -449,7 +449,7 @@ func TestHandler_compile(t *testing.T) {
 			}
 
 			for _, expId := range tt.expIds {
-				if _, ok := h.compiled[storage.Identifier(expId)]; !ok {
+				if _, ok := h.compiled[expId]; !ok {
 					t.Errorf("expected %q in compiled map", expId)
 				}
 			}
@@ -600,7 +600,7 @@ func TestHandler_expandConfig(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			h := &Handler{}
 
-			session := &game.PlayerState{CharId: "alice", Character: tt.actor}
+			session := &game.PlayerState{Character: storage.NewResolvedSmartIdentifier("alice", tt.actor)}
 
 			expandedConfig, err := h.expandConfig(tt.config, tt.actor, session, tt.targets, tt.inputs)
 

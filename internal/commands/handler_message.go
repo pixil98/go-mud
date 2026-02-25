@@ -3,34 +3,29 @@ package commands
 import (
 	"context"
 	"fmt"
+
+	"github.com/pixil98/go-mud/internal/game"
 )
 
-// MessageHandlerFactory creates handlers that publish messages to channels.
+// MessageHandlerFactory creates handlers that publish messages to scoped groups.
 // Config:
-//   - recipient_channel (optional): template for the recipient's channel
-//   - recipient_message (required if recipient_channel set): template for message to recipient
-//   - sender_channel (optional): template for sender's channel (for confirmation)
-//   - sender_message (required if sender_channel set): template for sender confirmation
-//
-// TODO: This handler uses raw Publish with config-driven channel names. Evaluate whether
-// it can use typed Publisher methods now that plugins won't define custom channels.
+//   - scope (required): "room", "zone", "world", or "player"
+//   - recipient_message (required): template for message sent to scope targets
+//   - sender_message (optional): template for 2nd-person message sent to actor
 type MessageHandlerFactory struct {
-	pub Publisher
+	pub game.Publisher
 }
 
 // NewMessageHandlerFactory creates a new MessageHandlerFactory with a publisher.
-func NewMessageHandlerFactory(pub Publisher) *MessageHandlerFactory {
+func NewMessageHandlerFactory(pub game.Publisher) *MessageHandlerFactory {
 	return &MessageHandlerFactory{pub: pub}
 }
 
 func (f *MessageHandlerFactory) Spec() *HandlerSpec {
-	// Conditional requirements (e.g., recipient_message required when recipient_channel set)
-	// are handled by ValidateConfig below.
 	return &HandlerSpec{
 		Config: []ConfigRequirement{
-			{Name: "recipient_channel", Required: false},
-			{Name: "recipient_message", Required: false},
-			{Name: "sender_channel", Required: false},
+			{Name: "scope", Required: true},
+			{Name: "recipient_message", Required: true},
 			{Name: "sender_message", Required: false},
 		},
 		Targets: []TargetRequirement{
@@ -40,20 +35,12 @@ func (f *MessageHandlerFactory) Spec() *HandlerSpec {
 }
 
 func (f *MessageHandlerFactory) ValidateConfig(config map[string]any) error {
-	recipientChannel, _ := config["recipient_channel"].(string)
-	recipientMessage, _ := config["recipient_message"].(string)
-	if recipientChannel != "" && recipientMessage == "" {
-		return fmt.Errorf("recipient_message is required when recipient_channel is set")
-	}
-
-	senderChannel, _ := config["sender_channel"].(string)
-	senderMessage, _ := config["sender_message"].(string)
-	if senderChannel != "" && senderMessage == "" {
-		return fmt.Errorf("sender_message is required when sender_channel is set")
-	}
-
-	if recipientChannel == "" && senderChannel == "" {
-		return fmt.Errorf("at least one of recipient_channel or sender_channel is required")
+	scope, _ := config["scope"].(string)
+	switch scope {
+	case "room", "zone", "world", "player":
+		// valid
+	default:
+		return fmt.Errorf("scope must be room, zone, world, or player (got %q)", scope)
 	}
 
 	return nil
@@ -61,24 +48,42 @@ func (f *MessageHandlerFactory) ValidateConfig(config map[string]any) error {
 
 func (f *MessageHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		// Config values are already expanded by the framework
-		recipientChannel := cmdCtx.Config["recipient_channel"]
+		scope := cmdCtx.Config["scope"]
 		recipientMessage := cmdCtx.Config["recipient_message"]
-		senderChannel := cmdCtx.Config["sender_channel"]
 		senderMessage := cmdCtx.Config["sender_message"]
 
-		// Send confirmation to sender if configured
-		if senderChannel != "" {
-			if err := f.pub.Publish(senderChannel, []byte(senderMessage)); err != nil {
+		// Send 2nd-person message to actor if configured
+		if senderMessage != "" {
+			if err := f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(senderMessage)); err != nil {
 				return err
 			}
 		}
 
-		// Send message to recipient if configured
-		if recipientChannel != "" {
-			if err := f.pub.Publish(recipientChannel, []byte(recipientMessage)); err != nil {
-				return err
+		// Send message to scope targets, excluding actor only if they got a sender_message
+		zoneId, roomId := cmdCtx.Session.Location()
+		var exclude []string
+		if senderMessage != "" {
+			exclude = []string{cmdCtx.Session.Character.Id()}
+		}
+
+		switch scope {
+		case "room":
+			room := cmdCtx.World.Instances()[zoneId].GetRoom(roomId)
+			return f.pub.Publish(room, exclude, []byte(recipientMessage))
+
+		case "zone":
+			zone := cmdCtx.World.Instances()[zoneId]
+			return f.pub.Publish(zone, exclude, []byte(recipientMessage))
+
+		case "world":
+			return f.pub.Publish(cmdCtx.World, exclude, []byte(recipientMessage))
+
+		case "player":
+			target := cmdCtx.Targets["target"]
+			if target == nil || target.Player == nil {
+				return NewUserError("They're not here.")
 			}
+			return f.pub.Publish(game.SinglePlayer(target.Player.CharId), nil, []byte(recipientMessage))
 		}
 
 		return nil

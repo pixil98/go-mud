@@ -38,8 +38,8 @@ type PlayerManager struct {
 	dict       *game.Dictionary
 
 	loginFlow   *loginFlow
-	defaultZone storage.Identifier
-	defaultRoom storage.Identifier
+	defaultZone string
+	defaultRoom string
 
 	pronouns *storage.SelectableStorer[*game.Pronoun]
 	races    *storage.SelectableStorer[*game.Race]
@@ -54,8 +54,8 @@ func NewPlayerManager(cmd *commands.Handler, world *game.WorldState, dict *game.
 		world:           world,
 		dict:            dict,
 		loginFlow:       &loginFlow{chars: dict.Characters},
-		defaultZone:     storage.Identifier(defaultZone),
-		defaultRoom:     storage.Identifier(defaultRoom),
+		defaultZone:     defaultZone,
+		defaultRoom:     defaultRoom,
 		linklessTimeout: DefaultLinklessTimeout,
 		idleTimeout:     DefaultIdleTimeout,
 	}
@@ -75,10 +75,10 @@ func NewPlayerManager(cmd *commands.Handler, world *game.WorldState, dict *game.
 // Idle connected players are marked linkless and kicked, dropping their connection.
 func (m *PlayerManager) Tick(ctx context.Context) error {
 	now := time.Now()
-	var linklessExpired []storage.Identifier
-	var idleExpired []storage.Identifier
+	var linklessExpired []string
+	var idleExpired []string
 
-	m.world.ForEachPlayer(func(charId storage.Identifier, ps game.PlayerState) {
+	m.world.ForEachPlayer(func(charId string, ps *game.PlayerState) {
 		if ps.Linkless {
 			if now.Sub(ps.LinklessAt) >= m.linklessTimeout {
 				linklessExpired = append(linklessExpired, charId)
@@ -150,9 +150,9 @@ func (m *PlayerManager) newPlayer(conn io.ReadWriter) (*Player, error) {
 		return nil, fmt.Errorf("saving character: %w", err)
 	}
 
-	charId := storage.Identifier(strings.ToLower(char.Name))
+	charId := strings.ToLower(char.Name)
 	msgs := make(chan []byte, 100)
-	var zoneId, roomId storage.Identifier
+	var zoneId, roomId string
 
 	if ps := m.world.GetPlayer(charId); ps != nil {
 		// Player already in world — kick old connection and reattach
@@ -164,8 +164,10 @@ func (m *PlayerManager) newPlayer(conn io.ReadWriter) (*Player, error) {
 		_, _ = conn.Write([]byte("Reconnecting...\n"))
 	} else {
 		// Fresh login
-		zoneId, roomId = m.startingLocation(char)
-		err = m.world.AddPlayer(charId, m.dict.Characters.Get(charId.String()), msgs, zoneId, roomId)
+		char := storage.NewSmartIdentifier[*game.Character](charId)
+		char.Resolve(m.dict.Characters)
+		zoneId, roomId = m.startingLocation(char.Get())
+		err = m.world.AddPlayer(char, msgs, zoneId, roomId)
 		if err != nil {
 			return nil, fmt.Errorf("registering player in world: %w", err)
 		}
@@ -182,7 +184,7 @@ func (m *PlayerManager) newPlayer(conn io.ReadWriter) (*Player, error) {
 		done:       ps.Done(),
 	}
 
-	if err := m.subscribePlayer(ps, charId, zoneId, roomId); err != nil {
+	if err := m.subscribePlayer(ps, charId); err != nil {
 		_ = m.world.RemovePlayer(charId)
 		return nil, fmt.Errorf("subscribing player: %w", err)
 	}
@@ -197,8 +199,7 @@ func (m *PlayerManager) handleSessionEnd(charId string, playErr error) {
 		return
 	}
 
-	id := storage.Identifier(charId)
-	ps := m.world.GetPlayer(id)
+	ps := m.world.GetPlayer(charId)
 	if ps == nil {
 		return
 	}
@@ -209,7 +210,7 @@ func (m *PlayerManager) handleSessionEnd(charId string, playErr error) {
 
 	if ps.Quit {
 		ps.UnsubscribeAll()
-		_ = m.world.RemovePlayer(id)
+		_ = m.world.RemovePlayer(charId)
 		slog.Info("player quit", "charId", charId)
 	} else {
 		ps.MarkLinkless()
@@ -217,19 +218,10 @@ func (m *PlayerManager) handleSessionEnd(charId string, playErr error) {
 	}
 }
 
-// subscribePlayer subscribes the player to the standard NATS channels.
-func (m *PlayerManager) subscribePlayer(ps *game.PlayerState, charId storage.Identifier, zoneId, roomId storage.Identifier) error {
+// subscribePlayer subscribes the player to their individual NATS channel.
+func (m *PlayerManager) subscribePlayer(ps *game.PlayerState, charId string) error {
 	if err := ps.Subscribe(fmt.Sprintf("player-%s", charId)); err != nil {
 		return fmt.Errorf("subscribing to player channel: %w", err)
-	}
-	if err := ps.Subscribe("world"); err != nil {
-		return fmt.Errorf("subscribing to world channel: %w", err)
-	}
-	if err := ps.Subscribe(fmt.Sprintf("zone-%s", zoneId)); err != nil {
-		return fmt.Errorf("subscribing to zone channel: %w", err)
-	}
-	if err := ps.Subscribe(fmt.Sprintf("zone-%s-room-%s", zoneId, roomId)); err != nil {
-		return fmt.Errorf("subscribing to room channel: %w", err)
 	}
 	return nil
 }
@@ -253,7 +245,11 @@ func (m *PlayerManager) initCharacter(rw io.ReadWriter, char *game.Character) er
 	}
 
 	if char.Level == 0 {
-		char.Level = 1
+		char.Gain()
+	}
+
+	if char.BaseStats == nil {
+		char.BaseStats = game.DefaultBaseStats()
 	}
 
 	return nil
@@ -261,13 +257,13 @@ func (m *PlayerManager) initCharacter(rw io.ReadWriter, char *game.Character) er
 
 // startingLocation returns the zone and room a character should start in.
 // Uses saved location if the zone and room are still valid, otherwise falls back to defaults.
-func (m *PlayerManager) startingLocation(char *game.Character) (storage.Identifier, storage.Identifier) {
+func (m *PlayerManager) startingLocation(char *game.Character) (string, string) {
 	if char.LastZone == "" || char.LastRoom == "" {
 		return m.defaultZone, m.defaultRoom
 	}
 
 	// Verify zone exists
-	if m.dict.Zones.Get(string(char.LastZone)) == nil {
+	if m.dict.Zones.Get(char.LastZone) == nil {
 		slog.Warn("saved zone not found, using default", "char", char.Name, "zone", char.LastZone)
 		return m.defaultZone, m.defaultRoom
 	}

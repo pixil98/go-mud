@@ -11,10 +11,10 @@ import (
 // Targets:
 //   - target (required): the object to wear
 type WearHandlerFactory struct {
-	pub Publisher
+	pub game.Publisher
 }
 
-func NewWearHandlerFactory(pub Publisher) *WearHandlerFactory {
+func NewWearHandlerFactory(pub game.Publisher) *WearHandlerFactory {
 	return &WearHandlerFactory{pub: pub}
 }
 
@@ -93,12 +93,16 @@ func (f *WearHandlerFactory) Create() (CommandFunc, error) {
 			return NewUserError("You're already wearing something in that slot.")
 		}
 
-		// Broadcast to room
-		if f.pub != nil {
-			msg := fmt.Sprintf("%s wears %s.", cmdCtx.Actor.Name, obj.ShortDesc)
-			return f.pub.PublishToRoom(cmdCtx.Session.ZoneId, cmdCtx.Session.RoomId, []byte(msg))
+		// Send self message
+		selfMsg := fmt.Sprintf("You wear %s.", obj.ShortDesc)
+		if err := f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(selfMsg)); err != nil {
+			return err
 		}
 
-		return nil
+		// Broadcast to room
+		roomMsg := fmt.Sprintf("%s wears %s.", cmdCtx.Actor.Name, obj.ShortDesc)
+		zoneId, roomId := cmdCtx.Session.Location()
+		room := cmdCtx.World.Instances()[zoneId].GetRoom(roomId)
+		return f.pub.Publish(room, []string{cmdCtx.Session.Character.Id()}, []byte(roomMsg))
 	}, nil
 }

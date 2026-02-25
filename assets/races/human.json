@@ -4,7 +4,7 @@
     "spec": {
         "name": "Human",
         "abbreviation": "Hu",
-        "stats": {
+        "stat_mods": {
             "str": -2,
             "dex": 2
         },

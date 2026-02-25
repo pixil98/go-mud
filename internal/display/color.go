@@ -24,8 +24,8 @@ type Palette struct {
 	BrightWhite   string
 }
 
-// Colors is the shared palette instance.
-var Colors = &Palette{
+// Color is the shared palette instance.
+var Color = &Palette{
 	Reset: "\033[0m",
 	Bold:  "\033[1m",
 
@@ -50,5 +50,5 @@ var Colors = &Palette{
 
 // Colorize wraps text with a color code and reset.
 func Colorize(color, text string) string {
-	return color + text + Colors.Reset
+	return color + text + Color.Reset
 }

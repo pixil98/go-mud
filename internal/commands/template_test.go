@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // mockCharStore implements storage.Storer[*game.Character] for testing
@@ -16,10 +15,10 @@ func (m *mockCharStore) Get(id string) *game.Character {
 	return m.chars[id]
 }
 
-func (m *mockCharStore) GetAll() map[storage.Identifier]*game.Character {
-	result := make(map[storage.Identifier]*game.Character)
+func (m *mockCharStore) GetAll() map[string]*game.Character {
+	result := make(map[string]*game.Character)
 	for k, v := range m.chars {
-		result[storage.Identifier(k)] = v
+		result[k] = v
 	}
 	return result
 }
@@ -38,10 +37,10 @@ func (m *mockZoneStore) Get(id string) *game.Zone {
 	return m.zones[id]
 }
 
-func (m *mockZoneStore) GetAll() map[storage.Identifier]*game.Zone {
-	result := make(map[storage.Identifier]*game.Zone)
+func (m *mockZoneStore) GetAll() map[string]*game.Zone {
+	result := make(map[string]*game.Zone)
 	for k, v := range m.zones {
-		result[storage.Identifier(k)] = v
+		result[k] = v
 	}
 	return result
 }
@@ -60,10 +59,10 @@ func (m *mockRoomStore) Get(id string) *game.Room {
 	return m.rooms[id]
 }
 
-func (m *mockRoomStore) GetAll() map[storage.Identifier]*game.Room {
-	result := make(map[storage.Identifier]*game.Room)
+func (m *mockRoomStore) GetAll() map[string]*game.Room {
+	result := make(map[string]*game.Room)
 	for k, v := range m.rooms {
-		result[storage.Identifier(k)] = v
+		result[k] = v
 	}
 	return result
 }
@@ -82,10 +81,10 @@ func (m *mockMobileStore) Get(id string) *game.Mobile {
 	return m.mobiles[id]
 }
 
-func (m *mockMobileStore) GetAll() map[storage.Identifier]*game.Mobile {
-	result := make(map[storage.Identifier]*game.Mobile)
+func (m *mockMobileStore) GetAll() map[string]*game.Mobile {
+	result := make(map[string]*game.Mobile)
 	for k, v := range m.mobiles {
-		result[storage.Identifier(k)] = v
+		result[k] = v
 	}
 	return result
 }
@@ -104,10 +103,10 @@ func (m *mockObjectStore) Get(id string) *game.Object {
 	return m.objects[id]
 }
 
-func (m *mockObjectStore) GetAll() map[storage.Identifier]*game.Object {
-	result := make(map[storage.Identifier]*game.Object)
+func (m *mockObjectStore) GetAll() map[string]*game.Object {
+	result := make(map[string]*game.Object)
 	for k, v := range m.objects {
-		result[storage.Identifier(k)] = v
+		result[k] = v
 	}
 	return result
 }
@@ -126,10 +125,10 @@ func (m *mockRaceStore) Get(id string) *game.Race {
 	return m.races[id]
 }
 
-func (m *mockRaceStore) GetAll() map[storage.Identifier]*game.Race {
-	result := make(map[storage.Identifier]*game.Race)
+func (m *mockRaceStore) GetAll() map[string]*game.Race {
+	result := make(map[string]*game.Race)
 	for k, v := range m.races {
-		result[storage.Identifier(k)] = v
+		result[k] = v
 	}
 	return result
 }
@@ -157,7 +156,7 @@ func TestExpandTemplate(t *testing.T) {
 				Session *game.PlayerState
 			}{
 				Session: &game.PlayerState{
-					ZoneId: storage.Identifier("forest"),
+					ZoneId: "forest",
 				},
 			},
 			exp: "zone-forest",
@@ -168,7 +167,7 @@ func TestExpandTemplate(t *testing.T) {
 				Session *game.PlayerState
 			}{
 				Session: &game.PlayerState{
-					RoomId: storage.Identifier("clearing"),
+					RoomId: "clearing",
 				},
 			},
 			exp: "room-clearing",
@@ -190,8 +189,8 @@ func TestExpandTemplate(t *testing.T) {
 				Session *game.PlayerState
 			}{
 				Session: &game.PlayerState{
-					ZoneId: storage.Identifier("castle"),
-					RoomId: storage.Identifier("throne"),
+					ZoneId: "castle",
+					RoomId: "throne",
 				},
 			},
 			exp: "zone-castle-room-throne",

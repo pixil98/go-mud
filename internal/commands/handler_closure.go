@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // ClosureHandlerFactory creates handlers for open/close/lock/unlock commands.
@@ -17,10 +16,10 @@ import (
 //   - target (required): an exit or container object resolved by the command system
 type ClosureHandlerFactory struct {
 	world *game.WorldState
-	pub   Publisher
+	pub   game.Publisher
 }
 
-func NewClosureHandlerFactory(world *game.WorldState, pub Publisher) *ClosureHandlerFactory {
+func NewClosureHandlerFactory(world *game.WorldState, pub game.Publisher) *ClosureHandlerFactory {
 	return &ClosureHandlerFactory{world: world, pub: pub}
 }
 
@@ -119,7 +118,8 @@ func (f *ClosureHandlerFactory) handleExit(action, direction string, closure *ga
 	// Apply state change to this exit and the other side of the door
 	exit := room.Room.Get().Exits[direction]
 	applyExitAction(action, room, direction)
-	if otherRoom, otherDir := f.findOtherSide(exit, cmdCtx); otherRoom != nil {
+	zoneId, roomId := cmdCtx.Session.Location()
+	if otherRoom, otherDir := game.FindOtherSide(exit, zoneId, roomId, f.world.Instances()); otherRoom != nil {
 		applyExitAction(action, otherRoom, otherDir)
 	}
 
@@ -138,30 +138,6 @@ func applyExitAction(action string, room *game.RoomInstance, direction string) {
 	case "unlock":
 		room.SetExitLocked(direction, false)
 	}
-}
-
-// findOtherSide looks up the destination room of an exit and finds the exit
-// that leads back to the current room, returning the room instance and direction.
-func (f *ClosureHandlerFactory) findOtherSide(exit game.Exit, cmdCtx *CommandContext) (*game.RoomInstance, string) {
-	zoneId, roomId := cmdCtx.Session.Location()
-
-	destZone := storage.Identifier(exit.Zone.Id())
-	if destZone == "" {
-		destZone = zoneId
-	}
-	destRoom := f.world.Instances()[destZone].GetRoom(storage.Identifier(exit.Room.Id()))
-
-	for dir, otherExit := range destRoom.Room.Get().Exits {
-		otherDestZone := storage.Identifier(otherExit.Zone.Id())
-		if otherDestZone == "" {
-			otherDestZone = destZone
-		}
-		if otherDestZone == zoneId && storage.Identifier(otherExit.Room.Id()) == roomId && otherExit.Closure != nil {
-			return destRoom, dir
-		}
-	}
-
-	return nil, ""
 }
 
 func (f *ClosureHandlerFactory) handleContainer(action string, oi *game.ObjectInstance, cmdCtx *CommandContext) error {
@@ -234,8 +210,10 @@ func (f *ClosureHandlerFactory) publish(cmdCtx *CommandContext, selfMsg, roomMsg
 	if f.pub == nil {
 		return nil
 	}
-	if err := f.pub.PublishToPlayer(cmdCtx.Session.CharId, []byte(selfMsg)); err != nil {
+	if err := f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(selfMsg)); err != nil {
 		return err
 	}
-	return f.pub.PublishToRoom(cmdCtx.Session.ZoneId, cmdCtx.Session.RoomId, []byte(roomMsg))
+	zoneId, roomId := cmdCtx.Session.Location()
+	room := cmdCtx.World.Instances()[zoneId].GetRoom(roomId)
+	return f.pub.Publish(room, []string{cmdCtx.Session.Character.Id()}, []byte(roomMsg))
 }

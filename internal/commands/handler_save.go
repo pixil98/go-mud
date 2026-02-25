@@ -11,10 +11,10 @@ import (
 // SaveHandlerFactory creates handlers that persist the player's character.
 type SaveHandlerFactory struct {
 	chars storage.Storer[*game.Character]
-	pub   Publisher
+	pub   game.Publisher
 }
 
-func NewSaveHandlerFactory(chars storage.Storer[*game.Character], pub Publisher) *SaveHandlerFactory {
+func NewSaveHandlerFactory(chars storage.Storer[*game.Character], pub game.Publisher) *SaveHandlerFactory {
 	return &SaveHandlerFactory{chars: chars, pub: pub}
 }
 
@@ -33,7 +33,7 @@ func (f *SaveHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		if f.pub != nil {
-			return f.pub.PublishToPlayer(cmdCtx.Session.CharId, []byte("Character saved."))
+			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte("Character saved."))
 		}
 
 		return nil

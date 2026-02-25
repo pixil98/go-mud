@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // MoveHandlerFactory creates handlers that move players between rooms.
@@ -14,11 +13,11 @@ import (
 //   - direction (required): the direction to move (north, south, east, west, up, down)
 type MoveHandlerFactory struct {
 	world *game.WorldState
-	pub   Publisher
+	pub   game.Publisher
 }
 
 // NewMoveHandlerFactory creates a new MoveHandlerFactory with access to world state.
-func NewMoveHandlerFactory(world *game.WorldState, pub Publisher) *MoveHandlerFactory {
+func NewMoveHandlerFactory(world *game.WorldState, pub game.Publisher) *MoveHandlerFactory {
 	return &MoveHandlerFactory{world: world, pub: pub}
 }
 
@@ -41,6 +40,10 @@ func (f *MoveHandlerFactory) ValidateConfig(config map[string]any) error {
 
 func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, cmdCtx *CommandContext) error {
+		if cmdCtx.Session.InCombat {
+			return NewUserError("You can't move while fighting!")
+		}
+
 		// Read direction from expanded config
 		direction := strings.ToLower(cmdCtx.Config["direction"])
 		if direction == "" {
@@ -72,11 +75,11 @@ func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		// Determine destination zone (default to current if not specified)
-		destZone := storage.Identifier(exit.Zone.Id())
-		if exit.Zone.Id() == "" {
+		destZone := exit.Zone.Id()
+		if destZone == "" {
 			destZone = zoneId
 		}
-		destRoomId := storage.Identifier(exit.Room.Id())
+		destRoomId := exit.Room.Id()
 
 		// Get destination room instance
 		toRoom := f.world.Instances()[destZone].GetRoom(destRoomId)
@@ -90,7 +93,7 @@ func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 		// Send room description to player
 		roomDesc := toRoom.Describe(cmdCtx.Actor.Name)
 		if f.pub != nil {
-			return f.pub.PublishToPlayer(cmdCtx.Session.CharId, []byte(roomDesc))
+			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(roomDesc))
 		}
 
 		return nil

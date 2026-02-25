@@ -10,11 +10,11 @@ import (
 
 // InventoryHandlerFactory creates handlers that list the player's inventory.
 type InventoryHandlerFactory struct {
-	pub Publisher
+	pub game.Publisher
 }
 
 // NewInventoryHandlerFactory creates a new InventoryHandlerFactory.
-func NewInventoryHandlerFactory(pub Publisher) *InventoryHandlerFactory {
+func NewInventoryHandlerFactory(pub game.Publisher) *InventoryHandlerFactory {
 	return &InventoryHandlerFactory{pub: pub}
 }
 
@@ -33,7 +33,7 @@ func (f *InventoryHandlerFactory) Create() (CommandFunc, error) {
 
 		output := strings.Join(lines, "\n")
 		if f.pub != nil {
-			return f.pub.PublishToPlayer(cmdCtx.Session.CharId, []byte(output))
+			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(output))
 		}
 
 		return nil

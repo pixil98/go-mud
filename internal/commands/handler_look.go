@@ -9,11 +9,11 @@ import (
 // LookHandlerFactory creates handlers that display the current room.
 type LookHandlerFactory struct {
 	world *game.WorldState
-	pub   Publisher
+	pub   game.Publisher
 }
 
 // NewLookHandlerFactory creates a new LookHandlerFactory with access to world state.
-func NewLookHandlerFactory(world *game.WorldState, pub Publisher) *LookHandlerFactory {
+func NewLookHandlerFactory(world *game.WorldState, pub game.Publisher) *LookHandlerFactory {
 	return &LookHandlerFactory{world: world, pub: pub}
 }
 
@@ -51,7 +51,7 @@ func (f *LookHandlerFactory) showRoom(cmdCtx *CommandContext) error {
 
 	roomDesc := ri.Describe(cmdCtx.Actor.Name)
 	if f.pub != nil {
-		return f.pub.PublishToPlayer(cmdCtx.Session.CharId, []byte(roomDesc))
+		return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(roomDesc))
 	}
 
 	return nil
@@ -72,7 +72,7 @@ func (f *LookHandlerFactory) showTarget(cmdCtx *CommandContext, target *TargetRe
 	}
 
 	if f.pub != nil {
-		return f.pub.PublishToPlayer(cmdCtx.Session.CharId, []byte(msg))
+		return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(msg))
 	}
 	return nil
 }

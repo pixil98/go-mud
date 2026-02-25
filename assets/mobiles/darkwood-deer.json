@@ -5,6 +5,13 @@
         "aliases": ["deer", "doe"],
         "short_desc": "a young deer",
         "long_desc": "A young deer grazes peacefully on the forest floor.",
-        "detailed_desc": "This graceful deer has a soft brown coat dappled with white spots. Its large dark eyes watch you warily, ears twitching at every sound. It seems ready to bolt at the first sign of danger."
+        "detailed_desc": "This graceful deer has a soft brown coat dappled with white spots. Its large dark eyes watch you warily, ears twitching at every sound. It seems ready to bolt at the first sign of danger.",
+        "level": 1,
+        "max_hp": 12,
+        "ac": 10,
+        "attack_mod": 1,
+        "damage_dice": 1,
+        "damage_sides": 4,
+        "damage_mod": 0
     }
 }
