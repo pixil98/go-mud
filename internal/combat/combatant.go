@@ -15,7 +15,6 @@ type PlayerCombatant struct {
 
 func (c *PlayerCombatant) CombatID() string   { return fmt.Sprintf("player:%s", c.Character.Id()) }
 func (c *PlayerCombatant) CombatName() string { return c.Character.Get().Name }
-func (c *PlayerCombatant) CombatSide() Side   { return SidePlayer }
 func (c *PlayerCombatant) IsAlive() bool      { return c.Character.Get().CurrentHP > 0 }
 
 func (c *PlayerCombatant) AC() int {
@@ -77,6 +76,21 @@ func (c *PlayerCombatant) SetInCombat(v bool) {
 
 func (c *PlayerCombatant) Level() int { return c.Character.Get().Level }
 
+// AwardXP adds amount to the player's experience and returns the message to
+// send them. Returns empty string if the award is zero.
+func (c *PlayerCombatant) AwardXP(amount int) string {
+	if amount <= 0 {
+		return ""
+	}
+	char := c.Character.Get()
+	char.Experience += amount
+	msg := fmt.Sprintf("You receive %d experience points.", amount)
+	if game.ExpToNextLevel(char.Level, char.Experience) <= 0 {
+		msg += " You feel ready to advance!"
+	}
+	return msg
+}
+
 // MobCombatant adapts a MobileInstance for the combat system.
 type MobCombatant struct {
 	Instance *game.MobileInstance
@@ -84,7 +98,6 @@ type MobCombatant struct {
 
 func (c *MobCombatant) CombatID() string   { return fmt.Sprintf("mob:%s", c.Instance.InstanceId) }
 func (c *MobCombatant) CombatName() string { return c.Instance.Mobile.Get().ShortDesc }
-func (c *MobCombatant) CombatSide() Side   { return SideMob }
 func (c *MobCombatant) IsAlive() bool      { return c.Instance.CurrentHP > 0 }
 
 func (c *MobCombatant) AC() int { return c.Instance.Mobile.Get().AC }
@@ -111,3 +124,13 @@ func (c *MobCombatant) SetInCombat(v bool) {
 }
 
 func (c *MobCombatant) Level() int { return c.Instance.Mobile.Get().Level }
+
+// ExpReward returns the XP value of killing this mob. If the mob has no
+// explicit exp_reward, falls back to the level-based formula.
+func (c *MobCombatant) ExpReward() int {
+	def := c.Instance.Mobile.Get()
+	if def.ExpReward > 0 {
+		return def.ExpReward
+	}
+	return game.BaseExpForLevel(def.Level)
+}

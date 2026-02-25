@@ -77,57 +77,6 @@ func (h *CombatEventHandler) onMobDeath(mob *MobCombatant, dctx DeathContext) {
 		ri.AddObj(corpse)
 		ri.RemoveMob(mi.InstanceId)
 	}
-
-	// Award experience to all players on the winning side
-	h.awardExperience(mob, dctx)
-}
-
-func (h *CombatEventHandler) awardExperience(mob *MobCombatant, dctx DeathContext) {
-	def := mob.Instance.Mobile.Get()
-	mobLevel := def.Level
-	baseExp := def.ExpReward
-
-	// Build participant list from opponents (the winners).
-	var participants []game.XPParticipant
-	for _, opp := range dctx.Opponents {
-		if opp.CombatSide() != SidePlayer {
-			continue
-		}
-		participants = append(participants, game.XPParticipant{
-			CombatID: opp.CombatID(),
-			Level:    opp.Level(),
-			Damage:   dctx.DamageBy[opp.CombatID()],
-		})
-	}
-
-	if len(participants) == 0 {
-		return
-	}
-
-	awards := game.CalculateXPAwards(mobLevel, baseExp, participants)
-
-	for _, award := range awards {
-		// Find the matching opponent to get the PlayerCombatant.
-		for _, opp := range dctx.Opponents {
-			if opp.CombatID() != award.CombatID {
-				continue
-			}
-			pc, ok := opp.(*PlayerCombatant)
-			if !ok {
-				break
-			}
-
-			char := pc.Character.Get()
-			char.Experience += award.Amount
-
-			msg := fmt.Sprintf("You receive %d experience points.", award.Amount)
-			if game.ExpToNextLevel(char.Level, char.Experience) <= 0 {
-				msg += " You feel ready to advance!"
-			}
-			_ = h.pub.Publish(game.SinglePlayer(pc.Character.Id()), nil, []byte(msg))
-			break
-		}
-	}
 }
 
 func (h *CombatEventHandler) onPlayerDeath(pc *PlayerCombatant, dctx DeathContext) {

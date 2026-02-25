@@ -11,14 +11,6 @@ import (
 	"github.com/pixil98/go-mud/internal/game"
 )
 
-// Side identifies which team a combatant is on.
-type Side int
-
-const (
-	SidePlayer Side = iota
-	SideMob
-)
-
 // Attack describes a single attack a combatant can make per round.
 type Attack struct {
 	Mod         int // added to d20 roll
@@ -31,7 +23,6 @@ type Attack struct {
 type Combatant interface {
 	CombatID() string
 	CombatName() string
-	CombatSide() Side
 	IsAlive() bool
 	AC() int
 	Attacks() []Attack
@@ -49,7 +40,14 @@ type DeathContext struct {
 	DamageBy  map[string]int   // combatant ID -> total damage dealt to victim
 }
 
-// EventHandler handles combat events that require game-level logic.
+// PlayerMessage is a message targeted at a specific player by ID.
+type PlayerMessage struct {
+	PlayerID string
+	Text     string
+}
+
+// EventHandler handles death side effects after room messages are delivered
+// (corpse creation, player respawn, etc.).
 type EventHandler interface {
 	OnDeath(ctx DeathContext)
 }
@@ -170,41 +168,127 @@ func (m *Manager) StartCombat(attacker, target Combatant, zoneID, roomID string)
 	return nil
 }
 
-// Tick processes one combat round.
+// fightResult holds the output of processing one fight round.
+type fightResult struct {
+	zoneID     string
+	roomID     string
+	roomMsgs   []string        // broadcast to all players in the room
+	playerMsgs []PlayerMessage // targeted at specific players (e.g. XP awards)
+	deaths     []DeathContext  // for deferred death side effects
+}
+
+// Tick processes one combat round in three phases:
+//  1. Compute — process attacks, resolve deaths, award XP.
+//  2. Deliver — send each player a single combined message.
+//  3. Effects — run death side effects (corpse creation, respawn).
 func (m *Manager) Tick(ctx context.Context) error {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 
-	var deferred []DeathContext
+	var results []fightResult
 	for _, rooms := range m.fights {
 		for _, fights := range rooms {
 			for _, fight := range fights {
-				msgs := fight.Process()
-				deathMsgs, deathContexts := m.processFightDeaths(fight)
-				msgs = append(msgs, deathMsgs...)
-				if len(msgs) > 0 {
-					ri := m.world.Instances()[fight.ZoneID].GetRoom(fight.RoomID)
-					if err := m.pub.Publish(ri, nil, []byte(strings.Join(msgs, "\n"))); err != nil {
-						return fmt.Errorf("publishing combat messages: %w", err)
-					}
-				}
-				deferred = append(deferred, deathContexts...)
+				results = append(results, m.processFight(fight))
 			}
 		}
 	}
 
-	// Handle death effects (corpse creation, XP awards, player respawn)
-	// after all room broadcasts so R.I.P. messages arrive first.
-	for _, dctx := range deferred {
-		m.handler.OnDeath(dctx)
+	for _, r := range results {
+		m.deliver(r)
+	}
+
+	for _, r := range results {
+		for _, dctx := range r.deaths {
+			m.handler.OnDeath(dctx)
+		}
 	}
 
 	m.cleanupFights()
 	return nil
 }
 
-// Process runs one round of combat for this fight, returning combat messages.
-func (f *Fight) Process() []string {
+// processFight runs one round for a fight and returns the result.
+func (m *Manager) processFight(fight *Fight) fightResult {
+	r := fightResult{zoneID: fight.ZoneID, roomID: fight.RoomID}
+	r.roomMsgs = fight.process()
+	deathMsgs, deaths := m.processFightDeaths(fight)
+	r.roomMsgs = append(r.roomMsgs, deathMsgs...)
+	r.deaths = deaths
+	r.playerMsgs = computeKillRewards(deaths)
+	return r
+}
+
+// deliver sends each player in the fight room a single combined message.
+func (m *Manager) deliver(r fightResult) {
+	if len(r.roomMsgs) == 0 && len(r.playerMsgs) == 0 {
+		return
+	}
+	ri := m.world.Instances()[r.zoneID].GetRoom(r.roomID)
+	if ri == nil {
+		return
+	}
+
+	roomText := strings.Join(r.roomMsgs, "\n")
+	extra := make(map[string][]string, len(r.playerMsgs))
+	for _, pm := range r.playerMsgs {
+		extra[pm.PlayerID] = append(extra[pm.PlayerID], pm.Text)
+	}
+
+	ri.ForEachPlayer(func(id string, _ *game.PlayerState) {
+		var parts []string
+		if roomText != "" {
+			parts = append(parts, roomText)
+		}
+		parts = append(parts, extra[id]...)
+		if len(parts) > 0 {
+			if err := m.pub.Publish(game.SinglePlayer(id), nil, []byte(strings.Join(parts, "\n"))); err != nil {
+				slog.Error("publishing combat message", "player", id, "err", err)
+			}
+		}
+	})
+}
+
+// computeKillRewards calculates XP for all mob deaths in a fight round and
+// returns per-player messages. Called during the compute phase so rewards
+// arrive in the same delivery as the kill messages.
+func computeKillRewards(deaths []DeathContext) []PlayerMessage {
+	var msgs []PlayerMessage
+	for _, dctx := range deaths {
+		mob, ok := dctx.Victim.(*MobCombatant)
+		if !ok {
+			continue
+		}
+		var participants []game.XPParticipant
+		for _, opp := range dctx.Opponents {
+			pc, ok := opp.(*PlayerCombatant)
+			if !ok {
+				continue
+			}
+			participants = append(participants, game.XPParticipant{
+				CombatID: pc.CombatID(),
+				Level:    pc.Level(),
+				Damage:   dctx.DamageBy[pc.CombatID()],
+			})
+		}
+		awards := game.CalculateXPAwards(mob.Level(), mob.ExpReward(), participants)
+		for _, award := range awards {
+			for _, opp := range dctx.Opponents {
+				pc, ok := opp.(*PlayerCombatant)
+				if !ok || pc.CombatID() != award.CombatID {
+					continue
+				}
+				if msg := pc.AwardXP(award.Amount); msg != "" {
+					msgs = append(msgs, PlayerMessage{PlayerID: pc.Character.Id(), Text: msg})
+				}
+			}
+		}
+	}
+	return msgs
+}
+
+// process runs one round of combat for this fight, returning attack messages.
+func (f *Fight) process() []string {
 	var msgs []string
 	for _, fighter := range f.SideA {
 		msgs = append(msgs, f.processAttacks(fighter)...)
