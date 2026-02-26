@@ -11,11 +11,12 @@ import (
 // Targets:
 //   - target (required): the object to wear
 type WearHandlerFactory struct {
-	pub game.Publisher
+	rooms RoomLocator
+	pub   game.Publisher
 }
 
-func NewWearHandlerFactory(pub game.Publisher) *WearHandlerFactory {
-	return &WearHandlerFactory{pub: pub}
+func NewWearHandlerFactory(rooms RoomLocator, pub game.Publisher) *WearHandlerFactory {
+	return &WearHandlerFactory{rooms: rooms, pub: pub}
 }
 
 func (f *WearHandlerFactory) Spec() *HandlerSpec {
@@ -102,7 +103,7 @@ func (f *WearHandlerFactory) Create() (CommandFunc, error) {
 		// Broadcast to room
 		roomMsg := fmt.Sprintf("%s wears %s.", cmdCtx.Actor.Name, obj.ShortDesc)
 		zoneId, roomId := cmdCtx.Session.Location()
-		room := cmdCtx.World.Instances()[zoneId].GetRoom(roomId)
+		room := f.rooms.GetRoom(zoneId, roomId)
 		return f.pub.Publish(room, []string{cmdCtx.Session.Character.Id()}, []byte(roomMsg))
 	}, nil
 }

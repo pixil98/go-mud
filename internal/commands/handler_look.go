@@ -8,13 +8,13 @@ import (
 
 // LookHandlerFactory creates handlers that display the current room.
 type LookHandlerFactory struct {
-	world *game.WorldState
+	rooms RoomLocator
 	pub   game.Publisher
 }
 
 // NewLookHandlerFactory creates a new LookHandlerFactory with access to world state.
-func NewLookHandlerFactory(world *game.WorldState, pub game.Publisher) *LookHandlerFactory {
-	return &LookHandlerFactory{world: world, pub: pub}
+func NewLookHandlerFactory(rooms RoomLocator, pub game.Publisher) *LookHandlerFactory {
+	return &LookHandlerFactory{rooms: rooms, pub: pub}
 }
 
 func (f *LookHandlerFactory) Spec() *HandlerSpec {
@@ -44,7 +44,7 @@ func (f *LookHandlerFactory) Create() (CommandFunc, error) {
 func (f *LookHandlerFactory) showRoom(cmdCtx *CommandContext) error {
 	zoneId, roomId := cmdCtx.Session.Location()
 
-	ri := f.world.Instances()[zoneId].GetRoom(roomId)
+	ri := f.rooms.GetRoom(zoneId, roomId)
 	if ri == nil {
 		return NewUserError("You are in an invalid location.")
 	}

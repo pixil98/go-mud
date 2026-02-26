@@ -14,15 +14,15 @@ func (f objectOnlyFinder) FindPlayer(string) *game.PlayerState    { return nil }
 func (f objectOnlyFinder) FindMob(string) *game.MobileInstance   { return nil }
 func (f objectOnlyFinder) FindExit(string) (string, *game.Exit)  { return "", nil }
 
-// WorldScopes implements TargetScopes using *game.WorldState.
+// WorldScopes implements TargetScopes using a WorldView.
 // It translates scope flags into the correct search spaces by looking up
-// rooms, zones, inventory, and equipment from the world state.
+// rooms, zones, inventory, and equipment from the world view.
 type WorldScopes struct {
-	world *game.WorldState
+	world WorldView
 }
 
-// NewWorldScopes creates a TargetScopes backed by the given WorldState.
-func NewWorldScopes(world *game.WorldState) *WorldScopes {
+// NewWorldScopes creates a TargetScopes backed by the given WorldView.
+func NewWorldScopes(world WorldView) *WorldScopes {
 	return &WorldScopes{world: world}
 }
 
@@ -46,14 +46,14 @@ func (ws *WorldScopes) SpacesFor(scope Scope, actor *game.Character, session *ga
 		})
 	}
 	if scope&ScopeRoom != 0 {
-		room := ws.world.Instances()[zoneId].GetRoom(roomId)
+		room := ws.world.GetRoom(zoneId, roomId)
 		spaces = append(spaces, SearchSpace{
 			Finder:  room,
 			Remover: room,
 		})
 	}
 	if scope&ScopeZone != 0 {
-		zone := ws.world.Instances()[zoneId]
+		zone := ws.world.GetZone(zoneId)
 		spaces = append(spaces, SearchSpace{
 			Finder: zone,
 		})

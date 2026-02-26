@@ -1,0 +1,1 @@
+- Remove world.Instances() and switch to GetZone

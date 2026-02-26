@@ -13,12 +13,13 @@ import (
 //   - recipient_message (required): template for message sent to scope targets
 //   - sender_message (optional): template for 2nd-person message sent to actor
 type MessageHandlerFactory struct {
-	pub game.Publisher
+	world WorldView
+	pub   game.Publisher
 }
 
 // NewMessageHandlerFactory creates a new MessageHandlerFactory with a publisher.
-func NewMessageHandlerFactory(pub game.Publisher) *MessageHandlerFactory {
-	return &MessageHandlerFactory{pub: pub}
+func NewMessageHandlerFactory(world WorldView, pub game.Publisher) *MessageHandlerFactory {
+	return &MessageHandlerFactory{world: world, pub: pub}
 }
 
 func (f *MessageHandlerFactory) Spec() *HandlerSpec {
@@ -68,15 +69,15 @@ func (f *MessageHandlerFactory) Create() (CommandFunc, error) {
 
 		switch scope {
 		case "room":
-			room := cmdCtx.World.Instances()[zoneId].GetRoom(roomId)
+			room := f.world.GetRoom(zoneId, roomId)
 			return f.pub.Publish(room, exclude, []byte(recipientMessage))
 
 		case "zone":
-			zone := cmdCtx.World.Instances()[zoneId]
+			zone := f.world.GetZone(zoneId)
 			return f.pub.Publish(zone, exclude, []byte(recipientMessage))
 
 		case "world":
-			return f.pub.Publish(cmdCtx.World, exclude, []byte(recipientMessage))
+			return f.pub.Publish(f.world, exclude, []byte(recipientMessage))
 
 		case "player":
 			target := cmdCtx.Targets["target"]

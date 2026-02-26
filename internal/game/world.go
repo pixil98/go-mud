@@ -55,6 +55,22 @@ func (w *WorldState) Instances() map[string]*ZoneInstance {
 	return w.instances
 }
 
+// GetZone returns the zone instance for the given zone ID.
+// Returns nil if the zone is not found.
+func (w *WorldState) GetZone(zoneId string) *ZoneInstance {
+	return w.instances[zoneId]
+}
+
+// GetRoom returns the room instance for the given zone and room IDs.
+// Returns nil if the zone or room is not found.
+func (w *WorldState) GetRoom(zoneId, roomId string) *RoomInstance {
+	zi := w.instances[zoneId]
+	if zi == nil {
+		return nil
+	}
+	return zi.GetRoom(roomId)
+}
+
 // GetPlayer returns the player state. Returns nil if player not found.
 func (w *WorldState) GetPlayer(charId string) *PlayerState {
 	w.mu.RLock()
@@ -192,6 +208,7 @@ type PlayerState struct {
 	// Session state
 	Quit         bool
 	InCombat     bool
+	FollowingId  string // charId of the player being followed (empty = not following)
 	LastActivity time.Time
 
 	// Connection management: closed to signal the active Play() goroutine to exit.

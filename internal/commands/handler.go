@@ -24,7 +24,6 @@ type ParsedInput struct {
 type CommandContext struct {
 	Actor   *game.Character   // Character data (name, title, etc.)
 	Session *game.PlayerState // Current session state (location, quit flag, etc.)
-	World   *game.WorldState
 	Targets map[string]*TargetRef // Resolved targets by name
 	Config  map[string]string     // Expanded config values (all templates resolved)
 }
@@ -51,6 +50,25 @@ type ConfigRequirement struct {
 type HandlerSpec struct {
 	Targets []TargetRequirement
 	Config  []ConfigRequirement
+}
+
+// PlayerLookup finds a player by character ID.
+type PlayerLookup interface {
+	GetPlayer(charId string) *game.PlayerState
+}
+
+// RoomLocator finds a room instance by zone and room ID.
+type RoomLocator interface {
+	GetRoom(zoneId, roomId string) *game.RoomInstance
+}
+
+// WorldView provides read-only access to the game world for command handlers
+// that need more than just room lookup.
+type WorldView interface {
+	RoomLocator
+	GetZone(zoneId string) *game.ZoneInstance
+	Instances() map[string]*game.ZoneInstance
+	ForEachPlayer(func(string, *game.PlayerState))
 }
 
 // HandlerFactory creates CommandFuncs from command configurations.
@@ -87,21 +105,23 @@ func NewHandler(cmds storage.Storer[*Command], dict *game.Dictionary, publisher 
 	}
 
 	// Register built-in handlers
+	h.RegisterFactory("assist", NewAssistHandlerFactory(combat, world, world, publisher))
 	h.RegisterFactory("closure", NewClosureHandlerFactory(world, publisher))
 	h.RegisterFactory("equipment", NewEquipmentHandlerFactory(publisher))
+	h.RegisterFactory("follow", NewFollowHandlerFactory(world, publisher))
 	h.RegisterFactory("gain", NewGainHandlerFactory(publisher))
 	h.RegisterFactory("help", NewHelpHandlerFactory(cmds, publisher))
 	h.RegisterFactory("inventory", NewInventoryHandlerFactory(publisher))
-	h.RegisterFactory("kill", NewKillHandlerFactory(combat, publisher))
+	h.RegisterFactory("kill", NewKillHandlerFactory(combat, world, publisher))
 	h.RegisterFactory("look", NewLookHandlerFactory(world, publisher))
-	h.RegisterFactory("message", NewMessageHandlerFactory(publisher))
+	h.RegisterFactory("message", NewMessageHandlerFactory(world, publisher))
 	h.RegisterFactory("move", NewMoveHandlerFactory(world, publisher))
 	h.RegisterFactory("move_obj", NewMoveObjHandlerFactory(world, dict.Characters, publisher))
 	h.RegisterFactory("quit", NewQuitHandlerFactory())
 	h.RegisterFactory("save", NewSaveHandlerFactory(dict.Characters, publisher))
 	h.RegisterFactory("score", NewScoreHandlerFactory(publisher))
 	h.RegisterFactory("title", NewTitleHandlerFactory(publisher))
-	h.RegisterFactory("wear", NewWearHandlerFactory(publisher))
+	h.RegisterFactory("wear", NewWearHandlerFactory(world, publisher))
 	h.RegisterFactory("who", NewWhoHandlerFactory(world, publisher))
 
 	// Compile commands
@@ -333,7 +353,6 @@ func (h *Handler) Exec(ctx context.Context, world *game.WorldState, charId strin
 	cmdCtx := &CommandContext{
 		Actor:   actor,
 		Session: session,
-		World:   world,
 		Targets: targets,
 		Config:  expandedConfig,
 	}

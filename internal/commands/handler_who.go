@@ -11,13 +11,13 @@ import (
 
 // WhoHandlerFactory creates handlers that list online players.
 type WhoHandlerFactory struct {
-	world *game.WorldState
-	pub   game.Publisher
+	players game.PlayerGroup
+	pub     game.Publisher
 }
 
 // NewWhoHandlerFactory creates a new WhoHandlerFactory.
-func NewWhoHandlerFactory(world *game.WorldState, pub game.Publisher) *WhoHandlerFactory {
-	return &WhoHandlerFactory{world: world, pub: pub}
+func NewWhoHandlerFactory(players game.PlayerGroup, pub game.Publisher) *WhoHandlerFactory {
+	return &WhoHandlerFactory{players: players, pub: pub}
 }
 
 func (f *WhoHandlerFactory) Spec() *HandlerSpec {
@@ -32,7 +32,7 @@ func (f *WhoHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, cmdCtx *CommandContext) error {
 		var lines []string
 
-		f.world.ForEachPlayer(func(charId string, state *game.PlayerState) {
+		f.players.ForEachPlayer(func(charId string, state *game.PlayerState) {
 			if state.Linkless {
 				return
 			}

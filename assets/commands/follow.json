@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "follow",
+    "spec": {
+        "handler": "follow",
+        "category": "movement",
+        "description": "Follow another player.",
+        "targets": [
+            {
+                "name": "target",
+                "type": ["player"],
+                "scope": ["room"],
+                "input": "target",
+                "not_found": "You don't see '{{ .Inputs.target }}' here."
+            }
+        ],
+        "inputs": [
+            {"name": "target", "type": "string", "required": true, "missing": "Follow whom?"}
+        ]
+    }
+}
