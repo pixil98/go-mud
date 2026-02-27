@@ -209,6 +209,7 @@ type PlayerState struct {
 	Quit         bool
 	InCombat     bool
 	FollowingId  string // charId of the player being followed (empty = not following)
+	Group        *Group // current group, or nil if not grouped
 	LastActivity time.Time
 
 	// Connection management: closed to signal the active Play() goroutine to exit.

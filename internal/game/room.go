@@ -436,11 +436,11 @@ func (ri *RoomInstance) PlayerCount() int {
 }
 
 func formatFlags(flags []string) string {
-	var s string
+	var s strings.Builder
 	for _, f := range flags {
-		s += " (" + f + ")"
+		s.WriteString(" (" + f + ")")
 	}
-	return s
+	return s.String()
 }
 
 func formatExits(exits map[string]Exit, exitClosed, exitLocked map[string]bool) string {

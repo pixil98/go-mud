@@ -38,10 +38,10 @@ func (f *MessageHandlerFactory) Spec() *HandlerSpec {
 func (f *MessageHandlerFactory) ValidateConfig(config map[string]any) error {
 	scope, _ := config["scope"].(string)
 	switch scope {
-	case "room", "zone", "world", "player":
+	case "room", "zone", "world", "player", "group":
 		// valid
 	default:
-		return fmt.Errorf("scope must be room, zone, world, or player (got %q)", scope)
+		return fmt.Errorf("scope must be room, zone, world, player, or group (got %q)", scope)
 	}
 
 	return nil
@@ -85,6 +85,13 @@ func (f *MessageHandlerFactory) Create() (CommandFunc, error) {
 				return NewUserError("They're not here.")
 			}
 			return f.pub.Publish(game.SinglePlayer(target.Player.CharId), nil, []byte(recipientMessage))
+
+		case "group":
+			grp := cmdCtx.Session.Group
+			if grp == nil {
+				return NewUserError("You are not in a group.")
+			}
+			return f.pub.Publish(grp, exclude, []byte(recipientMessage))
 		}
 
 		return nil

@@ -110,6 +110,8 @@ func NewHandler(cmds storage.Storer[*Command], dict *game.Dictionary, publisher 
 	h.RegisterFactory("equipment", NewEquipmentHandlerFactory(publisher))
 	h.RegisterFactory("follow", NewFollowHandlerFactory(world, publisher))
 	h.RegisterFactory("gain", NewGainHandlerFactory(publisher))
+	h.RegisterFactory("group", NewGroupHandlerFactory(world, publisher))
+	h.RegisterFactory("ungroup", NewUngroupHandlerFactory(world, publisher))
 	h.RegisterFactory("help", NewHelpHandlerFactory(cmds, publisher))
 	h.RegisterFactory("inventory", NewInventoryHandlerFactory(publisher))
 	h.RegisterFactory("kill", NewKillHandlerFactory(combat, world, publisher))

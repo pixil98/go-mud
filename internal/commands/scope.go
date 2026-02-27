@@ -1,6 +1,8 @@
 package commands
 
 import (
+	"strings"
+
 	"github.com/pixil98/go-mud/internal/game"
 )
 
@@ -10,9 +12,33 @@ type objectOnlyFinder struct {
 	ObjectFinder
 }
 
-func (f objectOnlyFinder) FindPlayer(string) *game.PlayerState    { return nil }
+func (f objectOnlyFinder) FindPlayer(string) *game.PlayerState   { return nil }
 func (f objectOnlyFinder) FindMob(string) *game.MobileInstance   { return nil }
 func (f objectOnlyFinder) FindExit(string) (string, *game.Exit)  { return "", nil }
+
+// playerOnlyFinder wraps a PlayerGroup into a full TargetFinder.
+// FindPlayer searches members by name; mobs, objects, and exits always return nil.
+type playerOnlyFinder struct {
+	game.PlayerGroup
+}
+
+func (f playerOnlyFinder) FindPlayer(name string) *game.PlayerState {
+	lower := strings.ToLower(name)
+	var found *game.PlayerState
+	f.ForEachPlayer(func(_ string, ps *game.PlayerState) {
+		if found != nil || ps == nil {
+			return
+		}
+		if strings.ToLower(ps.Character.Get().Name) == lower {
+			found = ps
+		}
+	})
+	return found
+}
+
+func (f playerOnlyFinder) FindObj(string) *game.ObjectInstance  { return nil }
+func (f playerOnlyFinder) FindMob(string) *game.MobileInstance  { return nil }
+func (f playerOnlyFinder) FindExit(string) (string, *game.Exit) { return "", nil }
 
 // WorldScopes implements TargetScopes using a WorldView.
 // It translates scope flags into the correct search spaces by looking up
@@ -64,6 +90,11 @@ func (ws *WorldScopes) SpacesFor(scope Scope, actor *game.Character, session *ga
 				Finder: zi,
 			})
 		}
+	}
+	if scope&ScopeGroup != 0 && session.Group != nil {
+		spaces = append(spaces, SearchSpace{
+			Finder: playerOnlyFinder{session.Group},
+		})
 	}
 
 	return spaces, nil
