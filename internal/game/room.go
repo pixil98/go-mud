@@ -397,7 +397,7 @@ func (ri *RoomInstance) Describe(actorName string) string {
 	// Show other players
 	for _, ps := range ri.players {
 		if ps.Character.Get().Name != actorName {
-			sb.WriteString(display.Colorize(display.Color.Yellow, fmt.Sprintf("%s is here.%s\n", ps.Character.Get().Name, formatFlags(ps.Flags()))))
+			sb.WriteString(fmt.Sprintf("%s%s\n", display.Colorize(display.Color.Yellow, fmt.Sprintf("%s is here.", ps.Character.Get().Name)), formatFlags(ps.Flags())))
 		}
 	}
 	ri.mu.RUnlock()
