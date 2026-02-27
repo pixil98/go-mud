@@ -15,11 +15,11 @@ import (
 // Targets:
 //   - target (required): an exit or container object resolved by the command system
 type ClosureHandlerFactory struct {
-	world *game.WorldState
+	world WorldView
 	pub   game.Publisher
 }
 
-func NewClosureHandlerFactory(world *game.WorldState, pub game.Publisher) *ClosureHandlerFactory {
+func NewClosureHandlerFactory(world WorldView, pub game.Publisher) *ClosureHandlerFactory {
 	return &ClosureHandlerFactory{world: world, pub: pub}
 }
 
@@ -56,7 +56,7 @@ func (f *ClosureHandlerFactory) Create() (CommandFunc, error) {
 				return NewUserError(fmt.Sprintf("You can't %s that.", action))
 			}
 			zoneId, roomId := cmdCtx.Session.Location()
-			room := f.world.Instances()[zoneId].GetRoom(roomId)
+			room := f.world.GetRoom(zoneId, roomId)
 			return f.handleExit(action, target.Exit.Direction, closure, room, cmdCtx)
 
 		case TargetTypeObject:
@@ -214,6 +214,6 @@ func (f *ClosureHandlerFactory) publish(cmdCtx *CommandContext, selfMsg, roomMsg
 		return err
 	}
 	zoneId, roomId := cmdCtx.Session.Location()
-	room := cmdCtx.World.Instances()[zoneId].GetRoom(roomId)
+	room := f.world.GetRoom(zoneId, roomId)
 	return f.pub.Publish(room, []string{cmdCtx.Session.Character.Id()}, []byte(roomMsg))
 }

@@ -21,13 +21,13 @@ type ObjectHolder interface {
 //   - message (required): Go template for room broadcast
 //   - no_self_target (optional): target name to prevent self-targeting
 type MoveObjHandlerFactory struct {
-	world *game.WorldState
+	rooms RoomLocator
 	chars storage.Storer[*game.Character]
 	pub   game.Publisher
 }
 
-func NewMoveObjHandlerFactory(world *game.WorldState, chars storage.Storer[*game.Character], pub game.Publisher) *MoveObjHandlerFactory {
-	return &MoveObjHandlerFactory{world: world, pub: pub}
+func NewMoveObjHandlerFactory(rooms RoomLocator, chars storage.Storer[*game.Character], pub game.Publisher) *MoveObjHandlerFactory {
+	return &MoveObjHandlerFactory{rooms: rooms, pub: pub}
 }
 
 func (f *MoveObjHandlerFactory) Spec() *HandlerSpec {
@@ -103,7 +103,7 @@ func (f *MoveObjHandlerFactory) Create() (CommandFunc, error) {
 				}
 			}
 
-			room := cmdCtx.World.Instances()[cmdCtx.Session.ZoneId].GetRoom(cmdCtx.Session.RoomId)
+			room := f.rooms.GetRoom(cmdCtx.Session.ZoneId, cmdCtx.Session.RoomId)
 			_ = f.pub.Publish(room, exclude, []byte(cmdCtx.Config["room_message"]))
 		}
 
@@ -122,7 +122,7 @@ func (f *MoveObjHandlerFactory) resolveDestination(cmdCtx *CommandContext) (Obje
 		return cmdCtx.Actor.Inventory, nil
 
 	case "room":
-		return f.world.Instances()[cmdCtx.Session.ZoneId].GetRoom(cmdCtx.Session.RoomId), nil
+		return f.rooms.GetRoom(cmdCtx.Session.ZoneId, cmdCtx.Session.RoomId), nil
 
 	default:
 		return f.holderForTarget(cmdCtx.Targets[dest])

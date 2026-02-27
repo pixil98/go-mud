@@ -80,15 +80,30 @@ func (h *CombatEventHandler) onMobDeath(mob *MobCombatant, dctx DeathContext) {
 }
 
 func (h *CombatEventHandler) onPlayerDeath(pc *PlayerCombatant, dctx DeathContext) {
+	deadId := string(pc.Character.Id())
+	char := pc.Character.Get()
+
+	// Clear following on both sides: the dead player stops following,
+	// and anyone following the dead player stops too.
+	pc.Player.FollowingId = ""
+	fromRoom := h.world.Instances()[dctx.ZoneID].GetRoom(dctx.RoomID)
+	if fromRoom != nil {
+		fromRoom.ForEachPlayer(func(charId string, ps *game.PlayerState) {
+			if ps.FollowingId == deadId {
+				ps.FollowingId = ""
+				_ = h.pub.Publish(game.SinglePlayer(charId), nil,
+					[]byte(fmt.Sprintf("You stop following %s.", char.Name)))
+			}
+		})
+	}
+
 	// Send personal message
 	_ = h.pub.Publish(game.SinglePlayer(pc.Character.Id()), nil, []byte("You have been slain! You awaken in a familiar place..."))
 
 	// Restore HP
-	char := pc.Character.Get()
 	char.CurrentHP = char.MaxHP
 
 	// Move to default spawn
-	fromRoom := h.world.Instances()[dctx.ZoneID].GetRoom(dctx.RoomID)
 	toRoom := h.world.Instances()[h.defaultZone].GetRoom(h.defaultRoom)
 	if fromRoom != nil && toRoom != nil {
 		pc.Player.Move(fromRoom, toRoom)

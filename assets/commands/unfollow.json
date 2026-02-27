@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "unfollow",
+    "spec": {
+        "handler": "follow",
+        "category": "movement",
+        "description": "Stop following someone."
+    }
+}

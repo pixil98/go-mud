@@ -1,0 +1,3 @@
+- Remove world.Instances() and switch to GetZone
+- There are some locations that ignore errs and we should log something as a warning.
+- Room descriptions are showing an extra blank line at the end if a player is in the room

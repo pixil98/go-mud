@@ -13,12 +13,13 @@ import (
 //   - recipient_message (required): template for message sent to scope targets
 //   - sender_message (optional): template for 2nd-person message sent to actor
 type MessageHandlerFactory struct {
-	pub game.Publisher
+	world WorldView
+	pub   game.Publisher
 }
 
 // NewMessageHandlerFactory creates a new MessageHandlerFactory with a publisher.
-func NewMessageHandlerFactory(pub game.Publisher) *MessageHandlerFactory {
-	return &MessageHandlerFactory{pub: pub}
+func NewMessageHandlerFactory(world WorldView, pub game.Publisher) *MessageHandlerFactory {
+	return &MessageHandlerFactory{world: world, pub: pub}
 }
 
 func (f *MessageHandlerFactory) Spec() *HandlerSpec {
@@ -37,10 +38,10 @@ func (f *MessageHandlerFactory) Spec() *HandlerSpec {
 func (f *MessageHandlerFactory) ValidateConfig(config map[string]any) error {
 	scope, _ := config["scope"].(string)
 	switch scope {
-	case "room", "zone", "world", "player":
+	case "room", "zone", "world", "player", "group":
 		// valid
 	default:
-		return fmt.Errorf("scope must be room, zone, world, or player (got %q)", scope)
+		return fmt.Errorf("scope must be room, zone, world, player, or group (got %q)", scope)
 	}
 
 	return nil
@@ -68,15 +69,15 @@ func (f *MessageHandlerFactory) Create() (CommandFunc, error) {
 
 		switch scope {
 		case "room":
-			room := cmdCtx.World.Instances()[zoneId].GetRoom(roomId)
+			room := f.world.GetRoom(zoneId, roomId)
 			return f.pub.Publish(room, exclude, []byte(recipientMessage))
 
 		case "zone":
-			zone := cmdCtx.World.Instances()[zoneId]
+			zone := f.world.GetZone(zoneId)
 			return f.pub.Publish(zone, exclude, []byte(recipientMessage))
 
 		case "world":
-			return f.pub.Publish(cmdCtx.World, exclude, []byte(recipientMessage))
+			return f.pub.Publish(f.world, exclude, []byte(recipientMessage))
 
 		case "player":
 			target := cmdCtx.Targets["target"]
@@ -84,6 +85,13 @@ func (f *MessageHandlerFactory) Create() (CommandFunc, error) {
 				return NewUserError("They're not here.")
 			}
 			return f.pub.Publish(game.SinglePlayer(target.Player.CharId), nil, []byte(recipientMessage))
+
+		case "group":
+			grp := cmdCtx.Session.Group
+			if grp == nil {
+				return NewUserError("You are not in a group.")
+			}
+			return f.pub.Publish(grp, exclude, []byte(recipientMessage))
 		}
 
 		return nil

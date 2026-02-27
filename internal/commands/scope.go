@@ -1,6 +1,8 @@
 package commands
 
 import (
+	"strings"
+
 	"github.com/pixil98/go-mud/internal/game"
 )
 
@@ -10,19 +12,43 @@ type objectOnlyFinder struct {
 	ObjectFinder
 }
 
-func (f objectOnlyFinder) FindPlayer(string) *game.PlayerState    { return nil }
+func (f objectOnlyFinder) FindPlayer(string) *game.PlayerState   { return nil }
 func (f objectOnlyFinder) FindMob(string) *game.MobileInstance   { return nil }
 func (f objectOnlyFinder) FindExit(string) (string, *game.Exit)  { return "", nil }
 
-// WorldScopes implements TargetScopes using *game.WorldState.
-// It translates scope flags into the correct search spaces by looking up
-// rooms, zones, inventory, and equipment from the world state.
-type WorldScopes struct {
-	world *game.WorldState
+// playerOnlyFinder wraps a PlayerGroup into a full TargetFinder.
+// FindPlayer searches members by name; mobs, objects, and exits always return nil.
+type playerOnlyFinder struct {
+	game.PlayerGroup
 }
 
-// NewWorldScopes creates a TargetScopes backed by the given WorldState.
-func NewWorldScopes(world *game.WorldState) *WorldScopes {
+func (f playerOnlyFinder) FindPlayer(name string) *game.PlayerState {
+	lower := strings.ToLower(name)
+	var found *game.PlayerState
+	f.ForEachPlayer(func(_ string, ps *game.PlayerState) {
+		if found != nil || ps == nil {
+			return
+		}
+		if strings.ToLower(ps.Character.Get().Name) == lower {
+			found = ps
+		}
+	})
+	return found
+}
+
+func (f playerOnlyFinder) FindObj(string) *game.ObjectInstance  { return nil }
+func (f playerOnlyFinder) FindMob(string) *game.MobileInstance  { return nil }
+func (f playerOnlyFinder) FindExit(string) (string, *game.Exit) { return "", nil }
+
+// WorldScopes implements TargetScopes using a WorldView.
+// It translates scope flags into the correct search spaces by looking up
+// rooms, zones, inventory, and equipment from the world view.
+type WorldScopes struct {
+	world WorldView
+}
+
+// NewWorldScopes creates a TargetScopes backed by the given WorldView.
+func NewWorldScopes(world WorldView) *WorldScopes {
 	return &WorldScopes{world: world}
 }
 
@@ -46,14 +72,14 @@ func (ws *WorldScopes) SpacesFor(scope Scope, actor *game.Character, session *ga
 		})
 	}
 	if scope&ScopeRoom != 0 {
-		room := ws.world.Instances()[zoneId].GetRoom(roomId)
+		room := ws.world.GetRoom(zoneId, roomId)
 		spaces = append(spaces, SearchSpace{
 			Finder:  room,
 			Remover: room,
 		})
 	}
 	if scope&ScopeZone != 0 {
-		zone := ws.world.Instances()[zoneId]
+		zone := ws.world.GetZone(zoneId)
 		spaces = append(spaces, SearchSpace{
 			Finder: zone,
 		})
@@ -64,6 +90,11 @@ func (ws *WorldScopes) SpacesFor(scope Scope, actor *game.Character, session *ga
 				Finder: zi,
 			})
 		}
+	}
+	if scope&ScopeGroup != 0 && session.Group != nil {
+		spaces = append(spaces, SearchSpace{
+			Finder: playerOnlyFinder{session.Group},
+		})
 	}
 
 	return spaces, nil

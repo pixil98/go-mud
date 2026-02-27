@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "groupsay",
+    "spec": {
+        "handler": "message",
+        "category": "group",
+        "description": "Send a message to your group.",
+        "aliases": ["gsay","gtell","grouptell"],
+        "config": {
+            "scope": "group",
+            "sender_message": "{{ .Color.Cyan }}You tell the group, \"{{ .Inputs.text }}\"{{ .Color.Reset }}",
+            "recipient_message": "{{ .Color.Cyan }}{{ .Actor.Name }} tells the group, \"{{ .Inputs.text }}\"{{ .Color.Reset }}"
+        },
+        "inputs": [
+            {"name": "text", "type": "string", "required": true, "rest": true, "missing": "Say what to the group?"}
+        ]
+    }
+}

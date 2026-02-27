@@ -115,8 +115,13 @@ func NewManager(pub game.Publisher, world *game.WorldState, handler EventHandler
 	}
 }
 
-// GetFighter returns the Fighter for the given combatant ID, or nil.
-func (m *Manager) GetFighter(id string) *Fighter {
+// GetPlayerFighter returns the Fighter for a player character ID, or nil.
+func (m *Manager) GetPlayerFighter(charId string) *Fighter {
+	return m.getFighter(fmt.Sprintf("player:%s", charId))
+}
+
+// getFighter returns the Fighter for the given combatant ID, or nil.
+func (m *Manager) getFighter(id string) *Fighter {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	fight, ok := m.combatants[id]

@@ -30,6 +30,7 @@ const (
 	ScopeInventory                   // Objects in actor's inventory
 	ScopeEquipment                   // Objects in actor's equipment
 	ScopeContents                    // Objects inside another resolved target's contents (requires scope_target)
+	ScopeGroup                       // Members of the actor's current group
 )
 
 // TargetType represents the type of entity a target resolves to.
@@ -123,6 +124,8 @@ func (t *TargetSpec) Scope() Scope {
 			result |= ScopeZone
 		case "contents":
 			result |= ScopeContents
+		case "group":
+			result |= ScopeGroup
 		}
 	}
 	return result
