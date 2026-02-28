@@ -56,9 +56,12 @@ func TestNewFileStore_WithExistingAssets(t *testing.T) {
 			Identifier: a.id,
 			Spec:       a.spec,
 		}
-		data, _ := json.Marshal(asset)
+		data, err := json.Marshal(asset)
+		if err != nil {
+			t.Fatalf("failed to marshal test asset: %v", err)
+		}
 		filePath := filepath.Join(tmpDir, a.id+".json")
-		err := os.WriteFile(filePath, data, 0644)
+		err = os.WriteFile(filePath, data, 0644)
 		if err != nil {
 			t.Fatalf("failed to write test file: %v", err)
 		}
@@ -103,9 +106,12 @@ func TestNewFileStore_ValidationError(t *testing.T) {
 		Identifier: "test",
 		Spec:       &mockStoreSpec{Name: "Test", Value: 1},
 	}
-	data, _ := json.Marshal(asset)
+	data, err := json.Marshal(asset)
+	if err != nil {
+		t.Fatalf("failed to marshal test asset: %v", err)
+	}
 	filePath := filepath.Join(tmpDir, "test.json")
-	err := os.WriteFile(filePath, data, 0644)
+	err = os.WriteFile(filePath, data, 0644)
 	if err != nil {
 		t.Fatalf("failed to write test file: %v", err)
 	}
@@ -131,7 +137,10 @@ func TestNewFileStore_DuplicateKey(t *testing.T) {
 		Identifier: "duplicate-id",
 		Spec:       &mockStoreSpec{Name: "Test", Value: 1},
 	}
-	data, _ := json.Marshal(asset)
+	data, err := json.Marshal(asset)
+	if err != nil {
+		t.Fatalf("failed to marshal test asset: %v", err)
+	}
 
 	err = os.WriteFile(filepath.Join(tmpDir, "file1.json"), data, 0644)
 	if err != nil {
@@ -157,8 +166,11 @@ func TestNewFileStore_IgnoresNonJSONFiles(t *testing.T) {
 		Identifier: "valid",
 		Spec:       &mockStoreSpec{Name: "Valid", Value: 1},
 	}
-	data, _ := json.Marshal(asset)
-	err := os.WriteFile(filepath.Join(tmpDir, "valid.json"), data, 0644)
+	data, err := json.Marshal(asset)
+	if err != nil {
+		t.Fatalf("failed to marshal test asset: %v", err)
+	}
+	err = os.WriteFile(filepath.Join(tmpDir, "valid.json"), data, 0644)
 	if err != nil {
 		t.Fatalf("failed to write test file: %v", err)
 	}
@@ -183,7 +195,10 @@ func TestNewFileStore_IgnoresNonJSONFiles(t *testing.T) {
 
 func TestFileStore_Get(t *testing.T) {
 	tmpDir := t.TempDir()
-	store, _ := NewFileStore[*mockStoreSpec](tmpDir)
+	store, err := NewFileStore[*mockStoreSpec](tmpDir)
+	if err != nil {
+		t.Fatalf("unexpected error creating store: %v", err)
+	}
 	store.records = map[string]*mockStoreSpec{
 		"existing": {Name: "Test", Value: 42},
 	}
@@ -258,7 +273,10 @@ func TestFileStore_GetAll(t *testing.T) {
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
 			tmpDir := t.TempDir()
-			store, _ := NewFileStore[*mockStoreSpec](tmpDir)
+			store, err := NewFileStore[*mockStoreSpec](tmpDir)
+	if err != nil {
+		t.Fatalf("unexpected error creating store: %v", err)
+	}
 			store.records = tt.records
 
 			result := store.GetAll()
@@ -281,11 +299,14 @@ func TestFileStore_GetAll(t *testing.T) {
 
 func TestFileStore_Save(t *testing.T) {
 	tmpDir := t.TempDir()
-	store, _ := NewFileStore[*mockStoreSpec](tmpDir)
+	store, err := NewFileStore[*mockStoreSpec](tmpDir)
+	if err != nil {
+		t.Fatalf("unexpected error creating store: %v", err)
+	}
 
 	spec := &mockStoreSpec{Name: "TestItem", Value: 100}
 
-	err := store.Save("test-id", spec)
+	err = store.Save("test-id", spec)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -319,10 +340,13 @@ func TestFileStore_Save(t *testing.T) {
 
 func TestFileStore_Save_OverwritesExisting(t *testing.T) {
 	tmpDir := t.TempDir()
-	store, _ := NewFileStore[*mockStoreSpec](tmpDir)
+	store, err := NewFileStore[*mockStoreSpec](tmpDir)
+	if err != nil {
+		t.Fatalf("unexpected error creating store: %v", err)
+	}
 
 	// Save initial
-	err := store.Save("test-id", &mockStoreSpec{Name: "Initial", Value: 1})
+	err = store.Save("test-id", &mockStoreSpec{Name: "Initial", Value: 1})
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -341,7 +365,10 @@ func TestFileStore_Save_OverwritesExisting(t *testing.T) {
 
 func TestFileStore_filePath(t *testing.T) {
 	tmpDir := t.TempDir()
-	store, _ := NewFileStore[*mockStoreSpec](tmpDir)
+	store, err := NewFileStore[*mockStoreSpec](tmpDir)
+	if err != nil {
+		t.Fatalf("unexpected error creating store: %v", err)
+	}
 
 	result := store.filePath("test-id")
 

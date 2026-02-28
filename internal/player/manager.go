@@ -97,7 +97,9 @@ func (m *PlayerManager) Tick(ctx context.Context) error {
 			slog.Warn("failed to save linkless player", "charId", charId, "error", err)
 		}
 		ps.UnsubscribeAll()
-		_ = m.world.RemovePlayer(charId)
+		if err := m.world.RemovePlayer(charId); err != nil {
+			slog.Warn("failed to remove linkless player", "charId", charId, "error", err)
+		}
 		slog.Info("linkless player removed", "charId", charId)
 	}
 
@@ -185,7 +187,9 @@ func (m *PlayerManager) newPlayer(conn io.ReadWriter) (*Player, error) {
 	}
 
 	if err := m.subscribePlayer(ps, charId); err != nil {
-		_ = m.world.RemovePlayer(charId)
+		if removeErr := m.world.RemovePlayer(charId); removeErr != nil {
+			slog.Warn("failed to remove player after subscribe failure", "charId", charId, "error", removeErr)
+		}
 		return nil, fmt.Errorf("subscribing player: %w", err)
 	}
 
@@ -210,7 +214,9 @@ func (m *PlayerManager) handleSessionEnd(charId string, playErr error) {
 
 	if ps.Quit {
 		ps.UnsubscribeAll()
-		_ = m.world.RemovePlayer(charId)
+		if err := m.world.RemovePlayer(charId); err != nil {
+			slog.Warn("failed to remove player on quit", "charId", charId, "error", err)
+		}
 		slog.Info("player quit", "charId", charId)
 	} else {
 		ps.MarkLinkless()

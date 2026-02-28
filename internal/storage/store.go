@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log/slog"
 	"os"
 	"path/filepath"
 	"sync"
@@ -109,7 +110,9 @@ func atomicWrite(path string, data []byte, perm os.FileMode) error {
 		return fmt.Errorf("writing temp file: %w", err)
 	}
 	if err := os.Rename(tmp, path); err != nil {
-		_ = os.Remove(tmp)
+		if removeErr := os.Remove(tmp); removeErr != nil {
+			slog.Warn("failed to remove temp file after rename failure", "path", tmp, "error", removeErr)
+		}
 		return fmt.Errorf("renaming temp file: %w", err)
 	}
 	return nil

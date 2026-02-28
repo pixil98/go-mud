@@ -2,6 +2,7 @@ package combat
 
 import (
 	"fmt"
+	"log/slog"
 
 	"github.com/google/uuid"
 	"github.com/pixil98/go-mud/internal/game"
@@ -91,14 +92,18 @@ func (h *CombatEventHandler) onPlayerDeath(pc *PlayerCombatant, dctx DeathContex
 		fromRoom.ForEachPlayer(func(charId string, ps *game.PlayerState) {
 			if ps.FollowingId == deadId {
 				ps.FollowingId = ""
-				_ = h.pub.Publish(game.SinglePlayer(charId), nil,
-					[]byte(fmt.Sprintf("You stop following %s.", char.Name)))
+				if err := h.pub.Publish(game.SinglePlayer(charId), nil,
+					[]byte(fmt.Sprintf("You stop following %s.", char.Name))); err != nil {
+					slog.Warn("failed to notify follower of death", "error", err)
+				}
 			}
 		})
 	}
 
 	// Send personal message
-	_ = h.pub.Publish(game.SinglePlayer(pc.Character.Id()), nil, []byte("You have been slain! You awaken in a familiar place..."))
+	if err := h.pub.Publish(game.SinglePlayer(pc.Character.Id()), nil, []byte("You have been slain! You awaken in a familiar place...")); err != nil {
+		slog.Warn("failed to notify slain player", "error", err)
+	}
 
 	// Restore HP
 	char.CurrentHP = char.MaxHP
@@ -110,6 +115,8 @@ func (h *CombatEventHandler) onPlayerDeath(pc *PlayerCombatant, dctx DeathContex
 
 		// Show new room
 		roomDesc := toRoom.Describe(char.Name)
-		_ = h.pub.Publish(game.SinglePlayer(pc.Character.Id()), nil, []byte(roomDesc))
+		if err := h.pub.Publish(game.SinglePlayer(pc.Character.Id()), nil, []byte(roomDesc)); err != nil {
+			slog.Warn("failed to send room description after death", "error", err)
+		}
 	}
 }

@@ -8,14 +8,13 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
-func newTestRoom(id, name, zoneId string) *game.RoomInstance {
+func newTestRoom(id, name, zoneId string) (*game.RoomInstance, error) {
 	zone := &game.Zone{ResetMode: game.ZoneResetNever}
 	room := &game.Room{
 		Name: name,
 		Zone: storage.NewResolvedSmartIdentifier(zoneId, zone),
 	}
-	ri, _ := game.NewRoomInstance(storage.NewResolvedSmartIdentifier(id, room))
-	return ri
+	return game.NewRoomInstance(storage.NewResolvedSmartIdentifier(id, room))
 }
 
 func newTestPlayer(charId, name string, room *game.RoomInstance) *game.PlayerState {
@@ -83,8 +82,14 @@ func TestMoveFollowers(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			fromRoom := newTestRoom("test-room-1", "Room One", "test-zone")
-			toRoom := newTestRoom("test-room-2", "Room Two", "test-zone")
+			fromRoom, err := newTestRoom("test-room-1", "Room One", "test-zone")
+			if err != nil {
+				t.Fatalf("failed to create from room: %v", err)
+			}
+			toRoom, err := newTestRoom("test-room-2", "Room Two", "test-zone")
+			if err != nil {
+				t.Fatalf("failed to create to room: %v", err)
+			}
 			pub := &recordingPublisher{}
 			factory := &MoveHandlerFactory{pub: pub}
 

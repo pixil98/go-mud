@@ -3,6 +3,7 @@ package commands
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/game"
@@ -93,18 +94,24 @@ func (f *MoveObjHandlerFactory) Create() (CommandFunc, error) {
 			exclude := []string{cmdCtx.Session.Character.Id()}
 
 			if selfMsg := cmdCtx.Config["self_message"]; selfMsg != "" {
-				_ = f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(selfMsg))
+				if err := f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(selfMsg)); err != nil {
+					slog.Warn("failed to publish self message", "error", err)
+				}
 			}
 
 			if targetMsg := cmdCtx.Config["target_message"]; targetMsg != "" {
 				if ref := cmdCtx.Targets[cmdCtx.Config["destination"]]; ref != nil && ref.Type == TargetTypePlayer {
-					_ = f.pub.Publish(game.SinglePlayer(ref.Player.CharId), nil, []byte(targetMsg))
+					if err := f.pub.Publish(game.SinglePlayer(ref.Player.CharId), nil, []byte(targetMsg)); err != nil {
+						slog.Warn("failed to publish target message", "error", err)
+					}
 					exclude = append(exclude, ref.Player.CharId)
 				}
 			}
 
 			room := f.rooms.GetRoom(cmdCtx.Session.ZoneId, cmdCtx.Session.RoomId)
-			_ = f.pub.Publish(room, exclude, []byte(cmdCtx.Config["room_message"]))
+			if err := f.pub.Publish(room, exclude, []byte(cmdCtx.Config["room_message"])); err != nil {
+				slog.Warn("failed to publish room message", "error", err)
+			}
 		}
 
 		return nil

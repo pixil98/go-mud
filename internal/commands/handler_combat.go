@@ -3,6 +3,7 @@ package commands
 import (
 	"context"
 	"fmt"
+	"log/slog"
 
 	"github.com/pixil98/go-mud/internal/combat"
 	"github.com/pixil98/go-mud/internal/game"
@@ -58,12 +59,16 @@ func (f *KillHandlerFactory) Create() (CommandFunc, error) {
 			return NewUserError(err.Error())
 		}
 
-		_ = f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil,
-			[]byte(fmt.Sprintf("You attack %s!", mi.Mobile.Get().ShortDesc)))
+		if err := f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil,
+			[]byte(fmt.Sprintf("You attack %s!", mi.Mobile.Get().ShortDesc))); err != nil {
+			slog.Warn("failed to notify attacker", "error", err)
+		}
 
 		room := f.rooms.GetRoom(zoneID, roomID)
 		roomMsg := fmt.Sprintf("%s attacks %s!", cmdCtx.Actor.Name, mi.Mobile.Get().ShortDesc)
-		_ = f.pub.Publish(room, []string{cmdCtx.Session.Character.Id()}, []byte(roomMsg))
+		if err := f.pub.Publish(room, []string{cmdCtx.Session.Character.Id()}, []byte(roomMsg)); err != nil {
+			slog.Warn("failed to publish room attack message", "error", err)
+		}
 
 		return nil
 	}, nil
@@ -125,14 +130,20 @@ func (f *AssistHandlerFactory) Create() (CommandFunc, error) {
 
 		actorId := cmdCtx.Session.Character.Id()
 
-		_ = f.pub.Publish(game.SinglePlayer(actorId), nil,
-			[]byte(fmt.Sprintf("You jump to %s's aid!", assistedName)))
-		_ = f.pub.Publish(game.SinglePlayer(assistedId), nil,
-			[]byte(fmt.Sprintf("%s jumps to your aid!", cmdCtx.Actor.Name)))
+		if err := f.pub.Publish(game.SinglePlayer(actorId), nil,
+			[]byte(fmt.Sprintf("You jump to %s's aid!", assistedName))); err != nil {
+			slog.Warn("failed to notify actor of assist", "error", err)
+		}
+		if err := f.pub.Publish(game.SinglePlayer(assistedId), nil,
+			[]byte(fmt.Sprintf("%s jumps to your aid!", cmdCtx.Actor.Name))); err != nil {
+			slog.Warn("failed to notify assisted player", "error", err)
+		}
 
 		room := f.rooms.GetRoom(zoneID, roomID)
 		roomMsg := fmt.Sprintf("%s jumps to %s's aid!", cmdCtx.Actor.Name, assistedName)
-		_ = f.pub.Publish(room, []string{actorId, assistedId}, []byte(roomMsg))
+		if err := f.pub.Publish(room, []string{actorId, assistedId}, []byte(roomMsg)); err != nil {
+			slog.Warn("failed to publish room assist message", "error", err)
+		}
 
 		return nil
 	}, nil

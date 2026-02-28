@@ -81,8 +81,12 @@ func TestExtensionState_Get(t *testing.T) {
 	}
 
 	preloaded := ExtensionState{}
-	_ = preloaded.Set("data", testData{Name: "test", Count: 5})
-	_ = preloaded.Set("string", "hello")
+	if err := preloaded.Set("data", testData{Name: "test", Count: 5}); err != nil {
+		t.Fatalf("failed to set preloaded data: %v", err)
+	}
+	if err := preloaded.Set("string", "hello"); err != nil {
+		t.Fatalf("failed to set preloaded string: %v", err)
+	}
 
 	tests := map[string]struct {
 		state    ExtensionState

@@ -3,6 +3,7 @@ package commands
 import (
 	"context"
 	"fmt"
+	"log/slog"
 
 	"github.com/pixil98/go-mud/internal/game"
 )
@@ -68,10 +69,14 @@ func (f *FollowHandlerFactory) follow(cmdCtx *CommandContext, target *TargetRef)
 	cmdCtx.Session.FollowingId = leaderId
 
 	// Notify both parties.
-	_ = f.pub.Publish(game.SinglePlayer(actorId), nil,
-		[]byte(fmt.Sprintf("You now follow %s.", target.Player.Name)))
-	_ = f.pub.Publish(game.SinglePlayer(leaderId), nil,
-		[]byte(fmt.Sprintf("%s now follows you.", cmdCtx.Actor.Name)))
+	if err := f.pub.Publish(game.SinglePlayer(actorId), nil,
+		[]byte(fmt.Sprintf("You now follow %s.", target.Player.Name))); err != nil {
+		slog.Warn("failed to notify follower", "error", err)
+	}
+	if err := f.pub.Publish(game.SinglePlayer(leaderId), nil,
+		[]byte(fmt.Sprintf("%s now follows you.", cmdCtx.Actor.Name))); err != nil {
+		slog.Warn("failed to notify leader", "error", err)
+	}
 
 	return nil
 }
@@ -95,10 +100,14 @@ func (f *FollowHandlerFactory) notifyStopFollowing(cmdCtx *CommandContext) {
 	leaderPs := f.players.GetPlayer(leaderId)
 	if leaderPs != nil {
 		leaderName := leaderPs.Character.Get().Name
-		_ = f.pub.Publish(game.SinglePlayer(actorId), nil,
-			[]byte(fmt.Sprintf("You stop following %s.", leaderName)))
-		_ = f.pub.Publish(game.SinglePlayer(leaderId), nil,
-			[]byte(fmt.Sprintf("%s stops following you.", cmdCtx.Actor.Name)))
+		if err := f.pub.Publish(game.SinglePlayer(actorId), nil,
+			[]byte(fmt.Sprintf("You stop following %s.", leaderName))); err != nil {
+			slog.Warn("failed to notify follower", "error", err)
+		}
+		if err := f.pub.Publish(game.SinglePlayer(leaderId), nil,
+			[]byte(fmt.Sprintf("%s stops following you.", cmdCtx.Actor.Name))); err != nil {
+			slog.Warn("failed to notify leader", "error", err)
+		}
 	}
 }
 

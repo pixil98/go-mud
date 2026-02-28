@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log/slog"
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/commands"
@@ -45,7 +46,9 @@ func (p *Player) Play(ctx context.Context) error {
 	if err != nil {
 		var userErr *commands.UserError
 		if errors.As(err, &userErr) {
-			_ = p.writeLine(userErr.Message)
+			if writeErr := p.writeLine(userErr.Message); writeErr != nil {
+				slog.Warn("failed to write user error to player", "charId", p.charId, "error", writeErr)
+			}
 		} else {
 			return fmt.Errorf("initial look failed: %w", err)
 		}
@@ -57,10 +60,14 @@ func (p *Player) Play(ctx context.Context) error {
 
 		case <-p.done:
 			ps := p.world.GetPlayer(p.charId)
+			var msg string
 			if ps != nil && ps.Linkless {
-				_ = p.writeLine("\nDisconnected for inactivity.")
+				msg = "\nDisconnected for inactivity."
 			} else {
-				_ = p.writeLine("\nAnother connection has taken over your session.")
+				msg = "\nAnother connection has taken over your session."
+			}
+			if err := p.writeLine(msg); err != nil {
+				slog.Warn("failed to write disconnect message to player", "charId", p.charId, "error", err)
 			}
 			return game.ErrPlayerReconnected
 

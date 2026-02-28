@@ -3,6 +3,7 @@ package commands
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/game"
@@ -93,7 +94,9 @@ func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 		// Send room description to player
 		roomDesc := toRoom.Describe(cmdCtx.Actor.Name)
 		if f.pub != nil {
-			_ = f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(roomDesc))
+			if err := f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(roomDesc)); err != nil {
+				slog.Warn("failed to send room description", "error", err)
+			}
 		}
 
 		// Move any followers in the old room
@@ -131,8 +134,10 @@ func (f *MoveHandlerFactory) moveFollowers(leaderId, leaderName string, fromRoom
 	for _, fl := range followers {
 		if canMove(fl.ps) != nil {
 			if f.pub != nil {
-				_ = f.pub.Publish(game.SinglePlayer(fl.charId), nil,
-					[]byte(fmt.Sprintf("%s leaves %s without you.", leaderName, direction)))
+				if err := f.pub.Publish(game.SinglePlayer(fl.charId), nil,
+					[]byte(fmt.Sprintf("%s leaves %s without you.", leaderName, direction))); err != nil {
+					slog.Warn("failed to notify follower left behind", "error", err)
+				}
 			}
 			continue
 		}
@@ -142,7 +147,9 @@ func (f *MoveHandlerFactory) moveFollowers(leaderId, leaderName string, fromRoom
 		if f.pub != nil {
 			roomDesc := toRoom.Describe(fl.ps.Character.Get().Name)
 			msg := fmt.Sprintf("You follow %s.\n%s", leaderName, roomDesc)
-			_ = f.pub.Publish(game.SinglePlayer(fl.charId), nil, []byte(msg))
+			if err := f.pub.Publish(game.SinglePlayer(fl.charId), nil, []byte(msg)); err != nil {
+				slog.Warn("failed to send room description to follower", "error", err)
+			}
 		}
 
 		// Recurse: move this follower's followers too.

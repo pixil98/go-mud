@@ -70,7 +70,10 @@ func TestAssistHandler(t *testing.T) {
 						"bob": {Target: mob},
 					},
 				}
-				room := newTestRoom("test-room", "Test Room", "test-zone")
+				room, err := newTestRoom("test-room", "Test Room", "test-zone")
+			if err != nil {
+				t.Fatalf("failed to create test room: %v", err)
+			}
 				pub := &recordingPublisher{}
 				players := &mockPlayerLookup{}
 				f := NewAssistHandlerFactory(cm, &mockRoomLocator{room: room}, players, pub)
@@ -101,7 +104,10 @@ func TestAssistHandler(t *testing.T) {
 						"bob": {Target: mob},
 					},
 				}
-				room := newTestRoom("test-room", "Test Room", "test-zone")
+				room, err := newTestRoom("test-room", "Test Room", "test-zone")
+			if err != nil {
+				t.Fatalf("failed to create test room: %v", err)
+			}
 				pub := &recordingPublisher{}
 
 				bob := newTestPlayer("bob", "Bob", room)
