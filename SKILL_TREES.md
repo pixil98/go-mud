@@ -188,15 +188,10 @@ Grants an ability by ID (spells and skills share the same namespace).
 { "type": "unlock_ability", "id": "firebolt" }
 ```
 
-#### `stat_mod`
-Modifies a core, engine-known stat (e.g., `str`, `dex`, `int`, `wis`, `cha`).
-```json
-{ "type": "stat_mod", "stat": "int", "value": 1 }
-```
-
 #### `key_mod`
-Modifies an asset-defined numeric key. The engine stores and sums these keys but does not interpret them by default; other assets (abilities, items) can read them.
+Modifies a numeric key. The engine stores and sums these keys per character. Well-known keys (core stats, mana, etc.) use the `core.*` namespace and are interpreted by the engine. Asset-defined keys use tree-scoped names and are read by abilities, items, or other assets.
 ```json
+{ "type": "key_mod", "key": "core.stats.int", "value": 1 }
 { "type": "key_mod", "key": "evocation.storm.chain_jumps_add", "value": 1 }
 ```
 
@@ -209,9 +204,13 @@ Grants a keyword flag (for rules or UI).
 ### Key naming convention (recommended)
 Use namespaced dotted keys:
 
-- `<tree>.<line>.<property>_<add|pct>`
+- `core.stats.<stat>` — engine-known ability scores (`str`, `dex`, `con`, `int`, `wis`, `cha`)
+- `core.mana.max` — mana pool size
+- `<tree>.<line>.<property>_<add|pct>` — asset-defined keys
 
 Examples:
+- `core.stats.str`
+- `core.mana.max`
 - `evocation.fire.damage_pct`
 - `evocation.fire.burn_pct`
 - `evocation.frost.slow_pct`

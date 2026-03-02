@@ -12,25 +12,19 @@ import (
 // means two ring slots). The list order defines the display order for the
 // equipment command.
 type Race struct {
-	Name         string         `json:"name"`
-	Abbreviation string         `json:"abbreviation"`
-	StatMods     map[StatKey]int `json:"stat_mods"`
-	Perks        []string       `json:"perks"`
-	WearSlots    []string       `json:"wear_slots,omitempty"`
+	Name         string   `json:"name"`
+	Abbreviation string   `json:"abbreviation"`
+	Perks        []Perk   `json:"perks"`
+	WearSlots    []string `json:"wear_slots,omitempty"`
 }
 
 func (r *Race) Validate() error {
 	el := errors.NewErrorList()
 
-	for _, p := range r.Perks {
-		el.Add(func() error {
-			switch p {
-			case "darkvision":
-				return nil
-			default:
-				return fmt.Errorf("unknown perk: %s", p)
-			}
-		}())
+	for i, p := range r.Perks {
+		if err := p.validate(); err != nil {
+			el.Add(fmt.Errorf("perks[%d]: %w", i, err))
+		}
 	}
 
 	return el.Err()

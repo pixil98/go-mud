@@ -4,11 +4,10 @@
     "spec": {
         "name": "Halfling",
         "abbreviation": "Ha",
-        "stat_mods": {
-            "str": -2,
-            "dex": 2
-        },
-        "perks": [],
+        "perks": [
+            { "type": "key_mod", "key": "core.stats.str", "value": -2 },
+            { "type": "key_mod", "key": "core.stats.dex", "value": 2 }
+        ],
         "wear_slots": [
             "light", "head", "neck", "neck", "about",
             "body", "arms", "wrist", "wrist", "hands",

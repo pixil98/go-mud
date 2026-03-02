@@ -242,16 +242,28 @@ func objectInstanceToSpawn(oi *ObjectInstance) assets.ObjectSpawn {
 	return spawn
 }
 
-// EffectiveStats computes ability scores from base stats + race modifiers + equipment bonuses.
+// Perks returns the aggregated perks from all sources (race, tree nodes, etc.).
+func (ci *CharacterInstance) Perks() []assets.Perk {
+	var perks []assets.Perk
+	if r := ci.Character.Get().Race.Get(); r != nil {
+		perks = append(perks, r.Perks...)
+	}
+	return perks
+}
+
+// EffectiveStats computes ability scores from base stats + perk modifiers + equipment bonuses.
 func (ci *CharacterInstance) EffectiveStats() map[assets.StatKey]Stat {
 	char := ci.Character.Get()
 	stats := make(map[assets.StatKey]Stat, len(assets.AllStatKeys))
 	for _, k := range assets.AllStatKeys {
 		stats[k] = Stat(char.BaseStats[k])
 	}
-	if char.Race.Get() != nil {
-		for k, v := range char.Race.Get().StatMods {
-			stats[k] += Stat(v)
+	for _, p := range ci.Perks() {
+		if p.Type != "key_mod" {
+			continue
+		}
+		if sk, ok := assets.StatPerkKeys[p.Key]; ok {
+			stats[sk] += Stat(p.Value)
 		}
 	}
 	for k, v := range ci.Equipment.StatBonuses() {
@@ -278,12 +290,14 @@ func (ci *CharacterInstance) StatSections() []StatSection {
 		{Lines: []StatLine{{Value: strings.Join(parts, " | "), Center: true}}},
 	}
 
-	if char.Race.Get() != nil && len(char.Race.Get().Perks) > 0 {
-		var lines []StatLine
-		for _, p := range char.Race.Get().Perks {
-			lines = append(lines, StatLine{Value: "  " + p})
+	var perkLines []StatLine
+	for _, p := range ci.Perks() {
+		if p.Type == "tag" {
+			perkLines = append(perkLines, StatLine{Value: "  " + p.Tag})
 		}
-		sections = append(sections, StatSection{Header: "Perks", Lines: lines})
+	}
+	if len(perkLines) > 0 {
+		sections = append(sections, StatSection{Header: "Perks", Lines: perkLines})
 	}
 
 	// Prepend name line

@@ -4,12 +4,10 @@
     "spec": {
         "name": "Dwarf",
         "abbreviation": "Dw",
-        "stat_mods": {
-            "con": 2,
-            "cha": -2
-        },
         "perks": [
-            "darkvision"
+            { "type": "key_mod", "key": "core.stats.con", "value": 2 },
+            { "type": "key_mod", "key": "core.stats.cha", "value": -2 },
+            { "type": "tag", "tag": "darkvision" }
         ],
         "wear_slots": [
             "light", "head", "neck", "neck", "about",
