@@ -21,6 +21,7 @@ type StorageConfig struct {
 	Objects    AssetConfig[*assets.Object]    `json:"objects"`
 	Pronouns   AssetConfig[*assets.Pronoun]   `json:"pronouns"`
 	Races      AssetConfig[*assets.Race]      `json:"races"`
+	Trees      AssetConfig[*assets.Tree]      `json:"trees"`
 }
 
 func (c *StorageConfig) BuildDictionary() (*game.Dictionary, error) {
@@ -52,6 +53,10 @@ func (c *StorageConfig) BuildDictionary() (*game.Dictionary, error) {
 	if err != nil {
 		return nil, fmt.Errorf("creating race store: %w", err)
 	}
+	trees, err := c.Trees.BuildFileStore()
+	if err != nil {
+		return nil, fmt.Errorf("creating tree store: %w", err)
+	}
 
 	dict := &game.Dictionary{
 		Characters: chars,
@@ -61,6 +66,7 @@ func (c *StorageConfig) BuildDictionary() (*game.Dictionary, error) {
 		Objects:    objects,
 		Pronouns:   pronouns,
 		Races:      races,
+		Trees:      trees,
 	}
 
 	if err := dict.Resolve(); err != nil {
@@ -80,6 +86,7 @@ func (c *StorageConfig) validate() error {
 	el.Add(c.Objects.Validate("objects"))
 	el.Add(c.Pronouns.Validate("pronouns"))
 	el.Add(c.Races.Validate("races"))
+	el.Add(c.Trees.Validate("trees"))
 	return el.Err()
 }
 
