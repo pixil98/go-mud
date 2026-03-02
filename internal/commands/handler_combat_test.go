@@ -5,6 +5,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/combat"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
@@ -71,9 +72,9 @@ func TestAssistHandler(t *testing.T) {
 					},
 				}
 				room, err := newTestRoom("test-room", "Test Room", "test-zone")
-			if err != nil {
-				t.Fatalf("failed to create test room: %v", err)
-			}
+				if err != nil {
+					t.Fatalf("failed to create test room: %v", err)
+				}
 				pub := &recordingPublisher{}
 				players := &mockPlayerLookup{}
 				f := NewAssistHandlerFactory(cm, &mockRoomLocator{room: room}, players, pub)
@@ -105,13 +106,13 @@ func TestAssistHandler(t *testing.T) {
 					},
 				}
 				room, err := newTestRoom("test-room", "Test Room", "test-zone")
-			if err != nil {
-				t.Fatalf("failed to create test room: %v", err)
-			}
+				if err != nil {
+					t.Fatalf("failed to create test room: %v", err)
+				}
 				pub := &recordingPublisher{}
 
 				bob := newTestPlayer("bob", "Bob", room)
-				players := &mockPlayerLookup{players: map[string]*game.PlayerState{"bob": bob}}
+				players := &mockPlayerLookup{players: map[string]*game.CharacterInstance{"bob": bob}}
 				f := NewAssistHandlerFactory(cm, &mockRoomLocator{room: room}, players, pub)
 
 				actor := newTestPlayer("alice", "Alice", room)
@@ -136,8 +137,8 @@ func TestAssistHandler(t *testing.T) {
 				players := &mockPlayerLookup{}
 				f := NewAssistHandlerFactory(cm, &mockRoomLocator{}, players, pub)
 
-				actor := &game.PlayerState{
-					Character: storage.NewResolvedSmartIdentifier("alice", &game.Character{Name: "Alice"}),
+				actor := &game.CharacterInstance{
+					Character: storage.NewResolvedSmartIdentifier("alice", &assets.Character{Name: "Alice"}),
 					InCombat:  true,
 				}
 				cmdCtx := &CommandContext{
@@ -157,8 +158,8 @@ func TestAssistHandler(t *testing.T) {
 				players := &mockPlayerLookup{}
 				f := NewAssistHandlerFactory(cm, &mockRoomLocator{}, players, pub)
 
-				actor := &game.PlayerState{
-					Character: storage.NewResolvedSmartIdentifier("alice", &game.Character{Name: "Alice"}),
+				actor := &game.CharacterInstance{
+					Character: storage.NewResolvedSmartIdentifier("alice", &assets.Character{Name: "Alice"}),
 				}
 				cmdCtx := &CommandContext{
 					Actor:   actor.Character.Get(),
@@ -177,8 +178,8 @@ func TestAssistHandler(t *testing.T) {
 				players := &mockPlayerLookup{}
 				f := NewAssistHandlerFactory(cm, &mockRoomLocator{}, players, pub)
 
-				actor := &game.PlayerState{
-					Character: storage.NewResolvedSmartIdentifier("alice", &game.Character{Name: "Alice"}),
+				actor := &game.CharacterInstance{
+					Character: storage.NewResolvedSmartIdentifier("alice", &assets.Character{Name: "Alice"}),
 				}
 				cmdCtx := &CommandContext{
 					Actor:   actor.Character.Get(),

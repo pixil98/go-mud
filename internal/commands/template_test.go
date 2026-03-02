@@ -3,137 +3,138 @@ package commands
 import (
 	"testing"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 )
 
 // mockCharStore implements storage.Storer[*game.Character] for testing
 type mockCharStore struct {
-	chars map[string]*game.Character
+	chars map[string]*assets.Character
 }
 
-func (m *mockCharStore) Get(id string) *game.Character {
+func (m *mockCharStore) Get(id string) *assets.Character {
 	return m.chars[id]
 }
 
-func (m *mockCharStore) GetAll() map[string]*game.Character {
-	result := make(map[string]*game.Character)
+func (m *mockCharStore) GetAll() map[string]*assets.Character {
+	result := make(map[string]*assets.Character)
 	for k, v := range m.chars {
 		result[k] = v
 	}
 	return result
 }
 
-func (m *mockCharStore) Save(id string, char *game.Character) error {
+func (m *mockCharStore) Save(id string, char *assets.Character) error {
 	m.chars[id] = char
 	return nil
 }
 
-// mockZoneStore implements storage.Storer[*game.Zone] for testing
+// mockZoneStore implements storage.Storer[*assets.Zone] for testing
 type mockZoneStore struct {
-	zones map[string]*game.Zone
+	zones map[string]*assets.Zone
 }
 
-func (m *mockZoneStore) Get(id string) *game.Zone {
+func (m *mockZoneStore) Get(id string) *assets.Zone {
 	return m.zones[id]
 }
 
-func (m *mockZoneStore) GetAll() map[string]*game.Zone {
-	result := make(map[string]*game.Zone)
+func (m *mockZoneStore) GetAll() map[string]*assets.Zone {
+	result := make(map[string]*assets.Zone)
 	for k, v := range m.zones {
 		result[k] = v
 	}
 	return result
 }
 
-func (m *mockZoneStore) Save(id string, zone *game.Zone) error {
+func (m *mockZoneStore) Save(id string, zone *assets.Zone) error {
 	m.zones[id] = zone
 	return nil
 }
 
-// mockRoomStore implements storage.Storer[*game.Room] for testing
+// mockRoomStore implements storage.Storer[*assets.Room] for testing
 type mockRoomStore struct {
-	rooms map[string]*game.Room
+	rooms map[string]*assets.Room
 }
 
-func (m *mockRoomStore) Get(id string) *game.Room {
+func (m *mockRoomStore) Get(id string) *assets.Room {
 	return m.rooms[id]
 }
 
-func (m *mockRoomStore) GetAll() map[string]*game.Room {
-	result := make(map[string]*game.Room)
+func (m *mockRoomStore) GetAll() map[string]*assets.Room {
+	result := make(map[string]*assets.Room)
 	for k, v := range m.rooms {
 		result[k] = v
 	}
 	return result
 }
 
-func (m *mockRoomStore) Save(id string, room *game.Room) error {
+func (m *mockRoomStore) Save(id string, room *assets.Room) error {
 	m.rooms[id] = room
 	return nil
 }
 
-// mockMobileStore implements storage.Storer[*game.Mobile] for testing
+// mockMobileStore implements storage.Storer[*assets.Mobile] for testing
 type mockMobileStore struct {
-	mobiles map[string]*game.Mobile
+	mobiles map[string]*assets.Mobile
 }
 
-func (m *mockMobileStore) Get(id string) *game.Mobile {
+func (m *mockMobileStore) Get(id string) *assets.Mobile {
 	return m.mobiles[id]
 }
 
-func (m *mockMobileStore) GetAll() map[string]*game.Mobile {
-	result := make(map[string]*game.Mobile)
+func (m *mockMobileStore) GetAll() map[string]*assets.Mobile {
+	result := make(map[string]*assets.Mobile)
 	for k, v := range m.mobiles {
 		result[k] = v
 	}
 	return result
 }
 
-func (m *mockMobileStore) Save(id string, mobile *game.Mobile) error {
+func (m *mockMobileStore) Save(id string, mobile *assets.Mobile) error {
 	m.mobiles[id] = mobile
 	return nil
 }
 
-// mockObjectStore implements storage.Storer[*game.Object] for testing
+// mockObjectStore implements storage.Storer[*assets.Object] for testing
 type mockObjectStore struct {
-	objects map[string]*game.Object
+	objects map[string]*assets.Object
 }
 
-func (m *mockObjectStore) Get(id string) *game.Object {
+func (m *mockObjectStore) Get(id string) *assets.Object {
 	return m.objects[id]
 }
 
-func (m *mockObjectStore) GetAll() map[string]*game.Object {
-	result := make(map[string]*game.Object)
+func (m *mockObjectStore) GetAll() map[string]*assets.Object {
+	result := make(map[string]*assets.Object)
 	for k, v := range m.objects {
 		result[k] = v
 	}
 	return result
 }
 
-func (m *mockObjectStore) Save(id string, object *game.Object) error {
+func (m *mockObjectStore) Save(id string, object *assets.Object) error {
 	m.objects[id] = object
 	return nil
 }
 
-// mockRaceStore implements storage.Storer[*game.Race] for testing
+// mockRaceStore implements storage.Storer[*assets.Race] for testing
 type mockRaceStore struct {
-	races map[string]*game.Race
+	races map[string]*assets.Race
 }
 
-func (m *mockRaceStore) Get(id string) *game.Race {
+func (m *mockRaceStore) Get(id string) *assets.Race {
 	return m.races[id]
 }
 
-func (m *mockRaceStore) GetAll() map[string]*game.Race {
-	result := make(map[string]*game.Race)
+func (m *mockRaceStore) GetAll() map[string]*assets.Race {
+	result := make(map[string]*assets.Race)
 	for k, v := range m.races {
 		result[k] = v
 	}
 	return result
 }
 
-func (m *mockRaceStore) Save(id string, race *game.Race) error {
+func (m *mockRaceStore) Save(id string, race *assets.Race) error {
 	m.races[id] = race
 	return nil
 }
@@ -153,9 +154,9 @@ func TestExpandTemplate(t *testing.T) {
 		"expand session zone": {
 			tmplStr: "zone-{{ .Session.ZoneId }}",
 			data: struct {
-				Session *game.PlayerState
+				Session *game.CharacterInstance
 			}{
-				Session: &game.PlayerState{
+				Session: &game.CharacterInstance{
 					ZoneId: "forest",
 				},
 			},
@@ -164,9 +165,9 @@ func TestExpandTemplate(t *testing.T) {
 		"expand session room": {
 			tmplStr: "room-{{ .Session.RoomId }}",
 			data: struct {
-				Session *game.PlayerState
+				Session *game.CharacterInstance
 			}{
-				Session: &game.PlayerState{
+				Session: &game.CharacterInstance{
 					RoomId: "clearing",
 				},
 			},
@@ -186,9 +187,9 @@ func TestExpandTemplate(t *testing.T) {
 		"expand multiple values": {
 			tmplStr: "zone-{{ .Session.ZoneId }}-room-{{ .Session.RoomId }}",
 			data: struct {
-				Session *game.PlayerState
+				Session *game.CharacterInstance
 			}{
-				Session: &game.PlayerState{
+				Session: &game.CharacterInstance{
 					ZoneId: "castle",
 					RoomId: "throne",
 				},
@@ -198,9 +199,9 @@ func TestExpandTemplate(t *testing.T) {
 		"expand actor name": {
 			tmplStr: "{{ .Actor.Name }} says hello",
 			data: struct {
-				Actor *game.Character
+				Actor *assets.Character
 			}{
-				Actor: &game.Character{Name: "Bob"},
+				Actor: &assets.Character{Name: "Bob"},
 			},
 			exp: "Bob says hello",
 		},

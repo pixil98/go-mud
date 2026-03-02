@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/combat"
 	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
@@ -22,10 +23,10 @@ type ParsedInput struct {
 
 // CommandContext is what handlers receive after config processing.
 type CommandContext struct {
-	Actor   *game.Character   // Character data (name, title, etc.)
-	Session *game.PlayerState // Current session state (location, quit flag, etc.)
-	Targets map[string]*TargetRef // Resolved targets by name
-	Config  map[string]string     // Expanded config values (all templates resolved)
+	Actor   *assets.Character          // Character data (name, title, etc.)
+	Session *game.CharacterInstance    // Current session state (location, quit flag, etc.)
+	Targets map[string]*TargetRef      // Resolved targets by name
+	Config  map[string]string          // Expanded config values (all templates resolved)
 }
 
 // CommandFunc is the signature for compiled command functions.
@@ -54,7 +55,7 @@ type HandlerSpec struct {
 
 // PlayerLookup finds a player by character ID.
 type PlayerLookup interface {
-	GetPlayer(charId string) *game.PlayerState
+	GetPlayer(charId string) *game.CharacterInstance
 }
 
 // RoomLocator finds a room instance by zone and room ID.
@@ -68,7 +69,7 @@ type WorldView interface {
 	RoomLocator
 	GetZone(zoneId string) *game.ZoneInstance
 	Instances() map[string]*game.ZoneInstance
-	ForEachPlayer(func(string, *game.PlayerState))
+	ForEachPlayer(func(string, *game.CharacterInstance))
 }
 
 // HandlerFactory creates CommandFuncs from command configurations.
@@ -118,7 +119,7 @@ func NewHandler(cmds storage.Storer[*Command], dict *game.Dictionary, publisher 
 	h.RegisterFactory("look", NewLookHandlerFactory(world, publisher))
 	h.RegisterFactory("message", NewMessageHandlerFactory(world, publisher))
 	h.RegisterFactory("move", NewMoveHandlerFactory(world, publisher))
-	h.RegisterFactory("move_obj", NewMoveObjHandlerFactory(world, dict.Characters, publisher))
+	h.RegisterFactory("move_obj", NewMoveObjHandlerFactory(world, publisher))
 	h.RegisterFactory("quit", NewQuitHandlerFactory())
 	h.RegisterFactory("save", NewSaveHandlerFactory(dict.Characters, publisher))
 	h.RegisterFactory("score", NewScoreHandlerFactory(publisher))
@@ -341,7 +342,7 @@ func (h *Handler) Exec(ctx context.Context, world *game.WorldState, charId strin
 
 	// Resolve targets from targets section
 	resolver := NewTargetResolver(NewWorldScopes(world))
-	targets, err := resolver.ResolveSpecs(compiled.cmd.Targets, inputMap, actor, session)
+	targets, err := resolver.ResolveSpecs(compiled.cmd.Targets, inputMap, session)
 	if err != nil {
 		return err
 	}
@@ -447,15 +448,15 @@ func (h *Handler) parseValue(inputType InputType, raw string) (any, error) {
 
 // templateContext holds data for template expansion.
 type templateContext struct {
-	Actor   *game.Character
-	Session *game.PlayerState
+	Actor   *assets.Character
+	Session *game.CharacterInstance
 	Targets map[string]*TargetRef
 	Inputs  map[string]any
 	Color   *display.Palette
 }
 
 // expandConfig expands all template strings in config and returns map[string]string.
-func (h *Handler) expandConfig(config map[string]any, actor *game.Character, session *game.PlayerState, targets map[string]*TargetRef, inputs map[string]any) (map[string]string, error) {
+func (h *Handler) expandConfig(config map[string]any, actor *assets.Character, session *game.CharacterInstance, targets map[string]*TargetRef, inputs map[string]any) (map[string]string, error) {
 	if config == nil {
 		return make(map[string]string), nil
 	}

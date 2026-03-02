@@ -5,6 +5,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
 )
@@ -523,7 +524,7 @@ func TestHandler_RegisterFactory(t *testing.T) {
 func TestHandler_expandConfig(t *testing.T) {
 	tests := map[string]struct {
 		config    map[string]any
-		actor     *game.Character
+		actor     *assets.Character
 		targets   map[string]*TargetRef
 		inputs    map[string]any
 		expConfig map[string]string
@@ -533,7 +534,7 @@ func TestHandler_expandConfig(t *testing.T) {
 			config: map[string]any{
 				"message": "{{ .Actor.Name }} says, \"{{ .Inputs.text }}\"",
 			},
-			actor:   &game.Character{Name: "Alice"},
+			actor:   &assets.Character{Name: "Alice"},
 			targets: map[string]*TargetRef{},
 			inputs: map[string]any{
 				"text": "hello world",
@@ -547,7 +548,7 @@ func TestHandler_expandConfig(t *testing.T) {
 				"channel": "player-{{ .Targets.target.Player.Name | lower }}",
 				"message": "Hello {{ .Targets.target.Player.Name }}!",
 			},
-			actor: &game.Character{Name: "Alice"},
+			actor: &assets.Character{Name: "Alice"},
 			targets: map[string]*TargetRef{
 				"target": {Type: TargetTypePlayer, Player: &PlayerRef{Name: "Bob"}},
 			},
@@ -561,7 +562,7 @@ func TestHandler_expandConfig(t *testing.T) {
 			config: map[string]any{
 				"message": "{{ .Actor.Name }} tells {{ .Targets.target.Player.Name }}, \"{{ .Inputs.text }}\"",
 			},
-			actor: &game.Character{Name: "Alice"},
+			actor: &assets.Character{Name: "Alice"},
 			targets: map[string]*TargetRef{
 				"target": {Type: TargetTypePlayer, Player: &PlayerRef{Name: "Bob"}},
 			},
@@ -576,7 +577,7 @@ func TestHandler_expandConfig(t *testing.T) {
 			config: map[string]any{
 				"direction": "north",
 			},
-			actor:   &game.Character{Name: "Alice"},
+			actor:   &assets.Character{Name: "Alice"},
 			targets: map[string]*TargetRef{},
 			inputs:  map[string]any{},
 			expConfig: map[string]string{
@@ -587,7 +588,7 @@ func TestHandler_expandConfig(t *testing.T) {
 			config: map[string]any{
 				"message": "{{ .Color.Red }}hello{{ .Color.Reset }}",
 			},
-			actor:   &game.Character{},
+			actor:   &assets.Character{},
 			targets: map[string]*TargetRef{},
 			inputs:  map[string]any{},
 			expConfig: map[string]string{
@@ -600,7 +601,7 @@ func TestHandler_expandConfig(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			h := &Handler{}
 
-			session := &game.PlayerState{Character: storage.NewResolvedSmartIdentifier("alice", tt.actor)}
+			session := &game.CharacterInstance{Character: storage.NewResolvedSmartIdentifier("alice", tt.actor)}
 
 			expandedConfig, err := h.expandConfig(tt.config, tt.actor, session, tt.targets, tt.inputs)
 

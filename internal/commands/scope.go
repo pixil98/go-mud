@@ -3,8 +3,10 @@ package commands
 import (
 	"strings"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 )
+
 
 // objectOnlyFinder wraps an ObjectFinder (like Inventory or Equipment)
 // into a full TargetFinder. FindPlayer and FindMob always return nil.
@@ -12,9 +14,9 @@ type objectOnlyFinder struct {
 	ObjectFinder
 }
 
-func (f objectOnlyFinder) FindPlayer(string) *game.PlayerState   { return nil }
-func (f objectOnlyFinder) FindMob(string) *game.MobileInstance   { return nil }
-func (f objectOnlyFinder) FindExit(string) (string, *game.Exit)  { return "", nil }
+func (f objectOnlyFinder) FindPlayer(string) *game.CharacterInstance  { return nil }
+func (f objectOnlyFinder) FindMob(string) *game.MobileInstance  { return nil }
+func (f objectOnlyFinder) FindExit(string) (string, *assets.Exit) { return "", nil }
 
 // playerOnlyFinder wraps a PlayerGroup into a full TargetFinder.
 // FindPlayer searches members by name; mobs, objects, and exits always return nil.
@@ -22,10 +24,10 @@ type playerOnlyFinder struct {
 	game.PlayerGroup
 }
 
-func (f playerOnlyFinder) FindPlayer(name string) *game.PlayerState {
+func (f playerOnlyFinder) FindPlayer(name string) *game.CharacterInstance {
 	lower := strings.ToLower(name)
-	var found *game.PlayerState
-	f.ForEachPlayer(func(_ string, ps *game.PlayerState) {
+	var found *game.CharacterInstance
+	f.ForEachPlayer(func(_ string, ps *game.CharacterInstance) {
 		if found != nil || ps == nil {
 			return
 		}
@@ -36,9 +38,9 @@ func (f playerOnlyFinder) FindPlayer(name string) *game.PlayerState {
 	return found
 }
 
-func (f playerOnlyFinder) FindObj(string) *game.ObjectInstance  { return nil }
-func (f playerOnlyFinder) FindMob(string) *game.MobileInstance  { return nil }
-func (f playerOnlyFinder) FindExit(string) (string, *game.Exit) { return "", nil }
+func (f playerOnlyFinder) FindObj(string) *game.ObjectInstance { return nil }
+func (f playerOnlyFinder) FindMob(string) *game.MobileInstance   { return nil }
+func (f playerOnlyFinder) FindExit(string) (string, *assets.Exit) { return "", nil }
 
 // WorldScopes implements TargetScopes using a WorldView.
 // It translates scope flags into the correct search spaces by looking up
@@ -54,21 +56,21 @@ func NewWorldScopes(world WorldView) *WorldScopes {
 
 // SpacesFor returns search spaces for the given scope flags, ordered from
 // narrowest (inventory) to broadest (world).
-func (ws *WorldScopes) SpacesFor(scope Scope, actor *game.Character, session *game.PlayerState) ([]SearchSpace, error) {
-	zoneId, roomId := session.Location()
+func (ws *WorldScopes) SpacesFor(scope Scope, ci *game.CharacterInstance) ([]SearchSpace, error) {
+	zoneId, roomId := ci.Location()
 
 	var spaces []SearchSpace
 
-	if scope&ScopeInventory != 0 && actor.Inventory != nil {
+	if scope&ScopeInventory != 0 && ci.Inventory != nil {
 		spaces = append(spaces, SearchSpace{
-			Finder:  objectOnlyFinder{actor.Inventory},
-			Remover: actor.Inventory,
+			Finder:  objectOnlyFinder{ci.Inventory},
+			Remover: ci.Inventory,
 		})
 	}
-	if scope&ScopeEquipment != 0 && actor.Equipment != nil {
+	if scope&ScopeEquipment != 0 && ci.Equipment != nil {
 		spaces = append(spaces, SearchSpace{
-			Finder:  objectOnlyFinder{actor.Equipment},
-			Remover: actor.Equipment,
+			Finder:  objectOnlyFinder{ci.Equipment},
+			Remover: ci.Equipment,
 		})
 	}
 	if scope&ScopeRoom != 0 {
@@ -91,9 +93,9 @@ func (ws *WorldScopes) SpacesFor(scope Scope, actor *game.Character, session *ga
 			})
 		}
 	}
-	if scope&ScopeGroup != 0 && session.Group != nil {
+	if scope&ScopeGroup != 0 && ci.Group != nil {
 		spaces = append(spaces, SearchSpace{
-			Finder: playerOnlyFinder{session.Group},
+			Finder: playerOnlyFinder{ci.Group},
 		})
 	}
 

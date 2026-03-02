@@ -8,20 +8,20 @@ import "sync"
 type Group struct {
 	mu       sync.RWMutex
 	LeaderId string
-	members  map[string]*PlayerState
+	members  map[string]*CharacterInstance
 }
 
 // NewGroup creates a new group with the given player as leader and sole member.
-func NewGroup(leaderId string, leader *PlayerState) *Group {
+func NewGroup(leaderId string, leader *CharacterInstance) *Group {
 	return &Group{
 		LeaderId: leaderId,
-		members:  map[string]*PlayerState{leaderId: leader},
+		members:  map[string]*CharacterInstance{leaderId: leader},
 	}
 }
 
 // ForEachPlayer calls fn for each member of the group.
 // Satisfies the PlayerGroup interface.
-func (g *Group) ForEachPlayer(fn func(string, *PlayerState)) {
+func (g *Group) ForEachPlayer(fn func(string, *CharacterInstance)) {
 	g.mu.RLock()
 	defer g.mu.RUnlock()
 	for id, ps := range g.members {
@@ -30,7 +30,7 @@ func (g *Group) ForEachPlayer(fn func(string, *PlayerState)) {
 }
 
 // AddMember adds a player to the group.
-func (g *Group) AddMember(charId string, ps *PlayerState) {
+func (g *Group) AddMember(charId string, ps *CharacterInstance) {
 	g.mu.Lock()
 	defer g.mu.Unlock()
 	g.members[charId] = ps

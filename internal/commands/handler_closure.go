@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 )
 
@@ -61,7 +62,7 @@ func (f *ClosureHandlerFactory) Create() (CommandFunc, error) {
 
 		case TargetTypeObject:
 			oi := target.Obj.instance
-			if !oi.Object.Get().HasFlag(game.ObjectFlagContainer) || oi.Object.Get().Closure == nil {
+			if !oi.Object.Get().HasFlag(assets.ObjectFlagContainer) || oi.Object.Get().Closure == nil {
 				return NewUserError(fmt.Sprintf("You can't %s that.", action))
 			}
 			return f.handleContainer(action, oi, cmdCtx)
@@ -72,7 +73,7 @@ func (f *ClosureHandlerFactory) Create() (CommandFunc, error) {
 	}, nil
 }
 
-func (f *ClosureHandlerFactory) handleExit(action, direction string, closure *game.Closure, room *game.RoomInstance, cmdCtx *CommandContext) error {
+func (f *ClosureHandlerFactory) handleExit(action, direction string, closure *assets.Closure, room *game.RoomInstance, cmdCtx *CommandContext) error {
 	name := closure.Name
 
 	switch action {
@@ -199,8 +200,8 @@ func (f *ClosureHandlerFactory) handleContainer(action string, oi *game.ObjectIn
 	return nil
 }
 
-func (f *ClosureHandlerFactory) checkKey(cmdCtx *CommandContext, lock *game.Lock) error {
-	if cmdCtx.Actor.Inventory.FindObjByDef(lock.KeyId.Id()) == nil {
+func (f *ClosureHandlerFactory) checkKey(cmdCtx *CommandContext, lock *assets.Lock) error {
+	if cmdCtx.Session.Inventory.FindObjByDef(lock.KeyId.Id()) == nil {
 		return NewUserError("You don't have the key.")
 	}
 	return nil

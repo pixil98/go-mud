@@ -5,6 +5,7 @@ import (
 	"log/slog"
 
 	"github.com/google/uuid"
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
 )
@@ -41,7 +42,7 @@ func (h *CombatEventHandler) onMobDeath(mob *MobCombatant, dctx DeathContext) {
 
 	// Create corpse object definition
 	corpseAliases := append([]string{"corpse"}, def.Aliases...)
-	corpseDef := &game.Object{
+	corpseDef := &assets.Object{
 		Aliases:      corpseAliases,
 		ShortDesc:    fmt.Sprintf("the corpse of %s", def.ShortDesc),
 		LongDesc:     fmt.Sprintf("The corpse of %s lies here.", def.ShortDesc),
@@ -50,7 +51,7 @@ func (h *CombatEventHandler) onMobDeath(mob *MobCombatant, dctx DeathContext) {
 	}
 
 	corpseId := fmt.Sprintf("corpse-%s", mi.InstanceId)
-	corpseSmartId := storage.NewResolvedSmartIdentifier[*game.Object](corpseId, corpseDef)
+	corpseSmartId := storage.NewResolvedSmartIdentifier[*assets.Object](corpseId, corpseDef)
 
 	corpse := &game.ObjectInstance{
 		InstanceId: uuid.New().String(),
@@ -89,7 +90,7 @@ func (h *CombatEventHandler) onPlayerDeath(pc *PlayerCombatant, dctx DeathContex
 	pc.Player.FollowingId = ""
 	fromRoom := h.world.Instances()[dctx.ZoneID].GetRoom(dctx.RoomID)
 	if fromRoom != nil {
-		fromRoom.ForEachPlayer(func(charId string, ps *game.PlayerState) {
+		fromRoom.ForEachPlayer(func(charId string, ps *game.CharacterInstance) {
 			if ps.FollowingId == deadId {
 				ps.FollowingId = ""
 				if err := h.pub.Publish(game.SinglePlayer(charId), nil,

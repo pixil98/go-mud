@@ -50,13 +50,13 @@ func (f *ScoreHandlerFactory) resolveSections(cmdCtx *CommandContext) ([]game.St
 	if target := cmdCtx.Targets["target"]; target != nil {
 		switch target.Type {
 		case TargetTypePlayer:
-			return target.Player.session.Character.Get().StatSections(), nil
+			return target.Player.session.StatSections(), nil
 		case TargetTypeMobile:
-			return target.Mob.instance.Mobile.Get().StatSections(), nil
+			return target.Mob.instance.StatSections(), nil
 		}
 	}
 
-	return cmdCtx.Actor.StatSections(), nil
+	return cmdCtx.Session.StatSections(), nil
 }
 
 // --- Box rendering ---

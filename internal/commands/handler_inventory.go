@@ -29,7 +29,7 @@ func (f *InventoryHandlerFactory) ValidateConfig(config map[string]any) error {
 func (f *InventoryHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, cmdCtx *CommandContext) error {
 		lines := []string{"You are carrying:"}
-		lines = append(lines, FormatInventoryItems(cmdCtx.Actor.Inventory)...)
+		lines = append(lines, FormatInventoryItems(cmdCtx.Session.Inventory)...)
 
 		output := strings.Join(lines, "\n")
 		if f.pub != nil {

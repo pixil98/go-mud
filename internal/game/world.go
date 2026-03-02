@@ -2,10 +2,10 @@ package game
 
 import (
 	"context"
-	"fmt"
 	"sync"
 	"time"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
@@ -14,13 +14,13 @@ import (
 type WorldState struct {
 	mu         sync.RWMutex
 	subscriber Subscriber
-	players    map[string]*PlayerState
+	players    map[string]*CharacterInstance
 
 	instances map[string]*ZoneInstance
 }
 
 // NewWorldState creates a new WorldState with zone and room instances initialized.
-func NewWorldState(sub Subscriber, zones storage.Storer[*Zone], rooms storage.Storer[*Room]) (*WorldState, error) {
+func NewWorldState(sub Subscriber, zones storage.Storer[*assets.Zone], rooms storage.Storer[*assets.Room]) (*WorldState, error) {
 	// Build zone instances
 	instances := make(map[string]*ZoneInstance)
 	for zoneId, zone := range zones.GetAll() {
@@ -45,7 +45,7 @@ func NewWorldState(sub Subscriber, zones storage.Storer[*Zone], rooms storage.St
 
 	return &WorldState{
 		subscriber: sub,
-		players:    make(map[string]*PlayerState),
+		players:    make(map[string]*CharacterInstance),
 		instances:  instances,
 	}, nil
 }
@@ -72,37 +72,27 @@ func (w *WorldState) GetRoom(zoneId, roomId string) *RoomInstance {
 }
 
 // GetPlayer returns the player state. Returns nil if player not found.
-func (w *WorldState) GetPlayer(charId string) *PlayerState {
+func (w *WorldState) GetPlayer(charId string) *CharacterInstance {
 	w.mu.RLock()
 	defer w.mu.RUnlock()
 
 	return w.players[charId]
 }
 
-// AddPlayer registers a new player in the world state and adds them to the room instance.
-func (w *WorldState) AddPlayer(char storage.SmartIdentifier[*Character], msgs chan []byte, zoneId string, roomId string) error {
+// AddPlayer registers a CharacterInstance in the world state and places them in their room.
+func (w *WorldState) AddPlayer(ci *CharacterInstance) error {
 	w.mu.Lock()
-	if _, exists := w.players[char.Id()]; exists {
+	charId := ci.Character.Id()
+	if _, exists := w.players[charId]; exists {
 		w.mu.Unlock()
 		return ErrPlayerExists
 	}
-
-	ps := &PlayerState{
-		subscriber:   w.subscriber,
-		subs:         make(map[string]func()),
-		msgs:         msgs,
-		Character:    char,
-		ZoneId:       zoneId,
-		RoomId:       roomId,
-		Quit:         false,
-		LastActivity: time.Now(),
-		done:         make(chan struct{}),
-	}
-	w.players[char.Id()] = ps
-	room := w.instances[zoneId].GetRoom(roomId)
+	ci.subscriber = w.subscriber
+	w.players[charId] = ci
+	room := w.instances[ci.ZoneId].GetRoom(ci.RoomId)
 	w.mu.Unlock()
 
-	room.AddPlayer(char.Id(), ps)
+	room.AddPlayer(charId, ci)
 	return nil
 }
 
@@ -148,7 +138,7 @@ func (w *WorldState) MarkPlayerActive(charId string) {
 }
 
 // ForEachPlayer calls fn for each player in the world while holding the lock.
-func (w *WorldState) ForEachPlayer(fn func(string, *PlayerState)) {
+func (w *WorldState) ForEachPlayer(fn func(string, *CharacterInstance)) {
 	w.mu.Lock()
 	defer w.mu.Unlock()
 	for id, ps := range w.players {
@@ -156,12 +146,12 @@ func (w *WorldState) ForEachPlayer(fn func(string, *PlayerState)) {
 	}
 }
 
-// Subscriber provides the ability to subscribe to message subjects
+// Subscriber provides the ability to subscribe to message subjects.
 type Subscriber interface {
 	Subscribe(subject string, handler func(data []byte)) (unsubscribe func(), err error)
 }
 
-// Tick processes zone resets based on their reset mode and lifespan.
+// Tick processes zone resets and regenerates out-of-combat entities.
 func (w *WorldState) Tick(ctx context.Context) error {
 	for _, zi := range w.instances {
 		err := zi.Reset(false, w.instances)
@@ -171,9 +161,9 @@ func (w *WorldState) Tick(ctx context.Context) error {
 	}
 
 	// Regenerate out-of-combat entities.
-	w.ForEachPlayer(func(_ string, ps *PlayerState) {
-		if !ps.InCombat && ps.Character.Get().CurrentHP < ps.Character.Get().MaxHP {
-			ps.Character.Get().Regenerate(1)
+	w.ForEachPlayer(func(_ string, ps *CharacterInstance) {
+		if !ps.InCombat && ps.CurrentHP < ps.MaxHP {
+			ps.Regenerate(1)
 		}
 	})
 	for _, zi := range w.instances {
@@ -189,147 +179,4 @@ func (w *WorldState) Tick(ctx context.Context) error {
 	}
 
 	return nil
-}
-
-// PlayerState holds all mutable state for an active player.
-type PlayerState struct {
-	subscriber Subscriber
-	msgs       chan []byte
-
-	Character storage.SmartIdentifier[*Character]
-
-	// Location
-	ZoneId string
-	RoomId string
-
-	// Subscriptions
-	subs map[string]func()
-
-	// Session state
-	Quit         bool
-	InCombat     bool
-	FollowingId  string // charId of the player being followed (empty = not following)
-	Group        *Group // current group, or nil if not grouped
-	LastActivity time.Time
-
-	// Connection management: closed to signal the active Play() goroutine to exit.
-	done chan struct{}
-
-	// Linkless state: player's connection dropped but they remain in the world.
-	Linkless   bool
-	LinklessAt time.Time
-}
-
-// Flags returns display labels for the player's current state (e.g., "linkless").
-func (p *PlayerState) Flags() []string {
-	var flags []string
-	if p.InCombat {
-		flags = append(flags, "fighting")
-	}
-	if p.Linkless {
-		flags = append(flags, "linkless")
-	}
-	return flags
-}
-
-// Done returns the channel that is closed when this session is evicted by a reconnection.
-func (p *PlayerState) Done() <-chan struct{} {
-	return p.done
-}
-
-// Location returns the player's current zone and room.
-func (p *PlayerState) Location() (zoneId, roomId string) {
-	return p.ZoneId, p.RoomId
-}
-
-// Move updates the player's location and room instance player lists.
-func (p *PlayerState) Move(fromRoom, toRoom *RoomInstance) {
-	toZoneId := toRoom.Room.Get().Zone.Id()
-	toRoomId := toRoom.Room.Id()
-
-	fromRoom.RemovePlayer(p.Character.Id())
-	toRoom.AddPlayer(p.Character.Id(), p)
-
-	p.ZoneId = toZoneId
-	p.RoomId = toRoomId
-}
-
-// Subscribe adds a new subscription
-func (p *PlayerState) Subscribe(subject string) error {
-	if p.subscriber == nil {
-		return fmt.Errorf("subscriber is nil")
-	}
-
-	unsub, err := p.subscriber.Subscribe(subject, func(data []byte) {
-		p.msgs <- data
-	})
-
-	// If we some how are subscribing to a channel we already think we have
-	// unsubscribe from the existing one.
-	if unsub, ok := p.subs[subject]; ok {
-		unsub()
-	}
-
-	if err != nil {
-		return fmt.Errorf("subscribing to channel '%s': %w", subject, err)
-	}
-	p.subs[subject] = unsub
-	return nil
-
-}
-
-// Unsubscribe removes a subscription by name
-func (p *PlayerState) Unsubscribe(subject string) {
-	if unsub, ok := p.subs[subject]; ok {
-		unsub()
-		delete(p.subs, subject)
-	}
-}
-
-// UnsubscribeAll removes all subscriptions
-func (p *PlayerState) UnsubscribeAll() {
-	for name, unsub := range p.subs {
-		unsub()
-		delete(p.subs, name)
-	}
-}
-
-// Kick closes the done channel, signaling the active Play() goroutine to exit.
-// It is safe to call multiple times; subsequent calls are no-ops.
-func (p *PlayerState) Kick() {
-	select {
-	case <-p.done:
-		// already closed
-	default:
-		close(p.done)
-	}
-}
-
-// Reattach swaps the msgs channel and done channel for a reconnecting player.
-// It unsubscribes all old NATS subscriptions (their closures reference the old msgs channel),
-// clears the linkless flag, and creates a fresh done channel.
-// The caller is responsible for re-subscribing to NATS channels after this call.
-func (p *PlayerState) Reattach(msgs chan []byte) {
-	p.UnsubscribeAll()
-	p.msgs = msgs
-	p.done = make(chan struct{})
-	p.Linkless = false
-	p.LinklessAt = time.Time{}
-	p.LastActivity = time.Now()
-}
-
-// SaveCharacter persists the character's current session state (location, inventory, etc.)
-// to the character store.
-func (ps *PlayerState) SaveCharacter(chars storage.Storer[*Character]) error {
-	ps.Character.Get().LastZone = ps.ZoneId
-	ps.Character.Get().LastRoom = ps.RoomId
-	return chars.Save(string(ps.Character.Id()), ps.Character.Get())
-}
-
-// MarkLinkless sets the player as linkless and unsubscribes all NATS subscriptions
-// to prevent channel fill-up while they have no active connection.
-func (p *PlayerState) MarkLinkless() {
-	p.Linkless = true
-	p.LinklessAt = time.Now()
-	p.UnsubscribeAll()
 }

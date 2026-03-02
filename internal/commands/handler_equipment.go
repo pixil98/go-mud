@@ -29,14 +29,14 @@ func (f *EquipmentHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, cmdCtx *CommandContext) error {
 		// Build the slot list to display: race slots if available, otherwise equipped slots
 		slots := cmdCtx.Actor.Race.Get().WearSlots
-		if len(slots) == 0 && cmdCtx.Actor.Equipment != nil {
-			for _, item := range cmdCtx.Actor.Equipment.Objs {
+		if len(slots) == 0 && cmdCtx.Session.Equipment != nil {
+			for _, item := range cmdCtx.Session.Equipment.Objs {
 				slots = append(slots, item.Slot)
 			}
 		}
 
 		lines := []string{"You are wearing:"}
-		lines = append(lines, FormatEquipmentSlots(cmdCtx.Actor.Equipment, slots)...)
+		lines = append(lines, FormatEquipmentSlots(cmdCtx.Session.Equipment, slots)...)
 
 		output := strings.Join(lines, "\n")
 		if f.pub != nil {

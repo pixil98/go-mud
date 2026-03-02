@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 )
 
@@ -42,16 +43,11 @@ func (f *WearHandlerFactory) Create() (CommandFunc, error) {
 		obj := target.Obj.instance.Object.Get()
 
 		// Check if the item is wearable
-		if !obj.HasFlag(game.ObjectFlagWearable) {
+		if !obj.HasFlag(assets.ObjectFlagWearable) {
 			return NewUserError(fmt.Sprintf("You can't wear %s.", obj.ShortDesc))
 		}
 
 		race := cmdCtx.Actor.Race.Get()
-
-		// Initialize equipment if needed
-		if cmdCtx.Actor.Equipment == nil {
-			cmdCtx.Actor.Equipment = game.NewEquipment()
-		}
 
 		// Find first wear slot that the race supports and has capacity
 		var slot string
@@ -60,7 +56,7 @@ func (f *WearHandlerFactory) Create() (CommandFunc, error) {
 			if maxSlots == 0 {
 				continue // Race doesn't have this slot type
 			}
-			if cmdCtx.Actor.Equipment.SlotCount(s) < maxSlots {
+			if cmdCtx.Session.Equipment.SlotCount(s) < maxSlots {
 				slot = s
 				break
 			}
@@ -87,10 +83,10 @@ func (f *WearHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		maxSlots := race.SlotCount(slot)
-		err := cmdCtx.Actor.Equipment.Equip(slot, maxSlots, oi)
+		err := cmdCtx.Session.Equipment.Equip(slot, maxSlots, oi)
 		if err != nil {
 			// Put it back on failure
-			cmdCtx.Actor.Inventory.AddObj(oi)
+			cmdCtx.Session.Inventory.AddObj(oi)
 			return NewUserError("You're already wearing something in that slot.")
 		}
 

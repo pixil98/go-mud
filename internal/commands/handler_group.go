@@ -20,8 +20,8 @@ type groupCore struct {
 
 // clearFollow clears ps.Group and, if they were following leaderId, clears
 // FollowingId. Returns true if a follow was broken. Safe to call inside
-// ForEachPlayer because it only mutates PlayerState fields, not the Group.
-func clearFollow(leaderId string, ps *game.PlayerState) bool {
+// ForEachPlayer because it only mutates CharacterInstance fields, not the Group.
+func clearFollow(leaderId string, ps *game.CharacterInstance) bool {
 	if ps == nil {
 		return false
 	}
@@ -36,7 +36,7 @@ func clearFollow(leaderId string, ps *game.PlayerState) bool {
 // removeMember removes targetId from grp, clears their state via clearFollow,
 // stops their follow if applicable, and notifies all parties.
 // It does NOT auto-disband — callers decide whether to do that afterward.
-func (c *groupCore) removeMember(leaderName, leaderId, targetId, targetName string, targetPs *game.PlayerState, grp *game.Group) {
+func (c *groupCore) removeMember(leaderName, leaderId, targetId, targetName string, targetPs *game.CharacterInstance, grp *game.Group) {
 	grp.RemoveMember(targetId)
 	if clearFollow(leaderId, targetPs) {
 		if err := c.pub.Publish(game.SinglePlayer(targetId), nil,
@@ -61,7 +61,7 @@ func (c *groupCore) removeMember(leaderName, leaderId, targetId, targetName stri
 // disband dissolves the group, clearing every member's state and notifying them.
 func (c *groupCore) disband(grp *game.Group) {
 	leaderId := grp.LeaderId
-	grp.ForEachPlayer(func(charId string, ps *game.PlayerState) {
+	grp.ForEachPlayer(func(charId string, ps *game.CharacterInstance) {
 		clearFollow(leaderId, ps)
 		msg := "The group has been disbanded."
 		if charId == leaderId {
@@ -76,7 +76,7 @@ func (c *groupCore) disband(grp *game.Group) {
 // soloLeader reports whether the group now contains only the leader.
 func soloLeader(grp *game.Group) bool {
 	count := 0
-	grp.ForEachPlayer(func(_ string, _ *game.PlayerState) { count++ })
+	grp.ForEachPlayer(func(_ string, _ *game.CharacterInstance) { count++ })
 	return count == 1
 }
 
@@ -130,7 +130,7 @@ func (f *GroupHandlerFactory) showGroup(cmdCtx *CommandContext) error {
 	}
 	var members []memberLine
 
-	grp.ForEachPlayer(func(_ string, ps *game.PlayerState) {
+	grp.ForEachPlayer(func(_ string, ps *game.CharacterInstance) {
 		if ps == nil {
 			return
 		}

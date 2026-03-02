@@ -6,8 +6,8 @@ import (
 	"log/slog"
 	"strings"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // ObjectHolder can have objects added and removed.
@@ -23,11 +23,10 @@ type ObjectHolder interface {
 //   - no_self_target (optional): target name to prevent self-targeting
 type MoveObjHandlerFactory struct {
 	rooms RoomLocator
-	chars storage.Storer[*game.Character]
 	pub   game.Publisher
 }
 
-func NewMoveObjHandlerFactory(rooms RoomLocator, chars storage.Storer[*game.Character], pub game.Publisher) *MoveObjHandlerFactory {
+func NewMoveObjHandlerFactory(rooms RoomLocator, pub game.Publisher) *MoveObjHandlerFactory {
 	return &MoveObjHandlerFactory{rooms: rooms, pub: pub}
 }
 
@@ -63,7 +62,7 @@ func (f *MoveObjHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		// Check immobile flag
-		if item.Obj.instance.Object.Get().HasFlag(game.ObjectFlagImmobile) {
+		if item.Obj.instance.Object.Get().HasFlag(assets.ObjectFlagImmobile) {
 			return NewUserError(fmt.Sprintf("You can't seem to move %s.", item.Obj.Name))
 		}
 
@@ -119,14 +118,14 @@ func (f *MoveObjHandlerFactory) Create() (CommandFunc, error) {
 }
 
 // resolveDestination maps the "destination" config to an ObjectHolder.
-// Returns "inventory" → actor inventory, "room" → room holder,
+// Returns "inventory" → session inventory, "room" → room holder,
 // or looks up a resolved target and returns its holder.
 func (f *MoveObjHandlerFactory) resolveDestination(cmdCtx *CommandContext) (ObjectHolder, error) {
 	dest := cmdCtx.Config["destination"]
 
 	switch dest {
 	case "inventory":
-		return cmdCtx.Actor.Inventory, nil
+		return cmdCtx.Session.Inventory, nil
 
 	case "room":
 		return f.rooms.GetRoom(cmdCtx.Session.ZoneId, cmdCtx.Session.RoomId), nil
@@ -137,16 +136,15 @@ func (f *MoveObjHandlerFactory) resolveDestination(cmdCtx *CommandContext) (Obje
 }
 
 // holderForTarget returns an ObjectHolder for a resolved target.
-// For player targets, returns their character's inventory.
+// For player targets, returns their session inventory.
 // For object targets, validates the container flag and returns contents.
 // For mobile targets, returns their inventory.
 func (f *MoveObjHandlerFactory) holderForTarget(ref *TargetRef) (ObjectHolder, error) {
 	if ref.Player != nil {
-		char := f.chars.Get(ref.Player.CharId)
-		if char == nil {
+		if ref.Player.session == nil {
 			return nil, NewUserError(fmt.Sprintf("%s is no longer here.", ref.Player.Name))
 		}
-		return char.Inventory, nil
+		return ref.Player.session.Inventory, nil
 	}
 
 	if ref.Mob != nil {
@@ -154,7 +152,7 @@ func (f *MoveObjHandlerFactory) holderForTarget(ref *TargetRef) (ObjectHolder, e
 	}
 
 	if ref.Obj != nil {
-		if !ref.Obj.instance.Object.Get().HasFlag(game.ObjectFlagContainer) {
+		if !ref.Obj.instance.Object.Get().HasFlag(assets.ObjectFlagContainer) {
 			name := strings.ToUpper(ref.Obj.Name[:1]) + ref.Obj.Name[1:]
 			return nil, NewUserError(fmt.Sprintf("%s is not a container.", name))
 		}

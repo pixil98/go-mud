@@ -4,17 +4,18 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // SaveHandlerFactory creates handlers that persist the player's character.
 type SaveHandlerFactory struct {
-	chars storage.Storer[*game.Character]
+	chars storage.Storer[*assets.Character]
 	pub   game.Publisher
 }
 
-func NewSaveHandlerFactory(chars storage.Storer[*game.Character], pub game.Publisher) *SaveHandlerFactory {
+func NewSaveHandlerFactory(chars storage.Storer[*assets.Character], pub game.Publisher) *SaveHandlerFactory {
 	return &SaveHandlerFactory{chars: chars, pub: pub}
 }
 

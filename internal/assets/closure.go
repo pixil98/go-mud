@@ -1,4 +1,4 @@
-package game
+package assets
 
 import (
 	"fmt"

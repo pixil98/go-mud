@@ -107,7 +107,7 @@ func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 }
 
 // canMove returns a UserError if the player cannot move, or nil if they can.
-func canMove(ps *game.PlayerState) error {
+func canMove(ps *game.CharacterInstance) error {
 	if ps.InCombat {
 		return NewUserError("You can't move while fighting!")
 	}
@@ -120,12 +120,12 @@ func canMove(ps *game.PlayerState) error {
 func (f *MoveHandlerFactory) moveFollowers(leaderId, leaderName string, fromRoom, toRoom *game.RoomInstance, direction string) {
 	type follower struct {
 		charId string
-		ps     *game.PlayerState
+		ps     *game.CharacterInstance
 	}
 
 	// Snapshot followers while holding the room lock.
 	var followers []follower
-	fromRoom.ForEachPlayer(func(charId string, ps *game.PlayerState) {
+	fromRoom.ForEachPlayer(func(charId string, ps *game.CharacterInstance) {
 		if ps.FollowingId == leaderId {
 			followers = append(followers, follower{charId: charId, ps: ps})
 		}

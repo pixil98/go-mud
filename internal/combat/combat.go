@@ -240,7 +240,7 @@ func (m *Manager) deliver(r fightResult) {
 		extra[pm.PlayerID] = append(extra[pm.PlayerID], pm.Text)
 	}
 
-	ri.ForEachPlayer(func(id string, _ *game.PlayerState) {
+	ri.ForEachPlayer(func(id string, _ *game.CharacterInstance) {
 		var parts []string
 		if roomText != "" {
 			parts = append(parts, roomText)

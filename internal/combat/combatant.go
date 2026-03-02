@@ -3,34 +3,34 @@ package combat
 import (
 	"fmt"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
-// PlayerCombatant adapts a PlayerState for the combat system.
+// PlayerCombatant adapts a CharacterInstance for the combat system.
 type PlayerCombatant struct {
-	Character storage.SmartIdentifier[*game.Character]
-	Player    *game.PlayerState
+	Character storage.SmartIdentifier[*assets.Character]
+	Player    *game.CharacterInstance
 }
 
 func (c *PlayerCombatant) CombatID() string   { return fmt.Sprintf("player:%s", c.Character.Id()) }
 func (c *PlayerCombatant) CombatName() string { return c.Character.Get().Name }
-func (c *PlayerCombatant) IsAlive() bool      { return c.Character.Get().CurrentHP > 0 }
+func (c *PlayerCombatant) IsAlive() bool      { return c.Player.CurrentHP > 0 }
 
 func (c *PlayerCombatant) AC() int {
-	char := c.Character.Get()
-	stats := char.EffectiveStats()
-	return 10 + stats[game.StatDEX].Mod() + char.Equipment.ACBonus()
+	stats := c.Player.EffectiveStats()
+	return 10 + stats[assets.StatDEX].Mod() + c.Player.Equipment.ACBonus()
 }
 
 func (c *PlayerCombatant) Attacks() []Attack {
 	char := c.Character.Get()
-	stats := char.EffectiveStats()
-	strMod := stats[game.StatSTR].Mod()
+	stats := c.Player.EffectiveStats()
+	strMod := stats[assets.StatSTR].Mod()
 	attackMod := strMod + char.Level/2
 
 	var attacks []Attack
-	for _, slot := range char.Equipment.Objs {
+	for _, slot := range c.Player.Equipment.Objs {
 		if slot.Slot != "wield" || slot.Obj == nil {
 			continue
 		}
@@ -63,10 +63,9 @@ func (c *PlayerCombatant) Attacks() []Attack {
 }
 
 func (c *PlayerCombatant) ApplyDamage(dmg int) {
-	char := c.Character.Get()
-	char.CurrentHP -= dmg
-	if char.CurrentHP < 0 {
-		char.CurrentHP = 0
+	c.Player.CurrentHP -= dmg
+	if c.Player.CurrentHP < 0 {
+		c.Player.CurrentHP = 0
 	}
 }
 

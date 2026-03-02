@@ -3,136 +3,20 @@ package game
 import (
 	"encoding/json"
 	"fmt"
-	"strings"
 
 	"github.com/google/uuid"
-	"github.com/pixil98/go-errors"
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/storage"
 )
-
-// ObjectFlag defines a boolean property of an object.
-type ObjectFlag int
-
-const (
-	ObjectFlagUnknown ObjectFlag = iota
-	ObjectFlagContainer
-	ObjectFlagImmobile
-	ObjectFlagWearable
-)
-
-func parseObjectFlag(s string) ObjectFlag {
-	switch strings.ToLower(s) {
-	case "container":
-		return ObjectFlagContainer
-	case "immobile":
-		return ObjectFlagImmobile
-	case "wearable":
-		return ObjectFlagWearable
-	default:
-		return ObjectFlagUnknown
-	}
-}
-
-// Object defines a type of object/item loaded from asset files.
-// Multiple instances can be spawned from one definition.
-// Object IDs follow the convention <zone>-<name> (e.g., "millbrook-sword").
-type Object struct {
-	// Aliases are keywords players can use to target this object (e.g., ["sword", "blade"])
-	Aliases []string `json:"aliases"`
-
-	// ShortDesc is used in action messages (e.g., "You pick up a rusty sword.")
-	ShortDesc string `json:"short_desc"`
-
-	// LongDesc is shown when the object is on the ground in a room
-	LongDesc string `json:"long_desc"`
-
-	// DetailedDesc is shown when a player looks at the object
-	DetailedDesc string `json:"detailed_desc"`
-
-	// Flags are boolean markers for object properties (e.g., "wearable", "container", "nodrop")
-	Flags []string `json:"flags,omitempty"`
-
-	// WearSlots lists the slot types this item can be equipped in (e.g., ["head"], ["finger"],
-	// ["hand_main", "hand_off"]). Only meaningful when the "wearable" flag is set.
-	WearSlots []string `json:"wear_slots,omitempty"`
-
-	// Closure defines open/close/lock behavior. Only meaningful when the "container" flag is set.
-	Closure *Closure `json:"closure,omitempty"`
-
-	// Combat stats for equipment
-	ACBonus     int             `json:"ac_bonus,omitempty"`
-	DamageDice  int             `json:"damage_dice,omitempty"`
-	DamageSides int             `json:"damage_sides,omitempty"`
-	DamageMod   int             `json:"damage_mod,omitempty"`
-	StatMods    map[StatKey]int `json:"stat_mods,omitempty"`
-}
-
-// MatchName returns true if name matches any of this object's aliases (case-insensitive).
-func (o *Object) MatchName(name string) bool {
-	nameLower := strings.ToLower(name)
-	for _, alias := range o.Aliases {
-		if strings.ToLower(alias) == nameLower {
-			return true
-		}
-	}
-	return false
-}
-
-// HasFlag returns true if the object has the given flag.
-func (o *Object) HasFlag(flag ObjectFlag) bool {
-	for _, f := range o.Flags {
-		if parseObjectFlag(f) == flag {
-			return true
-		}
-	}
-	return false
-}
-
-// Validate satisfies storage.ValidatingSpec
-func (o *Object) Validate() error {
-	el := errors.NewErrorList()
-	if len(o.Aliases) < 1 {
-		el.Add(fmt.Errorf("object alias is required"))
-	}
-	if o.ShortDesc == "" {
-		el.Add(fmt.Errorf("object short description is required"))
-	}
-	for _, f := range o.Flags {
-		if parseObjectFlag(f) == ObjectFlagUnknown {
-			el.Add(fmt.Errorf("unknown flag %q", f))
-		}
-	}
-	if o.HasFlag(ObjectFlagWearable) && len(o.WearSlots) == 0 {
-		el.Add(fmt.Errorf("wearable items must have at least one wear_slot"))
-	}
-	if !o.HasFlag(ObjectFlagWearable) && len(o.WearSlots) > 0 {
-		el.Add(fmt.Errorf("wear_slots requires the wearable flag"))
-	}
-	if o.Closure != nil {
-		if !o.HasFlag(ObjectFlagContainer) {
-			el.Add(fmt.Errorf("closure requires the container flag"))
-		}
-		el.Add(o.Closure.Validate())
-	}
-	return el.Err()
-}
-
-// Resolve resolves foreign key references on the object definition.
-func (o *Object) Resolve(dict *Dictionary) error {
-	if o.Closure != nil {
-		return o.Closure.Resolve(dict.Objects)
-	}
-	return nil
-}
 
 // ObjectInstance represents a single spawned instance of an Object definition.
 // Location is tracked by the containing structure (room map or inventory).
 type ObjectInstance struct {
-	InstanceId string                           `json:"-"` // Unique ID
-	Object     storage.SmartIdentifier[*Object] `json:"object_id"`
-	Contents   *Inventory                       `json:"contents,omitempty"` // Non-nil for containers; holds objects stored inside
-	Closed     bool                             `json:"closed,omitempty"`   // Runtime open/closed state for containers with a Closure
-	Locked     bool                             `json:"locked,omitempty"`   // Runtime lock state for containers with a Lock
+	InstanceId string                                  `json:"-"` // Unique ID
+	Object     storage.SmartIdentifier[*assets.Object] `json:"object_id"`
+	Contents   *Inventory                              `json:"contents,omitempty"` // Non-nil for containers; holds objects stored inside
+	Closed     bool                                    `json:"closed,omitempty"`   // Runtime open/closed state for containers with a Closure
+	Locked     bool                                    `json:"locked,omitempty"`   // Runtime lock state for containers with a Lock
 }
 
 func (oi *ObjectInstance) UnmarshalJSON(b []byte) error {
@@ -147,7 +31,7 @@ func (oi *ObjectInstance) UnmarshalJSON(b []byte) error {
 
 // NewObjectInstance creates an ObjectInstance linked to its definition.
 // Containers are initialized with an empty Contents inventory.
-func NewObjectInstance(obj storage.SmartIdentifier[*Object]) (*ObjectInstance, error) {
+func NewObjectInstance(obj storage.SmartIdentifier[*assets.Object]) (*ObjectInstance, error) {
 	if obj.Get() == nil {
 		return nil, fmt.Errorf("unable create %q from unresolved object", obj.Id())
 	}
@@ -157,7 +41,7 @@ func NewObjectInstance(obj storage.SmartIdentifier[*Object]) (*ObjectInstance, e
 		InstanceId: uuid.New().String(),
 		Object:     obj,
 	}
-	if def.HasFlag(ObjectFlagContainer) {
+	if def.HasFlag(assets.ObjectFlagContainer) {
 		oi.Contents = NewInventory()
 		if def.Closure != nil {
 			oi.Closed = def.Closure.Closed
@@ -172,11 +56,11 @@ func NewObjectInstance(obj storage.SmartIdentifier[*Object]) (*ObjectInstance, e
 // Resolve resolves this instance's object definition and recursively resolves
 // any contents. Containers are initialized with an empty Contents inventory
 // if they don't already have one.
-func (oi *ObjectInstance) Resolve(objs storage.Storer[*Object]) error {
+func (oi *ObjectInstance) Resolve(objs storage.Storer[*assets.Object]) error {
 	if err := oi.Object.Resolve(objs); err != nil {
 		return err
 	}
-	if oi.Object.Get().HasFlag(ObjectFlagContainer) && oi.Contents == nil {
+	if oi.Object.Get().HasFlag(assets.ObjectFlagContainer) && oi.Contents == nil {
 		oi.Contents = NewInventory()
 	}
 	if oi.Contents != nil {
@@ -189,33 +73,16 @@ func (oi *ObjectInstance) Resolve(objs storage.Storer[*Object]) error {
 	return nil
 }
 
-// ObjectSpawn defines an object to spawn in a room during zone reset.
-// Contents lists objects to spawn inside this container (requires the container flag).
-// Supports nesting — content items can themselves be containers with contents.
-type ObjectSpawn struct {
-	Object   storage.SmartIdentifier[*Object] `json:"object_id"`
-	Contents []ObjectSpawn                    `json:"contents,omitempty"`
-}
-
-func (s *ObjectSpawn) Resolve(objs storage.Storer[*Object]) error {
-	el := errors.NewErrorList()
-	el.Add(s.Object.Resolve(objs))
-	for i := range s.Contents {
-		el.Add(s.Contents[i].Resolve(objs))
-	}
-	return el.Err()
-}
-
-// Spawn creates an ObjectInstance from an ObjectSpawn,
+// SpawnObject creates an ObjectInstance from an assets.ObjectSpawn spec,
 // recursively spawning any contents for containers.
-func (s *ObjectSpawn) Spawn() (*ObjectInstance, error) {
-	oi, err := NewObjectInstance(s.Object)
+func SpawnObject(spec assets.ObjectSpawn) (*ObjectInstance, error) {
+	oi, err := NewObjectInstance(spec.Object)
 	if err != nil {
 		return nil, fmt.Errorf("spawning: %w", err)
 	}
 
-	for _, contentSpawn := range s.Contents {
-		soi, err := contentSpawn.Spawn()
+	for _, contentSpawn := range spec.Contents {
+		soi, err := SpawnObject(contentSpawn)
 		if err != nil {
 			return nil, err
 		}

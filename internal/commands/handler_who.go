@@ -32,7 +32,7 @@ func (f *WhoHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, cmdCtx *CommandContext) error {
 		var lines []string
 
-		f.players.ForEachPlayer(func(charId string, state *game.PlayerState) {
+		f.players.ForEachPlayer(func(charId string, state *game.CharacterInstance) {
 			if state.Linkless {
 				return
 			}
