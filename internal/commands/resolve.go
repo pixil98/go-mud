@@ -196,7 +196,7 @@ func exitRefFrom(direction string, exit *assets.Exit) *ExitRef {
 
 // TargetRef is a polymorphic target reference that could be a player, mobile, object, or exit.
 type TargetRef struct {
-	Type   TargetType // "player", "mobile", "object", or "exit"
+	Type   targetType // targetTypePlayer, targetTypeMobile, targetTypeObject, or targetTypeExit
 	Player *PlayerRef // Non-nil if Type == "player"
 	Mob    *MobileRef // Non-nil if Type == "mobile"
 	Obj    *ObjectRef // Non-nil if Type == "object"
@@ -231,36 +231,36 @@ type SearchSpace struct {
 // FindTarget searches spaces in order for the first matching target.
 // It checks player, then mobile, then object, then exit within each space,
 // filtering by the allowed target types. Returns the first match.
-func FindTarget(name string, tt TargetType, spaces []SearchSpace) (*TargetRef, error) {
+func FindTarget(name string, tt targetType, spaces []SearchSpace) (*TargetRef, error) {
 	for _, sp := range spaces {
-		if tt&TargetTypePlayer != 0 {
+		if tt&targetTypePlayer != 0 {
 			if ps := sp.Finder.FindPlayer(name); ps != nil {
 				return &TargetRef{
-					Type:   TargetTypePlayer,
+					Type:   targetTypePlayer,
 					Player: playerRefFromState(ps),
 				}, nil
 			}
 		}
-		if tt&TargetTypeMobile != 0 {
+		if tt&targetTypeMobile != 0 {
 			if mi := sp.Finder.FindMob(name); mi != nil {
 				return &TargetRef{
-					Type: TargetTypeMobile,
+					Type: targetTypeMobile,
 					Mob:  mobRefFromInstance(mi),
 				}, nil
 			}
 		}
-		if tt&TargetTypeObject != 0 {
+		if tt&targetTypeObject != 0 {
 			if oi := sp.Finder.FindObj(name); oi != nil {
 				return &TargetRef{
-					Type: TargetTypeObject,
+					Type: targetTypeObject,
 					Obj:  objRefFromInstance(oi, sp.Remover),
 				}, nil
 			}
 		}
-		if tt&TargetTypeExit != 0 {
+		if tt&targetTypeExit != 0 {
 			if dir, exit := sp.Finder.FindExit(name); exit != nil {
 				return &TargetRef{
-					Type: TargetTypeExit,
+					Type: targetTypeExit,
 					Exit: exitRefFrom(dir, exit),
 				}, nil
 			}
@@ -275,7 +275,7 @@ func FindTarget(name string, tt TargetType, spaces []SearchSpace) (*TargetRef, e
 // Implementations decide where to look (room, zone, world, inventory, etc.)
 // without coupling the resolver to any particular game state type.
 type TargetScopes interface {
-	SpacesFor(scope Scope, ci *game.CharacterInstance) ([]SearchSpace, error)
+	SpacesFor(s scope, ci *game.CharacterInstance) ([]SearchSpace, error)
 }
 
 // --- TargetResolver ---
@@ -298,7 +298,7 @@ type notFoundContext struct {
 // ResolveSpecs resolves all targets from the command's targets section.
 // Specs are processed in order so that scope_target references to earlier
 // targets work correctly. Inputs are assumed to have been validated by parseInputs.
-func (r *TargetResolver) ResolveSpecs(specs []TargetSpec, inputs map[string]any, session *game.CharacterInstance) (map[string]*TargetRef, error) {
+func (r *TargetResolver) ResolveSpecs(specs []assets.TargetSpec, inputs map[string]any, session *game.CharacterInstance) (map[string]*TargetRef, error) {
 	if len(specs) == 0 {
 		return make(map[string]*TargetRef), nil
 	}
@@ -329,8 +329,8 @@ func (r *TargetResolver) ResolveSpecs(specs []TargetSpec, inputs map[string]any,
 		}
 
 		// Normal scope resolution
-		scope := spec.Scope()
-		spaces, err := r.scopes.SpacesFor(scope, session)
+		s := parseScope(spec.Scopes)
+		spaces, err := r.scopes.SpacesFor(s, session)
 		if err != nil {
 			return nil, err
 		}
@@ -347,8 +347,8 @@ func (r *TargetResolver) ResolveSpecs(specs []TargetSpec, inputs map[string]any,
 
 // findWithNotFound wraps FindTarget and replaces the default error with the
 // spec's NotFound template when one is configured.
-func findWithNotFound(name string, spec TargetSpec, spaces []SearchSpace, inputs map[string]any) (*TargetRef, error) {
-	ref, err := FindTarget(name, spec.TargetType(), spaces)
+func findWithNotFound(name string, spec assets.TargetSpec, spaces []SearchSpace, inputs map[string]any) (*TargetRef, error) {
+	ref, err := FindTarget(name, parseTargetType(spec.Types), spaces)
 	if err != nil && spec.NotFound != "" {
 		msg, tmplErr := ExpandTemplate(spec.NotFound, &notFoundContext{Inputs: inputs})
 		if tmplErr != nil {
@@ -362,7 +362,7 @@ func findWithNotFound(name string, spec TargetSpec, spaces []SearchSpace, inputs
 // containerSpaces checks if a spec has a scope_target and returns container-only
 // search spaces if the referenced target resolved to a container object.
 // Returns (spaces, handled, error) where handled=true means container scoping applies.
-func containerSpaces(spec TargetSpec, targets map[string]*TargetRef) ([]SearchSpace, bool, error) {
+func containerSpaces(spec assets.TargetSpec, targets map[string]*TargetRef) ([]SearchSpace, bool, error) {
 	if spec.ScopeTarget == "" {
 		return nil, false, nil
 	}

@@ -22,7 +22,7 @@ func NewScoreHandlerFactory(pub game.Publisher) *ScoreHandlerFactory {
 func (f *ScoreHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
-			{Name: "target", Type: TargetTypePlayer | TargetTypeMobile, Required: false},
+			{Name: "target", Type: targetTypePlayer | targetTypeMobile, Required: false},
 		},
 	}
 }
@@ -49,9 +49,9 @@ func (f *ScoreHandlerFactory) Create() (CommandFunc, error) {
 func (f *ScoreHandlerFactory) resolveSections(cmdCtx *CommandContext) ([]game.StatSection, error) {
 	if target := cmdCtx.Targets["target"]; target != nil {
 		switch target.Type {
-		case TargetTypePlayer:
+		case targetTypePlayer:
 			return target.Player.session.StatSections(), nil
-		case TargetTypeMobile:
+		case targetTypeMobile:
 			return target.Mob.instance.StatSections(), nil
 		}
 	}

@@ -86,7 +86,7 @@ func TestAssistHandler(t *testing.T) {
 					Actor:   actor.Character.Get(),
 					Session: actor,
 					Targets: map[string]*TargetRef{
-						"target": {Type: TargetTypePlayer, Player: &PlayerRef{CharId: "bob", Name: "Bob"}},
+						"target": {Type: targetTypePlayer, Player: &PlayerRef{CharId: "bob", Name: "Bob"}},
 					},
 					Config: make(map[string]string),
 				}
@@ -185,7 +185,7 @@ func TestAssistHandler(t *testing.T) {
 					Actor:   actor.Character.Get(),
 					Session: actor,
 					Targets: map[string]*TargetRef{
-						"target": {Type: TargetTypePlayer, Player: &PlayerRef{CharId: "bob", Name: "Bob"}},
+						"target": {Type: targetTypePlayer, Player: &PlayerRef{CharId: "bob", Name: "Bob"}},
 					},
 					Config: make(map[string]string),
 				}

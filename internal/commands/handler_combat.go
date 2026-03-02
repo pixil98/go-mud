@@ -29,7 +29,7 @@ func NewKillHandlerFactory(combat CombatManager, rooms RoomLocator, pub game.Pub
 func (f *KillHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
-			{Name: "target", Type: TargetTypeMobile, Required: true},
+			{Name: "target", Type: targetTypeMobile, Required: true},
 		},
 	}
 }
@@ -91,7 +91,7 @@ func NewAssistHandlerFactory(combat CombatManager, rooms RoomLocator, players Pl
 func (f *AssistHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
-			{Name: "target", Type: TargetTypePlayer, Required: false},
+			{Name: "target", Type: targetTypePlayer, Required: false},
 		},
 	}
 }

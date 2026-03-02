@@ -69,7 +69,7 @@ type mockScopes struct {
 	spaces []SearchSpace
 }
 
-func (s *mockScopes) SpacesFor(Scope, *game.CharacterInstance) ([]SearchSpace, error) {
+func (s *mockScopes) SpacesFor(scope, *game.CharacterInstance) ([]SearchSpace, error) {
 	return s.spaces, nil
 }
 
@@ -132,7 +132,7 @@ func TestFindTarget_Player(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			result, err := FindTarget(tt.name, TargetTypePlayer, tt.spaces)
+			result, err := FindTarget(tt.name, targetTypePlayer, tt.spaces)
 
 			if tt.expErr != "" {
 				if err == nil {
@@ -147,8 +147,8 @@ func TestFindTarget_Player(t *testing.T) {
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			if result.Type != TargetTypePlayer {
-				t.Errorf("Type = %q, expected %q", result.Type.String(), TargetTypePlayer.String())
+			if result.Type != targetTypePlayer {
+				t.Errorf("Type = %q, expected %q", result.Type.String(), targetTypePlayer.String())
 			}
 			if result.Player.Name != tt.expPlayerName {
 				t.Errorf("Name = %q, expected %q", result.Player.Name, tt.expPlayerName)
@@ -192,7 +192,7 @@ func TestFindTarget_Mobile(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			result, err := FindTarget(tt.name, TargetTypeMobile, tt.spaces)
+			result, err := FindTarget(tt.name, targetTypeMobile, tt.spaces)
 
 			if tt.expErr != "" {
 				if err == nil {
@@ -207,8 +207,8 @@ func TestFindTarget_Mobile(t *testing.T) {
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			if result.Type != TargetTypeMobile {
-				t.Errorf("Type = %q, expected %q", result.Type.String(), TargetTypeMobile.String())
+			if result.Type != targetTypeMobile {
+				t.Errorf("Type = %q, expected %q", result.Type.String(), targetTypeMobile.String())
 			}
 			if result.Mob.Name != tt.expMobName {
 				t.Errorf("Name = %q, expected %q", result.Mob.Name, tt.expMobName)
@@ -266,7 +266,7 @@ func TestFindTarget_Object(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			result, err := FindTarget(tt.name, TargetTypeObject, tt.spaces)
+			result, err := FindTarget(tt.name, targetTypeObject, tt.spaces)
 
 			if tt.expErr != "" {
 				if err == nil {
@@ -281,7 +281,7 @@ func TestFindTarget_Object(t *testing.T) {
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			if result.Type != TargetTypeObject {
+			if result.Type != targetTypeObject {
 				t.Errorf("Type = %q, expected %q", result.Type, "object")
 			}
 			if result.Obj.Name != tt.expObjName {
@@ -309,7 +309,7 @@ func TestFindTarget_Combined(t *testing.T) {
 	tests := map[string]struct {
 		spaces  []SearchSpace
 		name    string
-		expType TargetType
+		expType targetType
 		expErr  string
 	}{
 		"prefers player over mob": {
@@ -318,14 +318,14 @@ func TestFindTarget_Combined(t *testing.T) {
 				mobs:    map[string]*game.MobileInstance{"guard-1": guard},
 			}}},
 			name:    "bob",
-			expType: TargetTypePlayer,
+			expType: targetTypePlayer,
 		},
 		"falls through to mob when no player": {
 			spaces: []SearchSpace{{Finder: &mockFinder{
 				mobs: map[string]*game.MobileInstance{"guard-1": guard},
 			}}},
 			name:    "guard",
-			expType: TargetTypeMobile,
+			expType: targetTypeMobile,
 		},
 		"not found returns generic label": {
 			spaces: []SearchSpace{{Finder: &mockFinder{}}},
@@ -336,7 +336,7 @@ func TestFindTarget_Combined(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			result, err := FindTarget(tt.name, TargetTypePlayer|TargetTypeMobile|TargetTypeObject, tt.spaces)
+			result, err := FindTarget(tt.name, targetTypePlayer|targetTypeMobile|targetTypeObject, tt.spaces)
 
 			if tt.expErr != "" {
 				if err == nil {
@@ -398,10 +398,10 @@ func TestFindTarget_Exit(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			targetType := TargetTypeExit
+			targetType := targetTypeExit
 			if tt.expDirection == "" && tt.expErr == "" {
 				// "prefers object over exit" case
-				targetType = TargetTypeObject | TargetTypeExit
+				targetType = targetTypeObject | targetTypeExit
 			}
 			result, err := FindTarget(tt.name, targetType, tt.spaces)
 
@@ -420,16 +420,16 @@ func TestFindTarget_Exit(t *testing.T) {
 			}
 
 			if tt.expDirection != "" {
-				if result.Type != TargetTypeExit {
-					t.Errorf("Type = %q, expected %q", result.Type.String(), TargetTypeExit.String())
+				if result.Type != targetTypeExit {
+					t.Errorf("Type = %q, expected %q", result.Type.String(), targetTypeExit.String())
 				}
 				if result.Exit.Direction != tt.expDirection {
 					t.Errorf("Direction = %q, expected %q", result.Exit.Direction, tt.expDirection)
 				}
 			} else {
 				// "prefers object over exit" — should resolve as object
-				if result.Type != TargetTypeObject {
-					t.Errorf("Type = %q, expected %q", result.Type.String(), TargetTypeObject.String())
+				if result.Type != targetTypeObject {
+					t.Errorf("Type = %q, expected %q", result.Type.String(), targetTypeObject.String())
 				}
 			}
 		})
@@ -448,12 +448,12 @@ func TestFindTarget_TypeFiltering(t *testing.T) {
 	spaces := []SearchSpace{{Finder: finder}}
 
 	// When only mobile type is requested, player "bob" should be skipped
-	result, err := FindTarget("bob", TargetTypeMobile, spaces)
+	result, err := FindTarget("bob", targetTypeMobile, spaces)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if result.Type != TargetTypeMobile {
-		t.Errorf("Type = %q, expected %q", result.Type.String(), TargetTypeMobile.String())
+	if result.Type != targetTypeMobile {
+		t.Errorf("Type = %q, expected %q", result.Type.String(), targetTypeMobile.String())
 	}
 }
 
@@ -468,38 +468,38 @@ func TestResolveSpecs(t *testing.T) {
 	}
 
 	tests := map[string]struct {
-		specs      []TargetSpec
+		specs      []assets.TargetSpec
 		inputs     map[string]any
 		spaces     []SearchSpace
-		expTargets map[string]TargetType
+		expTargets map[string]targetType
 		expNil     []string
 		expErr     string
 	}{
 		"empty specs returns empty map": {
-			specs:      []TargetSpec{},
+			specs:      []assets.TargetSpec{},
 			inputs:     map[string]any{},
-			expTargets: map[string]TargetType{},
+			expTargets: map[string]targetType{},
 		},
 		"resolves player target": {
-			specs: []TargetSpec{
+			specs: []assets.TargetSpec{
 				{Name: "target", Types: []string{"player"}, Scopes: []string{"world"}, Input: "who"},
 			},
 			inputs:     map[string]any{"who": "bob"},
 			spaces:     []SearchSpace{{Finder: finder}},
-			expTargets: map[string]TargetType{"target": TargetTypePlayer},
+			expTargets: map[string]targetType{"target": targetTypePlayer},
 		},
 		"resolves multiple targets": {
-			specs: []TargetSpec{
+			specs: []assets.TargetSpec{
 				{Name: "first", Types: []string{"player"}, Scopes: []string{"world"}, Input: "who1"},
 				{Name: "second", Types: []string{"player"}, Scopes: []string{"world"}, Input: "who2", Optional: true},
 			},
 			inputs:     map[string]any{"who1": "bob", "who2": ""},
 			spaces:     []SearchSpace{{Finder: finder}},
-			expTargets: map[string]TargetType{"first": TargetTypePlayer},
+			expTargets: map[string]targetType{"first": targetTypePlayer},
 			expNil:     []string{"second"},
 		},
 		"optional target with empty input": {
-			specs: []TargetSpec{
+			specs: []assets.TargetSpec{
 				{Name: "target", Types: []string{"player"}, Scopes: []string{"world"}, Input: "who", Optional: true},
 			},
 			inputs: map[string]any{"who": ""},
@@ -507,14 +507,14 @@ func TestResolveSpecs(t *testing.T) {
 			expNil: []string{"target"},
 		},
 		"required target with empty input": {
-			specs: []TargetSpec{
+			specs: []assets.TargetSpec{
 				{Name: "target", Types: []string{"player"}, Scopes: []string{"world"}, Input: "who"},
 			},
 			inputs: map[string]any{"who": ""},
 			expErr: `Input "who" is required.`,
 		},
 		"not found": {
-			specs: []TargetSpec{
+			specs: []assets.TargetSpec{
 				{Name: "target", Types: []string{"player"}, Scopes: []string{"world"}, Input: "who"},
 			},
 			inputs: map[string]any{"who": "nobody"},
@@ -522,7 +522,7 @@ func TestResolveSpecs(t *testing.T) {
 			expErr: `Player "nobody" not found.`,
 		},
 		"not found with custom message": {
-			specs: []TargetSpec{
+			specs: []assets.TargetSpec{
 				{Name: "target", Types: []string{"player"}, Scopes: []string{"world"}, Input: "who", NotFound: "You don't see '{{ .Inputs.who }}' here."},
 			},
 			inputs: map[string]any{"who": "nobody"},
@@ -596,34 +596,34 @@ func TestResolveSpecs_ScopeTarget(t *testing.T) {
 
 	tests := map[string]struct {
 		roomObjects []*game.ObjectInstance
-		specs       []TargetSpec
+		specs       []assets.TargetSpec
 		inputs      map[string]any
-		expTargets  map[string]TargetType
+		expTargets  map[string]targetType
 		expNil      []string
 		expErr      string
 	}{
 		"resolves from container contents": {
 			roomObjects: []*game.ObjectInstance{chestWithTorch},
-			specs: []TargetSpec{
+			specs: []assets.TargetSpec{
 				{Name: "container", Types: []string{"object"}, Scopes: []string{"room"}, Input: "from", Optional: true},
 				{Name: "target", Types: []string{"object"}, Scopes: []string{"room", "contents"}, Input: "item", ScopeTarget: "container"},
 			},
 			inputs:     map[string]any{"from": "chest", "item": "torch"},
-			expTargets: map[string]TargetType{"container": TargetTypeObject, "target": TargetTypeObject},
+			expTargets: map[string]targetType{"container": targetTypeObject, "target": targetTypeObject},
 		},
 		"falls back to room when container not provided": {
 			roomObjects: []*game.ObjectInstance{swordObj},
-			specs: []TargetSpec{
+			specs: []assets.TargetSpec{
 				{Name: "container", Types: []string{"object"}, Scopes: []string{"room"}, Input: "from", Optional: true},
 				{Name: "target", Types: []string{"object"}, Scopes: []string{"room", "contents"}, Input: "item", ScopeTarget: "container"},
 			},
 			inputs:     map[string]any{"from": "", "item": "sword"},
-			expTargets: map[string]TargetType{"target": TargetTypeObject},
+			expTargets: map[string]targetType{"target": targetTypeObject},
 			expNil:     []string{"container"},
 		},
 		"restricts to contents when container resolved": {
 			roomObjects: []*game.ObjectInstance{emptyChest, swordObj},
-			specs: []TargetSpec{
+			specs: []assets.TargetSpec{
 				{Name: "container", Types: []string{"object"}, Scopes: []string{"room"}, Input: "from", Optional: true},
 				{Name: "target", Types: []string{"object"}, Scopes: []string{"room", "contents"}, Input: "item", ScopeTarget: "container"},
 			},
@@ -635,7 +635,7 @@ func TestResolveSpecs_ScopeTarget(t *testing.T) {
 				{InstanceId: "chest-2", Object: storage.NewResolvedSmartIdentifier("chest", chestDef),
 					Contents: game.NewInventory()},
 			},
-			specs: []TargetSpec{
+			specs: []assets.TargetSpec{
 				{Name: "container", Types: []string{"object"}, Scopes: []string{"room"}, Input: "from", Optional: true},
 				{Name: "target", Types: []string{"object"}, Scopes: []string{"room", "contents"}, Input: "item", ScopeTarget: "container"},
 			},
@@ -644,7 +644,7 @@ func TestResolveSpecs_ScopeTarget(t *testing.T) {
 		},
 		"rejects non-container": {
 			roomObjects: []*game.ObjectInstance{swordObj},
-			specs: []TargetSpec{
+			specs: []assets.TargetSpec{
 				{Name: "container", Types: []string{"object"}, Scopes: []string{"room"}, Input: "from", Optional: true},
 				{Name: "target", Types: []string{"object"}, Scopes: []string{"room", "contents"}, Input: "item", ScopeTarget: "container"},
 			},

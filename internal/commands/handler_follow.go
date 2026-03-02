@@ -23,7 +23,7 @@ func NewFollowHandlerFactory(players PlayerLookup, pub game.Publisher) *FollowHa
 func (f *FollowHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
-			{Name: "target", Type: TargetTypePlayer, Required: false},
+			{Name: "target", Type: targetTypePlayer, Required: false},
 		},
 	}
 }

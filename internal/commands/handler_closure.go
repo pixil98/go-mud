@@ -27,7 +27,7 @@ func NewClosureHandlerFactory(world WorldView, pub game.Publisher) *ClosureHandl
 func (f *ClosureHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
-			{Name: "target", Type: TargetTypeObject | TargetTypeExit, Required: true},
+			{Name: "target", Type: targetTypeObject | targetTypeExit, Required: true},
 		},
 		Config: []ConfigRequirement{
 			{Name: "action", Required: true},
@@ -51,7 +51,7 @@ func (f *ClosureHandlerFactory) Create() (CommandFunc, error) {
 		target := cmdCtx.Targets["target"]
 
 		switch target.Type {
-		case TargetTypeExit:
+		case targetTypeExit:
 			closure := target.Exit.exit.Closure
 			if closure == nil {
 				return NewUserError(fmt.Sprintf("You can't %s that.", action))
@@ -60,7 +60,7 @@ func (f *ClosureHandlerFactory) Create() (CommandFunc, error) {
 			room := f.world.GetRoom(zoneId, roomId)
 			return f.handleExit(action, target.Exit.Direction, closure, room, cmdCtx)
 
-		case TargetTypeObject:
+		case targetTypeObject:
 			oi := target.Obj.instance
 			if !oi.Object.Get().HasFlag(assets.ObjectFlagContainer) || oi.Object.Get().Closure == nil {
 				return NewUserError(fmt.Sprintf("You can't %s that.", action))

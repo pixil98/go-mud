@@ -23,7 +23,7 @@ func NewWearHandlerFactory(rooms RoomLocator, pub game.Publisher) *WearHandlerFa
 func (f *WearHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
-			{Name: "target", Type: TargetTypeObject, Required: true},
+			{Name: "target", Type: targetTypeObject, Required: true},
 		},
 	}
 }

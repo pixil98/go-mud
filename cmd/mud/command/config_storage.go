@@ -6,7 +6,6 @@ import (
 
 	"github.com/pixil98/go-errors"
 	"github.com/pixil98/go-mud/internal/assets"
-	"github.com/pixil98/go-mud/internal/commands"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
 )
@@ -14,7 +13,7 @@ import (
 type StorageConfig struct {
 	/* Core Parts */
 	Characters AssetConfig[*assets.Character] `json:"characters"`
-	Commands   AssetConfig[*commands.Command] `json:"commands"`
+	Commands   AssetConfig[*assets.Command]   `json:"commands"`
 	Zones      AssetConfig[*assets.Zone]      `json:"zones"`
 	Rooms      AssetConfig[*assets.Room]      `json:"rooms"`
 	Mobiles    AssetConfig[*assets.Mobile]    `json:"mobiles"`

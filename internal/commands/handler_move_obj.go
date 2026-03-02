@@ -33,8 +33,8 @@ func NewMoveObjHandlerFactory(rooms RoomLocator, pub game.Publisher) *MoveObjHan
 func (f *MoveObjHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
-			{Name: "item", Type: TargetTypeObject, Required: true},
-			{Name: "destination", Type: TargetTypePlayer | TargetTypeMobile | TargetTypeObject, Required: false},
+			{Name: "item", Type: targetTypeObject, Required: true},
+			{Name: "destination", Type: targetTypePlayer | targetTypeMobile | targetTypeObject, Required: false},
 		},
 		Config: []ConfigRequirement{
 			{Name: "destination", Required: true},
@@ -99,7 +99,7 @@ func (f *MoveObjHandlerFactory) Create() (CommandFunc, error) {
 			}
 
 			if targetMsg := cmdCtx.Config["target_message"]; targetMsg != "" {
-				if ref := cmdCtx.Targets[cmdCtx.Config["destination"]]; ref != nil && ref.Type == TargetTypePlayer {
+				if ref := cmdCtx.Targets[cmdCtx.Config["destination"]]; ref != nil && ref.Type == targetTypePlayer {
 					if err := f.pub.Publish(game.SinglePlayer(ref.Player.CharId), nil, []byte(targetMsg)); err != nil {
 						slog.Warn("failed to publish target message", "error", err)
 					}

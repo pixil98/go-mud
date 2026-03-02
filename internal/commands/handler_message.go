@@ -30,7 +30,7 @@ func (f *MessageHandlerFactory) Spec() *HandlerSpec {
 			{Name: "sender_message", Required: false},
 		},
 		Targets: []TargetRequirement{
-			{Name: "target", Type: TargetTypePlayer, Required: false},
+			{Name: "target", Type: targetTypePlayer, Required: false},
 		},
 	}
 }

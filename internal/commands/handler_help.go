@@ -6,18 +6,19 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // HelpHandlerFactory creates handlers that display command help.
 type HelpHandlerFactory struct {
-	commands storage.Storer[*Command]
+	commands storage.Storer[*assets.Command]
 	pub      game.Publisher
 }
 
 // NewHelpHandlerFactory creates a new HelpHandlerFactory.
-func NewHelpHandlerFactory(commands storage.Storer[*Command], pub game.Publisher) *HelpHandlerFactory {
+func NewHelpHandlerFactory(commands storage.Storer[*assets.Command], pub game.Publisher) *HelpHandlerFactory {
 	return &HelpHandlerFactory{commands: commands, pub: pub}
 }
 

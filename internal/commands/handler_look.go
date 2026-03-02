@@ -20,7 +20,7 @@ func NewLookHandlerFactory(rooms RoomLocator, pub game.Publisher) *LookHandlerFa
 func (f *LookHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
-			{Name: "target", Type: TargetTypePlayer | TargetTypeMobile | TargetTypeObject, Required: false},
+			{Name: "target", Type: targetTypePlayer | targetTypeMobile | targetTypeObject, Required: false},
 		},
 	}
 }
@@ -61,11 +61,11 @@ func (f *LookHandlerFactory) showRoom(cmdCtx *CommandContext) error {
 func (f *LookHandlerFactory) showTarget(cmdCtx *CommandContext, target *TargetRef) error {
 	var msg string
 	switch target.Type {
-	case TargetTypePlayer:
+	case targetTypePlayer:
 		msg = target.Player.Describe()
-	case TargetTypeMobile:
+	case targetTypeMobile:
 		msg = target.Mob.Describe()
-	case TargetTypeObject:
+	case targetTypeObject:
 		msg = target.Obj.Describe()
 	default:
 		return NewUserError("You can't look at that.")

@@ -56,44 +56,44 @@ func NewWorldScopes(world WorldView) *WorldScopes {
 
 // SpacesFor returns search spaces for the given scope flags, ordered from
 // narrowest (inventory) to broadest (world).
-func (ws *WorldScopes) SpacesFor(scope Scope, ci *game.CharacterInstance) ([]SearchSpace, error) {
+func (ws *WorldScopes) SpacesFor(s scope, ci *game.CharacterInstance) ([]SearchSpace, error) {
 	zoneId, roomId := ci.Location()
 
 	var spaces []SearchSpace
 
-	if scope&ScopeInventory != 0 && ci.Inventory != nil {
+	if s&scopeInventory != 0 && ci.Inventory != nil {
 		spaces = append(spaces, SearchSpace{
 			Finder:  objectOnlyFinder{ci.Inventory},
 			Remover: ci.Inventory,
 		})
 	}
-	if scope&ScopeEquipment != 0 && ci.Equipment != nil {
+	if s&scopeEquipment != 0 && ci.Equipment != nil {
 		spaces = append(spaces, SearchSpace{
 			Finder:  objectOnlyFinder{ci.Equipment},
 			Remover: ci.Equipment,
 		})
 	}
-	if scope&ScopeRoom != 0 {
+	if s&scopeRoom != 0 {
 		room := ws.world.GetRoom(zoneId, roomId)
 		spaces = append(spaces, SearchSpace{
 			Finder:  room,
 			Remover: room,
 		})
 	}
-	if scope&ScopeZone != 0 {
+	if s&scopeZone != 0 {
 		zone := ws.world.GetZone(zoneId)
 		spaces = append(spaces, SearchSpace{
 			Finder: zone,
 		})
 	}
-	if scope&ScopeWorld != 0 {
+	if s&scopeWorld != 0 {
 		for _, zi := range ws.world.Instances() {
 			spaces = append(spaces, SearchSpace{
 				Finder: zi,
 			})
 		}
 	}
-	if scope&ScopeGroup != 0 && ci.Group != nil {
+	if s&scopeGroup != 0 && ci.Group != nil {
 		spaces = append(spaces, SearchSpace{
 			Finder: playerOnlyFinder{ci.Group},
 		})

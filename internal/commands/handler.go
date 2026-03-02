@@ -16,7 +16,7 @@ import (
 
 // ParsedInput represents a validated and parsed command input.
 type ParsedInput struct {
-	Spec  *InputSpec
+	Spec  *assets.InputSpec
 	Raw   string // Original player input
 	Value any    // Parsed value: int for number, string for string/direction
 }
@@ -36,7 +36,7 @@ type CommandFunc func(ctx context.Context, cmdCtx *CommandContext) error
 // TargetRequirement describes an expected target for a handler.
 type TargetRequirement struct {
 	Name     string     // Target name (must match JSON "name" field)
-	Type     TargetType // Expected type: TargetTypePlayer, TargetTypeObject, etc.
+	Type     targetType // Expected type: targetTypePlayer, targetTypeObject, etc.
 	Required bool       // If true, target must exist in command JSON
 }
 
@@ -88,7 +88,7 @@ type HandlerFactory interface {
 
 // compiledCommand holds a command that's been validated and compiled.
 type compiledCommand struct {
-	cmd     *Command
+	cmd     *assets.Command
 	cmdFunc CommandFunc
 }
 
@@ -98,7 +98,7 @@ type Handler struct {
 	dict      *game.Dictionary
 }
 
-func NewHandler(cmds storage.Storer[*Command], dict *game.Dictionary, publisher game.Publisher, world *game.WorldState, combat *combat.Manager) (*Handler, error) {
+func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, publisher game.Publisher, world *game.WorldState, combat *combat.Manager) (*Handler, error) {
 	h := &Handler{
 		factories: make(map[string]HandlerFactory),
 		compiled:  make(map[string]*compiledCommand),
@@ -155,7 +155,7 @@ func (h *Handler) RegisterFactory(name string, factory HandlerFactory) error {
 	return nil
 }
 
-func (h *Handler) compile(id string, cmd *Command) error {
+func (h *Handler) compile(id string, cmd *assets.Command) error {
 	factory, ok := h.factories[cmd.Handler]
 	if !ok {
 		return fmt.Errorf("unknown handler %q", cmd.Handler)
@@ -199,9 +199,9 @@ func (h *Handler) compile(id string, cmd *Command) error {
 }
 
 // validateSpec validates a command against a handler's spec.
-func (h *Handler) validateSpec(cmd *Command, spec *HandlerSpec) error {
+func (h *Handler) validateSpec(cmd *assets.Command, spec *HandlerSpec) error {
 	// Build maps for quick lookup
-	cmdTargets := make(map[string]TargetSpec)
+	cmdTargets := make(map[string]assets.TargetSpec)
 	for _, t := range cmd.Targets {
 		cmdTargets[t.Name] = t
 	}
@@ -225,8 +225,9 @@ func (h *Handler) validateSpec(cmd *Command, spec *HandlerSpec) error {
 		}
 
 		// Validate command types are a subset of spec types
-		if target.TargetType()&req.Type != target.TargetType() {
-			return fmt.Errorf("target %q: expected type %s, got %s", req.Name, req.Type, target.TargetType())
+		tt := parseTargetType(target.Types)
+		if tt&req.Type != tt {
+			return fmt.Errorf("target %q: expected type %s, got %s", req.Name, req.Type, tt)
 		}
 	}
 
@@ -365,7 +366,7 @@ func (h *Handler) Exec(ctx context.Context, world *game.WorldState, charId strin
 }
 
 // parseInputs validates raw string arguments against input specs.
-func (h *Handler) parseInputs(specs []InputSpec, rawArgs []string) ([]ParsedInput, error) {
+func (h *Handler) parseInputs(specs []assets.InputSpec, rawArgs []string) ([]ParsedInput, error) {
 	// Count required inputs
 	requiredCount := 0
 	for _, spec := range specs {
@@ -430,12 +431,12 @@ func (h *Handler) parseInputs(specs []InputSpec, rawArgs []string) ([]ParsedInpu
 }
 
 // parseValue parses a raw string into the appropriate type.
-func (h *Handler) parseValue(inputType InputType, raw string) (any, error) {
+func (h *Handler) parseValue(inputType string, raw string) (any, error) {
 	switch inputType {
-	case InputTypeString:
+	case assets.InputTypeString:
 		return raw, nil
 
-	case InputTypeNumber:
+	case assets.InputTypeNumber:
 		n, err := strconv.Atoi(raw)
 		if err != nil {
 			return nil, NewUserError(fmt.Sprintf("%q is not a valid number.", raw))

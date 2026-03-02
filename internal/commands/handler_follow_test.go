@@ -63,7 +63,7 @@ func TestFollowHandler(t *testing.T) {
 	}{
 		"follow a player": {
 			target: &TargetRef{
-				Type:   TargetTypePlayer,
+				Type:   targetTypePlayer,
 				Player: &PlayerRef{CharId: "bob", Name: "Bob"},
 			},
 			expFollowId: "bob",
@@ -72,7 +72,7 @@ func TestFollowHandler(t *testing.T) {
 		},
 		"follow yourself": {
 			target: &TargetRef{
-				Type:   TargetTypePlayer,
+				Type:   targetTypePlayer,
 				Player: &PlayerRef{CharId: "alice", Name: "Alice"},
 			},
 			expErr: "You can't follow yourself.",
@@ -82,7 +82,7 @@ func TestFollowHandler(t *testing.T) {
 				alice.FollowingId = "bob"
 			},
 			target: &TargetRef{
-				Type:   TargetTypePlayer,
+				Type:   targetTypePlayer,
 				Player: &PlayerRef{CharId: "bob", Name: "Bob"},
 			},
 			expErr: "You are already following Bob.",
@@ -92,7 +92,7 @@ func TestFollowHandler(t *testing.T) {
 				bob.FollowingId = "alice"
 			},
 			target: &TargetRef{
-				Type:   TargetTypePlayer,
+				Type:   targetTypePlayer,
 				Player: &PlayerRef{CharId: "bob", Name: "Bob"},
 			},
 			expErr: "Sorry, following in loops is not allowed.",
@@ -104,7 +104,7 @@ func TestFollowHandler(t *testing.T) {
 				lookup.players["charlie"] = charlie
 			},
 			target: &TargetRef{
-				Type:   TargetTypePlayer,
+				Type:   targetTypePlayer,
 				Player: &PlayerRef{CharId: "charlie", Name: "Charlie"},
 			},
 			expFollowId: "charlie",

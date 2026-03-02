@@ -99,7 +99,7 @@ func NewGroupHandlerFactory(players PlayerLookup, pub game.Publisher) *GroupHand
 func (f *GroupHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
-			{Name: "target", Type: TargetTypePlayer, Required: false},
+			{Name: "target", Type: targetTypePlayer, Required: false},
 		},
 	}
 }
@@ -240,7 +240,7 @@ func NewUngroupHandlerFactory(players PlayerLookup, pub game.Publisher) *Ungroup
 func (f *UngroupHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
-			{Name: "target", Type: TargetTypePlayer, Required: false},
+			{Name: "target", Type: targetTypePlayer, Required: false},
 		},
 	}
 }
