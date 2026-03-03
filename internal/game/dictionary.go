@@ -19,6 +19,7 @@ type Dictionary struct {
 	Pronouns   storage.Storer[*assets.Pronoun]
 	Races      storage.Storer[*assets.Race]
 	Trees      storage.Storer[*assets.Tree]
+	Abilities  storage.Storer[*assets.Ability]
 }
 
 // Resolve resolves all foreign key references on non-character asset types.

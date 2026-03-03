@@ -7,7 +7,9 @@
         "perks": [
             { "type": "key_mod", "key": "core.stats.con", "value": 2 },
             { "type": "key_mod", "key": "core.stats.cha", "value": -2 },
-            { "type": "tag", "tag": "darkvision" }
+            { "type": "tag", "tag": "darkvision" },
+            { "type": "unlock_ability", "id": "fireball" },
+            { "type": "unlock_ability", "id": "bash" }
         ],
         "wear_slots": [
             "light", "head", "neck", "neck", "about",

@@ -11,8 +11,6 @@ import (
 )
 
 func TestHandler_parseValue(t *testing.T) {
-	h := &Handler{}
-
 	tests := map[string]struct {
 		inputType string
 		raw       string
@@ -53,7 +51,7 @@ func TestHandler_parseValue(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			got, err := h.parseValue(tt.inputType, tt.raw)
+			got, err := parseValue(tt.inputType, tt.raw)
 
 			if tt.expErr != "" {
 				if err == nil {
@@ -79,7 +77,6 @@ func TestHandler_parseValue(t *testing.T) {
 }
 
 func TestHandler_parseInputs(t *testing.T) {
-	h := &Handler{}
 
 	tests := map[string]struct {
 		specs   []assets.InputSpec
@@ -202,7 +199,7 @@ func TestHandler_parseInputs(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			got, err := h.parseInputs(tt.specs, tt.rawArgs)
+			got, err := parseInputs(tt.specs, tt.rawArgs)
 
 			if tt.expErr != "" {
 				if err == nil {

@@ -251,6 +251,17 @@ func (ci *CharacterInstance) Perks() []assets.Perk {
 	return perks
 }
 
+// HasAbility returns true if any of the character's aggregated perks include
+// an unlock_ability perk matching the given ability ID.
+func (ci *CharacterInstance) HasAbility(abilityId string) bool {
+	for _, p := range ci.Perks() {
+		if p.Type == assets.PerkTypeUnlockAbility && p.Id == abilityId {
+			return true
+		}
+	}
+	return false
+}
+
 // EffectiveStats computes ability scores from base stats + perk modifiers + equipment bonuses.
 func (ci *CharacterInstance) EffectiveStats() map[assets.StatKey]Stat {
 	char := ci.Character.Get()
@@ -259,7 +270,7 @@ func (ci *CharacterInstance) EffectiveStats() map[assets.StatKey]Stat {
 		stats[k] = Stat(char.BaseStats[k])
 	}
 	for _, p := range ci.Perks() {
-		if p.Type != "key_mod" {
+		if p.Type != assets.PerkTypeKeyMod {
 			continue
 		}
 		if sk, ok := assets.StatPerkKeys[p.Key]; ok {
@@ -292,7 +303,7 @@ func (ci *CharacterInstance) StatSections() []StatSection {
 
 	var perkLines []StatLine
 	for _, p := range ci.Perks() {
-		if p.Type == "tag" {
+		if p.Type == assets.PerkTypeTag {
 			perkLines = append(perkLines, StatLine{Value: "  " + p.Tag})
 		}
 	}

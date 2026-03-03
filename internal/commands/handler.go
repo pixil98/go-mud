@@ -96,6 +96,7 @@ type Handler struct {
 	factories map[string]HandlerFactory
 	compiled  map[string]*compiledCommand
 	dict      *game.Dictionary
+	effects   map[string]EffectHandler
 }
 
 func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, publisher game.Publisher, world *game.WorldState, combat *combat.Manager) (*Handler, error) {
@@ -103,10 +104,15 @@ func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, pub
 		factories: make(map[string]HandlerFactory),
 		compiled:  make(map[string]*compiledCommand),
 		dict:      dict,
+		effects:   make(map[string]EffectHandler),
 	}
+
+	// Register effect handlers
+	h.effects["damage"] = &damageEffect{}
 
 	// Register built-in handlers
 	h.RegisterFactory("assist", NewAssistHandlerFactory(combat, world, world, publisher))
+	h.RegisterFactory("cast", NewCastHandlerFactory(dict.Abilities, world, publisher, h.effects))
 	h.RegisterFactory("closure", NewClosureHandlerFactory(world, publisher))
 	h.RegisterFactory("equipment", NewEquipmentHandlerFactory(publisher))
 	h.RegisterFactory("follow", NewFollowHandlerFactory(world, publisher))
@@ -136,7 +142,52 @@ func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, pub
 		}
 	}
 
+	// Auto-register skill abilities as top-level commands
+	for id, ability := range dict.Abilities.GetAll() {
+		if ability.Type == assets.AbilityTypeSkill {
+			if err := h.registerSkill(id, ability, world, publisher); err != nil {
+				return nil, fmt.Errorf("registering skill %q: %w", id, err)
+			}
+		}
+	}
+
 	return h, nil
+}
+
+// registerSkill registers a skill ability as a top-level command.
+// The skill's embedded Command provides input/target specs. The compiled
+// handler checks the actor's perks for unlock and sends ability messages.
+func (h *Handler) registerSkill(id string, ability *assets.Ability, world WorldView, pub game.Publisher) error {
+	cmd := ability.Command // value copy
+	cmd.Handler = ability.Handler
+
+	effect, ok := h.effects[ability.Handler]
+	if !ok {
+		return fmt.Errorf("unknown effect handler %q", ability.Handler)
+	}
+	cmdFunc := func(ctx context.Context, cmdCtx *CommandContext) error {
+		if !cmdCtx.Session.HasAbility(id) {
+			return NewUserError("You don't know how to do that.")
+		}
+		return executeAbility(ability, cmdCtx, cmdCtx.Targets, world, pub, effect)
+	}
+
+	cc := &compiledCommand{cmd: &cmd, cmdFunc: cmdFunc}
+
+	if _, exists := h.compiled[id]; exists {
+		return fmt.Errorf("%q conflicts with an existing command or alias", id)
+	}
+	h.compiled[id] = cc
+
+	for _, alias := range cmd.Aliases {
+		aliasId := strings.ToLower(alias)
+		if _, exists := h.compiled[aliasId]; exists {
+			return fmt.Errorf("alias %q conflicts with an existing command or alias", alias)
+		}
+		h.compiled[aliasId] = cc
+	}
+
+	return nil
 }
 
 // RegisterFactory registers a handler factory by name.
@@ -322,7 +373,7 @@ func (h *Handler) Exec(ctx context.Context, world *game.WorldState, charId strin
 	}
 
 	// Parse inputs
-	inputs, err := h.parseInputs(compiled.cmd.Inputs, rawArgs)
+	inputs, err := parseInputs(compiled.cmd.Inputs, rawArgs)
 	if err != nil {
 		return err
 	}
@@ -366,7 +417,7 @@ func (h *Handler) Exec(ctx context.Context, world *game.WorldState, charId strin
 }
 
 // parseInputs validates raw string arguments against input specs.
-func (h *Handler) parseInputs(specs []assets.InputSpec, rawArgs []string) ([]ParsedInput, error) {
+func parseInputs(specs []assets.InputSpec, rawArgs []string) ([]ParsedInput, error) {
 	// Count required inputs
 	requiredCount := 0
 	for _, spec := range specs {
@@ -415,7 +466,7 @@ func (h *Handler) parseInputs(specs []assets.InputSpec, rawArgs []string) ([]Par
 			argIndex++
 		}
 
-		value, err := h.parseValue(spec.Type, raw)
+		value, err := parseValue(spec.Type, raw)
 		if err != nil {
 			return nil, fmt.Errorf("parameter %q: %w", spec.Name, err)
 		}
@@ -431,7 +482,7 @@ func (h *Handler) parseInputs(specs []assets.InputSpec, rawArgs []string) ([]Par
 }
 
 // parseValue parses a raw string into the appropriate type.
-func (h *Handler) parseValue(inputType string, raw string) (any, error) {
+func parseValue(inputType string, raw string) (any, error) {
 	switch inputType {
 	case assets.InputTypeString:
 		return raw, nil

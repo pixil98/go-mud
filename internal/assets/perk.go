@@ -30,6 +30,13 @@ var StatPerkKeys = map[PerkKey]StatKey{
 	PerkKeyCHA: StatCHA,
 }
 
+// Perk type constants.
+const (
+	PerkTypeUnlockAbility = "unlock_ability"
+	PerkTypeKeyMod        = "key_mod"
+	PerkTypeTag           = "tag"
+)
+
 // Perk describes an effect granted when a node or spine node is unlocked, or
 // by a race. Which fields are meaningful depends on Type.
 type Perk struct {
@@ -46,15 +53,15 @@ func (p *Perk) validate() error {
 	}
 
 	switch p.Type {
-	case "unlock_ability":
+	case PerkTypeUnlockAbility:
 		if p.Id == "" {
 			return fmt.Errorf("unlock_ability perk requires id")
 		}
-	case "key_mod":
+	case PerkTypeKeyMod:
 		if p.Key == "" {
 			return fmt.Errorf("key_mod perk requires key")
 		}
-	case "tag":
+	case PerkTypeTag:
 		if p.Tag == "" {
 			return fmt.Errorf("tag perk requires tag")
 		}
