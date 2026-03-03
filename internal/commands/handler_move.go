@@ -40,18 +40,18 @@ func (f *MoveHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		if err := canMove(cmdCtx.Session); err != nil {
+	return func(ctx context.Context, in *CommandInput) error {
+		if err := canMove(in.Char); err != nil {
 			return err
 		}
 
 		// Read direction from expanded config
-		direction := strings.ToLower(cmdCtx.Config["direction"])
+		direction := strings.ToLower(in.Config["direction"])
 		if direction == "" {
 			return fmt.Errorf("direction not set in config")
 		}
 
-		zoneId, roomId := cmdCtx.Session.Location()
+		zoneId, roomId := in.Char.Location()
 
 		// Look up current room instance
 		fromRoom := f.rooms.GetRoom(zoneId, roomId)
@@ -89,18 +89,19 @@ func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		// Move the player (updates location, subscriptions, and room player lists)
-		cmdCtx.Session.Move(fromRoom, toRoom)
+		in.Char.Move(fromRoom, toRoom)
 
 		// Send room description to player
-		roomDesc := toRoom.Describe(cmdCtx.Actor.Name)
+		actor := in.Char.Character.Get()
+		roomDesc := toRoom.Describe(actor.Name)
 		if f.pub != nil {
-			if err := f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(roomDesc)); err != nil {
+			if err := f.pub.Publish(game.SinglePlayer(in.Char.Character.Id()), nil, []byte(roomDesc)); err != nil {
 				slog.Warn("failed to send room description", "error", err)
 			}
 		}
 
 		// Move any followers in the old room
-		f.moveFollowers(cmdCtx.Session.Character.Id(), cmdCtx.Actor.Name, fromRoom, toRoom, direction)
+		f.moveFollowers(in.Char.Character.Id(), actor.Name, fromRoom, toRoom, direction)
 
 		return nil
 	}, nil

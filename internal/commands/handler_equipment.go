@@ -26,21 +26,21 @@ func (f *EquipmentHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *EquipmentHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
+	return func(ctx context.Context, in *CommandInput) error {
 		// Build the slot list to display: race slots if available, otherwise equipped slots
-		slots := cmdCtx.Actor.Race.Get().WearSlots
-		if len(slots) == 0 && cmdCtx.Session.Equipment != nil {
-			for _, item := range cmdCtx.Session.Equipment.Objs {
+		slots := in.Char.Character.Get().Race.Get().WearSlots
+		if len(slots) == 0 && in.Char.Equipment != nil {
+			for _, item := range in.Char.Equipment.Objs {
 				slots = append(slots, item.Slot)
 			}
 		}
 
 		lines := []string{"You are wearing:"}
-		lines = append(lines, FormatEquipmentSlots(cmdCtx.Session.Equipment, slots)...)
+		lines = append(lines, FormatEquipmentSlots(in.Char.Equipment, slots)...)
 
 		output := strings.Join(lines, "\n")
 		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(output))
+			return f.pub.Publish(game.SinglePlayer(in.Char.Character.Id()), nil, []byte(output))
 		}
 
 		return nil

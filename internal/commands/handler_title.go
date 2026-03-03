@@ -30,11 +30,11 @@ func (f *TitleHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *TitleHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
+	return func(ctx context.Context, in *CommandInput) error {
 		// Read new_title from expanded config (input was templated into config)
-		title := cmdCtx.Config["new_title"]
+		title := in.Config["new_title"]
 
-		cmdCtx.Actor.Title = title
+		in.Char.Character.Get().Title = title
 
 		var output string
 		if title == "" {
@@ -44,7 +44,7 @@ func (f *TitleHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(output))
+			return f.pub.Publish(game.SinglePlayer(in.Char.Character.Id()), nil, []byte(output))
 		}
 
 		return nil

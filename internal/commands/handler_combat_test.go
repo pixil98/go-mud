@@ -56,7 +56,7 @@ func (m *mockCombatant) Level() int               { return 1 }
 
 func TestAssistHandler(t *testing.T) {
 	tests := map[string]struct {
-		setup          func() (*AssistHandlerFactory, *CommandContext)
+		setup          func() (*AssistHandlerFactory, *CommandInput)
 		expErr         string
 		expStarted     bool
 		expMsgActor    string // substring in message to actor
@@ -64,7 +64,7 @@ func TestAssistHandler(t *testing.T) {
 		expMsgRoom     string // substring in message to room bystander
 	}{
 		"assist explicit target in combat": {
-			setup: func() (*AssistHandlerFactory, *CommandContext) {
+			setup: func() (*AssistHandlerFactory, *CommandInput) {
 				mob := &mockCombatant{id: "mob:test-mob", name: "test-mob"}
 				cm := &mockCombatManager{
 					fighters: map[string]*combat.Fighter{
@@ -82,9 +82,8 @@ func TestAssistHandler(t *testing.T) {
 				actor := newTestPlayer("alice", "Alice", room)
 				newTestPlayer("bob", "Bob", room)
 
-				cmdCtx := &CommandContext{
-					Actor:   actor.Character.Get(),
-					Session: actor,
+				cmdCtx := &CommandInput{
+					Char: actor,
 					Targets: map[string]*TargetRef{
 						"target": {Type: targetTypePlayer, Player: &PlayerRef{CharId: "bob", Name: "Bob"}},
 					},
@@ -98,7 +97,7 @@ func TestAssistHandler(t *testing.T) {
 			expMsgRoom:     "Alice jumps to Bob's aid!",
 		},
 		"assist follow leader": {
-			setup: func() (*AssistHandlerFactory, *CommandContext) {
+			setup: func() (*AssistHandlerFactory, *CommandInput) {
 				mob := &mockCombatant{id: "mob:test-mob", name: "test-mob"}
 				cm := &mockCombatManager{
 					fighters: map[string]*combat.Fighter{
@@ -118,9 +117,8 @@ func TestAssistHandler(t *testing.T) {
 				actor := newTestPlayer("alice", "Alice", room)
 				actor.FollowingId = "bob"
 
-				cmdCtx := &CommandContext{
-					Actor:   actor.Character.Get(),
-					Session: actor,
+				cmdCtx := &CommandInput{
+					Char:    actor,
 					Targets: map[string]*TargetRef{},
 					Config:  make(map[string]string),
 				}
@@ -131,7 +129,7 @@ func TestAssistHandler(t *testing.T) {
 			expMsgAssisted: "Alice jumps to your aid!",
 		},
 		"already in combat": {
-			setup: func() (*AssistHandlerFactory, *CommandContext) {
+			setup: func() (*AssistHandlerFactory, *CommandInput) {
 				cm := &mockCombatManager{}
 				pub := &recordingPublisher{}
 				players := &mockPlayerLookup{}
@@ -141,9 +139,8 @@ func TestAssistHandler(t *testing.T) {
 					Character: storage.NewResolvedSmartIdentifier("alice", &assets.Character{Name: "Alice"}),
 					InCombat:  true,
 				}
-				cmdCtx := &CommandContext{
-					Actor:   actor.Character.Get(),
-					Session: actor,
+				cmdCtx := &CommandInput{
+					Char:    actor,
 					Targets: map[string]*TargetRef{},
 					Config:  make(map[string]string),
 				}
@@ -152,7 +149,7 @@ func TestAssistHandler(t *testing.T) {
 			expErr: "already fighting",
 		},
 		"no target and not following": {
-			setup: func() (*AssistHandlerFactory, *CommandContext) {
+			setup: func() (*AssistHandlerFactory, *CommandInput) {
 				cm := &mockCombatManager{}
 				pub := &recordingPublisher{}
 				players := &mockPlayerLookup{}
@@ -161,9 +158,8 @@ func TestAssistHandler(t *testing.T) {
 				actor := &game.CharacterInstance{
 					Character: storage.NewResolvedSmartIdentifier("alice", &assets.Character{Name: "Alice"}),
 				}
-				cmdCtx := &CommandContext{
-					Actor:   actor.Character.Get(),
-					Session: actor,
+				cmdCtx := &CommandInput{
+					Char:    actor,
 					Targets: map[string]*TargetRef{},
 					Config:  make(map[string]string),
 				}
@@ -172,7 +168,7 @@ func TestAssistHandler(t *testing.T) {
 			expErr: "Assist whom?",
 		},
 		"assisted player not in combat": {
-			setup: func() (*AssistHandlerFactory, *CommandContext) {
+			setup: func() (*AssistHandlerFactory, *CommandInput) {
 				cm := &mockCombatManager{} // no fighters
 				pub := &recordingPublisher{}
 				players := &mockPlayerLookup{}
@@ -181,9 +177,8 @@ func TestAssistHandler(t *testing.T) {
 				actor := &game.CharacterInstance{
 					Character: storage.NewResolvedSmartIdentifier("alice", &assets.Character{Name: "Alice"}),
 				}
-				cmdCtx := &CommandContext{
-					Actor:   actor.Character.Get(),
-					Session: actor,
+				cmdCtx := &CommandInput{
+					Char: actor,
 					Targets: map[string]*TargetRef{
 						"target": {Type: targetTypePlayer, Player: &PlayerRef{CharId: "bob", Name: "Bob"}},
 					},
@@ -224,7 +219,7 @@ func TestAssistHandler(t *testing.T) {
 			}
 
 			pub := factory.pub.(*recordingPublisher)
-			actorId := cmdCtx.Session.Character.Id()
+			actorId := cmdCtx.Char.Character.Id()
 
 			if tt.expMsgActor != "" {
 				msgs := pub.messagesTo(string(actorId))
@@ -237,7 +232,7 @@ func TestAssistHandler(t *testing.T) {
 				if ref := cmdCtx.Targets["target"]; ref != nil {
 					assistedId = ref.Player.CharId
 				} else {
-					assistedId = cmdCtx.Session.FollowingId
+					assistedId = cmdCtx.Char.FollowingId
 				}
 				msgs := pub.messagesTo(assistedId)
 				if !containsSubstring(msgs, tt.expMsgAssisted) {

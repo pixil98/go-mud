@@ -81,13 +81,13 @@ func TestHandler_parseInputs(t *testing.T) {
 	tests := map[string]struct {
 		specs   []assets.InputSpec
 		rawArgs []string
-		exp     []ParsedInput
+		exp     map[string]any
 		expErr  string
 	}{
 		"no inputs no args": {
 			specs:   nil,
 			rawArgs: nil,
-			exp:     []ParsedInput{},
+			exp:     map[string]any{},
 		},
 		"no inputs with args rejected": {
 			specs:   nil,
@@ -106,46 +106,28 @@ func TestHandler_parseInputs(t *testing.T) {
 				{Name: "count", Type: assets.InputTypeNumber, Required: true},
 			},
 			rawArgs: []string{"5"},
-			exp: []ParsedInput{
-				{
-					Spec:  &assets.InputSpec{Name: "count", Type: assets.InputTypeNumber, Required: true},
-					Raw:   "5",
-					Value: 5,
-				},
-			},
+			exp:     map[string]any{"count": 5},
 		},
 		"optional input omitted": {
 			specs: []assets.InputSpec{
 				{Name: "count", Type: assets.InputTypeNumber, Required: false},
 			},
 			rawArgs: nil,
-			exp:     []ParsedInput{},
+			exp:     map[string]any{"count": ""},
 		},
 		"optional input provided": {
 			specs: []assets.InputSpec{
 				{Name: "count", Type: assets.InputTypeNumber, Required: false},
 			},
 			rawArgs: []string{"5"},
-			exp: []ParsedInput{
-				{
-					Spec:  &assets.InputSpec{Name: "count", Type: assets.InputTypeNumber, Required: false},
-					Raw:   "5",
-					Value: 5,
-				},
-			},
+			exp:     map[string]any{"count": 5},
 		},
 		"rest input captures remaining": {
 			specs: []assets.InputSpec{
 				{Name: "text", Type: assets.InputTypeString, Required: true, Rest: true},
 			},
 			rawArgs: []string{"hello", "world", "foo"},
-			exp: []ParsedInput{
-				{
-					Spec:  &assets.InputSpec{Name: "text", Type: assets.InputTypeString, Required: true, Rest: true},
-					Raw:   "hello world foo",
-					Value: "hello world foo",
-				},
-			},
+			exp:     map[string]any{"text": "hello world foo"},
 		},
 		"mixed inputs with rest": {
 			specs: []assets.InputSpec{
@@ -153,18 +135,7 @@ func TestHandler_parseInputs(t *testing.T) {
 				{Name: "message", Type: assets.InputTypeString, Required: true, Rest: true},
 			},
 			rawArgs: []string{"3", "hello", "there", "friend"},
-			exp: []ParsedInput{
-				{
-					Spec:  &assets.InputSpec{Name: "count", Type: assets.InputTypeNumber, Required: true},
-					Raw:   "3",
-					Value: 3,
-				},
-				{
-					Spec:  &assets.InputSpec{Name: "message", Type: assets.InputTypeString, Required: true, Rest: true},
-					Raw:   "hello there friend",
-					Value: "hello there friend",
-				},
-			},
+			exp:     map[string]any{"count": 3, "message": "hello there friend"},
 		},
 		"too many args without rest": {
 			specs: []assets.InputSpec{
@@ -227,16 +198,14 @@ func TestHandler_parseInputs(t *testing.T) {
 				return
 			}
 
-			for i, input := range got {
-				expected := tt.exp[i]
-				if input.Raw != expected.Raw {
-					t.Errorf("input[%d].Raw = %q, expected %q", i, input.Raw, expected.Raw)
+			for key, expVal := range tt.exp {
+				gotVal, ok := got[key]
+				if !ok {
+					t.Errorf("missing key %q in result", key)
+					continue
 				}
-				if input.Value != expected.Value {
-					t.Errorf("input[%d].Value = %v, expected %v", i, input.Value, expected.Value)
-				}
-				if input.Spec.Name != expected.Spec.Name {
-					t.Errorf("input[%d].Spec.Name = %q, expected %q", i, input.Spec.Name, expected.Spec.Name)
+				if gotVal != expVal {
+					t.Errorf("input[%q] = %v, expected %v", key, gotVal, expVal)
 				}
 			}
 		})
@@ -600,7 +569,7 @@ func TestHandler_expandConfig(t *testing.T) {
 
 			session := &game.CharacterInstance{Character: storage.NewResolvedSmartIdentifier("alice", tt.actor)}
 
-			expandedConfig, err := h.expandConfig(tt.config, tt.actor, session, tt.targets, tt.inputs)
+			expandedConfig, err := h.expandConfig(tt.config, session, tt.targets, tt.inputs)
 
 			if tt.expErr != "" {
 				if err == nil {

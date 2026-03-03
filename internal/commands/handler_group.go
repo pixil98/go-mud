@@ -107,18 +107,18 @@ func (f *GroupHandlerFactory) Spec() *HandlerSpec {
 func (f *GroupHandlerFactory) ValidateConfig(config map[string]any) error { return nil }
 
 func (f *GroupHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		target := cmdCtx.Targets["target"]
+	return func(ctx context.Context, in *CommandInput) error {
+		target := in.Targets["target"]
 		if target == nil {
-			return f.showGroup(cmdCtx)
+			return f.showGroup(in)
 		}
-		return f.toggleMember(cmdCtx, target)
+		return f.toggleMember(in, target)
 	}, nil
 }
 
-func (f *GroupHandlerFactory) showGroup(cmdCtx *CommandContext) error {
-	actorId := cmdCtx.Session.Character.Id()
-	grp := cmdCtx.Session.Group
+func (f *GroupHandlerFactory) showGroup(in *CommandInput) error {
+	actorId := in.Char.Character.Id()
+	grp := in.Char.Group
 	if grp == nil {
 		return NewUserError("You are not in a group.")
 	}
@@ -164,8 +164,8 @@ func (f *GroupHandlerFactory) showGroup(cmdCtx *CommandContext) error {
 	return f.pub.Publish(game.SinglePlayer(actorId), nil, []byte(strings.Join(lines, "\n")))
 }
 
-func (f *GroupHandlerFactory) toggleMember(cmdCtx *CommandContext, target *TargetRef) error {
-	actorId := cmdCtx.Session.Character.Id()
+func (f *GroupHandlerFactory) toggleMember(in *CommandInput, target *TargetRef) error {
+	actorId := in.Char.Character.Id()
 	targetId := target.Player.CharId
 
 	targetPs := f.players.GetPlayer(targetId)
@@ -173,14 +173,14 @@ func (f *GroupHandlerFactory) toggleMember(cmdCtx *CommandContext, target *Targe
 		return NewUserError("They are not available.")
 	}
 
-	grp := cmdCtx.Session.Group
+	grp := in.Char.Group
 
 	// Toggle out: target is already in this group — remove them.
 	if grp != nil && grp.HasMember(targetId) {
 		if grp.LeaderId != actorId {
 			return NewUserError("Only the group leader can remove members.")
 		}
-		f.removeMember(cmdCtx.Actor.Name, actorId, targetId, target.Player.Name, targetPs, grp)
+		f.removeMember(in.Char.Character.Get().Name, actorId, targetId, target.Player.Name, targetPs, grp)
 		if soloLeader(grp) {
 			f.disband(grp)
 		}
@@ -202,8 +202,8 @@ func (f *GroupHandlerFactory) toggleMember(cmdCtx *CommandContext, target *Targe
 	}
 
 	if grp == nil {
-		grp = game.NewGroup(actorId, cmdCtx.Session)
-		cmdCtx.Session.Group = grp
+		grp = game.NewGroup(actorId, in.Char)
+		in.Char.Group = grp
 	}
 
 	grp.AddMember(targetId, targetPs)
@@ -214,7 +214,7 @@ func (f *GroupHandlerFactory) toggleMember(cmdCtx *CommandContext, target *Targe
 		slog.Warn("failed to notify group of new member", "error", err)
 	}
 	if err := f.pub.Publish(game.SinglePlayer(targetId), nil,
-		[]byte(fmt.Sprintf("You join %s's group.", cmdCtx.Actor.Name))); err != nil {
+		[]byte(fmt.Sprintf("You join %s's group.", in.Char.Character.Get().Name))); err != nil {
 		slog.Warn("failed to notify new member", "error", err)
 	}
 
@@ -248,18 +248,18 @@ func (f *UngroupHandlerFactory) Spec() *HandlerSpec {
 func (f *UngroupHandlerFactory) ValidateConfig(config map[string]any) error { return nil }
 
 func (f *UngroupHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		target := cmdCtx.Targets["target"]
+	return func(ctx context.Context, in *CommandInput) error {
+		target := in.Targets["target"]
 		if target == nil {
-			return f.disbandOrLeave(cmdCtx)
+			return f.disbandOrLeave(in)
 		}
-		return f.removeTarget(cmdCtx, target)
+		return f.removeTarget(in, target)
 	}, nil
 }
 
-func (f *UngroupHandlerFactory) disbandOrLeave(cmdCtx *CommandContext) error {
-	actorId := cmdCtx.Session.Character.Id()
-	grp := cmdCtx.Session.Group
+func (f *UngroupHandlerFactory) disbandOrLeave(in *CommandInput) error {
+	actorId := in.Char.Character.Id()
+	grp := in.Char.Group
 	if grp == nil {
 		return NewUserError("You are not in a group.")
 	}
@@ -277,7 +277,7 @@ func (f *UngroupHandlerFactory) disbandOrLeave(cmdCtx *CommandContext) error {
 		slog.Warn("failed to notify leaving member", "error", err)
 	}
 	if err := f.pub.Publish(grp, nil,
-		[]byte(fmt.Sprintf("%s has left the group.", cmdCtx.Actor.Name))); err != nil {
+		[]byte(fmt.Sprintf("%s has left the group.", in.Char.Character.Get().Name))); err != nil {
 		slog.Warn("failed to notify group of member leaving", "error", err)
 	}
 
@@ -287,10 +287,10 @@ func (f *UngroupHandlerFactory) disbandOrLeave(cmdCtx *CommandContext) error {
 	return nil
 }
 
-func (f *UngroupHandlerFactory) removeTarget(cmdCtx *CommandContext, target *TargetRef) error {
-	actorId := cmdCtx.Session.Character.Id()
+func (f *UngroupHandlerFactory) removeTarget(in *CommandInput, target *TargetRef) error {
+	actorId := in.Char.Character.Id()
 	targetId := target.Player.CharId
-	grp := cmdCtx.Session.Group
+	grp := in.Char.Group
 
 	if grp == nil {
 		return NewUserError("You are not in a group.")
@@ -310,7 +310,7 @@ func (f *UngroupHandlerFactory) removeTarget(cmdCtx *CommandContext, target *Tar
 	}
 
 	targetPs := f.players.GetPlayer(targetId)
-	f.removeMember(cmdCtx.Actor.Name, actorId, targetId, target.Player.Name, targetPs, grp)
+	f.removeMember(in.Char.Character.Get().Name, actorId, targetId, target.Player.Name, targetPs, grp)
 
 	if soloLeader(grp) {
 		f.disband(grp)

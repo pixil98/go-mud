@@ -25,28 +25,30 @@ func (f *GainHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *GainHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		if cmdCtx.Session.InCombat {
+	return func(ctx context.Context, in *CommandInput) error {
+		if in.Char.InCombat {
 			return NewUserError("You can't train while fighting!")
 		}
 
-		if cmdCtx.Actor.Level >= game.MaxLevel {
+		actor := in.Char.Character.Get()
+
+		if actor.Level >= game.MaxLevel {
 			return NewUserError("You have reached the maximum level.")
 		}
 
-		needed := game.ExpToNextLevel(cmdCtx.Actor.Level, cmdCtx.Actor.Experience)
+		needed := game.ExpToNextLevel(actor.Level, actor.Experience)
 		if needed > 0 {
 			return NewUserError(fmt.Sprintf(
 				"You need %d more experience to reach level %d.",
-				needed, cmdCtx.Actor.Level+1))
+				needed, actor.Level+1))
 		}
 
-		cmdCtx.Session.Gain()
+		in.Char.Gain()
 
-		msg := fmt.Sprintf("Congratulations! You have advanced to level %d!", cmdCtx.Actor.Level)
+		msg := fmt.Sprintf("Congratulations! You have advanced to level %d!", actor.Level)
 
 		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(msg))
+			return f.pub.Publish(game.SinglePlayer(in.Char.Character.Id()), nil, []byte(msg))
 		}
 		return nil
 	}, nil

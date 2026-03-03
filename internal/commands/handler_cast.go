@@ -38,9 +38,9 @@ func (f *CastHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *CastHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		spellName := cmdCtx.Config["spell"]
-		argsStr := cmdCtx.Config["args"]
+	return func(ctx context.Context, in *CommandInput) error {
+		spellName := in.Config["spell"]
+		argsStr := in.Config["args"]
 
 		id, ability := f.findSpell(spellName)
 		if ability == nil {
@@ -48,7 +48,7 @@ func (f *CastHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		// Check if the actor has unlocked this spell
-		if !cmdCtx.Session.HasAbility(id) {
+		if !in.Char.HasAbility(id) {
 			return NewUserError("You don't know a spell called '" + spellName + "'.")
 		}
 
@@ -57,30 +57,19 @@ func (f *CastHandlerFactory) Create() (CommandFunc, error) {
 		if argsStr != "" {
 			rawArgs = strings.Fields(argsStr)
 		}
-		inputs, err := parseInputs(ability.Command.Inputs, rawArgs)
+		inputMap, err := parseInputs(ability.Command.Inputs, rawArgs)
 		if err != nil {
 			return err
-		}
-
-		// Build input map
-		inputMap := make(map[string]any, len(ability.Command.Inputs))
-		for _, spec := range ability.Command.Inputs {
-			if !spec.Required {
-				inputMap[spec.Name] = ""
-			}
-		}
-		for _, input := range inputs {
-			inputMap[input.Spec.Name] = input.Value
 		}
 
 		// Resolve targets
 		resolver := NewTargetResolver(NewWorldScopes(f.world))
-		targets, err := resolver.ResolveSpecs(ability.Command.Targets, inputMap, cmdCtx.Session)
+		targets, err := resolver.ResolveSpecs(ability.Command.Targets, inputMap, in.Char)
 		if err != nil {
 			return err
 		}
 
-		return executeAbility(ability, cmdCtx, targets, f.world, f.pub, f.effects[ability.Handler])
+		return executeAbility(ability, in, targets, f.world, f.pub, f.effects[ability.Handler])
 	}, nil
 }
 

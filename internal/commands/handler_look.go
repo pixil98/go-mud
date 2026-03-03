@@ -30,35 +30,35 @@ func (f *LookHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *LookHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
+	return func(ctx context.Context, in *CommandInput) error {
 		// Check if target was resolved (from targets section)
-		if target := cmdCtx.Targets["target"]; target != nil {
-			return f.showTarget(cmdCtx, target)
+		if target := in.Targets["target"]; target != nil {
+			return f.showTarget(in, target)
 		}
 
-		return f.showRoom(cmdCtx)
+		return f.showRoom(in)
 	}, nil
 }
 
 // showRoom displays the current room description.
-func (f *LookHandlerFactory) showRoom(cmdCtx *CommandContext) error {
-	zoneId, roomId := cmdCtx.Session.Location()
+func (f *LookHandlerFactory) showRoom(in *CommandInput) error {
+	zoneId, roomId := in.Char.Location()
 
 	ri := f.rooms.GetRoom(zoneId, roomId)
 	if ri == nil {
 		return NewUserError("You are in an invalid location.")
 	}
 
-	roomDesc := ri.Describe(cmdCtx.Actor.Name)
+	roomDesc := ri.Describe(in.Char.Character.Get().Name)
 	if f.pub != nil {
-		return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(roomDesc))
+		return f.pub.Publish(game.SinglePlayer(in.Char.Character.Id()), nil, []byte(roomDesc))
 	}
 
 	return nil
 }
 
 // showTarget displays information about a specific target.
-func (f *LookHandlerFactory) showTarget(cmdCtx *CommandContext, target *TargetRef) error {
+func (f *LookHandlerFactory) showTarget(in *CommandInput, target *TargetRef) error {
 	var msg string
 	switch target.Type {
 	case targetTypePlayer:
@@ -72,7 +72,7 @@ func (f *LookHandlerFactory) showTarget(cmdCtx *CommandContext, target *TargetRe
 	}
 
 	if f.pub != nil {
-		return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(msg))
+		return f.pub.Publish(game.SinglePlayer(in.Char.Character.Id()), nil, []byte(msg))
 	}
 	return nil
 }

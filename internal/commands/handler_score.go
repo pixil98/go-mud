@@ -32,22 +32,22 @@ func (f *ScoreHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *ScoreHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		sections, err := f.resolveSections(cmdCtx)
+	return func(ctx context.Context, in *CommandInput) error {
+		sections, err := f.resolveSections(in)
 		if err != nil {
 			return err
 		}
 
 		output := renderBox(sections, scoreBoxWidth)
 		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(output))
+			return f.pub.Publish(game.SinglePlayer(in.Char.Character.Id()), nil, []byte(output))
 		}
 		return nil
 	}, nil
 }
 
-func (f *ScoreHandlerFactory) resolveSections(cmdCtx *CommandContext) ([]game.StatSection, error) {
-	if target := cmdCtx.Targets["target"]; target != nil {
+func (f *ScoreHandlerFactory) resolveSections(in *CommandInput) ([]game.StatSection, error) {
+	if target := in.Targets["target"]; target != nil {
 		switch target.Type {
 		case targetTypePlayer:
 			return target.Player.session.StatSections(), nil
@@ -56,7 +56,7 @@ func (f *ScoreHandlerFactory) resolveSections(cmdCtx *CommandContext) ([]game.St
 		}
 	}
 
-	return cmdCtx.Session.StatSections(), nil
+	return in.Char.StatSections(), nil
 }
 
 // --- Box rendering ---

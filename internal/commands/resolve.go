@@ -183,7 +183,7 @@ func (r *ObjectRef) Describe() string {
 
 // ExitRef is the template-facing view of a resolved exit.
 type ExitRef struct {
-	Direction string      // Direction key (e.g., "north", "south")
+	Direction string       // Direction key (e.g., "north", "south")
 	exit      *assets.Exit // The exit definition
 }
 

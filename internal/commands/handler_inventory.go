@@ -27,13 +27,13 @@ func (f *InventoryHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *InventoryHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
+	return func(ctx context.Context, in *CommandInput) error {
 		lines := []string{"You are carrying:"}
-		lines = append(lines, FormatInventoryItems(cmdCtx.Session.Inventory)...)
+		lines = append(lines, FormatInventoryItems(in.Char.Inventory)...)
 
 		output := strings.Join(lines, "\n")
 		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(output))
+			return f.pub.Publish(game.SinglePlayer(in.Char.Character.Id()), nil, []byte(output))
 		}
 
 		return nil

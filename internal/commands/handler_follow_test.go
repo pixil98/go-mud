@@ -149,9 +149,8 @@ func TestFollowHandler(t *testing.T) {
 				targets["target"] = tt.target
 			}
 
-			cmdCtx := &CommandContext{
-				Actor:   alice.Character.Get(),
-				Session: alice,
+			cmdCtx := &CommandInput{
+				Char:    alice,
 				Targets: targets,
 				Config:  make(map[string]string),
 			}

@@ -28,13 +28,13 @@ func (f *SaveHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *SaveHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		if err := cmdCtx.Session.SaveCharacter(f.chars); err != nil {
+	return func(ctx context.Context, in *CommandInput) error {
+		if err := in.Char.SaveCharacter(f.chars); err != nil {
 			return fmt.Errorf("saving character: %w", err)
 		}
 
 		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte("Character saved."))
+			return f.pub.Publish(game.SinglePlayer(in.Char.Character.Id()), nil, []byte("Character saved."))
 		}
 
 		return nil

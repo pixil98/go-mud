@@ -35,9 +35,9 @@ func (f *TreesHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *TreesHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		charId := cmdCtx.Session.Character.Id()
-		if name := cmdCtx.Config["tree"]; name != "" {
+	return func(ctx context.Context, in *CommandInput) error {
+		charId := in.Char.Character.Id()
+		if name := in.Config["tree"]; name != "" {
 			return f.showTree(name, charId)
 		}
 		return f.listTrees(charId)

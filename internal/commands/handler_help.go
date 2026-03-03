@@ -35,13 +35,13 @@ func (f *HelpHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *HelpHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		command := cmdCtx.Config["command"]
+	return func(ctx context.Context, in *CommandInput) error {
+		command := in.Config["command"]
 		if command != "" {
-			return f.showCommand(command, cmdCtx.Session.Character.Id())
+			return f.showCommand(command, in.Char.Character.Id())
 		}
 
-		return f.listCommands(cmdCtx.Session.Character.Id())
+		return f.listCommands(in.Char.Character.Id())
 	}, nil
 }
 

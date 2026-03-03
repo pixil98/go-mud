@@ -10,15 +10,15 @@ import (
 
 // EffectHandler executes an ability's gameplay effect (damage, healing, etc.).
 type EffectHandler interface {
-	Execute(ability *assets.Ability, cmdCtx *CommandContext, targets map[string]*TargetRef) error
+	Execute(ability *assets.Ability, in *CommandInput, targets map[string]*TargetRef) error
 }
 
 // executeAbility runs an ability's effect handler and sends its messages.
 // If effect is nil, only messages are sent.
-func executeAbility(ability *assets.Ability, cmdCtx *CommandContext, targets map[string]*TargetRef, world WorldView, pub game.Publisher, effect EffectHandler) error {
+func executeAbility(ability *assets.Ability, in *CommandInput, targets map[string]*TargetRef, world WorldView, pub game.Publisher, effect EffectHandler) error {
 	// Run effect first — if it fails, don't send messages
 	if effect != nil {
-		if err := effect.Execute(ability, cmdCtx, targets); err != nil {
+		if err := effect.Execute(ability, in, targets); err != nil {
 			return err
 		}
 	}
@@ -28,13 +28,13 @@ func executeAbility(ability *assets.Ability, cmdCtx *CommandContext, targets map
 	}
 
 	ctx := &templateContext{
-		Actor:   cmdCtx.Actor,
-		Session: cmdCtx.Session,
+		Actor:   in.Char.Character.Get(),
+		Session: in.Char,
 		Targets: targets,
 		Color:   display.Color,
 	}
 
-	charId := cmdCtx.Session.Character.Id()
+	charId := in.Char.Character.Id()
 
 	// Actor message
 	if ability.Messages.Actor != "" {
@@ -76,7 +76,7 @@ func executeAbility(ability *assets.Ability, cmdCtx *CommandContext, targets map
 				exclude = append(exclude, ref.Player.CharId)
 			}
 		}
-		zoneId, roomId := cmdCtx.Session.Location()
+		zoneId, roomId := in.Char.Location()
 		room := world.GetRoom(zoneId, roomId)
 		if err := pub.Publish(room, exclude, []byte(msg)); err != nil {
 			return err
@@ -90,7 +90,7 @@ func executeAbility(ability *assets.Ability, cmdCtx *CommandContext, targets map
 // Reads "base_damage" from the ability's Config (numeric value).
 type damageEffect struct{}
 
-func (e *damageEffect) Execute(ability *assets.Ability, cmdCtx *CommandContext, targets map[string]*TargetRef) error {
+func (e *damageEffect) Execute(ability *assets.Ability, in *CommandInput, targets map[string]*TargetRef) error {
 	baseDamage, ok := ability.Config["base_damage"].(float64)
 	if !ok {
 		return fmt.Errorf("damage effect: base_damage config required")

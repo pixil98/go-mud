@@ -39,34 +39,35 @@ func (f *KillHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *KillHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		if cmdCtx.Session.InCombat {
+	return func(ctx context.Context, in *CommandInput) error {
+		if in.Char.InCombat {
 			return NewUserError("You're already fighting!")
 		}
 
-		target := cmdCtx.Targets["target"]
+		target := in.Targets["target"]
 
 		mi := target.Mob.instance
 		attacker := &combat.PlayerCombatant{
-			Character: cmdCtx.Session.Character,
-			Player:    cmdCtx.Session,
+			Character: in.Char.Character,
+			Player:    in.Char,
 		}
 		defender := &combat.MobCombatant{Instance: mi}
 
-		zoneID, roomID := cmdCtx.Session.Location()
+		zoneID, roomID := in.Char.Location()
 		err := f.combat.StartCombat(attacker, defender, zoneID, roomID)
 		if err != nil {
 			return NewUserError(err.Error())
 		}
 
-		if err := f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil,
+		if err := f.pub.Publish(game.SinglePlayer(in.Char.Character.Id()), nil,
 			[]byte(fmt.Sprintf("You attack %s!", mi.Mobile.Get().ShortDesc))); err != nil {
 			slog.Warn("failed to notify attacker", "error", err)
 		}
 
 		room := f.rooms.GetRoom(zoneID, roomID)
-		roomMsg := fmt.Sprintf("%s attacks %s!", cmdCtx.Actor.Name, mi.Mobile.Get().ShortDesc)
-		if err := f.pub.Publish(room, []string{cmdCtx.Session.Character.Id()}, []byte(roomMsg)); err != nil {
+		actor := in.Char.Character.Get()
+		roomMsg := fmt.Sprintf("%s attacks %s!", actor.Name, mi.Mobile.Get().ShortDesc)
+		if err := f.pub.Publish(room, []string{in.Char.Character.Id()}, []byte(roomMsg)); err != nil {
 			slog.Warn("failed to publish room attack message", "error", err)
 		}
 
@@ -101,13 +102,13 @@ func (f *AssistHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *AssistHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		if cmdCtx.Session.InCombat {
+	return func(ctx context.Context, in *CommandInput) error {
+		if in.Char.InCombat {
 			return NewUserError("You're already fighting!")
 		}
 
 		// Resolve who we're assisting: explicit target or follow leader.
-		assistedId, assistedName, err := f.resolveAssisted(cmdCtx)
+		assistedId, assistedName, err := f.resolveAssisted(in)
 		if err != nil {
 			return err
 		}
@@ -119,28 +120,29 @@ func (f *AssistHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		attacker := &combat.PlayerCombatant{
-			Character: cmdCtx.Session.Character,
-			Player:    cmdCtx.Session,
+			Character: in.Char.Character,
+			Player:    in.Char,
 		}
 
-		zoneID, roomID := cmdCtx.Session.Location()
+		zoneID, roomID := in.Char.Location()
 		if err := f.combat.StartCombat(attacker, fighter.Target, zoneID, roomID); err != nil {
 			return NewUserError(err.Error())
 		}
 
-		actorId := cmdCtx.Session.Character.Id()
+		actorId := in.Char.Character.Id()
 
 		if err := f.pub.Publish(game.SinglePlayer(actorId), nil,
 			[]byte(fmt.Sprintf("You jump to %s's aid!", assistedName))); err != nil {
 			slog.Warn("failed to notify actor of assist", "error", err)
 		}
+		actor := in.Char.Character.Get()
 		if err := f.pub.Publish(game.SinglePlayer(assistedId), nil,
-			[]byte(fmt.Sprintf("%s jumps to your aid!", cmdCtx.Actor.Name))); err != nil {
+			[]byte(fmt.Sprintf("%s jumps to your aid!", actor.Name))); err != nil {
 			slog.Warn("failed to notify assisted player", "error", err)
 		}
 
 		room := f.rooms.GetRoom(zoneID, roomID)
-		roomMsg := fmt.Sprintf("%s jumps to %s's aid!", cmdCtx.Actor.Name, assistedName)
+		roomMsg := fmt.Sprintf("%s jumps to %s's aid!", actor.Name, assistedName)
 		if err := f.pub.Publish(room, []string{actorId, assistedId}, []byte(roomMsg)); err != nil {
 			slog.Warn("failed to publish room assist message", "error", err)
 		}
@@ -151,13 +153,13 @@ func (f *AssistHandlerFactory) Create() (CommandFunc, error) {
 
 // resolveAssisted determines who the actor wants to assist.
 // Returns the assisted player's charId and display name.
-func (f *AssistHandlerFactory) resolveAssisted(cmdCtx *CommandContext) (string, string, error) {
-	if target := cmdCtx.Targets["target"]; target != nil {
+func (f *AssistHandlerFactory) resolveAssisted(in *CommandInput) (string, string, error) {
+	if target := in.Targets["target"]; target != nil {
 		return target.Player.CharId, target.Player.Name, nil
 	}
 
 	// Fall back to follow leader.
-	leaderId := cmdCtx.Session.FollowingId
+	leaderId := in.Char.FollowingId
 	leader := f.players.GetPlayer(leaderId)
 	if leader == nil {
 		return "", "", NewUserError("Assist whom?")

@@ -33,17 +33,17 @@ func (f *FollowHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *FollowHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		target := cmdCtx.Targets["target"]
+	return func(ctx context.Context, in *CommandInput) error {
+		target := in.Targets["target"]
 		if target == nil {
-			return f.unfollow(cmdCtx)
+			return f.unfollow(in)
 		}
-		return f.follow(cmdCtx, target)
+		return f.follow(in, target)
 	}, nil
 }
 
-func (f *FollowHandlerFactory) follow(cmdCtx *CommandContext, target *TargetRef) error {
-	actorId := cmdCtx.Session.Character.Id()
+func (f *FollowHandlerFactory) follow(in *CommandInput, target *TargetRef) error {
+	actorId := in.Char.Character.Id()
 	leaderId := target.Player.CharId
 
 	// Can't follow yourself.
@@ -52,7 +52,7 @@ func (f *FollowHandlerFactory) follow(cmdCtx *CommandContext, target *TargetRef)
 	}
 
 	// Already following this person.
-	if cmdCtx.Session.FollowingId == leaderId {
+	if in.Char.FollowingId == leaderId {
 		return NewUserError(fmt.Sprintf("You are already following %s.", target.Player.Name))
 	}
 
@@ -62,11 +62,11 @@ func (f *FollowHandlerFactory) follow(cmdCtx *CommandContext, target *TargetRef)
 	}
 
 	// Stop following old leader first.
-	if cmdCtx.Session.FollowingId != "" {
-		f.notifyStopFollowing(cmdCtx)
+	if in.Char.FollowingId != "" {
+		f.notifyStopFollowing(in)
 	}
 
-	cmdCtx.Session.FollowingId = leaderId
+	in.Char.FollowingId = leaderId
 
 	// Notify both parties.
 	if err := f.pub.Publish(game.SinglePlayer(actorId), nil,
@@ -74,28 +74,28 @@ func (f *FollowHandlerFactory) follow(cmdCtx *CommandContext, target *TargetRef)
 		slog.Warn("failed to notify follower", "error", err)
 	}
 	if err := f.pub.Publish(game.SinglePlayer(leaderId), nil,
-		[]byte(fmt.Sprintf("%s now follows you.", cmdCtx.Actor.Name))); err != nil {
+		[]byte(fmt.Sprintf("%s now follows you.", in.Char.Character.Get().Name))); err != nil {
 		slog.Warn("failed to notify leader", "error", err)
 	}
 
 	return nil
 }
 
-func (f *FollowHandlerFactory) unfollow(cmdCtx *CommandContext) error {
-	if cmdCtx.Session.FollowingId == "" {
+func (f *FollowHandlerFactory) unfollow(in *CommandInput) error {
+	if in.Char.FollowingId == "" {
 		return NewUserError("You aren't following anyone.")
 	}
 
-	f.notifyStopFollowing(cmdCtx)
-	cmdCtx.Session.FollowingId = ""
+	f.notifyStopFollowing(in)
+	in.Char.FollowingId = ""
 	return nil
 }
 
 // notifyStopFollowing sends stop-following messages to both parties and does NOT
 // clear FollowingId — the caller is responsible for that.
-func (f *FollowHandlerFactory) notifyStopFollowing(cmdCtx *CommandContext) {
-	actorId := cmdCtx.Session.Character.Id()
-	leaderId := cmdCtx.Session.FollowingId
+func (f *FollowHandlerFactory) notifyStopFollowing(in *CommandInput) {
+	actorId := in.Char.Character.Id()
+	leaderId := in.Char.FollowingId
 
 	leaderPs := f.players.GetPlayer(leaderId)
 	if leaderPs != nil {
@@ -105,7 +105,7 @@ func (f *FollowHandlerFactory) notifyStopFollowing(cmdCtx *CommandContext) {
 			slog.Warn("failed to notify follower", "error", err)
 		}
 		if err := f.pub.Publish(game.SinglePlayer(leaderId), nil,
-			[]byte(fmt.Sprintf("%s stops following you.", cmdCtx.Actor.Name))); err != nil {
+			[]byte(fmt.Sprintf("%s stops following you.", in.Char.Character.Get().Name))); err != nil {
 			slog.Warn("failed to notify leader", "error", err)
 		}
 	}

@@ -14,24 +14,15 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
-// ParsedInput represents a validated and parsed command input.
-type ParsedInput struct {
-	Spec  *assets.InputSpec
-	Raw   string // Original player input
-	Value any    // Parsed value: int for number, string for string/direction
-}
-
-// CommandContext is what handlers receive after config processing.
-type CommandContext struct {
-	Actor   *assets.Character          // Character data (name, title, etc.)
-	Session *game.CharacterInstance    // Current session state (location, quit flag, etc.)
-	Targets map[string]*TargetRef      // Resolved targets by name
-	Config  map[string]string          // Expanded config values (all templates resolved)
+// CommandInput is what handlers receive after config processing.
+type CommandInput struct {
+	Char    *game.CharacterInstance // Active character instance
+	Targets map[string]*TargetRef  // Resolved targets by name
+	Config  map[string]string      // Expanded config values (all templates resolved)
 }
 
 // CommandFunc is the signature for compiled command functions.
-// It receives CommandContext with fully expanded config.
-type CommandFunc func(ctx context.Context, cmdCtx *CommandContext) error
+type CommandFunc func(ctx context.Context, in *CommandInput) error
 
 // TargetRequirement describes an expected target for a handler.
 type TargetRequirement struct {
@@ -82,7 +73,7 @@ type HandlerFactory interface {
 	// ValidateConfig performs custom validation on the config.
 	// Called after spec validation. Use for conditional logic that Spec can't express.
 	ValidateConfig(config map[string]any) error
-	// Create creates a CommandFunc. Handlers read expanded config from CommandContext.
+	// Create creates a CommandFunc. Handlers read expanded config from CommandInput.
 	Create() (CommandFunc, error)
 }
 
@@ -95,7 +86,6 @@ type compiledCommand struct {
 type Handler struct {
 	factories map[string]HandlerFactory
 	compiled  map[string]*compiledCommand
-	dict      *game.Dictionary
 	effects   map[string]EffectHandler
 }
 
@@ -103,7 +93,6 @@ func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, pub
 	h := &Handler{
 		factories: make(map[string]HandlerFactory),
 		compiled:  make(map[string]*compiledCommand),
-		dict:      dict,
 		effects:   make(map[string]EffectHandler),
 	}
 
@@ -165,11 +154,11 @@ func (h *Handler) registerSkill(id string, ability *assets.Ability, world WorldV
 	if !ok {
 		return fmt.Errorf("unknown effect handler %q", ability.Handler)
 	}
-	cmdFunc := func(ctx context.Context, cmdCtx *CommandContext) error {
-		if !cmdCtx.Session.HasAbility(id) {
+	cmdFunc := func(ctx context.Context, in *CommandInput) error {
+		if !in.Char.HasAbility(id) {
 			return NewUserError("You don't know how to do that.")
 		}
-		return executeAbility(ability, cmdCtx, cmdCtx.Targets, world, pub, effect)
+		return executeAbility(ability, in, in.Targets, world, pub, effect)
 	}
 
 	cc := &compiledCommand{cmd: &cmd, cmdFunc: cmdFunc}
@@ -373,51 +362,37 @@ func (h *Handler) Exec(ctx context.Context, world *game.WorldState, charId strin
 	}
 
 	// Parse inputs
-	inputs, err := parseInputs(compiled.cmd.Inputs, rawArgs)
+	inputMap, err := parseInputs(compiled.cmd.Inputs, rawArgs)
 	if err != nil {
 		return err
 	}
 
-	// Build input map for template expansion and target resolution.
-	// Pre-populate optional inputs with zero values so templates don't render "<no value>".
-	inputMap := make(map[string]any, len(compiled.cmd.Inputs))
-	for _, spec := range compiled.cmd.Inputs {
-		if !spec.Required {
-			inputMap[spec.Name] = ""
-		}
-	}
-	for _, input := range inputs {
-		inputMap[input.Spec.Name] = input.Value
-	}
-
-	actor := h.dict.Characters.Get(charId)
-	session := world.GetPlayer(charId)
+	char := world.GetPlayer(charId)
 
 	// Resolve targets from targets section
 	resolver := NewTargetResolver(NewWorldScopes(world))
-	targets, err := resolver.ResolveSpecs(compiled.cmd.Targets, inputMap, session)
+	targets, err := resolver.ResolveSpecs(compiled.cmd.Targets, inputMap, char)
 	if err != nil {
 		return err
 	}
 
 	// Expand config templates
-	expandedConfig, err := h.expandConfig(compiled.cmd.Config, actor, session, targets, inputMap)
+	expandedConfig, err := h.expandConfig(compiled.cmd.Config, char, targets, inputMap)
 	if err != nil {
 		return err
 	}
 
-	cmdCtx := &CommandContext{
-		Actor:   actor,
-		Session: session,
+	return compiled.cmdFunc(ctx, &CommandInput{
+		Char:    char,
 		Targets: targets,
 		Config:  expandedConfig,
-	}
-
-	return compiled.cmdFunc(ctx, cmdCtx)
+	})
 }
 
-// parseInputs validates raw string arguments against input specs.
-func parseInputs(specs []assets.InputSpec, rawArgs []string) ([]ParsedInput, error) {
+// parseInputs validates raw string arguments against input specs and returns
+// a map of input name to parsed value. Optional inputs are pre-populated with
+// empty strings so templates don't render "<no value>".
+func parseInputs(specs []assets.InputSpec, rawArgs []string) (map[string]any, error) {
 	// Count required inputs
 	requiredCount := 0
 	for _, spec := range specs {
@@ -439,7 +414,7 @@ func parseInputs(specs []assets.InputSpec, rawArgs []string) ([]ParsedInput, err
 		return nil, NewUserError(fmt.Sprintf("Expected at most %d argument(s), got %d.", len(specs), len(rawArgs)))
 	}
 
-	inputs := make([]ParsedInput, 0, len(specs))
+	result := make(map[string]any, len(specs))
 	argIndex := 0
 
 	for i := range specs {
@@ -453,6 +428,7 @@ func parseInputs(specs []assets.InputSpec, rawArgs []string) ([]ParsedInput, err
 				}
 				return nil, NewUserError(fmt.Sprintf("Parameter %q is required.", spec.Name))
 			}
+			result[spec.Name] = ""
 			continue
 		}
 
@@ -471,14 +447,10 @@ func parseInputs(specs []assets.InputSpec, rawArgs []string) ([]ParsedInput, err
 			return nil, fmt.Errorf("parameter %q: %w", spec.Name, err)
 		}
 
-		inputs = append(inputs, ParsedInput{
-			Spec:  spec,
-			Raw:   raw,
-			Value: value,
-		})
+		result[spec.Name] = value
 	}
 
-	return inputs, nil
+	return result, nil
 }
 
 // parseValue parses a raw string into the appropriate type.
@@ -509,14 +481,14 @@ type templateContext struct {
 }
 
 // expandConfig expands all template strings in config and returns map[string]string.
-func (h *Handler) expandConfig(config map[string]any, actor *assets.Character, session *game.CharacterInstance, targets map[string]*TargetRef, inputs map[string]any) (map[string]string, error) {
+func (h *Handler) expandConfig(config map[string]any, char *game.CharacterInstance, targets map[string]*TargetRef, inputs map[string]any) (map[string]string, error) {
 	if config == nil {
 		return make(map[string]string), nil
 	}
 
 	tmplCtx := &templateContext{
-		Actor:   actor,
-		Session: session,
+		Actor:   char.Character.Get(),
+		Session: char,
 		Targets: targets,
 		Inputs:  inputs,
 		Color:   display.Color,
