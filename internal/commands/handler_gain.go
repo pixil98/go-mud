@@ -26,7 +26,7 @@ func (f *GainHandlerFactory) ValidateConfig(config map[string]any) error {
 
 func (f *GainHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, in *CommandInput) error {
-		if in.Char.InCombat {
+		if in.Char.IsInCombat() {
 			return NewUserError("You can't train while fighting!")
 		}
 

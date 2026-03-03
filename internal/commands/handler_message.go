@@ -87,7 +87,7 @@ func (f *MessageHandlerFactory) Create() (CommandFunc, error) {
 			return f.pub.Publish(game.SinglePlayer(target.Player.CharId), nil, []byte(recipientMessage))
 
 		case "group":
-			grp := in.Char.Group
+			grp := in.Char.GetGroup()
 			if grp == nil {
 				return NewUserError("You are not in a group.")
 			}

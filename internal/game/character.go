@@ -21,14 +21,16 @@ func (s Stat) Mod() int {
 
 // CharacterInstance holds all mutable state for an active player.
 type CharacterInstance struct {
+	mu sync.RWMutex
+
 	subscriber Subscriber
 	msgs       chan []byte
 
 	Character storage.SmartIdentifier[*assets.Character]
 
 	// Location
-	ZoneId string
-	RoomId string
+	zoneId string
+	roomId string
 
 	// Runtime inventory, equipment, and HP (persisted to Character on save)
 	ActorInstance
@@ -37,18 +39,18 @@ type CharacterInstance struct {
 	subs map[string]func()
 
 	// Session state
-	Quit         bool
-	InCombat     bool
-	FollowingId  string // charId of the player being followed (empty = not following)
-	Group        *Group // current group, or nil if not grouped
-	LastActivity time.Time
+	quit         bool
+	inCombat     bool
+	followingId  string // charId of the player being followed (empty = not following)
+	group        *Group // current group, or nil if not grouped
+	lastActivity time.Time
 
 	// Connection management: closed to signal the active Play() goroutine to exit.
 	done chan struct{}
 
 	// Linkless state: player's connection dropped but they remain in the world.
-	Linkless   bool
-	LinklessAt time.Time
+	linkless   bool
+	linklessAt time.Time
 }
 
 // NewCharacterInstance creates a CharacterInstance from a saved character spec,
@@ -63,15 +65,15 @@ func NewCharacterInstance(char storage.SmartIdentifier[*assets.Character], msgs 
 		subs:      make(map[string]func()),
 		msgs:      msgs,
 		Character: char,
-		ZoneId:    zoneId,
-		RoomId:    roomId,
+		zoneId:    zoneId,
+		roomId:    roomId,
 		ActorInstance: ActorInstance{
-			Inventory: inv,
-			Equipment: eq,
-			MaxHP:     c.MaxHP,
-			CurrentHP: c.CurrentHP,
+			inventory: inv,
+			equipment: eq,
+			maxHP:     c.MaxHP,
+			currentHP: c.CurrentHP,
 		},
-		LastActivity: time.Now(),
+		lastActivity: time.Now(),
 		done:         make(chan struct{}),
 	}, nil
 }
@@ -101,130 +103,270 @@ func materializeInventoryEquipment(c *assets.Character) (*Inventory, *Equipment,
 	return inv, eq, nil
 }
 
-// Flags returns display labels for the player's current state.
-func (p *CharacterInstance) Flags() []string {
-	var flags []string
-	if p.InCombat {
-		flags = append(flags, "fighting")
-	}
-	if p.Linkless {
-		flags = append(flags, "linkless")
-	}
-	return flags
-}
+// --- Connection lifecycle ---
 
 // Done returns the channel that is closed when this session is evicted by a reconnection.
-func (p *CharacterInstance) Done() <-chan struct{} {
-	return p.done
-}
-
-// Location returns the player's current zone and room.
-func (p *CharacterInstance) Location() (zoneId, roomId string) {
-	return p.ZoneId, p.RoomId
-}
-
-// Move updates the player's location and room instance player lists.
-func (p *CharacterInstance) Move(fromRoom, toRoom *RoomInstance) {
-	toZoneId := toRoom.Room.Get().Zone.Id()
-	toRoomId := toRoom.Room.Id()
-
-	fromRoom.RemovePlayer(p.Character.Id())
-	toRoom.AddPlayer(p.Character.Id(), p)
-
-	p.ZoneId = toZoneId
-	p.RoomId = toRoomId
+func (ci *CharacterInstance) Done() <-chan struct{} {
+	return ci.done
 }
 
 // Subscribe adds a new subscription.
-func (p *CharacterInstance) Subscribe(subject string) error {
-	if p.subscriber == nil {
+func (ci *CharacterInstance) Subscribe(subject string) error {
+	if ci.subscriber == nil {
 		return fmt.Errorf("subscriber is nil")
 	}
 
-	unsub, err := p.subscriber.Subscribe(subject, func(data []byte) {
-		p.msgs <- data
+	unsub, err := ci.subscriber.Subscribe(subject, func(data []byte) {
+		ci.msgs <- data
 	})
 
 	// If we somehow are subscribing to a channel we already have, unsubscribe the old one.
-	if unsub, ok := p.subs[subject]; ok {
+	if unsub, ok := ci.subs[subject]; ok {
 		unsub()
 	}
 
 	if err != nil {
 		return fmt.Errorf("subscribing to channel '%s': %w", subject, err)
 	}
-	p.subs[subject] = unsub
+	ci.subs[subject] = unsub
 	return nil
 }
 
 // Unsubscribe removes a subscription by name.
-func (p *CharacterInstance) Unsubscribe(subject string) {
-	if unsub, ok := p.subs[subject]; ok {
+func (ci *CharacterInstance) Unsubscribe(subject string) {
+	if unsub, ok := ci.subs[subject]; ok {
 		unsub()
-		delete(p.subs, subject)
+		delete(ci.subs, subject)
 	}
 }
 
 // UnsubscribeAll removes all subscriptions.
-func (p *CharacterInstance) UnsubscribeAll() {
-	for name, unsub := range p.subs {
+func (ci *CharacterInstance) UnsubscribeAll() {
+	for name, unsub := range ci.subs {
 		unsub()
-		delete(p.subs, name)
+		delete(ci.subs, name)
 	}
 }
 
 // Kick closes the done channel, signaling the active Play() goroutine to exit.
 // Safe to call multiple times; subsequent calls are no-ops.
-func (p *CharacterInstance) Kick() {
+func (ci *CharacterInstance) Kick() {
 	select {
-	case <-p.done:
+	case <-ci.done:
 		// already closed
 	default:
-		close(p.done)
+		close(ci.done)
 	}
 }
 
 // Reattach swaps the msgs and done channels for a reconnecting player.
 // It unsubscribes all old NATS subscriptions, clears the linkless flag,
 // and creates a fresh done channel. The caller must re-subscribe to NATS after this.
-func (p *CharacterInstance) Reattach(msgs chan []byte) {
-	p.UnsubscribeAll()
-	p.msgs = msgs
-	p.done = make(chan struct{})
-	p.Linkless = false
-	p.LinklessAt = time.Time{}
-	p.LastActivity = time.Now()
+func (ci *CharacterInstance) Reattach(msgs chan []byte) {
+	ci.UnsubscribeAll()
+	ci.msgs = msgs
+	ci.done = make(chan struct{})
+
+	ci.mu.Lock()
+	ci.linkless = false
+	ci.linklessAt = time.Time{}
+	ci.lastActivity = time.Now()
+	ci.mu.Unlock()
 }
 
 // MarkLinkless sets the player as linkless and unsubscribes all NATS subscriptions
 // to prevent channel fill-up while they have no active connection.
-func (p *CharacterInstance) MarkLinkless() {
-	p.Linkless = true
-	p.LinklessAt = time.Now()
-	p.UnsubscribeAll()
+func (ci *CharacterInstance) MarkLinkless() {
+	ci.mu.Lock()
+	ci.linkless = true
+	ci.linklessAt = time.Now()
+	ci.mu.Unlock()
+
+	ci.UnsubscribeAll()
+}
+
+// --- Accessor methods ---
+
+// Location returns the player's current zone and room.
+func (ci *CharacterInstance) Location() (zoneId, roomId string) {
+	ci.mu.RLock()
+	defer ci.mu.RUnlock()
+	return ci.zoneId, ci.roomId
+}
+
+// IsInCombat returns whether the character is currently in combat.
+func (ci *CharacterInstance) IsInCombat() bool {
+	ci.mu.RLock()
+	defer ci.mu.RUnlock()
+	return ci.inCombat
+}
+
+// SetInCombat sets the character's combat state.
+func (ci *CharacterInstance) SetInCombat(v bool) {
+	ci.mu.Lock()
+	defer ci.mu.Unlock()
+	ci.inCombat = v
+}
+
+// GetFollowingId returns the charId of the player being followed, or empty.
+func (ci *CharacterInstance) GetFollowingId() string {
+	ci.mu.RLock()
+	defer ci.mu.RUnlock()
+	return ci.followingId
+}
+
+// SetFollowingId sets the charId of the player being followed.
+func (ci *CharacterInstance) SetFollowingId(id string) {
+	ci.mu.Lock()
+	defer ci.mu.Unlock()
+	ci.followingId = id
+}
+
+// GetGroup returns the character's current group, or nil.
+func (ci *CharacterInstance) GetGroup() *Group {
+	ci.mu.RLock()
+	defer ci.mu.RUnlock()
+	return ci.group
+}
+
+// SetGroup sets the character's current group.
+func (ci *CharacterInstance) SetGroup(g *Group) {
+	ci.mu.Lock()
+	defer ci.mu.Unlock()
+	ci.group = g
+}
+
+// IsQuit returns whether the quit flag is set.
+func (ci *CharacterInstance) IsQuit() bool {
+	ci.mu.RLock()
+	defer ci.mu.RUnlock()
+	return ci.quit
+}
+
+// SetQuit sets the quit flag.
+func (ci *CharacterInstance) SetQuit(v bool) {
+	ci.mu.Lock()
+	defer ci.mu.Unlock()
+	ci.quit = v
+}
+
+// IsLinkless returns whether the player's connection has dropped.
+func (ci *CharacterInstance) IsLinkless() bool {
+	ci.mu.RLock()
+	defer ci.mu.RUnlock()
+	return ci.linkless
+}
+
+// GetLastActivity returns the time of the player's last activity.
+func (ci *CharacterInstance) GetLastActivity() time.Time {
+	ci.mu.RLock()
+	defer ci.mu.RUnlock()
+	return ci.lastActivity
+}
+
+// GetLinklessAt returns the time the player went linkless.
+func (ci *CharacterInstance) GetLinklessAt() time.Time {
+	ci.mu.RLock()
+	defer ci.mu.RUnlock()
+	return ci.linklessAt
+}
+
+// MarkActive resets the player's idle timer to now.
+func (ci *CharacterInstance) MarkActive() {
+	ci.mu.Lock()
+	defer ci.mu.Unlock()
+	ci.lastActivity = time.Now()
+}
+
+// HP returns the current and max hit points.
+func (ci *CharacterInstance) HP() (current, max int) {
+	ci.mu.RLock()
+	defer ci.mu.RUnlock()
+	return ci.currentHP, ci.maxHP
+}
+
+// SetHP sets the current and max hit points.
+func (ci *CharacterInstance) SetHP(current, max int) {
+	ci.mu.Lock()
+	defer ci.mu.Unlock()
+	ci.currentHP = current
+	ci.maxHP = max
+}
+
+// AdjustHP changes current HP by delta (positive = heal, negative = damage),
+// clamping the result to [0, maxHP].
+func (ci *CharacterInstance) AdjustHP(delta int) {
+	ci.mu.Lock()
+	defer ci.mu.Unlock()
+	ci.ActorInstance.adjustHP(delta)
+}
+
+// GetInventory returns the character's inventory.
+// Inventory is self-locking; its methods are safe for concurrent use.
+func (ci *CharacterInstance) GetInventory() *Inventory {
+	return ci.inventory
+}
+
+// GetEquipment returns the character's equipment.
+// Equipment is self-locking; its methods are safe for concurrent use.
+func (ci *CharacterInstance) GetEquipment() *Equipment {
+	return ci.equipment
+}
+
+// Flags returns display labels for the player's current state.
+func (ci *CharacterInstance) Flags() []string {
+	ci.mu.RLock()
+	defer ci.mu.RUnlock()
+	var flags []string
+	if ci.inCombat {
+		flags = append(flags, "fighting")
+	}
+	if ci.linkless {
+		flags = append(flags, "linkless")
+	}
+	return flags
+}
+
+// --- Game logic ---
+
+// Move updates the player's location and room instance player lists.
+// Room locks are acquired first (for map safety), then instance lock (for field update).
+func (ci *CharacterInstance) Move(fromRoom, toRoom *RoomInstance) {
+	toZoneId := toRoom.Room.Get().Zone.Id()
+	toRoomId := toRoom.Room.Id()
+
+	fromRoom.RemovePlayer(ci.Character.Id())
+	toRoom.AddPlayer(ci.Character.Id(), ci)
+
+	ci.mu.Lock()
+	ci.zoneId = toZoneId
+	ci.roomId = toRoomId
+	ci.mu.Unlock()
 }
 
 // SaveCharacter persists the character's current runtime state to the character store.
 func (ci *CharacterInstance) SaveCharacter(chars storage.Storer[*assets.Character]) error {
+	ci.mu.RLock()
 	c := ci.Character.Get()
-	c.LastZone = ci.ZoneId
-	c.LastRoom = ci.RoomId
-	c.MaxHP = ci.MaxHP
-	c.CurrentHP = ci.CurrentHP
+	c.LastZone = ci.zoneId
+	c.LastRoom = ci.roomId
+	c.MaxHP = ci.maxHP
+	c.CurrentHP = ci.currentHP
+	ci.mu.RUnlock()
 
-	// Convert runtime inventory to spawn specs
+	// Convert runtime inventory to spawn specs (Inventory self-locks)
 	c.Inventory = nil
-	for _, oi := range ci.Inventory.Objs {
+	ci.inventory.ForEachObj(func(_ string, oi *ObjectInstance) {
 		c.Inventory = append(c.Inventory, objectInstanceToSpawn(oi))
-	}
+	})
 
-	// Convert runtime equipment to spawn specs
+	// Convert runtime equipment to spawn specs (Equipment self-locks)
 	c.Equipment = make(map[string]assets.ObjectSpawn)
-	for _, slot := range ci.Equipment.Objs {
+	ci.equipment.ForEachSlot(func(slot EquipSlot) {
 		if slot.Obj != nil {
 			c.Equipment[slot.Slot] = objectInstanceToSpawn(slot.Obj)
 		}
-	}
+	})
 
 	return chars.Save(ci.Character.Id(), c)
 }
@@ -235,9 +377,9 @@ func objectInstanceToSpawn(oi *ObjectInstance) assets.ObjectSpawn {
 		Object: oi.Object,
 	}
 	if oi.Contents != nil {
-		for _, ci := range oi.Contents.Objs {
+		oi.Contents.ForEachObj(func(_ string, ci *ObjectInstance) {
 			spawn.Contents = append(spawn.Contents, objectInstanceToSpawn(ci))
-		}
+		})
 	}
 	return spawn
 }
@@ -277,7 +419,7 @@ func (ci *CharacterInstance) EffectiveStats() map[assets.StatKey]Stat {
 			stats[sk] += Stat(p.Value)
 		}
 	}
-	for k, v := range ci.Equipment.StatBonuses() {
+	for k, v := range ci.equipment.StatBonuses() {
 		stats[k] += Stat(v)
 	}
 	return stats
@@ -330,13 +472,13 @@ func (ci *CharacterInstance) StatSections() []StatSection {
 	})
 
 	// Combat section
-	ac := 10 + stats[assets.StatDEX].Mod() + ci.Equipment.ACBonus()
+	ac := 10 + stats[assets.StatDEX].Mod() + ci.equipment.ACBonus()
 	attackMod := stats[assets.StatSTR].Mod() + char.Level/2
 
 	var dmgParts []string
-	for _, slot := range ci.Equipment.Objs {
+	ci.equipment.ForEachSlot(func(slot EquipSlot) {
 		if slot.Slot != "wield" || slot.Obj == nil {
-			continue
+			return
 		}
 		def := slot.Obj.Object.Get()
 		dice, sides := def.DamageDice, def.DamageSides
@@ -347,7 +489,7 @@ func (ci *CharacterInstance) StatSections() []StatSection {
 			sides = 4
 		}
 		dmgParts = append(dmgParts, fmt.Sprintf("%dd%d", dice, sides))
-	}
+	})
 	if len(dmgParts) == 0 {
 		dmgParts = append(dmgParts, "1d4")
 	}
@@ -378,10 +520,11 @@ func (ci *CharacterInstance) StatSections() []StatSection {
 	}
 
 	// Vitals section
+	currentHP, maxHP := ci.HP()
 	sections = append(sections, StatSection{
 		Header: "Vitals",
 		Lines: []StatLine{
-			{Value: fmt.Sprintf("  HP: %d/%d", ci.CurrentHP, ci.MaxHP)},
+			{Value: fmt.Sprintf("  HP: %d/%d", currentHP, maxHP)},
 		},
 	})
 
@@ -400,8 +543,11 @@ func (ci *CharacterInstance) Gain() {
 	if hpGain < 1 {
 		hpGain = 1
 	}
-	ci.MaxHP += hpGain
-	ci.CurrentHP = ci.MaxHP
+
+	ci.mu.Lock()
+	ci.maxHP += hpGain
+	ci.currentHP = ci.maxHP
+	ci.mu.Unlock()
 }
 
 // --- Inventory ---
@@ -409,15 +555,14 @@ func (ci *CharacterInstance) Gain() {
 // Inventory holds object instances carried by a character or mobile.
 // All methods are safe for concurrent use.
 type Inventory struct {
-	mu sync.RWMutex
-	// Objs maps instance IDs to object instances
-	Objs map[string]*ObjectInstance `json:"objects,omitempty"`
+	mu   sync.RWMutex
+	objs map[string]*ObjectInstance
 }
 
 // NewInventory creates an empty inventory.
 func NewInventory() *Inventory {
 	return &Inventory{
-		Objs: make(map[string]*ObjectInstance),
+		objs: make(map[string]*ObjectInstance),
 	}
 }
 
@@ -426,10 +571,10 @@ func (inv *Inventory) AddObj(obj *ObjectInstance) {
 	inv.mu.Lock()
 	defer inv.mu.Unlock()
 
-	if inv.Objs == nil {
-		inv.Objs = make(map[string]*ObjectInstance)
+	if inv.objs == nil {
+		inv.objs = make(map[string]*ObjectInstance)
 	}
-	inv.Objs[obj.InstanceId] = obj
+	inv.objs[obj.InstanceId] = obj
 }
 
 // RemoveObj removes an object instance from the inventory.
@@ -438,8 +583,8 @@ func (inv *Inventory) RemoveObj(instanceId string) *ObjectInstance {
 	inv.mu.Lock()
 	defer inv.mu.Unlock()
 
-	if obj, ok := inv.Objs[instanceId]; ok {
-		delete(inv.Objs, instanceId)
+	if obj, ok := inv.objs[instanceId]; ok {
+		delete(inv.objs, instanceId)
 		return obj
 	}
 	return nil
@@ -451,7 +596,7 @@ func (inv *Inventory) FindObj(name string) *ObjectInstance {
 	inv.mu.RLock()
 	defer inv.mu.RUnlock()
 
-	for _, oi := range inv.Objs {
+	for _, oi := range inv.objs {
 		if oi.Object.Get().MatchName(name) {
 			return oi
 		}
@@ -465,7 +610,7 @@ func (inv *Inventory) FindObjByDef(defId string) *ObjectInstance {
 	inv.mu.RLock()
 	defer inv.mu.RUnlock()
 
-	for _, oi := range inv.Objs {
+	for _, oi := range inv.objs {
 		if oi.Object.Id() == defId {
 			return oi
 		}
@@ -473,12 +618,28 @@ func (inv *Inventory) FindObjByDef(defId string) *ObjectInstance {
 	return nil
 }
 
+// ForEachObj calls fn for each object in the inventory while holding the read lock.
+func (inv *Inventory) ForEachObj(fn func(string, *ObjectInstance)) {
+	inv.mu.RLock()
+	defer inv.mu.RUnlock()
+	for id, oi := range inv.objs {
+		fn(id, oi)
+	}
+}
+
+// Len returns the number of items in the inventory.
+func (inv *Inventory) Len() int {
+	inv.mu.RLock()
+	defer inv.mu.RUnlock()
+	return len(inv.objs)
+}
+
 // Clear removes all items.
 func (inv *Inventory) Clear() {
 	inv.mu.Lock()
 	defer inv.mu.Unlock()
 
-	inv.Objs = make(map[string]*ObjectInstance)
+	inv.objs = make(map[string]*ObjectInstance)
 }
 
 // --- Equipment ---
@@ -494,7 +655,7 @@ type EquipSlot struct {
 // All methods are safe for concurrent use.
 type Equipment struct {
 	mu   sync.RWMutex
-	Objs []EquipSlot `json:"slots,omitempty"`
+	objs []EquipSlot
 }
 
 // NewEquipment creates an empty equipment set.
@@ -512,7 +673,7 @@ func (eq *Equipment) Equip(slot string, maxSlots int, obj *ObjectInstance) error
 	if maxSlots > 0 && eq.slotCount(slot) >= maxSlots {
 		return fmt.Errorf("no available %q slot", slot)
 	}
-	eq.Objs = append(eq.Objs, EquipSlot{Slot: slot, Obj: obj})
+	eq.objs = append(eq.objs, EquipSlot{Slot: slot, Obj: obj})
 	return nil
 }
 
@@ -520,7 +681,7 @@ func (eq *Equipment) Equip(slot string, maxSlots int, obj *ObjectInstance) error
 // Caller must hold at least a read lock.
 func (eq *Equipment) slotCount(slot string) int {
 	count := 0
-	for _, item := range eq.Objs {
+	for _, item := range eq.objs {
 		if item.Slot == slot {
 			count++
 		}
@@ -542,7 +703,7 @@ func (eq *Equipment) FindObj(name string) *ObjectInstance {
 	eq.mu.RLock()
 	defer eq.mu.RUnlock()
 
-	for _, slot := range eq.Objs {
+	for _, slot := range eq.objs {
 		if slot.Obj == nil {
 			continue
 		}
@@ -553,13 +714,29 @@ func (eq *Equipment) FindObj(name string) *ObjectInstance {
 	return nil
 }
 
+// ForEachSlot calls fn for each equipment slot while holding the read lock.
+func (eq *Equipment) ForEachSlot(fn func(EquipSlot)) {
+	eq.mu.RLock()
+	defer eq.mu.RUnlock()
+	for _, slot := range eq.objs {
+		fn(slot)
+	}
+}
+
+// Len returns the number of equipped items.
+func (eq *Equipment) Len() int {
+	eq.mu.RLock()
+	defer eq.mu.RUnlock()
+	return len(eq.objs)
+}
+
 // ACBonus returns the total AC bonus from all equipped items.
 func (eq *Equipment) ACBonus() int {
 	eq.mu.RLock()
 	defer eq.mu.RUnlock()
 
 	total := 0
-	for _, slot := range eq.Objs {
+	for _, slot := range eq.objs {
 		if slot.Obj != nil {
 			total += slot.Obj.Object.Get().ACBonus
 		}
@@ -573,7 +750,7 @@ func (eq *Equipment) StatBonuses() map[assets.StatKey]int {
 	defer eq.mu.RUnlock()
 
 	bonuses := make(map[assets.StatKey]int)
-	for _, slot := range eq.Objs {
+	for _, slot := range eq.objs {
 		if slot.Obj != nil {
 			for k, v := range slot.Obj.Object.Get().StatMods {
 				bonuses[k] += v
@@ -588,9 +765,9 @@ func (eq *Equipment) RemoveObj(instanceId string) *ObjectInstance {
 	eq.mu.Lock()
 	defer eq.mu.Unlock()
 
-	for i, item := range eq.Objs {
+	for i, item := range eq.objs {
 		if item.Obj.InstanceId == instanceId {
-			eq.Objs = append(eq.Objs[:i], eq.Objs[i+1:]...)
+			eq.objs = append(eq.objs[:i], eq.objs[i+1:]...)
 			return item.Obj
 		}
 	}

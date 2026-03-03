@@ -52,7 +52,7 @@ func (f *FollowHandlerFactory) follow(in *CommandInput, target *TargetRef) error
 	}
 
 	// Already following this person.
-	if in.Char.FollowingId == leaderId {
+	if in.Char.GetFollowingId() == leaderId {
 		return NewUserError(fmt.Sprintf("You are already following %s.", target.Player.Name))
 	}
 
@@ -62,11 +62,11 @@ func (f *FollowHandlerFactory) follow(in *CommandInput, target *TargetRef) error
 	}
 
 	// Stop following old leader first.
-	if in.Char.FollowingId != "" {
+	if in.Char.GetFollowingId() != "" {
 		f.notifyStopFollowing(in)
 	}
 
-	in.Char.FollowingId = leaderId
+	in.Char.SetFollowingId(leaderId)
 
 	// Notify both parties.
 	if err := f.pub.Publish(game.SinglePlayer(actorId), nil,
@@ -82,12 +82,12 @@ func (f *FollowHandlerFactory) follow(in *CommandInput, target *TargetRef) error
 }
 
 func (f *FollowHandlerFactory) unfollow(in *CommandInput) error {
-	if in.Char.FollowingId == "" {
+	if in.Char.GetFollowingId() == "" {
 		return NewUserError("You aren't following anyone.")
 	}
 
 	f.notifyStopFollowing(in)
-	in.Char.FollowingId = ""
+	in.Char.SetFollowingId("")
 	return nil
 }
 
@@ -95,7 +95,7 @@ func (f *FollowHandlerFactory) unfollow(in *CommandInput) error {
 // clear FollowingId — the caller is responsible for that.
 func (f *FollowHandlerFactory) notifyStopFollowing(in *CommandInput) {
 	actorId := in.Char.Character.Id()
-	leaderId := in.Char.FollowingId
+	leaderId := in.Char.GetFollowingId()
 
 	leaderPs := f.players.GetPlayer(leaderId)
 	if leaderPs != nil {
@@ -117,13 +117,13 @@ func wouldCreateLoop(players PlayerLookup, followerId, leaderId string) bool {
 	current := leaderId
 	for i := 0; i < 100; i++ {
 		ps := players.GetPlayer(current)
-		if ps == nil || ps.FollowingId == "" {
+		if ps == nil || ps.GetFollowingId() == "" {
 			return false
 		}
-		if ps.FollowingId == followerId {
+		if ps.GetFollowingId() == followerId {
 			return true
 		}
-		current = ps.FollowingId
+		current = ps.GetFollowingId()
 	}
 	// Safety: if we walked 100 links, treat as a loop.
 	return true

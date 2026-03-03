@@ -26,7 +26,7 @@ type Combatant interface {
 	IsAlive() bool
 	AC() int
 	Attacks() []Attack
-	ApplyDamage(int)
+	AdjustHP(int)
 	SetInCombat(bool)
 	Level() int
 }
@@ -334,7 +334,7 @@ func (f *Fight) processAttacks(fighter *Fighter) []string {
 		var damage int
 		if attackRoll >= targetAC {
 			damage = RollDamage(atk.DamageDice, atk.DamageSides, atk.DamageMod)
-			target.ApplyDamage(damage)
+			target.AdjustHP(-damage)
 
 			attackerID := attacker.CombatID()
 			if f.Damage[attackerID] == nil {

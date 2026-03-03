@@ -72,11 +72,11 @@ func actorCondition(currentHP, maxHP int) string {
 
 // describeActor returns a detailed description for a player or mob,
 // including condition and equipped items.
-func describeActor(description, name string, actor *game.ActorInstance) string {
+func describeActor(description, name string, currentHP, maxHP int, equipment *game.Equipment) string {
 	cName := display.Capitalize(name)
 	lines := []string{display.Wrap(description)}
-	lines = append(lines, fmt.Sprintf("%s %s.", cName, actorCondition(actor.CurrentHP, actor.MaxHP)))
-	if eqLines := FormatEquippedItems(actor.Equipment); eqLines != nil {
+	lines = append(lines, fmt.Sprintf("%s %s.", cName, actorCondition(currentHP, maxHP)))
+	if eqLines := FormatEquippedItems(equipment); eqLines != nil {
 		lines = append(lines, "")
 		lines = append(lines, fmt.Sprintf("%s is using:", cName))
 		lines = append(lines, eqLines...)
@@ -103,7 +103,8 @@ func playerRefFromState(ps *game.CharacterInstance) *PlayerRef {
 
 // Describe returns a detailed description of the player, including equipped items.
 func (r *PlayerRef) Describe() string {
-	return describeActor(r.Description, r.Name, &r.session.ActorInstance)
+	currentHP, maxHP := r.session.HP()
+	return describeActor(r.Description, r.Name, currentHP, maxHP, r.session.GetEquipment())
 }
 
 // MobileRef is the template-facing view of a resolved mob.
@@ -128,7 +129,8 @@ func mobRefFromInstance(mi *game.MobileInstance) *MobileRef {
 
 // Describe returns a detailed description of the mob, including equipped items.
 func (r *MobileRef) Describe() string {
-	return describeActor(r.Description, r.Name, &r.instance.ActorInstance)
+	currentHP, maxHP := r.instance.HP()
+	return describeActor(r.Description, r.Name, currentHP, maxHP, r.instance.GetEquipment())
 }
 
 // ObjectRef is the template-facing view of a resolved object.

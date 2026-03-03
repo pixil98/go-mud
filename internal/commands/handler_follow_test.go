@@ -79,7 +79,7 @@ func TestFollowHandler(t *testing.T) {
 		},
 		"already following target": {
 			setup: func(lookup *mockPlayerLookup, alice, bob *game.CharacterInstance) {
-				alice.FollowingId = "bob"
+				alice.SetFollowingId("bob")
 			},
 			target: &TargetRef{
 				Type:   targetTypePlayer,
@@ -89,7 +89,7 @@ func TestFollowHandler(t *testing.T) {
 		},
 		"circular follow": {
 			setup: func(lookup *mockPlayerLookup, alice, bob *game.CharacterInstance) {
-				bob.FollowingId = "alice"
+				bob.SetFollowingId("alice")
 			},
 			target: &TargetRef{
 				Type:   targetTypePlayer,
@@ -99,7 +99,7 @@ func TestFollowHandler(t *testing.T) {
 		},
 		"switch leader": {
 			setup: func(lookup *mockPlayerLookup, alice, bob *game.CharacterInstance) {
-				alice.FollowingId = "bob"
+				alice.SetFollowingId("bob")
 				charlie := newCharacterInstance("charlie", "Charlie")
 				lookup.players["charlie"] = charlie
 			},
@@ -112,7 +112,7 @@ func TestFollowHandler(t *testing.T) {
 		},
 		"unfollow when following": {
 			setup: func(lookup *mockPlayerLookup, alice, bob *game.CharacterInstance) {
-				alice.FollowingId = "bob"
+				alice.SetFollowingId("bob")
 			},
 			target:      nil,
 			expFollowId: "",
@@ -171,8 +171,8 @@ func TestFollowHandler(t *testing.T) {
 				t.Fatalf("unexpected error: %v", err)
 			}
 
-			if alice.FollowingId != tt.expFollowId {
-				t.Errorf("FollowingId = %q, expected %q", alice.FollowingId, tt.expFollowId)
+			if alice.GetFollowingId() != tt.expFollowId {
+				t.Errorf("FollowingId = %q, expected %q", alice.GetFollowingId(), tt.expFollowId)
 			}
 
 			if tt.expMsgAlice != "" {
@@ -225,7 +225,7 @@ func TestWouldCreateLoop(t *testing.T) {
 		"direct loop": {
 			setup: func(lookup *mockPlayerLookup) {
 				a := newCharacterInstance("a", "A")
-				a.FollowingId = "b"
+				a.SetFollowingId("b")
 				lookup.players["a"] = a
 				lookup.players["b"] = newCharacterInstance("b", "B")
 			},
@@ -237,8 +237,8 @@ func TestWouldCreateLoop(t *testing.T) {
 			setup: func(lookup *mockPlayerLookup) {
 				a := newCharacterInstance("a", "A")
 				b := newCharacterInstance("b", "B")
-				a.FollowingId = "c"
-				b.FollowingId = "a"
+				a.SetFollowingId("c")
+				b.SetFollowingId("a")
 				lookup.players["a"] = a
 				lookup.players["b"] = b
 				lookup.players["c"] = newCharacterInstance("c", "C")

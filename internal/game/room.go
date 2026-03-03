@@ -221,10 +221,10 @@ func (ri *RoomInstance) spawnMob(mob storage.SmartIdentifier[*assets.Mobile]) (*
 		InstanceId: uuid.New().String(),
 		Mobile:     mob,
 		ActorInstance: ActorInstance{
-			Inventory: NewInventory(),
-			Equipment: NewEquipment(),
-			MaxHP:     def.MaxHP,
-			CurrentHP: def.MaxHP,
+			inventory: NewInventory(),
+			equipment: NewEquipment(),
+			maxHP:     def.MaxHP,
+			currentHP: def.MaxHP,
 		},
 	}
 	for _, spawn := range def.Inventory {
@@ -232,14 +232,14 @@ func (ri *RoomInstance) spawnMob(mob storage.SmartIdentifier[*assets.Mobile]) (*
 		if err != nil {
 			return nil, fmt.Errorf("spawning %q: %w", mob.Id(), err)
 		}
-		mi.Inventory.AddObj(oi)
+		mi.inventory.AddObj(oi)
 	}
 	for slot, spawn := range def.Equipment {
 		oi, err := SpawnObject(spawn)
 		if err != nil {
 			return nil, fmt.Errorf("spawning %q: %w", mob.Id(), err)
 		}
-		mi.Equipment.Equip(slot, 0, oi)
+		mi.equipment.Equip(slot, 0, oi)
 	}
 	ri.mobiles[mi.InstanceId] = mi
 	return mi, nil
@@ -310,13 +310,13 @@ func (ri *RoomInstance) Describe(actorName string) string {
 	sb.WriteString("\n")
 
 	// Show objects
-	for _, oi := range ri.objects.Objs {
+	ri.objects.ForEachObj(func(_ string, oi *ObjectInstance) {
 		desc := oi.Object.Get().LongDesc
 		if desc == "" {
 			desc = fmt.Sprintf("%s is here.", oi.Object.Get().ShortDesc)
 		}
 		sb.WriteString(fmt.Sprintf("%s\n", display.Colorize(display.Color.Green, desc)))
-	}
+	})
 
 	ri.mu.RLock()
 	// Show mobs

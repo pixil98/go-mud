@@ -33,7 +33,7 @@ func (f *WhoHandlerFactory) Create() (CommandFunc, error) {
 		var lines []string
 
 		f.players.ForEachPlayer(func(charId string, state *game.CharacterInstance) {
-			if state.Linkless {
+			if state.IsLinkless() {
 				return
 			}
 			char := state.Character.Get()

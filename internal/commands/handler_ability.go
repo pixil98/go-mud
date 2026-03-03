@@ -109,17 +109,11 @@ func (e *damageEffect) Execute(ability *assets.Ability, in *CommandInput, target
 	return nil
 }
 
-// applyDamage reduces a target's HP, clamping at zero.
+// applyDamage reduces a target's HP by amount.
 func applyDamage(ref *TargetRef, amount int) {
 	if ref.Player != nil {
-		ref.Player.session.CurrentHP -= amount
-		if ref.Player.session.CurrentHP < 0 {
-			ref.Player.session.CurrentHP = 0
-		}
+		ref.Player.session.AdjustHP(-amount)
 	} else if ref.Mob != nil {
-		ref.Mob.instance.CurrentHP -= amount
-		if ref.Mob.instance.CurrentHP < 0 {
-			ref.Mob.instance.CurrentHP = 0
-		}
+		ref.Mob.instance.AdjustHP(-amount)
 	}
 }

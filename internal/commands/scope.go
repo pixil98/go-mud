@@ -7,16 +7,15 @@ import (
 	"github.com/pixil98/go-mud/internal/game"
 )
 
-
 // objectOnlyFinder wraps an ObjectFinder (like Inventory or Equipment)
 // into a full TargetFinder. FindPlayer and FindMob always return nil.
 type objectOnlyFinder struct {
 	ObjectFinder
 }
 
-func (f objectOnlyFinder) FindPlayer(string) *game.CharacterInstance  { return nil }
-func (f objectOnlyFinder) FindMob(string) *game.MobileInstance  { return nil }
-func (f objectOnlyFinder) FindExit(string) (string, *assets.Exit) { return "", nil }
+func (f objectOnlyFinder) FindPlayer(string) *game.CharacterInstance { return nil }
+func (f objectOnlyFinder) FindMob(string) *game.MobileInstance       { return nil }
+func (f objectOnlyFinder) FindExit(string) (string, *assets.Exit)    { return "", nil }
 
 // playerOnlyFinder wraps a PlayerGroup into a full TargetFinder.
 // FindPlayer searches members by name; mobs, objects, and exits always return nil.
@@ -38,8 +37,8 @@ func (f playerOnlyFinder) FindPlayer(name string) *game.CharacterInstance {
 	return found
 }
 
-func (f playerOnlyFinder) FindObj(string) *game.ObjectInstance { return nil }
-func (f playerOnlyFinder) FindMob(string) *game.MobileInstance   { return nil }
+func (f playerOnlyFinder) FindObj(string) *game.ObjectInstance    { return nil }
+func (f playerOnlyFinder) FindMob(string) *game.MobileInstance    { return nil }
 func (f playerOnlyFinder) FindExit(string) (string, *assets.Exit) { return "", nil }
 
 // WorldScopes implements TargetScopes using a WorldView.
@@ -61,17 +60,21 @@ func (ws *WorldScopes) SpacesFor(s scope, ci *game.CharacterInstance) ([]SearchS
 
 	var spaces []SearchSpace
 
-	if s&scopeInventory != 0 && ci.Inventory != nil {
-		spaces = append(spaces, SearchSpace{
-			Finder:  objectOnlyFinder{ci.Inventory},
-			Remover: ci.Inventory,
-		})
+	if s&scopeInventory != 0 {
+		if i := ci.GetInventory(); i != nil {
+			spaces = append(spaces, SearchSpace{
+				Finder:  objectOnlyFinder{i},
+				Remover: i,
+			})
+		}
 	}
-	if s&scopeEquipment != 0 && ci.Equipment != nil {
-		spaces = append(spaces, SearchSpace{
-			Finder:  objectOnlyFinder{ci.Equipment},
-			Remover: ci.Equipment,
-		})
+	if s&scopeEquipment != 0 {
+		if eq := ci.GetEquipment(); eq != nil {
+			spaces = append(spaces, SearchSpace{
+				Finder:  objectOnlyFinder{eq},
+				Remover: eq,
+			})
+		}
 	}
 	if s&scopeRoom != 0 {
 		room := ws.world.GetRoom(zoneId, roomId)
@@ -79,6 +82,13 @@ func (ws *WorldScopes) SpacesFor(s scope, ci *game.CharacterInstance) ([]SearchS
 			Finder:  room,
 			Remover: room,
 		})
+	}
+	if s&scopeGroup != 0 {
+		if grp := ci.GetGroup(); grp != nil {
+			spaces = append(spaces, SearchSpace{
+				Finder: playerOnlyFinder{grp},
+			})
+		}
 	}
 	if s&scopeZone != 0 {
 		zone := ws.world.GetZone(zoneId)
@@ -92,11 +102,6 @@ func (ws *WorldScopes) SpacesFor(s scope, ci *game.CharacterInstance) ([]SearchS
 				Finder: zi,
 			})
 		}
-	}
-	if s&scopeGroup != 0 && ci.Group != nil {
-		spaces = append(spaces, SearchSpace{
-			Finder: playerOnlyFinder{ci.Group},
-		})
 	}
 
 	return spaces, nil

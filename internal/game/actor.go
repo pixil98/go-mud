@@ -14,13 +14,14 @@ type StatSection struct {
 
 // ActorInstance holds HP, inventory, and equipment shared between CharacterInstance and MobileInstance.
 type ActorInstance struct {
-	Inventory *Inventory
-	Equipment *Equipment
-	MaxHP     int
-	CurrentHP int
+	inventory *Inventory
+	equipment *Equipment
+	maxHP     int
+	currentHP int
 }
 
-// Regenerate heals the actor by amount, capped at MaxHP.
-func (a *ActorInstance) Regenerate(amount int) {
-	a.CurrentHP = min(a.CurrentHP+amount, a.MaxHP)
+// adjustHP changes currentHP by delta (positive = heal, negative = damage),
+// clamping the result to [0, maxHP]. Caller must hold the owning type's write lock.
+func (a *ActorInstance) adjustHP(delta int) {
+	a.currentHP = max(0, min(a.currentHP+delta, a.maxHP))
 }

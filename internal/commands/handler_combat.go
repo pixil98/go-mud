@@ -40,7 +40,7 @@ func (f *KillHandlerFactory) ValidateConfig(config map[string]any) error {
 
 func (f *KillHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, in *CommandInput) error {
-		if in.Char.InCombat {
+		if in.Char.IsInCombat() {
 			return NewUserError("You're already fighting!")
 		}
 
@@ -103,7 +103,7 @@ func (f *AssistHandlerFactory) ValidateConfig(config map[string]any) error {
 
 func (f *AssistHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, in *CommandInput) error {
-		if in.Char.InCombat {
+		if in.Char.IsInCombat() {
 			return NewUserError("You're already fighting!")
 		}
 
@@ -159,7 +159,7 @@ func (f *AssistHandlerFactory) resolveAssisted(in *CommandInput) (string, string
 	}
 
 	// Fall back to follow leader.
-	leaderId := in.Char.FollowingId
+	leaderId := in.Char.GetFollowingId()
 	leader := f.players.GetPlayer(leaderId)
 	if leader == nil {
 		return "", "", NewUserError("Assist whom?")

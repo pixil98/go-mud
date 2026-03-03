@@ -5,10 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/combat"
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // mockCombatManager is a test double for CombatManager.
@@ -50,7 +48,7 @@ func (m *mockCombatant) CombatName() string       { return m.name }
 func (m *mockCombatant) IsAlive() bool            { return true }
 func (m *mockCombatant) AC() int                  { return 10 }
 func (m *mockCombatant) Attacks() []combat.Attack { return nil }
-func (m *mockCombatant) ApplyDamage(int)          {}
+func (m *mockCombatant) AdjustHP(int)             {}
 func (m *mockCombatant) SetInCombat(bool)         {}
 func (m *mockCombatant) Level() int               { return 1 }
 
@@ -115,7 +113,7 @@ func TestAssistHandler(t *testing.T) {
 				f := NewAssistHandlerFactory(cm, &mockRoomLocator{room: room}, players, pub)
 
 				actor := newTestPlayer("alice", "Alice", room)
-				actor.FollowingId = "bob"
+				actor.SetFollowingId("bob")
 
 				cmdCtx := &CommandInput{
 					Char:    actor,
@@ -135,10 +133,8 @@ func TestAssistHandler(t *testing.T) {
 				players := &mockPlayerLookup{}
 				f := NewAssistHandlerFactory(cm, &mockRoomLocator{}, players, pub)
 
-				actor := &game.CharacterInstance{
-					Character: storage.NewResolvedSmartIdentifier("alice", &assets.Character{Name: "Alice"}),
-					InCombat:  true,
-				}
+				actor := newCharacterInstance("alice", "Alice")
+				actor.SetInCombat(true)
 				cmdCtx := &CommandInput{
 					Char:    actor,
 					Targets: map[string]*TargetRef{},
@@ -155,9 +151,7 @@ func TestAssistHandler(t *testing.T) {
 				players := &mockPlayerLookup{}
 				f := NewAssistHandlerFactory(cm, &mockRoomLocator{}, players, pub)
 
-				actor := &game.CharacterInstance{
-					Character: storage.NewResolvedSmartIdentifier("alice", &assets.Character{Name: "Alice"}),
-				}
+				actor := newCharacterInstance("alice", "Alice")
 				cmdCtx := &CommandInput{
 					Char:    actor,
 					Targets: map[string]*TargetRef{},
@@ -174,9 +168,7 @@ func TestAssistHandler(t *testing.T) {
 				players := &mockPlayerLookup{}
 				f := NewAssistHandlerFactory(cm, &mockRoomLocator{}, players, pub)
 
-				actor := &game.CharacterInstance{
-					Character: storage.NewResolvedSmartIdentifier("alice", &assets.Character{Name: "Alice"}),
-				}
+				actor := newCharacterInstance("alice", "Alice")
 				cmdCtx := &CommandInput{
 					Char: actor,
 					Targets: map[string]*TargetRef{
@@ -232,7 +224,7 @@ func TestAssistHandler(t *testing.T) {
 				if ref := cmdCtx.Targets["target"]; ref != nil {
 					assistedId = ref.Player.CharId
 				} else {
-					assistedId = cmdCtx.Char.FollowingId
+					assistedId = cmdCtx.Char.GetFollowingId()
 				}
 				msgs := pub.messagesTo(assistedId)
 				if !containsSubstring(msgs, tt.expMsgAssisted) {

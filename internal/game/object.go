@@ -64,7 +64,7 @@ func (oi *ObjectInstance) Resolve(objs storage.Storer[*assets.Object]) error {
 		oi.Contents = NewInventory()
 	}
 	if oi.Contents != nil {
-		for _, ci := range oi.Contents.Objs {
+		for _, ci := range oi.Contents.objs {
 			if err := ci.Resolve(objs); err != nil {
 				return err
 			}

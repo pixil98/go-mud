@@ -1,5 +1,5 @@
 - Remove world.Instances() and switch to GetZone
 - We should put room/obj/mob assets in a subdirectory for their zone.
-- Races should be updated to use the new perk system from trees
 - Commands use "type" and "scope" but take a slice
 - Commands and spells/abilities use a different context struct so templating is slightly different
+- Having both regenerate and applydamage seem duplicative on actors.

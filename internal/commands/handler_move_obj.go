@@ -107,7 +107,8 @@ func (f *MoveObjHandlerFactory) Create() (CommandFunc, error) {
 				}
 			}
 
-			room := f.rooms.GetRoom(in.Char.ZoneId, in.Char.RoomId)
+			zoneId, roomId := in.Char.Location()
+			room := f.rooms.GetRoom(zoneId, roomId)
 			if err := f.pub.Publish(room, exclude, []byte(in.Config["room_message"])); err != nil {
 				slog.Warn("failed to publish room message", "error", err)
 			}
@@ -125,10 +126,11 @@ func (f *MoveObjHandlerFactory) resolveDestination(in *CommandInput) (ObjectHold
 
 	switch dest {
 	case "inventory":
-		return in.Char.Inventory, nil
+		return in.Char.GetInventory(), nil
 
 	case "room":
-		return f.rooms.GetRoom(in.Char.ZoneId, in.Char.RoomId), nil
+		zoneId, roomId := in.Char.Location()
+		return f.rooms.GetRoom(zoneId, roomId), nil
 
 	default:
 		return f.holderForTarget(in.Targets[dest])
@@ -144,11 +146,11 @@ func (f *MoveObjHandlerFactory) holderForTarget(ref *TargetRef) (ObjectHolder, e
 		if ref.Player.session == nil {
 			return nil, NewUserError(fmt.Sprintf("%s is no longer here.", ref.Player.Name))
 		}
-		return ref.Player.session.Inventory, nil
+		return ref.Player.session.GetInventory(), nil
 	}
 
 	if ref.Mob != nil {
-		return ref.Mob.instance.Inventory, nil
+		return ref.Mob.instance.GetInventory(), nil
 	}
 
 	if ref.Obj != nil {

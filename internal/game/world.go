@@ -3,7 +3,6 @@ package game
 import (
 	"context"
 	"sync"
-	"time"
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/storage"
@@ -89,7 +88,8 @@ func (w *WorldState) AddPlayer(ci *CharacterInstance) error {
 	}
 	ci.subscriber = w.subscriber
 	w.players[charId] = ci
-	room := w.instances[ci.ZoneId].GetRoom(ci.RoomId)
+	zoneId, roomId := ci.Location()
+	room := w.instances[zoneId].GetRoom(roomId)
 	w.mu.Unlock()
 
 	room.AddPlayer(charId, ci)
@@ -105,7 +105,8 @@ func (w *WorldState) RemovePlayer(charId string) error {
 		return ErrPlayerNotFound
 	}
 
-	room := w.instances[ps.ZoneId].GetRoom(ps.RoomId)
+	zoneId, roomId := ps.Location()
+	room := w.instances[zoneId].GetRoom(roomId)
 	delete(w.players, charId)
 	w.mu.Unlock()
 
@@ -115,25 +116,24 @@ func (w *WorldState) RemovePlayer(charId string) error {
 
 // SetPlayerQuit sets the quit flag for a player.
 func (w *WorldState) SetPlayerQuit(charId string, quit bool) error {
-	w.mu.Lock()
-	defer w.mu.Unlock()
-
+	w.mu.RLock()
 	p, exists := w.players[charId]
+	w.mu.RUnlock()
 	if !exists {
 		return ErrPlayerNotFound
 	}
 
-	p.Quit = quit
+	p.SetQuit(quit)
 	return nil
 }
 
 // MarkPlayerActive resets the player's idle timer.
 func (w *WorldState) MarkPlayerActive(charId string) {
-	w.mu.Lock()
-	defer w.mu.Unlock()
-
-	if p, ok := w.players[charId]; ok {
-		p.LastActivity = time.Now()
+	w.mu.RLock()
+	p, ok := w.players[charId]
+	w.mu.RUnlock()
+	if ok {
+		p.MarkActive()
 	}
 }
 
@@ -162,16 +162,22 @@ func (w *WorldState) Tick(ctx context.Context) error {
 
 	// Regenerate out-of-combat entities.
 	w.ForEachPlayer(func(_ string, ps *CharacterInstance) {
-		if !ps.InCombat && ps.CurrentHP < ps.MaxHP {
-			ps.Regenerate(1)
+		if !ps.IsInCombat() {
+			cur, mx := ps.HP()
+			if cur < mx {
+				ps.AdjustHP(1)
+			}
 		}
 	})
 	for _, zi := range w.instances {
 		for _, ri := range zi.rooms {
 			ri.mu.RLock()
 			for _, mi := range ri.mobiles {
-				if !mi.InCombat && mi.CurrentHP < mi.MaxHP {
-					mi.Regenerate(1)
+				if !mi.IsInCombat() {
+					cur, mx := mi.HP()
+					if cur < mx {
+						mi.AdjustHP(1)
+					}
 				}
 			}
 			ri.mu.RUnlock()

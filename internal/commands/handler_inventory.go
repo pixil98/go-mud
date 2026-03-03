@@ -29,7 +29,7 @@ func (f *InventoryHandlerFactory) ValidateConfig(config map[string]any) error {
 func (f *InventoryHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, in *CommandInput) error {
 		lines := []string{"You are carrying:"}
-		lines = append(lines, FormatInventoryItems(in.Char.Inventory)...)
+		lines = append(lines, FormatInventoryItems(in.Char.GetInventory())...)
 
 		output := strings.Join(lines, "\n")
 		if f.pub != nil {
@@ -43,13 +43,13 @@ func (f *InventoryHandlerFactory) Create() (CommandFunc, error) {
 // FormatInventoryItems returns indented lines describing items in an inventory.
 // Returns ["  Nothing"] if the inventory is nil or empty.
 func FormatInventoryItems(inv *game.Inventory) []string {
-	if inv == nil || len(inv.Objs) == 0 {
+	if inv == nil || inv.Len() == 0 {
 		return []string{"  Nothing"}
 	}
 	var lines []string
-	for _, oi := range inv.Objs {
+	inv.ForEachObj(func(_ string, oi *game.ObjectInstance) {
 		lines = append(lines, fmt.Sprintf("  %s", oi.Object.Get().ShortDesc))
-	}
+	})
 	if len(lines) == 0 {
 		return []string{"  Nothing"}
 	}

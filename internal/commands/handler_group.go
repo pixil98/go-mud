@@ -25,9 +25,9 @@ func clearFollow(leaderId string, ps *game.CharacterInstance) bool {
 	if ps == nil {
 		return false
 	}
-	ps.Group = nil
-	if ps.FollowingId == leaderId {
-		ps.FollowingId = ""
+	ps.SetGroup(nil)
+	if ps.GetFollowingId() == leaderId {
+		ps.SetFollowingId("")
 		return true
 	}
 	return false
@@ -118,7 +118,7 @@ func (f *GroupHandlerFactory) Create() (CommandFunc, error) {
 
 func (f *GroupHandlerFactory) showGroup(in *CommandInput) error {
 	actorId := in.Char.Character.Id()
-	grp := in.Char.Group
+	grp := in.Char.GetGroup()
 	if grp == nil {
 		return NewUserError("You are not in a group.")
 	}
@@ -140,7 +140,8 @@ func (f *GroupHandlerFactory) showGroup(in *CommandInput) error {
 		if isLeader {
 			label = "[Leader]"
 		}
-		hp := fmt.Sprintf("%d/%d HP", char.CurrentHP, char.MaxHP)
+		currentHP, maxHP := ps.HP()
+		hp := fmt.Sprintf("%d/%d HP", currentHP, maxHP)
 		members = append(members, memberLine{
 			name:   char.Name,
 			line:   fmt.Sprintf("%-8s %-20s %s", label, char.Name, hp),
@@ -173,7 +174,7 @@ func (f *GroupHandlerFactory) toggleMember(in *CommandInput, target *TargetRef) 
 		return NewUserError("They are not available.")
 	}
 
-	grp := in.Char.Group
+	grp := in.Char.GetGroup()
 
 	// Toggle out: target is already in this group — remove them.
 	if grp != nil && grp.HasMember(targetId) {
@@ -191,10 +192,10 @@ func (f *GroupHandlerFactory) toggleMember(in *CommandInput, target *TargetRef) 
 	if targetId == actorId {
 		return NewUserError("You are already in your own group.")
 	}
-	if targetPs.FollowingId != actorId {
+	if targetPs.GetFollowingId() != actorId {
 		return NewUserError(fmt.Sprintf("%s is not following you.", target.Player.Name))
 	}
-	if targetPs.Group != nil {
+	if targetPs.GetGroup() != nil {
 		return NewUserError(fmt.Sprintf("%s is already in a group.", target.Player.Name))
 	}
 	if grp != nil && grp.LeaderId != actorId {
@@ -203,11 +204,11 @@ func (f *GroupHandlerFactory) toggleMember(in *CommandInput, target *TargetRef) 
 
 	if grp == nil {
 		grp = game.NewGroup(actorId, in.Char)
-		in.Char.Group = grp
+		in.Char.SetGroup(grp)
 	}
 
 	grp.AddMember(targetId, targetPs)
-	targetPs.Group = grp
+	targetPs.SetGroup(grp)
 
 	joinMsg := fmt.Sprintf("%s has joined the group.", target.Player.Name)
 	if err := f.pub.Publish(grp, []string{targetId}, []byte(joinMsg)); err != nil {
@@ -259,7 +260,7 @@ func (f *UngroupHandlerFactory) Create() (CommandFunc, error) {
 
 func (f *UngroupHandlerFactory) disbandOrLeave(in *CommandInput) error {
 	actorId := in.Char.Character.Id()
-	grp := in.Char.Group
+	grp := in.Char.GetGroup()
 	if grp == nil {
 		return NewUserError("You are not in a group.")
 	}
@@ -290,7 +291,7 @@ func (f *UngroupHandlerFactory) disbandOrLeave(in *CommandInput) error {
 func (f *UngroupHandlerFactory) removeTarget(in *CommandInput, target *TargetRef) error {
 	actorId := in.Char.Character.Id()
 	targetId := target.Player.CharId
-	grp := in.Char.Group
+	grp := in.Char.GetGroup()
 
 	if grp == nil {
 		return NewUserError("You are not in a group.")

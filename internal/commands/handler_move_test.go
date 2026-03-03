@@ -19,11 +19,8 @@ func newTestRoom(id, name, zoneId string) (*game.RoomInstance, error) {
 }
 
 func newTestPlayer(charId, name string, room *game.RoomInstance) *game.CharacterInstance {
-	ps := &game.CharacterInstance{
-		Character: storage.NewResolvedSmartIdentifier(charId, &assets.Character{Name: name}),
-		ZoneId:    room.Room.Get().Zone.Id(),
-		RoomId:    room.Room.Id(),
-	}
+	charRef := storage.NewResolvedSmartIdentifier(charId, &assets.Character{Name: name})
+	ps, _ := game.NewCharacterInstance(charRef, make(chan []byte, 10), room.Room.Get().Zone.Id(), room.Room.Id())
 	room.AddPlayer(charId, ps)
 	return ps
 }
@@ -39,7 +36,7 @@ func TestMoveFollowers(t *testing.T) {
 			setup: func(from, to *game.RoomInstance) (string, string, map[string]*game.CharacterInstance) {
 				leader := newTestPlayer("leader", "Leader", from)
 				follower := newTestPlayer("follower", "Follower", from)
-				follower.FollowingId = "leader"
+				follower.SetFollowingId("leader")
 				return "leader", "Leader", map[string]*game.CharacterInstance{"leader": leader, "follower": follower}
 			},
 			expMovedTo:     []string{"follower"},
@@ -49,8 +46,8 @@ func TestMoveFollowers(t *testing.T) {
 			setup: func(from, to *game.RoomInstance) (string, string, map[string]*game.CharacterInstance) {
 				leader := newTestPlayer("leader", "Leader", from)
 				follower := newTestPlayer("follower", "Follower", from)
-				follower.FollowingId = "leader"
-				follower.InCombat = true
+				follower.SetFollowingId("leader")
+				follower.SetInCombat(true)
 				return "leader", "Leader", map[string]*game.CharacterInstance{"leader": leader, "follower": follower}
 			},
 			expStayedIn:    []string{"follower"},
@@ -60,9 +57,9 @@ func TestMoveFollowers(t *testing.T) {
 			setup: func(from, to *game.RoomInstance) (string, string, map[string]*game.CharacterInstance) {
 				leader := newTestPlayer("leader", "Leader", from)
 				mid := newTestPlayer("mid", "Mid", from)
-				mid.FollowingId = "leader"
+				mid.SetFollowingId("leader")
 				tail := newTestPlayer("tail", "Tail", from)
-				tail.FollowingId = "mid"
+				tail.SetFollowingId("mid")
 				return "leader", "Leader", map[string]*game.CharacterInstance{"leader": leader, "mid": mid, "tail": tail}
 			},
 			expMovedTo: []string{"mid", "tail"},
@@ -137,11 +134,17 @@ func TestCanMove(t *testing.T) {
 		expNil bool
 	}{
 		"can move": {
-			ps:     &game.CharacterInstance{},
+			ps: func() *game.CharacterInstance {
+				return newCharacterInstance("test", "Test")
+			}(),
 			expNil: true,
 		},
 		"in combat": {
-			ps:     &game.CharacterInstance{InCombat: true},
+			ps: func() *game.CharacterInstance {
+				ci := newCharacterInstance("test", "Test")
+				ci.SetInCombat(true)
+				return ci
+			}(),
 			expNil: false,
 		},
 	}

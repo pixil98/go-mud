@@ -57,7 +57,7 @@ func (f *WearHandlerFactory) Create() (CommandFunc, error) {
 			if maxSlots == 0 {
 				continue // Race doesn't have this slot type
 			}
-			if in.Char.Equipment.SlotCount(s) < maxSlots {
+			if in.Char.GetEquipment().SlotCount(s) < maxSlots {
 				slot = s
 				break
 			}
@@ -84,10 +84,10 @@ func (f *WearHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		maxSlots := race.SlotCount(slot)
-		err := in.Char.Equipment.Equip(slot, maxSlots, oi)
+		err := in.Char.GetEquipment().Equip(slot, maxSlots, oi)
 		if err != nil {
 			// Put it back on failure
-			in.Char.Inventory.AddObj(oi)
+			in.Char.GetInventory().AddObj(oi)
 			return NewUserError("You're already wearing something in that slot.")
 		}
 

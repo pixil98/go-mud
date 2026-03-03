@@ -80,11 +80,11 @@ func (m *PlayerManager) Tick(ctx context.Context) error {
 	var idleExpired []string
 
 	m.world.ForEachPlayer(func(charId string, ps *game.CharacterInstance) {
-		if ps.Linkless {
-			if now.Sub(ps.LinklessAt) >= m.linklessTimeout {
+		if ps.IsLinkless() {
+			if now.Sub(ps.GetLinklessAt()) >= m.linklessTimeout {
 				linklessExpired = append(linklessExpired, charId)
 			}
-		} else if now.Sub(ps.LastActivity) >= m.idleTimeout {
+		} else if now.Sub(ps.GetLastActivity()) >= m.idleTimeout {
 			idleExpired = append(idleExpired, charId)
 		}
 	})
@@ -216,7 +216,7 @@ func (m *PlayerManager) handleSessionEnd(charId string, playErr error) {
 		slog.Warn("failed to save player on session end", "charId", charId, "error", err)
 	}
 
-	if ps.Quit {
+	if ps.IsQuit() {
 		ps.UnsubscribeAll()
 		if err := m.world.RemovePlayer(charId); err != nil {
 			slog.Warn("failed to remove player on quit", "charId", charId, "error", err)

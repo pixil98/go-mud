@@ -202,7 +202,7 @@ func (f *ClosureHandlerFactory) handleContainer(action string, oi *game.ObjectIn
 }
 
 func (f *ClosureHandlerFactory) checkKey(in *CommandInput, lock *assets.Lock) error {
-	if in.Char.Inventory.FindObjByDef(lock.KeyId.Id()) == nil {
+	if in.Char.GetInventory().FindObjByDef(lock.KeyId.Id()) == nil {
 		return NewUserError("You don't have the key.")
 	}
 	return nil

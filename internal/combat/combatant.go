@@ -16,11 +16,15 @@ type PlayerCombatant struct {
 
 func (c *PlayerCombatant) CombatID() string   { return fmt.Sprintf("player:%s", c.Character.Id()) }
 func (c *PlayerCombatant) CombatName() string { return c.Character.Get().Name }
-func (c *PlayerCombatant) IsAlive() bool      { return c.Player.CurrentHP > 0 }
+
+func (c *PlayerCombatant) IsAlive() bool {
+	cur, _ := c.Player.HP()
+	return cur > 0
+}
 
 func (c *PlayerCombatant) AC() int {
 	stats := c.Player.EffectiveStats()
-	return 10 + stats[assets.StatDEX].Mod() + c.Player.Equipment.ACBonus()
+	return 10 + stats[assets.StatDEX].Mod() + c.Player.GetEquipment().ACBonus()
 }
 
 func (c *PlayerCombatant) Attacks() []Attack {
@@ -30,9 +34,9 @@ func (c *PlayerCombatant) Attacks() []Attack {
 	attackMod := strMod + char.Level/2
 
 	var attacks []Attack
-	for _, slot := range c.Player.Equipment.Objs {
+	c.Player.GetEquipment().ForEachSlot(func(slot game.EquipSlot) {
 		if slot.Slot != "wield" || slot.Obj == nil {
-			continue
+			return
 		}
 		def := slot.Obj.Object.Get()
 		dice, sides := def.DamageDice, def.DamageSides
@@ -48,7 +52,7 @@ func (c *PlayerCombatant) Attacks() []Attack {
 			DamageSides: sides,
 			DamageMod:   strMod + def.DamageMod,
 		})
-	}
+	})
 
 	// Unarmed fallback
 	if len(attacks) == 0 {
@@ -62,18 +66,9 @@ func (c *PlayerCombatant) Attacks() []Attack {
 	return attacks
 }
 
-func (c *PlayerCombatant) ApplyDamage(dmg int) {
-	c.Player.CurrentHP -= dmg
-	if c.Player.CurrentHP < 0 {
-		c.Player.CurrentHP = 0
-	}
-}
-
-func (c *PlayerCombatant) SetInCombat(v bool) {
-	c.Player.InCombat = v
-}
-
-func (c *PlayerCombatant) Level() int { return c.Character.Get().Level }
+func (c *PlayerCombatant) AdjustHP(delta int) { c.Player.AdjustHP(delta) }
+func (c *PlayerCombatant) SetInCombat(v bool)   { c.Player.SetInCombat(v) }
+func (c *PlayerCombatant) Level() int           { return c.Character.Get().Level }
 
 // AwardXP adds amount to the player's experience and returns the message to
 // send them. Returns empty string if the award is zero.
@@ -97,7 +92,11 @@ type MobCombatant struct {
 
 func (c *MobCombatant) CombatID() string   { return fmt.Sprintf("mob:%s", c.Instance.InstanceId) }
 func (c *MobCombatant) CombatName() string { return c.Instance.Mobile.Get().ShortDesc }
-func (c *MobCombatant) IsAlive() bool      { return c.Instance.CurrentHP > 0 }
+
+func (c *MobCombatant) IsAlive() bool {
+	cur, _ := c.Instance.HP()
+	return cur > 0
+}
 
 func (c *MobCombatant) AC() int { return c.Instance.Mobile.Get().AC }
 
@@ -111,18 +110,9 @@ func (c *MobCombatant) Attacks() []Attack {
 	}}
 }
 
-func (c *MobCombatant) ApplyDamage(dmg int) {
-	c.Instance.CurrentHP -= dmg
-	if c.Instance.CurrentHP < 0 {
-		c.Instance.CurrentHP = 0
-	}
-}
-
-func (c *MobCombatant) SetInCombat(v bool) {
-	c.Instance.InCombat = v
-}
-
-func (c *MobCombatant) Level() int { return c.Instance.Mobile.Get().Level }
+func (c *MobCombatant) AdjustHP(delta int) { c.Instance.AdjustHP(delta) }
+func (c *MobCombatant) SetInCombat(v bool)   { c.Instance.SetInCombat(v) }
+func (c *MobCombatant) Level() int           { return c.Instance.Mobile.Get().Level }
 
 // ExpReward returns the XP value of killing this mob. If the mob has no
 // explicit exp_reward, falls back to the level-based formula.

@@ -61,7 +61,7 @@ func (p *Player) Play(ctx context.Context) error {
 		case <-p.done:
 			ps := p.world.GetPlayer(p.charId)
 			var msg string
-			if ps != nil && ps.Linkless {
+			if ps != nil && ps.IsLinkless() {
 				msg = "\nDisconnected for inactivity."
 			} else {
 				msg = "\nAnother connection has taken over your session."
@@ -134,7 +134,7 @@ func (p *Player) Play(ctx context.Context) error {
 			if state == nil {
 				return fmt.Errorf("player state not found for %s", p.charId)
 			}
-			if state.Quit {
+			if state.IsQuit() {
 				p.writeLine("Goodbye!")
 				// Quit handler already saved and unsubscribed isn't needed
 				// — HandleSessionEnd will remove the player from the world.
@@ -152,7 +152,8 @@ func (p *Player) Play(ctx context.Context) error {
 func (p *Player) prompt() error {
 	prompt := "> "
 	if ps := p.world.GetPlayer(p.charId); ps != nil {
-		prompt = fmt.Sprintf("[%d/%dHP] > ", ps.Character.Get().CurrentHP, ps.Character.Get().MaxHP)
+		currentHP, maxHP := ps.HP()
+		prompt = fmt.Sprintf("[%d/%dHP] > ", currentHP, maxHP)
 	}
 	_, err := p.conn.Write([]byte(prompt))
 	return err

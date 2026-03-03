@@ -60,18 +60,18 @@ func (h *CombatEventHandler) onMobDeath(mob *MobCombatant, dctx DeathContext) {
 	}
 
 	// Transfer inventory to corpse
-	for id, obj := range mi.Inventory.Objs {
-		mi.Inventory.RemoveObj(id)
+	mi.GetInventory().ForEachObj(func(id string, obj *game.ObjectInstance) {
+		mi.GetInventory().RemoveObj(id)
 		corpse.Contents.AddObj(obj)
-	}
+	})
 
 	// Transfer equipment to corpse
-	for _, slot := range mi.Equipment.Objs {
+	mi.GetEquipment().ForEachSlot(func(slot game.EquipSlot) {
 		if slot.Obj != nil {
-			mi.Equipment.RemoveObj(slot.Obj.InstanceId)
+			mi.GetEquipment().RemoveObj(slot.Obj.InstanceId)
 			corpse.Contents.AddObj(slot.Obj)
 		}
-	}
+	})
 
 	// Place corpse in room and remove mob
 	ri := h.world.Instances()[dctx.ZoneID].GetRoom(dctx.RoomID)
@@ -87,12 +87,12 @@ func (h *CombatEventHandler) onPlayerDeath(pc *PlayerCombatant, dctx DeathContex
 
 	// Clear following on both sides: the dead player stops following,
 	// and anyone following the dead player stops too.
-	pc.Player.FollowingId = ""
+	pc.Player.SetFollowingId("")
 	fromRoom := h.world.Instances()[dctx.ZoneID].GetRoom(dctx.RoomID)
 	if fromRoom != nil {
 		fromRoom.ForEachPlayer(func(charId string, ps *game.CharacterInstance) {
-			if ps.FollowingId == deadId {
-				ps.FollowingId = ""
+			if ps.GetFollowingId() == deadId {
+				ps.SetFollowingId("")
 				if err := h.pub.Publish(game.SinglePlayer(charId), nil,
 					[]byte(fmt.Sprintf("You stop following %s.", char.Name))); err != nil {
 					slog.Warn("failed to notify follower of death", "error", err)
@@ -107,7 +107,7 @@ func (h *CombatEventHandler) onPlayerDeath(pc *PlayerCombatant, dctx DeathContex
 	}
 
 	// Restore HP
-	char.CurrentHP = char.MaxHP
+	pc.Player.SetHP(char.MaxHP, char.MaxHP)
 
 	// Move to default spawn
 	toRoom := h.world.Instances()[h.defaultZone].GetRoom(h.defaultRoom)
