@@ -8,14 +8,15 @@ import "fmt"
 type PerkKey = string
 
 const (
-	PerkKeySTR     PerkKey = "core.stats.str"
-	PerkKeyDEX     PerkKey = "core.stats.dex"
-	PerkKeyCON     PerkKey = "core.stats.con"
-	PerkKeyINT     PerkKey = "core.stats.int"
-	PerkKeyWIS     PerkKey = "core.stats.wis"
-	PerkKeyCHA     PerkKey = "core.stats.cha"
-	PerkKeyMaxHp   PerkKey = "core.hp.max"
-	PerkKeyMaxMana PerkKey = "core.mana.max"
+	PerkKeySTR          PerkKey = "core.stats.str"
+	PerkKeyDEX          PerkKey = "core.stats.dex"
+	PerkKeyCON          PerkKey = "core.stats.con"
+	PerkKeyINT          PerkKey = "core.stats.int"
+	PerkKeyWIS          PerkKey = "core.stats.wis"
+	PerkKeyCHA          PerkKey = "core.stats.cha"
+	PerkKeyMaxHp        PerkKey = "core.resource.hp.max"
+	PerkKeyCombatAC     PerkKey = "core.combat.ac"
+	PerkKeyCombatDmgMod PerkKey = "core.combat.damage_mod"
 )
 
 // StatPerkKeys maps stat-related PerkKey consts to their corresponding StatKey.
@@ -37,8 +38,8 @@ const (
 	PerkTypeTag           = "tag"
 )
 
-// Perk describes an effect granted when a node or spine node is unlocked, or
-// by a race. Which fields are meaningful depends on Type.
+// Perk describes an effect granted by a race, tree node, or equipped object.
+// Which fields are meaningful depends on Type.
 type Perk struct {
 	Type  string `json:"type"`
 	Id    string `json:"id,omitempty"`    // unlock_ability: the ability id to grant

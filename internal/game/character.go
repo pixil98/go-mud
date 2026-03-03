@@ -384,13 +384,25 @@ func objectInstanceToSpawn(oi *ObjectInstance) assets.ObjectSpawn {
 	return spawn
 }
 
-// Perks returns the aggregated perks from all sources (race, tree nodes, etc.).
+// Perks returns the aggregated perks from all sources (race, equipment, etc.).
 func (ci *CharacterInstance) Perks() []assets.Perk {
 	var perks []assets.Perk
 	if r := ci.Character.Get().Race.Get(); r != nil {
 		perks = append(perks, r.Perks...)
 	}
+	perks = append(perks, ci.equipment.Perks()...)
 	return perks
+}
+
+// PerkValue sums all key_mod perk values matching key across all sources.
+func (ci *CharacterInstance) PerkValue(key assets.PerkKey) int {
+	total := 0
+	for _, p := range ci.Perks() {
+		if p.Type == assets.PerkTypeKeyMod && p.Key == key {
+			total += p.Value
+		}
+	}
+	return total
 }
 
 // HasAbility returns true if any of the character's aggregated perks include
@@ -404,7 +416,8 @@ func (ci *CharacterInstance) HasAbility(abilityId string) bool {
 	return false
 }
 
-// EffectiveStats computes ability scores from base stats + perk modifiers + equipment bonuses.
+// EffectiveStats computes ability scores from base stats + perk modifiers.
+// Equipment stat bonuses flow through Perks() automatically.
 func (ci *CharacterInstance) EffectiveStats() map[assets.StatKey]Stat {
 	char := ci.Character.Get()
 	stats := make(map[assets.StatKey]Stat, len(assets.AllStatKeys))
@@ -418,9 +431,6 @@ func (ci *CharacterInstance) EffectiveStats() map[assets.StatKey]Stat {
 		if sk, ok := assets.StatPerkKeys[p.Key]; ok {
 			stats[sk] += Stat(p.Value)
 		}
-	}
-	for k, v := range ci.equipment.StatBonuses() {
-		stats[k] += Stat(v)
 	}
 	return stats
 }
@@ -472,7 +482,7 @@ func (ci *CharacterInstance) StatSections() []StatSection {
 	})
 
 	// Combat section
-	ac := 10 + stats[assets.StatDEX].Mod() + ci.equipment.ACBonus()
+	ac := 10 + stats[assets.StatDEX].Mod() + ci.PerkValue(assets.PerkKeyCombatAC)
 	attackMod := stats[assets.StatSTR].Mod() + char.Level/2
 
 	var dmgParts []string
@@ -730,34 +740,18 @@ func (eq *Equipment) Len() int {
 	return len(eq.objs)
 }
 
-// ACBonus returns the total AC bonus from all equipped items.
-func (eq *Equipment) ACBonus() int {
+// Perks returns the aggregated perks from all equipped items.
+func (eq *Equipment) Perks() []assets.Perk {
 	eq.mu.RLock()
 	defer eq.mu.RUnlock()
 
-	total := 0
+	var perks []assets.Perk
 	for _, slot := range eq.objs {
 		if slot.Obj != nil {
-			total += slot.Obj.Object.Get().ACBonus
+			perks = append(perks, slot.Obj.Object.Get().Perks...)
 		}
 	}
-	return total
-}
-
-// StatBonuses returns the combined stat modifiers from all equipped items.
-func (eq *Equipment) StatBonuses() map[assets.StatKey]int {
-	eq.mu.RLock()
-	defer eq.mu.RUnlock()
-
-	bonuses := make(map[assets.StatKey]int)
-	for _, slot := range eq.objs {
-		if slot.Obj != nil {
-			for k, v := range slot.Obj.Object.Get().StatMods {
-				bonuses[k] += v
-			}
-		}
-	}
-	return bonuses
+	return perks
 }
 
 // RemoveObj finds and unequips an object by instance ID.

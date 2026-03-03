@@ -57,12 +57,12 @@ type Object struct {
 	// Closure defines open/close/lock behavior. Only meaningful when the "container" flag is set.
 	Closure *Closure `json:"closure,omitempty"`
 
-	// Combat stats for equipment
-	ACBonus     int            `json:"ac_bonus,omitempty"`
-	DamageDice  int            `json:"damage_dice,omitempty"`
-	DamageSides int            `json:"damage_sides,omitempty"`
-	DamageMod   int            `json:"damage_mod,omitempty"`
-	StatMods    map[StatKey]int `json:"stat_mods,omitempty"`
+	// Weapon damage dice (intrinsic weapon properties, not additive bonuses).
+	DamageDice  int `json:"damage_dice,omitempty"`
+	DamageSides int `json:"damage_sides,omitempty"`
+
+	// Perks granted while this item is equipped (AC, stat mods, damage mods, etc.).
+	Perks []Perk `json:"perks,omitempty"`
 }
 
 // MatchName returns true if name matches any of this object's aliases (case-insensitive).
@@ -105,6 +105,11 @@ func (o *Object) Validate() error {
 	}
 	if !o.HasFlag(ObjectFlagWearable) && len(o.WearSlots) > 0 {
 		el.Add(fmt.Errorf("wear_slots requires the wearable flag"))
+	}
+	for i := range o.Perks {
+		if err := o.Perks[i].validate(); err != nil {
+			el.Add(fmt.Errorf("perk[%d]: %w", i, err))
+		}
 	}
 	if o.Closure != nil {
 		if !o.HasFlag(ObjectFlagContainer) {

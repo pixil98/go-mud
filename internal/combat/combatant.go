@@ -24,7 +24,7 @@ func (c *PlayerCombatant) IsAlive() bool {
 
 func (c *PlayerCombatant) AC() int {
 	stats := c.Player.EffectiveStats()
-	return 10 + stats[assets.StatDEX].Mod() + c.Player.GetEquipment().ACBonus()
+	return 10 + stats[assets.StatDEX].Mod() + c.Player.PerkValue(assets.PerkKeyCombatAC)
 }
 
 func (c *PlayerCombatant) Attacks() []Attack {
@@ -32,6 +32,7 @@ func (c *PlayerCombatant) Attacks() []Attack {
 	stats := c.Player.EffectiveStats()
 	strMod := stats[assets.StatSTR].Mod()
 	attackMod := strMod + char.Level/2
+	dmgMod := strMod + c.Player.PerkValue(assets.PerkKeyCombatDmgMod)
 
 	var attacks []Attack
 	c.Player.GetEquipment().ForEachSlot(func(slot game.EquipSlot) {
@@ -50,7 +51,7 @@ func (c *PlayerCombatant) Attacks() []Attack {
 			Mod:         attackMod,
 			DamageDice:  dice,
 			DamageSides: sides,
-			DamageMod:   strMod + def.DamageMod,
+			DamageMod:   dmgMod,
 		})
 	})
 
@@ -60,7 +61,7 @@ func (c *PlayerCombatant) Attacks() []Attack {
 			Mod:         attackMod,
 			DamageDice:  1,
 			DamageSides: 4,
-			DamageMod:   strMod,
+			DamageMod:   dmgMod,
 		})
 	}
 	return attacks

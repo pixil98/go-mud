@@ -8,6 +8,8 @@
         "detailed_desc": "Hundreds of interlocking iron rings form this sturdy suit of chain mail. It is well-maintained, each link oiled to prevent rust. A leather jerkin beneath would cushion the weight against the wearer's body.",
         "flags": ["wearable"],
         "wear_slots": ["body"],
-        "ac_bonus": 4
+        "perks": [
+            {"type": "key_mod", "key": "core.combat.ac", "value": 4}
+        ]
     }
 }
