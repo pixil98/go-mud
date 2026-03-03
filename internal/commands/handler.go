@@ -474,7 +474,6 @@ func parseValue(inputType string, raw string) (any, error) {
 // templateContext holds data for template expansion.
 type templateContext struct {
 	Actor   *assets.Character
-	Session *game.CharacterInstance
 	Targets map[string]*TargetRef
 	Inputs  map[string]any
 	Color   *display.Palette
@@ -488,7 +487,6 @@ func (h *Handler) expandConfig(config map[string]any, char *game.CharacterInstan
 
 	tmplCtx := &templateContext{
 		Actor:   char.Character.Get(),
-		Session: char,
 		Targets: targets,
 		Inputs:  inputs,
 		Color:   display.Color,

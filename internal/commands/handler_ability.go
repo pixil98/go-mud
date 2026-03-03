@@ -29,7 +29,6 @@ func executeAbility(ability *assets.Ability, in *CommandInput, targets map[strin
 
 	ctx := &templateContext{
 		Actor:   in.Char.Character.Get(),
-		Session: in.Char,
 		Targets: targets,
 		Color:   display.Color,
 	}

@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/pixil98/go-mud/internal/assets"
-	"github.com/pixil98/go-mud/internal/game"
 )
 
 // mockCharStore implements storage.Storer[*game.Character] for testing
@@ -151,59 +150,30 @@ func TestExpandTemplate(t *testing.T) {
 			data:    struct{}{},
 			exp:     "hello world",
 		},
-		"expand session zone": {
-			tmplStr: "zone-{{ .Session.ZoneId }}",
-			data: struct {
-				Session *game.CharacterInstance
-			}{
-				Session: &game.CharacterInstance{
-					ZoneId: "forest",
-				},
-			},
-			exp: "zone-forest",
-		},
-		"expand session room": {
-			tmplStr: "room-{{ .Session.RoomId }}",
-			data: struct {
-				Session *game.CharacterInstance
-			}{
-				Session: &game.CharacterInstance{
-					RoomId: "clearing",
-				},
-			},
-			exp: "room-clearing",
-		},
-		"expand config value": {
-			tmplStr: "player-{{ .Config.target }}",
-			data: struct {
-				Config map[string]any
-			}{
-				Config: map[string]any{
-					"target": "bob",
-				},
-			},
-			exp: "player-bob",
-		},
-		"expand multiple values": {
-			tmplStr: "zone-{{ .Session.ZoneId }}-room-{{ .Session.RoomId }}",
-			data: struct {
-				Session *game.CharacterInstance
-			}{
-				Session: &game.CharacterInstance{
-					ZoneId: "castle",
-					RoomId: "throne",
-				},
-			},
-			exp: "zone-castle-room-throne",
-		},
 		"expand actor name": {
 			tmplStr: "{{ .Actor.Name }} says hello",
-			data: struct {
-				Actor *assets.Character
-			}{
-				Actor: &assets.Character{Name: "Bob"},
+			data: &templateContext{
+				Actor: &assets.Character{Name: "test-actor"},
 			},
-			exp: "Bob says hello",
+			exp: "test-actor says hello",
+		},
+		"expand input value": {
+			tmplStr: "player-{{ .Inputs.target }}",
+			data: &templateContext{
+				Actor:  &assets.Character{},
+				Inputs: map[string]any{"target": "test-target"},
+			},
+			exp: "player-test-target",
+		},
+		"expand multiple values": {
+			tmplStr: "{{ .Actor.Name }} targets {{ .Targets.target.Player.Name }}",
+			data: &templateContext{
+				Actor: &assets.Character{Name: "test-actor"},
+				Targets: map[string]*TargetRef{
+					"target": {Type: targetTypePlayer, Player: &PlayerRef{Name: "test-target"}},
+				},
+			},
+			exp: "test-actor targets test-target",
 		},
 		"invalid template syntax": {
 			tmplStr: "{{ .Invalid",
