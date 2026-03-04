@@ -9,7 +9,7 @@
         "flags": ["wearable"],
         "wear_slots": ["head"],
         "perks": [
-            {"type": "key_mod", "key": "core.combat.ac", "value": 1}
+            {"type": "modifier", "key": "core.combat.ac", "value": 1}
         ]
     }
 }

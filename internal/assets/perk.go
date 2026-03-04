@@ -2,7 +2,7 @@ package assets
 
 import "fmt"
 
-// PerkKey identifies a well-known key for key_mod perks. Asset-defined keys
+// PerkKey identifies a well-known key for modifier perks. Asset-defined keys
 // (e.g. "evocation.fire.damage_pct") don't need consts — these are provided
 // for engine-interpreted values so they're discoverable and consistent.
 type PerkKey = string
@@ -20,7 +20,7 @@ const (
 )
 
 // StatPerkKeys maps stat-related PerkKey consts to their corresponding StatKey.
-// Use this to extract ability score modifiers from key_mod perks without
+// Use this to extract ability score modifiers from modifier perks without
 // hardcoding the key strings at the call site.
 var StatPerkKeys = map[PerkKey]StatKey{
 	PerkKeySTR: StatSTR,
@@ -33,42 +33,48 @@ var StatPerkKeys = map[PerkKey]StatKey{
 
 // Perk type constants.
 const (
-	PerkTypeUnlockAbility = "unlock_ability"
-	PerkTypeKeyMod        = "key_mod"
-	PerkTypeTag           = "tag"
+	PerkTypeModifier = "modifier"
+	PerkTypeGrant    = "grant"
+)
+
+// Well-known grant keys for engine-interpreted grant perks.
+const (
+	// PerkGrantUnlockAbility grants access to an ability. Arg is the ability id.
+	PerkGrantUnlockAbility = "unlock_ability"
+	// PerkGrantAttack grants an extra attack. Arg is the dice expression (e.g. "2d6").
+	PerkGrantAttack = "attack"
 )
 
 // Perk describes an effect granted by a race, tree node, or equipped object.
 // Which fields are meaningful depends on Type.
+//
+// modifier perks use Key and Value; their values are summed across all sources.
+// grant perks use Key and an optional Arg string for parameterized effects.
 type Perk struct {
 	Type  string `json:"type"`
-	Id    string `json:"id,omitempty"`    // unlock_ability: the ability id to grant
-	Key   string `json:"key,omitempty"`   // key_mod: the key to modify
-	Value int    `json:"value,omitempty"` // key_mod: amount to add per rank
-	Tag   string `json:"tag,omitempty"`   // tag: the keyword flag to grant
+	Key   string `json:"key,omitempty"`   // modifier: the key to modify; grant: the keyword to grant
+	Value int    `json:"value,omitempty"` // modifier: amount to add per rank
+	Arg   string `json:"arg,omitempty"`   // grant: optional argument (e.g. ability id, dice expression)
 }
 
 func (p *Perk) validate() error {
 	if p.Type == "" {
 		return fmt.Errorf("type is required")
 	}
-
 	switch p.Type {
-	case PerkTypeUnlockAbility:
-		if p.Id == "" {
-			return fmt.Errorf("unlock_ability perk requires id")
-		}
-	case PerkTypeKeyMod:
+	case PerkTypeModifier:
 		if p.Key == "" {
-			return fmt.Errorf("key_mod perk requires key")
+			return fmt.Errorf("modifier perk requires key")
 		}
-	case PerkTypeTag:
-		if p.Tag == "" {
-			return fmt.Errorf("tag perk requires tag")
+		if p.Value == 0 {
+			return fmt.Errorf("modifier perk requires non-zero value")
+		}
+	case PerkTypeGrant:
+		if p.Key == "" {
+			return fmt.Errorf("grant perk requires key")
 		}
 	default:
 		return fmt.Errorf("unknown perk type: %q", p.Type)
 	}
-
 	return nil
 }

@@ -24,7 +24,7 @@ func (c *PlayerCombatant) IsAlive() bool {
 
 func (c *PlayerCombatant) AC() int {
 	stats := c.Player.EffectiveStats()
-	return 10 + stats[assets.StatDEX].Mod() + c.Player.PerkValue(assets.PerkKeyCombatAC)
+	return 10 + stats[assets.StatDEX].Mod() + c.Player.ModifierValue(assets.PerkKeyCombatAC)
 }
 
 func (c *PlayerCombatant) Attacks() []Attack {
@@ -32,30 +32,23 @@ func (c *PlayerCombatant) Attacks() []Attack {
 	stats := c.Player.EffectiveStats()
 	strMod := stats[assets.StatSTR].Mod()
 	attackMod := strMod + char.Level/2
-	dmgMod := strMod + c.Player.PerkValue(assets.PerkKeyCombatDmgMod)
+	dmgMod := strMod + c.Player.ModifierValue(assets.PerkKeyCombatDmgMod)
 
 	var attacks []Attack
-	c.Player.GetEquipment().ForEachSlot(func(slot game.EquipSlot) {
-		if slot.Slot != "wield" || slot.Obj == nil {
-			return
-		}
-		def := slot.Obj.Object.Get()
-		dice, sides := def.DamageDice, def.DamageSides
-		if dice == 0 {
-			dice = 1
-		}
-		if sides == 0 {
-			sides = 4
+	for _, expr := range c.Player.Grants(assets.PerkGrantAttack) {
+		dice, sides, bonus, ok := parseAttackDice(expr)
+		if !ok {
+			continue
 		}
 		attacks = append(attacks, Attack{
 			Mod:         attackMod,
 			DamageDice:  dice,
 			DamageSides: sides,
-			DamageMod:   dmgMod,
+			DamageMod:   dmgMod + bonus,
 		})
-	})
+	}
 
-	// Unarmed fallback
+	// Unarmed fallback.
 	if len(attacks) == 0 {
 		attacks = append(attacks, Attack{
 			Mod:         attackMod,
@@ -67,9 +60,24 @@ func (c *PlayerCombatant) Attacks() []Attack {
 	return attacks
 }
 
+// parseAttackDice parses a dice expression like "2d6" or "2d6+3" into
+// (dice, sides, bonus, ok). Returns ok=false for any unrecognized format.
+func parseAttackDice(expr string) (dice, sides, bonus int, ok bool) {
+	// Try NdN+N first, then NdN.
+	n, err := fmt.Sscanf(expr, "%dd%d+%d", &dice, &sides, &bonus)
+	if err == nil && n == 3 && dice >= 1 && sides >= 1 {
+		return dice, sides, bonus, true
+	}
+	n, err = fmt.Sscanf(expr, "%dd%d", &dice, &sides)
+	if err == nil && n == 2 && dice >= 1 && sides >= 1 {
+		return dice, sides, 0, true
+	}
+	return 0, 0, 0, false
+}
+
 func (c *PlayerCombatant) AdjustHP(delta int) { c.Player.AdjustHP(delta) }
-func (c *PlayerCombatant) SetInCombat(v bool)   { c.Player.SetInCombat(v) }
-func (c *PlayerCombatant) Level() int           { return c.Character.Get().Level }
+func (c *PlayerCombatant) SetInCombat(v bool) { c.Player.SetInCombat(v) }
+func (c *PlayerCombatant) Level() int         { return c.Character.Get().Level }
 
 // AwardXP adds amount to the player's experience and returns the message to
 // send them. Returns empty string if the award is zero.
@@ -112,8 +120,8 @@ func (c *MobCombatant) Attacks() []Attack {
 }
 
 func (c *MobCombatant) AdjustHP(delta int) { c.Instance.AdjustHP(delta) }
-func (c *MobCombatant) SetInCombat(v bool)   { c.Instance.SetInCombat(v) }
-func (c *MobCombatant) Level() int           { return c.Instance.Mobile.Get().Level }
+func (c *MobCombatant) SetInCombat(v bool) { c.Instance.SetInCombat(v) }
+func (c *MobCombatant) Level() int         { return c.Instance.Mobile.Get().Level }
 
 // ExpReward returns the XP value of killing this mob. If the mob has no
 // explicit exp_reward, falls back to the level-based formula.

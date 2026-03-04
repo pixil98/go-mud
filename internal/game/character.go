@@ -394,26 +394,41 @@ func (ci *CharacterInstance) Perks() []assets.Perk {
 	return perks
 }
 
-// PerkValue sums all key_mod perk values matching key across all sources.
-func (ci *CharacterInstance) PerkValue(key assets.PerkKey) int {
+// ModifierValue sums all modifier perk values matching key across all sources.
+func (ci *CharacterInstance) ModifierValue(key assets.PerkKey) int {
 	total := 0
 	for _, p := range ci.Perks() {
-		if p.Type == assets.PerkTypeKeyMod && p.Key == key {
+		if p.Type == assets.PerkTypeModifier && p.Key == key {
 			total += p.Value
 		}
 	}
 	return total
 }
 
-// HasAbility returns true if any of the character's aggregated perks include
-// an unlock_ability perk matching the given ability ID.
-func (ci *CharacterInstance) HasAbility(abilityId string) bool {
+// Grants returns the args of all grant perks with the given key.
+func (ci *CharacterInstance) Grants(key string) []string {
+	var args []string
 	for _, p := range ci.Perks() {
-		if p.Type == assets.PerkTypeUnlockAbility && p.Id == abilityId {
+		if p.Type == assets.PerkTypeGrant && p.Key == key {
+			args = append(args, p.Arg)
+		}
+	}
+	return args
+}
+
+// HasGrant returns true if any grant perk matches both key and arg.
+func (ci *CharacterInstance) HasGrant(key, arg string) bool {
+	for _, p := range ci.Perks() {
+		if p.Type == assets.PerkTypeGrant && p.Key == key && p.Arg == arg {
 			return true
 		}
 	}
 	return false
+}
+
+// HasAbility returns true if any of the character's aggregated perks grant the given ability ID.
+func (ci *CharacterInstance) HasAbility(abilityId string) bool {
+	return ci.HasGrant(assets.PerkGrantUnlockAbility, abilityId)
 }
 
 // EffectiveStats computes ability scores from base stats + perk modifiers.
@@ -425,7 +440,7 @@ func (ci *CharacterInstance) EffectiveStats() map[assets.StatKey]Stat {
 		stats[k] = Stat(char.BaseStats[k])
 	}
 	for _, p := range ci.Perks() {
-		if p.Type != assets.PerkTypeKeyMod {
+		if p.Type != assets.PerkTypeModifier {
 			continue
 		}
 		if sk, ok := assets.StatPerkKeys[p.Key]; ok {
@@ -455,8 +470,12 @@ func (ci *CharacterInstance) StatSections() []StatSection {
 
 	var perkLines []StatLine
 	for _, p := range ci.Perks() {
-		if p.Type == assets.PerkTypeTag {
-			perkLines = append(perkLines, StatLine{Value: "  " + p.Tag})
+		if p.Type == assets.PerkTypeGrant {
+			label := p.Key
+			if p.Arg != "" {
+				label += ": " + p.Arg
+			}
+			perkLines = append(perkLines, StatLine{Value: "  " + label})
 		}
 	}
 	if len(perkLines) > 0 {
@@ -482,7 +501,7 @@ func (ci *CharacterInstance) StatSections() []StatSection {
 	})
 
 	// Combat section
-	ac := 10 + stats[assets.StatDEX].Mod() + ci.PerkValue(assets.PerkKeyCombatAC)
+	ac := 10 + stats[assets.StatDEX].Mod() + ci.ModifierValue(assets.PerkKeyCombatAC)
 	attackMod := stats[assets.StatSTR].Mod() + char.Level/2
 
 	var dmgParts []string
@@ -652,6 +671,19 @@ func (inv *Inventory) Clear() {
 	inv.objs = make(map[string]*ObjectInstance)
 }
 
+// Drain atomically removes and returns all items.
+func (inv *Inventory) Drain() []*ObjectInstance {
+	inv.mu.Lock()
+	defer inv.mu.Unlock()
+
+	items := make([]*ObjectInstance, 0, len(inv.objs))
+	for _, obj := range inv.objs {
+		items = append(items, obj)
+	}
+	inv.objs = make(map[string]*ObjectInstance)
+	return items
+}
+
 // --- Equipment ---
 
 // EquipSlot pairs a slot type name with the equipped object instance.
@@ -731,6 +763,21 @@ func (eq *Equipment) ForEachSlot(fn func(EquipSlot)) {
 	for _, slot := range eq.objs {
 		fn(slot)
 	}
+}
+
+// Drain atomically removes and returns all equipped objects.
+func (eq *Equipment) Drain() []*ObjectInstance {
+	eq.mu.Lock()
+	defer eq.mu.Unlock()
+
+	var items []*ObjectInstance
+	for _, slot := range eq.objs {
+		if slot.Obj != nil {
+			items = append(items, slot.Obj)
+		}
+	}
+	eq.objs = []EquipSlot{}
+	return items
 }
 
 // Len returns the number of equipped items.

@@ -5,9 +5,9 @@
         "name": "Naga",
         "abbreviation": "Na",
         "perks": [
-            { "type": "key_mod", "key": "core.stats.str", "value": 2 },
-            { "type": "key_mod", "key": "core.stats.dex", "value": -2 },
-            { "type": "tag", "tag": "darkvision" }
+            { "type": "modifier", "key": "core.stats.str", "value": 2 },
+            { "type": "modifier", "key": "core.stats.dex", "value": -2 },
+            { "type": "grant", "key": "darkvision" }
         ],
         "wear_slots": [
             "light", "head", "neck", "neck", "about",

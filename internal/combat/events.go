@@ -59,19 +59,13 @@ func (h *CombatEventHandler) onMobDeath(mob *MobCombatant, dctx DeathContext) {
 		Contents:   game.NewInventory(),
 	}
 
-	// Transfer inventory to corpse
-	mi.GetInventory().ForEachObj(func(id string, obj *game.ObjectInstance) {
-		mi.GetInventory().RemoveObj(id)
+	// Transfer inventory and equipment to corpse.
+	for _, obj := range mi.GetInventory().Drain() {
 		corpse.Contents.AddObj(obj)
-	})
-
-	// Transfer equipment to corpse
-	mi.GetEquipment().ForEachSlot(func(slot game.EquipSlot) {
-		if slot.Obj != nil {
-			mi.GetEquipment().RemoveObj(slot.Obj.InstanceId)
-			corpse.Contents.AddObj(slot.Obj)
-		}
-	})
+	}
+	for _, obj := range mi.GetEquipment().Drain() {
+		corpse.Contents.AddObj(obj)
+	}
 
 	// Place corpse in room and remove mob
 	ri := h.world.Instances()[dctx.ZoneID].GetRoom(dctx.RoomID)

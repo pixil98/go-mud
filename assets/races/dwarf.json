@@ -5,11 +5,11 @@
         "name": "Dwarf",
         "abbreviation": "Dw",
         "perks": [
-            { "type": "key_mod", "key": "core.stats.con", "value": 2 },
-            { "type": "key_mod", "key": "core.stats.cha", "value": -2 },
-            { "type": "tag", "tag": "darkvision" },
-            { "type": "unlock_ability", "id": "fireball" },
-            { "type": "unlock_ability", "id": "bash" }
+            { "type": "modifier", "key": "core.stats.con", "value": 2 },
+            { "type": "modifier", "key": "core.stats.cha", "value": -2 },
+            { "type": "grant", "key": "darkvision" },
+            { "type": "grant", "key": "unlock_ability", "arg": "fireball" },
+            { "type": "grant", "key": "unlock_ability", "arg": "bash" }
         ],
         "wear_slots": [
             "light", "head", "neck", "neck", "about",

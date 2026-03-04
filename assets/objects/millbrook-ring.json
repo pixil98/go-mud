@@ -9,7 +9,7 @@
         "flags": ["wearable"],
         "wear_slots": ["finger"],
         "perks": [
-            {"type": "key_mod", "key": "core.stats.str", "value": 2}
+            {"type": "modifier", "key": "core.stats.str", "value": 2}
         ]
     }
 }

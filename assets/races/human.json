@@ -5,8 +5,8 @@
         "name": "Human",
         "abbreviation": "Hu",
         "perks": [
-            { "type": "key_mod", "key": "core.stats.str", "value": -2 },
-            { "type": "key_mod", "key": "core.stats.dex", "value": 2 }
+            { "type": "modifier", "key": "core.stats.str", "value": -2 },
+            { "type": "modifier", "key": "core.stats.dex", "value": 2 }
         ],
         "wear_slots": [
             "light", "head", "neck", "neck", "about",
