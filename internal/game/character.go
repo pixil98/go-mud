@@ -504,21 +504,7 @@ func (ci *CharacterInstance) StatSections() []StatSection {
 	ac := 10 + stats[assets.StatDEX].Mod() + ci.ModifierValue(assets.PerkKeyCombatAC)
 	attackMod := stats[assets.StatSTR].Mod() + char.Level/2
 
-	var dmgParts []string
-	ci.equipment.ForEachSlot(func(slot EquipSlot) {
-		if slot.Slot != "wield" || slot.Obj == nil {
-			return
-		}
-		def := slot.Obj.Object.Get()
-		dice, sides := def.DamageDice, def.DamageSides
-		if dice == 0 {
-			dice = 1
-		}
-		if sides == 0 {
-			sides = 4
-		}
-		dmgParts = append(dmgParts, fmt.Sprintf("%dd%d", dice, sides))
-	})
+	dmgParts := ci.Grants(assets.PerkGrantAttack)
 	if len(dmgParts) == 0 {
 		dmgParts = append(dmgParts, "1d4")
 	}
