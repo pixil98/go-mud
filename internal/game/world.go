@@ -15,7 +15,7 @@ type WorldState struct {
 	subscriber Subscriber
 	players    map[string]*CharacterInstance
 
-	instances map[string]*ZoneInstance
+	zones map[string]*ZoneInstance
 }
 
 // NewWorldState creates a new WorldState with zone and room instances initialized.
@@ -45,25 +45,25 @@ func NewWorldState(sub Subscriber, zones storage.Storer[*assets.Zone], rooms sto
 	return &WorldState{
 		subscriber: sub,
 		players:    make(map[string]*CharacterInstance),
-		instances:  instances,
+		zones:      instances,
 	}, nil
 }
 
 // Instances returns all zone instances.
 func (w *WorldState) Instances() map[string]*ZoneInstance {
-	return w.instances
+	return w.zones
 }
 
 // GetZone returns the zone instance for the given zone ID.
 // Returns nil if the zone is not found.
 func (w *WorldState) GetZone(zoneId string) *ZoneInstance {
-	return w.instances[zoneId]
+	return w.zones[zoneId]
 }
 
 // GetRoom returns the room instance for the given zone and room IDs.
 // Returns nil if the zone or room is not found.
 func (w *WorldState) GetRoom(zoneId, roomId string) *RoomInstance {
-	zi := w.instances[zoneId]
+	zi := w.zones[zoneId]
 	if zi == nil {
 		return nil
 	}
@@ -89,7 +89,7 @@ func (w *WorldState) AddPlayer(ci *CharacterInstance) error {
 	ci.subscriber = w.subscriber
 	w.players[charId] = ci
 	zoneId, roomId := ci.Location()
-	room := w.instances[zoneId].GetRoom(roomId)
+	room := w.zones[zoneId].GetRoom(roomId)
 	w.mu.Unlock()
 
 	room.AddPlayer(charId, ci)
@@ -106,7 +106,7 @@ func (w *WorldState) RemovePlayer(charId string) error {
 	}
 
 	zoneId, roomId := ps.Location()
-	room := w.instances[zoneId].GetRoom(roomId)
+	room := w.zones[zoneId].GetRoom(roomId)
 	delete(w.players, charId)
 	w.mu.Unlock()
 
@@ -153,8 +153,8 @@ type Subscriber interface {
 
 // Tick processes zone resets and regenerates out-of-combat entities.
 func (w *WorldState) Tick(ctx context.Context) error {
-	for _, zi := range w.instances {
-		err := zi.Reset(false, w.instances)
+	for _, zi := range w.zones {
+		err := zi.Reset(false, w.zones)
 		if err != nil {
 			return err
 		}
@@ -166,7 +166,7 @@ func (w *WorldState) Tick(ctx context.Context) error {
 			ps.RegenTick()
 		}
 	})
-	for _, zi := range w.instances {
+	for _, zi := range w.zones {
 		for _, ri := range zi.rooms {
 			ri.mu.RLock()
 			for _, mi := range ri.mobiles {

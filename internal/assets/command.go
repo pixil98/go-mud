@@ -54,8 +54,8 @@ type InputSpec struct {
 // contents, this target is resolved exclusively from those contents.
 type TargetSpec struct {
 	Name        string   `json:"name"`                   // Name to access in templates (e.g., "target" -> .Targets.target)
-	Types       []string `json:"type"`                   // Entity types: player, mobile, object, exit
-	Scopes      []string `json:"scope,omitempty"`        // Resolution scopes: room, world, zone, inventory, equipment, contents, group
+	Types       []string `json:"types"`                  // Entity types: player, mobile, object, exit
+	Scopes      []string `json:"scopes,omitempty"`       // Resolution scopes: room, world, zone, inventory, equipment, contents, group
 	Input       string   `json:"input"`                  // Which input provides the name to resolve
 	Optional    bool     `json:"optional,omitempty"`     // If true, missing input -> nil (no error)
 	ScopeTarget string   `json:"scope_target,omitempty"` // Resolve inside this target's contents when present; falls back to normal scopes

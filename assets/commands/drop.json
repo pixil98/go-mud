@@ -12,7 +12,7 @@
             "room_message": "{{ .Actor.Name }} drops {{ .Targets.item.Obj.Name }}."
         },
         "targets": [
-            {"name": "item", "type": ["object"], "scope": ["inventory"], "input": "item", "not_found": "You aren't carrying anything called '{{ .Inputs.item }}'."}
+            {"name": "item", "types": ["object"], "scopes": ["inventory"], "input": "item", "not_found": "You aren't carrying anything called '{{ .Inputs.item }}'."}
         ],
         "inputs": [
             {"name": "item", "type": "string", "required": true, "missing": "Drop what?"}

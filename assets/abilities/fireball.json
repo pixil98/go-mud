@@ -17,8 +17,8 @@
             "targets": [
                 {
                     "name": "target",
-                    "type": ["mobile", "player"],
-                    "scope": ["room"],
+                    "types": ["mobile", "player"],
+                    "scopes": ["room"],
                     "input": "target",
                     "not_found": "You don't see '{{ .Inputs.target }}' here."
                 }
