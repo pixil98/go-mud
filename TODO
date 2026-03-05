@@ -1,1 +1,2 @@
 - Commands and spells/abilities use a different context struct so templating is slightly different
+- Wire up defense perks

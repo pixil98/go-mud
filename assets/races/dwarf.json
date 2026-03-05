@@ -16,6 +16,7 @@
             { "type": "modifier", "key": "core.combat.ac", "value": 10 },
             { "type": "grant", "key": "darkvision" },
             { "type": "grant", "key": "unlock_ability", "arg": "fireball" },
+            { "type": "grant", "key": "unlock_ability", "arg": "flame-ward" },
             { "type": "grant", "key": "unlock_ability", "arg": "bash" }
         ],
         "wear_slots": [

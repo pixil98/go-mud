@@ -8,12 +8,12 @@ import "fmt"
 type PerkKey = string
 
 const (
-	PerkKeySTR          PerkKey = "core.stats.str"
-	PerkKeyDEX          PerkKey = "core.stats.dex"
-	PerkKeyCON          PerkKey = "core.stats.con"
-	PerkKeyINT          PerkKey = "core.stats.int"
-	PerkKeyWIS          PerkKey = "core.stats.wis"
-	PerkKeyCHA          PerkKey = "core.stats.cha"
+	PerkKeySTR             PerkKey = "core.stats.str"
+	PerkKeyDEX             PerkKey = "core.stats.dex"
+	PerkKeyCON             PerkKey = "core.stats.con"
+	PerkKeyINT             PerkKey = "core.stats.int"
+	PerkKeyWIS             PerkKey = "core.stats.wis"
+	PerkKeyCHA             PerkKey = "core.stats.cha"
 	PerkKeyCombatAC        PerkKey = "core.combat.ac"
 	PerkKeyCombatAttackMod PerkKey = "core.combat.attack_mod"
 	PerkKeyCombatDmgMod    PerkKey = "core.combat.damage_mod"
@@ -51,6 +51,45 @@ var StatPerkKeys = map[PerkKey]StatKey{
 	PerkKeyINT: StatINT,
 	PerkKeyWIS: StatWIS,
 	PerkKeyCHA: StatCHA,
+}
+
+// DamageKeyPrefix is the perk key prefix for damage type modifiers.
+// Damage perk keys follow: core.damage.<type>.<aspect>
+const DamageKeyPrefix = "core.damage."
+
+// DamageAspect identifies a specific aspect of damage type scaling.
+type DamageAspect string
+
+const (
+	DamageAspectPct     DamageAspect = "pct"      // percent damage bonus
+	DamageAspectCritPct DamageAspect = "crit_pct" // percent crit chance
+)
+
+// DamageKey builds a perk key for a damage type aspect
+// (e.g. DamageKey("fire", DamageAspectPct) -> "core.damage.fire.pct").
+func DamageKey(damageType string, aspect DamageAspect) string {
+	return DamageKeyPrefix + damageType + "." + string(aspect)
+}
+
+// DefenseKeyPrefix is the perk key prefix for defense type modifiers.
+// Defense perk keys follow: core.defense.<type>.<aspect>
+// Use "all" as the type to apply to all incoming damage regardless of type.
+const DefenseKeyPrefix = "core.defense."
+
+// DefenseAspect identifies a specific aspect of damage mitigation.
+type DefenseAspect string
+
+const (
+	DefenseAspectAbsorb    DefenseAspect = "absorb"     // flat damage reduction after a hit lands
+	DefenseAspectAbsorbPct DefenseAspect = "absorb_pct" // percent damage reduction after a hit lands
+	DefenseAspectReflect   DefenseAspect = "reflect"    // flat damage reflected back to the attacker
+)
+
+// DefenseKey builds a perk key for a defense type aspect
+// (e.g. DefenseKey("fire", DefenseAspectAbsorb) -> "core.defense.fire.absorb",
+// DefenseKey("all", DefenseAspectAbsorb) -> "core.defense.all.absorb").
+func DefenseKey(damageType string, aspect DefenseAspect) string {
+	return DefenseKeyPrefix + damageType + "." + string(aspect)
 }
 
 // Perk type constants.
