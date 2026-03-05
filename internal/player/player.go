@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"log/slog"
+	"sort"
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/assets"
@@ -158,11 +159,17 @@ func (p *Player) prompt() error {
 		if cur, mx := ps.Resource(assets.ResourceHp); mx > 0 {
 			parts = append(parts, game.ResourceLine(assets.ResourceHp, cur, mx))
 		}
+		var others []string
 		ps.ForEachResource(func(name string, current, max int) {
 			if name != assets.ResourceHp {
-				parts = append(parts, game.ResourceLine(name, current, max))
+				others = append(others, name)
 			}
 		})
+		sort.Strings(others)
+		for _, name := range others {
+			cur, mx := ps.Resource(name)
+			parts = append(parts, game.ResourceLine(name, cur, mx))
+		}
 		if len(parts) > 0 {
 			prompt = fmt.Sprintf("[%s] > ", strings.Join(parts, " | "))
 		}
