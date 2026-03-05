@@ -6,16 +6,29 @@ This document defines how skill/spell progression trees are authored in JSON ass
 
 The game uses **trees** to represent progression. Players spend:
 
-- **Minor Points (SP)**: earned each level
-- **Major Points (BP)**: earned every 5 levels (5, 10, 15, …)
+- **Minor Points (SP)**: 1 per level (40 total at max level)
+- **Major Points (BP)**: 1 every 5 levels — 5, 10, 15, 20, 25, 30, 35, 40 (8 total)
 
-Trees are designed to encourage specialization without hard classes.
+Max level is **40**.
+
+Trees are designed to encourage specialization without hard classes. A player can
+reach a capstone in one tree (6 BP) with 2 BP left to dip into a second tree's
+spine, but cannot capstone two trees (would need 12 BP). SP pressure comes from
+trees being wide (~50 SP of nodes each) — even going all-in on a single tree
+leaves nodes unpurchased, and splitting across two trees forces hard choices.
 
 A tree contains three node lists:
 
 - **Spine**: ordered “tier gates” purchased with BP (vertical chain)
 - **Nodes**: non-spine nodes purchased with SP (actives and passives)
 - **Capstones**: mutually exclusive endgame packages purchased with 2 BP
+
+### Point budget summary
+
+| Resource | Total at 40 | One capstone path | Two capstone paths |
+|----------|-------------|-------------------|--------------------|
+| BP       | 8           | 6 (4 spine + 2 cap) | 12 — impossible |
+| SP       | 40          | ~50 available per tree | ~100 across two trees |
 
 ## Point Costs and Purchasing Rules
 
@@ -56,11 +69,12 @@ To encourage early investment and prevent players from skipping the early tree i
 - Higher spine nodes should require **N-of** earlier nodes so deeper tiers cannot be rushed immediately.
 
 Recommended gating pattern (guideline, not a hard rule):
-- Spine I: requires **any 1–2** Tier 0 nodes in that tree
-- Spine II: requires Spine I + **any 2** Tier I nodes
-- Spine III: requires Spine II + **any 2** Tier II nodes
-- Spine IV: requires Spine III + **any 2** Tier III nodes
+- Spine I: requires **any 2** Tier 0 nodes in that tree
+- Spine II: requires Spine I + **any 3** Tier I nodes
+- Spine III: requires Spine II + **any 3** Tier II nodes
+- Spine IV: requires Spine III + **any 3** Tier III nodes
 
+The higher gate counts (3 instead of 2) reflect wider trees (~50 SP of nodes).
 Exact node lists and counts are tree-author decisions.
 
 ## Prerequisites
@@ -173,53 +187,61 @@ Rules:
 - Capstones cost **2 BP**.
 
 Capstones should be **packages**, typically:
-- 1 `unlock_ability` (signature active)
-- + 2–5 passive perks (`key_mod` / `tag`) that strongly reinforce a specific line identity
+- 1 `grant` with `key: "unlock_ability"` (signature active)
+- + 2–5 passive perks (`modifier`) that strongly reinforce a specific line identity
 
 ## Perks
 
-Perks are granted by nodes and races. Keep perk types limited; prefer `key_mod` over inventing new perk handlers.
+Perks are granted by nodes and races. There are two perk types: `modifier` and `grant`.
 
 ### Supported perk types
 
-#### `unlock_ability`
-Grants an ability by ID (spells and skills share the same namespace).
+#### `modifier`
+Modifies a numeric key. The engine stores and sums these keys per character. Well-known keys use the `core.*` namespace and are interpreted by the engine. Asset-defined keys use tree-scoped names and are read by abilities, items, or other assets.
 ```json
-{ "type": "unlock_ability", "id": "firebolt" }
+{ "type": "modifier", "key": "core.stats.int", "value": 1 }
+{ "type": "modifier", "key": "core.damage.fire.pct", "value": 5 }
 ```
 
-#### `key_mod`
-Modifies a numeric key. The engine stores and sums these keys per character. Well-known keys (core stats, mana, etc.) use the `core.*` namespace and are interpreted by the engine. Asset-defined keys use tree-scoped names and are read by abilities, items, or other assets.
-```json
-{ "type": "key_mod", "key": "core.stats.int", "value": 1 }
-{ "type": "key_mod", "key": "evocation.storm.chain_jumps_add", "value": 1 }
-```
+#### `grant`
+Grants a keyword or parameterized effect. The `key` identifies the grant type; `arg` provides an optional parameter.
 
-#### `tag`
-Grants a keyword flag (for rules or UI).
+Well-known grant keys:
+- `unlock_ability` — grants access to an ability. Arg is the ability id.
+- `attack` — grants an extra attack. Arg is a dice expression (e.g. `"2d6"`).
+
 ```json
-{ "type": "tag", "tag": "darkvision" }
+{ "type": "grant", "key": "unlock_ability", "arg": "firebolt" }
+{ "type": "grant", "key": "attack", "arg": "1d6" }
+{ "type": "grant", "key": "darkvision" }
 ```
 
 ### Key naming convention (recommended)
 Use namespaced dotted keys:
 
 - `core.stats.<stat>` — engine-known ability scores (`str`, `dex`, `con`, `int`, `wis`, `cha`)
-- `core.mana.max` — mana pool size
-- `<tree>.<line>.<property>_<add|pct>` — asset-defined keys
+- `core.resource.<pool>.<aspect>` — resource pool modifiers (`max`, `per_level`, `regen`)
+- `core.combat.<property>` — combat modifiers (`ac`, `attack_mod`, `damage_mod`)
+- `core.damage.<type>.pct` — global damage type scaling (applies to all abilities with that damage type)
+- `core.damage.<type>.crit_pct` — global crit chance by damage type
+- `<tree>.<property>` — tree-scoped keys for mechanics specific to one tree
 
 Examples:
 - `core.stats.str`
-- `core.mana.max`
-- `evocation.fire.damage_pct`
-- `evocation.fire.burn_pct`
-- `evocation.frost.slow_pct`
-- `evocation.storm.disrupt_add`
-- `evocation.force.evasion_ignore_pct`
+- `core.resource.mana.max`
+- `core.resource.mana.regen`
+- `core.combat.attack_mod`
+- `core.damage.fire.pct`
+- `core.damage.frost.pct`
+- `core.damage.storm.pct`
+- `core.damage.fire.crit_pct`
+- `evocation.cast_time_reduce`
 
 ## Design guidance
 
+- **Target ~50 SP of nodes per tree.** Even a player going all-in on one tree should not be able to buy every node. The capstone is a specialization choice that costs breadth within the tree, not a freebie on top of everything.
 - Spines should provide infrastructure and identity (reliability, small specialization keys, slots), not large generic power.
 - Tier 0 nodes should be flavorful and low impact.
+- Each tier should include both shared utility nodes (attractive to any build) and line-specific passives (rewarding commitment to a particular line). The competition between them creates SP pressure.
 - Element/line specialization should ramp naturally down the tree.
 - Capstones should be the largest jump and should strongly reinforce a line.
