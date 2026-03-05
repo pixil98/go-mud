@@ -16,10 +16,13 @@ type WorldState struct {
 	players    map[string]*CharacterInstance
 
 	zones map[string]*ZoneInstance
+	Perks *TimedPerkCache
 }
 
 // NewWorldState creates a new WorldState with zone and room instances initialized.
 func NewWorldState(sub Subscriber, zones storage.Storer[*assets.Zone], rooms storage.Storer[*assets.Room]) (*WorldState, error) {
+	worldPerks := NewTimedPerkCache(nil)
+
 	// Build zone instances
 	instances := make(map[string]*ZoneInstance)
 	for zoneId, zone := range zones.GetAll() {
@@ -27,6 +30,7 @@ func NewWorldState(sub Subscriber, zones storage.Storer[*assets.Zone], rooms sto
 		if err != nil {
 			return nil, err
 		}
+		zi.Perks.AddSource("world", worldPerks)
 		instances[zoneId] = zi
 	}
 
@@ -46,6 +50,7 @@ func NewWorldState(sub Subscriber, zones storage.Storer[*assets.Zone], rooms sto
 		subscriber: sub,
 		players:    make(map[string]*CharacterInstance),
 		zones:      instances,
+		Perks:      worldPerks,
 	}, nil
 }
 
@@ -90,6 +95,7 @@ func (w *WorldState) AddPlayer(ci *CharacterInstance) error {
 	w.players[charId] = ci
 	zoneId, roomId := ci.Location()
 	room := w.zones[zoneId].GetRoom(roomId)
+	ci.PerkCache.AddSource("room", room.Perks)
 	w.mu.Unlock()
 
 	room.AddPlayer(charId, ci)
@@ -151,12 +157,21 @@ type Subscriber interface {
 	Subscribe(subject string, handler func(data []byte)) (unsubscribe func(), err error)
 }
 
-// Tick processes zone resets and regenerates out-of-combat entities.
+// Tick processes zone resets, timed perks, and regenerates out-of-combat entities.
 func (w *WorldState) Tick(ctx context.Context) error {
 	for _, zi := range w.zones {
 		err := zi.Reset(false, w.zones)
 		if err != nil {
 			return err
+		}
+	}
+
+	// Tick timed perks: world, zones, and rooms.
+	w.Perks.Tick()
+	for _, zi := range w.zones {
+		zi.Perks.Tick()
+		for _, ri := range zi.rooms {
+			ri.Perks.Tick()
 		}
 	}
 

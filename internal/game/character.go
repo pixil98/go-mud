@@ -78,7 +78,7 @@ func NewCharacterInstance(char storage.SmartIdentifier[*assets.Character], msgs 
 			inventory: inv,
 			equipment: eq,
 			level:     c.Level,
-			PerkCache: *NewPerkCache(racePerks, eq),
+			PerkCache: *NewPerkCache(racePerks, map[string]PerkSource{"equipment": eq}),
 		},
 		lastActivity: time.Now(),
 		done:         make(chan struct{}),
@@ -364,6 +364,8 @@ func (ci *CharacterInstance) Move(fromRoom, toRoom *RoomInstance) {
 	ci.mu.Lock()
 	ci.zoneId = toZoneId
 	ci.roomId = toRoomId
+	ci.PerkCache.RemoveSource("room")
+	ci.PerkCache.AddSource("room", toRoom.Perks)
 	ci.mu.Unlock()
 }
 
@@ -512,6 +514,28 @@ func (ci *CharacterInstance) StatSections() []StatSection {
 				{Value: fmt.Sprintf("  XP: %d  TNL: %d", char.Experience, tnl)},
 			},
 		})
+	}
+
+	// Modifiers section: show modifiers not already covered by stats/combat/resources.
+	var modLines []StatLine
+	for key, val := range ci.Modifiers() {
+		if val == 0 {
+			continue
+		}
+		if _, isStat := assets.StatPerkKeys[key]; isStat {
+			continue
+		}
+		if strings.HasPrefix(key, assets.ResourceKeyPrefix) {
+			continue
+		}
+		switch key {
+		case assets.PerkKeyCombatAC, assets.PerkKeyCombatAttackMod, assets.PerkKeyCombatDmgMod:
+			continue
+		}
+		modLines = append(modLines, StatLine{Value: fmt.Sprintf("  %s: %+d", key, val)})
+	}
+	if len(modLines) > 0 {
+		sections = append(sections, StatSection{Header: "Modifiers", Lines: modLines})
 	}
 
 	// Vitals section
@@ -666,8 +690,12 @@ type Equipment struct {
 
 // NewEquipment creates an empty equipment set.
 func NewEquipment() *Equipment {
-	return &Equipment{}
+	return &Equipment{
+		PerkCache: *NewPerkCache(nil, nil),
+	}
 }
+
+// --- Equip / Unequip ---
 
 // Equip adds an object to the given slot type. maxSlots limits how many items
 // can occupy that slot type (0 means no limit). Returns an error if the slot
@@ -684,17 +712,38 @@ func (eq *Equipment) Equip(slot string, maxSlots int, obj *ObjectInstance) error
 	return nil
 }
 
-// slotCount returns how many items are equipped in the given slot type.
-// Caller must hold at least a read lock.
-func (eq *Equipment) slotCount(slot string) int {
-	count := 0
-	for _, item := range eq.objs {
-		if item.Slot == slot {
-			count++
+// RemoveObj finds and unequips an object by instance ID.
+func (eq *Equipment) RemoveObj(instanceId string) *ObjectInstance {
+	eq.mu.Lock()
+	defer eq.mu.Unlock()
+
+	for i, item := range eq.objs {
+		if item.Obj.InstanceId == instanceId {
+			eq.objs = append(eq.objs[:i], eq.objs[i+1:]...)
+			eq.rebuildPerks()
+			return item.Obj
 		}
 	}
-	return count
+	return nil
 }
+
+// Drain atomically removes and returns all equipped objects.
+func (eq *Equipment) Drain() []*ObjectInstance {
+	eq.mu.Lock()
+	defer eq.mu.Unlock()
+
+	var items []*ObjectInstance
+	for _, slot := range eq.objs {
+		if slot.Obj != nil {
+			items = append(items, slot.Obj)
+		}
+	}
+	eq.objs = []EquipSlot{}
+	eq.rebuildPerks()
+	return items
+}
+
+// --- Queries ---
 
 // SlotCount returns how many items are equipped in the given slot type.
 func (eq *Equipment) SlotCount(slot string) int {
@@ -705,7 +754,6 @@ func (eq *Equipment) SlotCount(slot string) int {
 }
 
 // FindObj searches equipped items for one whose definition matches the given alias.
-// Returns nil if not found.
 func (eq *Equipment) FindObj(name string) *ObjectInstance {
 	eq.mu.RLock()
 	defer eq.mu.RUnlock()
@@ -730,27 +778,20 @@ func (eq *Equipment) ForEachSlot(fn func(EquipSlot)) {
 	}
 }
 
-// Drain atomically removes and returns all equipped objects.
-func (eq *Equipment) Drain() []*ObjectInstance {
-	eq.mu.Lock()
-	defer eq.mu.Unlock()
-
-	var items []*ObjectInstance
-	for _, slot := range eq.objs {
-		if slot.Obj != nil {
-			items = append(items, slot.Obj)
-		}
-	}
-	eq.objs = []EquipSlot{}
-	eq.rebuildPerks()
-	return items
-}
-
 // Len returns the number of equipped items.
 func (eq *Equipment) Len() int {
 	eq.mu.RLock()
 	defer eq.mu.RUnlock()
 	return len(eq.objs)
+}
+
+// --- Perks ---
+
+// Snapshot returns the pre-resolved equipment perks and version atomically.
+func (eq *Equipment) Snapshot() (*ResolvedPerks, uint64) {
+	eq.mu.RLock()
+	defer eq.mu.RUnlock()
+	return eq.PerkCache.Snapshot()
 }
 
 // rebuildPerks aggregates perks from all equipped items into the embedded PerkCache.
@@ -765,17 +806,14 @@ func (eq *Equipment) rebuildPerks() {
 	eq.SetOwn(perks)
 }
 
-// RemoveObj finds and unequips an object by instance ID.
-func (eq *Equipment) RemoveObj(instanceId string) *ObjectInstance {
-	eq.mu.Lock()
-	defer eq.mu.Unlock()
-
-	for i, item := range eq.objs {
-		if item.Obj.InstanceId == instanceId {
-			eq.objs = append(eq.objs[:i], eq.objs[i+1:]...)
-			eq.rebuildPerks()
-			return item.Obj
+// slotCount returns how many items are equipped in the given slot type.
+// Caller must hold at least a read lock.
+func (eq *Equipment) slotCount(slot string) int {
+	count := 0
+	for _, item := range eq.objs {
+		if item.Slot == slot {
+			count++
 		}
 	}
-	return nil
+	return count
 }

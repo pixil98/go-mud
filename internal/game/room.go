@@ -25,6 +25,8 @@ type RoomInstance struct {
 	players    map[string]*CharacterInstance
 	exitClosed map[string]bool // runtime closed state for exits with a Closure
 	exitLocked map[string]bool // runtime locked state for exits with a Lock
+
+	Perks *TimedPerkCache
 }
 
 // NewRoomInstance creates a RoomInstance from a resolved SmartIdentifier.
@@ -39,6 +41,7 @@ func NewRoomInstance(room storage.SmartIdentifier[*assets.Room]) (*RoomInstance,
 		players:    make(map[string]*CharacterInstance),
 		exitClosed: make(map[string]bool),
 		exitLocked: make(map[string]bool),
+		Perks:      NewTimedPerkCache(nil),
 	}
 	ri.initExitClosures()
 	return ri, nil
@@ -224,7 +227,7 @@ func (ri *RoomInstance) spawnMob(mob storage.SmartIdentifier[*assets.Mobile]) (*
 			inventory: NewInventory(),
 			equipment: NewEquipment(),
 			level:     def.Level,
-			PerkCache: *NewPerkCache(def.Perks),
+			PerkCache: *NewPerkCache(def.Perks, nil),
 		},
 	}
 	mi.initResources()

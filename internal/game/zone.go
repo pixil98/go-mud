@@ -16,6 +16,8 @@ type ZoneInstance struct {
 	lifespanDuration time.Duration // parsed lifespan
 
 	rooms map[string]*RoomInstance
+
+	Perks *TimedPerkCache
 }
 
 func NewZoneInstance(zone storage.SmartIdentifier[*assets.Zone]) (*ZoneInstance, error) {
@@ -26,6 +28,7 @@ func NewZoneInstance(zone storage.SmartIdentifier[*assets.Zone]) (*ZoneInstance,
 	zi := &ZoneInstance{
 		Zone:  zone,
 		rooms: make(map[string]*RoomInstance),
+		Perks: NewTimedPerkCache(nil),
 	}
 	if def.Lifespan != "" {
 		d, err := time.ParseDuration(def.Lifespan)
@@ -37,8 +40,10 @@ func NewZoneInstance(zone storage.SmartIdentifier[*assets.Zone]) (*ZoneInstance,
 	return zi, nil
 }
 
-// AddRoom adds a room instance to the zone.
+// AddRoom adds a room instance to the zone and wires the zone's
+// TimedPerkCache as a source for the room's TimedPerkCache.
 func (z *ZoneInstance) AddRoom(ri *RoomInstance) {
+	ri.Perks.AddSource("zone", z.Perks)
 	z.rooms[ri.Room.Id()] = ri
 }
 

@@ -2,6 +2,7 @@ package game
 
 import (
 	"slices"
+	"sync"
 
 	"github.com/pixil98/go-mud/internal/assets"
 )
@@ -13,11 +14,14 @@ type ResolvedPerks struct {
 	grants    map[string][]string
 }
 
-func newResolvedPerks() *ResolvedPerks {
-	return &ResolvedPerks{
+// NewResolvedPerks creates a ResolvedPerks, optionally pre-populated from a perk list.
+func NewResolvedPerks(perks []assets.Perk) *ResolvedPerks {
+	r := &ResolvedPerks{
 		modifiers: make(map[string]int),
 		grants:    make(map[string][]string),
 	}
+	r.addPerks(perks)
+	return r
 }
 
 func (r *ResolvedPerks) addPerks(perks []assets.Perk) {
@@ -40,53 +44,75 @@ func (r *ResolvedPerks) merge(other *ResolvedPerks) {
 	}
 }
 
-// PerkSource is implemented by any type that provides a PerkCache.
-// Types that embed PerkCache satisfy this automatically.
+// PerkSource provides pre-resolved perks for composition into a PerkCache.
+// Snapshot returns the resolved perks and a version counter atomically.
+// The version must increment whenever the perks change.
 type PerkSource interface {
-	perkCache() *PerkCache
+	Snapshot() (resolved *ResolvedPerks, version uint64)
 }
 
-// perkCache returns the receiver, satisfying PerkSource for types that embed PerkCache.
-func (pc *PerkCache) perkCache() *PerkCache { return pc }
-
-// PerkCache is a composable, lazy-resolving perk aggregator.
-// It holds its own perks and optional nested sources (any PerkSource).
-// Resolution is lazy: the first query after invalidation rebuilds the cache.
+// PerkCache is a lazy-resolving perk aggregator. It holds its own perks
+// and optional named PerkSources. Resolution is lazy: the first query
+// after a change rebuilds the cache.
 //
 // Thread safety: PerkCache is NOT internally locked. The owning struct
 // must hold its own mutex when calling PerkCache methods.
 type PerkCache struct {
-	own      []assets.Perk
-	sources  []PerkSource
-	resolved *ResolvedPerks
+	own            []assets.Perk
+	sources        map[string]PerkSource
+	sourceVersions map[string]uint64
+	version        uint64
+	resolved       *ResolvedPerks
 }
 
-// NewPerkCache creates a PerkCache with the given own perks and nested sources.
-func NewPerkCache(own []assets.Perk, sources ...PerkSource) *PerkCache {
+// NewPerkCache creates a PerkCache with the given own perks and named sources.
+func NewPerkCache(own []assets.Perk, sources map[string]PerkSource) *PerkCache {
+	if sources == nil {
+		sources = make(map[string]PerkSource)
+	}
 	return &PerkCache{
-		own:     own,
-		sources: sources,
+		own:            own,
+		sources:        sources,
+		sourceVersions: make(map[string]uint64),
 	}
 }
 
 // SetOwn replaces the cache's own perks and invalidates the resolved state.
 func (pc *PerkCache) SetOwn(perks []assets.Perk) {
 	pc.own = perks
-	pc.Invalidate()
+	pc.invalidate()
 }
 
-// Invalidate clears the resolved state, forcing re-resolution on the next query.
-func (pc *PerkCache) Invalidate() {
+// AddSource adds a named PerkSource and invalidates the cache.
+func (pc *PerkCache) AddSource(name string, s PerkSource) {
+	pc.sources[name] = s
+	pc.invalidate()
+}
+
+// RemoveSource removes a named PerkSource and invalidates the cache.
+// No-op if the name is not found.
+func (pc *PerkCache) RemoveSource(name string) {
+	if _, ok := pc.sources[name]; ok {
+		delete(pc.sources, name)
+		delete(pc.sourceVersions, name)
+		pc.invalidate()
+	}
+}
+
+// invalidate clears the resolved state and increments the version.
+func (pc *PerkCache) invalidate() {
 	pc.resolved = nil
+	pc.version++
 }
 
-// isDirty returns true if this cache or any nested source needs resolution.
+// isDirty returns true if the cache needs re-resolution.
 func (pc *PerkCache) isDirty() bool {
 	if pc.resolved == nil {
 		return true
 	}
-	for _, s := range pc.sources {
-		if s.perkCache().isDirty() {
+	for name, s := range pc.sources {
+		_, v := s.Snapshot()
+		if v != pc.sourceVersions[name] {
 			return true
 		}
 	}
@@ -98,13 +124,26 @@ func (pc *PerkCache) resolve() *ResolvedPerks {
 	if !pc.isDirty() {
 		return pc.resolved
 	}
-	r := newResolvedPerks()
-	r.addPerks(pc.own)
-	for _, s := range pc.sources {
-		r.merge(s.perkCache().resolve())
+	r := NewResolvedPerks(pc.own)
+	for name, s := range pc.sources {
+		resolved, v := s.Snapshot()
+		r.merge(resolved)
+		pc.sourceVersions[name] = v
 	}
 	pc.resolved = r
 	return r
+}
+
+// Snapshot returns the resolved perks and a composite version that
+// reflects changes in both own perks and all sources.
+func (pc *PerkCache) Snapshot() (*ResolvedPerks, uint64) {
+	resolved := pc.resolve()
+	v := pc.version
+	for _, s := range pc.sources {
+		_, sv := s.Snapshot()
+		v += sv
+	}
+	return resolved, v
 }
 
 // ModifierValue returns the summed value for a modifier perk key.
@@ -130,4 +169,85 @@ func (pc *PerkCache) HasGrant(key, arg string) bool {
 // Grants returns the full grants map. Do not mutate the returned map.
 func (pc *PerkCache) Grants() map[string][]string {
 	return pc.resolve().grants
+}
+
+// timedPerk is a named set of perks with a remaining tick count.
+type timedPerk struct {
+	perks     []assets.Perk
+	remaining int
+}
+
+// TimedPerkCache manages named timed perks that expire after a set number
+// of ticks. It embeds PerkCache so it can be used as a PerkSource for other
+// PerkCaches, enabling the room -> zone -> world composition chain.
+//
+// Thread safety: TimedPerkCache has its own mutex and is safe for
+// concurrent use.
+type TimedPerkCache struct {
+	mu      sync.Mutex
+	entries map[string]*timedPerk
+	PerkCache
+}
+
+// NewTimedPerkCache creates an empty TimedPerkCache with optional sources.
+func NewTimedPerkCache(sources map[string]PerkSource) *TimedPerkCache {
+	return &TimedPerkCache{
+		entries:   make(map[string]*timedPerk),
+		PerkCache: *NewPerkCache(nil, sources),
+	}
+}
+
+// AddPerks registers a named set of perks with a tick duration.
+// If an entry with the same name already exists, it is replaced.
+func (t *TimedPerkCache) AddPerks(name string, perks []assets.Perk, ticks int) {
+	t.mu.Lock()
+	defer t.mu.Unlock()
+
+	t.entries[name] = &timedPerk{perks: perks, remaining: ticks}
+	t.rebuild()
+}
+
+// Tick decrements all timers and removes expired entries.
+// Returns true if any entries were removed.
+func (t *TimedPerkCache) Tick() bool {
+	t.mu.Lock()
+	defer t.mu.Unlock()
+
+	changed := false
+	for name, e := range t.entries {
+		e.remaining--
+		if e.remaining <= 0 {
+			delete(t.entries, name)
+			changed = true
+		}
+	}
+	if changed {
+		t.rebuild()
+	}
+	return changed
+}
+
+// Snapshot returns the pre-resolved perks and version atomically.
+func (t *TimedPerkCache) Snapshot() (*ResolvedPerks, uint64) {
+	t.mu.Lock()
+	defer t.mu.Unlock()
+	return t.PerkCache.Snapshot()
+}
+
+// HasPerks returns true if an entry with the given name is active.
+func (t *TimedPerkCache) HasPerks(name string) bool {
+	t.mu.Lock()
+	defer t.mu.Unlock()
+	_, ok := t.entries[name]
+	return ok
+}
+
+// rebuild aggregates perks from all active entries into the embedded PerkCache.
+// Caller must hold the mutex.
+func (t *TimedPerkCache) rebuild() {
+	var all []assets.Perk
+	for _, e := range t.entries {
+		all = append(all, e.perks...)
+	}
+	t.SetOwn(all)
 }

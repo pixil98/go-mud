@@ -1,12 +1,17 @@
 package commands
 
 import (
+	"encoding/json"
 	"fmt"
+	"math/rand/v2"
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
 )
+
+// randIntn wraps rand.IntN for testability.
+var randIntn = rand.IntN
 
 // EffectHandler executes an ability's gameplay effect (damage, healing, etc.).
 type EffectHandler interface {
@@ -94,8 +99,16 @@ func executeAbility(ability *assets.Ability, in *CommandInput, targets map[strin
 	return nil
 }
 
-// damageEffect applies flat damage to the primary target.
-// Reads "base_damage" from the ability's Config (numeric value).
+// damageEffect applies damage to the primary target.
+//
+// Config fields:
+//   - "base_damage" (number, required): flat damage before modifiers.
+//   - "damage_types" ([]string, optional): damage type tags (e.g. ["fire"]).
+//     The caster's core.damage.<type>.pct modifiers are summed and applied as
+//     a percentage bonus. core.damage.<type>.crit_pct modifiers give a percent
+//     chance to double damage.
+//
+// The caster's core.combat.damage_mod is always added as flat bonus damage.
 type damageEffect struct{}
 
 func (e *damageEffect) Execute(ability *assets.Ability, in *CommandInput, targets map[string]*TargetRef) error {
@@ -104,6 +117,33 @@ func (e *damageEffect) Execute(ability *assets.Ability, in *CommandInput, target
 		return fmt.Errorf("damage effect: base_damage config required")
 	}
 	damage := int(baseDamage)
+
+	// Add flat damage_mod from caster perks
+	damage += in.Char.ModifierValue(assets.PerkKeyCombatDmgMod)
+
+	// Apply damage type percentage bonuses and crit
+	if arr, ok := ability.Config["damage_types"].([]any); ok && len(arr) > 0 {
+		pctBonus := 0
+		critPct := 0
+		for _, v := range arr {
+			dt, ok := v.(string)
+			if !ok {
+				continue
+			}
+			pctBonus += in.Char.ModifierValue(assets.DamageKey(dt, assets.DamageAspectPct))
+			critPct += in.Char.ModifierValue(assets.DamageKey(dt, assets.DamageAspectCritPct))
+		}
+		if pctBonus != 0 {
+			damage = damage * (100 + pctBonus) / 100
+		}
+		if critPct > 0 && randIntn(100) < critPct {
+			damage *= 2
+		}
+	}
+
+	if damage < 1 {
+		damage = 1
+	}
 
 	// Apply to the first resolved target
 	for _, spec := range ability.Command.Targets {
@@ -125,4 +165,47 @@ func applyDamage(ref *TargetRef, amount int) {
 	} else if ref.Mob != nil {
 		ref.Mob.instance.AdjustResource(assets.ResourceHp, -amount)
 	}
+}
+
+// roomBuffEffect applies timed perks to the caster's current room.
+//
+// Config fields:
+//   - "perks" ([]Perk, required): perks to apply to the room.
+//   - "duration" (number, required): number of ticks the perks last.
+//   - "name" (string, optional): entry name for the timed perk. Defaults to the ability name.
+type roomBuffEffect struct {
+	world RoomLocator
+}
+
+func (e *roomBuffEffect) Execute(ability *assets.Ability, in *CommandInput, _ map[string]*TargetRef) error {
+	dur, ok := ability.Config["duration"].(float64)
+	if !ok || dur <= 0 {
+		return fmt.Errorf("room_buff effect: positive duration config required")
+	}
+
+	perksRaw, ok := ability.Config["perks"]
+	if !ok {
+		return fmt.Errorf("room_buff effect: perks config required")
+	}
+	raw, err := json.Marshal(perksRaw)
+	if err != nil {
+		return fmt.Errorf("room_buff effect: marshaling perks: %w", err)
+	}
+	var perks []assets.Perk
+	if err := json.Unmarshal(raw, &perks); err != nil {
+		return fmt.Errorf("room_buff effect: parsing perks: %w", err)
+	}
+
+	name, _ := ability.Config["name"].(string)
+	if name == "" {
+		name = ability.Name
+	}
+
+	zoneId, roomId := in.Char.Location()
+	room := e.world.GetRoom(zoneId, roomId)
+	if room == nil {
+		return fmt.Errorf("room_buff effect: room not found")
+	}
+	room.Perks.AddPerks(name, perks, int(dur))
+	return nil
 }
