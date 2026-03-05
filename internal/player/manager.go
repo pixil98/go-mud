@@ -258,12 +258,10 @@ func (m *PlayerManager) initCharacter(rw io.ReadWriter, char *assets.Character) 
 		char.BaseStats = assets.DefaultBaseStats()
 	}
 
-	// Level 0 means brand new character — do the initial level-up directly on the spec.
-	// We don't have a CharacterInstance yet, so we apply the HP gain inline here.
+	// Level 0 means brand new character — set to level 1. Resource pools
+	// (HP, etc.) are computed from perks when NewCharacterInstance runs.
 	if char.Level == 0 {
 		char.Level = 1
-		char.MaxHP = 20 + 8 // base 20 + 1d8 at level 1 (fixed roll for new chars)
-		char.CurrentHP = char.MaxHP
 	}
 
 	return nil

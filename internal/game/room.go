@@ -223,10 +223,11 @@ func (ri *RoomInstance) spawnMob(mob storage.SmartIdentifier[*assets.Mobile]) (*
 		ActorInstance: ActorInstance{
 			inventory: NewInventory(),
 			equipment: NewEquipment(),
-			maxHP:     def.MaxHP,
-			currentHP: def.MaxHP,
+			level:     def.Level,
+			PerkCache: *NewPerkCache(def.Perks),
 		},
 	}
+	mi.initResources()
 	for _, spawn := range def.Inventory {
 		oi, err := SpawnObject(spawn)
 		if err != nil {

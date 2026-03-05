@@ -8,34 +8,45 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
-// PlayerCombatant adapts a CharacterInstance for the combat system.
-type PlayerCombatant struct {
-	Character storage.SmartIdentifier[*assets.Character]
-	Player    *game.CharacterInstance
+// combatActor is the subset of game.CharacterInstance / game.MobileInstance
+// methods used by the combat system. Both types satisfy this via ActorInstance
+// embedding.
+type combatActor interface {
+	Resource(name string) (current, max int)
+	AdjustResource(name string, delta int)
+	SetInCombat(v bool)
+	ModifierValue(key string) int
+	GrantArgs(key string) []string
 }
 
-func (c *PlayerCombatant) CombatID() string   { return fmt.Sprintf("player:%s", c.Character.Id()) }
-func (c *PlayerCombatant) CombatName() string { return c.Character.Get().Name }
+// baseCombatant implements the Combatant methods that are identical for
+// players and mobs. Concrete types embed this and provide identity, AC,
+// Attacks, and Level.
+type baseCombatant struct {
+	actor combatActor
+}
 
-func (c *PlayerCombatant) IsAlive() bool {
-	cur, _ := c.Player.HP()
+func (b *baseCombatant) IsAlive() bool {
+	cur, _ := b.actor.Resource(assets.ResourceHp)
 	return cur > 0
 }
 
-func (c *PlayerCombatant) AC() int {
-	stats := c.Player.EffectiveStats()
-	return 10 + stats[assets.StatDEX].Mod() + c.Player.ModifierValue(assets.PerkKeyCombatAC)
+func (b *baseCombatant) AdjustHP(delta int) {
+	b.actor.AdjustResource(assets.ResourceHp, delta)
 }
 
-func (c *PlayerCombatant) Attacks() []Attack {
-	char := c.Character.Get()
-	stats := c.Player.EffectiveStats()
-	strMod := stats[assets.StatSTR].Mod()
-	attackMod := strMod + char.Level/2
-	dmgMod := strMod + c.Player.ModifierValue(assets.PerkKeyCombatDmgMod)
+func (b *baseCombatant) SetInCombat(v bool) {
+	b.actor.SetInCombat(v)
+}
+
+// buildAttacks constructs the attack list from grant perks, reading attackMod
+// and dmgMod from perk keys.
+func (b *baseCombatant) buildAttacks() []Attack {
+	attackMod := b.actor.ModifierValue(assets.PerkKeyCombatAttackMod)
+	dmgMod := b.actor.ModifierValue(assets.PerkKeyCombatDmgMod)
 
 	var attacks []Attack
-	for _, expr := range c.Player.Grants(assets.PerkGrantAttack) {
+	for _, expr := range b.actor.GrantArgs(assets.PerkGrantAttack) {
 		dice, sides, bonus, ok := parseAttackDice(expr)
 		if !ok {
 			continue
@@ -45,16 +56,6 @@ func (c *PlayerCombatant) Attacks() []Attack {
 			DamageDice:  dice,
 			DamageSides: sides,
 			DamageMod:   dmgMod + bonus,
-		})
-	}
-
-	// Unarmed fallback.
-	if len(attacks) == 0 {
-		attacks = append(attacks, Attack{
-			Mod:         attackMod,
-			DamageDice:  1,
-			DamageSides: 4,
-			DamageMod:   dmgMod,
 		})
 	}
 	return attacks
@@ -75,9 +76,52 @@ func parseAttackDice(expr string) (dice, sides, bonus int, ok bool) {
 	return 0, 0, 0, false
 }
 
-func (c *PlayerCombatant) AdjustHP(delta int) { c.Player.AdjustHP(delta) }
-func (c *PlayerCombatant) SetInCombat(v bool) { c.Player.SetInCombat(v) }
+// PlayerCombatant adapts a CharacterInstance for the combat system.
+type PlayerCombatant struct {
+	baseCombatant
+	Character storage.SmartIdentifier[*assets.Character]
+	Player    *game.CharacterInstance
+}
+
+// NewPlayerCombatant creates a PlayerCombatant for the given character.
+func NewPlayerCombatant(char storage.SmartIdentifier[*assets.Character], player *game.CharacterInstance) *PlayerCombatant {
+	return &PlayerCombatant{
+		baseCombatant: baseCombatant{actor: player},
+		Character:     char,
+		Player:        player,
+	}
+}
+
+func (c *PlayerCombatant) CombatID() string   { return fmt.Sprintf("player:%s", c.Character.Id()) }
+func (c *PlayerCombatant) CombatName() string { return c.Character.Get().Name }
 func (c *PlayerCombatant) Level() int         { return c.Character.Get().Level }
+
+func (c *PlayerCombatant) AC() int {
+	stats := c.Player.EffectiveStats()
+	return stats[assets.StatDEX].Mod() + c.actor.ModifierValue(assets.PerkKeyCombatAC)
+}
+
+func (c *PlayerCombatant) Attacks() []Attack {
+	attacks := c.buildAttacks()
+	// Unarmed fallback: players always have at least a 1d4 punch.
+	if len(attacks) == 0 {
+		attacks = append(attacks, Attack{
+			Mod:         c.actor.ModifierValue(assets.PerkKeyCombatAttackMod),
+			DamageDice:  1,
+			DamageSides: 4,
+			DamageMod:   c.actor.ModifierValue(assets.PerkKeyCombatDmgMod),
+		})
+	}
+	// Add stat-based bonuses.
+	char := c.Character.Get()
+	stats := c.Player.EffectiveStats()
+	strMod := stats[assets.StatSTR].Mod()
+	for i := range attacks {
+		attacks[i].Mod += strMod + char.Level/2
+		attacks[i].DamageMod += strMod
+	}
+	return attacks
+}
 
 // AwardXP adds amount to the player's experience and returns the message to
 // send them. Returns empty string if the award is zero.
@@ -96,32 +140,29 @@ func (c *PlayerCombatant) AwardXP(amount int) string {
 
 // MobCombatant adapts a MobileInstance for the combat system.
 type MobCombatant struct {
+	baseCombatant
 	Instance *game.MobileInstance
+}
+
+// NewMobCombatant creates a MobCombatant for the given mobile instance.
+func NewMobCombatant(instance *game.MobileInstance) *MobCombatant {
+	return &MobCombatant{
+		baseCombatant: baseCombatant{actor: instance},
+		Instance:      instance,
+	}
 }
 
 func (c *MobCombatant) CombatID() string   { return fmt.Sprintf("mob:%s", c.Instance.InstanceId) }
 func (c *MobCombatant) CombatName() string { return c.Instance.Mobile.Get().ShortDesc }
+func (c *MobCombatant) Level() int         { return c.Instance.Mobile.Get().Level }
 
-func (c *MobCombatant) IsAlive() bool {
-	cur, _ := c.Instance.HP()
-	return cur > 0
+func (c *MobCombatant) AC() int {
+	return c.actor.ModifierValue(assets.PerkKeyCombatAC)
 }
-
-func (c *MobCombatant) AC() int { return c.Instance.Mobile.Get().AC }
 
 func (c *MobCombatant) Attacks() []Attack {
-	def := c.Instance.Mobile.Get()
-	return []Attack{{
-		Mod:         def.AttackMod,
-		DamageDice:  def.DamageDice,
-		DamageSides: def.DamageSides,
-		DamageMod:   def.DamageMod,
-	}}
+	return c.buildAttacks()
 }
-
-func (c *MobCombatant) AdjustHP(delta int) { c.Instance.AdjustHP(delta) }
-func (c *MobCombatant) SetInCombat(v bool) { c.Instance.SetInCombat(v) }
-func (c *MobCombatant) Level() int         { return c.Instance.Mobile.Get().Level }
 
 // ExpReward returns the XP value of killing this mob. If the mob has no
 // explicit exp_reward, falls back to the level-based formula.

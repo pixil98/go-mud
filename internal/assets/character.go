@@ -33,9 +33,8 @@ type Character struct {
 	BaseStats  map[StatKey]int `json:"base_stats,omitempty"`
 	Experience int            `json:"experience,omitempty"`
 
-	// Persisted runtime state
-	MaxHP     int `json:"max_hp,omitempty"`
-	CurrentHP int `json:"current_hp,omitempty"`
+	// Persisted resource current values (max is always computed from perks).
+	Resources map[string]int `json:"resources,omitempty"`
 
 	// Inventory and equipment stored as spawn specs so objects are re-materialized on login
 	Inventory []ObjectSpawn          `json:"inventory,omitempty"`

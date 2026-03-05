@@ -33,13 +33,8 @@ type Mobile struct {
 
 	Level int `json:"level,omitempty"`
 
-	// Combat template values used to initialize MobileInstance CombatStats on spawn.
-	MaxHP       int `json:"max_hp,omitempty"`
-	AC          int `json:"ac,omitempty"`
-	AttackMod   int `json:"attack_mod,omitempty"`
-	DamageDice  int `json:"damage_dice,omitempty"`
-	DamageSides int `json:"damage_sides,omitempty"`
-	DamageMod   int `json:"damage_mod,omitempty"`
+	// Perks define the mobile's resources, combat stats, and other perk-driven values.
+	Perks []Perk `json:"perks,omitempty"`
 
 	// ExpReward overrides the base XP awarded when this mobile is killed.
 	// If 0, base XP is calculated from the mobile's level.
@@ -66,8 +61,10 @@ func (m *Mobile) Validate() error {
 	if m.ShortDesc == "" {
 		el.Add(fmt.Errorf("mobile short description is required"))
 	}
-	if m.MaxHP <= 0 {
-		el.Add(fmt.Errorf("mobile max_hp is required and must be positive"))
+	for i := range m.Perks {
+		if err := m.Perks[i].validate(); err != nil {
+			el.Add(fmt.Errorf("perk[%d]: %w", i, err))
+		}
 	}
 	return el.Err()
 }

@@ -1,5 +1,12 @@
 package game
 
+import (
+	"fmt"
+	"strings"
+
+	"github.com/pixil98/go-mud/internal/assets"
+)
+
 // StatLine is a single line in a stat section.
 type StatLine struct {
 	Value  string
@@ -12,16 +19,100 @@ type StatSection struct {
 	Lines  []StatLine
 }
 
-// ActorInstance holds HP, inventory, and equipment shared between CharacterInstance and MobileInstance.
+// ActorInstance holds resource pools, inventory, equipment, and perks shared
+// between CharacterInstance and MobileInstance.
 type ActorInstance struct {
 	inventory *Inventory
 	equipment *Equipment
-	maxHP     int
-	currentHP int
+	resources map[string]int // current values only; max derived from PerkCache
+	level     int
+	PerkCache
 }
 
-// adjustHP changes currentHP by delta (positive = heal, negative = damage),
-// clamping the result to [0, maxHP]. Caller must hold the owning type's write lock.
-func (a *ActorInstance) adjustHP(delta int) {
-	a.currentHP = max(0, min(a.currentHP+delta, a.maxHP))
+// resourceMax computes the max value for a named resource from perks.
+// Formula: sum(core.resource.<name>.max) + level * sum(core.resource.<name>.per_level)
+func (a *ActorInstance) resourceMax(name string) int {
+	return a.ModifierValue(assets.ResourceKey(name, assets.ResourceAspectMax)) +
+		a.level*a.ModifierValue(assets.ResourceKey(name, assets.ResourceAspectPerLevel))
+}
+
+// resource returns (current, max) for the named resource.
+// Returns (0, 0) if the resource doesn't exist.
+func (a *ActorInstance) resource(name string) (current, max int) {
+	cur, ok := a.resources[name]
+	if !ok {
+		return 0, 0
+	}
+	return cur, a.resourceMax(name)
+}
+
+// setResourceCurrent sets the current value for a named resource.
+func (a *ActorInstance) setResourceCurrent(name string, current int) {
+	if a.resources == nil {
+		a.resources = make(map[string]int)
+	}
+	a.resources[name] = current
+}
+
+// adjustResource changes a resource's current value by delta, clamping to [0, max].
+// No-op if the resource doesn't exist.
+func (a *ActorInstance) adjustResource(name string, delta int) {
+	cur, ok := a.resources[name]
+	if !ok {
+		return
+	}
+	mx := a.resourceMax(name)
+	a.resources[name] = max(0, min(cur+delta, mx))
+}
+
+// initResources discovers all resource perk keys and initializes current = max
+// for each resource. Call this after the PerkCache is wired and resolved.
+func (a *ActorInstance) initResources() {
+	if a.resources == nil {
+		a.resources = make(map[string]int)
+	}
+	for name := range a.resourceNames() {
+		a.resources[name] = a.resourceMax(name)
+	}
+}
+
+// resourceNames returns the set of resource names discovered from perk modifier keys.
+func (a *ActorInstance) resourceNames() map[string]struct{} {
+	names := make(map[string]struct{})
+	for key := range a.Modifiers() {
+		if !strings.HasPrefix(key, assets.ResourceKeyPrefix) {
+			continue
+		}
+		rest := key[len(assets.ResourceKeyPrefix):]
+		dotIdx := strings.Index(rest, ".")
+		if dotIdx < 0 {
+			continue
+		}
+		names[rest[:dotIdx]] = struct{}{}
+	}
+	return names
+}
+
+// regenTick applies flat regen from perks to all resources.
+// Formula per resource: sum(core.resource.<name>.regen).
+// Caller must hold the owning type's write lock.
+func (a *ActorInstance) regenTick() {
+	for name := range a.resources {
+		regen := a.ModifierValue(assets.ResourceKey(name, assets.ResourceAspectRegen))
+		if regen > 0 {
+			a.adjustResource(name, regen)
+		}
+	}
+}
+
+// ForEachResource calls fn for each resource. Caller must hold the owning type's lock.
+func (a *ActorInstance) ForEachResource(fn func(name string, current, max int)) {
+	for name, cur := range a.resources {
+		fn(name, cur, a.resourceMax(name))
+	}
+}
+
+// ResourceLine returns a formatted display line for a resource (e.g. "HP: 45/50").
+func ResourceLine(name string, current, max int) string {
+	return fmt.Sprintf("%s: %d/%d", name, current, max)
 }

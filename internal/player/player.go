@@ -9,6 +9,7 @@ import (
 	"log/slog"
 	"strings"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/commands"
 	"github.com/pixil98/go-mud/internal/game"
 )
@@ -152,7 +153,7 @@ func (p *Player) Play(ctx context.Context) error {
 func (p *Player) prompt() error {
 	prompt := "> "
 	if ps := p.world.GetPlayer(p.charId); ps != nil {
-		currentHP, maxHP := ps.HP()
+		currentHP, maxHP := ps.Resource(assets.ResourceHp)
 		prompt = fmt.Sprintf("[%d/%dHP] > ", currentHP, maxHP)
 	}
 	_, err := p.conn.Write([]byte(prompt))

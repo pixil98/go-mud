@@ -103,7 +103,7 @@ func playerRefFromState(ps *game.CharacterInstance) *PlayerRef {
 
 // Describe returns a detailed description of the player, including equipped items.
 func (r *PlayerRef) Describe() string {
-	currentHP, maxHP := r.session.HP()
+	currentHP, maxHP := r.session.Resource(assets.ResourceHp)
 	return describeActor(r.Description, r.Name, currentHP, maxHP, r.session.GetEquipment())
 }
 
@@ -129,7 +129,7 @@ func mobRefFromInstance(mi *game.MobileInstance) *MobileRef {
 
 // Describe returns a detailed description of the mob, including equipped items.
 func (r *MobileRef) Describe() string {
-	currentHP, maxHP := r.instance.HP()
+	currentHP, maxHP := r.instance.Resource(assets.ResourceHp)
 	return describeActor(r.Description, r.Name, currentHP, maxHP, r.instance.GetEquipment())
 }
 

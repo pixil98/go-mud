@@ -37,27 +37,33 @@ func (mi *MobileInstance) SetInCombat(v bool) {
 	mi.inCombat = v
 }
 
-// HP returns the current and max hit points.
-func (mi *MobileInstance) HP() (current, max int) {
+// Resource returns the current and max for a named resource.
+func (mi *MobileInstance) Resource(name string) (current, max int) {
 	mi.mu.RLock()
 	defer mi.mu.RUnlock()
-	return mi.currentHP, mi.maxHP
+	return mi.resource(name)
 }
 
-// SetHP sets the current and max hit points.
-func (mi *MobileInstance) SetHP(current, max int) {
+// SetResource sets the current value for a named resource, clamped to [0, max].
+func (mi *MobileInstance) SetResource(name string, current int) {
 	mi.mu.Lock()
 	defer mi.mu.Unlock()
-	mi.currentHP = current
-	mi.maxHP = max
+	mx := mi.resourceMax(name)
+	mi.setResourceCurrent(name, max(0, min(current, mx)))
 }
 
-// AdjustHP changes current HP by delta (positive = heal, negative = damage),
-// clamping the result to [0, maxHP].
-func (mi *MobileInstance) AdjustHP(delta int) {
+// AdjustResource changes a resource's current value by delta, clamping to [0, max].
+func (mi *MobileInstance) AdjustResource(name string, delta int) {
 	mi.mu.Lock()
 	defer mi.mu.Unlock()
-	mi.ActorInstance.adjustHP(delta)
+	mi.adjustResource(name, delta)
+}
+
+// RegenTick regenerates all resources based on perk-driven regen values.
+func (mi *MobileInstance) RegenTick() {
+	mi.mu.Lock()
+	defer mi.mu.Unlock()
+	mi.regenTick()
 }
 
 // GetInventory returns the mobile's inventory.

@@ -2,7 +2,6 @@ package assets
 
 import (
 	"fmt"
-	"slices"
 	"text/template"
 
 	"github.com/Masterminds/sprig/v3"
@@ -15,13 +14,7 @@ const (
 	AbilityTypeSkill = "skill"
 )
 
-// Resource type constants.
-const (
-	ResourceMana    = "mana"
-	ResourceStamina = "stamina"
-)
 
-var validResources = []string{ResourceMana, ResourceStamina}
 
 // Ability defines a spell or skill loaded from asset files.
 // Both types use an embedded Command for input parsing and target resolution.
@@ -65,9 +58,6 @@ func (a *Ability) Validate() error {
 	}
 
 	// Resource invariants
-	if a.Resource != "" && !slices.Contains(validResources, a.Resource) {
-		el.Add(fmt.Errorf("unknown resource %q", a.Resource))
-	}
 	if a.ResourceCost > 0 && a.Resource == "" {
 		el.Add(fmt.Errorf("resource_cost requires resource"))
 	}

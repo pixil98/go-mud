@@ -14,10 +14,32 @@ const (
 	PerkKeyINT          PerkKey = "core.stats.int"
 	PerkKeyWIS          PerkKey = "core.stats.wis"
 	PerkKeyCHA          PerkKey = "core.stats.cha"
-	PerkKeyMaxHp        PerkKey = "core.resource.hp.max"
-	PerkKeyCombatAC     PerkKey = "core.combat.ac"
-	PerkKeyCombatDmgMod PerkKey = "core.combat.damage_mod"
+	PerkKeyCombatAC        PerkKey = "core.combat.ac"
+	PerkKeyCombatAttackMod PerkKey = "core.combat.attack_mod"
+	PerkKeyCombatDmgMod    PerkKey = "core.combat.damage_mod"
 )
+
+// ResourceHp is the well-known resource name for hit points.
+const ResourceHp = "hp"
+
+// ResourceKeyPrefix is the perk key prefix for resource modifiers.
+// Resource perk keys follow: core.resource.<name>.<aspect>
+const ResourceKeyPrefix = "core.resource."
+
+// ResourceAspect identifies a specific aspect of a perk-driven resource pool.
+type ResourceAspect string
+
+const (
+	ResourceAspectMax      ResourceAspect = "max"
+	ResourceAspectPerLevel ResourceAspect = "per_level"
+	ResourceAspectRegen    ResourceAspect = "regen"
+)
+
+// ResourceKey builds a perk key for a resource aspect
+// (e.g. ResourceKey("hp", ResourceAspectMax) -> "core.resource.hp.max").
+func ResourceKey(resource string, aspect ResourceAspect) string {
+	return ResourceKeyPrefix + resource + "." + string(aspect)
+}
 
 // StatPerkKeys maps stat-related PerkKey consts to their corresponding StatKey.
 // Use this to extract ability score modifiers from modifier perks without

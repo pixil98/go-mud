@@ -39,7 +39,7 @@ func TestAbility_Validate(t *testing.T) {
 				Name:         "test-spell",
 				Type:         AbilityTypeSpell,
 				Handler:      "test-handler",
-				Resource:     ResourceMana,
+				Resource:     "test-resource",
 				ResourceCost: 10,
 				CastTime:     2,
 				Cooldown:     5,
@@ -112,20 +112,6 @@ func TestAbility_Validate(t *testing.T) {
 			},
 			expErr: "handler is required",
 		},
-		"unknown resource": {
-			ability: Ability{
-				Name:     "test-spell",
-				Type:     AbilityTypeSpell,
-				Handler:  "test-handler",
-				Resource: "bogus",
-				Command: Command{
-					Inputs:  []InputSpec{{Name: "test-target", Type: InputTypeString}},
-					Targets: []TargetSpec{{Name: "test-target", Types: []string{TargetMobile}, Input: "test-target"}},
-				},
-				Messages: AbilityMessages{Actor: "test-message"},
-			},
-			expErr: `unknown resource "bogus"`,
-		},
 		"cost without resource": {
 			ability: Ability{
 				Name:         "test-spell",
@@ -145,7 +131,7 @@ func TestAbility_Validate(t *testing.T) {
 				Name:         "test-spell",
 				Type:         AbilityTypeSpell,
 				Handler:      "test-handler",
-				Resource:     ResourceMana,
+				Resource:     "test-resource",
 				ResourceCost: -5,
 				Command: Command{
 					Inputs:  []InputSpec{{Name: "test-target", Type: InputTypeString}},
@@ -225,7 +211,7 @@ func TestAbility_Validate(t *testing.T) {
 				Name:     "test-spell",
 				Type:     AbilityTypeSpell,
 				Handler:  "test-handler",
-				Resource: ResourceMana,
+				Resource: "test-resource",
 				Command: Command{
 					Inputs:  []InputSpec{{Name: "test-target", Type: InputTypeString}},
 					Targets: []TargetSpec{{Name: "test-target", Types: []string{TargetMobile}, Input: "test-target"}},

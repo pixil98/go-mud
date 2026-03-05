@@ -7,11 +7,12 @@
         "long_desc": "The one and only floofybutt Muffin.",
         "detailed_desc": "She's too perfect to describe. It's just Muffin.",
         "level": 20,
-        "max_hp": 500,
-        "ac": 20,
-        "attack_mod": 10,
-        "damage_dice": 3,
-        "damage_sides": 8,
-        "damage_mod": 5
+        "perks": [
+            { "type": "modifier", "key": "core.resource.hp.max", "value": 500 },
+            { "type": "modifier", "key": "core.combat.ac", "value": 20 },
+            { "type": "modifier", "key": "core.combat.attack_mod", "value": 10 },
+            { "type": "modifier", "key": "core.combat.damage_mod", "value": 5 },
+            { "type": "grant", "key": "attack", "arg": "3d8" }
+        ]
     }
 }

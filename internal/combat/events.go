@@ -100,8 +100,9 @@ func (h *CombatEventHandler) onPlayerDeath(pc *PlayerCombatant, dctx DeathContex
 		slog.Warn("failed to notify slain player", "error", err)
 	}
 
-	// Restore HP
-	pc.Player.SetHP(char.MaxHP, char.MaxHP)
+	// Restore HP to full.
+	_, maxHP := pc.Player.Resource(assets.ResourceHp)
+	pc.Player.SetResource(assets.ResourceHp, maxHP)
 
 	// Move to default spawn
 	toRoom := h.world.Instances()[h.defaultZone].GetRoom(h.defaultRoom)

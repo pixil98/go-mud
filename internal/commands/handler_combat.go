@@ -47,11 +47,8 @@ func (f *KillHandlerFactory) Create() (CommandFunc, error) {
 		target := in.Targets["target"]
 
 		mi := target.Mob.instance
-		attacker := &combat.PlayerCombatant{
-			Character: in.Char.Character,
-			Player:    in.Char,
-		}
-		defender := &combat.MobCombatant{Instance: mi}
+		attacker := combat.NewPlayerCombatant(in.Char.Character, in.Char)
+		defender := combat.NewMobCombatant(mi)
 
 		zoneID, roomID := in.Char.Location()
 		err := f.combat.StartCombat(attacker, defender, zoneID, roomID)
@@ -119,10 +116,7 @@ func (f *AssistHandlerFactory) Create() (CommandFunc, error) {
 			return NewUserError(fmt.Sprintf("%s isn't fighting anyone.", assistedName))
 		}
 
-		attacker := &combat.PlayerCombatant{
-			Character: in.Char.Character,
-			Player:    in.Char,
-		}
+		attacker := combat.NewPlayerCombatant(in.Char.Character, in.Char)
 
 		zoneID, roomID := in.Char.Location()
 		if err := f.combat.StartCombat(attacker, fighter.Target, zoneID, roomID); err != nil {

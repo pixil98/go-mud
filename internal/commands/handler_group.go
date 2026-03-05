@@ -7,6 +7,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
 )
@@ -140,7 +141,7 @@ func (f *GroupHandlerFactory) showGroup(in *CommandInput) error {
 		if isLeader {
 			label = "[Leader]"
 		}
-		currentHP, maxHP := ps.HP()
+		currentHP, maxHP := ps.Resource(assets.ResourceHp)
 		hp := fmt.Sprintf("%d/%d HP", currentHP, maxHP)
 		members = append(members, memberLine{
 			name:   char.Name,
@@ -229,7 +230,8 @@ func (f *GroupHandlerFactory) toggleMember(in *CommandInput, target *TargetRef) 
 // UngroupHandlerFactory creates handlers for the ungroup command.
 // With no target: the leader disbands the group; a member leaves it.
 // With a target: the leader removes a specific member (also stops their follow).
-//   Targeting yourself disbands the group if you are the leader.
+//
+//	Targeting yourself disbands the group if you are the leader.
 type UngroupHandlerFactory struct {
 	groupCore
 }

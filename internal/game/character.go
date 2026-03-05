@@ -2,7 +2,6 @@ package game
 
 import (
 	"fmt"
-	"math/rand/v2"
 	"strings"
 	"sync"
 	"time"
@@ -32,7 +31,8 @@ type CharacterInstance struct {
 	zoneId string
 	roomId string
 
-	// Runtime inventory, equipment, and HP (persisted to Character on save)
+	// Runtime inventory, equipment, and resources (persisted to Character on save).
+	// PerkCache (embedded in ActorInstance) aggregates race + equipment perks.
 	ActorInstance
 
 	// Subscriptions
@@ -61,7 +61,14 @@ func NewCharacterInstance(char storage.SmartIdentifier[*assets.Character], msgs 
 	if err != nil {
 		return nil, fmt.Errorf("materializing inventory for %q: %w", char.Id(), err)
 	}
-	return &CharacterInstance{
+
+	// Build perk cache: race perks (own) + equipment (source).
+	var racePerks []assets.Perk
+	if r := c.Race.Get(); r != nil {
+		racePerks = r.Perks
+	}
+
+	ci := &CharacterInstance{
 		subs:      make(map[string]func()),
 		msgs:      msgs,
 		Character: char,
@@ -70,12 +77,22 @@ func NewCharacterInstance(char storage.SmartIdentifier[*assets.Character], msgs 
 		ActorInstance: ActorInstance{
 			inventory: inv,
 			equipment: eq,
-			maxHP:     c.MaxHP,
-			currentHP: c.CurrentHP,
+			level:     c.Level,
+			PerkCache: *NewPerkCache(racePerks, eq),
 		},
 		lastActivity: time.Now(),
 		done:         make(chan struct{}),
-	}, nil
+	}
+
+	// Initialize resource pools from perks, then restore persisted current values.
+	ci.initResources()
+	for name, current := range c.Resources {
+		if _, mx := ci.resource(name); mx > 0 {
+			ci.setResourceCurrent(name, min(current, mx))
+		}
+	}
+
+	return ci, nil
 }
 
 // materializeInventoryEquipment converts persistent spawn specs into runtime instances.
@@ -278,27 +295,33 @@ func (ci *CharacterInstance) MarkActive() {
 	ci.lastActivity = time.Now()
 }
 
-// HP returns the current and max hit points.
-func (ci *CharacterInstance) HP() (current, max int) {
+// Resource returns the current and max for a named resource.
+func (ci *CharacterInstance) Resource(name string) (current, max int) {
 	ci.mu.RLock()
 	defer ci.mu.RUnlock()
-	return ci.currentHP, ci.maxHP
+	return ci.resource(name)
 }
 
-// SetHP sets the current and max hit points.
-func (ci *CharacterInstance) SetHP(current, max int) {
+// SetResource sets the current value for a named resource, clamped to [0, max].
+func (ci *CharacterInstance) SetResource(name string, current int) {
 	ci.mu.Lock()
 	defer ci.mu.Unlock()
-	ci.currentHP = current
-	ci.maxHP = max
+	mx := ci.resourceMax(name)
+	ci.setResourceCurrent(name, max(0, min(current, mx)))
 }
 
-// AdjustHP changes current HP by delta (positive = heal, negative = damage),
-// clamping the result to [0, maxHP].
-func (ci *CharacterInstance) AdjustHP(delta int) {
+// AdjustResource changes a resource's current value by delta, clamping to [0, max].
+func (ci *CharacterInstance) AdjustResource(name string, delta int) {
 	ci.mu.Lock()
 	defer ci.mu.Unlock()
-	ci.ActorInstance.adjustHP(delta)
+	ci.adjustResource(name, delta)
+}
+
+// RegenTick regenerates all resources based on perk-driven regen values.
+func (ci *CharacterInstance) RegenTick() {
+	ci.mu.Lock()
+	defer ci.mu.Unlock()
+	ci.regenTick()
 }
 
 // GetInventory returns the character's inventory.
@@ -350,8 +373,10 @@ func (ci *CharacterInstance) SaveCharacter(chars storage.Storer[*assets.Characte
 	c := ci.Character.Get()
 	c.LastZone = ci.zoneId
 	c.LastRoom = ci.roomId
-	c.MaxHP = ci.maxHP
-	c.CurrentHP = ci.currentHP
+	c.Resources = make(map[string]int)
+	for name, cur := range ci.resources {
+		c.Resources[name] = cur
+	}
 	ci.mu.RUnlock()
 
 	// Convert runtime inventory to spawn specs (Inventory self-locks)
@@ -384,67 +409,22 @@ func objectInstanceToSpawn(oi *ObjectInstance) assets.ObjectSpawn {
 	return spawn
 }
 
-// Perks returns the aggregated perks from all sources (race, equipment, etc.).
-func (ci *CharacterInstance) Perks() []assets.Perk {
-	var perks []assets.Perk
-	if r := ci.Character.Get().Race.Get(); r != nil {
-		perks = append(perks, r.Perks...)
-	}
-	perks = append(perks, ci.equipment.Perks()...)
-	return perks
-}
-
-// ModifierValue sums all modifier perk values matching key across all sources.
-func (ci *CharacterInstance) ModifierValue(key assets.PerkKey) int {
-	total := 0
-	for _, p := range ci.Perks() {
-		if p.Type == assets.PerkTypeModifier && p.Key == key {
-			total += p.Value
-		}
-	}
-	return total
-}
-
-// Grants returns the args of all grant perks with the given key.
-func (ci *CharacterInstance) Grants(key string) []string {
-	var args []string
-	for _, p := range ci.Perks() {
-		if p.Type == assets.PerkTypeGrant && p.Key == key {
-			args = append(args, p.Arg)
-		}
-	}
-	return args
-}
-
-// HasGrant returns true if any grant perk matches both key and arg.
-func (ci *CharacterInstance) HasGrant(key, arg string) bool {
-	for _, p := range ci.Perks() {
-		if p.Type == assets.PerkTypeGrant && p.Key == key && p.Arg == arg {
-			return true
-		}
-	}
-	return false
-}
-
 // HasAbility returns true if any of the character's aggregated perks grant the given ability ID.
 func (ci *CharacterInstance) HasAbility(abilityId string) bool {
 	return ci.HasGrant(assets.PerkGrantUnlockAbility, abilityId)
 }
 
 // EffectiveStats computes ability scores from base stats + perk modifiers.
-// Equipment stat bonuses flow through Perks() automatically.
+// Equipment stat bonuses flow through the embedded PerkCache automatically.
 func (ci *CharacterInstance) EffectiveStats() map[assets.StatKey]Stat {
 	char := ci.Character.Get()
 	stats := make(map[assets.StatKey]Stat, len(assets.AllStatKeys))
 	for _, k := range assets.AllStatKeys {
 		stats[k] = Stat(char.BaseStats[k])
 	}
-	for _, p := range ci.Perks() {
-		if p.Type != assets.PerkTypeModifier {
-			continue
-		}
-		if sk, ok := assets.StatPerkKeys[p.Key]; ok {
-			stats[sk] += Stat(p.Value)
+	for pk, sk := range assets.StatPerkKeys {
+		if v := ci.ModifierValue(pk); v != 0 {
+			stats[sk] += Stat(v)
 		}
 	}
 	return stats
@@ -469,11 +449,11 @@ func (ci *CharacterInstance) StatSections() []StatSection {
 	}
 
 	var perkLines []StatLine
-	for _, p := range ci.Perks() {
-		if p.Type == assets.PerkTypeGrant {
-			label := p.Key
-			if p.Arg != "" {
-				label += ": " + p.Arg
+	for key, args := range ci.Grants() {
+		for _, arg := range args {
+			label := key
+			if arg != "" {
+				label += ": " + arg
 			}
 			perkLines = append(perkLines, StatLine{Value: "  " + label})
 		}
@@ -501,10 +481,10 @@ func (ci *CharacterInstance) StatSections() []StatSection {
 	})
 
 	// Combat section
-	ac := 10 + stats[assets.StatDEX].Mod() + ci.ModifierValue(assets.PerkKeyCombatAC)
+	ac := stats[assets.StatDEX].Mod() + ci.ModifierValue(assets.PerkKeyCombatAC)
 	attackMod := stats[assets.StatSTR].Mod() + char.Level/2
 
-	dmgParts := ci.Grants(assets.PerkGrantAttack)
+	dmgParts := ci.GrantArgs(assets.PerkGrantAttack)
 	if len(dmgParts) == 0 {
 		dmgParts = append(dmgParts, "1d4")
 	}
@@ -535,33 +515,30 @@ func (ci *CharacterInstance) StatSections() []StatSection {
 	}
 
 	// Vitals section
-	currentHP, maxHP := ci.HP()
-	sections = append(sections, StatSection{
-		Header: "Vitals",
-		Lines: []StatLine{
-			{Value: fmt.Sprintf("  HP: %d/%d", currentHP, maxHP)},
-		},
+	var vitalLines []StatLine
+	ci.ForEachResource(func(name string, current, mx int) {
+		vitalLines = append(vitalLines, StatLine{
+			Value: fmt.Sprintf("  %s", ResourceLine(name, current, mx)),
+		})
 	})
+	if len(vitalLines) > 0 {
+		sections = append(sections, StatSection{Header: "Vitals", Lines: vitalLines})
+	}
 
 	return sections
 }
 
-// Gain advances the character to the next level, increasing MaxHP.
+// Gain advances the character to the next level. Resource maxes automatically
+// increase via per_level perks; all resources are restored to their new max.
 func (ci *CharacterInstance) Gain() {
 	char := ci.Character.Get()
 	char.Level++
 
-	// HP gain: 1d8 + CON modifier (minimum 1)
-	stats := ci.EffectiveStats()
-	conMod := stats[assets.StatCON].Mod()
-	hpGain := rand.IntN(8) + 1 + conMod
-	if hpGain < 1 {
-		hpGain = 1
-	}
-
 	ci.mu.Lock()
-	ci.maxHP += hpGain
-	ci.currentHP = ci.maxHP
+	ci.level = char.Level
+	for name := range ci.resources {
+		ci.setResourceCurrent(name, ci.resourceMax(name))
+	}
 	ci.mu.Unlock()
 }
 
@@ -684,6 +661,7 @@ type EquipSlot struct {
 type Equipment struct {
 	mu   sync.RWMutex
 	objs []EquipSlot
+	PerkCache
 }
 
 // NewEquipment creates an empty equipment set.
@@ -702,6 +680,7 @@ func (eq *Equipment) Equip(slot string, maxSlots int, obj *ObjectInstance) error
 		return fmt.Errorf("no available %q slot", slot)
 	}
 	eq.objs = append(eq.objs, EquipSlot{Slot: slot, Obj: obj})
+	eq.rebuildPerks()
 	return nil
 }
 
@@ -763,6 +742,7 @@ func (eq *Equipment) Drain() []*ObjectInstance {
 		}
 	}
 	eq.objs = []EquipSlot{}
+	eq.rebuildPerks()
 	return items
 }
 
@@ -773,18 +753,16 @@ func (eq *Equipment) Len() int {
 	return len(eq.objs)
 }
 
-// Perks returns the aggregated perks from all equipped items.
-func (eq *Equipment) Perks() []assets.Perk {
-	eq.mu.RLock()
-	defer eq.mu.RUnlock()
-
+// rebuildPerks aggregates perks from all equipped items into the embedded PerkCache.
+// Caller must hold the write lock.
+func (eq *Equipment) rebuildPerks() {
 	var perks []assets.Perk
 	for _, slot := range eq.objs {
 		if slot.Obj != nil {
 			perks = append(perks, slot.Obj.Object.Get().Perks...)
 		}
 	}
-	return perks
+	eq.SetOwn(perks)
 }
 
 // RemoveObj finds and unequips an object by instance ID.
@@ -795,6 +773,7 @@ func (eq *Equipment) RemoveObj(instanceId string) *ObjectInstance {
 	for i, item := range eq.objs {
 		if item.Obj.InstanceId == instanceId {
 			eq.objs = append(eq.objs[:i], eq.objs[i+1:]...)
+			eq.rebuildPerks()
 			return item.Obj
 		}
 	}

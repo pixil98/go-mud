@@ -163,10 +163,7 @@ func (w *WorldState) Tick(ctx context.Context) error {
 	// Regenerate out-of-combat entities.
 	w.ForEachPlayer(func(_ string, ps *CharacterInstance) {
 		if !ps.IsInCombat() {
-			cur, mx := ps.HP()
-			if cur < mx {
-				ps.AdjustHP(1)
-			}
+			ps.RegenTick()
 		}
 	})
 	for _, zi := range w.instances {
@@ -174,10 +171,7 @@ func (w *WorldState) Tick(ctx context.Context) error {
 			ri.mu.RLock()
 			for _, mi := range ri.mobiles {
 				if !mi.IsInCombat() {
-					cur, mx := mi.HP()
-					if cur < mx {
-						mi.AdjustHP(1)
-					}
+					mi.RegenTick()
 				}
 			}
 			ri.mu.RUnlock()

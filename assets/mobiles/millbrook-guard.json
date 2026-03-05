@@ -15,11 +15,12 @@
             "wield": {"object_id": "millbrook-shortsword"}
         },
         "level": 5,
-        "max_hp": 50,
-        "ac": 16,
-        "attack_mod": 5,
-        "damage_dice": 1,
-        "damage_sides": 8,
-        "damage_mod": 3
+        "perks": [
+            { "type": "modifier", "key": "core.resource.hp.max", "value": 50 },
+            { "type": "modifier", "key": "core.combat.ac", "value": 16 },
+            { "type": "modifier", "key": "core.combat.attack_mod", "value": 5 },
+            { "type": "modifier", "key": "core.combat.damage_mod", "value": 3 },
+            { "type": "grant", "key": "attack", "arg": "1d8" }
+        ]
     }
 }
