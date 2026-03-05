@@ -1,42 +1,27 @@
 package game
 
 // MaxLevel is the highest level a character can reach.
-const MaxLevel = 20
-
-// levelTable holds the cumulative XP required to reach each level.
-// Index 0 = level 1 (0 XP), index 1 = level 2 (300 XP), etc.
-var levelTable = [MaxLevel]int{
-	0,      // Level 1
-	300,    // Level 2
-	900,    // Level 3
-	2700,   // Level 4
-	6500,   // Level 5
-	14000,  // Level 6
-	23000,  // Level 7
-	34000,  // Level 8
-	48000,  // Level 9
-	64000,  // Level 10
-	85000,  // Level 11
-	100000, // Level 12
-	120000, // Level 13
-	140000, // Level 14
-	165000, // Level 15
-	195000, // Level 16
-	225000, // Level 17
-	265000, // Level 18
-	305000, // Level 19
-	355000, // Level 20
-}
+const MaxLevel = 40
 
 // ExpForLevel returns the cumulative XP required to reach the given level.
+// Uses a cubic + quadratic formula: 30*L³ + 20*L². Level 1 requires 0 XP.
+//
+// Sample values:
+//
+//	Level  5:    4,250
+//	Level 10:   32,000
+//	Level 15:  108,750
+//	Level 20:  248,000
+//	Level 30:  828,000
+//	Level 40: 1,952,000
 func ExpForLevel(level int) int {
-	if level < 1 {
+	if level <= 1 {
 		return 0
 	}
 	if level > MaxLevel {
-		return levelTable[MaxLevel-1]
+		level = MaxLevel
 	}
-	return levelTable[level-1]
+	return 30*level*level*level + 20*level*level
 }
 
 // ExpToNextLevel returns the remaining XP needed to reach the next level.
