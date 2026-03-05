@@ -153,8 +153,19 @@ func (p *Player) Play(ctx context.Context) error {
 func (p *Player) prompt() error {
 	prompt := "> "
 	if ps := p.world.GetPlayer(p.charId); ps != nil {
-		currentHP, maxHP := ps.Resource(assets.ResourceHp)
-		prompt = fmt.Sprintf("[%d/%dHP] > ", currentHP, maxHP)
+		var parts []string
+		// HP is always first.
+		if cur, mx := ps.Resource(assets.ResourceHp); mx > 0 {
+			parts = append(parts, game.ResourceLine(assets.ResourceHp, cur, mx))
+		}
+		ps.ForEachResource(func(name string, current, max int) {
+			if name != assets.ResourceHp {
+				parts = append(parts, game.ResourceLine(name, current, max))
+			}
+		})
+		if len(parts) > 0 {
+			prompt = fmt.Sprintf("[%s] > ", strings.Join(parts, " | "))
+		}
 	}
 	_, err := p.conn.Write([]byte(prompt))
 	return err

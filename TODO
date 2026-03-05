@@ -1,3 +1,1 @@
-- We should put room/obj/mob assets in a subdirectory for their zone.
 - Commands and spells/abilities use a different context struct so templating is slightly different
-- Maybe we move max resources (hp) off of characters and use perks all the time? Races can set a flat max for starting and an amount for leveling up. Maybe we just hard code in some default perks for all players.
