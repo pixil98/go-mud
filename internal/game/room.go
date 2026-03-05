@@ -220,14 +220,17 @@ func (ri *RoomInstance) FindMob(name string) *MobileInstance {
 // Caller must hold the write lock.
 func (ri *RoomInstance) spawnMob(mob storage.SmartIdentifier[*assets.Mobile]) (*MobileInstance, error) {
 	def := mob.Get()
+	eq := NewEquipment()
+	buffs := NewTimedPerkCache(nil)
 	mi := &MobileInstance{
 		InstanceId: uuid.New().String(),
 		Mobile:     mob,
 		ActorInstance: ActorInstance{
 			inventory: NewInventory(),
-			equipment: NewEquipment(),
+			equipment: eq,
 			level:     def.Level,
-			PerkCache: *NewPerkCache(def.Perks, nil),
+			Buffs:     buffs,
+			PerkCache: *NewPerkCache(def.Perks, map[string]PerkSource{"equipment": eq, "buffs": buffs}),
 		},
 	}
 	mi.initResources()

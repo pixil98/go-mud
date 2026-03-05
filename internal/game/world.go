@@ -166,25 +166,21 @@ func (w *WorldState) Tick(ctx context.Context) error {
 		}
 	}
 
-	// Tick timed perks: world, zones, and rooms.
+	// Tick timed perks and regenerate out-of-combat entities.
 	w.Perks.Tick()
-	for _, zi := range w.zones {
-		zi.Perks.Tick()
-		for _, ri := range zi.rooms {
-			ri.Perks.Tick()
-		}
-	}
-
-	// Regenerate out-of-combat entities.
 	w.ForEachPlayer(func(_ string, ps *CharacterInstance) {
+		ps.Buffs.Tick()
 		if !ps.IsInCombat() {
 			ps.RegenTick()
 		}
 	})
 	for _, zi := range w.zones {
+		zi.Perks.Tick()
 		for _, ri := range zi.rooms {
+			ri.Perks.Tick()
 			ri.mu.RLock()
 			for _, mi := range ri.mobiles {
+				mi.Buffs.Tick()
 				if !mi.IsInCombat() {
 					mi.RegenTick()
 				}

@@ -167,33 +167,29 @@ func applyDamage(ref *TargetRef, amount int) {
 	}
 }
 
-// roomBuffEffect applies timed perks to the caster's current room.
+// parsePerkBuffConfig extracts the common config fields for perk buff effects.
 //
 // Config fields:
-//   - "perks" ([]Perk, required): perks to apply to the room.
+//   - "perks" ([]Perk, required): perks to apply.
 //   - "duration" (number, required): number of ticks the perks last.
 //   - "name" (string, optional): entry name for the timed perk. Defaults to the ability name.
-type roomBuffEffect struct {
-	world RoomLocator
-}
-
-func (e *roomBuffEffect) Execute(ability *assets.Ability, in *CommandInput, _ map[string]*TargetRef) error {
+func parsePerkBuffConfig(handler string, ability *assets.Ability) (string, []assets.Perk, int, error) {
 	dur, ok := ability.Config["duration"].(float64)
 	if !ok || dur <= 0 {
-		return fmt.Errorf("room_buff effect: positive duration config required")
+		return "", nil, 0, fmt.Errorf("%s effect: positive duration config required", handler)
 	}
 
 	perksRaw, ok := ability.Config["perks"]
 	if !ok {
-		return fmt.Errorf("room_buff effect: perks config required")
+		return "", nil, 0, fmt.Errorf("%s effect: perks config required", handler)
 	}
 	raw, err := json.Marshal(perksRaw)
 	if err != nil {
-		return fmt.Errorf("room_buff effect: marshaling perks: %w", err)
+		return "", nil, 0, fmt.Errorf("%s effect: marshaling perks: %w", handler, err)
 	}
 	var perks []assets.Perk
 	if err := json.Unmarshal(raw, &perks); err != nil {
-		return fmt.Errorf("room_buff effect: parsing perks: %w", err)
+		return "", nil, 0, fmt.Errorf("%s effect: parsing perks: %w", handler, err)
 	}
 
 	name, _ := ability.Config["name"].(string)
@@ -201,11 +197,90 @@ func (e *roomBuffEffect) Execute(ability *assets.Ability, in *CommandInput, _ ma
 		name = ability.Name
 	}
 
+	return name, perks, int(dur), nil
+}
+
+// actorBuffEffect applies timed perks to a target player/mob, or self if no target.
+type actorBuffEffect struct{}
+
+func (e *actorBuffEffect) Execute(ability *assets.Ability, in *CommandInput, targets map[string]*TargetRef) error {
+	name, perks, dur, err := parsePerkBuffConfig("actor_buff", ability)
+	if err != nil {
+		return err
+	}
+
+	// Apply to the first resolved player or mob target.
+	for _, spec := range ability.Command.Targets {
+		ref := targets[spec.Name]
+		if ref == nil {
+			continue
+		}
+		if ref.Player != nil {
+			ref.Player.session.Buffs.AddPerks(name, perks, dur)
+			return nil
+		}
+		if ref.Mob != nil {
+			ref.Mob.instance.Buffs.AddPerks(name, perks, dur)
+			return nil
+		}
+	}
+
+	// No target resolved — apply to self.
+	in.Char.Buffs.AddPerks(name, perks, dur)
+	return nil
+}
+
+// roomBuffEffect applies timed perks to the caster's current room.
+type roomBuffEffect struct {
+	world RoomLocator
+}
+
+func (e *roomBuffEffect) Execute(ability *assets.Ability, in *CommandInput, _ map[string]*TargetRef) error {
+	name, perks, dur, err := parsePerkBuffConfig("room_buff", ability)
+	if err != nil {
+		return err
+	}
+
 	zoneId, roomId := in.Char.Location()
 	room := e.world.GetRoom(zoneId, roomId)
 	if room == nil {
 		return fmt.Errorf("room_buff effect: room not found")
 	}
-	room.Perks.AddPerks(name, perks, int(dur))
+	room.Perks.AddPerks(name, perks, dur)
+	return nil
+}
+
+// zoneBuffEffect applies timed perks to the caster's current zone.
+type zoneBuffEffect struct {
+	world WorldView
+}
+
+func (e *zoneBuffEffect) Execute(ability *assets.Ability, in *CommandInput, _ map[string]*TargetRef) error {
+	name, perks, dur, err := parsePerkBuffConfig("zone_buff", ability)
+	if err != nil {
+		return err
+	}
+
+	zoneId, _ := in.Char.Location()
+	zone := e.world.GetZone(zoneId)
+	if zone == nil {
+		return fmt.Errorf("zone_buff effect: zone not found")
+	}
+	zone.Perks.AddPerks(name, perks, dur)
+	return nil
+}
+
+// worldBuffEffect applies timed perks to the entire world.
+type worldBuffEffect struct {
+	world *game.WorldState
+}
+
+func (e *worldBuffEffect) Execute(ability *assets.Ability, _ *CommandInput, _ map[string]*TargetRef) error {
+	name, perks, dur, err := parsePerkBuffConfig("world_buff", ability)
+	if err != nil {
+		return err
+	}
+
+	e.world.Perks.AddPerks(name, perks, dur)
 	return nil
 }

@@ -98,7 +98,10 @@ func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, pub
 
 	// Register effect handlers
 	h.effects["damage"] = &damageEffect{}
+	h.effects["actor_buff"] = &actorBuffEffect{}
 	h.effects["room_buff"] = &roomBuffEffect{world: world}
+	h.effects["zone_buff"] = &zoneBuffEffect{world: world}
+	h.effects["world_buff"] = &worldBuffEffect{world: world}
 
 	// Register built-in handlers
 	h.RegisterFactory("assist", NewAssistHandlerFactory(combat, world, world, publisher))

@@ -14,8 +14,9 @@ Max level is **40**.
 Trees are designed to encourage specialization without hard classes. A player can
 reach a capstone in one tree (6 BP) with 2 BP left to dip into a second tree's
 spine, but cannot capstone two trees (would need 12 BP). SP pressure comes from
-trees being wide (~50 SP of nodes each) — even going all-in on a single tree
-leaves nodes unpurchased, and splitting across two trees forces hard choices.
+trees being wide (~60 SP of nodes each) — even going all-in on a single tree
+leaves a significant number of nodes unpurchased, and splitting across two trees
+forces hard choices.
 
 A tree contains three node lists:
 
@@ -28,7 +29,7 @@ A tree contains three node lists:
 | Resource | Total at 40 | One capstone path | Two capstone paths |
 |----------|-------------|-------------------|--------------------|
 | BP       | 8           | 6 (4 spine + 2 cap) | 12 — impossible |
-| SP       | 40          | ~50 available per tree | ~100 across two trees |
+| SP       | 40          | ~60 available per tree | ~120 across two trees |
 
 ## Point Costs and Purchasing Rules
 
@@ -53,6 +54,11 @@ A tree contains three node lists:
 
 **Spine count:** Most trees use **4 spine nodes** (I–IV), but this is a convention, not a hard requirement. Trees may have fewer or more if justified.
 
+### Tier 4 “endgame” nodes
+Tier 4 nodes require the final spine node. They provide powerful endgame passives
+and actives that compete with each other for SP. Capstones require several Tier 4
+nodes, so reaching a capstone demands meaningful SP investment at the top of the tree.
+
 ### Tier 0 “taster” nodes
 Trees may include a small number of prereq-less nodes in `Nodes[]` to provide early flavor.
 
@@ -73,9 +79,22 @@ Recommended gating pattern (guideline, not a hard rule):
 - Spine II: requires Spine I + **any 3** Tier I nodes
 - Spine III: requires Spine II + **any 3** Tier II nodes
 - Spine IV: requires Spine III + **any 3** Tier III nodes
+- Capstones: require Spine IV + **any 3** Tier IV nodes
 
-The higher gate counts (3 instead of 2) reflect wider trees (~50 SP of nodes).
+The higher gate counts (3 instead of 2) reflect wider trees (~60 SP of nodes).
 Exact node lists and counts are tree-author decisions.
+
+### Spell chains
+Actives within an element line should form **chains** across tiers:
+
+- **Horizontal chains** (within a tier): a second spell requires the first spell in
+  the same tier. E.g. Flame Lash requires Firebolt; both are Tier 1.
+- **Vertical chains** (cross-tier): a higher-tier spell requires both the spine gate
+  **and** a lower-tier spell. E.g. Fireball requires Spine II + Flame Lash.
+
+Chains make element investment feel deliberate — you build mastery, not just unlock
+tiers. Unchained "utility" actives (e.g. Force Dart) can exist as cheap picks that
+don't lead anywhere deeper.
 
 ## Prerequisites
 
@@ -182,7 +201,7 @@ Requires any 2 Tier 0 “attunement” nodes:
 Capstones are intended to be a meaningful specialization “jump”.
 
 Rules:
-- Each capstone requires the **final spine node**.
+- Each capstone requires the **final spine node** and several **Tier IV nodes** (see gating pattern).
 - A character may own **at most one capstone per tree**.
 - Capstones cost **2 BP**.
 
@@ -237,9 +256,43 @@ Examples:
 - `core.damage.fire.crit_pct`
 - `evocation.cast_time_reduce`
 
+## Effect Handlers
+
+Abilities reference an effect handler by name in their `handler` field. The handler
+determines what gameplay effect the ability produces. Available handlers:
+
+| Handler       | Scope   | Description |
+|---------------|---------|-------------|
+| `damage`      | target  | Deals damage to a player or mob target |
+| `actor_buff`  | target/self | Applies timed perks to a target player/mob, or self if no target |
+| `room_buff`   | room    | Applies timed perks to the caster's current room |
+| `zone_buff`   | zone    | Applies timed perks to the caster's current zone |
+| `world_buff`  | world   | Applies timed perks to the entire world |
+
+### Buff config fields
+
+All buff handlers (`actor_buff`, `room_buff`, `zone_buff`, `world_buff`) share
+the same config fields:
+
+- `"perks"` ([]Perk, required): perks to apply.
+- `"duration"` (number, required): number of ticks the buff lasts.
+- `"name"` (string, optional): entry name for the timed perk. Defaults to the ability name. Same-name buffs replace rather than stack.
+
+### Spell progression pattern
+
+Buff handlers enable a natural spell progression within a tree where the same
+effect scales in scope across tiers:
+
+- **Tier 1**: `actor_buff` — single-target buff (e.g. grant fire resistance to one ally)
+- **Tier 2**: `room_buff` — area buff affecting everyone in the room
+- **Tier 3/4**: `zone_buff` — zone-wide buff affecting an entire dungeon floor
+
+This creates meaningful choices: the higher-tier version covers more allies but
+costs more resources and requires deeper tree investment.
+
 ## Design guidance
 
-- **Target ~50 SP of nodes per tree.** Even a player going all-in on one tree should not be able to buy every node. The capstone is a specialization choice that costs breadth within the tree, not a freebie on top of everything.
+- **Target ~60 SP of nodes per tree (Tiers 0–4).** Even a player going all-in on one tree should not be able to buy every node. The capstone is a specialization choice that costs breadth within the tree, not a freebie on top of everything.
 - Spines should provide infrastructure and identity (reliability, small specialization keys, slots), not large generic power.
 - Tier 0 nodes should be flavorful and low impact.
 - Each tier should include both shared utility nodes (attractive to any build) and line-specific passives (rewarding commitment to a particular line). The competition between them creates SP pressure.

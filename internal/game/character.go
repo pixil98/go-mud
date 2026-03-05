@@ -62,11 +62,12 @@ func NewCharacterInstance(char storage.SmartIdentifier[*assets.Character], msgs 
 		return nil, fmt.Errorf("materializing inventory for %q: %w", char.Id(), err)
 	}
 
-	// Build perk cache: race perks (own) + equipment (source).
+	// Build perk cache: race perks (own) + equipment + buffs (sources).
 	var racePerks []assets.Perk
 	if r := c.Race.Get(); r != nil {
 		racePerks = r.Perks
 	}
+	buffs := NewTimedPerkCache(nil)
 
 	ci := &CharacterInstance{
 		subs:      make(map[string]func()),
@@ -78,7 +79,8 @@ func NewCharacterInstance(char storage.SmartIdentifier[*assets.Character], msgs 
 			inventory: inv,
 			equipment: eq,
 			level:     c.Level,
-			PerkCache: *NewPerkCache(racePerks, map[string]PerkSource{"equipment": eq}),
+			Buffs:     buffs,
+			PerkCache: *NewPerkCache(racePerks, map[string]PerkSource{"equipment": eq, "buffs": buffs}),
 		},
 		lastActivity: time.Now(),
 		done:         make(chan struct{}),

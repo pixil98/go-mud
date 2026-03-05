@@ -26,6 +26,7 @@ type ActorInstance struct {
 	equipment *Equipment
 	resources map[string]int // current values only; max derived from PerkCache
 	level     int
+	Buffs     *TimedPerkCache
 	PerkCache
 }
 
