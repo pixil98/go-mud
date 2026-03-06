@@ -13,13 +13,13 @@ import (
 // Config:
 //   - direction (required): the direction to move (north, south, east, west, up, down)
 type MoveHandlerFactory struct {
-	rooms RoomLocator
+	zones ZoneLocator
 	pub   game.Publisher
 }
 
 // NewMoveHandlerFactory creates a new MoveHandlerFactory with access to world state.
-func NewMoveHandlerFactory(rooms RoomLocator, pub game.Publisher) *MoveHandlerFactory {
-	return &MoveHandlerFactory{rooms: rooms, pub: pub}
+func NewMoveHandlerFactory(zones ZoneLocator, pub game.Publisher) *MoveHandlerFactory {
+	return &MoveHandlerFactory{zones: zones, pub: pub}
 }
 
 func (f *MoveHandlerFactory) Spec() *HandlerSpec {
@@ -54,7 +54,7 @@ func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 		zoneId, roomId := in.Char.Location()
 
 		// Look up current room instance
-		fromRoom := f.rooms.GetRoom(zoneId, roomId)
+		fromRoom := f.zones.GetZone(zoneId).GetRoom(roomId)
 		if fromRoom == nil {
 			return NewUserError("You are in an invalid location.")
 		}
@@ -83,7 +83,7 @@ func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 		destRoomId := exit.Room.Id()
 
 		// Get destination room instance
-		toRoom := f.rooms.GetRoom(destZone, destRoomId)
+		toRoom := f.zones.GetZone(destZone).GetRoom(destRoomId)
 		if toRoom == nil {
 			return NewUserError("Alas, you cannot go that way...")
 		}

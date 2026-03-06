@@ -69,7 +69,7 @@ func (f *MessageHandlerFactory) Create() (CommandFunc, error) {
 
 		switch scope {
 		case "room":
-			room := f.world.GetRoom(zoneId, roomId)
+			room := f.world.GetZone(zoneId).GetRoom(roomId)
 			return f.pub.Publish(room, exclude, []byte(recipientMessage))
 
 		case "zone":

@@ -216,6 +216,22 @@ func (ri *RoomInstance) FindMob(name string) *MobileInstance {
 	return nil
 }
 
+// GetMob returns the MobileInstance with the given instanceId, or nil if not found.
+func (ri *RoomInstance) GetMob(instanceId string) *MobileInstance {
+	ri.mu.RLock()
+	defer ri.mu.RUnlock()
+	return ri.mobiles[instanceId]
+}
+
+// ForEachMob calls fn for each mob in the room while holding the lock.
+func (ri *RoomInstance) ForEachMob(fn func(*MobileInstance)) {
+	ri.mu.Lock()
+	defer ri.mu.Unlock()
+	for _, mi := range ri.mobiles {
+		fn(mi)
+	}
+}
+
 // spawnMob creates a new MobileInstance and adds it to the room.
 // Caller must hold the write lock.
 func (ri *RoomInstance) spawnMob(mob storage.SmartIdentifier[*assets.Mobile]) (*MobileInstance, error) {
@@ -223,8 +239,10 @@ func (ri *RoomInstance) spawnMob(mob storage.SmartIdentifier[*assets.Mobile]) (*
 	eq := NewEquipment()
 	buffs := NewTimedPerkCache(nil)
 	mi := &MobileInstance{
-		InstanceId: uuid.New().String(),
-		Mobile:     mob,
+		InstanceId:    uuid.New().String(),
+		Mobile:        mob,
+		threats:       make(map[string]int),
+		contributions: make(map[string]int),
 		ActorInstance: ActorInstance{
 			inventory: NewInventory(),
 			equipment: eq,

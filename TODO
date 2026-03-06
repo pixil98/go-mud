@@ -1,2 +1,6 @@
 - Commands and spells/abilities use a different context struct so templating is slightly different
 - Wire up defense perks
+
+## Combat System
+- `combat_test.go` `pickTarget` and `computeMobKillXP` unit tests need a way to construct a properly initialized `MobileInstance` from outside the `game` package (threats/contributions maps are private). Consider a `NewMobileInstance` constructor when there's a production use, or test these indirectly via `Manager.Tick` integration tests.
+- Add `NotifyHeal` and `NotifyTaunt` to `combat.Manager` and `commands.CombatManager` interface when implementing heal/taunt ability effect handlers.

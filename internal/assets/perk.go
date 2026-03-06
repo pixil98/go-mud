@@ -17,6 +17,7 @@ const (
 	PerkKeyCombatAC        PerkKey = "core.combat.ac"
 	PerkKeyCombatAttackMod PerkKey = "core.combat.attack_mod"
 	PerkKeyCombatDmgMod    PerkKey = "core.combat.damage_mod"
+	PerkKeyCombatThreatMod PerkKey = "core.combat.threat_mod"
 )
 
 // ResourceHp is the well-known resource name for hit points.

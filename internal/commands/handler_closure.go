@@ -57,7 +57,7 @@ func (f *ClosureHandlerFactory) Create() (CommandFunc, error) {
 				return NewUserError(fmt.Sprintf("You can't %s that.", action))
 			}
 			zoneId, roomId := in.Char.Location()
-			room := f.world.GetRoom(zoneId, roomId)
+			room := f.world.GetZone(zoneId).GetRoom(roomId)
 			return f.handleExit(action, target.Exit.Direction, closure, room, in)
 
 		case targetTypeObject:
@@ -216,6 +216,6 @@ func (f *ClosureHandlerFactory) publish(in *CommandInput, selfMsg, roomMsg strin
 		return err
 	}
 	zoneId, roomId := in.Char.Location()
-	room := f.world.GetRoom(zoneId, roomId)
+	room := f.world.GetZone(zoneId).GetRoom(roomId)
 	return f.pub.Publish(room, []string{in.Char.Character.Id()}, []byte(roomMsg))
 }

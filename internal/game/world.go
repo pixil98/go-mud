@@ -65,16 +65,6 @@ func (w *WorldState) GetZone(zoneId string) *ZoneInstance {
 	return w.zones[zoneId]
 }
 
-// GetRoom returns the room instance for the given zone and room IDs.
-// Returns nil if the zone or room is not found.
-func (w *WorldState) GetRoom(zoneId, roomId string) *RoomInstance {
-	zi := w.zones[zoneId]
-	if zi == nil {
-		return nil
-	}
-	return zi.GetRoom(roomId)
-}
-
 // GetPlayer returns the player state. Returns nil if player not found.
 func (w *WorldState) GetPlayer(charId string) *CharacterInstance {
 	w.mu.RLock()

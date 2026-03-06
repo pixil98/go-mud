@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/assets"
-	"github.com/pixil98/go-mud/internal/combat"
 	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
@@ -49,16 +48,15 @@ type PlayerLookup interface {
 	GetPlayer(charId string) *game.CharacterInstance
 }
 
-// RoomLocator finds a room instance by zone and room ID.
-type RoomLocator interface {
-	GetRoom(zoneId, roomId string) *game.RoomInstance
+// ZoneLocator finds a zone instance by zone ID.
+type ZoneLocator interface {
+	GetZone(zoneId string) *game.ZoneInstance
 }
 
 // WorldView provides read-only access to the game world for command handlers
-// that need more than just room lookup.
+// that need more than just zone lookup.
 type WorldView interface {
-	RoomLocator
-	GetZone(zoneId string) *game.ZoneInstance
+	ZoneLocator
 	Instances() map[string]*game.ZoneInstance
 	ForEachPlayer(func(string, *game.CharacterInstance))
 }
@@ -89,7 +87,7 @@ type Handler struct {
 	effects   map[string]EffectHandler
 }
 
-func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, publisher game.Publisher, world *game.WorldState, combat *combat.Manager) (*Handler, error) {
+func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, publisher game.Publisher, world *game.WorldState, combat CombatManager) (*Handler, error) {
 	h := &Handler{
 		factories: make(map[string]HandlerFactory),
 		compiled:  make(map[string]*compiledCommand),

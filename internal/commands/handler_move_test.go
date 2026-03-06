@@ -9,15 +9,6 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
-func newTestRoom(id, name, zoneId string) (*game.RoomInstance, error) {
-	zone := &assets.Zone{ResetMode: assets.ZoneResetNever}
-	room := &assets.Room{
-		Name: name,
-		Zone: storage.NewResolvedSmartIdentifier(zoneId, zone),
-	}
-	return game.NewRoomInstance(storage.NewResolvedSmartIdentifier(id, room))
-}
-
 func newTestPlayer(charId, name string, room *game.RoomInstance) *game.CharacterInstance {
 	charRef := storage.NewResolvedSmartIdentifier(charId, &assets.Character{Name: name})
 	ps, _ := game.NewCharacterInstance(charRef, make(chan []byte, 10), room.Room.Get().Zone.Id(), room.Room.Id())

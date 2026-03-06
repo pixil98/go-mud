@@ -17,7 +17,9 @@
             { "type": "grant", "key": "darkvision" },
             { "type": "grant", "key": "unlock_ability", "arg": "fireball" },
             { "type": "grant", "key": "unlock_ability", "arg": "flame-ward" },
-            { "type": "grant", "key": "unlock_ability", "arg": "bash" }
+            { "type": "grant", "key": "unlock_ability", "arg": "bash" },
+            { "type": "modifier", "key": "core.resource.stamina.max", "value": 30 },
+            { "type": "modifier", "key": "core.resource.butts.max", "value": 30 }
         ],
         "wear_slots": [
             "light", "head", "neck", "neck", "about",

@@ -4,7 +4,16 @@ import (
 	"testing"
 
 	"github.com/pixil98/go-mud/internal/assets"
+	"github.com/pixil98/go-mud/internal/game"
 )
+
+// newTestRoomInZone creates a room and a zone instance with that room registered.
+func newTestRoomInZone(roomId, name, zoneId string) (*game.RoomInstance, *game.ZoneInstance) {
+	room, _ := newTestRoom(roomId, name, zoneId)
+	zone, _ := newTestZone(zoneId)
+	zone.AddRoom(room)
+	return room, zone
+}
 
 func TestRoomBuffEffect(t *testing.T) {
 	tests := map[string]struct {
@@ -41,23 +50,20 @@ func TestRoomBuffEffect(t *testing.T) {
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			room, err := newTestRoom("test-room", "Test Room", "test-zone")
-			if err != nil {
-				t.Fatalf("creating room: %v", err)
-			}
+			room, zone := newTestRoomInZone("test-room", "Test Room", "test-zone")
 			player := newTestPlayer("test-player", "Tester", room)
 			player.PerkCache.AddSource("room", room.Perks)
 
-			world := &mockRoomLocator{room: room}
+			world := &mockZoneLocator{zones: map[string]*game.ZoneInstance{"test-zone": zone}}
 			effect := &roomBuffEffect{world: world}
 
 			ability := &assets.Ability{
-				Name:    "test-ability",
-				Config:  tc.config,
+				Name:   "test-ability",
+				Config: tc.config,
 			}
 			in := &CommandInput{Char: player}
 
-			err = effect.Execute(ability, in, nil)
+			err := effect.Execute(ability, in, nil)
 
 			if tc.wantErr != "" {
 				if err == nil {
@@ -87,15 +93,11 @@ func TestRoomBuffEffect(t *testing.T) {
 }
 
 func TestRoomBuffEffectExpiry(t *testing.T) {
-	room, err := newTestRoom("test-room", "Test Room", "test-zone")
-	if err != nil {
-		t.Fatalf("creating room: %v", err)
-	}
+	room, zone := newTestRoomInZone("test-room", "Test Room", "test-zone")
 	player := newTestPlayer("test-player", "Tester", room)
 	player.PerkCache.AddSource("room", room.Perks)
 
-	world := &mockRoomLocator{room: room}
-	effect := &roomBuffEffect{world: world}
+	effect := &roomBuffEffect{world: &mockZoneLocator{zones: map[string]*game.ZoneInstance{"test-zone": zone}}}
 
 	ability := &assets.Ability{
 		Name: "test-ability",

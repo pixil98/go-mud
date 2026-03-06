@@ -5,52 +5,25 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/pixil98/go-mud/internal/combat"
 	"github.com/pixil98/go-mud/internal/game"
 )
 
 // mockCombatManager is a test double for CombatManager.
 type mockCombatManager struct {
-	fighters   map[string]*combat.Fighter // charId -> fighter
-	startedErr error                      // error to return from StartCombat
-	started    bool                       // set to true when StartCombat is called
+	startedErr error // error to return from StartCombat
+	started    bool  // set to true when StartCombat is called
+	lastZoneId string
+	lastRoomId string
+	lastMobId  string
 }
 
-func (m *mockCombatManager) StartCombat(attacker, target combat.Combatant, zoneID, roomID string) error {
+func (m *mockCombatManager) StartCombat(player *game.CharacterInstance, zoneId, roomId, mobInstanceId string) error {
 	m.started = true
+	m.lastZoneId = zoneId
+	m.lastRoomId = roomId
+	m.lastMobId = mobInstanceId
 	return m.startedErr
 }
-
-func (m *mockCombatManager) GetPlayerFighter(charId string) *combat.Fighter {
-	if m.fighters == nil {
-		return nil
-	}
-	return m.fighters[charId]
-}
-
-// mockRoomLocator is a test double for RoomLocator.
-type mockRoomLocator struct {
-	room *game.RoomInstance
-}
-
-func (m *mockRoomLocator) GetRoom(zoneId, roomId string) *game.RoomInstance {
-	return m.room
-}
-
-// mockCombatant is a minimal Combatant for test targets.
-type mockCombatant struct {
-	id   string
-	name string
-}
-
-func (m *mockCombatant) CombatID() string         { return m.id }
-func (m *mockCombatant) CombatName() string       { return m.name }
-func (m *mockCombatant) IsAlive() bool            { return true }
-func (m *mockCombatant) AC() int                  { return 10 }
-func (m *mockCombatant) Attacks() []combat.Attack { return nil }
-func (m *mockCombatant) AdjustHP(int)             {}
-func (m *mockCombatant) SetInCombat(bool)         {}
-func (m *mockCombatant) Level() int               { return 1 }
 
 func TestAssistHandler(t *testing.T) {
 	tests := map[string]struct {
@@ -63,22 +36,24 @@ func TestAssistHandler(t *testing.T) {
 	}{
 		"assist explicit target in combat": {
 			setup: func() (*AssistHandlerFactory, *CommandInput) {
-				mob := &mockCombatant{id: "mob:test-mob", name: "test-mob"}
-				cm := &mockCombatManager{
-					fighters: map[string]*combat.Fighter{
-						"bob": {Target: mob},
-					},
-				}
 				room, err := newTestRoom("test-room", "Test Room", "test-zone")
 				if err != nil {
 					t.Fatalf("failed to create test room: %v", err)
 				}
+				zone, err := newTestZone("test-zone")
+				if err != nil {
+					t.Fatalf("failed to create test zone: %v", err)
+				}
+				zone.AddRoom(room)
 				pub := &recordingPublisher{}
-				players := &mockPlayerLookup{}
-				f := NewAssistHandlerFactory(cm, &mockRoomLocator{room: room}, players, pub)
+				cm := &mockCombatManager{}
 
 				actor := newTestPlayer("alice", "Alice", room)
-				newTestPlayer("bob", "Bob", room)
+				bob := newTestPlayer("bob", "Bob", room)
+				bob.SetCombatTargetId("mob:test-mob")
+
+				players := &mockPlayerLookup{players: map[string]*game.CharacterInstance{"bob": bob}}
+				f := NewAssistHandlerFactory(cm, &mockZoneLocator{zones: map[string]*game.ZoneInstance{"test-zone": zone}}, players, pub)
 
 				cmdCtx := &CommandInput{
 					Char: actor,
@@ -96,21 +71,23 @@ func TestAssistHandler(t *testing.T) {
 		},
 		"assist follow leader": {
 			setup: func() (*AssistHandlerFactory, *CommandInput) {
-				mob := &mockCombatant{id: "mob:test-mob", name: "test-mob"}
-				cm := &mockCombatManager{
-					fighters: map[string]*combat.Fighter{
-						"bob": {Target: mob},
-					},
-				}
 				room, err := newTestRoom("test-room", "Test Room", "test-zone")
 				if err != nil {
 					t.Fatalf("failed to create test room: %v", err)
 				}
+				zone, err := newTestZone("test-zone")
+				if err != nil {
+					t.Fatalf("failed to create test zone: %v", err)
+				}
+				zone.AddRoom(room)
 				pub := &recordingPublisher{}
+				cm := &mockCombatManager{}
 
 				bob := newTestPlayer("bob", "Bob", room)
+				bob.SetCombatTargetId("mob:test-mob")
+
 				players := &mockPlayerLookup{players: map[string]*game.CharacterInstance{"bob": bob}}
-				f := NewAssistHandlerFactory(cm, &mockRoomLocator{room: room}, players, pub)
+				f := NewAssistHandlerFactory(cm, &mockZoneLocator{zones: map[string]*game.ZoneInstance{"test-zone": zone}}, players, pub)
 
 				actor := newTestPlayer("alice", "Alice", room)
 				actor.SetFollowingId("bob")
@@ -131,7 +108,7 @@ func TestAssistHandler(t *testing.T) {
 				cm := &mockCombatManager{}
 				pub := &recordingPublisher{}
 				players := &mockPlayerLookup{}
-				f := NewAssistHandlerFactory(cm, &mockRoomLocator{}, players, pub)
+				f := NewAssistHandlerFactory(cm, &mockZoneLocator{}, players, pub)
 
 				actor := newCharacterInstance("alice", "Alice")
 				actor.SetInCombat(true)
@@ -149,7 +126,7 @@ func TestAssistHandler(t *testing.T) {
 				cm := &mockCombatManager{}
 				pub := &recordingPublisher{}
 				players := &mockPlayerLookup{}
-				f := NewAssistHandlerFactory(cm, &mockRoomLocator{}, players, pub)
+				f := NewAssistHandlerFactory(cm, &mockZoneLocator{}, players, pub)
 
 				actor := newCharacterInstance("alice", "Alice")
 				cmdCtx := &CommandInput{
@@ -163,10 +140,11 @@ func TestAssistHandler(t *testing.T) {
 		},
 		"assisted player not in combat": {
 			setup: func() (*AssistHandlerFactory, *CommandInput) {
-				cm := &mockCombatManager{} // no fighters
+				cm := &mockCombatManager{}
 				pub := &recordingPublisher{}
-				players := &mockPlayerLookup{}
-				f := NewAssistHandlerFactory(cm, &mockRoomLocator{}, players, pub)
+				bob := newCharacterInstance("bob", "Bob") // GetCombatTargetId returns ""
+				players := &mockPlayerLookup{players: map[string]*game.CharacterInstance{"bob": bob}}
+				f := NewAssistHandlerFactory(cm, &mockZoneLocator{}, players, pub)
 
 				actor := newCharacterInstance("alice", "Alice")
 				cmdCtx := &CommandInput{

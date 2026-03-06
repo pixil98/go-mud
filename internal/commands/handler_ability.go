@@ -90,7 +90,7 @@ func executeAbility(ability *assets.Ability, in *CommandInput, targets map[strin
 			}
 		}
 		zoneId, roomId := in.Char.Location()
-		room := world.GetRoom(zoneId, roomId)
+		room := world.GetZone(zoneId).GetRoom(roomId)
 		if err := pub.Publish(room, exclude, []byte(msg)); err != nil {
 			return err
 		}
@@ -232,7 +232,7 @@ func (e *actorBuffEffect) Execute(ability *assets.Ability, in *CommandInput, tar
 
 // roomBuffEffect applies timed perks to the caster's current room.
 type roomBuffEffect struct {
-	world RoomLocator
+	world ZoneLocator
 }
 
 func (e *roomBuffEffect) Execute(ability *assets.Ability, in *CommandInput, _ map[string]*TargetRef) error {
@@ -242,7 +242,7 @@ func (e *roomBuffEffect) Execute(ability *assets.Ability, in *CommandInput, _ ma
 	}
 
 	zoneId, roomId := in.Char.Location()
-	room := e.world.GetRoom(zoneId, roomId)
+	room := e.world.GetZone(zoneId).GetRoom(roomId)
 	if room == nil {
 		return fmt.Errorf("room_buff effect: room not found")
 	}

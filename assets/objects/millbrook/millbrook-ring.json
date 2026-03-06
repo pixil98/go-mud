@@ -9,7 +9,8 @@
         "flags": ["wearable"],
         "wear_slots": ["finger"],
         "perks": [
-            {"type": "modifier", "key": "core.stats.str", "value": 2}
+            {"type": "modifier", "key": "core.stats.str", "value": 2},
+            { "type": "modifier", "key": "core.resource.hp.per_level", "value": 5 }
         ]
     }
 }

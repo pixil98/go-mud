@@ -77,7 +77,7 @@ func (ws *WorldScopes) SpacesFor(s scope, ci *game.CharacterInstance) ([]SearchS
 		}
 	}
 	if s&scopeRoom != 0 {
-		room := ws.world.GetRoom(zoneId, roomId)
+		room := ws.world.GetZone(zoneId).GetRoom(roomId)
 		spaces = append(spaces, SearchSpace{
 			Finder:  room,
 			Remover: room,

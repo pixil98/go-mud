@@ -22,12 +22,12 @@ type ObjectHolder interface {
 //   - message (required): Go template for room broadcast
 //   - no_self_target (optional): target name to prevent self-targeting
 type MoveObjHandlerFactory struct {
-	rooms RoomLocator
+	zones ZoneLocator
 	pub   game.Publisher
 }
 
-func NewMoveObjHandlerFactory(rooms RoomLocator, pub game.Publisher) *MoveObjHandlerFactory {
-	return &MoveObjHandlerFactory{rooms: rooms, pub: pub}
+func NewMoveObjHandlerFactory(zones ZoneLocator, pub game.Publisher) *MoveObjHandlerFactory {
+	return &MoveObjHandlerFactory{zones: zones, pub: pub}
 }
 
 func (f *MoveObjHandlerFactory) Spec() *HandlerSpec {
@@ -108,7 +108,7 @@ func (f *MoveObjHandlerFactory) Create() (CommandFunc, error) {
 			}
 
 			zoneId, roomId := in.Char.Location()
-			room := f.rooms.GetRoom(zoneId, roomId)
+			room := f.zones.GetZone(zoneId).GetRoom(roomId)
 			if err := f.pub.Publish(room, exclude, []byte(in.Config["room_message"])); err != nil {
 				slog.Warn("failed to publish room message", "error", err)
 			}
@@ -130,7 +130,7 @@ func (f *MoveObjHandlerFactory) resolveDestination(in *CommandInput) (ObjectHold
 
 	case "room":
 		zoneId, roomId := in.Char.Location()
-		return f.rooms.GetRoom(zoneId, roomId), nil
+		return f.zones.GetZone(zoneId).GetRoom(roomId), nil
 
 	default:
 		return f.holderForTarget(in.Targets[dest])

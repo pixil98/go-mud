@@ -39,9 +39,10 @@ type CharacterInstance struct {
 	subs map[string]func()
 
 	// Session state
-	quit         bool
-	inCombat     bool
-	followingId  string // charId of the player being followed (empty = not following)
+	quit           bool
+	inCombat       bool
+	combatTargetId string // InstanceId of the mob being auto-attacked; empty = not auto-attacking
+	followingId    string // charId of the player being followed (empty = not following)
 	group        *Group // current group, or nil if not grouped
 	lastActivity time.Time
 
@@ -225,6 +226,35 @@ func (ci *CharacterInstance) SetInCombat(v bool) {
 	ci.mu.Lock()
 	defer ci.mu.Unlock()
 	ci.inCombat = v
+}
+
+// IsAlive returns whether the character has more than zero hit points.
+func (ci *CharacterInstance) IsAlive() bool {
+	cur, _ := ci.Resource(assets.ResourceHp)
+	return cur > 0
+}
+
+// GetCombatTargetId returns the InstanceId of the mob being auto-attacked, or empty.
+func (ci *CharacterInstance) GetCombatTargetId() string {
+	ci.mu.RLock()
+	defer ci.mu.RUnlock()
+	return ci.combatTargetId
+}
+
+// SetCombatTargetId sets the mob being auto-attacked and marks the character in combat.
+func (ci *CharacterInstance) SetCombatTargetId(mobInstanceId string) {
+	ci.mu.Lock()
+	defer ci.mu.Unlock()
+	ci.combatTargetId = mobInstanceId
+	ci.inCombat = true
+}
+
+// ClearCombatTargetId clears the auto-attack target and marks the character out of combat.
+func (ci *CharacterInstance) ClearCombatTargetId() {
+	ci.mu.Lock()
+	defer ci.mu.Unlock()
+	ci.combatTargetId = ""
+	ci.inCombat = false
 }
 
 // GetFollowingId returns the charId of the player being followed, or empty.

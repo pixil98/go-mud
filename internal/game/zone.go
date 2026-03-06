@@ -88,6 +88,13 @@ func (z *ZoneInstance) ForEachPlayer(fn func(string, *CharacterInstance)) {
 	}
 }
 
+// ForEachRoom calls fn for each room in the zone.
+func (z *ZoneInstance) ForEachRoom(fn func(roomId string, room *RoomInstance)) {
+	for id, ri := range z.rooms {
+		fn(id, ri)
+	}
+}
+
 // IsOccupied returns true if any players are in any room of this zone.
 func (z *ZoneInstance) IsOccupied() bool {
 	for _, ri := range z.rooms {
