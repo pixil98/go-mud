@@ -239,10 +239,8 @@ func (ri *RoomInstance) spawnMob(mob storage.SmartIdentifier[*assets.Mobile]) (*
 	eq := NewEquipment()
 	buffs := NewTimedPerkCache(nil)
 	mi := &MobileInstance{
-		InstanceId:    uuid.New().String(),
-		Mobile:        mob,
-		threats:       make(map[string]int),
-		contributions: make(map[string]int),
+		InstanceId: uuid.New().String(),
+		Mobile:     mob,
 		ActorInstance: ActorInstance{
 			inventory: NewInventory(),
 			equipment: eq,
@@ -348,15 +346,15 @@ func (ri *RoomInstance) Describe(actorName string) string {
 	for _, mi := range ri.mobiles {
 		desc := mi.Mobile.Get().LongDesc
 		if desc == "" {
-			desc = fmt.Sprintf("%s is here.", mi.Mobile.Get().ShortDesc)
+			desc = fmt.Sprintf("%s is here.", mi.Name())
 		}
 		sb.WriteString(fmt.Sprintf("%s%s\n", display.Colorize(display.Color.Yellow, desc), formatFlags(mi.Flags())))
 	}
 
 	// Show other players
 	for _, ps := range ri.players {
-		if ps.Character.Get().Name != actorName {
-			sb.WriteString(fmt.Sprintf("%s%s\n", display.Colorize(display.Color.Yellow, fmt.Sprintf("%s is here.", ps.Character.Get().Name)), formatFlags(ps.Flags())))
+		if ps.Name() != actorName {
+			sb.WriteString(fmt.Sprintf("%s%s\n", display.Colorize(display.Color.Yellow, fmt.Sprintf("%s is here.", ps.Name())), formatFlags(ps.Flags())))
 		}
 	}
 	ri.mu.RUnlock()

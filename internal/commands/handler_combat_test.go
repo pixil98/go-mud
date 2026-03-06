@@ -5,6 +5,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/pixil98/go-mud/internal/combat"
 	"github.com/pixil98/go-mud/internal/game"
 )
 
@@ -12,16 +13,14 @@ import (
 type mockCombatManager struct {
 	startedErr error // error to return from StartCombat
 	started    bool  // set to true when StartCombat is called
-	lastZoneId string
-	lastRoomId string
-	lastMobId  string
+	lastAttacker combat.Combatant
+	lastTarget   combat.Combatant
 }
 
-func (m *mockCombatManager) StartCombat(player *game.CharacterInstance, zoneId, roomId, mobInstanceId string) error {
+func (m *mockCombatManager) StartCombat(attacker, target combat.Combatant) error {
 	m.started = true
-	m.lastZoneId = zoneId
-	m.lastRoomId = roomId
-	m.lastMobId = mobInstanceId
+	m.lastAttacker = attacker
+	m.lastTarget = target
 	return m.startedErr
 }
 
@@ -189,7 +188,7 @@ func TestAssistHandler(t *testing.T) {
 			}
 
 			pub := factory.pub.(*recordingPublisher)
-			actorId := cmdCtx.Char.Character.Id()
+			actorId := cmdCtx.Char.Id()
 
 			if tt.expMsgActor != "" {
 				msgs := pub.messagesTo(string(actorId))

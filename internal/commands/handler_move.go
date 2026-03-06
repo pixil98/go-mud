@@ -92,16 +92,15 @@ func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 		in.Char.Move(fromRoom, toRoom)
 
 		// Send room description to player
-		actor := in.Char.Character.Get()
-		roomDesc := toRoom.Describe(actor.Name)
+		roomDesc := toRoom.Describe(in.Char.Name())
 		if f.pub != nil {
-			if err := f.pub.Publish(game.SinglePlayer(in.Char.Character.Id()), nil, []byte(roomDesc)); err != nil {
+			if err := f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil, []byte(roomDesc)); err != nil {
 				slog.Warn("failed to send room description", "error", err)
 			}
 		}
 
 		// Move any followers in the old room
-		f.moveFollowers(in.Char.Character.Id(), actor.Name, fromRoom, toRoom, direction)
+		f.moveFollowers(in.Char.Id(), in.Char.Name(), fromRoom, toRoom, direction)
 
 		return nil
 	}, nil
@@ -146,7 +145,7 @@ func (f *MoveHandlerFactory) moveFollowers(leaderId, leaderName string, fromRoom
 		fl.ps.Move(fromRoom, toRoom)
 
 		if f.pub != nil {
-			roomDesc := toRoom.Describe(fl.ps.Character.Get().Name)
+			roomDesc := toRoom.Describe(fl.ps.Name())
 			msg := fmt.Sprintf("You follow %s.\n%s", leaderName, roomDesc)
 			if err := f.pub.Publish(game.SinglePlayer(fl.charId), nil, []byte(msg)); err != nil {
 				slog.Warn("failed to send room description to follower", "error", err)
@@ -154,6 +153,6 @@ func (f *MoveHandlerFactory) moveFollowers(leaderId, leaderName string, fromRoom
 		}
 
 		// Recurse: move this follower's followers too.
-		f.moveFollowers(fl.charId, fl.ps.Character.Get().Name, fromRoom, toRoom, direction)
+		f.moveFollowers(fl.charId, fl.ps.Name(), fromRoom, toRoom, direction)
 	}
 }

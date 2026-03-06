@@ -49,9 +49,9 @@ func (f *LookHandlerFactory) showRoom(in *CommandInput) error {
 		return NewUserError("You are in an invalid location.")
 	}
 
-	roomDesc := ri.Describe(in.Char.Character.Get().Name)
+	roomDesc := ri.Describe(in.Char.Name())
 	if f.pub != nil {
-		return f.pub.Publish(game.SinglePlayer(in.Char.Character.Id()), nil, []byte(roomDesc))
+		return f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil, []byte(roomDesc))
 	}
 
 	return nil
@@ -72,7 +72,7 @@ func (f *LookHandlerFactory) showTarget(in *CommandInput, target *TargetRef) err
 	}
 
 	if f.pub != nil {
-		return f.pub.Publish(game.SinglePlayer(in.Char.Character.Id()), nil, []byte(msg))
+		return f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil, []byte(msg))
 	}
 	return nil
 }

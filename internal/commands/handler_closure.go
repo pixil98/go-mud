@@ -124,7 +124,7 @@ func (f *ClosureHandlerFactory) handleExit(action, direction string, closure *as
 		applyExitAction(action, otherRoom, otherDir)
 	}
 
-	return f.publish(in, fmt.Sprintf("You %s the %s.", action, name), fmt.Sprintf("%s %ss the %s.", in.Char.Character.Get().Name, action, name))
+	return f.publish(in, fmt.Sprintf("You %s the %s.", action, name), fmt.Sprintf("%s %ss the %s.", in.Char.Name(), action, name))
 }
 
 // applyExitAction applies a closure state change to a single exit.
@@ -142,7 +142,6 @@ func applyExitAction(action string, room *game.RoomInstance, direction string) {
 }
 
 func (f *ClosureHandlerFactory) handleContainer(action string, oi *game.ObjectInstance, in *CommandInput) error {
-	actor := in.Char.Character.Get()
 	closure := oi.Object.Get().Closure
 	name := closure.Name
 	if name == "" {
@@ -159,14 +158,14 @@ func (f *ClosureHandlerFactory) handleContainer(action string, oi *game.ObjectIn
 			return NewUserError(fmt.Sprintf("%s is already open.", capName))
 		}
 		oi.Closed = false
-		return f.publish(in, fmt.Sprintf("You open %s.", name), fmt.Sprintf("%s opens %s.", actor.Name, name))
+		return f.publish(in, fmt.Sprintf("You open %s.", name), fmt.Sprintf("%s opens %s.", in.Char.Name(), name))
 
 	case "close":
 		if oi.Closed {
 			return NewUserError(fmt.Sprintf("%s is already closed.", capName))
 		}
 		oi.Closed = true
-		return f.publish(in, fmt.Sprintf("You close %s.", name), fmt.Sprintf("%s closes %s.", actor.Name, name))
+		return f.publish(in, fmt.Sprintf("You close %s.", name), fmt.Sprintf("%s closes %s.", in.Char.Name(), name))
 
 	case "lock":
 		if !oi.Closed {
@@ -182,7 +181,7 @@ func (f *ClosureHandlerFactory) handleContainer(action string, oi *game.ObjectIn
 			return err
 		}
 		oi.Locked = true
-		return f.publish(in, fmt.Sprintf("You lock %s.", name), fmt.Sprintf("%s locks %s.", actor.Name, name))
+		return f.publish(in, fmt.Sprintf("You lock %s.", name), fmt.Sprintf("%s locks %s.", in.Char.Name(), name))
 
 	case "unlock":
 		if !oi.Locked {
@@ -195,7 +194,7 @@ func (f *ClosureHandlerFactory) handleContainer(action string, oi *game.ObjectIn
 			return err
 		}
 		oi.Locked = false
-		return f.publish(in, fmt.Sprintf("You unlock %s.", name), fmt.Sprintf("%s unlocks %s.", actor.Name, name))
+		return f.publish(in, fmt.Sprintf("You unlock %s.", name), fmt.Sprintf("%s unlocks %s.", in.Char.Name(), name))
 	}
 
 	return nil
@@ -212,10 +211,10 @@ func (f *ClosureHandlerFactory) publish(in *CommandInput, selfMsg, roomMsg strin
 	if f.pub == nil {
 		return nil
 	}
-	if err := f.pub.Publish(game.SinglePlayer(in.Char.Character.Id()), nil, []byte(selfMsg)); err != nil {
+	if err := f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil, []byte(selfMsg)); err != nil {
 		return err
 	}
 	zoneId, roomId := in.Char.Location()
 	room := f.world.GetZone(zoneId).GetRoom(roomId)
-	return f.pub.Publish(room, []string{in.Char.Character.Id()}, []byte(roomMsg))
+	return f.pub.Publish(room, []string{in.Char.Id()}, []byte(roomMsg))
 }

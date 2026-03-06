@@ -34,7 +34,7 @@ func (f *SaveHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(in.Char.Character.Id()), nil, []byte("Character saved."))
+			return f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil, []byte("Character saved."))
 		}
 
 		return nil

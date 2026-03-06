@@ -46,7 +46,7 @@ func (f *WhoHandlerFactory) Create() (CommandFunc, error) {
 
 		output := "Players Online:\n" + strings.Join(lines, "\n")
 		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(in.Char.Character.Id()), nil, []byte(output))
+			return f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil, []byte(output))
 		}
 
 		return nil

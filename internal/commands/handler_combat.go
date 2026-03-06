@@ -5,12 +5,13 @@ import (
 	"fmt"
 	"log/slog"
 
+	"github.com/pixil98/go-mud/internal/combat"
 	"github.com/pixil98/go-mud/internal/game"
 )
 
 // CombatManager provides combat operations needed by command handlers.
 type CombatManager interface {
-	StartCombat(player *game.CharacterInstance, zoneId, roomId, mobInstanceId string) error
+	StartCombat(attacker, target combat.Combatant) error
 }
 
 // KillHandlerFactory creates handlers for the kill command.
@@ -42,24 +43,21 @@ func (f *KillHandlerFactory) Create() (CommandFunc, error) {
 			return NewUserError("You're already fighting!")
 		}
 
-		target := in.Targets["target"]
-		mi := target.Mob.instance
-		zoneId, roomId := in.Char.Location()
+		mi := in.Targets["target"].Mob.instance
 
-		if err := f.combat.StartCombat(in.Char, zoneId, roomId, mi.InstanceId); err != nil {
+		if err := f.combat.StartCombat(in.Char, mi); err != nil {
 			return NewUserError(err.Error())
 		}
 
-		if err := f.pub.Publish(game.SinglePlayer(in.Char.Character.Id()), nil,
-			[]byte(fmt.Sprintf("You attack %s!", mi.Mobile.Get().ShortDesc))); err != nil {
+		if err := f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil,
+			[]byte(fmt.Sprintf("You attack %s!", mi.Name()))); err != nil {
 			slog.Warn("failed to notify attacker", "error", err)
 		}
 
 		zoneID, roomID := in.Char.Location()
 		room := f.zones.GetZone(zoneID).GetRoom(roomID)
-		actor := in.Char.Character.Get()
-		roomMsg := fmt.Sprintf("%s attacks %s!", actor.Name, mi.Mobile.Get().ShortDesc)
-		if err := f.pub.Publish(room, []string{string(in.Char.Character.Id())}, []byte(roomMsg)); err != nil {
+		roomMsg := fmt.Sprintf("%s attacks %s!", in.Char.Name(), mi.Name())
+		if err := f.pub.Publish(room, []string{in.Char.Id()}, []byte(roomMsg)); err != nil {
 			slog.Warn("failed to publish room attack message", "error", err)
 		}
 
@@ -115,26 +113,26 @@ func (f *AssistHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		assistedZone, assistedRoom := assistedCI.Location()
-		if err := f.combat.StartCombat(in.Char, assistedZone, assistedRoom, targetMobId); err != nil {
+		targetMob := f.zones.GetZone(assistedZone).GetRoom(assistedRoom).GetMob(targetMobId)
+		if err := f.combat.StartCombat(in.Char, targetMob); err != nil {
 			return NewUserError(fmt.Sprintf("%s isn't fighting anything you can assist with.", assistedName))
 		}
 
-		actorId := in.Char.Character.Id()
-		actor := in.Char.Character.Get()
+		actorId := in.Char.Id()
 
 		if err := f.pub.Publish(game.SinglePlayer(actorId), nil,
 			[]byte(fmt.Sprintf("You jump to %s's aid!", assistedName))); err != nil {
 			slog.Warn("failed to notify actor of assist", "error", err)
 		}
 		if err := f.pub.Publish(game.SinglePlayer(assistedId), nil,
-			[]byte(fmt.Sprintf("%s jumps to your aid!", actor.Name))); err != nil {
+			[]byte(fmt.Sprintf("%s jumps to your aid!", in.Char.Name()))); err != nil {
 			slog.Warn("failed to notify assisted player", "error", err)
 		}
 
 		zoneID, roomID := in.Char.Location()
 		room := f.zones.GetZone(zoneID).GetRoom(roomID)
-		roomMsg := fmt.Sprintf("%s jumps to %s's aid!", actor.Name, assistedName)
-		if err := f.pub.Publish(room, []string{string(actorId), assistedId}, []byte(roomMsg)); err != nil {
+		roomMsg := fmt.Sprintf("%s jumps to %s's aid!", in.Char.Name(), assistedName)
+		if err := f.pub.Publish(room, []string{actorId, assistedId}, []byte(roomMsg)); err != nil {
 			slog.Warn("failed to publish room assist message", "error", err)
 		}
 
@@ -156,5 +154,5 @@ func (f *AssistHandlerFactory) resolveAssisted(in *CommandInput) (string, string
 		return "", "", NewUserError("Assist whom?")
 	}
 
-	return leaderId, leader.Character.Get().Name, nil
+	return leaderId, leader.Name(), nil
 }

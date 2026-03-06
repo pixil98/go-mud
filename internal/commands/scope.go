@@ -30,7 +30,7 @@ func (f playerOnlyFinder) FindPlayer(name string) *game.CharacterInstance {
 		if found != nil || ps == nil {
 			return
 		}
-		if strings.ToLower(ps.Character.Get().Name) == lower {
+		if strings.ToLower(ps.Name()) == lower {
 			found = ps
 		}
 	})

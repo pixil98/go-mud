@@ -38,10 +38,10 @@ func (f *HelpHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, in *CommandInput) error {
 		command := in.Config["command"]
 		if command != "" {
-			return f.showCommand(command, in.Char.Character.Id())
+			return f.showCommand(command, in.Char.Id())
 		}
 
-		return f.listCommands(in.Char.Character.Id())
+		return f.listCommands(in.Char.Id())
 	}, nil
 }
 

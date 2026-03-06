@@ -14,16 +14,24 @@ import (
 type MobileInstance struct {
 	mu sync.RWMutex
 
-	InstanceId    string
-	Mobile        storage.SmartIdentifier[*assets.Mobile]
-	inCombat      bool
-	threats       map[string]int // opaque combatant ID → threat; keys owned by combat package
-	contributions map[string]int // opaque combatant ID → contribution total (damage + heals) for XP
+	InstanceId string
+	Mobile     storage.SmartIdentifier[*assets.Mobile]
+	inCombat   bool
 
 	ActorInstance
 }
 
 // --- Accessor methods ---
+
+// Id returns the mobile instance's unique identifier.
+func (mi *MobileInstance) Id() string {
+	return mi.InstanceId
+}
+
+// Name returns the mobile's display name.
+func (mi *MobileInstance) Name() string {
+	return mi.Mobile.Get().ShortDesc
+}
 
 // IsInCombat returns whether the mobile is currently in combat.
 func (mi *MobileInstance) IsInCombat() bool {
@@ -97,68 +105,9 @@ func (mi *MobileInstance) Flags() []string {
 	return flags
 }
 
-// AddThreat adds amount to this mob's threat toward id.
-func (mi *MobileInstance) AddThreat(id string, amount int) {
-	mi.mu.Lock()
-	defer mi.mu.Unlock()
-	mi.threats[id] += amount
-	if mi.threats[id] < 0 {
-		mi.threats[id] = 0
-	}
-}
-
-// ClearThreatFor removes a single entry from this mob's threat table.
-func (mi *MobileInstance) ClearThreatFor(id string) {
-	mi.mu.Lock()
-	defer mi.mu.Unlock()
-	delete(mi.threats, id)
-}
-
-// ClearAllThreats wipes the threat and contribution tables and ends combat.
-func (mi *MobileInstance) ClearAllThreats() {
-	mi.mu.Lock()
-	defer mi.mu.Unlock()
-	mi.threats = make(map[string]int)
-	mi.contributions = make(map[string]int)
-	mi.inCombat = false
-}
-
-// HasThreat reports whether id has an entry in this mob's threat table.
-func (mi *MobileInstance) HasThreat(id string) bool {
-	mi.mu.RLock()
-	defer mi.mu.RUnlock()
-	_, ok := mi.threats[id]
-	return ok
-}
-
-// RecordContribution adds amount to id's contribution total (used for XP).
-func (mi *MobileInstance) RecordContribution(id string, amount int) {
-	mi.mu.Lock()
-	defer mi.mu.Unlock()
-	mi.contributions[id] += amount
-}
-
-// SnapshotContributions returns a copy of the contribution map for XP calculation.
-func (mi *MobileInstance) SnapshotContributions() map[string]int {
-	mi.mu.RLock()
-	defer mi.mu.RUnlock()
-	out := make(map[string]int, len(mi.contributions))
-	for k, v := range mi.contributions {
-		out[k] = v
-	}
-	return out
-}
-
-// SnapshotThreats returns a copy of the threat map. The combat package uses this
-// to perform CombatID-aware target selection without locking the mob.
-func (mi *MobileInstance) SnapshotThreats() map[string]int {
-	mi.mu.RLock()
-	defer mi.mu.RUnlock()
-	out := make(map[string]int, len(mi.threats))
-	for k, v := range mi.threats {
-		out[k] = v
-	}
-	return out
+// OnDeath handles mob death (e.g., loot, despawn, XP distribution).
+func (mi *MobileInstance) OnDeath() {
+	// TODO: implement mob death handling
 }
 
 // StatSections returns the mobile's stat display sections.

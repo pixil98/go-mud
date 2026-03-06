@@ -69,7 +69,7 @@ func (f *MoveObjHandlerFactory) Create() (CommandFunc, error) {
 		// Check self-targeting if configured
 		if noSelf := in.Config["no_self_target"]; noSelf != "" {
 			ref := in.Targets[noSelf]
-			if ref != nil && ref.Player != nil && ref.Player.CharId == in.Char.Character.Id() {
+			if ref != nil && ref.Player != nil && ref.Player.CharId == in.Char.Id() {
 				return NewUserError("You can't give something to yourself.")
 			}
 		}
@@ -90,10 +90,10 @@ func (f *MoveObjHandlerFactory) Create() (CommandFunc, error) {
 		dest.AddObj(oi)
 
 		if f.pub != nil {
-			exclude := []string{in.Char.Character.Id()}
+			exclude := []string{in.Char.Id()}
 
 			if selfMsg := in.Config["self_message"]; selfMsg != "" {
-				if err := f.pub.Publish(game.SinglePlayer(in.Char.Character.Id()), nil, []byte(selfMsg)); err != nil {
+				if err := f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil, []byte(selfMsg)); err != nil {
 					slog.Warn("failed to publish self message", "error", err)
 				}
 			}

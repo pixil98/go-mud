@@ -93,7 +93,7 @@ func (f *WearHandlerFactory) Create() (CommandFunc, error) {
 
 		// Send self message
 		selfMsg := fmt.Sprintf("You wear %s.", obj.ShortDesc)
-		if err := f.pub.Publish(game.SinglePlayer(in.Char.Character.Id()), nil, []byte(selfMsg)); err != nil {
+		if err := f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil, []byte(selfMsg)); err != nil {
 			return err
 		}
 
@@ -101,6 +101,6 @@ func (f *WearHandlerFactory) Create() (CommandFunc, error) {
 		roomMsg := fmt.Sprintf("%s wears %s.", actor.Name, obj.ShortDesc)
 		zoneId, roomId := in.Char.Location()
 		room := f.zones.GetZone(zoneId).GetRoom(roomId)
-		return f.pub.Publish(room, []string{in.Char.Character.Id()}, []byte(roomMsg))
+		return f.pub.Publish(room, []string{in.Char.Id()}, []byte(roomMsg))
 	}, nil
 }

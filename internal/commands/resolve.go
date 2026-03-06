@@ -94,8 +94,8 @@ type PlayerRef struct {
 
 func playerRefFromState(ps *game.CharacterInstance) *PlayerRef {
 	return &PlayerRef{
-		CharId:      ps.Character.Id(),
-		Name:        ps.Character.Get().Name,
+		CharId:      ps.Id(),
+		Name:        ps.Name(),
 		Description: ps.Character.Get().DetailedDesc,
 		session:     ps,
 	}
@@ -120,8 +120,8 @@ func mobRefFromInstance(mi *game.MobileInstance) *MobileRef {
 		return nil
 	}
 	return &MobileRef{
-		InstanceId:  mi.InstanceId,
-		Name:        mi.Mobile.Get().ShortDesc,
+		InstanceId:  mi.Id(),
+		Name:        mi.Name(),
 		Description: mi.Mobile.Get().DetailedDesc,
 		instance:    mi,
 	}

@@ -207,6 +207,16 @@ func (ci *CharacterInstance) MarkLinkless() {
 
 // --- Accessor methods ---
 
+// Id returns the character's unique identifier.
+func (ci *CharacterInstance) Id() string {
+	return ci.Character.Id()
+}
+
+// Name returns the character's display name.
+func (ci *CharacterInstance) Name() string {
+	return ci.Character.Get().Name
+}
+
 // Location returns the player's current zone and room.
 func (ci *CharacterInstance) Location() (zoneId, roomId string) {
 	ci.mu.RLock()
@@ -380,6 +390,11 @@ func (ci *CharacterInstance) Flags() []string {
 		flags = append(flags, "linkless")
 	}
 	return flags
+}
+
+// OnDeath handles player death (e.g., respawn, penalties).
+func (ci *CharacterInstance) OnDeath() {
+	// TODO: implement player death handling
 }
 
 // --- Game logic ---

@@ -47,7 +47,7 @@ func executeAbility(ability *assets.Ability, in *CommandInput, targets map[strin
 		Color:   display.Color,
 	}
 
-	charId := in.Char.Character.Id()
+	charId := in.Char.Id()
 
 	// Actor message
 	if ability.Messages.Actor != "" {

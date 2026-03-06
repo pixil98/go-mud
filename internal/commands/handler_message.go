@@ -55,7 +55,7 @@ func (f *MessageHandlerFactory) Create() (CommandFunc, error) {
 
 		// Send 2nd-person message to actor if configured
 		if senderMessage != "" {
-			if err := f.pub.Publish(game.SinglePlayer(in.Char.Character.Id()), nil, []byte(senderMessage)); err != nil {
+			if err := f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil, []byte(senderMessage)); err != nil {
 				return err
 			}
 		}
@@ -64,7 +64,7 @@ func (f *MessageHandlerFactory) Create() (CommandFunc, error) {
 		zoneId, roomId := in.Char.Location()
 		var exclude []string
 		if senderMessage != "" {
-			exclude = []string{in.Char.Character.Id()}
+			exclude = []string{in.Char.Id()}
 		}
 
 		switch scope {

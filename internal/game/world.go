@@ -76,7 +76,7 @@ func (w *WorldState) GetPlayer(charId string) *CharacterInstance {
 // AddPlayer registers a CharacterInstance in the world state and places them in their room.
 func (w *WorldState) AddPlayer(ci *CharacterInstance) error {
 	w.mu.Lock()
-	charId := ci.Character.Id()
+	charId := ci.Id()
 	if _, exists := w.players[charId]; exists {
 		w.mu.Unlock()
 		return ErrPlayerExists
