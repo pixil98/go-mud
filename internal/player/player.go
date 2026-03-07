@@ -7,8 +7,10 @@ import (
 	"fmt"
 	"io"
 	"log/slog"
+	"sort"
 	"strings"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/commands"
 	"github.com/pixil98/go-mud/internal/game"
 )
@@ -61,7 +63,7 @@ func (p *Player) Play(ctx context.Context) error {
 		case <-p.done:
 			ps := p.world.GetPlayer(p.charId)
 			var msg string
-			if ps != nil && ps.Linkless {
+			if ps != nil && ps.IsLinkless() {
 				msg = "\nDisconnected for inactivity."
 			} else {
 				msg = "\nAnother connection has taken over your session."
@@ -134,7 +136,7 @@ func (p *Player) Play(ctx context.Context) error {
 			if state == nil {
 				return fmt.Errorf("player state not found for %s", p.charId)
 			}
-			if state.Quit {
+			if state.IsQuit() {
 				p.writeLine("Goodbye!")
 				// Quit handler already saved and unsubscribed isn't needed
 				// — HandleSessionEnd will remove the player from the world.
@@ -152,7 +154,25 @@ func (p *Player) Play(ctx context.Context) error {
 func (p *Player) prompt() error {
 	prompt := "> "
 	if ps := p.world.GetPlayer(p.charId); ps != nil {
-		prompt = fmt.Sprintf("[%d/%dHP] > ", ps.Character.Get().CurrentHP, ps.Character.Get().MaxHP)
+		var parts []string
+		// HP is always first.
+		if cur, mx := ps.Resource(assets.ResourceHp); mx > 0 {
+			parts = append(parts, game.ResourceLine(assets.ResourceHp, cur, mx))
+		}
+		var others []string
+		ps.ForEachResource(func(name string, current, max int) {
+			if name != assets.ResourceHp {
+				others = append(others, name)
+			}
+		})
+		sort.Strings(others)
+		for _, name := range others {
+			cur, mx := ps.Resource(name)
+			parts = append(parts, game.ResourceLine(name, cur, mx))
+		}
+		if len(parts) > 0 {
+			prompt = fmt.Sprintf("[%s] > ", strings.Join(parts, " | "))
+		}
 	}
 	_, err := p.conn.Write([]byte(prompt))
 	return err

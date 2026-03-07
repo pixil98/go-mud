@@ -1,0 +1,16 @@
+{
+    "version": 1,
+    "id": "trees",
+    "spec": {
+        "handler": "trees",
+        "category": "information",
+        "description": "List skill trees or view the nodes of a specific tree.",
+        "priority": 5,
+        "config": {
+            "tree": "{{ .Inputs.tree }}"
+        },
+        "inputs": [
+            {"name": "tree", "type": "string", "required": false}
+        ]
+    }
+}

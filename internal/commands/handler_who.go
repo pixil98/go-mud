@@ -29,11 +29,11 @@ func (f *WhoHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *WhoHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
+	return func(ctx context.Context, in *CommandInput) error {
 		var lines []string
 
-		f.players.ForEachPlayer(func(charId string, state *game.PlayerState) {
-			if state.Linkless {
+		f.players.ForEachPlayer(func(charId string, state *game.CharacterInstance) {
+			if state.IsLinkless() {
 				return
 			}
 			char := state.Character.Get()
@@ -46,7 +46,7 @@ func (f *WhoHandlerFactory) Create() (CommandFunc, error) {
 
 		output := "Players Online:\n" + strings.Join(lines, "\n")
 		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(output))
+			return f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil, []byte(output))
 		}
 
 		return nil

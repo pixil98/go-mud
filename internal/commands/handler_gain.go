@@ -25,30 +25,30 @@ func (f *GainHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *GainHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		char := cmdCtx.Actor
-
-		if cmdCtx.Session.InCombat {
+	return func(ctx context.Context, in *CommandInput) error {
+		if in.Char.IsInCombat() {
 			return NewUserError("You can't train while fighting!")
 		}
 
-		if char.Level >= game.MaxLevel {
+		actor := in.Char.Character.Get()
+
+		if actor.Level >= game.MaxLevel {
 			return NewUserError("You have reached the maximum level.")
 		}
 
-		needed := game.ExpToNextLevel(char.Level, char.Experience)
+		needed := game.ExpToNextLevel(actor.Level, actor.Experience)
 		if needed > 0 {
 			return NewUserError(fmt.Sprintf(
 				"You need %d more experience to reach level %d.",
-				needed, char.Level+1))
+				needed, actor.Level+1))
 		}
 
-		char.Gain()
+		in.Char.Gain()
 
-		msg := fmt.Sprintf("Congratulations! You have advanced to level %d!", char.Level)
+		msg := fmt.Sprintf("Congratulations! You have advanced to level %d!", actor.Level)
 
 		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(msg))
+			return f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil, []byte(msg))
 		}
 		return nil
 	}, nil

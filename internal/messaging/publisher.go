@@ -22,7 +22,7 @@ func (p *NatsPublisher) Publish(targets game.PlayerGroup, exclude []string, data
 		excludeSet[id] = true
 	}
 	var firstErr error
-	targets.ForEachPlayer(func(charId string, _ *game.PlayerState) {
+	targets.ForEachPlayer(func(charId string, _ *game.CharacterInstance) {
 		if excludeSet[charId] {
 			return
 		}

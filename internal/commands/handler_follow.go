@@ -23,7 +23,7 @@ func NewFollowHandlerFactory(players PlayerLookup, pub game.Publisher) *FollowHa
 func (f *FollowHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
-			{Name: "target", Type: TargetTypePlayer, Required: false},
+			{Name: "target", Type: targetTypePlayer, Required: false},
 		},
 	}
 }
@@ -33,17 +33,17 @@ func (f *FollowHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *FollowHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		target := cmdCtx.Targets["target"]
+	return func(ctx context.Context, in *CommandInput) error {
+		target := in.Targets["target"]
 		if target == nil {
-			return f.unfollow(cmdCtx)
+			return f.unfollow(in)
 		}
-		return f.follow(cmdCtx, target)
+		return f.follow(in, target)
 	}, nil
 }
 
-func (f *FollowHandlerFactory) follow(cmdCtx *CommandContext, target *TargetRef) error {
-	actorId := cmdCtx.Session.Character.Id()
+func (f *FollowHandlerFactory) follow(in *CommandInput, target *TargetRef) error {
+	actorId := in.Char.Id()
 	leaderId := target.Player.CharId
 
 	// Can't follow yourself.
@@ -52,7 +52,7 @@ func (f *FollowHandlerFactory) follow(cmdCtx *CommandContext, target *TargetRef)
 	}
 
 	// Already following this person.
-	if cmdCtx.Session.FollowingId == leaderId {
+	if in.Char.GetFollowingId() == leaderId {
 		return NewUserError(fmt.Sprintf("You are already following %s.", target.Player.Name))
 	}
 
@@ -62,11 +62,11 @@ func (f *FollowHandlerFactory) follow(cmdCtx *CommandContext, target *TargetRef)
 	}
 
 	// Stop following old leader first.
-	if cmdCtx.Session.FollowingId != "" {
-		f.notifyStopFollowing(cmdCtx)
+	if in.Char.GetFollowingId() != "" {
+		f.notifyStopFollowing(in)
 	}
 
-	cmdCtx.Session.FollowingId = leaderId
+	in.Char.SetFollowingId(leaderId)
 
 	// Notify both parties.
 	if err := f.pub.Publish(game.SinglePlayer(actorId), nil,
@@ -74,38 +74,38 @@ func (f *FollowHandlerFactory) follow(cmdCtx *CommandContext, target *TargetRef)
 		slog.Warn("failed to notify follower", "error", err)
 	}
 	if err := f.pub.Publish(game.SinglePlayer(leaderId), nil,
-		[]byte(fmt.Sprintf("%s now follows you.", cmdCtx.Actor.Name))); err != nil {
+		[]byte(fmt.Sprintf("%s now follows you.", in.Char.Name()))); err != nil {
 		slog.Warn("failed to notify leader", "error", err)
 	}
 
 	return nil
 }
 
-func (f *FollowHandlerFactory) unfollow(cmdCtx *CommandContext) error {
-	if cmdCtx.Session.FollowingId == "" {
+func (f *FollowHandlerFactory) unfollow(in *CommandInput) error {
+	if in.Char.GetFollowingId() == "" {
 		return NewUserError("You aren't following anyone.")
 	}
 
-	f.notifyStopFollowing(cmdCtx)
-	cmdCtx.Session.FollowingId = ""
+	f.notifyStopFollowing(in)
+	in.Char.SetFollowingId("")
 	return nil
 }
 
 // notifyStopFollowing sends stop-following messages to both parties and does NOT
 // clear FollowingId — the caller is responsible for that.
-func (f *FollowHandlerFactory) notifyStopFollowing(cmdCtx *CommandContext) {
-	actorId := cmdCtx.Session.Character.Id()
-	leaderId := cmdCtx.Session.FollowingId
+func (f *FollowHandlerFactory) notifyStopFollowing(in *CommandInput) {
+	actorId := in.Char.Id()
+	leaderId := in.Char.GetFollowingId()
 
 	leaderPs := f.players.GetPlayer(leaderId)
 	if leaderPs != nil {
-		leaderName := leaderPs.Character.Get().Name
+		leaderName := leaderPs.Name()
 		if err := f.pub.Publish(game.SinglePlayer(actorId), nil,
 			[]byte(fmt.Sprintf("You stop following %s.", leaderName))); err != nil {
 			slog.Warn("failed to notify follower", "error", err)
 		}
 		if err := f.pub.Publish(game.SinglePlayer(leaderId), nil,
-			[]byte(fmt.Sprintf("%s stops following you.", cmdCtx.Actor.Name))); err != nil {
+			[]byte(fmt.Sprintf("%s stops following you.", in.Char.Name()))); err != nil {
 			slog.Warn("failed to notify leader", "error", err)
 		}
 	}
@@ -117,13 +117,13 @@ func wouldCreateLoop(players PlayerLookup, followerId, leaderId string) bool {
 	current := leaderId
 	for i := 0; i < 100; i++ {
 		ps := players.GetPlayer(current)
-		if ps == nil || ps.FollowingId == "" {
+		if ps == nil || ps.GetFollowingId() == "" {
 			return false
 		}
-		if ps.FollowingId == followerId {
+		if ps.GetFollowingId() == followerId {
 			return true
 		}
-		current = ps.FollowingId
+		current = ps.GetFollowingId()
 	}
 	// Safety: if we walked 100 links, treat as a loop.
 	return true

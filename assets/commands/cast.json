@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "cast",
+    "spec": {
+        "handler": "cast",
+        "category": "abilities",
+        "priority": 5,
+        "description": "Cast a spell.",
+        "config": {
+            "spell": "{{ .Inputs.spell }}",
+            "args": "{{ .Inputs.args }}"
+        },
+        "inputs": [
+            {"name": "spell", "type": "string", "required": true, "missing": "Cast what?"},
+            {"name": "args", "type": "string", "rest": true}
+        ]
+    }
+}

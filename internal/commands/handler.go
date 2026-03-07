@@ -7,35 +7,26 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/pixil98/go-mud/internal/combat"
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
-// ParsedInput represents a validated and parsed command input.
-type ParsedInput struct {
-	Spec  *InputSpec
-	Raw   string // Original player input
-	Value any    // Parsed value: int for number, string for string/direction
-}
-
-// CommandContext is what handlers receive after config processing.
-type CommandContext struct {
-	Actor   *game.Character   // Character data (name, title, etc.)
-	Session *game.PlayerState // Current session state (location, quit flag, etc.)
-	Targets map[string]*TargetRef // Resolved targets by name
-	Config  map[string]string     // Expanded config values (all templates resolved)
+// CommandInput is what handlers receive after config processing.
+type CommandInput struct {
+	Char    *game.CharacterInstance // Active character instance
+	Targets map[string]*TargetRef  // Resolved targets by name
+	Config  map[string]string      // Expanded config values (all templates resolved)
 }
 
 // CommandFunc is the signature for compiled command functions.
-// It receives CommandContext with fully expanded config.
-type CommandFunc func(ctx context.Context, cmdCtx *CommandContext) error
+type CommandFunc func(ctx context.Context, in *CommandInput) error
 
 // TargetRequirement describes an expected target for a handler.
 type TargetRequirement struct {
 	Name     string     // Target name (must match JSON "name" field)
-	Type     TargetType // Expected type: TargetTypePlayer, TargetTypeObject, etc.
+	Type     targetType // Expected type: targetTypePlayer, targetTypeObject, etc.
 	Required bool       // If true, target must exist in command JSON
 }
 
@@ -54,21 +45,20 @@ type HandlerSpec struct {
 
 // PlayerLookup finds a player by character ID.
 type PlayerLookup interface {
-	GetPlayer(charId string) *game.PlayerState
+	GetPlayer(charId string) *game.CharacterInstance
 }
 
-// RoomLocator finds a room instance by zone and room ID.
-type RoomLocator interface {
-	GetRoom(zoneId, roomId string) *game.RoomInstance
+// ZoneLocator finds a zone instance by zone ID.
+type ZoneLocator interface {
+	GetZone(zoneId string) *game.ZoneInstance
 }
 
 // WorldView provides read-only access to the game world for command handlers
-// that need more than just room lookup.
+// that need more than just zone lookup.
 type WorldView interface {
-	RoomLocator
-	GetZone(zoneId string) *game.ZoneInstance
+	ZoneLocator
 	Instances() map[string]*game.ZoneInstance
-	ForEachPlayer(func(string, *game.PlayerState))
+	ForEachPlayer(func(string, *game.CharacterInstance))
 }
 
 // HandlerFactory creates CommandFuncs from command configurations.
@@ -81,31 +71,39 @@ type HandlerFactory interface {
 	// ValidateConfig performs custom validation on the config.
 	// Called after spec validation. Use for conditional logic that Spec can't express.
 	ValidateConfig(config map[string]any) error
-	// Create creates a CommandFunc. Handlers read expanded config from CommandContext.
+	// Create creates a CommandFunc. Handlers read expanded config from CommandInput.
 	Create() (CommandFunc, error)
 }
 
 // compiledCommand holds a command that's been validated and compiled.
 type compiledCommand struct {
-	cmd     *Command
+	cmd     *assets.Command
 	cmdFunc CommandFunc
 }
 
 type Handler struct {
 	factories map[string]HandlerFactory
 	compiled  map[string]*compiledCommand
-	dict      *game.Dictionary
+	effects   map[string]EffectHandler
 }
 
-func NewHandler(cmds storage.Storer[*Command], dict *game.Dictionary, publisher game.Publisher, world *game.WorldState, combat *combat.Manager) (*Handler, error) {
+func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, publisher game.Publisher, world *game.WorldState, combat CombatManager) (*Handler, error) {
 	h := &Handler{
 		factories: make(map[string]HandlerFactory),
 		compiled:  make(map[string]*compiledCommand),
-		dict:      dict,
+		effects:   make(map[string]EffectHandler),
 	}
+
+	// Register effect handlers
+	h.effects["damage"] = &damageEffect{}
+	h.effects["actor_buff"] = &actorBuffEffect{}
+	h.effects["room_buff"] = &roomBuffEffect{world: world}
+	h.effects["zone_buff"] = &zoneBuffEffect{world: world}
+	h.effects["world_buff"] = &worldBuffEffect{world: world}
 
 	// Register built-in handlers
 	h.RegisterFactory("assist", NewAssistHandlerFactory(combat, world, world, publisher))
+	h.RegisterFactory("cast", NewCastHandlerFactory(dict.Abilities, world, publisher, h.effects))
 	h.RegisterFactory("closure", NewClosureHandlerFactory(world, publisher))
 	h.RegisterFactory("equipment", NewEquipmentHandlerFactory(publisher))
 	h.RegisterFactory("follow", NewFollowHandlerFactory(world, publisher))
@@ -118,11 +116,12 @@ func NewHandler(cmds storage.Storer[*Command], dict *game.Dictionary, publisher 
 	h.RegisterFactory("look", NewLookHandlerFactory(world, publisher))
 	h.RegisterFactory("message", NewMessageHandlerFactory(world, publisher))
 	h.RegisterFactory("move", NewMoveHandlerFactory(world, publisher))
-	h.RegisterFactory("move_obj", NewMoveObjHandlerFactory(world, dict.Characters, publisher))
+	h.RegisterFactory("move_obj", NewMoveObjHandlerFactory(world, publisher))
 	h.RegisterFactory("quit", NewQuitHandlerFactory())
 	h.RegisterFactory("save", NewSaveHandlerFactory(dict.Characters, publisher))
 	h.RegisterFactory("score", NewScoreHandlerFactory(publisher))
 	h.RegisterFactory("title", NewTitleHandlerFactory(publisher))
+	h.RegisterFactory("trees", NewTreesHandlerFactory(dict.Trees, publisher))
 	h.RegisterFactory("wear", NewWearHandlerFactory(world, publisher))
 	h.RegisterFactory("who", NewWhoHandlerFactory(world, publisher))
 
@@ -134,7 +133,52 @@ func NewHandler(cmds storage.Storer[*Command], dict *game.Dictionary, publisher 
 		}
 	}
 
+	// Auto-register skill abilities as top-level commands
+	for id, ability := range dict.Abilities.GetAll() {
+		if ability.Type == assets.AbilityTypeSkill {
+			if err := h.registerSkill(id, ability, world, publisher); err != nil {
+				return nil, fmt.Errorf("registering skill %q: %w", id, err)
+			}
+		}
+	}
+
 	return h, nil
+}
+
+// registerSkill registers a skill ability as a top-level command.
+// The skill's embedded Command provides input/target specs. The compiled
+// handler checks the actor's perks for unlock and sends ability messages.
+func (h *Handler) registerSkill(id string, ability *assets.Ability, world WorldView, pub game.Publisher) error {
+	cmd := ability.Command // value copy
+	cmd.Handler = ability.Handler
+
+	effect, ok := h.effects[ability.Handler]
+	if !ok {
+		return fmt.Errorf("unknown effect handler %q", ability.Handler)
+	}
+	cmdFunc := func(ctx context.Context, in *CommandInput) error {
+		if !in.Char.HasAbility(id) {
+			return NewUserError("You don't know how to do that.")
+		}
+		return executeAbility(ability, in, in.Targets, world, pub, effect)
+	}
+
+	cc := &compiledCommand{cmd: &cmd, cmdFunc: cmdFunc}
+
+	if _, exists := h.compiled[id]; exists {
+		return fmt.Errorf("%q conflicts with an existing command or alias", id)
+	}
+	h.compiled[id] = cc
+
+	for _, alias := range cmd.Aliases {
+		aliasId := strings.ToLower(alias)
+		if _, exists := h.compiled[aliasId]; exists {
+			return fmt.Errorf("alias %q conflicts with an existing command or alias", alias)
+		}
+		h.compiled[aliasId] = cc
+	}
+
+	return nil
 }
 
 // RegisterFactory registers a handler factory by name.
@@ -153,7 +197,7 @@ func (h *Handler) RegisterFactory(name string, factory HandlerFactory) error {
 	return nil
 }
 
-func (h *Handler) compile(id string, cmd *Command) error {
+func (h *Handler) compile(id string, cmd *assets.Command) error {
 	factory, ok := h.factories[cmd.Handler]
 	if !ok {
 		return fmt.Errorf("unknown handler %q", cmd.Handler)
@@ -197,9 +241,9 @@ func (h *Handler) compile(id string, cmd *Command) error {
 }
 
 // validateSpec validates a command against a handler's spec.
-func (h *Handler) validateSpec(cmd *Command, spec *HandlerSpec) error {
+func (h *Handler) validateSpec(cmd *assets.Command, spec *HandlerSpec) error {
 	// Build maps for quick lookup
-	cmdTargets := make(map[string]TargetSpec)
+	cmdTargets := make(map[string]assets.TargetSpec)
 	for _, t := range cmd.Targets {
 		cmdTargets[t.Name] = t
 	}
@@ -223,8 +267,9 @@ func (h *Handler) validateSpec(cmd *Command, spec *HandlerSpec) error {
 		}
 
 		// Validate command types are a subset of spec types
-		if target.TargetType()&req.Type != target.TargetType() {
-			return fmt.Errorf("target %q: expected type %s, got %s", req.Name, req.Type, target.TargetType())
+		tt := parseTargetType(target.Types)
+		if tt&req.Type != tt {
+			return fmt.Errorf("target %q: expected type %s, got %s", req.Name, req.Type, tt)
 		}
 	}
 
@@ -319,51 +364,37 @@ func (h *Handler) Exec(ctx context.Context, world *game.WorldState, charId strin
 	}
 
 	// Parse inputs
-	inputs, err := h.parseInputs(compiled.cmd.Inputs, rawArgs)
+	inputMap, err := parseInputs(compiled.cmd.Inputs, rawArgs)
 	if err != nil {
 		return err
 	}
 
-	// Build input map for template expansion and target resolution.
-	// Pre-populate optional inputs with zero values so templates don't render "<no value>".
-	inputMap := make(map[string]any, len(compiled.cmd.Inputs))
-	for _, spec := range compiled.cmd.Inputs {
-		if !spec.Required {
-			inputMap[spec.Name] = ""
-		}
-	}
-	for _, input := range inputs {
-		inputMap[input.Spec.Name] = input.Value
-	}
-
-	actor := h.dict.Characters.Get(charId)
-	session := world.GetPlayer(charId)
+	char := world.GetPlayer(charId)
 
 	// Resolve targets from targets section
 	resolver := NewTargetResolver(NewWorldScopes(world))
-	targets, err := resolver.ResolveSpecs(compiled.cmd.Targets, inputMap, actor, session)
+	targets, err := resolver.ResolveSpecs(compiled.cmd.Targets, inputMap, char)
 	if err != nil {
 		return err
 	}
 
 	// Expand config templates
-	expandedConfig, err := h.expandConfig(compiled.cmd.Config, actor, session, targets, inputMap)
+	expandedConfig, err := h.expandConfig(compiled.cmd.Config, char, targets, inputMap)
 	if err != nil {
 		return err
 	}
 
-	cmdCtx := &CommandContext{
-		Actor:   actor,
-		Session: session,
+	return compiled.cmdFunc(ctx, &CommandInput{
+		Char:    char,
 		Targets: targets,
 		Config:  expandedConfig,
-	}
-
-	return compiled.cmdFunc(ctx, cmdCtx)
+	})
 }
 
-// parseInputs validates raw string arguments against input specs.
-func (h *Handler) parseInputs(specs []InputSpec, rawArgs []string) ([]ParsedInput, error) {
+// parseInputs validates raw string arguments against input specs and returns
+// a map of input name to parsed value. Optional inputs are pre-populated with
+// empty strings so templates don't render "<no value>".
+func parseInputs(specs []assets.InputSpec, rawArgs []string) (map[string]any, error) {
 	// Count required inputs
 	requiredCount := 0
 	for _, spec := range specs {
@@ -385,7 +416,7 @@ func (h *Handler) parseInputs(specs []InputSpec, rawArgs []string) ([]ParsedInpu
 		return nil, NewUserError(fmt.Sprintf("Expected at most %d argument(s), got %d.", len(specs), len(rawArgs)))
 	}
 
-	inputs := make([]ParsedInput, 0, len(specs))
+	result := make(map[string]any, len(specs))
 	argIndex := 0
 
 	for i := range specs {
@@ -399,6 +430,7 @@ func (h *Handler) parseInputs(specs []InputSpec, rawArgs []string) ([]ParsedInpu
 				}
 				return nil, NewUserError(fmt.Sprintf("Parameter %q is required.", spec.Name))
 			}
+			result[spec.Name] = ""
 			continue
 		}
 
@@ -412,28 +444,24 @@ func (h *Handler) parseInputs(specs []InputSpec, rawArgs []string) ([]ParsedInpu
 			argIndex++
 		}
 
-		value, err := h.parseValue(spec.Type, raw)
+		value, err := parseValue(spec.Type, raw)
 		if err != nil {
 			return nil, fmt.Errorf("parameter %q: %w", spec.Name, err)
 		}
 
-		inputs = append(inputs, ParsedInput{
-			Spec:  spec,
-			Raw:   raw,
-			Value: value,
-		})
+		result[spec.Name] = value
 	}
 
-	return inputs, nil
+	return result, nil
 }
 
 // parseValue parses a raw string into the appropriate type.
-func (h *Handler) parseValue(inputType InputType, raw string) (any, error) {
+func parseValue(inputType string, raw string) (any, error) {
 	switch inputType {
-	case InputTypeString:
+	case assets.InputTypeString:
 		return raw, nil
 
-	case InputTypeNumber:
+	case assets.InputTypeNumber:
 		n, err := strconv.Atoi(raw)
 		if err != nil {
 			return nil, NewUserError(fmt.Sprintf("%q is not a valid number.", raw))
@@ -447,22 +475,20 @@ func (h *Handler) parseValue(inputType InputType, raw string) (any, error) {
 
 // templateContext holds data for template expansion.
 type templateContext struct {
-	Actor   *game.Character
-	Session *game.PlayerState
+	Actor   *assets.Character
 	Targets map[string]*TargetRef
 	Inputs  map[string]any
 	Color   *display.Palette
 }
 
 // expandConfig expands all template strings in config and returns map[string]string.
-func (h *Handler) expandConfig(config map[string]any, actor *game.Character, session *game.PlayerState, targets map[string]*TargetRef, inputs map[string]any) (map[string]string, error) {
+func (h *Handler) expandConfig(config map[string]any, char *game.CharacterInstance, targets map[string]*TargetRef, inputs map[string]any) (map[string]string, error) {
 	if config == nil {
 		return make(map[string]string), nil
 	}
 
 	tmplCtx := &templateContext{
-		Actor:   actor,
-		Session: session,
+		Actor:   char.Character.Get(),
 		Targets: targets,
 		Inputs:  inputs,
 		Color:   display.Color,

@@ -26,21 +26,22 @@ func (f *EquipmentHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *EquipmentHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
+	return func(ctx context.Context, in *CommandInput) error {
 		// Build the slot list to display: race slots if available, otherwise equipped slots
-		slots := cmdCtx.Actor.Race.Get().WearSlots
-		if len(slots) == 0 && cmdCtx.Actor.Equipment != nil {
-			for _, item := range cmdCtx.Actor.Equipment.Objs {
+		eq := in.Char.GetEquipment()
+		slots := in.Char.Character.Get().Race.Get().WearSlots
+		if len(slots) == 0 && eq != nil {
+			eq.ForEachSlot(func(item game.EquipSlot) {
 				slots = append(slots, item.Slot)
-			}
+			})
 		}
 
 		lines := []string{"You are wearing:"}
-		lines = append(lines, FormatEquipmentSlots(cmdCtx.Actor.Equipment, slots)...)
+		lines = append(lines, FormatEquipmentSlots(eq, slots)...)
 
 		output := strings.Join(lines, "\n")
 		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(output))
+			return f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil, []byte(output))
 		}
 
 		return nil
@@ -64,15 +65,14 @@ func FormatEquipmentSlots(eq *game.Equipment, slots []string) []string {
 		desc := "empty"
 		if eq != nil {
 			count := 0
-			for _, item := range eq.Objs {
+			eq.ForEachSlot(func(item game.EquipSlot) {
 				if item.Slot == slot {
 					count++
 					if count == slotSeen[slot] {
 						desc = item.Obj.Object.Get().ShortDesc
-						break
 					}
 				}
-			}
+			})
 		}
 		lines = append(lines, formatSlotLine(slot, desc))
 	}
@@ -82,12 +82,12 @@ func FormatEquipmentSlots(eq *game.Equipment, slots []string) []string {
 // FormatEquippedItems returns indented lines for occupied equipment slots only.
 // Returns nil if nothing is equipped.
 func FormatEquippedItems(eq *game.Equipment) []string {
-	if eq == nil || len(eq.Objs) == 0 {
+	if eq == nil || eq.Len() == 0 {
 		return nil
 	}
 	var lines []string
-	for _, item := range eq.Objs {
+	eq.ForEachSlot(func(item game.EquipSlot) {
 		lines = append(lines, formatSlotLine(item.Slot, item.Obj.Object.Get().ShortDesc))
-	}
+	})
 	return lines
 }

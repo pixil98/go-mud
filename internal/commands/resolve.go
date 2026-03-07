@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
 )
@@ -11,7 +12,7 @@ import (
 // --- Finder interfaces ---
 
 type PlayerFinder interface {
-	FindPlayer(string) *game.PlayerState
+	FindPlayer(string) *game.CharacterInstance
 }
 
 type ObjectFinder interface {
@@ -23,7 +24,7 @@ type MobileFinder interface {
 }
 
 type ExitFinder interface {
-	FindExit(string) (string, *game.Exit)
+	FindExit(string) (string, *assets.Exit)
 }
 
 // TargetFinder combines all finder interfaces.
@@ -71,11 +72,11 @@ func actorCondition(currentHP, maxHP int) string {
 
 // describeActor returns a detailed description for a player or mob,
 // including condition and equipped items.
-func describeActor(description, name string, actor *game.ActorInstance) string {
+func describeActor(description, name string, currentHP, maxHP int, equipment *game.Equipment) string {
 	cName := display.Capitalize(name)
 	lines := []string{display.Wrap(description)}
-	lines = append(lines, fmt.Sprintf("%s %s.", cName, actorCondition(actor.CurrentHP, actor.MaxHP)))
-	if eqLines := FormatEquippedItems(actor.Equipment); eqLines != nil {
+	lines = append(lines, fmt.Sprintf("%s %s.", cName, actorCondition(currentHP, maxHP)))
+	if eqLines := FormatEquippedItems(equipment); eqLines != nil {
 		lines = append(lines, "")
 		lines = append(lines, fmt.Sprintf("%s is using:", cName))
 		lines = append(lines, eqLines...)
@@ -88,13 +89,13 @@ type PlayerRef struct {
 	CharId      string
 	Name        string
 	Description string
-	session     *game.PlayerState
+	session     *game.CharacterInstance
 }
 
-func playerRefFromState(ps *game.PlayerState) *PlayerRef {
+func playerRefFromState(ps *game.CharacterInstance) *PlayerRef {
 	return &PlayerRef{
-		CharId:      ps.Character.Id(),
-		Name:        ps.Character.Get().Name,
+		CharId:      ps.Id(),
+		Name:        ps.Name(),
 		Description: ps.Character.Get().DetailedDesc,
 		session:     ps,
 	}
@@ -102,7 +103,8 @@ func playerRefFromState(ps *game.PlayerState) *PlayerRef {
 
 // Describe returns a detailed description of the player, including equipped items.
 func (r *PlayerRef) Describe() string {
-	return describeActor(r.Description, r.Name, &r.session.Character.Get().ActorInstance)
+	currentHP, maxHP := r.session.Resource(assets.ResourceHp)
+	return describeActor(r.Description, r.Name, currentHP, maxHP, r.session.GetEquipment())
 }
 
 // MobileRef is the template-facing view of a resolved mob.
@@ -118,8 +120,8 @@ func mobRefFromInstance(mi *game.MobileInstance) *MobileRef {
 		return nil
 	}
 	return &MobileRef{
-		InstanceId:  mi.InstanceId,
-		Name:        mi.Mobile.Get().ShortDesc,
+		InstanceId:  mi.Id(),
+		Name:        mi.Name(),
 		Description: mi.Mobile.Get().DetailedDesc,
 		instance:    mi,
 	}
@@ -127,7 +129,8 @@ func mobRefFromInstance(mi *game.MobileInstance) *MobileRef {
 
 // Describe returns a detailed description of the mob, including equipped items.
 func (r *MobileRef) Describe() string {
-	return describeActor(r.Description, r.Name, &r.instance.ActorInstance)
+	currentHP, maxHP := r.instance.Resource(assets.ResourceHp)
+	return describeActor(r.Description, r.Name, currentHP, maxHP, r.instance.GetEquipment())
 }
 
 // ObjectRef is the template-facing view of a resolved object.
@@ -166,7 +169,7 @@ func (r *ObjectRef) ClosureName() string {
 // Describe returns a detailed description of the object, including container contents.
 func (r *ObjectRef) Describe() string {
 	lines := []string{display.Wrap(r.Description)}
-	if r.instance.Object.Get().HasFlag(game.ObjectFlagContainer) {
+	if r.instance.Object.Get().HasFlag(assets.ObjectFlagContainer) {
 		lines = append(lines, "")
 		if r.instance.Locked {
 			lines = append(lines, "It is locked.")
@@ -182,11 +185,11 @@ func (r *ObjectRef) Describe() string {
 
 // ExitRef is the template-facing view of a resolved exit.
 type ExitRef struct {
-	Direction string     // Direction key (e.g., "north", "south")
-	exit      *game.Exit // The exit definition
+	Direction string       // Direction key (e.g., "north", "south")
+	exit      *assets.Exit // The exit definition
 }
 
-func exitRefFrom(direction string, exit *game.Exit) *ExitRef {
+func exitRefFrom(direction string, exit *assets.Exit) *ExitRef {
 	return &ExitRef{
 		Direction: direction,
 		exit:      exit,
@@ -195,7 +198,7 @@ func exitRefFrom(direction string, exit *game.Exit) *ExitRef {
 
 // TargetRef is a polymorphic target reference that could be a player, mobile, object, or exit.
 type TargetRef struct {
-	Type   TargetType // "player", "mobile", "object", or "exit"
+	Type   targetType // targetTypePlayer, targetTypeMobile, targetTypeObject, or targetTypeExit
 	Player *PlayerRef // Non-nil if Type == "player"
 	Mob    *MobileRef // Non-nil if Type == "mobile"
 	Obj    *ObjectRef // Non-nil if Type == "object"
@@ -230,36 +233,36 @@ type SearchSpace struct {
 // FindTarget searches spaces in order for the first matching target.
 // It checks player, then mobile, then object, then exit within each space,
 // filtering by the allowed target types. Returns the first match.
-func FindTarget(name string, tt TargetType, spaces []SearchSpace) (*TargetRef, error) {
+func FindTarget(name string, tt targetType, spaces []SearchSpace) (*TargetRef, error) {
 	for _, sp := range spaces {
-		if tt&TargetTypePlayer != 0 {
+		if tt&targetTypePlayer != 0 {
 			if ps := sp.Finder.FindPlayer(name); ps != nil {
 				return &TargetRef{
-					Type:   TargetTypePlayer,
+					Type:   targetTypePlayer,
 					Player: playerRefFromState(ps),
 				}, nil
 			}
 		}
-		if tt&TargetTypeMobile != 0 {
+		if tt&targetTypeMobile != 0 {
 			if mi := sp.Finder.FindMob(name); mi != nil {
 				return &TargetRef{
-					Type: TargetTypeMobile,
+					Type: targetTypeMobile,
 					Mob:  mobRefFromInstance(mi),
 				}, nil
 			}
 		}
-		if tt&TargetTypeObject != 0 {
+		if tt&targetTypeObject != 0 {
 			if oi := sp.Finder.FindObj(name); oi != nil {
 				return &TargetRef{
-					Type: TargetTypeObject,
+					Type: targetTypeObject,
 					Obj:  objRefFromInstance(oi, sp.Remover),
 				}, nil
 			}
 		}
-		if tt&TargetTypeExit != 0 {
+		if tt&targetTypeExit != 0 {
 			if dir, exit := sp.Finder.FindExit(name); exit != nil {
 				return &TargetRef{
-					Type: TargetTypeExit,
+					Type: targetTypeExit,
 					Exit: exitRefFrom(dir, exit),
 				}, nil
 			}
@@ -274,7 +277,7 @@ func FindTarget(name string, tt TargetType, spaces []SearchSpace) (*TargetRef, e
 // Implementations decide where to look (room, zone, world, inventory, etc.)
 // without coupling the resolver to any particular game state type.
 type TargetScopes interface {
-	SpacesFor(scope Scope, actor *game.Character, session *game.PlayerState) ([]SearchSpace, error)
+	SpacesFor(s scope, ci *game.CharacterInstance) ([]SearchSpace, error)
 }
 
 // --- TargetResolver ---
@@ -297,7 +300,7 @@ type notFoundContext struct {
 // ResolveSpecs resolves all targets from the command's targets section.
 // Specs are processed in order so that scope_target references to earlier
 // targets work correctly. Inputs are assumed to have been validated by parseInputs.
-func (r *TargetResolver) ResolveSpecs(specs []TargetSpec, inputs map[string]any, actor *game.Character, session *game.PlayerState) (map[string]*TargetRef, error) {
+func (r *TargetResolver) ResolveSpecs(specs []assets.TargetSpec, inputs map[string]any, session *game.CharacterInstance) (map[string]*TargetRef, error) {
 	if len(specs) == 0 {
 		return make(map[string]*TargetRef), nil
 	}
@@ -328,8 +331,8 @@ func (r *TargetResolver) ResolveSpecs(specs []TargetSpec, inputs map[string]any,
 		}
 
 		// Normal scope resolution
-		scope := spec.Scope()
-		spaces, err := r.scopes.SpacesFor(scope, actor, session)
+		s := parseScope(spec.Scopes)
+		spaces, err := r.scopes.SpacesFor(s, session)
 		if err != nil {
 			return nil, err
 		}
@@ -346,8 +349,8 @@ func (r *TargetResolver) ResolveSpecs(specs []TargetSpec, inputs map[string]any,
 
 // findWithNotFound wraps FindTarget and replaces the default error with the
 // spec's NotFound template when one is configured.
-func findWithNotFound(name string, spec TargetSpec, spaces []SearchSpace, inputs map[string]any) (*TargetRef, error) {
-	ref, err := FindTarget(name, spec.TargetType(), spaces)
+func findWithNotFound(name string, spec assets.TargetSpec, spaces []SearchSpace, inputs map[string]any) (*TargetRef, error) {
+	ref, err := FindTarget(name, parseTargetType(spec.Types), spaces)
 	if err != nil && spec.NotFound != "" {
 		msg, tmplErr := ExpandTemplate(spec.NotFound, &notFoundContext{Inputs: inputs})
 		if tmplErr != nil {
@@ -361,7 +364,7 @@ func findWithNotFound(name string, spec TargetSpec, spaces []SearchSpace, inputs
 // containerSpaces checks if a spec has a scope_target and returns container-only
 // search spaces if the referenced target resolved to a container object.
 // Returns (spaces, handled, error) where handled=true means container scoping applies.
-func containerSpaces(spec TargetSpec, targets map[string]*TargetRef) ([]SearchSpace, bool, error) {
+func containerSpaces(spec assets.TargetSpec, targets map[string]*TargetRef) ([]SearchSpace, bool, error) {
 	if spec.ScopeTarget == "" {
 		return nil, false, nil
 	}
@@ -373,7 +376,7 @@ func containerSpaces(spec TargetSpec, targets map[string]*TargetRef) ([]SearchSp
 	}
 
 	// Validate it's a container
-	if !scopeRef.Obj.instance.Object.Get().HasFlag(game.ObjectFlagContainer) {
+	if !scopeRef.Obj.instance.Object.Get().HasFlag(assets.ObjectFlagContainer) {
 		capName := strings.ToUpper(scopeRef.Obj.Name[:1]) + scopeRef.Obj.Name[1:]
 		return nil, false, NewUserError(fmt.Sprintf("%s is not a container.", capName))
 	}

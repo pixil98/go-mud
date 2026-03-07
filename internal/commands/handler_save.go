@@ -4,17 +4,18 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // SaveHandlerFactory creates handlers that persist the player's character.
 type SaveHandlerFactory struct {
-	chars storage.Storer[*game.Character]
+	chars storage.Storer[*assets.Character]
 	pub   game.Publisher
 }
 
-func NewSaveHandlerFactory(chars storage.Storer[*game.Character], pub game.Publisher) *SaveHandlerFactory {
+func NewSaveHandlerFactory(chars storage.Storer[*assets.Character], pub game.Publisher) *SaveHandlerFactory {
 	return &SaveHandlerFactory{chars: chars, pub: pub}
 }
 
@@ -27,13 +28,13 @@ func (f *SaveHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *SaveHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		if err := cmdCtx.Session.SaveCharacter(f.chars); err != nil {
+	return func(ctx context.Context, in *CommandInput) error {
+		if err := in.Char.SaveCharacter(f.chars); err != nil {
 			return fmt.Errorf("saving character: %w", err)
 		}
 
 		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte("Character saved."))
+			return f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil, []byte("Character saved."))
 		}
 
 		return nil

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 )
 
@@ -11,18 +12,18 @@ import (
 // Targets:
 //   - target (required): the object to wear
 type WearHandlerFactory struct {
-	rooms RoomLocator
+	zones ZoneLocator
 	pub   game.Publisher
 }
 
-func NewWearHandlerFactory(rooms RoomLocator, pub game.Publisher) *WearHandlerFactory {
-	return &WearHandlerFactory{rooms: rooms, pub: pub}
+func NewWearHandlerFactory(zones ZoneLocator, pub game.Publisher) *WearHandlerFactory {
+	return &WearHandlerFactory{zones: zones, pub: pub}
 }
 
 func (f *WearHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
-			{Name: "target", Type: TargetTypeObject, Required: true},
+			{Name: "target", Type: targetTypeObject, Required: true},
 		},
 	}
 }
@@ -32,8 +33,8 @@ func (f *WearHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *WearHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		target := cmdCtx.Targets["target"]
+	return func(ctx context.Context, in *CommandInput) error {
+		target := in.Targets["target"]
 		if target == nil || target.Obj == nil {
 			return NewUserError("Wear what?")
 		}
@@ -42,16 +43,12 @@ func (f *WearHandlerFactory) Create() (CommandFunc, error) {
 		obj := target.Obj.instance.Object.Get()
 
 		// Check if the item is wearable
-		if !obj.HasFlag(game.ObjectFlagWearable) {
+		if !obj.HasFlag(assets.ObjectFlagWearable) {
 			return NewUserError(fmt.Sprintf("You can't wear %s.", obj.ShortDesc))
 		}
 
-		race := cmdCtx.Actor.Race.Get()
-
-		// Initialize equipment if needed
-		if cmdCtx.Actor.Equipment == nil {
-			cmdCtx.Actor.Equipment = game.NewEquipment()
-		}
+		actor := in.Char.Character.Get()
+		race := actor.Race.Get()
 
 		// Find first wear slot that the race supports and has capacity
 		var slot string
@@ -60,7 +57,7 @@ func (f *WearHandlerFactory) Create() (CommandFunc, error) {
 			if maxSlots == 0 {
 				continue // Race doesn't have this slot type
 			}
-			if cmdCtx.Actor.Equipment.SlotCount(s) < maxSlots {
+			if in.Char.GetEquipment().SlotCount(s) < maxSlots {
 				slot = s
 				break
 			}
@@ -87,23 +84,23 @@ func (f *WearHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		maxSlots := race.SlotCount(slot)
-		err := cmdCtx.Actor.Equipment.Equip(slot, maxSlots, oi)
+		err := in.Char.GetEquipment().Equip(slot, maxSlots, oi)
 		if err != nil {
 			// Put it back on failure
-			cmdCtx.Actor.Inventory.AddObj(oi)
+			in.Char.GetInventory().AddObj(oi)
 			return NewUserError("You're already wearing something in that slot.")
 		}
 
 		// Send self message
 		selfMsg := fmt.Sprintf("You wear %s.", obj.ShortDesc)
-		if err := f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(selfMsg)); err != nil {
+		if err := f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil, []byte(selfMsg)); err != nil {
 			return err
 		}
 
 		// Broadcast to room
-		roomMsg := fmt.Sprintf("%s wears %s.", cmdCtx.Actor.Name, obj.ShortDesc)
-		zoneId, roomId := cmdCtx.Session.Location()
-		room := f.rooms.GetRoom(zoneId, roomId)
-		return f.pub.Publish(room, []string{cmdCtx.Session.Character.Id()}, []byte(roomMsg))
+		roomMsg := fmt.Sprintf("%s wears %s.", actor.Name, obj.ShortDesc)
+		zoneId, roomId := in.Char.Location()
+		room := f.zones.GetZone(zoneId).GetRoom(roomId)
+		return f.pub.Publish(room, []string{in.Char.Id()}, []byte(roomMsg))
 	}, nil
 }

@@ -8,6 +8,9 @@
         "detailed_desc": "A polished silver band inscribed with runes of strength. It feels warm to the touch, and your grip tightens involuntarily when you hold it.",
         "flags": ["wearable"],
         "wear_slots": ["finger"],
-        "stat_mods": {"str": 2}
+        "perks": [
+            {"type": "modifier", "key": "core.stats.str", "value": 2},
+            { "type": "modifier", "key": "core.resource.hp.per_level", "value": 5 }
+        ]
     }
 }

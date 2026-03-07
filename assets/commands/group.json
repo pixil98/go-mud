@@ -9,8 +9,8 @@
         "targets": [
             {
                 "name": "target",
-                "type": ["player"],
-                "scope": ["room"],
+                "types": ["player"],
+                "scopes": ["room"],
                 "input": "target",
                 "optional": true,
                 "not_found": "You don't see '{{ .Inputs.target }}' here."

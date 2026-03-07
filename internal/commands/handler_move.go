@@ -13,13 +13,13 @@ import (
 // Config:
 //   - direction (required): the direction to move (north, south, east, west, up, down)
 type MoveHandlerFactory struct {
-	rooms RoomLocator
+	zones ZoneLocator
 	pub   game.Publisher
 }
 
 // NewMoveHandlerFactory creates a new MoveHandlerFactory with access to world state.
-func NewMoveHandlerFactory(rooms RoomLocator, pub game.Publisher) *MoveHandlerFactory {
-	return &MoveHandlerFactory{rooms: rooms, pub: pub}
+func NewMoveHandlerFactory(zones ZoneLocator, pub game.Publisher) *MoveHandlerFactory {
+	return &MoveHandlerFactory{zones: zones, pub: pub}
 }
 
 func (f *MoveHandlerFactory) Spec() *HandlerSpec {
@@ -40,21 +40,21 @@ func (f *MoveHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		if err := canMove(cmdCtx.Session); err != nil {
+	return func(ctx context.Context, in *CommandInput) error {
+		if err := canMove(in.Char); err != nil {
 			return err
 		}
 
 		// Read direction from expanded config
-		direction := strings.ToLower(cmdCtx.Config["direction"])
+		direction := strings.ToLower(in.Config["direction"])
 		if direction == "" {
 			return fmt.Errorf("direction not set in config")
 		}
 
-		zoneId, roomId := cmdCtx.Session.Location()
+		zoneId, roomId := in.Char.Location()
 
 		// Look up current room instance
-		fromRoom := f.rooms.GetRoom(zoneId, roomId)
+		fromRoom := f.zones.GetZone(zoneId).GetRoom(roomId)
 		if fromRoom == nil {
 			return NewUserError("You are in an invalid location.")
 		}
@@ -83,32 +83,32 @@ func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 		destRoomId := exit.Room.Id()
 
 		// Get destination room instance
-		toRoom := f.rooms.GetRoom(destZone, destRoomId)
+		toRoom := f.zones.GetZone(destZone).GetRoom(destRoomId)
 		if toRoom == nil {
 			return NewUserError("Alas, you cannot go that way...")
 		}
 
 		// Move the player (updates location, subscriptions, and room player lists)
-		cmdCtx.Session.Move(fromRoom, toRoom)
+		in.Char.Move(fromRoom, toRoom)
 
 		// Send room description to player
-		roomDesc := toRoom.Describe(cmdCtx.Actor.Name)
+		roomDesc := toRoom.Describe(in.Char.Name())
 		if f.pub != nil {
-			if err := f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(roomDesc)); err != nil {
+			if err := f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil, []byte(roomDesc)); err != nil {
 				slog.Warn("failed to send room description", "error", err)
 			}
 		}
 
 		// Move any followers in the old room
-		f.moveFollowers(cmdCtx.Session.Character.Id(), cmdCtx.Actor.Name, fromRoom, toRoom, direction)
+		f.moveFollowers(in.Char.Id(), in.Char.Name(), fromRoom, toRoom, direction)
 
 		return nil
 	}, nil
 }
 
 // canMove returns a UserError if the player cannot move, or nil if they can.
-func canMove(ps *game.PlayerState) error {
-	if ps.InCombat {
+func canMove(ps *game.CharacterInstance) error {
+	if ps.IsInCombat() {
 		return NewUserError("You can't move while fighting!")
 	}
 	return nil
@@ -120,13 +120,13 @@ func canMove(ps *game.PlayerState) error {
 func (f *MoveHandlerFactory) moveFollowers(leaderId, leaderName string, fromRoom, toRoom *game.RoomInstance, direction string) {
 	type follower struct {
 		charId string
-		ps     *game.PlayerState
+		ps     *game.CharacterInstance
 	}
 
 	// Snapshot followers while holding the room lock.
 	var followers []follower
-	fromRoom.ForEachPlayer(func(charId string, ps *game.PlayerState) {
-		if ps.FollowingId == leaderId {
+	fromRoom.ForEachPlayer(func(charId string, ps *game.CharacterInstance) {
+		if ps.GetFollowingId() == leaderId {
 			followers = append(followers, follower{charId: charId, ps: ps})
 		}
 	})
@@ -145,7 +145,7 @@ func (f *MoveHandlerFactory) moveFollowers(leaderId, leaderName string, fromRoom
 		fl.ps.Move(fromRoom, toRoom)
 
 		if f.pub != nil {
-			roomDesc := toRoom.Describe(fl.ps.Character.Get().Name)
+			roomDesc := toRoom.Describe(fl.ps.Name())
 			msg := fmt.Sprintf("You follow %s.\n%s", leaderName, roomDesc)
 			if err := f.pub.Publish(game.SinglePlayer(fl.charId), nil, []byte(msg)); err != nil {
 				slog.Warn("failed to send room description to follower", "error", err)
@@ -153,6 +153,6 @@ func (f *MoveHandlerFactory) moveFollowers(leaderId, leaderName string, fromRoom
 		}
 
 		// Recurse: move this follower's followers too.
-		f.moveFollowers(fl.charId, fl.ps.Character.Get().Name, fromRoom, toRoom, direction)
+		f.moveFollowers(fl.charId, fl.ps.Name(), fromRoom, toRoom, direction)
 	}
 }

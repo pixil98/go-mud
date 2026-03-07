@@ -2,112 +2,121 @@ package game
 
 import (
 	"fmt"
-	"strings"
+	"sync"
 
-	"github.com/pixil98/go-errors"
 	"github.com/pixil98/go-mud/internal/storage"
+
+	"github.com/pixil98/go-mud/internal/assets"
 )
-
-// Mobile defines a type of mobile entity loaded from asset files.
-// Multiple instances can be spawned from one definition.
-// Mobile IDs follow the convention <zone>-<name> (e.g., "millbrook-guard").
-type Mobile struct {
-	// Aliases are keywords players can use to target this mobile (e.g., ["guard", "town"])
-	Aliases []string `json:"aliases"`
-
-	// ShortDesc is used in action messages (e.g., "The town guard hits you.")
-	ShortDesc string `json:"short_desc"`
-
-	// LongDesc is shown when the mobile is in its default position in a room
-	// (e.g., "A burly guard in chain mail keeps watch over the square.")
-	LongDesc string `json:"long_desc"`
-
-	// DetailedDesc is shown when a player looks at the mobile
-	DetailedDesc string `json:"detailed_desc"`
-
-	// Inventory is the mobile's starting inventory
-	Inventory []ObjectSpawn `json:"inventory,omitempty"`
-
-	// Equipment is the mobile's starting equipment
-	Equipment map[string]ObjectSpawn `json:"equipment,omitempty"`
-
-	Actor
-
-	// Combat template values used to initialize MobileInstance CombatStats on spawn.
-	MaxHP       int `json:"max_hp,omitempty"`
-	AC          int `json:"ac,omitempty"`
-	AttackMod   int `json:"attack_mod,omitempty"`
-	DamageDice  int `json:"damage_dice,omitempty"`
-	DamageSides int `json:"damage_sides,omitempty"`
-	DamageMod   int `json:"damage_mod,omitempty"`
-
-	// ExpReward overrides the base XP awarded when this mobile is killed.
-	// If 0, base XP is calculated from the mobile's level.
-	ExpReward int `json:"exp_reward,omitempty"`
-}
-
-// StatSections returns the mobile's stat display sections.
-func (m *Mobile) StatSections() []StatSection {
-	sections := m.Actor.statSections()
-	sections[0].Lines = append([]StatLine{{Value: m.ShortDesc, Center: true}}, sections[0].Lines...)
-	return sections
-}
-
-// Resolve resolves foreign keys from the dictionary.
-func (m *Mobile) Resolve(dict *Dictionary) error {
-	el := errors.NewErrorList()
-	for i := range m.Inventory {
-		el.Add(m.Inventory[i].Resolve(dict.Objects))
-	}
-	for k := range m.Equipment {
-		eq := m.Equipment[k]
-		el.Add(eq.Resolve(dict.Objects))
-		m.Equipment[k] = eq
-	}
-	el.Add(m.Actor.Resolve(dict))
-	return el.Err()
-}
-
-// MatchName returns true if name matches any of this mobile's aliases (case-insensitive).
-func (m *Mobile) MatchName(name string) bool {
-	nameLower := strings.ToLower(name)
-	for _, alias := range m.Aliases {
-		if strings.ToLower(alias) == nameLower {
-			return true
-		}
-	}
-	return false
-}
-
-// Validate satisfies storage.ValidatingSpec
-func (m *Mobile) Validate() error {
-	el := errors.NewErrorList()
-	if len(m.Aliases) < 1 {
-		el.Add(fmt.Errorf("mobile alias is required"))
-	}
-	if m.ShortDesc == "" {
-		el.Add(fmt.Errorf("mobile short description is required"))
-	}
-	if m.MaxHP <= 0 {
-		el.Add(fmt.Errorf("mobile max_hp is required and must be positive"))
-	}
-	return el.Err()
-}
 
 // MobileInstance represents a single spawned instance of a Mobile definition.
 // Location is tracked by the containing structure (room map).
 type MobileInstance struct {
+	mu sync.RWMutex
+
 	InstanceId string
-	Mobile     storage.SmartIdentifier[*Mobile]
-	InCombat   bool
+	Mobile     storage.SmartIdentifier[*assets.Mobile]
+	inCombat   bool
 
 	ActorInstance
 }
 
+// --- Accessor methods ---
+
+// Id returns the mobile instance's unique identifier.
+func (mi *MobileInstance) Id() string {
+	return mi.InstanceId
+}
+
+// Name returns the mobile's display name.
+func (mi *MobileInstance) Name() string {
+	return mi.Mobile.Get().ShortDesc
+}
+
+// IsInCombat returns whether the mobile is currently in combat.
+func (mi *MobileInstance) IsInCombat() bool {
+	mi.mu.RLock()
+	defer mi.mu.RUnlock()
+	return mi.inCombat
+}
+
+// SetInCombat sets the mobile's combat state.
+func (mi *MobileInstance) SetInCombat(v bool) {
+	mi.mu.Lock()
+	defer mi.mu.Unlock()
+	mi.inCombat = v
+}
+
+// Resource returns the current and max for a named resource.
+func (mi *MobileInstance) Resource(name string) (current, max int) {
+	mi.mu.RLock()
+	defer mi.mu.RUnlock()
+	return mi.resource(name)
+}
+
+// SetResource sets the current value for a named resource, clamped to [0, max].
+func (mi *MobileInstance) SetResource(name string, current int) {
+	mi.mu.Lock()
+	defer mi.mu.Unlock()
+	mx := mi.resourceMax(name)
+	mi.setResourceCurrent(name, max(0, min(current, mx)))
+}
+
+// AdjustResource changes a resource's current value by delta, clamping to [0, max].
+func (mi *MobileInstance) AdjustResource(name string, delta int) {
+	mi.mu.Lock()
+	defer mi.mu.Unlock()
+	mi.adjustResource(name, delta)
+}
+
+// RegenTick regenerates all resources based on perk-driven regen values.
+func (mi *MobileInstance) RegenTick() {
+	mi.mu.Lock()
+	defer mi.mu.Unlock()
+	mi.regenTick()
+}
+
+// GetInventory returns the mobile's inventory.
+// Inventory is self-locking; its methods are safe for concurrent use.
+func (mi *MobileInstance) GetInventory() *Inventory {
+	return mi.inventory
+}
+
+// GetEquipment returns the mobile's equipment.
+// Equipment is self-locking; its methods are safe for concurrent use.
+func (mi *MobileInstance) GetEquipment() *Equipment {
+	return mi.equipment
+}
+
+// IsAlive returns whether the mobile has more than zero hit points.
+func (mi *MobileInstance) IsAlive() bool {
+	cur, _ := mi.Resource(assets.ResourceHp)
+	return cur > 0
+}
+
+// Flags returns display labels for the mobile's current state.
 func (mi *MobileInstance) Flags() []string {
+	mi.mu.RLock()
+	defer mi.mu.RUnlock()
 	var flags []string
-	if mi.InCombat {
+	if mi.inCombat {
 		flags = append(flags, "fighting")
 	}
 	return flags
+}
+
+// OnDeath handles mob death (e.g., loot, despawn, XP distribution).
+func (mi *MobileInstance) OnDeath() {
+	// TODO: implement mob death handling
+}
+
+// StatSections returns the mobile's stat display sections.
+func (mi *MobileInstance) StatSections() []StatSection {
+	mob := mi.Mobile.Get()
+	return []StatSection{
+		{Lines: []StatLine{
+			{Value: mob.ShortDesc, Center: true},
+			{Value: fmt.Sprintf("Level %d", mob.Level), Center: true},
+		}},
+	}
 }

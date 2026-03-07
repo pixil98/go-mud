@@ -4,11 +4,14 @@
     "spec": {
         "name": "Human",
         "abbreviation": "Hu",
-        "stat_mods": {
-            "str": -2,
-            "dex": 2
-        },
-        "perks": [],
+        "perks": [
+            { "type": "modifier", "key": "core.stats.str", "value": -2 },
+            { "type": "modifier", "key": "core.stats.dex", "value": 2 },
+            { "type": "modifier", "key": "core.resource.hp.max", "value": 20 },
+            { "type": "modifier", "key": "core.resource.hp.per_level", "value": 5 },
+            { "type": "modifier", "key": "core.resource.hp.regen", "value": 1 },
+            { "type": "modifier", "key": "core.combat.ac", "value": 10 }
+        ],
         "wear_slots": [
             "light", "head", "neck", "neck", "about",
             "body", "arms", "wrist", "wrist", "hands",

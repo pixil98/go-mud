@@ -5,46 +5,45 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
 func TestHandler_parseValue(t *testing.T) {
-	h := &Handler{}
-
 	tests := map[string]struct {
-		inputType InputType
+		inputType string
 		raw       string
 		exp       any
 		expErr    string
 	}{
 		"string type": {
-			inputType: InputTypeString,
+			inputType: assets.InputTypeString,
 			raw:       "hello world",
 			exp:       "hello world",
 		},
 		"number type valid": {
-			inputType: InputTypeNumber,
+			inputType: assets.InputTypeNumber,
 			raw:       "42",
 			exp:       42,
 		},
 		"number type negative": {
-			inputType: InputTypeNumber,
+			inputType: assets.InputTypeNumber,
 			raw:       "-10",
 			exp:       -10,
 		},
 		"number type invalid": {
-			inputType: InputTypeNumber,
+			inputType: assets.InputTypeNumber,
 			raw:       "abc",
 			expErr:    `"abc" is not a valid number.`,
 		},
 		"number type float rejected": {
-			inputType: InputTypeNumber,
+			inputType: assets.InputTypeNumber,
 			raw:       "3.14",
 			expErr:    `"3.14" is not a valid number.`,
 		},
 		"unknown type": {
-			inputType: InputType("bogus"),
+			inputType: "bogus",
 			raw:       "test",
 			expErr:    `unknown parameter type "bogus"`,
 		},
@@ -52,7 +51,7 @@ func TestHandler_parseValue(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			got, err := h.parseValue(tt.inputType, tt.raw)
+			got, err := parseValue(tt.inputType, tt.raw)
 
 			if tt.expErr != "" {
 				if err == nil {
@@ -78,18 +77,17 @@ func TestHandler_parseValue(t *testing.T) {
 }
 
 func TestHandler_parseInputs(t *testing.T) {
-	h := &Handler{}
 
 	tests := map[string]struct {
-		specs   []InputSpec
+		specs   []assets.InputSpec
 		rawArgs []string
-		exp     []ParsedInput
+		exp     map[string]any
 		expErr  string
 	}{
 		"no inputs no args": {
 			specs:   nil,
 			rawArgs: nil,
-			exp:     []ParsedInput{},
+			exp:     map[string]any{},
 		},
 		"no inputs with args rejected": {
 			specs:   nil,
@@ -97,102 +95,73 @@ func TestHandler_parseInputs(t *testing.T) {
 			expErr:  "Expected at most 0 argument(s), got 1.",
 		},
 		"required input missing": {
-			specs: []InputSpec{
-				{Name: "count", Type: InputTypeNumber, Required: true},
+			specs: []assets.InputSpec{
+				{Name: "count", Type: assets.InputTypeNumber, Required: true},
 			},
 			rawArgs: nil,
 			expErr:  "Expected at least 1 argument(s), got 0.",
 		},
 		"required input provided": {
-			specs: []InputSpec{
-				{Name: "count", Type: InputTypeNumber, Required: true},
+			specs: []assets.InputSpec{
+				{Name: "count", Type: assets.InputTypeNumber, Required: true},
 			},
 			rawArgs: []string{"5"},
-			exp: []ParsedInput{
-				{
-					Spec:  &InputSpec{Name: "count", Type: InputTypeNumber, Required: true},
-					Raw:   "5",
-					Value: 5,
-				},
-			},
+			exp:     map[string]any{"count": 5},
 		},
 		"optional input omitted": {
-			specs: []InputSpec{
-				{Name: "count", Type: InputTypeNumber, Required: false},
+			specs: []assets.InputSpec{
+				{Name: "count", Type: assets.InputTypeNumber, Required: false},
 			},
 			rawArgs: nil,
-			exp:     []ParsedInput{},
+			exp:     map[string]any{"count": ""},
 		},
 		"optional input provided": {
-			specs: []InputSpec{
-				{Name: "count", Type: InputTypeNumber, Required: false},
+			specs: []assets.InputSpec{
+				{Name: "count", Type: assets.InputTypeNumber, Required: false},
 			},
 			rawArgs: []string{"5"},
-			exp: []ParsedInput{
-				{
-					Spec:  &InputSpec{Name: "count", Type: InputTypeNumber, Required: false},
-					Raw:   "5",
-					Value: 5,
-				},
-			},
+			exp:     map[string]any{"count": 5},
 		},
 		"rest input captures remaining": {
-			specs: []InputSpec{
-				{Name: "text", Type: InputTypeString, Required: true, Rest: true},
+			specs: []assets.InputSpec{
+				{Name: "text", Type: assets.InputTypeString, Required: true, Rest: true},
 			},
 			rawArgs: []string{"hello", "world", "foo"},
-			exp: []ParsedInput{
-				{
-					Spec:  &InputSpec{Name: "text", Type: InputTypeString, Required: true, Rest: true},
-					Raw:   "hello world foo",
-					Value: "hello world foo",
-				},
-			},
+			exp:     map[string]any{"text": "hello world foo"},
 		},
 		"mixed inputs with rest": {
-			specs: []InputSpec{
-				{Name: "count", Type: InputTypeNumber, Required: true},
-				{Name: "message", Type: InputTypeString, Required: true, Rest: true},
+			specs: []assets.InputSpec{
+				{Name: "count", Type: assets.InputTypeNumber, Required: true},
+				{Name: "message", Type: assets.InputTypeString, Required: true, Rest: true},
 			},
 			rawArgs: []string{"3", "hello", "there", "friend"},
-			exp: []ParsedInput{
-				{
-					Spec:  &InputSpec{Name: "count", Type: InputTypeNumber, Required: true},
-					Raw:   "3",
-					Value: 3,
-				},
-				{
-					Spec:  &InputSpec{Name: "message", Type: InputTypeString, Required: true, Rest: true},
-					Raw:   "hello there friend",
-					Value: "hello there friend",
-				},
-			},
+			exp:     map[string]any{"count": 3, "message": "hello there friend"},
 		},
 		"too many args without rest": {
-			specs: []InputSpec{
-				{Name: "count", Type: InputTypeNumber, Required: true},
+			specs: []assets.InputSpec{
+				{Name: "count", Type: assets.InputTypeNumber, Required: true},
 			},
 			rawArgs: []string{"5", "extra", "args"},
 			expErr:  "Expected at most 1 argument(s), got 3.",
 		},
 		"number parse error": {
-			specs: []InputSpec{
-				{Name: "count", Type: InputTypeNumber, Required: true},
+			specs: []assets.InputSpec{
+				{Name: "count", Type: assets.InputTypeNumber, Required: true},
 			},
 			rawArgs: []string{"notanumber"},
 			expErr:  `"notanumber" is not a valid number.`,
 		},
 		"required input missing with custom message": {
-			specs: []InputSpec{
-				{Name: "item", Type: InputTypeString, Required: true, Missing: "Get what?"},
+			specs: []assets.InputSpec{
+				{Name: "item", Type: assets.InputTypeString, Required: true, Missing: "Get what?"},
 			},
 			rawArgs: nil,
 			expErr:  "Get what?",
 		},
 		"required input missing custom message second arg": {
-			specs: []InputSpec{
-				{Name: "item", Type: InputTypeString, Required: true},
-				{Name: "recipient", Type: InputTypeString, Required: true, Missing: "Give to whom?"},
+			specs: []assets.InputSpec{
+				{Name: "item", Type: assets.InputTypeString, Required: true},
+				{Name: "recipient", Type: assets.InputTypeString, Required: true, Missing: "Give to whom?"},
 			},
 			rawArgs: []string{"sword"},
 			expErr:  "Give to whom?",
@@ -201,7 +170,7 @@ func TestHandler_parseInputs(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			got, err := h.parseInputs(tt.specs, tt.rawArgs)
+			got, err := parseInputs(tt.specs, tt.rawArgs)
 
 			if tt.expErr != "" {
 				if err == nil {
@@ -229,16 +198,14 @@ func TestHandler_parseInputs(t *testing.T) {
 				return
 			}
 
-			for i, input := range got {
-				expected := tt.exp[i]
-				if input.Raw != expected.Raw {
-					t.Errorf("input[%d].Raw = %q, expected %q", i, input.Raw, expected.Raw)
+			for key, expVal := range tt.exp {
+				gotVal, ok := got[key]
+				if !ok {
+					t.Errorf("missing key %q in result", key)
+					continue
 				}
-				if input.Value != expected.Value {
-					t.Errorf("input[%d].Value = %v, expected %v", i, input.Value, expected.Value)
-				}
-				if input.Spec.Name != expected.Spec.Name {
-					t.Errorf("input[%d].Spec.Name = %q, expected %q", i, input.Spec.Name, expected.Spec.Name)
+				if gotVal != expVal {
+					t.Errorf("input[%q] = %v, expected %v", key, gotVal, expVal)
 				}
 			}
 		})
@@ -247,7 +214,7 @@ func TestHandler_parseInputs(t *testing.T) {
 
 func TestHandler_resolve(t *testing.T) {
 	mkCmd := func(priority int) *compiledCommand {
-		return &compiledCommand{cmd: &Command{Priority: priority}}
+		return &compiledCommand{cmd: &assets.Command{Priority: priority}}
 	}
 
 	// delta has an alias "dd" — both keys share the same compiledCommand.
@@ -362,59 +329,59 @@ func TestHandler_compile(t *testing.T) {
 	tests := map[string]struct {
 		preCompile []struct {
 			id  string
-			cmd *Command
+			cmd *assets.Command
 		}
 		id     string
-		cmd    *Command
+		cmd    *assets.Command
 		expErr string
 		expIds []string // IDs expected in compiled map after success
 	}{
 		"basic command": {
 			id:     "alpha",
-			cmd:    &Command{Handler: "mock"},
+			cmd:    &assets.Command{Handler: "mock"},
 			expIds: []string{"alpha"},
 		},
 		"command with aliases": {
 			id:     "northwest",
-			cmd:    &Command{Handler: "mock", Aliases: []string{"nw"}},
+			cmd:    &assets.Command{Handler: "mock", Aliases: []string{"nw"}},
 			expIds: []string{"northwest", "nw"},
 		},
 		"alias conflicts with existing command": {
 			preCompile: []struct {
 				id  string
-				cmd *Command
+				cmd *assets.Command
 			}{
-				{id: "aa", cmd: &Command{Handler: "mock"}},
+				{id: "aa", cmd: &assets.Command{Handler: "mock"}},
 			},
 			id:     "alpha",
-			cmd:    &Command{Handler: "mock", Aliases: []string{"aa"}},
+			cmd:    &assets.Command{Handler: "mock", Aliases: []string{"aa"}},
 			expErr: `alias "aa" conflicts`,
 		},
 		"alias conflicts with earlier alias": {
 			preCompile: []struct {
 				id  string
-				cmd *Command
+				cmd *assets.Command
 			}{
-				{id: "alpha", cmd: &Command{Handler: "mock", Aliases: []string{"aa"}}},
+				{id: "alpha", cmd: &assets.Command{Handler: "mock", Aliases: []string{"aa"}}},
 			},
 			id:     "beta",
-			cmd:    &Command{Handler: "mock", Aliases: []string{"aa"}},
+			cmd:    &assets.Command{Handler: "mock", Aliases: []string{"aa"}},
 			expErr: `alias "aa" conflicts`,
 		},
 		"command name conflicts with earlier alias": {
 			preCompile: []struct {
 				id  string
-				cmd *Command
+				cmd *assets.Command
 			}{
-				{id: "alpha", cmd: &Command{Handler: "mock", Aliases: []string{"beta"}}},
+				{id: "alpha", cmd: &assets.Command{Handler: "mock", Aliases: []string{"beta"}}},
 			},
 			id:     "beta",
-			cmd:    &Command{Handler: "mock"},
+			cmd:    &assets.Command{Handler: "mock"},
 			expErr: `command "beta" conflicts`,
 		},
 		"unknown handler": {
 			id:     "alpha",
-			cmd:    &Command{Handler: "nonexistent"},
+			cmd:    &assets.Command{Handler: "nonexistent"},
 			expErr: `unknown handler "nonexistent"`,
 		},
 	}
@@ -523,7 +490,7 @@ func TestHandler_RegisterFactory(t *testing.T) {
 func TestHandler_expandConfig(t *testing.T) {
 	tests := map[string]struct {
 		config    map[string]any
-		actor     *game.Character
+		actor     *assets.Character
 		targets   map[string]*TargetRef
 		inputs    map[string]any
 		expConfig map[string]string
@@ -533,7 +500,7 @@ func TestHandler_expandConfig(t *testing.T) {
 			config: map[string]any{
 				"message": "{{ .Actor.Name }} says, \"{{ .Inputs.text }}\"",
 			},
-			actor:   &game.Character{Name: "Alice"},
+			actor:   &assets.Character{Name: "Alice"},
 			targets: map[string]*TargetRef{},
 			inputs: map[string]any{
 				"text": "hello world",
@@ -547,9 +514,9 @@ func TestHandler_expandConfig(t *testing.T) {
 				"channel": "player-{{ .Targets.target.Player.Name | lower }}",
 				"message": "Hello {{ .Targets.target.Player.Name }}!",
 			},
-			actor: &game.Character{Name: "Alice"},
+			actor: &assets.Character{Name: "Alice"},
 			targets: map[string]*TargetRef{
-				"target": {Type: TargetTypePlayer, Player: &PlayerRef{Name: "Bob"}},
+				"target": {Type: targetTypePlayer, Player: &PlayerRef{Name: "Bob"}},
 			},
 			inputs: map[string]any{},
 			expConfig: map[string]string{
@@ -561,9 +528,9 @@ func TestHandler_expandConfig(t *testing.T) {
 			config: map[string]any{
 				"message": "{{ .Actor.Name }} tells {{ .Targets.target.Player.Name }}, \"{{ .Inputs.text }}\"",
 			},
-			actor: &game.Character{Name: "Alice"},
+			actor: &assets.Character{Name: "Alice"},
 			targets: map[string]*TargetRef{
-				"target": {Type: TargetTypePlayer, Player: &PlayerRef{Name: "Bob"}},
+				"target": {Type: targetTypePlayer, Player: &PlayerRef{Name: "Bob"}},
 			},
 			inputs: map[string]any{
 				"text": "hello there",
@@ -576,7 +543,7 @@ func TestHandler_expandConfig(t *testing.T) {
 			config: map[string]any{
 				"direction": "north",
 			},
-			actor:   &game.Character{Name: "Alice"},
+			actor:   &assets.Character{Name: "Alice"},
 			targets: map[string]*TargetRef{},
 			inputs:  map[string]any{},
 			expConfig: map[string]string{
@@ -587,7 +554,7 @@ func TestHandler_expandConfig(t *testing.T) {
 			config: map[string]any{
 				"message": "{{ .Color.Red }}hello{{ .Color.Reset }}",
 			},
-			actor:   &game.Character{},
+			actor:   &assets.Character{},
 			targets: map[string]*TargetRef{},
 			inputs:  map[string]any{},
 			expConfig: map[string]string{
@@ -600,9 +567,9 @@ func TestHandler_expandConfig(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			h := &Handler{}
 
-			session := &game.PlayerState{Character: storage.NewResolvedSmartIdentifier("alice", tt.actor)}
+			session := &game.CharacterInstance{Character: storage.NewResolvedSmartIdentifier("alice", tt.actor)}
 
-			expandedConfig, err := h.expandConfig(tt.config, tt.actor, session, tt.targets, tt.inputs)
+			expandedConfig, err := h.expandConfig(tt.config, session, tt.targets, tt.inputs)
 
 			if tt.expErr != "" {
 				if err == nil {
@@ -631,89 +598,89 @@ func TestHandler_expandConfig(t *testing.T) {
 
 func TestHandler_validateSpec(t *testing.T) {
 	tests := map[string]struct {
-		cmd    *Command
+		cmd    *assets.Command
 		spec   *HandlerSpec
 		expErr string
 	}{
 		"nil spec passes": {
-			cmd:    &Command{Handler: "test"},
+			cmd:    &assets.Command{Handler: "test"},
 			spec:   nil,
 			expErr: "",
 		},
 		"empty spec passes": {
-			cmd:    &Command{Handler: "test"},
+			cmd:    &assets.Command{Handler: "test"},
 			spec:   &HandlerSpec{},
 			expErr: "",
 		},
 		"missing required target": {
-			cmd: &Command{
+			cmd: &assets.Command{
 				Handler: "test",
-				Targets: []TargetSpec{},
+				Targets: []assets.TargetSpec{},
 			},
 			spec: &HandlerSpec{
 				Targets: []TargetRequirement{
-					{Name: "target", Type: TargetTypeObject, Required: true},
+					{Name: "target", Type: targetTypeObject, Required: true},
 				},
 			},
 			expErr: `missing required target "target"`,
 		},
 		"optional target missing is ok": {
-			cmd: &Command{
+			cmd: &assets.Command{
 				Handler: "test",
-				Targets: []TargetSpec{},
+				Targets: []assets.TargetSpec{},
 			},
 			spec: &HandlerSpec{
 				Targets: []TargetRequirement{
-					{Name: "target", Type: TargetTypeObject, Required: false},
+					{Name: "target", Type: targetTypeObject, Required: false},
 				},
 			},
 			expErr: "",
 		},
 		"wrong target type": {
-			cmd: &Command{
+			cmd: &assets.Command{
 				Handler: "test",
-				Targets: []TargetSpec{
+				Targets: []assets.TargetSpec{
 					{Name: "target", Types: []string{"player"}, Input: "target"},
 				},
 			},
 			spec: &HandlerSpec{
 				Targets: []TargetRequirement{
-					{Name: "target", Type: TargetTypeObject, Required: true},
+					{Name: "target", Type: targetTypeObject, Required: true},
 				},
 			},
 			expErr: `target "target": expected type object, got player`,
 		},
 		"target type subset of spec is ok": {
-			cmd: &Command{
+			cmd: &assets.Command{
 				Handler: "test",
-				Targets: []TargetSpec{
+				Targets: []assets.TargetSpec{
 					{Name: "target", Types: []string{"object"}, Input: "target"},
 				},
 			},
 			spec: &HandlerSpec{
 				Targets: []TargetRequirement{
-					{Name: "target", Type: TargetTypePlayer | TargetTypeMobile | TargetTypeObject, Required: true},
+					{Name: "target", Type: targetTypePlayer | targetTypeMobile | targetTypeObject, Required: true},
 				},
 			},
 			expErr: "",
 		},
 		"extra target not in spec": {
-			cmd: &Command{
+			cmd: &assets.Command{
 				Handler: "test",
-				Targets: []TargetSpec{
+				Targets: []assets.TargetSpec{
 					{Name: "target", Types: []string{"object"}, Input: "target"},
 					{Name: "extra", Types: []string{"object"}, Input: "extra"},
 				},
 			},
 			spec: &HandlerSpec{
 				Targets: []TargetRequirement{
-					{Name: "target", Type: TargetTypeObject, Required: true},
+					{Name: "target", Type: targetTypeObject, Required: true},
 				},
 			},
 			expErr: `unknown target "extra"`,
 		},
 		"missing required config": {
-			cmd: &Command{
+			cmd: &assets.Command{
 				Handler: "test",
 				Config:  map[string]any{},
 			},
@@ -725,7 +692,7 @@ func TestHandler_validateSpec(t *testing.T) {
 			expErr: `missing required config key "direction"`,
 		},
 		"optional config missing is ok": {
-			cmd: &Command{
+			cmd: &assets.Command{
 				Handler: "test",
 				Config:  map[string]any{},
 			},
@@ -737,7 +704,7 @@ func TestHandler_validateSpec(t *testing.T) {
 			expErr: "",
 		},
 		"extra config not in spec": {
-			cmd: &Command{
+			cmd: &assets.Command{
 				Handler: "test",
 				Config: map[string]any{
 					"direction": "north",
@@ -752,9 +719,9 @@ func TestHandler_validateSpec(t *testing.T) {
 			expErr: `unknown config key "typo_key"`,
 		},
 		"valid targets and config": {
-			cmd: &Command{
+			cmd: &assets.Command{
 				Handler: "test",
-				Targets: []TargetSpec{
+				Targets: []assets.TargetSpec{
 					{Name: "item", Types: []string{"object"}, Input: "item"},
 					{Name: "recipient", Types: []string{"player"}, Input: "recipient"},
 				},
@@ -764,8 +731,8 @@ func TestHandler_validateSpec(t *testing.T) {
 			},
 			spec: &HandlerSpec{
 				Targets: []TargetRequirement{
-					{Name: "item", Type: TargetTypeObject, Required: true},
-					{Name: "recipient", Type: TargetTypePlayer, Required: true},
+					{Name: "item", Type: targetTypeObject, Required: true},
+					{Name: "recipient", Type: targetTypePlayer, Required: true},
 				},
 				Config: []ConfigRequirement{
 					{Name: "message", Required: true},

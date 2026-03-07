@@ -5,21 +5,23 @@ import (
 	"os"
 
 	"github.com/pixil98/go-errors"
-	"github.com/pixil98/go-mud/internal/commands"
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
 type StorageConfig struct {
 	/* Core Parts */
-	Characters AssetConfig[*game.Character]   `json:"characters"`
-	Commands   AssetConfig[*commands.Command] `json:"commands"`
-	Zones      AssetConfig[*game.Zone]        `json:"zones"`
-	Rooms      AssetConfig[*game.Room]        `json:"rooms"`
-	Mobiles    AssetConfig[*game.Mobile]      `json:"mobiles"`
-	Objects    AssetConfig[*game.Object]      `json:"objects"`
-	Pronouns   AssetConfig[*game.Pronoun]     `json:"pronouns"`
-	Races      AssetConfig[*game.Race]        `json:"races"`
+	Characters AssetConfig[*assets.Character] `json:"characters"`
+	Commands   AssetConfig[*assets.Command]   `json:"commands"`
+	Zones      AssetConfig[*assets.Zone]      `json:"zones"`
+	Rooms      AssetConfig[*assets.Room]      `json:"rooms"`
+	Mobiles    AssetConfig[*assets.Mobile]    `json:"mobiles"`
+	Objects    AssetConfig[*assets.Object]    `json:"objects"`
+	Pronouns   AssetConfig[*assets.Pronoun]   `json:"pronouns"`
+	Races      AssetConfig[*assets.Race]      `json:"races"`
+	Trees      AssetConfig[*assets.Tree]      `json:"trees"`
+	Abilities  AssetConfig[*assets.Ability]   `json:"abilities"`
 }
 
 func (c *StorageConfig) BuildDictionary() (*game.Dictionary, error) {
@@ -51,6 +53,14 @@ func (c *StorageConfig) BuildDictionary() (*game.Dictionary, error) {
 	if err != nil {
 		return nil, fmt.Errorf("creating race store: %w", err)
 	}
+	trees, err := c.Trees.BuildFileStore()
+	if err != nil {
+		return nil, fmt.Errorf("creating tree store: %w", err)
+	}
+	abilities, err := c.Abilities.BuildFileStore()
+	if err != nil {
+		return nil, fmt.Errorf("creating ability store: %w", err)
+	}
 
 	dict := &game.Dictionary{
 		Characters: chars,
@@ -60,6 +70,8 @@ func (c *StorageConfig) BuildDictionary() (*game.Dictionary, error) {
 		Objects:    objects,
 		Pronouns:   pronouns,
 		Races:      races,
+		Trees:      trees,
+		Abilities:  abilities,
 	}
 
 	if err := dict.Resolve(); err != nil {
@@ -79,6 +91,8 @@ func (c *StorageConfig) validate() error {
 	el.Add(c.Objects.Validate("objects"))
 	el.Add(c.Pronouns.Validate("pronouns"))
 	el.Add(c.Races.Validate("races"))
+	el.Add(c.Trees.Validate("trees"))
+	el.Add(c.Abilities.Validate("abilities"))
 	return el.Err()
 }
 

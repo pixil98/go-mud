@@ -11,7 +11,7 @@
             "recipient_message": "{{ .Actor.Name }} whispers to you, \"{{ .Inputs.text }}\""
         },
         "targets": [
-            {"name": "target", "type": ["player"], "scope": ["room"], "input": "target", "not_found": "You don't see '{{ .Inputs.target }}' here."}
+            {"name": "target", "types": ["player"], "scopes": ["room"], "input": "target", "not_found": "You don't see '{{ .Inputs.target }}' here."}
         ],
         "inputs": [
             {"name": "target", "type": "string", "required": true, "missing": "Whisper to whom?"},

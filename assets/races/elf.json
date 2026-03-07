@@ -4,12 +4,14 @@
     "spec": {
         "name": "Elf",
         "abbreviation": "El",
-        "stat_mods": {
-            "dex": 2,
-            "con": -2
-        },
         "perks": [
-            "darkvision"
+            { "type": "modifier", "key": "core.stats.dex", "value": 2 },
+            { "type": "modifier", "key": "core.stats.con", "value": -2 },
+            { "type": "modifier", "key": "core.resource.hp.max", "value": 20 },
+            { "type": "modifier", "key": "core.resource.hp.per_level", "value": 5 },
+            { "type": "modifier", "key": "core.resource.hp.regen", "value": 1 },
+            { "type": "modifier", "key": "core.combat.ac", "value": 10 },
+            { "type": "grant", "key": "darkvision" }
         ],
         "wear_slots": [
             "light", "head", "neck", "neck", "about",

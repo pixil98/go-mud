@@ -3,10 +3,8 @@ package game
 import (
 	"fmt"
 	"strings"
-	"sync"
 
-	"github.com/pixil98/go-errors"
-	"github.com/pixil98/go-mud/internal/storage"
+	"github.com/pixil98/go-mud/internal/assets"
 )
 
 // StatLine is a single line in a stat section.
@@ -21,328 +19,101 @@ type StatSection struct {
 	Lines  []StatLine
 }
 
-// Actor holds properties shared between characters and mobiles.
-type Actor struct {
-	Pronoun storage.SmartIdentifier[*Pronoun] `json:"pronoun,omitempty"`
-	Race    storage.SmartIdentifier[*Race]    `json:"race,omitempty"`
-	Level   int                               `json:"level,omitempty"`
-}
-
-// Resolve resolves foreign keys from the dictionary.
-// Empty identifiers are skipped (valid for characters that haven't selected yet).
-// Returns an error if a non-empty identifier doesn't resolve to a record.
-func (a *Actor) Resolve(dict *Dictionary) error {
-	if a.Race.Id() != "" {
-		if err := a.Race.Resolve(dict.Races); err != nil {
-			return err
-		}
-	}
-	if a.Pronoun.Id() != "" {
-		if err := a.Pronoun.Resolve(dict.Pronouns); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// statSections returns the shared stat display: an identity subtitle
-// (race, level, pronouns), stats, and perks. Character and Mobile
-// prepend their own name line to the first section.
-func (a *Actor) statSections() []StatSection {
-	var parts []string
-	if a.Race.Get() != nil {
-		parts = append(parts, a.Race.Get().Name)
-	}
-	parts = append(parts, fmt.Sprintf("Level %d", a.Level))
-	if a.Pronoun.Get() != nil {
-		parts = append(parts, a.Pronoun.Get().Selector())
-	}
-
-	sections := []StatSection{
-		{Lines: []StatLine{{Value: strings.Join(parts, " | "), Center: true}}},
-	}
-
-	if a.Race.Get() != nil && len(a.Race.Get().Perks) > 0 {
-		var lines []StatLine
-		for _, p := range a.Race.Get().Perks {
-			lines = append(lines, StatLine{Value: "  " + p})
-		}
-		sections = append(sections, StatSection{Header: "Perks", Lines: lines})
-	}
-
-	return sections
-}
-
-type pronounPossessive struct {
-	Adjective string `json:"adjective"`
-	Pronoun   string `json:"pronoun"`
-}
-
-// Pronoun defines a set of pronouns loaded from asset files.
-type Pronoun struct {
-	Subjective string            `json:"subjective"`
-	Objective  string            `json:"objective"`
-	Possessive pronounPossessive `json:"possessive"`
-	Reflexive  string            `json:"reflexive"`
-}
-
-func (p *Pronoun) Validate() error {
-	return nil
-}
-
-func (p *Pronoun) Selector() string {
-	return fmt.Sprintf("%s/%s", p.Subjective, p.Objective)
-}
-
-// Race defines a playable race loaded from asset files.
-// WearSlots lists the equipment slot types available to this race. Duplicate
-// entries indicate multiple slots of the same type (e.g., two "finger" entries
-// means two ring slots). The list order defines the display order for the
-// equipment command.
-type Race struct {
-	Name         string         `json:"name"`
-	Abbreviation string         `json:"abbreviation"`
-	StatMods     map[StatKey]int `json:"stat_mods"`
-	Perks        []string       `json:"perks"`
-	WearSlots    []string       `json:"wear_slots,omitempty"`
-}
-
-func (r *Race) Validate() error {
-	el := errors.NewErrorList()
-
-	for _, p := range r.Perks {
-		el.Add(func() error {
-			switch p {
-			case "darkvision":
-				return nil
-			default:
-				return fmt.Errorf("unknown perk: %s", p)
-			}
-		}())
-	}
-
-	return el.Err()
-}
-
-// SlotCount returns how many slots of the given type this race has.
-func (r *Race) SlotCount(slot string) int {
-	count := 0
-	for _, s := range r.WearSlots {
-		if s == slot {
-			count++
-		}
-	}
-	return count
-}
-
-func (r *Race) Selector() string {
-	return r.Name
-}
-
-// ActorInstance holds properties shared between Characters and MobileInstances
+// ActorInstance holds resource pools, inventory, equipment, and perks shared
+// between CharacterInstance and MobileInstance.
 type ActorInstance struct {
-	Inventory *Inventory `json:"inventory,omitempty"`
-	Equipment *Equipment `json:"equipment,omitempty"`
-
-	MaxHP     int `json:"max_hp,omitempty"`
-	CurrentHP int `json:"current_hp,omitempty"`
+	inventory *Inventory
+	equipment *Equipment
+	resources map[string]int // current values only; max derived from PerkCache
+	level     int
+	Buffs     *TimedPerkCache
+	PerkCache
 }
 
-// Regenerate heals the actor by the given amount, capping at MaxHP.
-func (a *ActorInstance) Regenerate(amount int) {
-	a.CurrentHP += amount
-	if a.CurrentHP > a.MaxHP {
-		a.CurrentHP = a.MaxHP
+// resourceMax computes the max value for a named resource from perks.
+// Formula: sum(core.resource.<name>.max) + level * sum(core.resource.<name>.per_level)
+func (a *ActorInstance) resourceMax(name string) int {
+	return a.ModifierValue(assets.ResourceKey(name, assets.ResourceAspectMax)) +
+		a.level*a.ModifierValue(assets.ResourceKey(name, assets.ResourceAspectPerLevel))
+}
+
+// resource returns (current, max) for the named resource.
+// Returns (0, 0) if the resource doesn't exist.
+func (a *ActorInstance) resource(name string) (current, max int) {
+	cur, ok := a.resources[name]
+	if !ok {
+		return 0, 0
+	}
+	return cur, a.resourceMax(name)
+}
+
+// setResourceCurrent sets the current value for a named resource.
+func (a *ActorInstance) setResourceCurrent(name string, current int) {
+	if a.resources == nil {
+		a.resources = make(map[string]int)
+	}
+	a.resources[name] = current
+}
+
+// adjustResource changes a resource's current value by delta, clamping to [0, max].
+// No-op if the resource doesn't exist.
+func (a *ActorInstance) adjustResource(name string, delta int) {
+	cur, ok := a.resources[name]
+	if !ok {
+		return
+	}
+	mx := a.resourceMax(name)
+	a.resources[name] = max(0, min(cur+delta, mx))
+}
+
+// initResources discovers all resource perk keys and initializes current = max
+// for each resource. Call this after the PerkCache is wired and resolved.
+func (a *ActorInstance) initResources() {
+	if a.resources == nil {
+		a.resources = make(map[string]int)
+	}
+	for name := range a.resourceNames() {
+		a.resources[name] = a.resourceMax(name)
 	}
 }
 
-
-// Inventory holds object instances carried by a character or mobile.
-// All methods are safe for concurrent use.
-// TODO: Add stackable item support (keyed by ObjectId with count) for commodities.
-type Inventory struct {
-	mu sync.RWMutex
-	// Objs maps instance IDs to object instances
-	Objs map[string]*ObjectInstance `json:"objects,omitempty"`
-}
-
-// NewInventory creates an empty inventory.
-func NewInventory() *Inventory {
-	return &Inventory{
-		Objs: make(map[string]*ObjectInstance),
-	}
-}
-
-// AddObj adds an object instance to the inventory.
-func (inv *Inventory) AddObj(obj *ObjectInstance) {
-	inv.mu.Lock()
-	defer inv.mu.Unlock()
-
-	if inv.Objs == nil {
-		inv.Objs = make(map[string]*ObjectInstance)
-	}
-	inv.Objs[obj.InstanceId] = obj
-}
-
-// RemoveObj removes an object instance from the inventory.
-// Returns the removed instance, or nil if not found.
-func (inv *Inventory) RemoveObj(instanceId string) *ObjectInstance {
-	inv.mu.Lock()
-	defer inv.mu.Unlock()
-
-	if obj, ok := inv.Objs[instanceId]; ok {
-		delete(inv.Objs, instanceId)
-		return obj
-	}
-	return nil
-}
-
-// FindObj searches inventory items for one whose definition matches the given alias.
-// Returns nil if not found.
-func (inv *Inventory) FindObj(name string) *ObjectInstance {
-	inv.mu.RLock()
-	defer inv.mu.RUnlock()
-
-	for _, oi := range inv.Objs {
-		if oi.Object.Get().MatchName(name) {
-			return oi
-		}
-	}
-	return nil
-}
-
-// FindObjByDef searches for an object whose definition ID matches defId.
-// Returns nil if not found.
-func (inv *Inventory) FindObjByDef(defId string) *ObjectInstance {
-	inv.mu.RLock()
-	defer inv.mu.RUnlock()
-
-	for _, oi := range inv.Objs {
-		if oi.Object.Id() == defId {
-			return oi
-		}
-	}
-	return nil
-}
-
-// Clear removes all items.
-func (inv *Inventory) Clear() {
-	inv.mu.Lock()
-	defer inv.mu.Unlock()
-
-	inv.Objs = make(map[string]*ObjectInstance)
-}
-
-// EquipSlot pairs a slot type name with the equipped object instance.
-type EquipSlot struct {
-	Slot string          `json:"slot"`
-	Obj  *ObjectInstance `json:"obj"`
-}
-
-// Equipment holds items equipped by a character or mobile.
-// Multiple items may share the same slot type (e.g., two rings in "finger").
-// All methods are safe for concurrent use.
-type Equipment struct {
-	mu   sync.RWMutex
-	Objs []EquipSlot `json:"slots,omitempty"`
-}
-
-// NewEquipment creates an empty equipment set.
-func NewEquipment() *Equipment {
-	return &Equipment{}
-}
-
-// Equip adds an object to the given slot type. maxSlots limits how many items
-// can occupy that slot type (0 means no limit). Returns an error if the slot
-// is already at capacity.
-func (eq *Equipment) Equip(slot string, maxSlots int, obj *ObjectInstance) error {
-	eq.mu.Lock()
-	defer eq.mu.Unlock()
-
-	if maxSlots > 0 && eq.slotCount(slot) >= maxSlots {
-		return fmt.Errorf("no available %q slot", slot)
-	}
-	eq.Objs = append(eq.Objs, EquipSlot{Slot: slot, Obj: obj})
-	return nil
-}
-
-// slotCount returns how many items are equipped in the given slot type.
-// Caller must hold at least a read lock.
-func (eq *Equipment) slotCount(slot string) int {
-	count := 0
-	for _, item := range eq.Objs {
-		if item.Slot == slot {
-			count++
-		}
-	}
-	return count
-}
-
-// SlotCount returns how many items are equipped in the given slot type.
-func (eq *Equipment) SlotCount(slot string) int {
-	eq.mu.RLock()
-	defer eq.mu.RUnlock()
-
-	return eq.slotCount(slot)
-}
-
-// FindObj searches equipped items for one whose definition matches the given alias.
-// Returns nil if not found.
-func (eq *Equipment) FindObj(name string) *ObjectInstance {
-	eq.mu.RLock()
-	defer eq.mu.RUnlock()
-
-	for _, slot := range eq.Objs {
-		if slot.Obj == nil {
+// resourceNames returns the set of resource names discovered from perk modifier keys.
+func (a *ActorInstance) resourceNames() map[string]struct{} {
+	names := make(map[string]struct{})
+	for key := range a.Modifiers() {
+		if !strings.HasPrefix(key, assets.ResourceKeyPrefix) {
 			continue
 		}
-		if slot.Obj.Object.Get().MatchName(name) {
-			return slot.Obj
+		rest := key[len(assets.ResourceKeyPrefix):]
+		dotIdx := strings.Index(rest, ".")
+		if dotIdx < 0 {
+			continue
 		}
+		names[rest[:dotIdx]] = struct{}{}
 	}
-	return nil
+	return names
 }
 
-// ACBonus returns the total AC bonus from all equipped items.
-func (eq *Equipment) ACBonus() int {
-	eq.mu.RLock()
-	defer eq.mu.RUnlock()
-
-	total := 0
-	for _, slot := range eq.Objs {
-		if slot.Obj != nil {
-			total += slot.Obj.Object.Get().ACBonus
+// regenTick applies flat regen from perks to all resources.
+// Formula per resource: sum(core.resource.<name>.regen).
+// Caller must hold the owning type's write lock.
+func (a *ActorInstance) regenTick() {
+	for name := range a.resources {
+		regen := a.ModifierValue(assets.ResourceKey(name, assets.ResourceAspectRegen))
+		if regen > 0 {
+			a.adjustResource(name, regen)
 		}
 	}
-	return total
 }
 
-// StatBonuses returns the combined stat modifiers from all equipped items.
-func (eq *Equipment) StatBonuses() map[StatKey]int {
-	eq.mu.RLock()
-	defer eq.mu.RUnlock()
-
-	bonuses := make(map[StatKey]int)
-	for _, slot := range eq.Objs {
-		if slot.Obj != nil {
-			for k, v := range slot.Obj.Object.Get().StatMods {
-				bonuses[k] += v
-			}
-		}
+// ForEachResource calls fn for each resource. Caller must hold the owning type's lock.
+func (a *ActorInstance) ForEachResource(fn func(name string, current, max int)) {
+	for name, cur := range a.resources {
+		fn(name, cur, a.resourceMax(name))
 	}
-	return bonuses
 }
 
-// RemoveObj finds and unequips an object by instance ID.
-func (eq *Equipment) RemoveObj(instanceId string) *ObjectInstance {
-	eq.mu.Lock()
-	defer eq.mu.Unlock()
-
-	for i, item := range eq.Objs {
-		if item.Obj.InstanceId == instanceId {
-			eq.Objs = append(eq.Objs[:i], eq.Objs[i+1:]...)
-			return item.Obj
-		}
-	}
-	return nil
+// ResourceLine returns a formatted display line for a resource (e.g. "HP: 45/50").
+func ResourceLine(name string, current, max int) string {
+	return fmt.Sprintf("%s: %d/%d", name, current, max)
 }
