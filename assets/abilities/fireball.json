@@ -8,8 +8,7 @@
         "description": "Hurl a ball of fire at your target.",
         "resource": "mana",
         "resource_cost": 15,
-        "cast_time": 2,
-        "cooldown": 5,
+        "ap_cost": 2,
         "command": {
             "inputs": [
                 {"name": "target", "type": "string", "required": true, "missing": "Cast fireball at whom?"}

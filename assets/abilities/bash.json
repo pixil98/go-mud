@@ -8,7 +8,7 @@
         "description": "Bash a target with your shield.",
         "resource": "stamina",
         "resource_cost": 10,
-        "cooldown": 4,
+        "ap_cost": 1,
         "command": {
             "priority": 3,
             "description": "Bash a target with your shield.",

@@ -7,6 +7,182 @@ import (
 	"github.com/pixil98/go-mud/internal/game"
 )
 
+func TestExecuteAbility_APGating(t *testing.T) {
+	tests := map[string]struct {
+		startAP int
+		apCost  int
+		wantErr string
+		wantAP  int // AP remaining after the call
+	}{
+		"sufficient ap succeeds": {
+			startAP: 2,
+			apCost:  1,
+			wantAP:  1,
+		},
+		"exact ap succeeds": {
+			startAP: 1,
+			apCost:  1,
+			wantAP:  0,
+		},
+		"zero ap_cost treated as 1": {
+			startAP: 1,
+			apCost:  0,
+			wantAP:  0,
+		},
+		"insufficient ap fails": {
+			startAP: 0,
+			apCost:  1,
+			wantErr: "not ready",
+			wantAP:  0,
+		},
+		"cost exceeds available ap fails": {
+			startAP: 1,
+			apCost:  2,
+			wantErr: "not ready",
+			wantAP:  1,
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			room, zone := newTestRoomInZone("r", "Room", "z")
+			_ = zone
+			player := newTestPlayer("player", "Player", room)
+			setPlayerAP(player, tc.startAP)
+
+			ability := &assets.Ability{
+				Name:     "test",
+				APCost:   tc.apCost,
+				Handler:  "test",
+				Messages: assets.AbilityMessages{},
+			}
+			in := &CommandInput{Char: player}
+
+			err := executeAbility(ability, in, nil, nil, nil, nil)
+
+			if tc.wantErr != "" {
+				if err == nil {
+					t.Fatalf("expected error containing %q, got nil", tc.wantErr)
+				}
+				if !containsStr(err.Error(), tc.wantErr) {
+					t.Fatalf("error = %q, want containing %q", err, tc.wantErr)
+				}
+			} else if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+
+			if got := player.CurrentAP(); got != tc.wantAP {
+				t.Errorf("AP after execute = %d, want %d", got, tc.wantAP)
+			}
+		})
+	}
+}
+
+func TestExecuteAbility_CostCheckOrdering(t *testing.T) {
+	const manaMax = 10
+	tests := map[string]struct {
+		startAP      int
+		apCost       int
+		startMana    int
+		resourceCost int
+		wantErr      string
+		wantAP       int
+		wantMana     int
+	}{
+		"insufficient resource does not spend AP": {
+			startAP:      1,
+			apCost:       1,
+			startMana:    5,
+			resourceCost: 10,
+			wantErr:      "mana",
+			wantAP:       1,
+			wantMana:     5,
+		},
+		"insufficient AP does not spend resource": {
+			startAP:      0,
+			apCost:       1,
+			startMana:    10,
+			resourceCost: 5,
+			wantErr:      "not ready",
+			wantAP:       0,
+			wantMana:     10,
+		},
+		"both sufficient: AP and resource deducted": {
+			startAP:      1,
+			apCost:       1,
+			startMana:    10,
+			resourceCost: 5,
+			wantAP:       0,
+			wantMana:     5,
+		},
+		"no resource cost: only AP spent": {
+			startAP:      1,
+			apCost:       1,
+			startMana:    10,
+			resourceCost: 0,
+			wantAP:       0,
+			wantMana:     10,
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			room, zone := newTestRoomInZone("r", "Room", "z")
+			_ = zone
+			player := newTestPlayer("player", "Player", room)
+
+			// Set up both perks at once so mana.max is in place when SetResource is called.
+			perks := []assets.Perk{
+				{Type: assets.PerkTypeModifier, Key: "core.resource.mana.max", Value: manaMax},
+			}
+			if tc.startAP > 0 {
+				perks = append(perks, assets.Perk{Type: assets.PerkTypeModifier, Key: assets.PerkKeyActionPointsMax, Value: tc.startAP})
+			}
+			player.PerkCache.SetOwn(perks)
+			player.SetResource("mana", tc.startMana)
+			player.ResetAP()
+
+			ability := &assets.Ability{
+				Name:         "test",
+				APCost:       tc.apCost,
+				Resource:     "mana",
+				ResourceCost: tc.resourceCost,
+				Handler:      "test",
+				Messages:     assets.AbilityMessages{},
+			}
+			in := &CommandInput{Char: player}
+
+			err := executeAbility(ability, in, nil, nil, nil, nil)
+
+			if tc.wantErr != "" {
+				if err == nil {
+					t.Fatalf("expected error containing %q, got nil", tc.wantErr)
+				}
+				if !containsStr(err.Error(), tc.wantErr) {
+					t.Fatalf("error = %q, want containing %q", err, tc.wantErr)
+				}
+			} else if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+
+			if got := player.CurrentAP(); got != tc.wantAP {
+				t.Errorf("AP after execute = %d, want %d", got, tc.wantAP)
+			}
+			if cur, _ := player.Resource("mana"); cur != tc.wantMana {
+				t.Errorf("mana after execute = %d, want %d", cur, tc.wantMana)
+			}
+		})
+	}
+}
+
+// setPlayerAP primes the player's AP to the given value via the perk system.
+func setPlayerAP(player *game.CharacterInstance, ap int) {
+	player.PerkCache.SetOwn([]assets.Perk{
+		{Type: assets.PerkTypeModifier, Key: assets.PerkKeyActionPointsMax, Value: ap},
+	})
+	player.ResetAP()
+}
+
 // newTestRoomInZone creates a room and a zone instance with that room registered.
 func newTestRoomInZone(roomId, name, zoneId string) (*game.RoomInstance, *game.ZoneInstance) {
 	room, _ := newTestRoom(roomId, name, zoneId)

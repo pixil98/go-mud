@@ -160,6 +160,7 @@ func (w *WorldState) Tick(ctx context.Context) error {
 	w.Perks.Tick()
 	w.ForEachPlayer(func(_ string, ps *CharacterInstance) {
 		ps.Buffs.Tick()
+		ps.ResetAP()
 		if !ps.IsInCombat() {
 			ps.RegenTick()
 		}

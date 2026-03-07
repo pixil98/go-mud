@@ -27,8 +27,7 @@ type Ability struct {
 	Description  string          `json:"description,omitempty"`
 	Resource     string          `json:"resource,omitempty"`      // pool name: "mana", "stamina"
 	ResourceCost int             `json:"resource_cost,omitempty"`
-	CastTime     int             `json:"cast_time,omitempty"`     // ticks to perform/channel
-	Cooldown     int             `json:"cooldown,omitempty"`      // ticks before reuse
+	APCost       int             `json:"ap_cost,omitempty"`       // action points consumed; 0 treated as 1
 	Command      Command         `json:"command"`                 // inputs and targets for resolution
 	Handler      string          `json:"handler"`                 // effect handler name (e.g. "damage")
 	Config       map[string]any  `json:"config,omitempty"`        // handler-specific config (includes *_key fields for key_mod integration)
@@ -64,11 +63,8 @@ func (a *Ability) Validate() error {
 	if a.ResourceCost < 0 {
 		el.Add(fmt.Errorf("resource_cost must not be negative"))
 	}
-	if a.CastTime < 0 {
-		el.Add(fmt.Errorf("cast_time must not be negative"))
-	}
-	if a.Cooldown < 0 {
-		el.Add(fmt.Errorf("cooldown must not be negative"))
+	if a.APCost < 0 {
+		el.Add(fmt.Errorf("ap_cost must not be negative"))
 	}
 
 	// Validate embedded command — use ability's handler since the command's

@@ -42,6 +42,7 @@ type CharacterInstance struct {
 	quit           bool
 	inCombat       bool
 	combatTargetId string // InstanceId of the mob being auto-attacked; empty = not auto-attacking
+	currentAP      int    // remaining action points this tick; reset each world tick
 	followingId    string // charId of the player being followed (empty = not following)
 	group        *Group // current group, or nil if not grouped
 	lastActivity time.Time
@@ -265,6 +266,33 @@ func (ci *CharacterInstance) ClearCombatTargetId() {
 	defer ci.mu.Unlock()
 	ci.combatTargetId = ""
 	ci.inCombat = false
+}
+
+// SpendAP deducts cost from the character's remaining action points for this tick.
+// Returns false without deducting if the character has fewer than cost AP remaining.
+func (ci *CharacterInstance) SpendAP(cost int) bool {
+	ci.mu.Lock()
+	defer ci.mu.Unlock()
+	if ci.currentAP < cost {
+		return false
+	}
+	ci.currentAP -= cost
+	return true
+}
+
+// CurrentAP returns the character's remaining action points for this tick.
+func (ci *CharacterInstance) CurrentAP() int {
+	ci.mu.RLock()
+	defer ci.mu.RUnlock()
+	return ci.currentAP
+}
+
+// ResetAP restores the character's action points to their maximum for the tick.
+// Maximum is determined by the core.action_points.max modifier (typically provided by race).
+func (ci *CharacterInstance) ResetAP() {
+	ci.mu.Lock()
+	defer ci.mu.Unlock()
+	ci.currentAP = ci.PerkCache.ModifierValue(assets.PerkKeyActionPointsMax)
 }
 
 // GetFollowingId returns the charId of the player being followed, or empty.

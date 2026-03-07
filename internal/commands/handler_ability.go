@@ -21,12 +21,25 @@ type EffectHandler interface {
 // executeAbility runs an ability's effect handler and sends its messages.
 // If effect is nil, only messages are sent.
 func executeAbility(ability *assets.Ability, in *CommandInput, targets map[string]*TargetRef, world WorldView, pub game.Publisher, effect EffectHandler) error {
-	// Check and deduct resource cost
+	// Check resource cost before spending any AP
 	if ability.ResourceCost > 0 {
 		cur, _ := in.Char.Resource(ability.Resource)
 		if cur < ability.ResourceCost {
 			return NewUserError(fmt.Sprintf("You don't have enough %s.", ability.Resource))
 		}
+	}
+
+	// Check and spend action points
+	apCost := ability.APCost
+	if apCost == 0 {
+		apCost = 1
+	}
+	if !in.Char.SpendAP(apCost) {
+		return NewUserError("You're not ready to do that yet.")
+	}
+
+	// Deduct resource cost
+	if ability.ResourceCost > 0 {
 		in.Char.AdjustResource(ability.Resource, -ability.ResourceCost)
 	}
 

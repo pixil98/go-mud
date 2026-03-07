@@ -34,15 +34,14 @@ func TestAbility_Validate(t *testing.T) {
 				Messages: AbilityMessages{Actor: "test-message"},
 			},
 		},
-		"valid spell with resource and cooldown": {
+		"valid spell with resource and ap cost": {
 			ability: Ability{
 				Name:         "test-spell",
 				Type:         AbilityTypeSpell,
 				Handler:      "test-handler",
 				Resource:     "test-resource",
 				ResourceCost: 10,
-				CastTime:     2,
-				Cooldown:     5,
+				APCost:       2,
 				Command: Command{
 					Inputs: []InputSpec{{Name: "test-target", Type: InputTypeString, Required: true}},
 					Targets: []TargetSpec{{
@@ -141,33 +140,19 @@ func TestAbility_Validate(t *testing.T) {
 			},
 			expErr: "resource_cost must not be negative",
 		},
-		"negative cast time": {
+		"negative ap cost": {
 			ability: Ability{
-				Name:     "test-spell",
-				Type:     AbilityTypeSpell,
-				Handler:  "test-handler",
-				CastTime: -1,
+				Name:    "test-spell",
+				Type:    AbilityTypeSpell,
+				Handler: "test-handler",
+				APCost:  -1,
 				Command: Command{
 					Inputs:  []InputSpec{{Name: "test-target", Type: InputTypeString}},
 					Targets: []TargetSpec{{Name: "test-target", Types: []string{TargetMobile}, Input: "test-target"}},
 				},
 				Messages: AbilityMessages{Actor: "test-message"},
 			},
-			expErr: "cast_time must not be negative",
-		},
-		"negative cooldown": {
-			ability: Ability{
-				Name:     "test-spell",
-				Type:     AbilityTypeSpell,
-				Handler:  "test-handler",
-				Cooldown: -1,
-				Command: Command{
-					Inputs:  []InputSpec{{Name: "test-target", Type: InputTypeString}},
-					Targets: []TargetSpec{{Name: "test-target", Types: []string{TargetMobile}, Input: "test-target"}},
-				},
-				Messages: AbilityMessages{Actor: "test-message"},
-			},
-			expErr: "cooldown must not be negative",
+			expErr: "ap_cost must not be negative",
 		},
 		"no messages": {
 			ability: Ability{

@@ -14,6 +14,7 @@ const (
 	PerkKeyINT             PerkKey = "core.stats.int"
 	PerkKeyWIS             PerkKey = "core.stats.wis"
 	PerkKeyCHA             PerkKey = "core.stats.cha"
+	PerkKeyActionPointsMax PerkKey = "core.action_points.max"
 	PerkKeyCombatAC        PerkKey = "core.combat.ac"
 	PerkKeyCombatAttackMod PerkKey = "core.combat.attack_mod"
 	PerkKeyCombatDmgMod    PerkKey = "core.combat.damage_mod"
@@ -103,8 +104,10 @@ const (
 const (
 	// PerkGrantUnlockAbility grants access to an ability. Arg is the ability id.
 	PerkGrantUnlockAbility = "unlock_ability"
-	// PerkGrantAttack grants an extra attack. Arg is the dice expression (e.g. "2d6").
+	// PerkGrantAttack grants an attack with the given dice expression (e.g. "2d6").
 	PerkGrantAttack = "attack"
+	// PerkGrantAutoAttack enables automatic melee attacks each combat tick. No arg.
+	PerkGrantAutoAttack = "autoattack"
 )
 
 // Perk describes an effect granted by a race, tree node, or equipped object.

@@ -170,6 +170,9 @@ func (p *Player) prompt() error {
 			cur, mx := ps.Resource(name)
 			parts = append(parts, game.ResourceLine(name, cur, mx))
 		}
+		if ap := ps.CurrentAP(); ap > 0 {
+			parts = append(parts, strings.Repeat("*", ap))
+		}
 		if len(parts) > 0 {
 			prompt = fmt.Sprintf("[%s] > ", strings.Join(parts, " | "))
 		}
