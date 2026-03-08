@@ -245,8 +245,8 @@ func (ci *CharacterInstance) IsAlive() bool {
 	return cur > 0
 }
 
-// GetCombatTargetId returns the InstanceId of the mob being auto-attacked, or empty.
-func (ci *CharacterInstance) GetCombatTargetId() string {
+// CombatTargetId returns the InstanceId of the mob being auto-attacked, or empty.
+func (ci *CharacterInstance) CombatTargetId() string {
 	ci.mu.RLock()
 	defer ci.mu.RUnlock()
 	return ci.combatTargetId
@@ -420,9 +420,20 @@ func (ci *CharacterInstance) Flags() []string {
 	return flags
 }
 
-// OnDeath handles player death (e.g., respawn, penalties).
+// OnDeath handles player death. The character is healed to full HP before the session
+// ends so they reconnect healthy. Location is not changed here; they will respawn
+// at their stored home location on next login.
 func (ci *CharacterInstance) OnDeath() {
-	// TODO: implement player death handling
+	if ci.msgs != nil {
+		select {
+		case ci.msgs <- []byte("You have been slain! Darkness consumes you..."):
+		default:
+		}
+	}
+	_, maxHP := ci.Resource(assets.ResourceHp)
+	ci.SetResource(assets.ResourceHp, maxHP)
+	ci.SetQuit(true)
+	ci.Kick()
 }
 
 // --- Game logic ---
@@ -445,11 +456,10 @@ func (ci *CharacterInstance) Move(fromRoom, toRoom *RoomInstance) {
 }
 
 // SaveCharacter persists the character's current runtime state to the character store.
+// Location is not saved here; it only changes via explicit commands (e.g., sethome).
 func (ci *CharacterInstance) SaveCharacter(chars storage.Storer[*assets.Character]) error {
 	ci.mu.RLock()
 	c := ci.Character.Get()
-	c.LastZone = ci.zoneId
-	c.LastRoom = ci.roomId
 	c.Resources = make(map[string]int)
 	for name, cur := range ci.resources {
 		c.Resources[name] = cur
@@ -484,11 +494,6 @@ func objectInstanceToSpawn(oi *ObjectInstance) assets.ObjectSpawn {
 		})
 	}
 	return spawn
-}
-
-// HasAbility returns true if any of the character's aggregated perks grant the given ability ID.
-func (ci *CharacterInstance) HasAbility(abilityId string) bool {
-	return ci.HasGrant(assets.PerkGrantUnlockAbility, abilityId)
 }
 
 // EffectiveStats computes ability scores from base stats + perk modifiers.

@@ -13,6 +13,83 @@ func newTestCharacterInstance() *CharacterInstance {
 	return ci
 }
 
+func TestCharacterInstance_OnDeath(t *testing.T) {
+	tests := map[string]struct {
+		startHP    int
+		maxHP      int
+		wantMsg    bool
+		wantQuit   bool
+		wantDone   bool
+		wantFullHP bool
+	}{
+		"death sends message, sets quit, closes done, restores HP": {
+			startHP:    0,
+			maxHP:      20,
+			wantMsg:    true,
+			wantQuit:   true,
+			wantDone:   true,
+			wantFullHP: true,
+		},
+		"death with nil msgs channel does not panic": {
+			startHP:  0,
+			maxHP:    20,
+			wantQuit: true,
+			wantDone: true,
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			hpMaxPerk := assets.Perk{
+				Type:  assets.PerkTypeModifier,
+				Key:   assets.ResourceKey(assets.ResourceHp, assets.ResourceAspectMax),
+				Value: tc.maxHP,
+			}
+			char := storage.NewResolvedSmartIdentifier("test-char", &assets.Character{Name: "Tester"})
+			var msgs chan []byte
+			if tc.wantMsg {
+				msgs = make(chan []byte, 1)
+			}
+			ci, _ := NewCharacterInstance(char, msgs, "test-zone", "test-room")
+			ci.PerkCache.SetOwn([]assets.Perk{hpMaxPerk})
+			ci.initResources()
+			ci.setResourceCurrent(assets.ResourceHp, tc.startHP)
+
+			ci.OnDeath()
+
+			if tc.wantMsg {
+				select {
+				case msg := <-msgs:
+					if len(msg) == 0 {
+						t.Error("expected non-empty death message")
+					}
+				default:
+					t.Error("expected message in channel, got none")
+				}
+			}
+			if got := ci.IsQuit(); got != tc.wantQuit {
+				t.Errorf("IsQuit() = %v, want %v", got, tc.wantQuit)
+			}
+			select {
+			case <-ci.Done():
+				if !tc.wantDone {
+					t.Error("done channel closed but should not be")
+				}
+			default:
+				if tc.wantDone {
+					t.Error("done channel not closed but should be")
+				}
+			}
+			if tc.wantFullHP {
+				cur, mx := ci.Resource(assets.ResourceHp)
+				if cur != mx {
+					t.Errorf("HP after OnDeath = %d, want %d (max)", cur, mx)
+				}
+			}
+		})
+	}
+}
+
 func TestCharacterInstance_SpendAP(t *testing.T) {
 	tests := map[string]struct {
 		startAP int

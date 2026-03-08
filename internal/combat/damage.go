@@ -7,18 +7,6 @@ func RollAttack(attackMod int) int {
 	return rand.IntN(20) + 1 + attackMod
 }
 
-// RollDamage rolls NdS + modifier, with a minimum result of 1.
-func RollDamage(dice, sides, mod int) int {
-	total := mod
-	for range dice {
-		total += rand.IntN(sides) + 1
-	}
-	if total < 1 {
-		total = 1
-	}
-	return total
-}
-
 var damageMessages = []struct {
 	maxDamage int
 	verb3rd   string // "{attacker} {verb} {target}!"

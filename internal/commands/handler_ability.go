@@ -112,7 +112,29 @@ func executeAbility(ability *assets.Ability, in *CommandInput, targets map[strin
 	return nil
 }
 
-// damageEffect applies damage to the primary target.
+// attackEffect queues a manual attack for the next combat tick.
+// It calls StartCombat (idempotent) then QueueAttack so the tick resolves
+// the full attack sequence bundled with all other combat activity.
+type attackEffect struct {
+	combat CombatManager
+}
+
+func (e *attackEffect) Execute(ability *assets.Ability, in *CommandInput, targets map[string]*TargetRef) error {
+	for _, spec := range ability.Command.Targets {
+		ref := targets[spec.Name]
+		if ref == nil || ref.Mob == nil {
+			continue
+		}
+		if err := e.combat.StartCombat(in.Char, ref.Mob.instance); err != nil {
+			return NewUserError(err.Error())
+		}
+		e.combat.QueueAttack(in.Char)
+		return nil
+	}
+	return nil
+}
+
+// damageEffect applies damage to the primary target and initiates combat if the target is a mob.
 //
 // Config fields:
 //   - "base_damage" (number, required): flat damage before modifiers.
@@ -122,7 +144,9 @@ func executeAbility(ability *assets.Ability, in *CommandInput, targets map[strin
 //     chance to double damage.
 //
 // The caster's core.combat.damage_mod is always added as flat bonus damage.
-type damageEffect struct{}
+type damageEffect struct {
+	combat CombatManager
+}
 
 func (e *damageEffect) Execute(ability *assets.Ability, in *CommandInput, targets map[string]*TargetRef) error {
 	baseDamage, ok := ability.Config["base_damage"].(float64)
@@ -165,6 +189,10 @@ func (e *damageEffect) Execute(ability *assets.Ability, in *CommandInput, target
 			continue
 		}
 		applyDamage(ref, damage)
+		if ref.Mob != nil {
+			_ = e.combat.StartCombat(in.Char, ref.Mob.instance)
+			e.combat.AddThreat(in.Char, ref.Mob.instance, damage)
+		}
 		return nil
 	}
 

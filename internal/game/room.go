@@ -241,6 +241,8 @@ func (ri *RoomInstance) spawnMob(mob storage.SmartIdentifier[*assets.Mobile]) (*
 	mi := &MobileInstance{
 		InstanceId: uuid.New().String(),
 		Mobile:     mob,
+		zoneId:     ri.Room.Get().Zone.Id(),
+		roomId:     ri.Room.Id(),
 		ActorInstance: ActorInstance{
 			inventory: NewInventory(),
 			equipment: eq,

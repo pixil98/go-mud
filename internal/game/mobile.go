@@ -10,13 +10,15 @@ import (
 )
 
 // MobileInstance represents a single spawned instance of a Mobile definition.
-// Location is tracked by the containing structure (room map).
+// Location is set at spawn time and tracks which zone/room contains this mob.
 type MobileInstance struct {
 	mu sync.RWMutex
 
 	InstanceId string
 	Mobile     storage.SmartIdentifier[*assets.Mobile]
 	inCombat   bool
+	zoneId     string
+	roomId     string
 
 	ActorInstance
 }
@@ -109,6 +111,21 @@ func (mi *MobileInstance) Flags() []string {
 func (mi *MobileInstance) OnDeath() {
 	// TODO: implement mob death handling
 }
+
+// Location returns the zone and room ID where this mob is spawned.
+func (mi *MobileInstance) Location() (zoneId, roomId string) {
+	mi.mu.RLock()
+	defer mi.mu.RUnlock()
+	return mi.zoneId, mi.roomId
+}
+
+// CombatTargetId returns an empty string; mobs select targets via their threat table.
+func (mi *MobileInstance) CombatTargetId() string {
+	return ""
+}
+
+// SetCombatTargetId is a no-op for mobs; their target is resolved from the threat table.
+func (mi *MobileInstance) SetCombatTargetId(_ string) {}
 
 // StatSections returns the mobile's stat display sections.
 func (mi *MobileInstance) StatSections() []StatSection {

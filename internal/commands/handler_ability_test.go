@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/pixil98/go-mud/internal/assets"
@@ -301,6 +302,135 @@ func TestRoomBuffEffectExpiry(t *testing.T) {
 	room.Perks.Tick()
 	if got := player.ModifierValue("test-key"); got != 0 {
 		t.Errorf("after 2 ticks = %d, want 0", got)
+	}
+}
+
+func TestAttackEffect(t *testing.T) {
+	tests := map[string]struct {
+		targets    map[string]*TargetRef
+		startErr   error
+		wantErr    string
+		wantStart  bool
+		wantQueued bool
+	}{
+		"mob target: StartCombat and QueueAttack called": {
+			targets: map[string]*TargetRef{
+				"target": {Type: targetTypeMobile, Mob: &MobileRef{
+					InstanceId: "mob-1",
+					Name:       "Goblin",
+					instance:   newTestMobInstance("mob-1", "Goblin"),
+				}},
+			},
+			wantStart:  true,
+			wantQueued: true,
+		},
+		"already in combat: StartCombat and QueueAttack still called": {
+			targets: map[string]*TargetRef{
+				"target": {Type: targetTypeMobile, Mob: &MobileRef{
+					InstanceId: "mob-1",
+					Name:       "Goblin",
+					instance:   newTestMobInstance("mob-1", "Goblin"),
+				}},
+			},
+			wantStart:  true,
+			wantQueued: true,
+		},
+		"no targets: no-op": {
+			targets:    map[string]*TargetRef{},
+			wantStart:  false,
+			wantQueued: false,
+		},
+		"nil target ref: skipped": {
+			targets:    map[string]*TargetRef{"target": nil},
+			wantStart:  false,
+			wantQueued: false,
+		},
+		"StartCombat error: wrapped as user error": {
+			targets: map[string]*TargetRef{
+				"target": {Type: targetTypeMobile, Mob: &MobileRef{
+					InstanceId: "mob-1",
+					Name:       "Goblin",
+					instance:   newTestMobInstance("mob-1", "Goblin"),
+				}},
+			},
+			startErr: fmt.Errorf("target is not alive"),
+			wantErr:  "target is not alive",
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			room, _ := newTestRoomInZone("r", "Room", "z")
+			player := newTestPlayer("player", "Player", room)
+			setPlayerAP(player, 2)
+
+			cm := &mockCombatManager{startedErr: tc.startErr}
+			effect := &attackEffect{combat: cm}
+			ability := &assets.Ability{
+				Command: assets.Command{
+					Targets: []assets.TargetSpec{{Name: "target"}},
+				},
+			}
+
+			err := effect.Execute(ability, &CommandInput{Char: player}, tc.targets)
+
+			if tc.wantErr != "" {
+				if err == nil {
+					t.Fatalf("expected error containing %q, got nil", tc.wantErr)
+				}
+				if !containsStr(err.Error(), tc.wantErr) {
+					t.Fatalf("error = %q, want containing %q", err.Error(), tc.wantErr)
+				}
+				return
+			}
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			if cm.started != tc.wantStart {
+				t.Errorf("StartCombat called = %v, want %v", cm.started, tc.wantStart)
+			}
+			if cm.queued != tc.wantQueued {
+				t.Errorf("QueueAttack called = %v, want %v", cm.queued, tc.wantQueued)
+			}
+		})
+	}
+}
+
+func TestDamageEffect_InitiatesCombat(t *testing.T) {
+	room, zone := newTestRoomInZone("r", "Room", "z")
+	_ = zone
+	player := newTestPlayer("player", "Player", room)
+
+	mob := newTestMobInstance("mob-1", "Goblin")
+	cm := &mockCombatManager{}
+	effect := &damageEffect{combat: cm}
+
+	ability := &assets.Ability{
+		Config: map[string]any{"base_damage": float64(10)},
+		Command: assets.Command{
+			Targets: []assets.TargetSpec{{Name: "target"}},
+		},
+	}
+	targets := map[string]*TargetRef{
+		"target": {Type: targetTypeMobile, Mob: &MobileRef{
+			InstanceId: "mob-1",
+			Name:       "Goblin",
+			instance:   mob,
+		}},
+	}
+
+	if err := effect.Execute(ability, &CommandInput{Char: player}, targets); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if !cm.started {
+		t.Error("StartCombat not called")
+	}
+	if !cm.threatAdded {
+		t.Error("AddThreat not called")
+	}
+	if cm.threatAmount != 10 {
+		t.Errorf("AddThreat amount = %d, want 10", cm.threatAmount)
 	}
 }
 

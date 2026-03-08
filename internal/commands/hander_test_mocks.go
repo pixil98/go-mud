@@ -18,6 +18,13 @@ func (m *mockZoneLocator) GetZone(zoneId string) *game.ZoneInstance {
 	return m.zones[zoneId]
 }
 
+func newTestMobInstance(instanceId, name string) *game.MobileInstance {
+	return &game.MobileInstance{
+		InstanceId: instanceId,
+		Mobile:     storage.NewResolvedSmartIdentifier(instanceId+"-spec", &assets.Mobile{ShortDesc: name}),
+	}
+}
+
 func newTestZone(id string) (*game.ZoneInstance, error) {
 	zone := &assets.Zone{ResetMode: assets.ZoneResetNever}
 	return game.NewZoneInstance(storage.NewResolvedSmartIdentifier(id, zone))

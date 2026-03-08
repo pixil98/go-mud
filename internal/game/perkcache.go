@@ -55,9 +55,9 @@ type PerkSource interface {
 // and optional named PerkSources. Resolution is lazy: the first query
 // after a change rebuilds the cache.
 //
-// Thread safety: PerkCache is NOT internally locked. The owning struct
-// must hold its own mutex when calling PerkCache methods.
+// PerkCache is safe for concurrent use.
 type PerkCache struct {
+	mu             *sync.Mutex // pointer so copying the struct does not copy the mutex
 	own            []assets.Perk
 	sources        map[string]PerkSource
 	sourceVersions map[string]uint64
@@ -71,6 +71,7 @@ func NewPerkCache(own []assets.Perk, sources map[string]PerkSource) *PerkCache {
 		sources = make(map[string]PerkSource)
 	}
 	return &PerkCache{
+		mu:             &sync.Mutex{},
 		own:            own,
 		sources:        sources,
 		sourceVersions: make(map[string]uint64),
@@ -79,12 +80,16 @@ func NewPerkCache(own []assets.Perk, sources map[string]PerkSource) *PerkCache {
 
 // SetOwn replaces the cache's own perks and invalidates the resolved state.
 func (pc *PerkCache) SetOwn(perks []assets.Perk) {
+	pc.mu.Lock()
+	defer pc.mu.Unlock()
 	pc.own = perks
 	pc.invalidate()
 }
 
 // AddSource adds a named PerkSource and invalidates the cache.
 func (pc *PerkCache) AddSource(name string, s PerkSource) {
+	pc.mu.Lock()
+	defer pc.mu.Unlock()
 	pc.sources[name] = s
 	pc.invalidate()
 }
@@ -92,6 +97,8 @@ func (pc *PerkCache) AddSource(name string, s PerkSource) {
 // RemoveSource removes a named PerkSource and invalidates the cache.
 // No-op if the name is not found.
 func (pc *PerkCache) RemoveSource(name string) {
+	pc.mu.Lock()
+	defer pc.mu.Unlock()
 	if _, ok := pc.sources[name]; ok {
 		delete(pc.sources, name)
 		delete(pc.sourceVersions, name)
@@ -100,12 +107,14 @@ func (pc *PerkCache) RemoveSource(name string) {
 }
 
 // invalidate clears the resolved state and increments the version.
+// Caller must hold pc.mu.
 func (pc *PerkCache) invalidate() {
 	pc.resolved = nil
 	pc.version++
 }
 
 // isDirty returns true if the cache needs re-resolution.
+// Caller must hold pc.mu.
 func (pc *PerkCache) isDirty() bool {
 	if pc.resolved == nil {
 		return true
@@ -120,6 +129,7 @@ func (pc *PerkCache) isDirty() bool {
 }
 
 // resolve lazily builds the ResolvedPerks if dirty.
+// Caller must hold pc.mu.
 func (pc *PerkCache) resolve() *ResolvedPerks {
 	if !pc.isDirty() {
 		return pc.resolved
@@ -137,6 +147,8 @@ func (pc *PerkCache) resolve() *ResolvedPerks {
 // Snapshot returns the resolved perks and a composite version that
 // reflects changes in both own perks and all sources.
 func (pc *PerkCache) Snapshot() (*ResolvedPerks, uint64) {
+	pc.mu.Lock()
+	defer pc.mu.Unlock()
 	resolved := pc.resolve()
 	v := pc.version
 	for _, s := range pc.sources {
@@ -148,26 +160,36 @@ func (pc *PerkCache) Snapshot() (*ResolvedPerks, uint64) {
 
 // ModifierValue returns the summed value for a modifier perk key.
 func (pc *PerkCache) ModifierValue(key string) int {
+	pc.mu.Lock()
+	defer pc.mu.Unlock()
 	return pc.resolve().modifiers[key]
 }
 
 // Modifiers returns the full modifier map. Do not mutate the returned map.
 func (pc *PerkCache) Modifiers() map[string]int {
+	pc.mu.Lock()
+	defer pc.mu.Unlock()
 	return pc.resolve().modifiers
 }
 
 // GrantArgs returns all args for a grant perk key.
 func (pc *PerkCache) GrantArgs(key string) []string {
+	pc.mu.Lock()
+	defer pc.mu.Unlock()
 	return pc.resolve().grants[key]
 }
 
 // HasGrant returns true if any grant perk matches both key and arg.
 func (pc *PerkCache) HasGrant(key, arg string) bool {
+	pc.mu.Lock()
+	defer pc.mu.Unlock()
 	return slices.Contains(pc.resolve().grants[key], arg)
 }
 
 // Grants returns the full grants map. Do not mutate the returned map.
 func (pc *PerkCache) Grants() map[string][]string {
+	pc.mu.Lock()
+	defer pc.mu.Unlock()
 	return pc.resolve().grants
 }
 
@@ -181,8 +203,7 @@ type timedPerk struct {
 // of ticks. It embeds PerkCache so it can be used as a PerkSource for other
 // PerkCaches, enabling the room -> zone -> world composition chain.
 //
-// Thread safety: TimedPerkCache has its own mutex and is safe for
-// concurrent use.
+// TimedPerkCache is safe for concurrent use.
 type TimedPerkCache struct {
 	mu      sync.Mutex
 	entries map[string]*timedPerk

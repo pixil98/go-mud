@@ -12,7 +12,8 @@
             { "type": "modifier", "key": "core.combat.ac", "value": 12 },
             { "type": "modifier", "key": "core.combat.attack_mod", "value": 3 },
             { "type": "modifier", "key": "core.combat.damage_mod", "value": 2 },
-            { "type": "grant", "key": "attack", "arg": "1d6" }
+            { "type": "grant", "key": "attack", "arg": "1d6" },
+            { "type": "grant", "key": "autoattack" }
         ]
     }
 }

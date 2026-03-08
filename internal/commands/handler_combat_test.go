@@ -11,10 +11,13 @@ import (
 
 // mockCombatManager is a test double for CombatManager.
 type mockCombatManager struct {
-	startedErr error // error to return from StartCombat
-	started    bool  // set to true when StartCombat is called
+	startedErr   error // error to return from StartCombat
+	started      bool
 	lastAttacker combat.Combatant
 	lastTarget   combat.Combatant
+	queued       bool
+	threatAdded  bool
+	threatAmount int
 }
 
 func (m *mockCombatManager) StartCombat(attacker, target combat.Combatant) error {
@@ -22,6 +25,15 @@ func (m *mockCombatManager) StartCombat(attacker, target combat.Combatant) error
 	m.lastAttacker = attacker
 	m.lastTarget = target
 	return m.startedErr
+}
+
+func (m *mockCombatManager) AddThreat(_, _ combat.Combatant, amount int) {
+	m.threatAdded = true
+	m.threatAmount = amount
+}
+
+func (m *mockCombatManager) QueueAttack(_ combat.Combatant) {
+	m.queued = true
 }
 
 func TestAssistHandler(t *testing.T) {

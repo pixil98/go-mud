@@ -48,7 +48,7 @@ func (f *CastHandlerFactory) Create() (CommandFunc, error) {
 		}
 
 		// Check if the actor has unlocked this spell
-		if !in.Char.HasAbility(id) {
+		if !in.Char.HasGrant(assets.PerkGrantUnlockAbility, id) {
 			return NewUserError("You don't know a spell called '" + spellName + "'.")
 		}
 

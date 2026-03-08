@@ -11,7 +11,8 @@
             { "type": "modifier", "key": "core.resource.hp.per_level", "value": 5 },
             { "type": "modifier", "key": "core.resource.hp.regen", "value": 1 },
             { "type": "modifier", "key": "core.combat.ac", "value": 10 },
-            { "type": "modifier", "key": "core.action_points.max", "value": 1 }
+            { "type": "modifier", "key": "core.action_points.max", "value": 1 },
+            { "type": "grant", "key": "unlock_ability", "arg": "attack" }
         ],
         "wear_slots": [
             "light", "head", "neck", "neck", "about",

@@ -51,7 +51,7 @@ A combatant leaves combat when they have no living enemies:
 
 ### Fleeing
 
-`Flee(c)` removes a combatant from the active manager and clears their in-combat state, but **does not** remove their entry from enemies' threat tables. This means:
+Flee is not yet implemented. When added, `Flee(c)` will remove a combatant from the active manager and clear their in-combat state, but **will not** remove their entry from enemies' threat tables. This means:
 
 - If the group is still fighting, the mob retains the fleeing player's threat value.
 - If the player re-enters the room and uses `attack`/`kill`, `StartCombat` re-registers them and the mob immediately recognises their prior threat level.
@@ -100,13 +100,16 @@ Autocast for casters raises balancing questions (resource costs, spell selection
 
 ## The attack/kill Command
 
-`attack` (aliased as `kill`) is a built-in command available to every combatant — no perk or tree node required. It:
+`attack` (aliased as `kill`) is a **skill ability** defined in `assets/abilities/attack.json`. It auto-registers as a top-level command via `registerSkill`. Access is gated by `unlock_ability: attack` — all races get this grant by default.
 
-1. Enters combat with the target if not already in combat
-2. Checks and spends 1 AP (same path as any ability in `executeAbility`)
-3. Performs one melee attack using the attack resolution below
+When typed:
+1. `executeAbility` checks and spends 1 AP
+2. The `attackEffect` handler calls `StartCombat` (idempotent) and then `QueueAttack`
+3. On the next combat tick, the queued attack fires alongside any autoattacks — all in one bundle
 
-This gives mages the option to punch a mob if they want. They'll roll 1d4 with no attack bonuses unless they've invested in melee grants. Fighters who have the autoattack perk don't need to type `attack` every tick — it fires automatically.
+Queuing the attack (rather than firing immediately) keeps messages cohesive: the player's attack result appears with the rest of the round's combat output, not interleaved with prompts.
+
+Mages can type `attack` to get a queued 1d4 punch. Fighters with the autoattack perk don't need to type it every tick.
 
 ## Target Selection
 
@@ -125,13 +128,16 @@ Accumulate room messages (map of room key → []string)
 
 For each combatant in combat:
     if !alive or threat table empty: skip
-    if len(GrantArgs("autoattack")) == 0: skip
+    wantsAutoAttack = len(GrantArgs("autoattack")) > 0
+    if !wantsAutoAttack and !attackPending: skip
+    attackPending = false  // consume the flag
 
     target = resolveTarget(combatant)
     if target == nil: skip
 
-    resolve melee attack (roll vs AC, damage, absorb)
-    apply damage, add threat, append to room messages
+    for each GrantArgs("attack") expr (or "1d4" if none):
+        resolve melee attack (roll vs AC, damage, absorb)
+        apply damage to target, add threat, append to room messages
 
 Handle deaths:
     for each dead combatant:
@@ -148,22 +154,25 @@ Publish bundled room messages (after unlock)
 
 ## Attack Resolution
 
-Used by both autoattack and the manual `attack`/`kill` command:
+`PerformAttack(attacker, target)` executes **one attack roll per `attack` grant** the attacker has. Falls back to a single 1d4 attack if no grants are present.
 
 ```
-attackMod = attacker.ModifierValue("core.combat.attack_mod")
-roll = RollAttack(attackMod)  // d20 + mod
-targetAC = 10 + target.ModifierValue("core.combat.ac")
+diceExprs = attacker.GrantArgs("attack")  // e.g. ["2d6", "1d8"] for dual-wield
+if len(diceExprs) == 0: diceExprs = ["1d4"]
 
-if roll < targetAC: miss
+for each expr in diceExprs:
+    attackMod = attacker.ModifierValue("core.combat.attack_mod")
+    roll = RollAttack(attackMod)  // d20 + mod
+    targetAC = target.ModifierValue("core.combat.ac")  // mob defines TOTAL AC, not a bonus
 
-diceExprs = attacker.GrantArgs("attack")
-dice = ParseDice(diceExprs[0])  // first grant, or default "1d4" if none
-damage = RollDamage(dice.Count, dice.Sides, dice.Mod)
-damage += attacker.ModifierValue("core.combat.damage_mod")
+    if roll < targetAC: record miss, continue
 
-absorb = target.ModifierValue("core.defense.all.absorb")
-damage = max(1, damage - absorb)
+    dice = ParseDice(expr)
+    damage = dice.Roll() + attacker.ModifierValue("core.combat.damage_mod")
+    absorb = target.ModifierValue("core.defense.all.absorb")
+    damage = max(1, damage - absorb)
+    target.AdjustResource("hp", -damage)
+    record hit
 ```
 
 ## Threat API for Abilities
@@ -174,11 +183,12 @@ The `CombatManager` interface (in the `commands` package, where it is consumed):
 type CombatManager interface {
     StartCombat(attacker, target combat.Combatant) error
     AddThreat(source, target combat.Combatant, amount int)
-    Flee(c combat.Combatant)
+    QueueAttack(c combat.Combatant)
 }
 ```
 
 - `damageEffect` calls `StartCombat` then `AddThreat` after dealing damage — any damage initiates combat automatically.
+- `attackEffect` calls `StartCombat` then `QueueAttack` — queued attack fires on the next tick.
 - A future `threatEffect` handler could add/reduce threat for taunt/fade abilities.
 - AP is handled entirely in `executeAbility` on `CharacterInstance`; the combat manager never touches it.
 
@@ -204,6 +214,8 @@ type Combatant interface {
     CombatTargetId() string          // player: stored target; mob: "" (always use threat)
     SetCombatTargetId(id string)     // player: store; mob: no-op
 
+    Location() (zoneId, roomId string)  // for publishing room combat messages
+
     OnDeath()
 }
 ```
@@ -219,11 +231,13 @@ type Manager struct {
     mu         sync.Mutex
     combatants map[string]*combatantState  // combatant ID → state
     pub        game.Publisher
+    zones      ZoneLocator  // for publishing room messages after unlock
 }
 
 type combatantState struct {
-    c      Combatant
-    threat map[string]int  // enemy ID → threat amount
+    c             Combatant
+    threat        map[string]int  // enemy ID → threat amount
+    attackPending bool            // set by QueueAttack; fires once next Tick
 }
 ```
 

@@ -62,6 +62,10 @@ func (p *Player) Play(ctx context.Context) error {
 
 		case <-p.done:
 			ps := p.world.GetPlayer(p.charId)
+			if ps != nil && ps.IsQuit() {
+				// Death or voluntary quit — return nil so handleSessionEnd saves and removes the player.
+				return nil
+			}
 			var msg string
 			if ps != nil && ps.IsLinkless() {
 				msg = "\nDisconnected for inactivity."

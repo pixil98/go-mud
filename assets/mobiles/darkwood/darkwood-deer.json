@@ -11,7 +11,8 @@
             { "type": "modifier", "key": "core.resource.hp.max", "value": 12 },
             { "type": "modifier", "key": "core.combat.ac", "value": 10 },
             { "type": "modifier", "key": "core.combat.attack_mod", "value": 1 },
-            { "type": "grant", "key": "attack", "arg": "1d4" }
+            { "type": "grant", "key": "attack", "arg": "1d4" },
+            { "type": "grant", "key": "autoattack" }
         ]
     }
 }

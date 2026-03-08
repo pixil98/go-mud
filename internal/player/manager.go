@@ -157,8 +157,8 @@ func (m *PlayerManager) newPlayer(conn io.ReadWriter) (*Player, error) {
 	msgs := make(chan []byte, 100)
 	var zoneId, roomId string
 
-	if ps := m.world.GetPlayer(charId); ps != nil {
-		// Player already in world — kick old connection and reattach
+	if ps := m.world.GetPlayer(charId); ps != nil && !ps.IsQuit() {
+		// Player already in world with an active session — kick old connection and reattach.
 		slog.Info("player reconnecting", "charId", charId)
 		ps.Kick()
 		time.Sleep(10 * time.Millisecond)

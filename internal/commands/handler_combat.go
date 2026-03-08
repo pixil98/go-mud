@@ -12,57 +12,8 @@ import (
 // CombatManager provides combat operations needed by command handlers.
 type CombatManager interface {
 	StartCombat(attacker, target combat.Combatant) error
-}
-
-// KillHandlerFactory creates handlers for the kill command.
-type KillHandlerFactory struct {
-	combat CombatManager
-	zones  ZoneLocator
-	pub    game.Publisher
-}
-
-func NewKillHandlerFactory(combat CombatManager, zones ZoneLocator, pub game.Publisher) *KillHandlerFactory {
-	return &KillHandlerFactory{combat: combat, zones: zones, pub: pub}
-}
-
-func (f *KillHandlerFactory) Spec() *HandlerSpec {
-	return &HandlerSpec{
-		Targets: []TargetRequirement{
-			{Name: "target", Type: targetTypeMobile, Required: true},
-		},
-	}
-}
-
-func (f *KillHandlerFactory) ValidateConfig(config map[string]any) error {
-	return nil
-}
-
-func (f *KillHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, in *CommandInput) error {
-		if in.Char.IsInCombat() {
-			return NewUserError("You're already fighting!")
-		}
-
-		mi := in.Targets["target"].Mob.instance
-
-		if err := f.combat.StartCombat(in.Char, mi); err != nil {
-			return NewUserError(err.Error())
-		}
-
-		if err := f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil,
-			[]byte(fmt.Sprintf("You attack %s!", mi.Name()))); err != nil {
-			slog.Warn("failed to notify attacker", "error", err)
-		}
-
-		zoneID, roomID := in.Char.Location()
-		room := f.zones.GetZone(zoneID).GetRoom(roomID)
-		roomMsg := fmt.Sprintf("%s attacks %s!", in.Char.Name(), mi.Name())
-		if err := f.pub.Publish(room, []string{in.Char.Id()}, []byte(roomMsg)); err != nil {
-			slog.Warn("failed to publish room attack message", "error", err)
-		}
-
-		return nil
-	}, nil
+	AddThreat(source, target combat.Combatant, amount int)
+	QueueAttack(c combat.Combatant)
 }
 
 // AssistHandlerFactory creates handlers for the assist command.
@@ -107,7 +58,7 @@ func (f *AssistHandlerFactory) Create() (CommandFunc, error) {
 			return NewUserError(fmt.Sprintf("%s isn't here.", assistedName))
 		}
 
-		targetMobId := assistedCI.GetCombatTargetId()
+		targetMobId := assistedCI.CombatTargetId()
 		if targetMobId == "" {
 			return NewUserError(fmt.Sprintf("%s isn't fighting anyone.", assistedName))
 		}
@@ -147,7 +98,6 @@ func (f *AssistHandlerFactory) resolveAssisted(in *CommandInput) (string, string
 		return target.Player.CharId, target.Player.Name, nil
 	}
 
-	// Fall back to follow leader.
 	leaderId := in.Char.GetFollowingId()
 	leader := f.players.GetPlayer(leaderId)
 	if leader == nil {

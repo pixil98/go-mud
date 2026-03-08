@@ -85,6 +85,7 @@ type Handler struct {
 	factories map[string]HandlerFactory
 	compiled  map[string]*compiledCommand
 	effects   map[string]EffectHandler
+	combat    CombatManager
 }
 
 func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, publisher game.Publisher, world *game.WorldState, combat CombatManager) (*Handler, error) {
@@ -92,10 +93,12 @@ func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, pub
 		factories: make(map[string]HandlerFactory),
 		compiled:  make(map[string]*compiledCommand),
 		effects:   make(map[string]EffectHandler),
+		combat:    combat,
 	}
 
 	// Register effect handlers
-	h.effects["damage"] = &damageEffect{}
+	h.effects["attack"] = &attackEffect{combat: combat}
+	h.effects["damage"] = &damageEffect{combat: combat}
 	h.effects["actor_buff"] = &actorBuffEffect{}
 	h.effects["room_buff"] = &roomBuffEffect{world: world}
 	h.effects["zone_buff"] = &zoneBuffEffect{world: world}
@@ -112,7 +115,6 @@ func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, pub
 	h.RegisterFactory("ungroup", NewUngroupHandlerFactory(world, publisher))
 	h.RegisterFactory("help", NewHelpHandlerFactory(cmds, publisher))
 	h.RegisterFactory("inventory", NewInventoryHandlerFactory(publisher))
-	h.RegisterFactory("kill", NewKillHandlerFactory(combat, world, publisher))
 	h.RegisterFactory("look", NewLookHandlerFactory(world, publisher))
 	h.RegisterFactory("message", NewMessageHandlerFactory(world, publisher))
 	h.RegisterFactory("move", NewMoveHandlerFactory(world, publisher))
@@ -157,7 +159,7 @@ func (h *Handler) registerSkill(id string, ability *assets.Ability, world WorldV
 		return fmt.Errorf("unknown effect handler %q", ability.Handler)
 	}
 	cmdFunc := func(ctx context.Context, in *CommandInput) error {
-		if !in.Char.HasAbility(id) {
+		if !in.Char.HasGrant(assets.PerkGrantUnlockAbility, id) {
 			return NewUserError("You don't know how to do that.")
 		}
 		return executeAbility(ability, in, in.Targets, world, pub, effect)

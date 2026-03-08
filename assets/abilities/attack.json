@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "attack",
+    "spec": {
+        "name": "attack",
+        "type": "skill",
+        "handler": "attack",
+        "description": "Attack a target.",
+        "ap_cost": 1,
+        "command": {
+            "priority": 5,
+            "description": "Attack a target.",
+            "aliases": ["kill"],
+            "inputs": [
+                {"name": "target", "type": "string", "required": true, "missing": "Attack whom?"}
+            ],
+            "targets": [
+                {
+                    "name": "target",
+                    "types": ["mobile"],
+                    "scopes": ["room"],
+                    "input": "target",
+                    "not_found": "You don't see '{{ .Inputs.target }}' here."
+                }
+            ]
+        },
+        "messages": {
+            "actor": "You attack {{ .Targets.target.Name }}!",
+            "room": "{{ .Actor.Name }} attacks {{ .Targets.target.Name }}!"
+        }
+    }
+}
