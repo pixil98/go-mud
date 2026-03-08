@@ -8,7 +8,7 @@ require (
 	github.com/iammegalith/telnet v0.0.0-20230201230822-b5765a6db0cf
 	github.com/muesli/reflow v0.3.0
 	github.com/nats-io/nats-server/v2 v2.12.4
-	github.com/nats-io/nats.go v1.48.0
+	github.com/nats-io/nats.go v1.49.0
 	github.com/pixil98/go-errors v0.0.0-20260129211429-af839a3eda29
 	github.com/pixil98/go-service v0.0.0-20260129222240-12e23ec56a18
 	github.com/pixil98/go-testutil v0.0.0-20260123222118-fa427b8db36a
