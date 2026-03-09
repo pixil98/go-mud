@@ -108,6 +108,10 @@ const (
 	PerkGrantAttack = "attack"
 	// PerkGrantAutoAttack enables automatic melee attacks each combat tick. No arg.
 	PerkGrantAutoAttack = "autoattack"
+	// PerkGrantPeaceful prevents the holder from initiating combat. Can be granted
+	// by a room, zone, world, or equipped item. Players inherit room/zone/world grants
+	// automatically via the perk chain.
+	PerkGrantPeaceful = "peaceful"
 )
 
 // Perk describes an effect granted by a race, tree node, or equipped object.

@@ -120,6 +120,9 @@ type attackEffect struct {
 }
 
 func (e *attackEffect) Execute(ability *assets.Ability, in *CommandInput, targets map[string]*TargetRef) error {
+	if in.Char.HasGrant(assets.PerkGrantPeaceful, "") {
+		return errPeacefulArea
+	}
 	for _, spec := range ability.Command.Targets {
 		ref := targets[spec.Name]
 		if ref == nil || ref.Mob == nil {
@@ -149,6 +152,9 @@ type damageEffect struct {
 }
 
 func (e *damageEffect) Execute(ability *assets.Ability, in *CommandInput, targets map[string]*TargetRef) error {
+	if in.Char.HasGrant(assets.PerkGrantPeaceful, "") {
+		return errPeacefulArea
+	}
 	baseDamage, ok := ability.Config["base_damage"].(float64)
 	if !ok {
 		return fmt.Errorf("damage effect: base_damage config required")
@@ -257,17 +263,17 @@ func (e *actorBuffEffect) Execute(ability *assets.Ability, in *CommandInput, tar
 			continue
 		}
 		if ref.Player != nil {
-			ref.Player.session.Buffs.AddPerks(name, perks, dur)
+			ref.Player.session.AddTimedPerks(name, perks, dur)
 			return nil
 		}
 		if ref.Mob != nil {
-			ref.Mob.instance.Buffs.AddPerks(name, perks, dur)
+			ref.Mob.instance.AddTimedPerks(name, perks, dur)
 			return nil
 		}
 	}
 
 	// No target resolved — apply to self.
-	in.Char.Buffs.AddPerks(name, perks, dur)
+	in.Char.AddTimedPerks(name, perks, dur)
 	return nil
 }
 
@@ -287,7 +293,7 @@ func (e *roomBuffEffect) Execute(ability *assets.Ability, in *CommandInput, _ ma
 	if room == nil {
 		return fmt.Errorf("room_buff effect: room not found")
 	}
-	room.Perks.AddPerks(name, perks, dur)
+	room.Perks.AddTimedPerks(name, perks, dur)
 	return nil
 }
 
@@ -307,7 +313,7 @@ func (e *zoneBuffEffect) Execute(ability *assets.Ability, in *CommandInput, _ ma
 	if zone == nil {
 		return fmt.Errorf("zone_buff effect: zone not found")
 	}
-	zone.Perks.AddPerks(name, perks, dur)
+	zone.Perks.AddTimedPerks(name, perks, dur)
 	return nil
 }
 
@@ -322,6 +328,6 @@ func (e *worldBuffEffect) Execute(ability *assets.Ability, _ *CommandInput, _ ma
 		return err
 	}
 
-	e.world.Perks.AddPerks(name, perks, dur)
+	e.world.Perks.AddTimedPerks(name, perks, dur)
 	return nil
 }

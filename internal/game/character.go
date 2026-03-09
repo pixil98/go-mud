@@ -64,12 +64,11 @@ func NewCharacterInstance(char storage.SmartIdentifier[*assets.Character], msgs 
 		return nil, fmt.Errorf("materializing inventory for %q: %w", char.Id(), err)
 	}
 
-	// Build perk cache: race perks (own) + equipment + buffs (sources).
+	// Build perk cache: race perks (own) + equipment (source).
 	var racePerks []assets.Perk
 	if r := c.Race.Get(); r != nil {
 		racePerks = r.Perks
 	}
-	buffs := NewTimedPerkCache(nil)
 
 	ci := &CharacterInstance{
 		subs:      make(map[string]func()),
@@ -81,8 +80,7 @@ func NewCharacterInstance(char storage.SmartIdentifier[*assets.Character], msgs 
 			inventory: inv,
 			equipment: eq,
 			level:     c.Level,
-			Buffs:     buffs,
-			PerkCache: *NewPerkCache(racePerks, map[string]PerkSource{"equipment": eq, "buffs": buffs}),
+			PerkCache: *NewPerkCache(racePerks, map[string]PerkSource{"equipment": eq}),
 		},
 		lastActivity: time.Now(),
 		done:         make(chan struct{}),
@@ -423,7 +421,7 @@ func (ci *CharacterInstance) Flags() []string {
 // OnDeath handles player death. The character is healed to full HP before the session
 // ends so they reconnect healthy. Location is not changed here; they will respawn
 // at their stored home location on next login.
-func (ci *CharacterInstance) OnDeath() {
+func (ci *CharacterInstance) OnDeath() []*ObjectInstance {
 	if ci.msgs != nil {
 		select {
 		case ci.msgs <- []byte("You have been slain! Darkness consumes you..."):
@@ -434,6 +432,30 @@ func (ci *CharacterInstance) OnDeath() {
 	ci.SetResource(assets.ResourceHp, maxHP)
 	ci.SetQuit(true)
 	ci.Kick()
+	return nil
+}
+
+// GainXP awards experience points to the character and returns true if the
+// character now has enough XP to advance to the next level.
+func (ci *CharacterInstance) GainXP(xp int) bool {
+	if xp <= 0 {
+		return false
+	}
+	char := ci.Character.Get()
+	char.Experience += xp
+	return char.Level < MaxLevel && char.Experience >= ExpForLevel(char.Level+1)
+}
+
+// Notify sends a message directly to the character's client. Non-blocking;
+// drops the message if the channel is full.
+func (ci *CharacterInstance) Notify(msg string) {
+	if ci.msgs == nil {
+		return
+	}
+	select {
+	case ci.msgs <- []byte(msg):
+	default:
+	}
 }
 
 // --- Game logic ---

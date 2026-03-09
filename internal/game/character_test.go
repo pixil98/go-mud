@@ -171,3 +171,57 @@ func TestCharacterInstance_ResetAP(t *testing.T) {
 		})
 	}
 }
+
+func TestCharacterInstance_GainXP(t *testing.T) {
+	tests := map[string]struct {
+		startLevel     int
+		startXP        int
+		gainXP         int
+		wantXP         int
+		wantLevel      int
+		wantCanAdvance bool
+	}{
+		"zero xp is a no-op": {
+			startLevel: 1, startXP: 0, gainXP: 0,
+			wantXP: 0, wantLevel: 1,
+		},
+		"negative xp is a no-op": {
+			startLevel: 1, startXP: 0, gainXP: -10,
+			wantXP: 0, wantLevel: 1,
+		},
+		"positive xp below level threshold": {
+			startLevel: 1, startXP: 0, gainXP: 50,
+			wantXP: 50, wantLevel: 1,
+		},
+		"xp reaching level threshold returns advance flag": {
+			startLevel: 1, startXP: 0, gainXP: ExpForLevel(2),
+			wantXP: ExpForLevel(2), wantLevel: 1, wantCanAdvance: true,
+		},
+		"at max level xp accumulates but no advance flag": {
+			startLevel: MaxLevel, startXP: 0, gainXP: 1000,
+			wantXP: 1000, wantLevel: MaxLevel,
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			char := &assets.Character{Name: "Tester", Level: tc.startLevel, Experience: tc.startXP}
+			ci, _ := NewCharacterInstance(
+				storage.NewResolvedSmartIdentifier("test-char", char),
+				nil, "z", "r",
+			)
+
+			canAdvance := ci.GainXP(tc.gainXP)
+
+			if char.Experience != tc.wantXP {
+				t.Errorf("Experience = %d, want %d", char.Experience, tc.wantXP)
+			}
+			if char.Level != tc.wantLevel {
+				t.Errorf("Level = %d, want %d", char.Level, tc.wantLevel)
+			}
+			if canAdvance != tc.wantCanAdvance {
+				t.Errorf("GainXP() canAdvance = %v, want %v", canAdvance, tc.wantCanAdvance)
+			}
+		})
+	}
+}

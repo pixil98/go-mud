@@ -5,9 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // recordingPublisher captures messages sent via Publish for test assertions.
@@ -47,9 +45,8 @@ func (m *mockPlayerLookup) GetPlayer(charId string) *game.CharacterInstance {
 }
 
 func newCharacterInstance(charId, name string) *game.CharacterInstance {
-	return &game.CharacterInstance{
-		Character: storage.NewResolvedSmartIdentifier(charId, &assets.Character{Name: name}),
-	}
+	room, _ := newTestRoom(charId+"-room", "Room", charId+"-zone")
+	return newTestPlayer(charId, name, room)
 }
 
 func TestFollowHandler(t *testing.T) {

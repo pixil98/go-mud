@@ -256,11 +256,6 @@ func TestRoomBuffEffect(t *testing.T) {
 				t.Fatalf("unexpected error: %v", err)
 			}
 
-			// Verify perks were applied to the room.
-			if !room.Perks.HasPerks("test-ability") {
-				t.Error("room does not have timed perk entry")
-			}
-
 			// Verify the player sees the room perks through their PerkCache.
 			if got := player.ModifierValue(tc.wantKey); got != tc.wantMod {
 				t.Errorf("player modifier %q = %d, want %d", tc.wantKey, got, tc.wantMod)
@@ -393,6 +388,44 @@ func TestAttackEffect(t *testing.T) {
 				t.Errorf("QueueAttack called = %v, want %v", cm.queued, tc.wantQueued)
 			}
 		})
+	}
+}
+
+func TestAttackEffect_PeacefulArea(t *testing.T) {
+	room, _ := newTestRoomInZone("r", "Room", "z")
+	player := newTestPlayer("player", "Player", room)
+	setPlayerAP(player, 2)
+
+	// Wire room as a source so the player inherits room perks.
+	player.PerkCache.AddSource("room", room.Perks)
+
+	// Make the room peaceful.
+	room.Perks.SetOwn([]assets.Perk{
+		{Type: assets.PerkTypeGrant, Key: assets.PerkGrantPeaceful},
+	})
+
+	cm := &mockCombatManager{}
+	effect := &attackEffect{combat: cm}
+	ability := &assets.Ability{
+		Command: assets.Command{
+			Targets: []assets.TargetSpec{{Name: "target"}},
+		},
+	}
+	targets := map[string]*TargetRef{
+		"target": {Type: targetTypeMobile, Mob: &MobileRef{
+			instance: newTestMobInstance("mob-1", "Goblin"),
+		}},
+	}
+
+	err := effect.Execute(ability, &CommandInput{Char: player}, targets)
+	if err == nil {
+		t.Fatal("expected peaceful area error, got nil")
+	}
+	if !containsStr(err.Error(), "peaceful") {
+		t.Errorf("error = %q, want to contain \"peaceful\"", err.Error())
+	}
+	if cm.started {
+		t.Error("StartCombat should not have been called in a peaceful area")
 	}
 }
 

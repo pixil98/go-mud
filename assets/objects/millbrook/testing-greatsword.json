@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "testing-greatsword",
+    "spec": {
+        "aliases": ["greatsword", "testing", "sword"],
+        "short_desc": "a testing greatsword",
+        "long_desc": "A massive testing greatsword hums with unnatural power.",
+        "detailed_desc": "An oversized blade crackling with debug energy. Probably not lore-accurate.",
+        "flags": ["wearable"],
+        "wear_slots": ["wield"],
+        "perks": [
+            { "type": "grant", "key": "autoattack" },
+            { "type": "grant", "key": "attack", "arg": "4d10" },
+            { "type": "modifier", "key": "core.combat.damage_mod", "value": 20 }
+        ]
+    }
+}

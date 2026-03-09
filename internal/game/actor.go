@@ -26,7 +26,6 @@ type ActorInstance struct {
 	equipment *Equipment
 	resources map[string]int // current values only; max derived from PerkCache
 	level     int
-	Buffs     *TimedPerkCache
 	PerkCache
 }
 
@@ -105,6 +104,9 @@ func (a *ActorInstance) regenTick() {
 		}
 	}
 }
+
+// Level returns the actor's current level.
+func (a *ActorInstance) Level() int { return a.level }
 
 // ForEachResource calls fn for each resource. Caller must hold the owning type's lock.
 func (a *ActorInstance) ForEachResource(fn func(name string, current, max int)) {

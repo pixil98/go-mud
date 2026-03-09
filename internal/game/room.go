@@ -26,7 +26,7 @@ type RoomInstance struct {
 	exitClosed map[string]bool // runtime closed state for exits with a Closure
 	exitLocked map[string]bool // runtime locked state for exits with a Lock
 
-	Perks *TimedPerkCache
+	Perks *PerkCache
 }
 
 // NewRoomInstance creates a RoomInstance from a resolved SmartIdentifier.
@@ -41,7 +41,7 @@ func NewRoomInstance(room storage.SmartIdentifier[*assets.Room]) (*RoomInstance,
 		players:    make(map[string]*CharacterInstance),
 		exitClosed: make(map[string]bool),
 		exitLocked: make(map[string]bool),
-		Perks:      NewTimedPerkCache(nil),
+		Perks:      NewPerkCache(room.Get().Perks, nil),
 	}
 	ri.initExitClosures()
 	return ri, nil
@@ -237,7 +237,6 @@ func (ri *RoomInstance) ForEachMob(fn func(*MobileInstance)) {
 func (ri *RoomInstance) spawnMob(mob storage.SmartIdentifier[*assets.Mobile]) (*MobileInstance, error) {
 	def := mob.Get()
 	eq := NewEquipment()
-	buffs := NewTimedPerkCache(nil)
 	mi := &MobileInstance{
 		InstanceId: uuid.New().String(),
 		Mobile:     mob,
@@ -247,8 +246,7 @@ func (ri *RoomInstance) spawnMob(mob storage.SmartIdentifier[*assets.Mobile]) (*
 			inventory: NewInventory(),
 			equipment: eq,
 			level:     def.Level,
-			Buffs:     buffs,
-			PerkCache: *NewPerkCache(def.Perks, map[string]PerkSource{"equipment": eq, "buffs": buffs}),
+			PerkCache: *NewPerkCache(def.Perks, map[string]PerkSource{"equipment": eq}),
 		},
 	}
 	mi.initResources()

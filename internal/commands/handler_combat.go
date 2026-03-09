@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log/slog"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/combat"
 	"github.com/pixil98/go-mud/internal/game"
 )
@@ -46,6 +47,9 @@ func (f *AssistHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, in *CommandInput) error {
 		if in.Char.IsInCombat() {
 			return NewUserError("You're already fighting!")
+		}
+		if in.Char.HasGrant(assets.PerkGrantPeaceful, "") {
+			return errPeacefulArea
 		}
 
 		assistedId, assistedName, err := f.resolveAssisted(in)

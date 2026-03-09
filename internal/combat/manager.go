@@ -186,21 +186,27 @@ func (m *Manager) Tick(_ context.Context) error {
 	}
 
 	// Handle deaths.
-	var dead []string
+	type deadEntry struct {
+		c      Combatant
+		threat map[string]int // snapshot of threat table at time of death
+	}
+	var dead []deadEntry
 	for id, state := range m.combatants {
 		if !state.c.IsAlive() {
-			dead = append(dead, id)
+			zoneId, roomId := state.c.Location()
+			addRoomLine(zoneId, roomId, fmt.Sprintf("%s is DEAD!  R.I.P.", state.c.Name()))
+			snap := make(map[string]int, len(state.threat))
+			for k, v := range state.threat {
+				snap[k] = v
+			}
+			dead = append(dead, deadEntry{c: state.c, threat: snap})
+			for _, other := range m.combatants {
+				delete(other.threat, id)
+			}
+			state.c.SetInCombat(false)
+			state.c.SetCombatTargetId("")
+			delete(m.combatants, id)
 		}
-	}
-	for _, id := range dead {
-		state := m.combatants[id]
-		state.c.OnDeath()
-		for _, other := range m.combatants {
-			delete(other.threat, id)
-		}
-		state.c.SetInCombat(false)
-		state.c.SetCombatTargetId("")
-		delete(m.combatants, id)
 	}
 
 	// Remove combatants with empty threat tables.
@@ -217,6 +223,20 @@ func (m *Manager) Tick(_ context.Context) error {
 
 	m.mu.Unlock()
 
+	// Call OnDeath, remove mob, and place drops outside the lock (room operations acquire ri.mu).
+	for _, d := range dead {
+		drops := d.c.OnDeath()
+		zoneId, roomId := d.c.Location()
+		if zi := m.zones.GetZone(zoneId); zi != nil {
+			if ri := zi.GetRoom(roomId); ri != nil {
+				ri.RemoveMob(d.c.Id())
+				for _, obj := range drops {
+					ri.AddObj(obj)
+				}
+			}
+		}
+	}
+
 	// Publish bundled room messages after releasing the lock.
 	for _, entry := range roomMessages {
 		zi := m.zones.GetZone(entry.zoneId)
@@ -230,6 +250,34 @@ func (m *Manager) Tick(_ context.Context) error {
 		if err := m.pub.Publish(ri, nil, []byte(strings.Join(entry.lines, "\n"))); err != nil {
 			slog.Warn("failed to publish combat room messages", "error", err)
 		}
+	}
+
+	// Distribute XP to player contributors after room messages so XP arrives in order.
+	for _, d := range dead {
+		if len(d.threat) == 0 {
+			continue
+		}
+		zoneId, _ := d.c.Location()
+		zi := m.zones.GetZone(zoneId)
+		if zi == nil {
+			continue
+		}
+		mobLevel := d.c.Level()
+		baseXP := game.BaseExpForLevel(mobLevel)
+		zi.ForEachPlayer(func(charId string, ci *game.CharacterInstance) {
+			if _, ok := d.threat[ci.Id()]; !ok {
+				return
+			}
+			xp := int(float64(baseXP) * game.LevelDiffMultiplier(ci.Character.Get().Level, mobLevel))
+			canAdvance := ci.GainXP(xp)
+			msg := fmt.Sprintf("You receive %d experience points.", xp)
+			if canAdvance {
+				msg += "\nYou feel ready to advance to the next level!"
+			}
+			if err := m.pub.Publish(game.SinglePlayer(charId), nil, []byte(msg)); err != nil {
+				slog.Warn("failed to publish xp message", "error", err)
+			}
+		})
 	}
 
 	return nil

@@ -51,14 +51,22 @@ type PerkSource interface {
 	Snapshot() (resolved *ResolvedPerks, version uint64)
 }
 
-// PerkCache is a lazy-resolving perk aggregator. It holds its own perks
-// and optional named PerkSources. Resolution is lazy: the first query
-// after a change rebuilds the cache.
+// timedPerk is a named set of perks with a remaining tick count.
+type timedPerk struct {
+	perks     []assets.Perk
+	remaining int
+}
+
+// PerkCache is a lazy-resolving perk aggregator. It holds static own perks,
+// timed perks that expire after a set number of ticks, and optional named
+// PerkSources. Resolution is lazy: the first query after a change rebuilds
+// the cache.
 //
 // PerkCache is safe for concurrent use.
 type PerkCache struct {
 	mu             *sync.Mutex // pointer so copying the struct does not copy the mutex
 	own            []assets.Perk
+	timedEntries   map[string]*timedPerk
 	sources        map[string]PerkSource
 	sourceVersions map[string]uint64
 	version        uint64
@@ -73,6 +81,7 @@ func NewPerkCache(own []assets.Perk, sources map[string]PerkSource) *PerkCache {
 	return &PerkCache{
 		mu:             &sync.Mutex{},
 		own:            own,
+		timedEntries:   make(map[string]*timedPerk),
 		sources:        sources,
 		sourceVersions: make(map[string]uint64),
 	}
@@ -106,6 +115,34 @@ func (pc *PerkCache) RemoveSource(name string) {
 	}
 }
 
+// AddTimedPerks registers a named set of perks with a tick duration.
+// If an entry with the same name already exists, it is replaced.
+func (pc *PerkCache) AddTimedPerks(name string, perks []assets.Perk, ticks int) {
+	pc.mu.Lock()
+	defer pc.mu.Unlock()
+	pc.timedEntries[name] = &timedPerk{perks: perks, remaining: ticks}
+	pc.invalidate()
+}
+
+// Tick decrements all timed perk timers and removes expired entries.
+// Returns true if any entries were removed.
+func (pc *PerkCache) Tick() bool {
+	pc.mu.Lock()
+	defer pc.mu.Unlock()
+	changed := false
+	for name, e := range pc.timedEntries {
+		e.remaining--
+		if e.remaining <= 0 {
+			delete(pc.timedEntries, name)
+			changed = true
+		}
+	}
+	if changed {
+		pc.invalidate()
+	}
+	return changed
+}
+
 // invalidate clears the resolved state and increments the version.
 // Caller must hold pc.mu.
 func (pc *PerkCache) invalidate() {
@@ -135,6 +172,9 @@ func (pc *PerkCache) resolve() *ResolvedPerks {
 		return pc.resolved
 	}
 	r := NewResolvedPerks(pc.own)
+	for _, e := range pc.timedEntries {
+		r.addPerks(e.perks)
+	}
 	for name, s := range pc.sources {
 		resolved, v := s.Snapshot()
 		r.merge(resolved)
@@ -191,84 +231,4 @@ func (pc *PerkCache) Grants() map[string][]string {
 	pc.mu.Lock()
 	defer pc.mu.Unlock()
 	return pc.resolve().grants
-}
-
-// timedPerk is a named set of perks with a remaining tick count.
-type timedPerk struct {
-	perks     []assets.Perk
-	remaining int
-}
-
-// TimedPerkCache manages named timed perks that expire after a set number
-// of ticks. It embeds PerkCache so it can be used as a PerkSource for other
-// PerkCaches, enabling the room -> zone -> world composition chain.
-//
-// TimedPerkCache is safe for concurrent use.
-type TimedPerkCache struct {
-	mu      sync.Mutex
-	entries map[string]*timedPerk
-	PerkCache
-}
-
-// NewTimedPerkCache creates an empty TimedPerkCache with optional sources.
-func NewTimedPerkCache(sources map[string]PerkSource) *TimedPerkCache {
-	return &TimedPerkCache{
-		entries:   make(map[string]*timedPerk),
-		PerkCache: *NewPerkCache(nil, sources),
-	}
-}
-
-// AddPerks registers a named set of perks with a tick duration.
-// If an entry with the same name already exists, it is replaced.
-func (t *TimedPerkCache) AddPerks(name string, perks []assets.Perk, ticks int) {
-	t.mu.Lock()
-	defer t.mu.Unlock()
-
-	t.entries[name] = &timedPerk{perks: perks, remaining: ticks}
-	t.rebuild()
-}
-
-// Tick decrements all timers and removes expired entries.
-// Returns true if any entries were removed.
-func (t *TimedPerkCache) Tick() bool {
-	t.mu.Lock()
-	defer t.mu.Unlock()
-
-	changed := false
-	for name, e := range t.entries {
-		e.remaining--
-		if e.remaining <= 0 {
-			delete(t.entries, name)
-			changed = true
-		}
-	}
-	if changed {
-		t.rebuild()
-	}
-	return changed
-}
-
-// Snapshot returns the pre-resolved perks and version atomically.
-func (t *TimedPerkCache) Snapshot() (*ResolvedPerks, uint64) {
-	t.mu.Lock()
-	defer t.mu.Unlock()
-	return t.PerkCache.Snapshot()
-}
-
-// HasPerks returns true if an entry with the given name is active.
-func (t *TimedPerkCache) HasPerks(name string) bool {
-	t.mu.Lock()
-	defer t.mu.Unlock()
-	_, ok := t.entries[name]
-	return ok
-}
-
-// rebuild aggregates perks from all active entries into the embedded PerkCache.
-// Caller must hold the mutex.
-func (t *TimedPerkCache) rebuild() {
-	var all []assets.Perk
-	for _, e := range t.entries {
-		all = append(all, e.perks...)
-	}
-	t.SetOwn(all)
 }

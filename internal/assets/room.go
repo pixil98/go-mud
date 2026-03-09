@@ -22,6 +22,7 @@ type Room struct {
 	Exits       map[string]Exit                     `json:"exits"`
 	MobSpawns   []storage.SmartIdentifier[*Mobile]  `json:"mobile_spawns"` // mobile IDs to spawn; list duplicates for multiple
 	ObjSpawns   []ObjectSpawn                       `json:"object_spawns"` // objects to spawn
+	Perks       []Perk                              `json:"perks,omitempty"`
 }
 
 // Validate returns an error if the room definition is invalid.

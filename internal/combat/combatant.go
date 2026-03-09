@@ -21,8 +21,9 @@ type Combatant interface {
 	SetCombatTargetId(id string)
 
 	Location() (zoneId, roomId string)
+	Level() int
 
-	OnDeath()
+	OnDeath() []*game.ObjectInstance
 }
 
 // ZoneLocator retrieves a zone instance by zone ID, for publishing room messages.

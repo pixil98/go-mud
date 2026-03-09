@@ -17,6 +17,7 @@ const (
 type Zone struct {
 	Lifespan  string `json:"lifespan"` // duration string (e.g., "1m", "30s", "2h")
 	ResetMode string `json:"reset_mode"`
+	Perks     []Perk `json:"perks,omitempty"`
 }
 
 // Validate satisfies storage.ValidatingSpec.

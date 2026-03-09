@@ -17,6 +17,7 @@ type mockCombatant struct {
 	alive          bool
 	hp             int
 	hpMax          int
+	level          int
 	modifiers      map[string]int
 	grants         map[string][]string
 	combatTargetId string
@@ -60,10 +61,11 @@ func (c *mockCombatant) GrantArgs(key string) []string {
 	return c.grants[key]
 }
 
-func (c *mockCombatant) CombatTargetId() string        { return c.combatTargetId }
-func (c *mockCombatant) SetCombatTargetId(id string)   { c.combatTargetId = id }
-func (c *mockCombatant) Location() (string, string)    { return c.zoneId, c.roomId }
-func (c *mockCombatant) OnDeath()                      { c.deathCalled = true }
+func (c *mockCombatant) CombatTargetId() string                    { return c.combatTargetId }
+func (c *mockCombatant) SetCombatTargetId(id string)               { c.combatTargetId = id }
+func (c *mockCombatant) Location() (string, string)                { return c.zoneId, c.roomId }
+func (c *mockCombatant) Level() int                                { return c.level }
+func (c *mockCombatant) OnDeath() []*game.ObjectInstance           { c.deathCalled = true; return nil }
 
 func newMC(id string) *mockCombatant {
 	return &mockCombatant{

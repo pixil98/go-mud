@@ -161,9 +161,9 @@ func TestPerkCacheAddRemoveSource(t *testing.T) {
 	}
 }
 
-func TestTimedPerkCache(t *testing.T) {
+func TestPerkCacheTimed(t *testing.T) {
 	tests := map[string]struct {
-		setup   func(*TimedPerkCache)
+		setup   func(*PerkCache)
 		ticks   int
 		key     string
 		wantMod int
@@ -173,8 +173,8 @@ func TestTimedPerkCache(t *testing.T) {
 			wantMod: 0,
 		},
 		"single timed perk": {
-			setup: func(tc *TimedPerkCache) {
-				tc.AddPerks("test-entry", []assets.Perk{
+			setup: func(pc *PerkCache) {
+				pc.AddTimedPerks("test-entry", []assets.Perk{
 					{Type: assets.PerkTypeModifier, Key: "test-key", Value: 5},
 				}, 3)
 			},
@@ -182,11 +182,11 @@ func TestTimedPerkCache(t *testing.T) {
 			wantMod: 5,
 		},
 		"multiple entries sum": {
-			setup: func(tc *TimedPerkCache) {
-				tc.AddPerks("entry-a", []assets.Perk{
+			setup: func(pc *PerkCache) {
+				pc.AddTimedPerks("entry-a", []assets.Perk{
 					{Type: assets.PerkTypeModifier, Key: "test-key", Value: 3},
 				}, 5)
-				tc.AddPerks("entry-b", []assets.Perk{
+				pc.AddTimedPerks("entry-b", []assets.Perk{
 					{Type: assets.PerkTypeModifier, Key: "test-key", Value: 7},
 				}, 5)
 			},
@@ -194,11 +194,11 @@ func TestTimedPerkCache(t *testing.T) {
 			wantMod: 10,
 		},
 		"replacement replaces": {
-			setup: func(tc *TimedPerkCache) {
-				tc.AddPerks("test-entry", []assets.Perk{
+			setup: func(pc *PerkCache) {
+				pc.AddTimedPerks("test-entry", []assets.Perk{
 					{Type: assets.PerkTypeModifier, Key: "test-key", Value: 5},
 				}, 3)
-				tc.AddPerks("test-entry", []assets.Perk{
+				pc.AddTimedPerks("test-entry", []assets.Perk{
 					{Type: assets.PerkTypeModifier, Key: "test-key", Value: 99},
 				}, 3)
 			},
@@ -206,8 +206,8 @@ func TestTimedPerkCache(t *testing.T) {
 			wantMod: 99,
 		},
 		"expires after ticks": {
-			setup: func(tc *TimedPerkCache) {
-				tc.AddPerks("test-entry", []assets.Perk{
+			setup: func(pc *PerkCache) {
+				pc.AddTimedPerks("test-entry", []assets.Perk{
 					{Type: assets.PerkTypeModifier, Key: "test-key", Value: 5},
 				}, 2)
 			},
@@ -216,11 +216,11 @@ func TestTimedPerkCache(t *testing.T) {
 			wantMod: 0,
 		},
 		"partial expiry": {
-			setup: func(tc *TimedPerkCache) {
-				tc.AddPerks("short", []assets.Perk{
+			setup: func(pc *PerkCache) {
+				pc.AddTimedPerks("short", []assets.Perk{
 					{Type: assets.PerkTypeModifier, Key: "test-key", Value: 3},
 				}, 1)
-				tc.AddPerks("long", []assets.Perk{
+				pc.AddTimedPerks("long", []assets.Perk{
 					{Type: assets.PerkTypeModifier, Key: "test-key", Value: 7},
 				}, 3)
 			},
@@ -228,59 +228,47 @@ func TestTimedPerkCache(t *testing.T) {
 			key:     "test-key",
 			wantMod: 7,
 		},
+		"timed and own perks sum": {
+			setup: func(pc *PerkCache) {
+				pc.SetOwn([]assets.Perk{
+					{Type: assets.PerkTypeModifier, Key: "test-key", Value: 10},
+				})
+				pc.AddTimedPerks("buff", []assets.Perk{
+					{Type: assets.PerkTypeModifier, Key: "test-key", Value: 5},
+				}, 3)
+			},
+			key:     "test-key",
+			wantMod: 15,
+		},
 	}
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			tpc := NewTimedPerkCache(nil)
+			pc := NewPerkCache(nil, nil)
 			if tc.setup != nil {
-				tc.setup(tpc)
+				tc.setup(pc)
 			}
 			for i := 0; i < tc.ticks; i++ {
-				tpc.Tick()
+				pc.Tick()
 			}
-			resolved, _ := tpc.Snapshot()
-			got := resolved.modifiers[tc.key]
-			if got != tc.wantMod {
+			if got := pc.ModifierValue(tc.key); got != tc.wantMod {
 				t.Errorf("ModifierValue(%q) = %d, want %d", tc.key, got, tc.wantMod)
 			}
 		})
 	}
 }
 
-func TestTimedPerkCacheHasPerks(t *testing.T) {
-	tpc := NewTimedPerkCache(nil)
-	tpc.AddPerks("test-entry", []assets.Perk{
-		{Type: assets.PerkTypeModifier, Key: "test-key", Value: 1},
-	}, 2)
 
-	if !tpc.HasPerks("test-entry") {
-		t.Error("HasPerks(test-entry) = false, want true")
-	}
-	if tpc.HasPerks("nonexistent") {
-		t.Error("HasPerks(nonexistent) = true, want false")
-	}
-
-	tpc.Tick()
-	if !tpc.HasPerks("test-entry") {
-		t.Error("after 1 tick HasPerks(test-entry) = false, want true")
-	}
-
-	tpc.Tick()
-	if tpc.HasPerks("test-entry") {
-		t.Error("after 2 ticks HasPerks(test-entry) = true, want false")
-	}
-}
-
-func TestTimedPerkCacheAsSource(t *testing.T) {
-	tpc := NewTimedPerkCache(nil)
-	tpc.AddPerks("test-entry", []assets.Perk{
+func TestPerkCacheTimedAsSource(t *testing.T) {
+	// A PerkCache with timed perks used as a source for another PerkCache.
+	src := NewPerkCache(nil, nil)
+	src.AddTimedPerks("test-entry", []assets.Perk{
 		{Type: assets.PerkTypeModifier, Key: "test-key", Value: 10},
 	}, 3)
 
 	pc := NewPerkCache([]assets.Perk{
 		{Type: assets.PerkTypeModifier, Key: "test-key", Value: 1},
-	}, map[string]PerkSource{"timed": tpc})
+	}, map[string]PerkSource{"timed": src})
 
 	if got := pc.ModifierValue("test-key"); got != 11 {
 		t.Errorf("with timed source = %d, want 11", got)
@@ -288,25 +276,25 @@ func TestTimedPerkCacheAsSource(t *testing.T) {
 
 	// Expire the timed perk; parent should detect version change.
 	for i := 0; i < 3; i++ {
-		tpc.Tick()
+		src.Tick()
 	}
 	if got := pc.ModifierValue("test-key"); got != 1 {
 		t.Errorf("after expiry = %d, want 1", got)
 	}
 }
 
-func TestTimedPerkCacheChain(t *testing.T) {
-	world := NewTimedPerkCache(nil)
-	zone := NewTimedPerkCache(map[string]PerkSource{"world": world})
-	room := NewTimedPerkCache(map[string]PerkSource{"zone": zone})
+func TestPerkCacheChain(t *testing.T) {
+	world := NewPerkCache(nil, nil)
+	zone := NewPerkCache(nil, map[string]PerkSource{"world": world})
+	room := NewPerkCache(nil, map[string]PerkSource{"zone": zone})
 
-	world.AddPerks("test-world", []assets.Perk{
+	world.AddTimedPerks("test-world", []assets.Perk{
 		{Type: assets.PerkTypeModifier, Key: "test-key", Value: 1},
 	}, 5)
-	zone.AddPerks("test-zone", []assets.Perk{
+	zone.AddTimedPerks("test-zone", []assets.Perk{
 		{Type: assets.PerkTypeModifier, Key: "test-key", Value: 10},
 	}, 5)
-	room.AddPerks("test-room", []assets.Perk{
+	room.AddTimedPerks("test-room", []assets.Perk{
 		{Type: assets.PerkTypeModifier, Key: "test-key", Value: 100},
 	}, 5)
 

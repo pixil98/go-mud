@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/pixil98/go-mud/internal/storage"
-
+	"github.com/google/uuid"
 	"github.com/pixil98/go-mud/internal/assets"
+	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // MobileInstance represents a single spawned instance of a Mobile definition.
@@ -107,9 +107,35 @@ func (mi *MobileInstance) Flags() []string {
 	return flags
 }
 
-// OnDeath handles mob death (e.g., loot, despawn, XP distribution).
-func (mi *MobileInstance) OnDeath() {
-	// TODO: implement mob death handling
+// OnDeath creates a corpse containing all of the mob's inventory and equipped items.
+// The combat manager places the returned objects in the room after calling this.
+func (mi *MobileInstance) OnDeath() []*ObjectInstance {
+	return []*ObjectInstance{newCorpse(mi)}
+}
+
+// newCorpse creates a container ObjectInstance holding all of the mob's loot.
+func newCorpse(mi *MobileInstance) *ObjectInstance {
+	name := mi.Name()
+	corpseObj := &assets.Object{
+		Aliases:      []string{"corpse", name},
+		ShortDesc:    fmt.Sprintf("the corpse of %s", name),
+		LongDesc:     fmt.Sprintf("The corpse of %s lies here.", name),
+		DetailedDesc: fmt.Sprintf("The lifeless body of %s. It may still be carrying some belongings.", name),
+		Flags:        []string{"container"},
+	}
+	si := storage.NewResolvedSmartIdentifier("corpse-"+mi.InstanceId, corpseObj)
+	corpse := &ObjectInstance{
+		InstanceId: uuid.New().String(),
+		Object:     si,
+		Contents:   NewInventory(),
+	}
+	for _, oi := range mi.inventory.Drain() {
+		corpse.Contents.AddObj(oi)
+	}
+	for _, oi := range mi.equipment.Drain() {
+		corpse.Contents.AddObj(oi)
+	}
+	return corpse
 }
 
 // Location returns the zone and room ID where this mob is spawned.

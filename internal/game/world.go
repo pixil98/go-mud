@@ -16,12 +16,12 @@ type WorldState struct {
 	players    map[string]*CharacterInstance
 
 	zones map[string]*ZoneInstance
-	Perks *TimedPerkCache
+	Perks *PerkCache
 }
 
 // NewWorldState creates a new WorldState with zone and room instances initialized.
 func NewWorldState(sub Subscriber, zones storage.Storer[*assets.Zone], rooms storage.Storer[*assets.Room]) (*WorldState, error) {
-	worldPerks := NewTimedPerkCache(nil)
+	worldPerks := NewPerkCache(nil, nil)
 
 	// Build zone instances
 	instances := make(map[string]*ZoneInstance)
@@ -159,7 +159,7 @@ func (w *WorldState) Tick(ctx context.Context) error {
 	// Tick timed perks and regenerate out-of-combat entities.
 	w.Perks.Tick()
 	w.ForEachPlayer(func(_ string, ps *CharacterInstance) {
-		ps.Buffs.Tick()
+		ps.Tick()
 		ps.ResetAP()
 		if !ps.IsInCombat() {
 			ps.RegenTick()
@@ -171,7 +171,7 @@ func (w *WorldState) Tick(ctx context.Context) error {
 			ri.Perks.Tick()
 			ri.mu.RLock()
 			for _, mi := range ri.mobiles {
-				mi.Buffs.Tick()
+				mi.Tick()
 				if !mi.IsInCombat() {
 					mi.RegenTick()
 				}
