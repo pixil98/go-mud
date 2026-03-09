@@ -141,7 +141,7 @@ func (p *Player) Play(ctx context.Context) error {
 				return fmt.Errorf("player state not found for %s", p.charId)
 			}
 			if state.IsQuit() {
-				p.writeLine("Goodbye!")
+				_ = p.writeLine("Goodbye!")
 				// Quit handler already saved and unsubscribed isn't needed
 				// — HandleSessionEnd will remove the player from the world.
 				return nil

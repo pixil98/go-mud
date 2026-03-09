@@ -85,7 +85,7 @@ func (w *WorldState) AddPlayer(ci *CharacterInstance) error {
 	w.players[charId] = ci
 	zoneId, roomId := ci.Location()
 	room := w.zones[zoneId].GetRoom(roomId)
-	ci.PerkCache.AddSource("room", room.Perks)
+	ci.AddSource("room", room.Perks)
 	w.mu.Unlock()
 
 	room.AddPlayer(charId, ci)

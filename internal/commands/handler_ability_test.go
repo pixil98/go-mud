@@ -140,7 +140,7 @@ func TestExecuteAbility_CostCheckOrdering(t *testing.T) {
 			if tc.startAP > 0 {
 				perks = append(perks, assets.Perk{Type: assets.PerkTypeModifier, Key: assets.PerkKeyActionPointsMax, Value: tc.startAP})
 			}
-			player.PerkCache.SetOwn(perks)
+			player.SetOwn(perks)
 			player.SetResource("mana", tc.startMana)
 			player.ResetAP()
 
@@ -178,7 +178,7 @@ func TestExecuteAbility_CostCheckOrdering(t *testing.T) {
 
 // setPlayerAP primes the player's AP to the given value via the perk system.
 func setPlayerAP(player *game.CharacterInstance, ap int) {
-	player.PerkCache.SetOwn([]assets.Perk{
+	player.SetOwn([]assets.Perk{
 		{Type: assets.PerkTypeModifier, Key: assets.PerkKeyActionPointsMax, Value: ap},
 	})
 	player.ResetAP()
@@ -230,7 +230,7 @@ func TestRoomBuffEffect(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			room, zone := newTestRoomInZone("test-room", "Test Room", "test-zone")
 			player := newTestPlayer("test-player", "Tester", room)
-			player.PerkCache.AddSource("room", room.Perks)
+			player.AddSource("room", room.Perks)
 
 			world := &mockZoneLocator{zones: map[string]*game.ZoneInstance{"test-zone": zone}}
 			effect := &roomBuffEffect{world: world}
@@ -274,7 +274,7 @@ func TestRoomBuffEffect(t *testing.T) {
 func TestRoomBuffEffectExpiry(t *testing.T) {
 	room, zone := newTestRoomInZone("test-room", "Test Room", "test-zone")
 	player := newTestPlayer("test-player", "Tester", room)
-	player.PerkCache.AddSource("room", room.Perks)
+	player.AddSource("room", room.Perks)
 
 	effect := &roomBuffEffect{world: &mockZoneLocator{zones: map[string]*game.ZoneInstance{"test-zone": zone}}}
 
@@ -399,7 +399,7 @@ func TestAttackEffect_PeacefulArea(t *testing.T) {
 	setPlayerAP(player, 2)
 
 	// Wire room as a source so the player inherits room perks.
-	player.PerkCache.AddSource("room", room.Perks)
+	player.AddSource("room", room.Perks)
 
 	// Make the room peaceful.
 	room.Perks.SetOwn([]assets.Perk{

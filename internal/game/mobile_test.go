@@ -69,7 +69,7 @@ func TestNewCorpse(t *testing.T) {
 				mi.inventory.AddObj(newTestObj(id))
 			}
 			for _, id := range tc.equippedItems {
-				mi.equipment.Equip("slot", 0, newTestObj(id))
+				_ = mi.equipment.Equip("slot", 0, newTestObj(id))
 			}
 
 			corpse := newCorpse(mi)

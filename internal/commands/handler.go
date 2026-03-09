@@ -127,26 +127,35 @@ func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, pub
 	h.effects["world_buff"] = &worldBuffEffect{world: world}
 
 	// Register built-in handlers
-	h.RegisterFactory("assist", NewAssistHandlerFactory(combat, world, world, publisher))
-	h.RegisterFactory("closure", NewClosureHandlerFactory(world, publisher))
-	h.RegisterFactory("equipment", NewEquipmentHandlerFactory(publisher))
-	h.RegisterFactory("follow", NewFollowHandlerFactory(world, publisher))
-	h.RegisterFactory("gain", NewGainHandlerFactory(publisher))
-	h.RegisterFactory("group", NewGroupHandlerFactory(world, publisher))
-	h.RegisterFactory("ungroup", NewUngroupHandlerFactory(world, publisher))
-	h.RegisterFactory("help", NewHelpHandlerFactory(cmds, publisher))
-	h.RegisterFactory("inventory", NewInventoryHandlerFactory(publisher))
-	h.RegisterFactory("look", NewLookHandlerFactory(world, publisher))
-	h.RegisterFactory("message", NewMessageHandlerFactory(world, publisher))
-	h.RegisterFactory("move", NewMoveHandlerFactory(world, publisher))
-	h.RegisterFactory("move_obj", NewMoveObjHandlerFactory(world, publisher))
-	h.RegisterFactory("quit", NewQuitHandlerFactory())
-	h.RegisterFactory("save", NewSaveHandlerFactory(dict.Characters, publisher))
-	h.RegisterFactory("score", NewScoreHandlerFactory(publisher))
-	h.RegisterFactory("title", NewTitleHandlerFactory(publisher))
-	h.RegisterFactory("trees", NewTreesHandlerFactory(dict.Trees, publisher))
-	h.RegisterFactory("wear", NewWearHandlerFactory(world, publisher))
-	h.RegisterFactory("who", NewWhoHandlerFactory(world, publisher))
+	for _, reg := range []struct {
+		name    string
+		factory HandlerFactory
+	}{
+		{"assist", NewAssistHandlerFactory(combat, world, world, publisher)},
+		{"closure", NewClosureHandlerFactory(world, publisher)},
+		{"equipment", NewEquipmentHandlerFactory(publisher)},
+		{"follow", NewFollowHandlerFactory(world, publisher)},
+		{"gain", NewGainHandlerFactory(publisher)},
+		{"group", NewGroupHandlerFactory(world, publisher)},
+		{"ungroup", NewUngroupHandlerFactory(world, publisher)},
+		{"help", NewHelpHandlerFactory(cmds, publisher)},
+		{"inventory", NewInventoryHandlerFactory(publisher)},
+		{"look", NewLookHandlerFactory(world, publisher)},
+		{"message", NewMessageHandlerFactory(world, publisher)},
+		{"move", NewMoveHandlerFactory(world, publisher)},
+		{"move_obj", NewMoveObjHandlerFactory(world, publisher)},
+		{"quit", NewQuitHandlerFactory()},
+		{"save", NewSaveHandlerFactory(dict.Characters, publisher)},
+		{"score", NewScoreHandlerFactory(publisher)},
+		{"title", NewTitleHandlerFactory(publisher)},
+		{"trees", NewTreesHandlerFactory(dict.Trees, publisher)},
+		{"wear", NewWearHandlerFactory(world, publisher)},
+		{"who", NewWhoHandlerFactory(world, publisher)},
+	} {
+		if err := h.RegisterFactory(reg.name, reg.factory); err != nil {
+			return nil, fmt.Errorf("registering handler %q: %w", reg.name, err)
+		}
+	}
 	// Compile commands
 	for id, cmd := range cmds.GetAll() {
 		err := h.compile(id, cmd)

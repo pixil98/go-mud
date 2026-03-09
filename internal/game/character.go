@@ -295,7 +295,7 @@ func (ci *CharacterInstance) CurrentAP() int {
 func (ci *CharacterInstance) ResetAP() {
 	ci.mu.Lock()
 	defer ci.mu.Unlock()
-	ci.currentAP = ci.PerkCache.ModifierValue(assets.PerkKeyActionPointsMax)
+	ci.currentAP = ci.ModifierValue(assets.PerkKeyActionPointsMax)
 }
 
 // GetFollowingId returns the charId of the player being followed, or empty.
@@ -477,8 +477,8 @@ func (ci *CharacterInstance) Move(fromRoom, toRoom *RoomInstance) {
 	ci.mu.Lock()
 	ci.zoneId = toZoneId
 	ci.roomId = toRoomId
-	ci.PerkCache.RemoveSource("room")
-	ci.PerkCache.AddSource("room", toRoom.Perks)
+	ci.RemoveSource("room")
+	ci.AddSource("room", toRoom.Perks)
 	ci.mu.Unlock()
 }
 

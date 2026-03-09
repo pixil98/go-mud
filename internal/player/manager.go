@@ -155,21 +155,20 @@ func (m *PlayerManager) newPlayer(conn io.ReadWriter) (*Player, error) {
 
 	charId := strings.ToLower(char.Name)
 	msgs := make(chan []byte, 100)
-	var zoneId, roomId string
-
 	if ps := m.world.GetPlayer(charId); ps != nil && !ps.IsQuit() {
 		// Player already in world with an active session — kick old connection and reattach.
 		slog.Info("player reconnecting", "charId", charId)
 		ps.Kick()
 		time.Sleep(10 * time.Millisecond)
 		ps.Reattach(msgs)
-		zoneId, roomId = ps.Location()
 		_, _ = conn.Write([]byte("Reconnecting...\n"))
 	} else {
 		// Fresh login
 		charRef := storage.NewSmartIdentifier[*assets.Character](charId)
-		charRef.Resolve(m.dict.Characters)
-		zoneId, roomId = m.startingLocation(charRef.Get())
+		if err := charRef.Resolve(m.dict.Characters); err != nil {
+			return nil, fmt.Errorf("resolving character %q: %w", charId, err)
+		}
+		zoneId, roomId := m.startingLocation(charRef.Get())
 		ci, err := game.NewCharacterInstance(charRef, msgs, zoneId, roomId)
 		if err != nil {
 			return nil, fmt.Errorf("creating character instance: %w", err)

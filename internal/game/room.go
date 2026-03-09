@@ -2,6 +2,7 @@ package game
 
 import (
 	"fmt"
+	"log/slog"
 	"maps"
 	"sort"
 	"strings"
@@ -151,7 +152,7 @@ func (ri *RoomInstance) Reset(instances map[string]*ZoneInstance) error {
 			if exit.Closure == nil {
 				continue
 			}
-			if exit.Closure.Closed == false {
+			if !exit.Closure.Closed {
 				continue
 			}
 			destZone := exit.Zone.Id()
@@ -171,7 +172,9 @@ func (ri *RoomInstance) Reset(instances map[string]*ZoneInstance) error {
 	def := ri.Room.Get()
 	ri.mobiles = make(map[string]*MobileInstance)
 	for _, mob := range def.MobSpawns {
-		ri.spawnMob(mob)
+		if _, err := ri.spawnMob(mob); err != nil {
+			slog.Error("respawning mob", "mob", mob.Id(), "room", ri.Room.Id(), "error", err)
+		}
 	}
 	ri.mu.Unlock()
 
@@ -262,7 +265,9 @@ func (ri *RoomInstance) spawnMob(mob storage.SmartIdentifier[*assets.Mobile]) (*
 		if err != nil {
 			return nil, fmt.Errorf("spawning %q: %w", mob.Id(), err)
 		}
-		mi.equipment.Equip(slot, 0, oi)
+		if err := mi.equipment.Equip(slot, 0, oi); err != nil {
+			return nil, fmt.Errorf("equipping %q on %q: %w", slot, mob.Id(), err)
+		}
 	}
 	ri.mobiles[mi.InstanceId] = mi
 	return mi, nil

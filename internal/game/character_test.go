@@ -51,7 +51,7 @@ func TestCharacterInstance_OnDeath(t *testing.T) {
 				msgs = make(chan []byte, 1)
 			}
 			ci, _ := NewCharacterInstance(char, msgs, "test-zone", "test-room")
-			ci.PerkCache.SetOwn([]assets.Perk{hpMaxPerk})
+			ci.SetOwn([]assets.Perk{hpMaxPerk})
 			ci.initResources()
 			ci.setResourceCurrent(assets.ResourceHp, tc.startHP)
 
@@ -160,7 +160,7 @@ func TestCharacterInstance_ResetAP(t *testing.T) {
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
 			ci := newTestCharacterInstance()
-			ci.PerkCache.SetOwn(tc.perks)
+			ci.SetOwn(tc.perks)
 			ci.currentAP = 0 // exhaust AP before reset to confirm it restores
 
 			ci.ResetAP()

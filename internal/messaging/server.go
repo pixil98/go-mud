@@ -83,7 +83,7 @@ func (n *NatsServer) Subscribe(subject string, handler func(data []byte)) (func(
 	if err != nil {
 		return nil, err
 	}
-	return func() { sub.Unsubscribe() }, nil
+	return func() { _ = sub.Unsubscribe() }, nil
 }
 
 // Publish sends a message to the given subject

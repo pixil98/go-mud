@@ -35,15 +35,6 @@ func (p *recordingPublisher) messagesTo(charId string) []string {
 	return msgs
 }
 
-// mockPlayerLookup is a test double for PlayerLookup (still needed by other test files).
-type mockPlayerLookup struct {
-	players map[string]*game.CharacterInstance
-}
-
-func (m *mockPlayerLookup) GetPlayer(charId string) *game.CharacterInstance {
-	return m.players[charId]
-}
-
 // mockFollowActor is a lightweight test double for FollowActor.
 // It also satisfies FollowedPlayer, so it can be used for looked-up players too.
 type mockFollowActor struct {

@@ -43,7 +43,7 @@ func (l *SshListener) Start(ctx context.Context) error {
 	// Close the listener when the parent context is canceled
 	go func() {
 		<-ctx.Done()
-		listener.Close()
+		_ = listener.Close()
 	}()
 
 	for {
@@ -70,14 +70,14 @@ func (l *SshListener) Start(ctx context.Context) error {
 }
 
 func (l *SshListener) handleConnection(ctx context.Context, conn net.Conn, config *ssh.ServerConfig) {
-	defer conn.Close()
+	defer func() { _ = conn.Close() }()
 
 	sshConn, chans, reqs, err := ssh.NewServerConn(conn, config)
 	if err != nil {
 		slog.ErrorContext(ctx, "ssh handshake", "remote", conn.RemoteAddr(), "error", err)
 		return
 	}
-	defer sshConn.Close()
+	defer func() { _ = sshConn.Close() }()
 
 	slog.InfoContext(ctx, "ssh connection established", "remote", conn.RemoteAddr())
 
@@ -85,14 +85,14 @@ func (l *SshListener) handleConnection(ctx context.Context, conn net.Conn, confi
 	// This unblocks the channel iteration loop below so handleConnection can return.
 	go func() {
 		<-ctx.Done()
-		sshConn.Close()
+		_ = sshConn.Close()
 	}()
 
 	go ssh.DiscardRequests(reqs)
 
 	for newChan := range chans {
 		if newChan.ChannelType() != "session" {
-			newChan.Reject(ssh.UnknownChannelType, "unknown channel type")
+			_ = newChan.Reject(ssh.UnknownChannelType, "unknown channel type")
 			continue
 		}
 
@@ -110,12 +110,12 @@ func (l *SshListener) handleConnection(ctx context.Context, conn net.Conn, confi
 				switch req.Type {
 				case "pty-req":
 					// Reject PTY so the client keeps local echo and line buffering.
-					req.Reply(false, nil)
+					_ = req.Reply(false, nil)
 				case "shell":
-					req.Reply(true, nil)
+					_ = req.Reply(true, nil)
 					close(shellReady)
 				default:
-					req.Reply(false, nil)
+					_ = req.Reply(false, nil)
 				}
 			}
 		}(requests)
@@ -123,11 +123,11 @@ func (l *SshListener) handleConnection(ctx context.Context, conn net.Conn, confi
 		select {
 		case <-shellReady:
 		case <-ctx.Done():
-			ch.Close()
+			_ = ch.Close()
 			continue
 		}
 
 		l.cm.AcceptConnection(ctx, newCRLFReadWriter(ch))
-		ch.Close()
+		_ = ch.Close()
 	}
 }
