@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "millbrook-riverside",
+    "spec": {
+        "name": "The Riverside",
+        "description": "The Millbrook river runs wide and shallow here, its water amber-coloured from the peat of the upland moors it drains. The bank is grassy and worn flat in places where people have stood to fish or wash clothing, with stones laid as informal stepping places into the shallows. Willows trail their branches into the current along the near bank, their roots making tangled handholds in the bank face. The smell of the river — green and slightly mineral — is stronger on warm days, when the water runs lower and slower. West along the bank, the timber frames of the town docks come into view; south, a fisherman's shack sits on a low rise just above the flood line, its chimney putting out a thin thread of smoke.",
+        "zone_id": "millbrook",
+        "exits": {
+            "east":  {"room_id": "millbrook-cottage-lane"},
+            "west":  {"room_id": "millbrook-docks"},
+            "south": {"room_id": "millbrook-fisherman-shack"}
+        }
+    }
+}

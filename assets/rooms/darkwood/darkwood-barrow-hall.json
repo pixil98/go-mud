@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "darkwood-barrow-hall",
+    "spec": {
+        "name": "Barrow Hall",
+        "description": "The passage opens into a low stone chamber, roughly circular, its ceiling formed by several large capstones. The space is tight — five or six paces across — lit only by whatever light comes in from the entrance. Stone shelves line the walls, once holding grave goods of which only fragmentary traces remain: a corroded fitting, a scatter of pot shards. The centre of the floor is packed hard, and faint carvings cover the wall stones — geometric patterns that repeat in an ordered way that suggests meaning rather than decoration.",
+        "zone_id": "darkwood",
+        "exits": {
+            "west":  {"room_id": "darkwood-barrow-entrance"},
+            "north": {"room_id": "darkwood-barrow-side"},
+            "east":  {"room_id": "darkwood-barrow-tomb"}
+        },
+        "mobile_spawns": ["darkwood-skeleton", "darkwood-skeleton"]
+    }
+}

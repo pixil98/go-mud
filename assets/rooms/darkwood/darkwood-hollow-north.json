@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "darkwood-hollow-north",
+    "spec": {
+        "name": "Hollow Rim",
+        "description": "The northwestern rim of the hollow rises to a narrow shelf of drier ground, the ferns giving way to harder, knottier vegetation that grows where the soil has better drainage. From here the hollow bowl is visible below — its mist, its standing water, and whatever moves within it laid out in a way that makes the approach less uncertain. The shelf connects back east to the descent path, offering a route that bypasses the hollow's lowest and wettest section.",
+        "zone_id": "darkwood",
+        "exits": {
+            "south": {"room_id": "darkwood-hollow"},
+            "east":  {"room_id": "darkwood-hollow-descent"}
+        }
+    }
+}

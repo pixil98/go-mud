@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "darkwood-woodcutter-camp",
+    "spec": {
+        "name": "Woodcutter's Camp",
+        "description": "A semi-permanent camp occupies a clear space north of the main trail, its presence marked by fresh wood chips scattered across the ground and the smell of pine sap and cut wood. Several large logs have been felled and stripped of branches nearby, their pale ends bright against the surrounding forest. The fire ring holds ash that hasn't been rained on — whoever works here was here recently — but the tools propped against a stump suggest they stepped away for a moment. The camp has the slightly defended feeling of a place whose occupants are aware that the forest around it is not entirely safe.",
+        "zone_id": "darkwood",
+        "exits": {
+            "south": {"room_id": "darkwood-clearing"},
+            "east":  {"room_id": "darkwood-hunters-path"},
+            "west":  {"room_id": "darkwood-overgrown-road"}
+        },
+        "mobile_spawns": ["darkwood-bandit"],
+        "object_spawns": [
+            {"object_id": "darkwood-woodcutter-axe"}
+        ]
+    }
+}

@@ -2,14 +2,14 @@
     "version": 1,
     "id": "millbrook-chainmail",
     "spec": {
-        "aliases": ["chainmail", "chain", "mail", "armor"],
-        "short_desc": "a suit of chain mail",
-        "long_desc": "A suit of chain mail is heaped on the ground.",
-        "detailed_desc": "Hundreds of interlocking iron rings form this sturdy suit of chain mail. It is well-maintained, each link oiled to prevent rust. A leather jerkin beneath would cushion the weight against the wearer's body.",
+        "aliases": ["chainmail", "chain", "mail"],
+        "short_desc": "a suit of chainmail",
+        "long_desc": "A suit of chainmail lies folded here.",
+        "detailed_desc": "A hauberk of close-linked iron rings extending to mid-thigh with sleeves to the elbow. The rings are clean and rust-free, treated with oil, and the work shows experience — links are tight and consistent throughout. Heavy, but reliable.",
         "flags": ["wearable"],
         "wear_slots": ["body"],
         "perks": [
-            {"type": "modifier", "key": "core.combat.ac", "value": 4}
+            { "type": "modifier", "key": "core.combat.ac", "value": 5 }
         ]
     }
 }

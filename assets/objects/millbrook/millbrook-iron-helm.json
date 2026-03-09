@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "millbrook-iron-helm",
+    "spec": {
+        "aliases": ["helm", "helmet", "iron"],
+        "short_desc": "an iron helm",
+        "long_desc": "An iron helm sits here.",
+        "detailed_desc": "A plain iron helmet of the spangenhelm style, with cheek pieces and a nasal bar. It is unadorned, functional work — precisely what a professional smith makes when a customer wants protection without decoration.",
+        "flags": ["wearable"],
+        "wear_slots": ["head"],
+        "perks": [
+            { "type": "modifier", "key": "core.combat.ac", "value": 1 }
+        ]
+    }
+}

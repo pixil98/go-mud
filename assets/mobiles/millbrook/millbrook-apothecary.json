@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "millbrook-apothecary",
+    "spec": {
+        "aliases": ["apothecary", "herbalist"],
+        "short_desc": "the apothecary",
+        "long_desc": "The apothecary works behind her counter, moving between jars and ledger with efficient precision.",
+        "detailed_desc": "A slight woman with sharp grey eyes and the habit of studying people as though assessing them for symptoms, the apothecary is brisk without being unfriendly. Her workbench is impeccably ordered, every jar labelled in a small, precise hand. She looks up when addressed with the brief assessing pause of someone who considers everything carefully before speaking.",
+        "level": 2,
+        "perks": [
+            { "type": "modifier", "key": "core.resource.hp.max", "value": 20 },
+            { "type": "modifier", "key": "core.combat.ac", "value": 10 }
+        ]
+    }
+}

@@ -3,10 +3,13 @@
     "id": "darkwood-clearing",
     "spec": {
         "name": "Forest Clearing",
-        "description": "A small clearing opens up in the dense forest. Sunlight filters through the gap in the canopy, illuminating a carpet of wildflowers and soft grass. A fallen log provides a natural seat, and you can hear a stream burbling somewhere to the north.",
+        "description": "A small clearing interrupts the Darkwood's canopy, letting in a pale column of daylight that falls on a carpet of wildflowers and soft grass. The contrast with the surrounding forest is immediate — it feels exposed here, open, which the local wildlife has evidently decided is worth the risk. A fallen log at the clearing's edge provides a natural seat and a good view of the treeline. The trail west leads back to Millbrook's east gate; trails branch east into the forest, south into a rougher camp site among the pines, and north toward the sound of axes.",
         "zone_id": "darkwood",
         "exits": {
-            "west": {"room_id": "darkwood-edge"}
+            "west":  {"room_id": "darkwood-edge"},
+            "east":  {"room_id": "darkwood-trail"},
+            "south": {"room_id": "darkwood-old-camp"},
+            "north": {"room_id": "darkwood-woodcutter-camp"}
         },
         "mobile_spawns": ["darkwood-deer", "darkwood-wolf"]
     }

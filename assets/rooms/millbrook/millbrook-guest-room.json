@@ -1,0 +1,12 @@
+{
+    "version": 1,
+    "id": "millbrook-guest-room",
+    "spec": {
+        "name": "Private Room",
+        "description": "The private room is small but has been kept in reasonable order: a rope bed with a straw mattress, a folded wool blanket, and a bolster pillow that has seen better years. A washstand in the corner holds a ceramic basin and a pitcher of water refreshed that morning, above which hangs a small mirror with a crack running diagonally across its lower half. The single window looks out over the tavern alley below, admitting a rectangle of grey light and the faint smell of the street. Someone has carved a set of initials and a date into the windowsill — the wood around the marks has been smoothed by many other hands resting there before yours. A hook on the back of the door serves for hanging a cloak or travel pack.",
+        "zone_id": "millbrook",
+        "exits": {
+            "west": {"room_id": "millbrook-guest-hall"}
+        }
+    }
+}

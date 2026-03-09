@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "darkwood-glen",
+    "spec": {
+        "name": "Spider Glen",
+        "description": "The forest floor is different here — the leaves have a different texture, drier and more compacted, and the reason becomes apparent as you look up: webs. Fine threads stretch between the branches in a loose network, not the organised spirals of individual spiders but the accumulated work of many, layered over years until the canopy is partly veiled in silk. The light that filters through is dimmer for it, and has a faint grey quality. Large silhouettes are visible moving in the webs above.",
+        "zone_id": "darkwood",
+        "exits": {
+            "north": {"room_id": "darkwood-creek"},
+            "east":  {"room_id": "darkwood-web-path"},
+            "south": {"room_id": "darkwood-glen-south"}
+        },
+        "mobile_spawns": ["darkwood-spider", "darkwood-spider"]
+    }
+}

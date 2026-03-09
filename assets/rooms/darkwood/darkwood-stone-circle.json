@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "darkwood-stone-circle",
+    "spec": {
+        "name": "Stone Circle",
+        "description": "A ring of standing stones occupies a clearing in the forest, their placement clearly deliberate and very old. The stones range from waist-height to perhaps twice a man's height, their surfaces worn smooth and covered in the same style of carvings found in the barrow, though here less eroded. The clearing around the circle has been kept clear by some mechanism — no saplings have grown within the ring's perimeter — and the grass within is a shade darker than the surrounding forest floor. The barrow hill is visible through the trees to the east.",
+        "zone_id": "darkwood",
+        "exits": {
+            "south": {"room_id": "darkwood-ancient-grove"},
+            "east":  {"room_id": "darkwood-barrow-hill"}
+        }
+    }
+}

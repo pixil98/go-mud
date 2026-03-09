@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "darkwood-hollow-cave",
+    "spec": {
+        "name": "Bear Den",
+        "description": "The cave opening is low and wide, worn smooth at the edges by years of something large passing through it. A thin stream runs through the cave's interior, entering from a crack in the back wall and exiting through the cave mouth to drain across the hollow floor — the water is clear and very cold, tracing a shallow channel through the compressed earth. The air inside carries a heavy animal musk — old fur, dried bones, and something else that makes a careful person stop and listen before going further. The floor around the stream is a deep layer of compressed dead leaves and pine needles, shaped into a broad depression by long use. This is a den, and something large lives in it.",
+        "zone_id": "darkwood",
+        "exits": {
+            "east": {"room_id": "darkwood-hollow"}
+        },
+        "mobile_spawns": ["darkwood-cave-bear"]
+    }
+}

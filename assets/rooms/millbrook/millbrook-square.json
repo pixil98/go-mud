@@ -3,19 +3,15 @@
     "id": "millbrook-square",
     "spec": {
         "name": "Town Square",
-        "description": "You stand in the heart of Millbrook. A weathered stone fountain bubbles cheerfully in the center, surrounded by cobblestones worn smooth by countless footsteps. The market lies to the west, while the warm glow of a tavern beckons from the east. A clock tower rises above to the north, and stone steps lead down to an old well.",
+        "description": "You stand in the heart of Millbrook, where four cobblestone roads converge around a weathered stone fountain that has stood here since the town's founding. The fountain's wide granite basin catches coins thrown by hopeful travellers, its water murky with age and algae. Centuries of footsteps have worn the surrounding stones to a mirror sheen in places, while others lie cracked and uneven where tree roots push up beneath. The smell of woodsmoke and fresh bread drifts from the surrounding buildings, mixing with the iron tang of the smithy and the faint sweetness of the herbalist's shop. Voices carry from every direction — the ambient hum of a town going about its daily business.",
         "zone_id": "millbrook",
         "exits": {
-            "west": {"room_id": "millbrook-market"},
-            "east": {"room_id": "millbrook-tavern"},
-            "up": {"room_id": "millbrook-clocktower"},
-            "down": {"room_id": "millbrook-well"},
-            "north": {"zone_id": "muffinville", "room_id": "muffinville-acatemy"}
+            "north": {"room_id": "millbrook-clocktower-plaza"},
+            "east":  {"room_id": "millbrook-market-road"},
+            "south": {"room_id": "millbrook-south-road"},
+            "west":  {"room_id": "millbrook-residential"}
         },
         "mobile_spawns": ["millbrook-guard"],
-        "object_spawns": [
-            {"object_id": "millbrook-fountain"},
-            {"object_id": "millbrook-torch"}
-        ]
+        "object_spawns": [{"object_id": "millbrook-fountain"}]
     }
 }

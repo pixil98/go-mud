@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "millbrook-residential",
+    "spec": {
+        "name": "Residential Lane",
+        "description": "West of the town square, the flagstones give way to an older residential lane where modest two-storey homes crowd together, their upper floors leaning slightly toward each other across the narrow street as if sharing a confidence. The buildings are timber-framed, their plaster washed in faded blues and yellows, and many of the ground-floor windows have small kitchen gardens or window boxes spilling herbs over the sills. The lane is quieter than the market streets, its sounds domestic: a shutter banging, the smell of something baking, children's voices from a courtyard behind one of the houses. Residents here know their neighbours in the particular way of people who have shared a wall for years — politely enough, and thoroughly. The cobbles are worn smooth in the walking lines, and the street has no formal name; most maps just mark it as the residential quarter.",
+        "zone_id": "millbrook",
+        "exits": {
+            "east":  {"room_id": "millbrook-square"},
+            "south": {"room_id": "millbrook-cottage-lane"}
+        }
+    }
+}

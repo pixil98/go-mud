@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "darkwood-old-camp",
+    "spec": {
+        "name": "Abandoned Camp",
+        "description": "The remains of a camp occupy a rough clearing beneath a stand of close-grown pines, sheltered enough from the prevailing wind that someone chose to stop here more than once. A blackened fire ring shows multiple layers of ash, and a rotting log bench sits to one side with the marks of many blades cut into its top surface. Whoever used this spot is long gone — the ash is cold and the scattered gear left behind is past salvaging. The pines overhead screen most of the sky, and the forest sounds press in close.",
+        "zone_id": "darkwood",
+        "exits": {
+            "north": {"room_id": "darkwood-clearing"}
+        },
+        "mobile_spawns": ["darkwood-bandit"]
+    }
+}

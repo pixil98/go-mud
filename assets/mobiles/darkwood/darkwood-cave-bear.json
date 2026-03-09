@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "darkwood-cave-bear",
+    "spec": {
+        "aliases": ["bear", "cave"],
+        "short_desc": "a cave bear",
+        "long_desc": "A massive cave bear rises from its nest, filling the den entrance with a wall of muscle and fur.",
+        "detailed_desc": "The bear is enormous — far larger than any bear you have seen outside a tapestry — its dark brown coat matted and scarred from years of whatever it is bears fight in the deep forest. It moves with a surprising lightness for its bulk, head low, watching you with small dark eyes that convey absolutely nothing resembling tolerance. This is a very dangerous animal and it is between you and the exit.",
+        "level": 6,
+        "perks": [
+            { "type": "modifier", "key": "core.resource.hp.max", "value": 65 },
+            { "type": "modifier", "key": "core.combat.ac", "value": 13 },
+            { "type": "modifier", "key": "core.combat.attack_mod", "value": 5 },
+            { "type": "modifier", "key": "core.combat.damage_mod", "value": 3 },
+            { "type": "grant", "key": "attack", "arg": "1d8" },
+            { "type": "grant", "key": "autoattack" }
+        ]
+    }
+}

@@ -1,7 +1,11 @@
 - Commands and spells/abilities use a different context struct so templating is slightly different
 - Wire up defense perks
+- Room with diagonal exists need to spell them out
 ## Combat System
 - Add `NotifyHeal` and `NotifyTaunt` to `combat.Manager` and `commands.CombatManager` interface when implementing heal/taunt ability effect handlers.
 - `CharacterInstance.OnDeath()` implemented: restores HP, sets quit, kicks session. `MobileInstance.OnDeath()` still a stub (loot, XP distribution not yet implemented).
 - Player location is not saved on `SaveCharacter`; add a `sethome` command to let players set `LastZone/LastRoom` explicitly.
 - Consider replacing `autoattack` grant with `core.combat.auto_ability <ability-id>` so mobs/players can auto-use any ability (e.g. a spell) rather than a hardcoded melee attack.
+
+
+- attack <target> doesn't actually cause your attack to hit that target, it queues up an attack for which ever target you are currently hitting.

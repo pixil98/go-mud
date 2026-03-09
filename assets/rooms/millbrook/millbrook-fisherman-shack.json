@@ -1,0 +1,12 @@
+{
+    "version": 1,
+    "id": "millbrook-fisherman-shack",
+    "spec": {
+        "name": "Fisherman's Shack",
+        "description": "The fisherman's shack sits on a low grassy rise just above the flood line, close enough to the river that you can hear the current through the single small window. The building is old and has been repaired so many times that the original structure is largely theoretical — the walls are a patchwork of different timber and daub repairs, and the thatched roof has been replaced in sections, the new straw bright gold next to the weathered grey of the older portions. Inside, the walls are hung with nets in various states of repair, coils of line, and hooks of several sizes. The smell of fish is old and deep here, worked into the wood itself over decades. A cold hearth against the back wall holds the remnants of last night's fire, and a rough wooden chair sits beside it with a mending project abandoned in the seat.",
+        "zone_id": "millbrook",
+        "exits": {
+            "north": {"room_id": "millbrook-riverside"}
+        }
+    }
+}

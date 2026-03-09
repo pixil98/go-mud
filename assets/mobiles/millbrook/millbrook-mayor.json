@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "millbrook-mayor",
+    "spec": {
+        "aliases": ["mayor", "alderman"],
+        "short_desc": "the mayor",
+        "long_desc": "The mayor stands in the town hall, attending to the business of governing Millbrook with visible industry.",
+        "detailed_desc": "An older man with thinning hair and the kind of face that has heard a lot of petitions, the mayor has the slightly distracted air of someone with more tasks than hours. His robes are well-made but show the creases of a long day. He is courteous in the practiced way of elected officials, and gives the impression of weighing every word for political cost before spending it.",
+        "level": 4,
+        "perks": [
+            { "type": "modifier", "key": "core.resource.hp.max", "value": 30 },
+            { "type": "modifier", "key": "core.combat.ac", "value": 10 }
+        ]
+    }
+}

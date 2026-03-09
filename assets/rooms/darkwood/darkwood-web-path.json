@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "darkwood-web-path",
+    "spec": {
+        "name": "Web-Hung Path",
+        "description": "The path ahead is increasingly enclosed by webbing that hangs from both sides in heavy curtains, grey-white and thick enough to be opaque in places. Moving through requires pushing the silk aside, a task with an unpleasant texture and an equally unpleasant smell — something between old meat and metal. The webs have a remarkable tensile strength for their apparent delicacy, and there is a faint vibration in them, as though something distant is moving. Parcels of silk the size of a man's fist are suspended at intervals, wrapped tight around shapes that have ceased moving.",
+        "zone_id": "darkwood",
+        "exits": {
+            "west": {"room_id": "darkwood-glen"},
+            "east": {"room_id": "darkwood-den"}
+        },
+        "mobile_spawns": ["darkwood-spider"]
+    }
+}

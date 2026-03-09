@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "millbrook-south-gate",
+    "spec": {
+        "name": "South Gate",
+        "description": "The south gate is a smaller and more utilitarian structure than the north gate, built for function rather than impression: a reinforced stone archway with a single iron-banded door that stands propped open during daylight with a heavy stone. The wall here is perhaps ten feet high and shows signs of patchwork repair — different-coloured stones fill gaps where older sections have crumbled and been replaced. A guard's post beside the gate holds a stool, a small brazier, and an empty iron peg that once supported a lantern. Beyond the gate, a rutted track descends into open scrubland, following the line of a dry drainage ditch before curving out of sight. The gate sees only local traffic — farmers, shepherds, and the occasional traveller who has come by the south road rather than the main highway through the north.",
+        "zone_id": "millbrook",
+        "exits": {
+            "north": {"room_id": "millbrook-south-road"}
+        },
+        "mobile_spawns": ["millbrook-gatekeeper"]
+    }
+}

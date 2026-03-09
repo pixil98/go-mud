@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "millbrook-gatekeeper",
+    "spec": {
+        "aliases": ["gatekeeper", "guard"],
+        "short_desc": "a gatekeeper",
+        "long_desc": "A gatekeeper leans against the gate post, watching the road beyond with practiced boredom.",
+        "detailed_desc": "A heavyset man somewhere in his forties who has clearly made peace with a career of watching traffic come and go, the gatekeeper wears a worn gambeson and carries a halberd with the comfortable familiarity of an old habit. He nods at people he recognizes and watches strangers with the mild, professional suspicion of a man who has learned that most trouble announces itself if you know what to look for.",
+        "level": 2,
+        "perks": [
+            { "type": "modifier", "key": "core.resource.hp.max", "value": 30 },
+            { "type": "modifier", "key": "core.combat.ac", "value": 12 }
+        ]
+    }
+}

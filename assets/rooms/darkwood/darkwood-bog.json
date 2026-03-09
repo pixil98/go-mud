@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "darkwood-bog",
+    "spec": {
+        "name": "The Bog",
+        "description": "The hollow opens eastward into a stretch of standing bog where the water table is near the surface and the ground trembles faintly underfoot. The tall oaks give way to stunted alders barely head-height, their trunks rising from hummocks of peat. A small stream enters from the west where the hollow drains into the bog, its clear water quickly swallowed by the dark standing water between hummocks. Movement in the shallows is probably just the disturbance of your footsteps, but it is difficult to be certain.",
+        "zone_id": "darkwood",
+        "exits": {
+            "west":  {"room_id": "darkwood-hollow"},
+            "east":  {"room_id": "darkwood-bog-depths"}
+        },
+        "mobile_spawns": ["darkwood-giant-frog", "darkwood-giant-frog"]
+    }
+}

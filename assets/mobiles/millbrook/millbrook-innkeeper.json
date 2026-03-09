@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "millbrook-innkeeper",
+    "spec": {
+        "aliases": ["innkeeper", "barkeep", "barkeeper"],
+        "short_desc": "the innkeeper",
+        "long_desc": "The innkeeper polishes glasses behind the bar with the mechanical ease of long habit.",
+        "detailed_desc": "A stout man with forearms like joints of meat, the innkeeper has the patient face of someone who has heard every story twice. He moves behind the bar with the economy of a person who knows exactly where everything is in the dark. His apron is clean — he takes some pride in that — and he keeps a close eye on the room with the practised alertness of a man who has broken up enough arguments to recognize when one is forming.",
+        "level": 2,
+        "perks": [
+            { "type": "modifier", "key": "core.resource.hp.max", "value": 25 },
+            { "type": "modifier", "key": "core.combat.ac", "value": 10 }
+        ]
+    }
+}

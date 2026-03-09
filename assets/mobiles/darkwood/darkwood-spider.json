@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "darkwood-spider",
+    "spec": {
+        "aliases": ["spider", "web"],
+        "short_desc": "a large forest spider",
+        "long_desc": "A large spider descends from the web canopy above, its legs spread wide.",
+        "detailed_desc": "The spider is roughly the size of a large cat, its abdomen a dark reddish-brown with pale markings that may or may not be significant. It moves with the liquid, boneless efficiency of its kind — all legs and no wasted motion. Its chelicerae are visible from several feet away and the venom that beads at their tips carries a smell faintly detectable as something chemical and unpleasant.",
+        "level": 8,
+        "perks": [
+            { "type": "modifier", "key": "core.resource.hp.max", "value": 95 },
+            { "type": "modifier", "key": "core.combat.ac", "value": 15 },
+            { "type": "modifier", "key": "core.combat.attack_mod", "value": 7 },
+            { "type": "modifier", "key": "core.combat.damage_mod", "value": 4 },
+            { "type": "grant", "key": "attack", "arg": "1d8" },
+            { "type": "grant", "key": "autoattack" }
+        ]
+    }
+}

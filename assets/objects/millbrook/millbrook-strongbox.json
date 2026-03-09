@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "millbrook-strongbox",
+    "spec": {
+        "aliases": ["strongbox", "box", "chest"],
+        "short_desc": "an iron strongbox",
+        "long_desc": "A heavy iron strongbox sits wedged in the corner, banded with reinforced straps.",
+        "detailed_desc": "A substantial iron box with reinforced corner straps and a heavy lock, the kind of thing designed to resist both casual tampering and determined effort. It bears no markings and shows signs of age — the iron is pitted and the lock mechanism is an older design, but the mechanism looks sound.",
+        "flags": ["container", "immobile"],
+        "closure": {
+            "name": "lid",
+            "closed": true,
+            "lock": {
+                "key_id": "millbrook-strongbox-key",
+                "locked": true
+            }
+        }
+    }
+}

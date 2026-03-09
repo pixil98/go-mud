@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "darkwood-wolf-territory",
+    "spec": {
+        "name": "Wolf Territory",
+        "description": "The trail enters a section of forest where the signs of wolf activity are immediate and unmissable: bones scattered across the ground, long grooves in the bark of the surrounding trees at shoulder height, a smell of musk and old kills that hangs in the still air. This is the centre of the pack's range, and the pack is here. The ground is worn bare in a rough oval — the pack's resting place — and the trees at the edges have been marked exhaustively to communicate ownership to anyone who can read the signs.",
+        "zone_id": "darkwood",
+        "exits": {
+            "south": {"room_id": "darkwood-north-trail"}
+        },
+        "mobile_spawns": ["darkwood-dire-wolf", "darkwood-dire-wolf", "darkwood-wolf"]
+    }
+}

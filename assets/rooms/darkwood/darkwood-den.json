@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "darkwood-den",
+    "spec": {
+        "name": "Spider Lair",
+        "description": "The central lair is a domed space where the trees overhead have been encased entirely in webbing, creating a white-grey ceiling that sags between branches. The floor is covered in a layer of silk and old debris — shed husks, bones stripped clean, the remains of past meals cocooned and stored in wall pockets. The smell here is strong and distinctive, and the sound of movement is immediate and continuous — the whisper of many legs on silk surfaces, coming from all directions.",
+        "zone_id": "darkwood",
+        "exits": {
+            "west":  {"room_id": "darkwood-web-path"},
+            "down":  {"room_id": "darkwood-den-depths"},
+            "north": {"room_id": "darkwood-egg-chamber"}
+        },
+        "mobile_spawns": ["darkwood-spider", "darkwood-spider"]
+    }
+}

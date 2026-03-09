@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "darkwood-deadfall",
+    "spec": {
+        "name": "The Deadfall",
+        "description": "A storm — or simple age — brought down a number of the old oaks here, their collapse creating a tangled obstacle of enormous trunks, upended root masses, and the secondary growth that has colonized the disrupted ground. Moving through requires climbing over and ducking under, the footing uncertain among buried branches and soft earth. The gap in the canopy left by the falls is slowly being filled by younger trees, the light here brighter and more unsettled than in the deeper forest. The ground to the east smells of old charcoal.",
+        "zone_id": "darkwood",
+        "exits": {
+            "west":  {"room_id": "darkwood-north-trail"},
+            "east":  {"room_id": "darkwood-charcoal-mound"}
+        },
+        "mobile_spawns": ["darkwood-wolf"]
+    }
+}

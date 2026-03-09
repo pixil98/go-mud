@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "darkwood-rusted-knife",
+    "spec": {
+        "aliases": ["knife", "rusted", "blade"],
+        "short_desc": "a rusted hunting knife",
+        "long_desc": "A rusted hunting knife lies here.",
+        "detailed_desc": "A short knife with a blade gone orange-brown from neglect, the edge still serviceable in the way that a mean thing often remains mean long past the point of dignity. The handle is wrapped in cord that has been re-wrapped several times. It has clearly changed hands more than once.",
+        "flags": ["wearable"],
+        "wear_slots": ["wield", "off_hand", "hold"],
+        "perks": [
+            { "type": "grant", "key": "attack", "arg": "1d4" }
+        ]
+    }
+}

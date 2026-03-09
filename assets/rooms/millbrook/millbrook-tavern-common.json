@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "millbrook-tavern-common",
+    "spec": {
+        "name": "The Rusty Nail",
+        "description": "The common room of The Rusty Nail is warm and perpetually dim, lit by candles stuffed into wine bottles on each table and a struggling fire in the hearth against the south wall. The low ceiling is black with decades of smoke, hung with a collection of objects of no obvious theme: a stuffed fish, several broken shields, a string of dried peppers. The bar runs along the north wall, its oak surface scarred with rings and knife marks, behind which the innkeeper polishes glasses with the mechanical ease of someone who has done it ten thousand times. Round tables fill the room, occupied at most hours by a rotating cast of regulars nursing drinks with the dedication of professionals. The trapdoor to the cellar is behind the bar, and a creaking stair leads up to the guest rooms.",
+        "zone_id": "millbrook",
+        "exits": {
+            "north": {"room_id": "millbrook-tavern-alley"},
+            "down":  {"room_id": "millbrook-tavern-cellar"},
+            "up":    {"room_id": "millbrook-guest-hall"}
+        },
+        "mobile_spawns": ["millbrook-innkeeper"]
+    }
+}

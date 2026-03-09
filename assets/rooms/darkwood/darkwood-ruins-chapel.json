@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "darkwood-ruins-chapel",
+    "spec": {
+        "name": "Ruined Chapel",
+        "description": "The smaller structure to the north of the square was clearly a place of worship — a shallow apse in the back wall, a raised stone platform at the centre, decorative carvings of considerable quality surviving on the lower sections of the walls. Whatever was worshipped here is not immediately identifiable from the imagery, which depicts a figure associated with trees, water, and fire in roughly equal measure. An offering bowl on the altar platform has survived intact.",
+        "zone_id": "darkwood",
+        "exits": {
+            "south": {"room_id": "darkwood-ruins-square"}
+        },
+        "mobile_spawns": ["darkwood-ruin-shade"],
+        "object_spawns": [
+            {"object_id": "darkwood-offering-bowl", "contents": [
+                {"object_id": "darkwood-ward-amulet"}
+            ]}
+        ]
+    }
+}

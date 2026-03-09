@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "darkwood-barrow-hill",
+    "spec": {
+        "name": "Barrow Hill",
+        "description": "The trees thin on the approach to a low mound that rises above the forest floor in a shape too regular to be natural — a burial mound, the oldest kind, heaped by hand in a time before Millbrook or any of its predecessors. The mound is perhaps twenty feet across and eight at its crown, its surface grown over with close-cropped turf that somehow resists the surrounding forest's encroachment. No trees grow on it. Carved stones mark each compass point around its base, their inscriptions long since weathered past any legibility.",
+        "zone_id": "darkwood",
+        "exits": {
+            "west": {"room_id": "darkwood-stone-circle"},
+            "east": {"room_id": "darkwood-barrow-entrance"}
+        }
+    }
+}

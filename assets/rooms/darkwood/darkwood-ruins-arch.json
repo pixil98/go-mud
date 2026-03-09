@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "darkwood-ruins-arch",
+    "spec": {
+        "name": "Ruined Arch",
+        "description": "The first surviving structure of the ruins is a stone arch, its keystone still in place despite centuries of unassisted standing. It is clearly the entrance to something — a settlement, a keep — and the walls on either side, though reduced to scattered stones for most of their length, are still standing at the arch itself to a height of perhaps twelve feet. The carved figures in the arch's stonework are of a style completely different from the barrow carvings — these are figurative, depicting men and women in formal poses, their faces worn to smooth ovals by weather.",
+        "zone_id": "darkwood",
+        "exits": {
+            "north": {"room_id": "darkwood-ruins-path"},
+            "south": {"room_id": "darkwood-ruins-square"}
+        },
+        "mobile_spawns": ["darkwood-ruin-shade"]
+    }
+}

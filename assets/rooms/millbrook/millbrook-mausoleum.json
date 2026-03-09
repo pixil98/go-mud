@@ -1,0 +1,12 @@
+{
+    "version": 1,
+    "id": "millbrook-mausoleum",
+    "spec": {
+        "name": "Whitmore Mausoleum",
+        "description": "The Whitmore Mausoleum is a squat, solid structure of fitted sandstone, its corners decorated with carved rope-work borders that have held their detail better than the inscriptions elsewhere in the cemetery. The heavy door is carved in relief with a weeping willow, its iron handle worn smooth by many hands over the years. Inside, the air is noticeably colder than outside and carries a smell of damp stone, old candle wax, and dried flowers left by visitors long enough ago to have lost their colour entirely. Stone niches in the walls hold the carved tablets of seven generations of Whitmores, the oldest dating back to the town's founding — the names on the first three niches are nearly illegible, worn by the slow seep of water through the stone. A stone altar in the centre holds an iron candle stand and a small carved crest: a millwheel over a river, the Whitmore family mark.",
+        "zone_id": "millbrook",
+        "exits": {
+            "west": {"room_id": "millbrook-cemetery"}
+        }
+    }
+}

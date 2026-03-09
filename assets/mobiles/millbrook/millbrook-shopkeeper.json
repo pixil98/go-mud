@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "millbrook-shopkeeper",
+    "spec": {
+        "aliases": ["shopkeeper", "merchant", "trader"],
+        "short_desc": "the shopkeeper",
+        "long_desc": "The shopkeeper stands behind the counter, watching the door with the alert patience of someone expecting a customer.",
+        "detailed_desc": "A lean man with ink stains on his right hand and the habit of adding things up in his head while you talk to him, the shopkeeper runs the Aldenmere Trading Post with the organized precision of someone who genuinely enjoys inventory. He is unfailingly polite and professionally friendly, and gives the impression of being always slightly ahead of whatever conversation you thought you were having.",
+        "level": 2,
+        "perks": [
+            { "type": "modifier", "key": "core.resource.hp.max", "value": 20 },
+            { "type": "modifier", "key": "core.combat.ac", "value": 10 }
+        ]
+    }
+}

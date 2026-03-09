@@ -1,0 +1,12 @@
+{
+    "version": 1,
+    "id": "millbrook-jail",
+    "spec": {
+        "name": "The Lockup",
+        "description": "Three iron-barred cells occupy the far wall of this sparse stone room, their doors painted with rust-bloom where the paint has long since chipped away. A single oil lamp hangs from a hook overhead, casting wavering shadows that make the empty cells seem occupied in the corner of your eye. The stone floor is scoured clean but deeply stained, and carved names and dates mark the inside of the cell walls — the idle record-keeping of people with nothing but time. Most cells stand empty with their doors ajar, the hinges squeaking faintly in the draught from the barracks. A bucket, a straw pallet, and a blanket of indeterminate colour constitute the full amenities.",
+        "zone_id": "millbrook",
+        "exits": {
+            "west": {"room_id": "millbrook-barracks"}
+        }
+    }
+}

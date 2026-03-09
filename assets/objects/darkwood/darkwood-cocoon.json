@@ -1,0 +1,11 @@
+{
+    "version": 1,
+    "id": "darkwood-cocoon",
+    "spec": {
+        "aliases": ["cocoon", "silk"],
+        "short_desc": "a large silk cocoon",
+        "long_desc": "A large silk cocoon is anchored to the chamber wall, its wrappings pulled apart.",
+        "detailed_desc": "The cocoon is man-sized and has been here long enough that the silk has yellowed and grown brittle at the edges. Whatever was inside has long since been consumed, but the innermost wrappings protected something that remains — something hard and small at the centre of all that silk.",
+        "flags": ["container", "immobile"]
+    }
+}

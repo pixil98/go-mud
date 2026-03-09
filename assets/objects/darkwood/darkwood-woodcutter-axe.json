@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "darkwood-woodcutter-axe",
+    "spec": {
+        "aliases": ["axe", "hatchet", "woodcutter"],
+        "short_desc": "a woodcutter's axe",
+        "long_desc": "A heavy woodcutter's axe leans against a nearby stump, its blade notched from use.",
+        "detailed_desc": "A full-size felling axe with a broad iron head and a long ash handle worn smooth at the grip from extensive use. The blade has a notch near the toe from hitting something harder than wood — a buried stone, perhaps — and the edge could use dressing, but the weight and balance are good. It is a tool first and a weapon second, but the distinction matters less when someone is swinging it at you.",
+        "flags": ["wearable"],
+        "wear_slots": ["wield"],
+        "perks": [
+            { "type": "grant", "key": "attack", "arg": "1d8" }
+        ]
+    }
+}

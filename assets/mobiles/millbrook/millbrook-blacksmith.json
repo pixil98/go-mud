@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "millbrook-blacksmith",
+    "spec": {
+        "aliases": ["blacksmith", "smith"],
+        "short_desc": "the blacksmith",
+        "long_desc": "The blacksmith works at her forge, the rhythmic ring of hammer on metal filling the smithy.",
+        "detailed_desc": "A big-shouldered woman with close-cropped hair and a permanent squint from years of watching hot metal, the blacksmith works with an unhurried focus that makes her look as though she has forgotten you are there. Her hands are seamed with small burn scars, each one a lesson learned. She looks up when addressed with the expression of someone who prefers good work to good conversation.",
+        "level": 3,
+        "perks": [
+            { "type": "modifier", "key": "core.resource.hp.max", "value": 40 },
+            { "type": "modifier", "key": "core.combat.ac", "value": 11 }
+        ]
+    }
+}
