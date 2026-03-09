@@ -17,7 +17,6 @@ const (
 	PerkKeyActionPointsMax PerkKey = "core.action_points.max"
 	PerkKeyCombatAC        PerkKey = "core.combat.ac"
 	PerkKeyCombatAttackMod PerkKey = "core.combat.attack_mod"
-	PerkKeyCombatDmgMod    PerkKey = "core.combat.damage_mod"
 	PerkKeyCombatThreatMod PerkKey = "core.combat.threat_mod"
 )
 
@@ -59,12 +58,21 @@ var StatPerkKeys = map[PerkKey]StatKey{
 // Damage perk keys follow: core.damage.<type>.<aspect>
 const DamageKeyPrefix = "core.damage."
 
+// Well-known damage type strings.
+const (
+	// DamageTypeUntyped is the default damage type when no type is configured.
+	DamageTypeUntyped = "untyped"
+	// DamageTypeAll is used in defense keys to apply mitigation to all damage
+	// regardless of type (e.g. DefenseKey(DamageTypeAll, DefenseAspectAbsorb)).
+	DamageTypeAll = "all"
+)
+
 // DamageAspect identifies a specific aspect of damage type scaling.
 type DamageAspect string
 
 const (
-	DamageAspectPct     DamageAspect = "pct"      // percent damage bonus
-	DamageAspectCritPct DamageAspect = "crit_pct" // percent crit chance
+	DamageAspectPct  DamageAspect = "pct"  // percent damage bonus
+	DamageAspectFlat DamageAspect = "flat" // flat damage bonus
 )
 
 // DamageKey builds a perk key for a damage type aspect
@@ -75,7 +83,7 @@ func DamageKey(damageType string, aspect DamageAspect) string {
 
 // DefenseKeyPrefix is the perk key prefix for defense type modifiers.
 // Defense perk keys follow: core.defense.<type>.<aspect>
-// Use "all" as the type to apply to all incoming damage regardless of type.
+// Use DamageTypeAll as the type to apply to all incoming damage regardless of type.
 const DefenseKeyPrefix = "core.defense."
 
 // DefenseAspect identifies a specific aspect of damage mitigation.

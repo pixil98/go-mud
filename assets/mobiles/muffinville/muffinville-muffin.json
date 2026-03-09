@@ -2,19 +2,45 @@
     "version": 1,
     "id": "muffinville-muffin",
     "spec": {
-        "aliases": ["muffin", "kittercat", "floofybutt"],
+        "aliases": [
+            "muffin",
+            "kittercat",
+            "floofybutt"
+        ],
         "short_desc": "Muffin the Kittercat",
         "long_desc": "The one and only floofybutt Muffin.",
         "detailed_desc": "She's too perfect to describe. It's just Muffin.",
         "level": 20,
         "perks": [
-            { "type": "modifier", "key": "core.resource.hp.max", "value": 500 },
-            { "type": "modifier", "key": "core.combat.ac", "value": 20 },
-            { "type": "modifier", "key": "core.combat.attack_mod", "value": 10 },
-            { "type": "modifier", "key": "core.combat.damage_mod", "value": 5 },
-            { "type": "grant", "key": "attack", "arg": "3d8" },
-            { "type": "grant", "key": "attack", "arg": "3d8" },
-            { "type": "grant", "key": "autoattack" }
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 500
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac",
+                "value": 20
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack_mod",
+                "value": 10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "physical:3d8+5"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "physical:3d8+5"
+            },
+            {
+                "type": "grant",
+                "key": "autoattack"
+            }
         ]
     }
 }

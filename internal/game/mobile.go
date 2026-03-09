@@ -23,6 +23,41 @@ type MobileInstance struct {
 	ActorInstance
 }
 
+// NewMobileInstance constructs a fully initialized MobileInstance from a mob
+// definition. The caller is responsible for placing it in a room via RoomInstance.AddMob.
+func NewMobileInstance(mob storage.SmartIdentifier[*assets.Mobile]) (*MobileInstance, error) {
+	def := mob.Get()
+	eq := NewEquipment()
+	mi := &MobileInstance{
+		InstanceId: uuid.New().String(),
+		Mobile:     mob,
+		ActorInstance: ActorInstance{
+			inventory: NewInventory(),
+			equipment: eq,
+			level:     def.Level,
+			PerkCache: *NewPerkCache(def.Perks, map[string]PerkSource{"equipment": eq}),
+		},
+	}
+	mi.initResources()
+	for _, spawn := range def.Inventory {
+		oi, err := SpawnObject(spawn)
+		if err != nil {
+			return nil, fmt.Errorf("spawning inventory for %q: %w", mob.Id(), err)
+		}
+		mi.inventory.AddObj(oi)
+	}
+	for slot, spawn := range def.Equipment {
+		oi, err := SpawnObject(spawn)
+		if err != nil {
+			return nil, fmt.Errorf("spawning equipment for %q: %w", mob.Id(), err)
+		}
+		if err := mi.equipment.Equip(slot, 0, oi); err != nil {
+			return nil, fmt.Errorf("equipping %q on %q: %w", slot, mob.Id(), err)
+		}
+	}
+	return mi, nil
+}
+
 // --- Accessor methods ---
 
 // Id returns the mobile instance's unique identifier.

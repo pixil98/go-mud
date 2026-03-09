@@ -2,18 +2,39 @@
     "version": 1,
     "id": "darkwood-dire-wolf",
     "spec": {
-        "aliases": ["wolf", "dire"],
+        "aliases": [
+            "wolf",
+            "dire"
+        ],
         "short_desc": "a dire wolf",
         "long_desc": "A dire wolf stands motionless among the old oaks, regarding you with pale yellow eyes.",
-        "detailed_desc": "The dire wolf is nearly twice the size of a common wolf, its coat a deep charcoal grey with white markings across the muzzle and chest. It does not growl or posture — it simply watches, with the still, evaluating attention of something that has been hunting these woods long enough to have no need for displays. The scars along its shoulders suggest a long career.",
+        "detailed_desc": "The dire wolf is nearly twice the size of a common wolf, its coat a deep charcoal grey with white markings across the muzzle and chest. It does not growl or posture \u2014 it simply watches, with the still, evaluating attention of something that has been hunting these woods long enough to have no need for displays. The scars along its shoulders suggest a long career.",
         "level": 6,
         "perks": [
-            { "type": "modifier", "key": "core.resource.hp.max", "value": 60 },
-            { "type": "modifier", "key": "core.combat.ac", "value": 13 },
-            { "type": "modifier", "key": "core.combat.attack_mod", "value": 5 },
-            { "type": "modifier", "key": "core.combat.damage_mod", "value": 3 },
-            { "type": "grant", "key": "attack", "arg": "1d8" },
-            { "type": "grant", "key": "autoattack" }
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 60
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac",
+                "value": 13
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack_mod",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "physical:1d8+3"
+            },
+            {
+                "type": "grant",
+                "key": "autoattack"
+            }
         ]
     }
 }

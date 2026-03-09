@@ -27,8 +27,9 @@ type combatantState struct {
 
 // AttackResult holds the outcome of a single attack roll.
 type AttackResult struct {
-	Damage int
-	Hit    bool
+	Damage    int
+	Hit       bool
+	Reflected int // damage reflected back to attacker (0 if none)
 }
 
 // NewManager creates a combat Manager.
@@ -90,31 +91,45 @@ func (m *Manager) AddThreat(source, target Combatant, amount int) {
 }
 
 // PerformAttack executes one attack roll per attack grant perk the attacker has,
-// applies damage for each hit, and returns the per-attack results.
-// Falls back to a single 1d4 attack if no attack grants are present.
+// applies damage for each hit (including any reflected damage back to the attacker),
+// and returns the per-attack results.
+// Falls back to a single untyped 1d4 attack if no attack grants are present.
 func PerformAttack(attacker, target Combatant) []AttackResult {
-	diceExprs := attacker.GrantArgs(assets.PerkGrantAttack)
-	if len(diceExprs) == 0 {
-		diceExprs = []string{"1d4"}
+	attackArgs := attacker.GrantArgs(assets.PerkGrantAttack)
+	if len(attackArgs) == 0 {
+		attackArgs = []string{"1d4"}
 	}
 
-	results := make([]AttackResult, 0, len(diceExprs))
-	for _, expr := range diceExprs {
-		result := rollOneAttack(attacker, target, expr)
+	results := make([]AttackResult, 0, len(attackArgs))
+	for _, arg := range attackArgs {
+		result := rollOneAttack(attacker, target, arg)
 		if result.Hit {
 			target.AdjustResource(assets.ResourceHp, -result.Damage)
+			if result.Reflected > 0 {
+				attacker.AdjustResource(assets.ResourceHp, -result.Reflected)
+			}
 		}
 		results = append(results, result)
 	}
 	return results
 }
 
-// rollOneAttack performs a single attack roll using the given dice expression.
+// parseAttackArg extracts the damage type and dice expression from an attack grant arg.
+// Supports "<type>:<dice>" (e.g. "fire:2d6+3") or plain "<dice>" (defaults to "untyped").
+func parseAttackArg(arg string) (dmgType, diceExpr string) {
+	if i := strings.IndexByte(arg, ':'); i >= 0 {
+		return arg[:i], arg[i+1:]
+	}
+	return assets.DamageTypeUntyped, arg
+}
+
+// rollOneAttack performs a single attack roll for the given attack grant arg.
 // Does NOT apply damage — PerformAttack handles that.
-func rollOneAttack(attacker, target Combatant, diceExpr string) AttackResult {
+func rollOneAttack(attacker, target Combatant, attackArg string) AttackResult {
+	dmgType, diceExpr := parseAttackArg(attackArg)
+
 	roll := RollAttack(attacker.ModifierValue(assets.PerkKeyCombatAttackMod))
-	targetAC := target.ModifierValue(assets.PerkKeyCombatAC)
-	if roll < targetAC {
+	if roll < target.ModifierValue(assets.PerkKeyCombatAC) {
 		return AttackResult{Hit: false}
 	}
 
@@ -123,12 +138,9 @@ func rollOneAttack(attacker, target Combatant, diceExpr string) AttackResult {
 		dice = DiceRoll{Count: 1, Sides: 4}
 	}
 
-	damage := dice.Roll() + attacker.ModifierValue(assets.PerkKeyCombatDmgMod)
-	absorb := target.ModifierValue(assets.DefenseKey("all", assets.DefenseAspectAbsorb))
-	if damage -= absorb; damage < 1 {
-		damage = 1
-	}
-	return AttackResult{Damage: damage, Hit: true}
+	raw := dice.Roll()
+	damage, reflected := CalcDamage(raw, dmgType, attacker, target)
+	return AttackResult{Damage: damage, Hit: true, Reflected: reflected}
 }
 
 // Tick processes one round of autoattacks for all active combatants.
@@ -176,6 +188,10 @@ func (m *Manager) Tick(_ context.Context) error {
 				totalDamage += r.Damage
 				verb := DamageVerb(r.Damage)
 				addRoomLine(zoneId, roomId, fmt.Sprintf("%s %s %s!", c.Name(), verb, target.Name()))
+				if r.Reflected > 0 {
+					reflectVerb := DamageVerb(r.Reflected)
+					addRoomLine(zoneId, roomId, fmt.Sprintf("%s's ward %s %s back!", target.Name(), reflectVerb, c.Name()))
+				}
 			} else {
 				addRoomLine(zoneId, roomId, fmt.Sprintf("%s misses %s.", c.Name(), target.Name()))
 			}

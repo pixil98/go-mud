@@ -13,15 +13,18 @@ import (
 type mockCombatManager struct {
 	startedErr   error // error to return from StartCombat
 	started      bool
+	startCount   int
 	lastAttacker combat.Combatant
 	lastTarget   combat.Combatant
 	queued       bool
 	threatAdded  bool
 	threatAmount int
+	threatCount  int
 }
 
 func (m *mockCombatManager) StartCombat(attacker, target combat.Combatant) error {
 	m.started = true
+	m.startCount++
 	m.lastAttacker = attacker
 	m.lastTarget = target
 	return m.startedErr
@@ -29,7 +32,8 @@ func (m *mockCombatManager) StartCombat(attacker, target combat.Combatant) error
 
 func (m *mockCombatManager) AddThreat(_, _ combat.Combatant, amount int) {
 	m.threatAdded = true
-	m.threatAmount = amount
+	m.threatCount++
+	m.threatAmount += amount
 }
 
 func (m *mockCombatManager) QueueAttack(_ combat.Combatant) {

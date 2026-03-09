@@ -18,11 +18,15 @@ func (m *mockZoneLocator) GetZone(zoneId string) *game.ZoneInstance {
 	return m.zones[zoneId]
 }
 
-func newTestMobInstance(instanceId, name string) *game.MobileInstance {
-	return &game.MobileInstance{
+func newTestMobInstance(instanceId, name string, perks []assets.Perk) *game.MobileInstance {
+	mi := &game.MobileInstance{
 		InstanceId: instanceId,
 		Mobile:     storage.NewResolvedSmartIdentifier(instanceId+"-spec", &assets.Mobile{ShortDesc: name}),
+		ActorInstance: game.ActorInstance{
+			PerkCache: *game.NewPerkCache(perks, nil),
+		},
 	}
+	return mi
 }
 
 func newTestZone(id string) (*game.ZoneInstance, error) {

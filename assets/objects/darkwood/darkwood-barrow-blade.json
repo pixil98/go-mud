@@ -9,8 +9,7 @@
         "flags": ["wearable"],
         "wear_slots": ["wield"],
         "perks": [
-            { "type": "grant", "key": "attack", "arg": "1d8" },
-            { "type": "modifier", "key": "core.combat.damage_mod", "value": 2 }
+            { "type": "grant", "key": "attack", "arg": "1d8+2" }
         ]
     }
 }

@@ -318,7 +318,7 @@ func TestAttackEffect(t *testing.T) {
 				"target": {Type: targetTypeMobile, Mob: &MobileRef{
 					InstanceId: "mob-1",
 					Name:       "Goblin",
-					instance:   newTestMobInstance("mob-1", "Goblin"),
+					instance:   newTestMobInstance("mob-1", "Goblin", nil),
 				}},
 			},
 			wantStart:  true,
@@ -329,7 +329,7 @@ func TestAttackEffect(t *testing.T) {
 				"target": {Type: targetTypeMobile, Mob: &MobileRef{
 					InstanceId: "mob-1",
 					Name:       "Goblin",
-					instance:   newTestMobInstance("mob-1", "Goblin"),
+					instance:   newTestMobInstance("mob-1", "Goblin", nil),
 				}},
 			},
 			wantStart:  true,
@@ -350,7 +350,7 @@ func TestAttackEffect(t *testing.T) {
 				"target": {Type: targetTypeMobile, Mob: &MobileRef{
 					InstanceId: "mob-1",
 					Name:       "Goblin",
-					instance:   newTestMobInstance("mob-1", "Goblin"),
+					instance:   newTestMobInstance("mob-1", "Goblin", nil),
 				}},
 			},
 			startErr: fmt.Errorf("target is not alive"),
@@ -411,7 +411,7 @@ func TestAttackEffect_PeacefulArea(t *testing.T) {
 	targetSpecs := []assets.TargetSpec{{Name: "target"}}
 	targets := map[string]*TargetRef{
 		"target": {Type: targetTypeMobile, Mob: &MobileRef{
-			instance: newTestMobInstance("mob-1", "Goblin"),
+			instance: newTestMobInstance("mob-1", "Goblin", nil),
 		}},
 	}
 
@@ -433,7 +433,7 @@ func TestDamageEffect_InitiatesCombat(t *testing.T) {
 	_ = zone
 	player := newTestPlayer("player", "Player", room)
 
-	mob := newTestMobInstance("mob-1", "Goblin")
+	mob := newTestMobInstance("mob-1", "Goblin", nil)
 	cm := &mockCombatManager{}
 	effect := &damageEffect{combat: cm}
 
@@ -460,6 +460,121 @@ func TestDamageEffect_InitiatesCombat(t *testing.T) {
 	}
 	if cm.threatAmount != 10 {
 		t.Errorf("AddThreat amount = %d, want 10", cm.threatAmount)
+	}
+}
+
+func TestAoeDamageEffect(t *testing.T) {
+	hpPerks := []assets.Perk{
+		{Type: assets.PerkTypeModifier, Key: assets.ResourceKey(assets.ResourceHp, assets.ResourceAspectMax), Value: 100},
+	}
+
+	tests := map[string]struct {
+		mobCount   int
+		hitPlayers bool
+		wantStarts int
+		wantHPDrop bool // whether mobs should take damage
+		wantPlayer bool // whether other player should take damage
+	}{
+		"hits all mobs": {
+			mobCount:   3,
+			wantStarts: 3,
+			wantHPDrop: true,
+		},
+		"empty room": {
+			mobCount:   0,
+			wantStarts: 0,
+		},
+		"does not hit players by default": {
+			mobCount:   1,
+			hitPlayers: false,
+			wantStarts: 1,
+			wantHPDrop: true,
+			wantPlayer: false,
+		},
+		"hits players when configured": {
+			mobCount:   0,
+			hitPlayers: true,
+			wantPlayer: true,
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			room, zone := newTestRoomInZone("r", "Room", "z")
+			player := newTestPlayer("player", "Player", room)
+			setPlayerAP(player, 2)
+
+			// Add a second player to test player damage.
+			other := newTestPlayer("other", "Other", room)
+			other.SetOwn(hpPerks)
+			other.SetResource(assets.ResourceHp, 100)
+
+			var mobs []*game.MobileInstance
+			for i := range tc.mobCount {
+				id := fmt.Sprintf("mob-%d", i)
+				mi := newTestMobInstance(id, "mob", hpPerks)
+				mi.SetResource(assets.ResourceHp, 100)
+				room.AddMob(mi)
+				mobs = append(mobs, mi)
+			}
+
+			cm := &mockCombatManager{}
+			world := &mockZoneLocator{zones: map[string]*game.ZoneInstance{"z": zone}}
+			effect := &aoeDamageEffect{combat: cm, world: world}
+
+			config := map[string]string{"damage": "10"}
+			if tc.hitPlayers {
+				config["hit_players"] = "true"
+			}
+
+			fn := effect.Create("test:0", config, nil)
+			if err := fn(player, nil); err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+
+			if cm.startCount != tc.wantStarts {
+				t.Errorf("StartCombat count = %d, want %d", cm.startCount, tc.wantStarts)
+			}
+
+			for _, mi := range mobs {
+				cur, _ := mi.Resource(assets.ResourceHp)
+				if tc.wantHPDrop && cur >= 100 {
+					t.Errorf("mob %s HP should have dropped, got %d", mi.Id(), cur)
+				}
+			}
+
+			otherHP, _ := other.Resource(assets.ResourceHp)
+			if tc.wantPlayer && otherHP >= 100 {
+				t.Error("other player HP should have dropped")
+			}
+			if !tc.wantPlayer && otherHP != 100 {
+				t.Errorf("other player HP should be unchanged, got %d", otherHP)
+			}
+		})
+	}
+}
+
+func TestAoeDamageEffect_PeacefulArea(t *testing.T) {
+	room, zone := newTestRoomInZone("r", "Room", "z")
+	player := newTestPlayer("player", "Player", room)
+	setPlayerAP(player, 2)
+	player.AddSource("room", room.Perks)
+
+	room.Perks.SetOwn([]assets.Perk{
+		{Type: assets.PerkTypeGrant, Key: assets.PerkGrantPeaceful},
+	})
+
+	cm := &mockCombatManager{}
+	world := &mockZoneLocator{zones: map[string]*game.ZoneInstance{"z": zone}}
+	effect := &aoeDamageEffect{combat: cm, world: world}
+
+	fn := effect.Create("test:0", map[string]string{"damage": "10"}, nil)
+	err := fn(player, nil)
+	if err == nil {
+		t.Fatal("expected peaceful area error, got nil")
+	}
+	if !containsStr(err.Error(), "peaceful") {
+		t.Errorf("error = %q, want to contain \"peaceful\"", err.Error())
 	}
 }
 

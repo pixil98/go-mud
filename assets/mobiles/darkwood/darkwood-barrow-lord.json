@@ -2,19 +2,45 @@
     "version": 1,
     "id": "darkwood-barrow-lord",
     "spec": {
-        "aliases": ["lord", "barrow", "wight"],
+        "aliases": [
+            "lord",
+            "barrow",
+            "wight"
+        ],
         "short_desc": "the barrow lord",
         "long_desc": "A tall figure stands on the burial platform, clothed in the remnants of ancient armour, its presence filling the small chamber.",
-        "detailed_desc": "The barrow lord was clearly a person of significance in whatever era it came from — the armour it wears is ornate even in its current state of decay, the helm bearing a crest of corroded metal. It moves with a slow, deliberate certainty that suggests it has all the time it needs. The thing in its eye sockets is not light exactly, but it is aware, and it has noticed you.",
+        "detailed_desc": "The barrow lord was clearly a person of significance in whatever era it came from \u2014 the armour it wears is ornate even in its current state of decay, the helm bearing a crest of corroded metal. It moves with a slow, deliberate certainty that suggests it has all the time it needs. The thing in its eye sockets is not light exactly, but it is aware, and it has noticed you.",
         "level": 9,
         "perks": [
-            { "type": "modifier", "key": "core.resource.hp.max", "value": 140 },
-            { "type": "modifier", "key": "core.combat.ac", "value": 16 },
-            { "type": "modifier", "key": "core.combat.attack_mod", "value": 9 },
-            { "type": "modifier", "key": "core.combat.damage_mod", "value": 5 },
-            { "type": "grant", "key": "attack", "arg": "1d8" },
-            { "type": "grant", "key": "attack", "arg": "1d4" },
-            { "type": "grant", "key": "autoattack" }
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 140
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac",
+                "value": 16
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack_mod",
+                "value": 9
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "necrotic:1d8+5"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "necrotic:1d4+5"
+            },
+            {
+                "type": "grant",
+                "key": "autoattack"
+            }
         ]
     }
 }

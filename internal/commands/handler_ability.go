@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/assets"
+	"github.com/pixil98/go-mud/internal/combat"
 	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
 )
@@ -307,7 +308,6 @@ func (e *attackEffect) Create(_ string, _ map[string]string, targets []assets.Ta
 //   - "damage" (int string, required): flat damage before modifiers.
 //   - "damage_types" (comma-separated string, optional): damage type tags (e.g. "fire,ice").
 //
-// The caster's core.combat.damage_mod is always added as flat bonus damage.
 type damageEffect struct {
 	combat CombatManager
 }
@@ -334,34 +334,19 @@ func (e *damageEffect) Create(_ string, config map[string]string, targets []asse
 	if dt := config["damage_types"]; dt != "" {
 		damageTypes = strings.Split(dt, ",")
 	}
+	primaryType := assets.DamageTypeUntyped
+	if len(damageTypes) > 0 {
+		primaryType = damageTypes[0]
+	}
 
 	return func(actor AbilityActor, resolved map[string]*TargetRef) error {
 		if actor.HasGrant(assets.PerkGrantPeaceful, "") {
 			return errPeacefulArea
 		}
-		damage := baseDamage
 
-		// Add flat damage_mod from caster perks
-		damage += actor.ModifierValue(assets.PerkKeyCombatDmgMod)
-
-		// Apply damage type percentage bonuses and crit
-		if len(damageTypes) > 0 {
-			pctBonus := 0
-			critPct := 0
-			for _, dt := range damageTypes {
-				pctBonus += actor.ModifierValue(assets.DamageKey(dt, assets.DamageAspectPct))
-				critPct += actor.ModifierValue(assets.DamageKey(dt, assets.DamageAspectCritPct))
-			}
-			if pctBonus != 0 {
-				damage = damage * (100 + pctBonus) / 100
-			}
-			if critPct > 0 && randIntn(100) < critPct {
-				damage *= 2
-			}
-		}
-
-		if damage < 1 {
-			damage = 1
+		raw := baseDamage
+		if raw < 1 {
+			raw = 1
 		}
 
 		for _, spec := range targets {
@@ -369,7 +354,11 @@ func (e *damageEffect) Create(_ string, config map[string]string, targets []asse
 			if ref == nil {
 				continue
 			}
+			damage, reflected := combat.CalcDamage(raw, primaryType, actor, targetPerkReader(ref))
 			applyDamage(ref, damage)
+			if reflected > 0 {
+				actor.AdjustResource(assets.ResourceHp, -reflected)
+			}
 			if ref.Mob != nil {
 				_ = e.combat.StartCombat(actor, ref.Mob.instance)
 				e.combat.AddThreat(actor, ref.Mob.instance, damage)
@@ -380,6 +369,98 @@ func (e *damageEffect) Create(_ string, config map[string]string, targets []asse
 		return nil
 	}
 }
+
+// aoeDamageEffect applies damage to all mobs and (optionally) players in the caster's room.
+//
+// Config fields:
+//   - "damage" (int string, required): flat damage before modifiers.
+//   - "damage_type" (string, optional): damage type tag. Defaults to untyped.
+//   - "hit_players" ("true"/"false", optional): whether to hit other players. Default false.
+type aoeDamageEffect struct {
+	combat CombatManager
+	world  ZoneLocator
+}
+
+func (e *aoeDamageEffect) Spec() *HandlerSpec { return nil }
+
+func (e *aoeDamageEffect) ValidateConfig(config map[string]string) error {
+	if _, err := strconv.Atoi(config["damage"]); err != nil {
+		return fmt.Errorf("damage config required")
+	}
+	return nil
+}
+
+func (e *aoeDamageEffect) Create(_ string, config map[string]string, _ []assets.TargetSpec) EffectFunc {
+	baseDamage, _ := strconv.Atoi(config["damage"])
+	dmgType := config["damage_type"]
+	if dmgType == "" {
+		dmgType = assets.DamageTypeUntyped
+	}
+	hitPlayers := config["hit_players"] == "true"
+
+	return func(actor AbilityActor, _ map[string]*TargetRef) error {
+		if actor.HasGrant(assets.PerkGrantPeaceful, "") {
+			return errPeacefulArea
+		}
+
+		raw := baseDamage
+		if raw < 1 {
+			raw = 1
+		}
+
+		zoneId, roomId := actor.Location()
+		zi := e.world.GetZone(zoneId)
+		if zi == nil {
+			return nil
+		}
+		ri := zi.GetRoom(roomId)
+		if ri == nil {
+			return nil
+		}
+
+		ri.ForEachMob(func(mi *game.MobileInstance) {
+			damage, reflected := combat.CalcDamage(raw, dmgType, actor, mi)
+			mi.AdjustResource(assets.ResourceHp, -damage)
+			if reflected > 0 {
+				actor.AdjustResource(assets.ResourceHp, -reflected)
+			}
+			_ = e.combat.StartCombat(actor, mi)
+			e.combat.AddThreat(actor, mi, damage)
+		})
+
+		if hitPlayers {
+			actorId := actor.Id()
+			ri.ForEachPlayer(func(charId string, ci *game.CharacterInstance) {
+				if charId == actorId {
+					return
+				}
+				damage, reflected := combat.CalcDamage(raw, dmgType, actor, ci)
+				ci.AdjustResource(assets.ResourceHp, -damage)
+				if reflected > 0 {
+					actor.AdjustResource(assets.ResourceHp, -reflected)
+				}
+			})
+		}
+
+		return nil
+	}
+}
+
+// targetPerkReader returns a combat.PerkReader for the target so CalcDamage can
+// apply defense perks. Falls back to a no-op reader if the ref has no instance.
+func targetPerkReader(ref *TargetRef) combat.PerkReader {
+	if ref.Player != nil {
+		return ref.Player.session
+	}
+	if ref.Mob != nil {
+		return ref.Mob.instance
+	}
+	return nopPerkReader{}
+}
+
+type nopPerkReader struct{}
+
+func (nopPerkReader) ModifierValue(_ string) int { return 0 }
 
 // applyDamage reduces a target's HP by amount.
 func applyDamage(ref *TargetRef, amount int) {

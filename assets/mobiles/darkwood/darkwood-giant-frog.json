@@ -2,18 +2,39 @@
     "version": 1,
     "id": "darkwood-giant-frog",
     "spec": {
-        "aliases": ["frog", "giant"],
+        "aliases": [
+            "frog",
+            "giant"
+        ],
         "short_desc": "a giant bog frog",
         "long_desc": "A massive frog crouches on a hummock of peat, its mottled skin blending with the bog vegetation.",
         "detailed_desc": "The frog is roughly the size of a large dog, its mottled brown-green skin slick with moisture and patterned in a way that makes it nearly invisible against the bog vegetation until it moves. It watches you with amber eyes the size of fists, throat pulsing slowly. Its tongue, when it moves, is extraordinarily fast.",
         "level": 4,
         "perks": [
-            { "type": "modifier", "key": "core.resource.hp.max", "value": 32 },
-            { "type": "modifier", "key": "core.combat.ac", "value": 11 },
-            { "type": "modifier", "key": "core.combat.attack_mod", "value": 3 },
-            { "type": "modifier", "key": "core.combat.damage_mod", "value": 1 },
-            { "type": "grant", "key": "attack", "arg": "1d6" },
-            { "type": "grant", "key": "autoattack" }
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 32
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac",
+                "value": 11
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack_mod",
+                "value": 3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "physical:1d6+1"
+            },
+            {
+                "type": "grant",
+                "key": "autoattack"
+            }
         ]
     }
 }

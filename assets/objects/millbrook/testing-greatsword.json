@@ -10,8 +10,7 @@
         "wear_slots": ["wield"],
         "perks": [
             { "type": "grant", "key": "autoattack" },
-            { "type": "grant", "key": "attack", "arg": "4d10" },
-            { "type": "modifier", "key": "core.combat.damage_mod", "value": 20 }
+            { "type": "grant", "key": "attack", "arg": "physical:4d10+20" }
         ]
     }
 }

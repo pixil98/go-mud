@@ -636,7 +636,7 @@ func (ci *CharacterInstance) StatSections() []StatSection {
 			continue
 		}
 		switch key {
-		case assets.PerkKeyCombatAC, assets.PerkKeyCombatAttackMod, assets.PerkKeyCombatDmgMod:
+		case assets.PerkKeyCombatAC, assets.PerkKeyCombatAttackMod:
 			continue
 		}
 		modLines = append(modLines, StatLine{Value: fmt.Sprintf("  %s: %+d", key, val)})

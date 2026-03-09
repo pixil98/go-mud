@@ -8,7 +8,6 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/google/uuid"
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/storage"
@@ -172,9 +171,12 @@ func (ri *RoomInstance) Reset(instances map[string]*ZoneInstance) error {
 	def := ri.Room.Get()
 	ri.mobiles = make(map[string]*MobileInstance)
 	for _, mob := range def.MobSpawns {
-		if _, err := ri.spawnMob(mob); err != nil {
+		mi, err := NewMobileInstance(mob)
+		if err != nil {
 			slog.Error("respawning mob", "mob", mob.Id(), "room", ri.Room.Id(), "error", err)
+			continue
 		}
+		ri.addMob(mi)
 	}
 	ri.mu.Unlock()
 
@@ -235,42 +237,18 @@ func (ri *RoomInstance) ForEachMob(fn func(*MobileInstance)) {
 	}
 }
 
-// spawnMob creates a new MobileInstance and adds it to the room.
-// Caller must hold the write lock.
-func (ri *RoomInstance) spawnMob(mob storage.SmartIdentifier[*assets.Mobile]) (*MobileInstance, error) {
-	def := mob.Get()
-	eq := NewEquipment()
-	mi := &MobileInstance{
-		InstanceId: uuid.New().String(),
-		Mobile:     mob,
-		zoneId:     ri.Room.Get().Zone.Id(),
-		roomId:     ri.Room.Id(),
-		ActorInstance: ActorInstance{
-			inventory: NewInventory(),
-			equipment: eq,
-			level:     def.Level,
-			PerkCache: *NewPerkCache(def.Perks, map[string]PerkSource{"equipment": eq}),
-		},
-	}
-	mi.initResources()
-	for _, spawn := range def.Inventory {
-		oi, err := SpawnObject(spawn)
-		if err != nil {
-			return nil, fmt.Errorf("spawning %q: %w", mob.Id(), err)
-		}
-		mi.inventory.AddObj(oi)
-	}
-	for slot, spawn := range def.Equipment {
-		oi, err := SpawnObject(spawn)
-		if err != nil {
-			return nil, fmt.Errorf("spawning %q: %w", mob.Id(), err)
-		}
-		if err := mi.equipment.Equip(slot, 0, oi); err != nil {
-			return nil, fmt.Errorf("equipping %q on %q: %w", slot, mob.Id(), err)
-		}
-	}
+// AddMob places an existing MobileInstance into the room, setting its location.
+func (ri *RoomInstance) AddMob(mi *MobileInstance) {
+	ri.mu.Lock()
+	defer ri.mu.Unlock()
+	ri.addMob(mi)
+}
+
+// addMob inserts a mob and sets its location. Caller must hold the write lock.
+func (ri *RoomInstance) addMob(mi *MobileInstance) {
+	mi.zoneId = ri.Room.Get().Zone.Id()
+	mi.roomId = ri.Room.Id()
 	ri.mobiles[mi.InstanceId] = mi
-	return mi, nil
 }
 
 // FindObj searches room objects for one whose definition matches the given name.

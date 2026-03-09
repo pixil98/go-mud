@@ -2,18 +2,39 @@
     "version": 1,
     "id": "darkwood-skeleton",
     "spec": {
-        "aliases": ["skeleton", "barrow"],
+        "aliases": [
+            "skeleton",
+            "barrow"
+        ],
         "short_desc": "an animated skeleton",
         "long_desc": "A skeleton moves through the barrow chamber with slow, purposeful steps, its eye sockets empty but aware.",
         "detailed_desc": "The bones are old and yellowed, held together by something that is not sinew and not magic in any recognisable form. It moves without sound except for the dry click of joints, carrying a corroded short sword with a grip that seems to predate its current purpose. It gives the impression of something that has been doing this for a very long time and has grown very good at it.",
         "level": 7,
         "perks": [
-            { "type": "modifier", "key": "core.resource.hp.max", "value": 78 },
-            { "type": "modifier", "key": "core.combat.ac", "value": 14 },
-            { "type": "modifier", "key": "core.combat.attack_mod", "value": 6 },
-            { "type": "modifier", "key": "core.combat.damage_mod", "value": 3 },
-            { "type": "grant", "key": "attack", "arg": "1d8" },
-            { "type": "grant", "key": "autoattack" }
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 78
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac",
+                "value": 14
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack_mod",
+                "value": 6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "physical:1d8+3"
+            },
+            {
+                "type": "grant",
+                "key": "autoattack"
+            }
         ]
     }
 }

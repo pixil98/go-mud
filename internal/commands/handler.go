@@ -121,6 +121,7 @@ func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, pub
 	// Register effect handlers
 	h.effects["attack"] = &attackEffect{combat: combat}
 	h.effects["damage"] = &damageEffect{combat: combat}
+	h.effects["aoe_damage"] = &aoeDamageEffect{combat: combat, world: world}
 	h.effects["actor_buff"] = &actorBuffEffect{}
 	h.effects["room_buff"] = &roomBuffEffect{world: world}
 	h.effects["zone_buff"] = &zoneBuffEffect{world: world}

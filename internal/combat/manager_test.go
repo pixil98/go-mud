@@ -61,11 +61,11 @@ func (c *mockCombatant) GrantArgs(key string) []string {
 	return c.grants[key]
 }
 
-func (c *mockCombatant) CombatTargetId() string                    { return c.combatTargetId }
-func (c *mockCombatant) SetCombatTargetId(id string)               { c.combatTargetId = id }
-func (c *mockCombatant) Location() (string, string)                { return c.zoneId, c.roomId }
-func (c *mockCombatant) Level() int                                { return c.level }
-func (c *mockCombatant) OnDeath() []*game.ObjectInstance           { c.deathCalled = true; return nil }
+func (c *mockCombatant) CombatTargetId() string          { return c.combatTargetId }
+func (c *mockCombatant) SetCombatTargetId(id string)     { c.combatTargetId = id }
+func (c *mockCombatant) Location() (string, string)      { return c.zoneId, c.roomId }
+func (c *mockCombatant) Level() int                      { return c.level }
+func (c *mockCombatant) OnDeath() []*game.ObjectInstance { c.deathCalled = true; return nil }
 
 func newMC(id string) *mockCombatant {
 	return &mockCombatant{
@@ -105,9 +105,9 @@ func TestManager_StartCombat(t *testing.T) {
 		bAlive  bool
 		wantErr bool
 	}{
-		"both alive: success":    {aAlive: true, bAlive: true},
-		"dead attacker: error":   {aAlive: false, bAlive: true, wantErr: true},
-		"dead target: error":     {aAlive: true, bAlive: false, wantErr: true},
+		"both alive: success":  {aAlive: true, bAlive: true},
+		"dead attacker: error": {aAlive: false, bAlive: true, wantErr: true},
+		"dead target: error":   {aAlive: true, bAlive: false, wantErr: true},
 	}
 
 	for name, tc := range tests {
@@ -190,10 +190,10 @@ func TestManager_AddThreat(t *testing.T) {
 		amount          int
 		want            int
 	}{
-		"basic threat":       {amount: 10, want: 10},
-		"with threat mod":    {sourceThreatMod: 5, amount: 10, want: 15},
-		"zero amount":        {amount: 0, want: 0},
-		"accumulates":        {amount: 7, want: 7},
+		"basic threat":    {amount: 10, want: 10},
+		"with threat mod": {sourceThreatMod: 5, amount: 10, want: 15},
+		"zero amount":     {amount: 0, want: 0},
+		"accumulates":     {amount: 7, want: 7},
 	}
 
 	for name, tc := range tests {
@@ -409,8 +409,8 @@ func TestManager_Tick_DeathCleanup(t *testing.T) {
 
 	a.grants[assets.PerkGrantAutoAttack] = []string{""}
 	a.grants[assets.PerkGrantAttack] = []string{"1d4"}
-	a.modifiers[assets.PerkKeyCombatAttackMod] = 100  // guaranteed hit
-	a.modifiers[assets.PerkKeyCombatDmgMod] = 1000    // guaranteed lethal
+	a.modifiers[assets.PerkKeyCombatAttackMod] = 100                                    // guaranteed hit
+	a.modifiers[assets.DamageKey(assets.DamageTypeAll, assets.DamageAspectFlat)] = 1000 // guaranteed lethal
 
 	if err := m.StartCombat(a, b); err != nil {
 		t.Fatalf("StartCombat: %v", err)
