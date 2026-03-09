@@ -55,13 +55,13 @@ func NewWorldScopes(world WorldView) *WorldScopes {
 
 // SpacesFor returns search spaces for the given scope flags, ordered from
 // narrowest (inventory) to broadest (world).
-func (ws *WorldScopes) SpacesFor(s scope, ci *game.CharacterInstance) ([]SearchSpace, error) {
-	zoneId, roomId := ci.Location()
+func (ws *WorldScopes) SpacesFor(s scope, actor ScopeActor) ([]SearchSpace, error) {
+	zoneId, roomId := actor.Location()
 
 	var spaces []SearchSpace
 
 	if s&scopeInventory != 0 {
-		if i := ci.GetInventory(); i != nil {
+		if i := actor.GetInventory(); i != nil {
 			spaces = append(spaces, SearchSpace{
 				Finder:  objectOnlyFinder{i},
 				Remover: i,
@@ -69,7 +69,7 @@ func (ws *WorldScopes) SpacesFor(s scope, ci *game.CharacterInstance) ([]SearchS
 		}
 	}
 	if s&scopeEquipment != 0 {
-		if eq := ci.GetEquipment(); eq != nil {
+		if eq := actor.GetEquipment(); eq != nil {
 			spaces = append(spaces, SearchSpace{
 				Finder:  objectOnlyFinder{eq},
 				Remover: eq,
@@ -84,7 +84,7 @@ func (ws *WorldScopes) SpacesFor(s scope, ci *game.CharacterInstance) ([]SearchS
 		})
 	}
 	if s&scopeGroup != 0 {
-		if grp := ci.GetGroup(); grp != nil {
+		if grp := actor.GetGroup(); grp != nil {
 			spaces = append(spaces, SearchSpace{
 				Finder: playerOnlyFinder{grp},
 			})

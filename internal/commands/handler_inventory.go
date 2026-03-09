@@ -8,6 +8,14 @@ import (
 	"github.com/pixil98/go-mud/internal/game"
 )
 
+// InventoryActor provides the character state needed by the inventory handler.
+type InventoryActor interface {
+	CommandActor
+	GetInventory() *game.Inventory
+}
+
+var _ InventoryActor = (*game.CharacterInstance)(nil)
+
 // InventoryHandlerFactory creates handlers that list the player's inventory.
 type InventoryHandlerFactory struct {
 	pub game.Publisher
@@ -27,17 +35,19 @@ func (f *InventoryHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *InventoryHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, in *CommandInput) error {
-		lines := []string{"You are carrying:"}
-		lines = append(lines, FormatInventoryItems(in.Char.GetInventory())...)
+	return Adapt[InventoryActor](f.handle), nil
+}
 
-		output := strings.Join(lines, "\n")
-		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil, []byte(output))
-		}
+func (f *InventoryHandlerFactory) handle(ctx context.Context, char InventoryActor, in *CommandInput) error {
+	lines := []string{"You are carrying:"}
+	lines = append(lines, FormatInventoryItems(char.GetInventory())...)
 
-		return nil
-	}, nil
+	output := strings.Join(lines, "\n")
+	if f.pub != nil {
+		return f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte(output))
+	}
+
+	return nil
 }
 
 // FormatInventoryItems returns indented lines describing items in an inventory.

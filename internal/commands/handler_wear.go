@@ -8,6 +8,17 @@ import (
 	"github.com/pixil98/go-mud/internal/game"
 )
 
+// WearActor provides the character state needed by the wear handler.
+type WearActor interface {
+	CommandActor
+	Location() (zoneId, roomId string)
+	GetInventory() *game.Inventory
+	GetEquipment() *game.Equipment
+	Asset() *assets.Character
+}
+
+var _ WearActor = (*game.CharacterInstance)(nil)
+
 // WearHandlerFactory creates handlers for equipping wearable items.
 // Targets:
 //   - target (required): the object to wear
@@ -33,74 +44,76 @@ func (f *WearHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *WearHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, in *CommandInput) error {
-		target := in.Targets["target"]
-		if target == nil || target.Obj == nil {
-			return NewUserError("Wear what?")
+	return Adapt[WearActor](f.handle), nil
+}
+
+func (f *WearHandlerFactory) handle(ctx context.Context, char WearActor, in *CommandInput) error {
+	target := in.Targets["target"]
+	if target == nil || target.Obj == nil {
+		return NewUserError("Wear what?")
+	}
+
+	// Use resolved object definition
+	obj := target.Obj.instance.Object.Get()
+
+	// Check if the item is wearable
+	if !obj.HasFlag(assets.ObjectFlagWearable) {
+		return NewUserError(fmt.Sprintf("You can't wear %s.", obj.ShortDesc))
+	}
+
+	actor := char.Asset()
+	race := actor.Race.Get()
+
+	// Find first wear slot that the race supports and has capacity
+	var slot string
+	for _, s := range obj.WearSlots {
+		maxSlots := race.SlotCount(s)
+		if maxSlots == 0 {
+			continue // Race doesn't have this slot type
 		}
-
-		// Use resolved object definition
-		obj := target.Obj.instance.Object.Get()
-
-		// Check if the item is wearable
-		if !obj.HasFlag(assets.ObjectFlagWearable) {
-			return NewUserError(fmt.Sprintf("You can't wear %s.", obj.ShortDesc))
+		if char.GetEquipment().SlotCount(s) < maxSlots {
+			slot = s
+			break
 		}
-
-		actor := in.Char.Character.Get()
-		race := actor.Race.Get()
-
-		// Find first wear slot that the race supports and has capacity
-		var slot string
+	}
+	if slot == "" {
+		// Distinguish "race can't wear this" from "slots full"
+		hasSlot := false
 		for _, s := range obj.WearSlots {
-			maxSlots := race.SlotCount(s)
-			if maxSlots == 0 {
-				continue // Race doesn't have this slot type
-			}
-			if in.Char.GetEquipment().SlotCount(s) < maxSlots {
-				slot = s
+			if race.SlotCount(s) > 0 {
+				hasSlot = true
 				break
 			}
 		}
-		if slot == "" {
-			// Distinguish "race can't wear this" from "slots full"
-			hasSlot := false
-			for _, s := range obj.WearSlots {
-				if race.SlotCount(s) > 0 {
-					hasSlot = true
-					break
-				}
-			}
-			if !hasSlot {
-				return NewUserError(fmt.Sprintf("Your body can't wear %s.", obj.ShortDesc))
-			}
-			return NewUserError("You're already wearing something in that slot.")
+		if !hasSlot {
+			return NewUserError(fmt.Sprintf("Your body can't wear %s.", obj.ShortDesc))
 		}
+		return NewUserError("You're already wearing something in that slot.")
+	}
 
-		// Remove from source and equip
-		oi := target.Obj.source.RemoveObj(target.Obj.InstanceId)
-		if oi == nil {
-			return NewUserError(fmt.Sprintf("You're not carrying %s.", target.Obj.Name))
-		}
+	// Remove from source and equip
+	oi := target.Obj.source.RemoveObj(target.Obj.InstanceId)
+	if oi == nil {
+		return NewUserError(fmt.Sprintf("You're not carrying %s.", target.Obj.Name))
+	}
 
-		maxSlots := race.SlotCount(slot)
-		err := in.Char.GetEquipment().Equip(slot, maxSlots, oi)
-		if err != nil {
-			// Put it back on failure
-			in.Char.GetInventory().AddObj(oi)
-			return NewUserError("You're already wearing something in that slot.")
-		}
+	maxSlots := race.SlotCount(slot)
+	err := char.GetEquipment().Equip(slot, maxSlots, oi)
+	if err != nil {
+		// Put it back on failure
+		char.GetInventory().AddObj(oi)
+		return NewUserError("You're already wearing something in that slot.")
+	}
 
-		// Send self message
-		selfMsg := fmt.Sprintf("You wear %s.", obj.ShortDesc)
-		if err := f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil, []byte(selfMsg)); err != nil {
-			return err
-		}
+	// Send self message
+	selfMsg := fmt.Sprintf("You wear %s.", obj.ShortDesc)
+	if err := f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte(selfMsg)); err != nil {
+		return err
+	}
 
-		// Broadcast to room
-		roomMsg := fmt.Sprintf("%s wears %s.", actor.Name, obj.ShortDesc)
-		zoneId, roomId := in.Char.Location()
-		room := f.zones.GetZone(zoneId).GetRoom(roomId)
-		return f.pub.Publish(room, []string{in.Char.Id()}, []byte(roomMsg))
-	}, nil
+	// Broadcast to room
+	roomMsg := fmt.Sprintf("%s wears %s.", actor.Name, obj.ShortDesc)
+	zoneId, roomId := char.Location()
+	room := f.zones.GetZone(zoneId).GetRoom(roomId)
+	return f.pub.Publish(room, []string{char.Id()}, []byte(roomMsg))
 }

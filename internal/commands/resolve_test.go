@@ -69,7 +69,7 @@ type mockScopes struct {
 	spaces []SearchSpace
 }
 
-func (s *mockScopes) SpacesFor(scope, *game.CharacterInstance) ([]SearchSpace, error) {
+func (s *mockScopes) SpacesFor(scope, ScopeActor) ([]SearchSpace, error) {
 	return s.spaces, nil
 }
 

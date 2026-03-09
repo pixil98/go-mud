@@ -4,17 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/storage"
 )
-
-func newTestPlayer(charId, name string, room *game.RoomInstance) *game.CharacterInstance {
-	charRef := storage.NewResolvedSmartIdentifier(charId, &assets.Character{Name: name})
-	ps, _ := game.NewCharacterInstance(charRef, make(chan []byte, 10), room.Room.Get().Zone.Id(), room.Room.Id())
-	room.AddPlayer(charId, ps)
-	return ps
-}
 
 func TestMoveFollowers(t *testing.T) {
 	tests := map[string]struct {

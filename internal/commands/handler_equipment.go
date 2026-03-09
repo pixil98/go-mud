@@ -5,8 +5,18 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 )
+
+// EquipmentActor provides the character state needed by the equipment handler.
+type EquipmentActor interface {
+	CommandActor
+	GetEquipment() *game.Equipment
+	Asset() *assets.Character
+}
+
+var _ EquipmentActor = (*game.CharacterInstance)(nil)
 
 // EquipmentHandlerFactory creates handlers that list the player's equipped items.
 type EquipmentHandlerFactory struct {
@@ -26,26 +36,28 @@ func (f *EquipmentHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *EquipmentHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, in *CommandInput) error {
-		// Build the slot list to display: race slots if available, otherwise equipped slots
-		eq := in.Char.GetEquipment()
-		slots := in.Char.Character.Get().Race.Get().WearSlots
-		if len(slots) == 0 && eq != nil {
-			eq.ForEachSlot(func(item game.EquipSlot) {
-				slots = append(slots, item.Slot)
-			})
-		}
+	return Adapt[EquipmentActor](f.handle), nil
+}
 
-		lines := []string{"You are wearing:"}
-		lines = append(lines, FormatEquipmentSlots(eq, slots)...)
+func (f *EquipmentHandlerFactory) handle(ctx context.Context, char EquipmentActor, in *CommandInput) error {
+	// Build the slot list to display: race slots if available, otherwise equipped slots
+	eq := char.GetEquipment()
+	slots := char.Asset().Race.Get().WearSlots
+	if len(slots) == 0 && eq != nil {
+		eq.ForEachSlot(func(item game.EquipSlot) {
+			slots = append(slots, item.Slot)
+		})
+	}
 
-		output := strings.Join(lines, "\n")
-		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil, []byte(output))
-		}
+	lines := []string{"You are wearing:"}
+	lines = append(lines, FormatEquipmentSlots(eq, slots)...)
 
-		return nil
-	}, nil
+	output := strings.Join(lines, "\n")
+	if f.pub != nil {
+		return f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte(output))
+	}
+
+	return nil
 }
 
 func formatSlotLine(slot string, desc string) string {

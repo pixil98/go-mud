@@ -7,6 +7,15 @@ import (
 	"github.com/pixil98/go-mud/internal/game"
 )
 
+// MessageActor provides the character state needed by the message handler.
+type MessageActor interface {
+	CommandActor
+	Location() (zoneId, roomId string)
+	GetGroup() *game.Group
+}
+
+var _ MessageActor = (*game.CharacterInstance)(nil)
+
 // MessageHandlerFactory creates handlers that publish messages to scoped groups.
 // Config:
 //   - scope (required): "room", "zone", "world", or "player"
@@ -48,52 +57,54 @@ func (f *MessageHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *MessageHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, in *CommandInput) error {
-		scope := in.Config["scope"]
-		recipientMessage := in.Config["recipient_message"]
-		senderMessage := in.Config["sender_message"]
+	return Adapt[MessageActor](f.handle), nil
+}
 
-		// Send 2nd-person message to actor if configured
-		if senderMessage != "" {
-			if err := f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil, []byte(senderMessage)); err != nil {
-				return err
-			}
+func (f *MessageHandlerFactory) handle(ctx context.Context, char MessageActor, in *CommandInput) error {
+	scope := in.Config["scope"]
+	recipientMessage := in.Config["recipient_message"]
+	senderMessage := in.Config["sender_message"]
+
+	// Send 2nd-person message to actor if configured
+	if senderMessage != "" {
+		if err := f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte(senderMessage)); err != nil {
+			return err
 		}
+	}
 
-		// Send message to scope targets, excluding actor only if they got a sender_message
-		zoneId, roomId := in.Char.Location()
-		var exclude []string
-		if senderMessage != "" {
-			exclude = []string{in.Char.Id()}
+	// Send message to scope targets, excluding actor only if they got a sender_message
+	zoneId, roomId := char.Location()
+	var exclude []string
+	if senderMessage != "" {
+		exclude = []string{char.Id()}
+	}
+
+	switch scope {
+	case "room":
+		room := f.world.GetZone(zoneId).GetRoom(roomId)
+		return f.pub.Publish(room, exclude, []byte(recipientMessage))
+
+	case "zone":
+		zone := f.world.GetZone(zoneId)
+		return f.pub.Publish(zone, exclude, []byte(recipientMessage))
+
+	case "world":
+		return f.pub.Publish(f.world, exclude, []byte(recipientMessage))
+
+	case "player":
+		target := in.Targets["target"]
+		if target == nil || target.Player == nil {
+			return NewUserError("They're not here.")
 		}
+		return f.pub.Publish(game.SinglePlayer(target.Player.CharId), nil, []byte(recipientMessage))
 
-		switch scope {
-		case "room":
-			room := f.world.GetZone(zoneId).GetRoom(roomId)
-			return f.pub.Publish(room, exclude, []byte(recipientMessage))
-
-		case "zone":
-			zone := f.world.GetZone(zoneId)
-			return f.pub.Publish(zone, exclude, []byte(recipientMessage))
-
-		case "world":
-			return f.pub.Publish(f.world, exclude, []byte(recipientMessage))
-
-		case "player":
-			target := in.Targets["target"]
-			if target == nil || target.Player == nil {
-				return NewUserError("They're not here.")
-			}
-			return f.pub.Publish(game.SinglePlayer(target.Player.CharId), nil, []byte(recipientMessage))
-
-		case "group":
-			grp := in.Char.GetGroup()
-			if grp == nil {
-				return NewUserError("You are not in a group.")
-			}
-			return f.pub.Publish(grp, exclude, []byte(recipientMessage))
+	case "group":
+		grp := char.GetGroup()
+		if grp == nil {
+			return NewUserError("You are not in a group.")
 		}
+		return f.pub.Publish(grp, exclude, []byte(recipientMessage))
+	}
 
-		return nil
-	}, nil
+	return nil
 }

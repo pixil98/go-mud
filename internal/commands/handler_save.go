@@ -9,6 +9,14 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
+// SaveActor provides the character state needed by the save handler.
+type SaveActor interface {
+	CommandActor
+	SaveCharacter(storage.Storer[*assets.Character]) error
+}
+
+var _ SaveActor = (*game.CharacterInstance)(nil)
+
 // SaveHandlerFactory creates handlers that persist the player's character.
 type SaveHandlerFactory struct {
 	chars storage.Storer[*assets.Character]
@@ -28,15 +36,17 @@ func (f *SaveHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *SaveHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, in *CommandInput) error {
-		if err := in.Char.SaveCharacter(f.chars); err != nil {
-			return fmt.Errorf("saving character: %w", err)
-		}
+	return Adapt[SaveActor](f.handle), nil
+}
 
-		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil, []byte("Character saved."))
-		}
+func (f *SaveHandlerFactory) handle(ctx context.Context, char SaveActor, in *CommandInput) error {
+	if err := char.SaveCharacter(f.chars); err != nil {
+		return fmt.Errorf("saving character: %w", err)
+	}
 
-		return nil
-	}, nil
+	if f.pub != nil {
+		return f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte("Character saved."))
+	}
+
+	return nil
 }

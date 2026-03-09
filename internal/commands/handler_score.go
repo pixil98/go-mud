@@ -10,6 +10,14 @@ import (
 
 const scoreBoxWidth = 40
 
+// ScoreActor provides the character state needed by the score handler.
+type ScoreActor interface {
+	CommandActor
+	StatSections() []game.StatSection
+}
+
+var _ ScoreActor = (*game.CharacterInstance)(nil)
+
 // ScoreHandlerFactory creates handlers that display character/mobile stats.
 type ScoreHandlerFactory struct {
 	pub game.Publisher
@@ -32,21 +40,23 @@ func (f *ScoreHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *ScoreHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, in *CommandInput) error {
-		sections, err := f.resolveSections(in)
-		if err != nil {
-			return err
-		}
-
-		output := renderBox(sections, scoreBoxWidth)
-		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil, []byte(output))
-		}
-		return nil
-	}, nil
+	return Adapt[ScoreActor](f.handle), nil
 }
 
-func (f *ScoreHandlerFactory) resolveSections(in *CommandInput) ([]game.StatSection, error) {
+func (f *ScoreHandlerFactory) handle(ctx context.Context, char ScoreActor, in *CommandInput) error {
+	sections, err := f.resolveSections(char, in)
+	if err != nil {
+		return err
+	}
+
+	output := renderBox(sections, scoreBoxWidth)
+	if f.pub != nil {
+		return f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte(output))
+	}
+	return nil
+}
+
+func (f *ScoreHandlerFactory) resolveSections(char ScoreActor, in *CommandInput) ([]game.StatSection, error) {
 	if target := in.Targets["target"]; target != nil {
 		switch target.Type {
 		case targetTypePlayer:
@@ -56,7 +66,7 @@ func (f *ScoreHandlerFactory) resolveSections(in *CommandInput) ([]game.StatSect
 		}
 	}
 
-	return in.Char.StatSections(), nil
+	return char.StatSections(), nil
 }
 
 // --- Box rendering ---

@@ -13,15 +13,37 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
+// CommandActor is the minimal interface for the character executing a command.
+// Handlers that need more define their own interface extending CommandActor
+// and use Adapt to get compile-time type safety.
+type CommandActor interface {
+	Id() string
+	Name() string
+}
+
 // CommandInput is what handlers receive after config processing.
 type CommandInput struct {
-	Char    *game.CharacterInstance // Active character instance
-	Targets map[string]*TargetRef  // Resolved targets by name
-	Config  map[string]string      // Expanded config values (all templates resolved)
+	Char    CommandActor          // Active character
+	Targets map[string]*TargetRef // Resolved targets by name
+	Config  map[string]string     // Expanded config values (all templates resolved)
 }
 
 // CommandFunc is the signature for compiled command functions.
 type CommandFunc func(ctx context.Context, in *CommandInput) error
+
+// HandlerFunc is a typed command handler that receives a handler-specific
+// actor interface. Use Adapt to wrap it into a CommandFunc for dispatch.
+type HandlerFunc[A CommandActor] func(ctx context.Context, char A, in *CommandInput) error
+
+// Adapt wraps a typed HandlerFunc into an untyped CommandFunc for the dispatch
+// map. The type assertion is safe: each handler file includes a compile-time
+// assertion (var _ XxxActor = (*game.CharacterInstance)(nil)) guaranteeing the
+// concrete type satisfies A.
+func Adapt[A CommandActor](fn HandlerFunc[A]) CommandFunc {
+	return func(ctx context.Context, in *CommandInput) error {
+		return fn(ctx, in.Char.(A), in)
+	}
+}
 
 // TargetRequirement describes an expected target for a handler.
 type TargetRequirement struct {
@@ -159,10 +181,14 @@ func (h *Handler) registerSkill(id string, ability *assets.Ability, world WorldV
 		return fmt.Errorf("unknown effect handler %q", ability.Handler)
 	}
 	cmdFunc := func(ctx context.Context, in *CommandInput) error {
-		if !in.Char.HasGrant(assets.PerkGrantUnlockAbility, id) {
+		actor, ok := in.Char.(AbilityActor)
+		if !ok {
+			return fmt.Errorf("character does not support abilities")
+		}
+		if !actor.HasGrant(assets.PerkGrantUnlockAbility, id) {
 			return NewUserError("You don't know how to do that.")
 		}
-		return executeAbility(ability, in, in.Targets, world, pub, effect)
+		return executeAbility(ability, actor, in, in.Targets, world, pub, effect)
 	}
 
 	cc := &compiledCommand{cmd: &cmd, cmdFunc: cmdFunc}

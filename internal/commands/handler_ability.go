@@ -13,17 +13,48 @@ import (
 // randIntn wraps rand.IntN for testability.
 var randIntn = rand.IntN
 
+// AbilityActor provides the character state needed by the ability and effect
+// subsystem. This is intentionally wide because the ability system genuinely
+// touches resources, perks, combat, location, and asset data.
+type AbilityActor interface {
+	CommandActor
+	Location() (zoneId, roomId string)
+	Asset() *assets.Character
+	IsInCombat() bool
+	IsAlive() bool
+	Level() int
+	Resource(name string) (current, max int)
+	AdjustResource(name string, delta int)
+	SpendAP(cost int) bool
+	HasGrant(key, arg string) bool
+	ModifierValue(key string) int
+	GrantArgs(key string) []string
+	AddTimedPerks(name string, perks []assets.Perk, ticks int)
+	// combat.Combatant methods — needed by attack/damage effects that call StartCombat.
+	SetInCombat(bool)
+	CombatTargetId() string
+	SetCombatTargetId(id string)
+	OnDeath() []*game.ObjectInstance
+}
+
+var _ AbilityActor = (*game.CharacterInstance)(nil)
+
 // EffectHandler executes an ability's gameplay effect (damage, healing, etc.).
+//
+// TODO: Each effect implementation (attackEffect, damageEffect, etc.) should
+// define its own narrow actor interface instead of taking the full AbilityActor.
+// This would let effect tests use minimal mocks rather than satisfying the
+// entire AbilityActor contract.
 type EffectHandler interface {
-	Execute(ability *assets.Ability, in *CommandInput, targets map[string]*TargetRef) error
+	Execute(ability *assets.Ability, actor AbilityActor, targets map[string]*TargetRef) error
 }
 
 // executeAbility runs an ability's effect handler and sends its messages.
 // If effect is nil, only messages are sent.
-func executeAbility(ability *assets.Ability, in *CommandInput, targets map[string]*TargetRef, world WorldView, pub game.Publisher, effect EffectHandler) error {
+func executeAbility(ability *assets.Ability, actor AbilityActor, in *CommandInput, targets map[string]*TargetRef, world WorldView, pub game.Publisher, effect EffectHandler) error {
 	// Check resource cost before spending any AP
 	if ability.ResourceCost > 0 {
-		cur, _ := in.Char.Resource(ability.Resource)
+		cur, _ := actor.Resource(ability.Resource)
 		if cur < ability.ResourceCost {
 			return NewUserError(fmt.Sprintf("You don't have enough %s.", ability.Resource))
 		}
@@ -34,18 +65,18 @@ func executeAbility(ability *assets.Ability, in *CommandInput, targets map[strin
 	if apCost == 0 {
 		apCost = 1
 	}
-	if !in.Char.SpendAP(apCost) {
+	if !actor.SpendAP(apCost) {
 		return NewUserError("You're not ready to do that yet.")
 	}
 
 	// Deduct resource cost
 	if ability.ResourceCost > 0 {
-		in.Char.AdjustResource(ability.Resource, -ability.ResourceCost)
+		actor.AdjustResource(ability.Resource, -ability.ResourceCost)
 	}
 
 	// Run effect first — if it fails, don't send messages
 	if effect != nil {
-		if err := effect.Execute(ability, in, targets); err != nil {
+		if err := effect.Execute(ability, actor, targets); err != nil {
 			return err
 		}
 	}
@@ -55,12 +86,12 @@ func executeAbility(ability *assets.Ability, in *CommandInput, targets map[strin
 	}
 
 	ctx := &templateContext{
-		Actor:   in.Char.Character.Get(),
+		Actor:   actor.Asset(),
 		Targets: targets,
 		Color:   display.Color,
 	}
 
-	charId := in.Char.Id()
+	charId := actor.Id()
 
 	// Actor message
 	if ability.Messages.Actor != "" {
@@ -102,7 +133,7 @@ func executeAbility(ability *assets.Ability, in *CommandInput, targets map[strin
 				exclude = append(exclude, ref.Player.CharId)
 			}
 		}
-		zoneId, roomId := in.Char.Location()
+		zoneId, roomId := actor.Location()
 		room := world.GetZone(zoneId).GetRoom(roomId)
 		if err := pub.Publish(room, exclude, []byte(msg)); err != nil {
 			return err
@@ -119,8 +150,8 @@ type attackEffect struct {
 	combat CombatManager
 }
 
-func (e *attackEffect) Execute(ability *assets.Ability, in *CommandInput, targets map[string]*TargetRef) error {
-	if in.Char.HasGrant(assets.PerkGrantPeaceful, "") {
+func (e *attackEffect) Execute(ability *assets.Ability, actor AbilityActor, targets map[string]*TargetRef) error {
+	if actor.HasGrant(assets.PerkGrantPeaceful, "") {
 		return errPeacefulArea
 	}
 	for _, spec := range ability.Command.Targets {
@@ -128,10 +159,10 @@ func (e *attackEffect) Execute(ability *assets.Ability, in *CommandInput, target
 		if ref == nil || ref.Mob == nil {
 			continue
 		}
-		if err := e.combat.StartCombat(in.Char, ref.Mob.instance); err != nil {
+		if err := e.combat.StartCombat(actor, ref.Mob.instance); err != nil {
 			return NewUserError(err.Error())
 		}
-		e.combat.QueueAttack(in.Char)
+		e.combat.QueueAttack(actor)
 		return nil
 	}
 	return nil
@@ -151,8 +182,8 @@ type damageEffect struct {
 	combat CombatManager
 }
 
-func (e *damageEffect) Execute(ability *assets.Ability, in *CommandInput, targets map[string]*TargetRef) error {
-	if in.Char.HasGrant(assets.PerkGrantPeaceful, "") {
+func (e *damageEffect) Execute(ability *assets.Ability, actor AbilityActor, targets map[string]*TargetRef) error {
+	if actor.HasGrant(assets.PerkGrantPeaceful, "") {
 		return errPeacefulArea
 	}
 	baseDamage, ok := ability.Config["base_damage"].(float64)
@@ -162,7 +193,7 @@ func (e *damageEffect) Execute(ability *assets.Ability, in *CommandInput, target
 	damage := int(baseDamage)
 
 	// Add flat damage_mod from caster perks
-	damage += in.Char.ModifierValue(assets.PerkKeyCombatDmgMod)
+	damage += actor.ModifierValue(assets.PerkKeyCombatDmgMod)
 
 	// Apply damage type percentage bonuses and crit
 	if arr, ok := ability.Config["damage_types"].([]any); ok && len(arr) > 0 {
@@ -173,8 +204,8 @@ func (e *damageEffect) Execute(ability *assets.Ability, in *CommandInput, target
 			if !ok {
 				continue
 			}
-			pctBonus += in.Char.ModifierValue(assets.DamageKey(dt, assets.DamageAspectPct))
-			critPct += in.Char.ModifierValue(assets.DamageKey(dt, assets.DamageAspectCritPct))
+			pctBonus += actor.ModifierValue(assets.DamageKey(dt, assets.DamageAspectPct))
+			critPct += actor.ModifierValue(assets.DamageKey(dt, assets.DamageAspectCritPct))
 		}
 		if pctBonus != 0 {
 			damage = damage * (100 + pctBonus) / 100
@@ -196,8 +227,8 @@ func (e *damageEffect) Execute(ability *assets.Ability, in *CommandInput, target
 		}
 		applyDamage(ref, damage)
 		if ref.Mob != nil {
-			_ = e.combat.StartCombat(in.Char, ref.Mob.instance)
-			e.combat.AddThreat(in.Char, ref.Mob.instance, damage)
+			_ = e.combat.StartCombat(actor, ref.Mob.instance)
+			e.combat.AddThreat(actor, ref.Mob.instance, damage)
 		}
 		return nil
 	}
@@ -250,7 +281,7 @@ func parsePerkBuffConfig(handler string, ability *assets.Ability) (string, []ass
 // actorBuffEffect applies timed perks to a target player/mob, or self if no target.
 type actorBuffEffect struct{}
 
-func (e *actorBuffEffect) Execute(ability *assets.Ability, in *CommandInput, targets map[string]*TargetRef) error {
+func (e *actorBuffEffect) Execute(ability *assets.Ability, actor AbilityActor, targets map[string]*TargetRef) error {
 	name, perks, dur, err := parsePerkBuffConfig("actor_buff", ability)
 	if err != nil {
 		return err
@@ -273,7 +304,7 @@ func (e *actorBuffEffect) Execute(ability *assets.Ability, in *CommandInput, tar
 	}
 
 	// No target resolved — apply to self.
-	in.Char.AddTimedPerks(name, perks, dur)
+	actor.AddTimedPerks(name, perks, dur)
 	return nil
 }
 
@@ -282,13 +313,13 @@ type roomBuffEffect struct {
 	world ZoneLocator
 }
 
-func (e *roomBuffEffect) Execute(ability *assets.Ability, in *CommandInput, _ map[string]*TargetRef) error {
+func (e *roomBuffEffect) Execute(ability *assets.Ability, actor AbilityActor, _ map[string]*TargetRef) error {
 	name, perks, dur, err := parsePerkBuffConfig("room_buff", ability)
 	if err != nil {
 		return err
 	}
 
-	zoneId, roomId := in.Char.Location()
+	zoneId, roomId := actor.Location()
 	room := e.world.GetZone(zoneId).GetRoom(roomId)
 	if room == nil {
 		return fmt.Errorf("room_buff effect: room not found")
@@ -302,13 +333,13 @@ type zoneBuffEffect struct {
 	world WorldView
 }
 
-func (e *zoneBuffEffect) Execute(ability *assets.Ability, in *CommandInput, _ map[string]*TargetRef) error {
+func (e *zoneBuffEffect) Execute(ability *assets.Ability, actor AbilityActor, _ map[string]*TargetRef) error {
 	name, perks, dur, err := parsePerkBuffConfig("zone_buff", ability)
 	if err != nil {
 		return err
 	}
 
-	zoneId, _ := in.Char.Location()
+	zoneId, _ := actor.Location()
 	zone := e.world.GetZone(zoneId)
 	if zone == nil {
 		return fmt.Errorf("zone_buff effect: zone not found")
@@ -322,7 +353,7 @@ type worldBuffEffect struct {
 	world *game.WorldState
 }
 
-func (e *worldBuffEffect) Execute(ability *assets.Ability, _ *CommandInput, _ map[string]*TargetRef) error {
+func (e *worldBuffEffect) Execute(ability *assets.Ability, _ AbilityActor, _ map[string]*TargetRef) error {
 	name, perks, dur, err := parsePerkBuffConfig("world_buff", ability)
 	if err != nil {
 		return err

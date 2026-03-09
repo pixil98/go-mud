@@ -4,8 +4,17 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 )
+
+// TitleActor provides the character state needed by the title handler.
+type TitleActor interface {
+	CommandActor
+	Asset() *assets.Character
+}
+
+var _ TitleActor = (*game.CharacterInstance)(nil)
 
 // TitleHandlerFactory creates handlers that set a player's title.
 type TitleHandlerFactory struct {
@@ -30,23 +39,25 @@ func (f *TitleHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *TitleHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, in *CommandInput) error {
-		// Read new_title from expanded config (input was templated into config)
-		title := in.Config["new_title"]
+	return Adapt[TitleActor](f.handle), nil
+}
 
-		in.Char.Character.Get().Title = title
+func (f *TitleHandlerFactory) handle(ctx context.Context, char TitleActor, in *CommandInput) error {
+	// Read new_title from expanded config (input was templated into config)
+	title := in.Config["new_title"]
 
-		var output string
-		if title == "" {
-			output = "Title cleared."
-		} else {
-			output = fmt.Sprintf("Title set to: %s", title)
-		}
+	char.Asset().Title = title
 
-		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil, []byte(output))
-		}
+	var output string
+	if title == "" {
+		output = "Title cleared."
+	} else {
+		output = fmt.Sprintf("Title set to: %s", title)
+	}
 
-		return nil
-	}, nil
+	if f.pub != nil {
+		return f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte(output))
+	}
+
+	return nil
 }

@@ -8,16 +8,51 @@ import (
 	"github.com/pixil98/go-mud/internal/game"
 )
 
+// FollowActor provides the character state needed by the follow handler.
+type FollowActor interface {
+	CommandActor
+	GetFollowingId() string
+	SetFollowingId(string)
+}
+
+var _ FollowActor = (*game.CharacterInstance)(nil)
+
+// FollowedPlayer provides the state the follow handler reads from a looked-up player.
+type FollowedPlayer interface {
+	Name() string
+	GetFollowingId() string
+}
+
+var _ FollowedPlayer = (*game.CharacterInstance)(nil)
+
+// FollowPlayerLookup finds players for the follow handler.
+type FollowPlayerLookup interface {
+	GetPlayer(charId string) FollowedPlayer
+}
+
+// followPlayerAdapter wraps a PlayerLookup to satisfy FollowPlayerLookup.
+type followPlayerAdapter struct {
+	inner PlayerLookup
+}
+
+func (a *followPlayerAdapter) GetPlayer(charId string) FollowedPlayer {
+	p := a.inner.GetPlayer(charId)
+	if p == nil {
+		return nil
+	}
+	return p
+}
+
 // FollowHandlerFactory creates handlers for the follow and unfollow commands.
 // When a target is resolved (follow command), the player starts following that target.
 // When no target is present (unfollow command), the player stops following.
 type FollowHandlerFactory struct {
-	players PlayerLookup
+	players FollowPlayerLookup
 	pub     game.Publisher
 }
 
 func NewFollowHandlerFactory(players PlayerLookup, pub game.Publisher) *FollowHandlerFactory {
-	return &FollowHandlerFactory{players: players, pub: pub}
+	return &FollowHandlerFactory{players: &followPlayerAdapter{inner: players}, pub: pub}
 }
 
 func (f *FollowHandlerFactory) Spec() *HandlerSpec {
@@ -33,17 +68,19 @@ func (f *FollowHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *FollowHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, in *CommandInput) error {
-		target := in.Targets["target"]
-		if target == nil {
-			return f.unfollow(in)
-		}
-		return f.follow(in, target)
-	}, nil
+	return Adapt[FollowActor](f.handle), nil
 }
 
-func (f *FollowHandlerFactory) follow(in *CommandInput, target *TargetRef) error {
-	actorId := in.Char.Id()
+func (f *FollowHandlerFactory) handle(ctx context.Context, char FollowActor, in *CommandInput) error {
+	target := in.Targets["target"]
+	if target == nil {
+		return f.unfollow(char)
+	}
+	return f.follow(char, target)
+}
+
+func (f *FollowHandlerFactory) follow(char FollowActor, target *TargetRef) error {
+	actorId := char.Id()
 	leaderId := target.Player.CharId
 
 	// Can't follow yourself.
@@ -52,7 +89,7 @@ func (f *FollowHandlerFactory) follow(in *CommandInput, target *TargetRef) error
 	}
 
 	// Already following this person.
-	if in.Char.GetFollowingId() == leaderId {
+	if char.GetFollowingId() == leaderId {
 		return NewUserError(fmt.Sprintf("You are already following %s.", target.Player.Name))
 	}
 
@@ -62,11 +99,11 @@ func (f *FollowHandlerFactory) follow(in *CommandInput, target *TargetRef) error
 	}
 
 	// Stop following old leader first.
-	if in.Char.GetFollowingId() != "" {
-		f.notifyStopFollowing(in)
+	if char.GetFollowingId() != "" {
+		f.notifyStopFollowing(char)
 	}
 
-	in.Char.SetFollowingId(leaderId)
+	char.SetFollowingId(leaderId)
 
 	// Notify both parties.
 	if err := f.pub.Publish(game.SinglePlayer(actorId), nil,
@@ -74,28 +111,28 @@ func (f *FollowHandlerFactory) follow(in *CommandInput, target *TargetRef) error
 		slog.Warn("failed to notify follower", "error", err)
 	}
 	if err := f.pub.Publish(game.SinglePlayer(leaderId), nil,
-		[]byte(fmt.Sprintf("%s now follows you.", in.Char.Name()))); err != nil {
+		[]byte(fmt.Sprintf("%s now follows you.", char.Name()))); err != nil {
 		slog.Warn("failed to notify leader", "error", err)
 	}
 
 	return nil
 }
 
-func (f *FollowHandlerFactory) unfollow(in *CommandInput) error {
-	if in.Char.GetFollowingId() == "" {
+func (f *FollowHandlerFactory) unfollow(char FollowActor) error {
+	if char.GetFollowingId() == "" {
 		return NewUserError("You aren't following anyone.")
 	}
 
-	f.notifyStopFollowing(in)
-	in.Char.SetFollowingId("")
+	f.notifyStopFollowing(char)
+	char.SetFollowingId("")
 	return nil
 }
 
 // notifyStopFollowing sends stop-following messages to both parties and does NOT
 // clear FollowingId — the caller is responsible for that.
-func (f *FollowHandlerFactory) notifyStopFollowing(in *CommandInput) {
-	actorId := in.Char.Id()
-	leaderId := in.Char.GetFollowingId()
+func (f *FollowHandlerFactory) notifyStopFollowing(char FollowActor) {
+	actorId := char.Id()
+	leaderId := char.GetFollowingId()
 
 	leaderPs := f.players.GetPlayer(leaderId)
 	if leaderPs != nil {
@@ -105,7 +142,7 @@ func (f *FollowHandlerFactory) notifyStopFollowing(in *CommandInput) {
 			slog.Warn("failed to notify follower", "error", err)
 		}
 		if err := f.pub.Publish(game.SinglePlayer(leaderId), nil,
-			[]byte(fmt.Sprintf("%s stops following you.", in.Char.Name()))); err != nil {
+			[]byte(fmt.Sprintf("%s stops following you.", char.Name()))); err != nil {
 			slog.Warn("failed to notify leader", "error", err)
 		}
 	}
@@ -113,7 +150,7 @@ func (f *FollowHandlerFactory) notifyStopFollowing(in *CommandInput) {
 
 // wouldCreateLoop returns true if making followerId follow leaderId would
 // create a circular follow chain.
-func wouldCreateLoop(players PlayerLookup, followerId, leaderId string) bool {
+func wouldCreateLoop(players FollowPlayerLookup, followerId, leaderId string) bool {
 	current := leaderId
 	for i := 0; i < 100; i++ {
 		ps := players.GetPlayer(current)

@@ -4,8 +4,19 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 )
+
+// GainActor provides the character state needed by the gain handler.
+type GainActor interface {
+	CommandActor
+	IsInCombat() bool
+	Asset() *assets.Character
+	Gain()
+}
+
+var _ GainActor = (*game.CharacterInstance)(nil)
 
 // GainHandlerFactory creates handlers for the gain (level up) command.
 type GainHandlerFactory struct {
@@ -25,31 +36,33 @@ func (f *GainHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *GainHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, in *CommandInput) error {
-		if in.Char.IsInCombat() {
-			return NewUserError("You can't train while fighting!")
-		}
+	return Adapt[GainActor](f.handle), nil
+}
 
-		actor := in.Char.Character.Get()
+func (f *GainHandlerFactory) handle(ctx context.Context, char GainActor, in *CommandInput) error {
+	if char.IsInCombat() {
+		return NewUserError("You can't train while fighting!")
+	}
 
-		if actor.Level >= game.MaxLevel {
-			return NewUserError("You have reached the maximum level.")
-		}
+	actor := char.Asset()
 
-		needed := game.ExpToNextLevel(actor.Level, actor.Experience)
-		if needed > 0 {
-			return NewUserError(fmt.Sprintf(
-				"You need %d more experience to reach level %d.",
-				needed, actor.Level+1))
-		}
+	if actor.Level >= game.MaxLevel {
+		return NewUserError("You have reached the maximum level.")
+	}
 
-		in.Char.Gain()
+	needed := game.ExpToNextLevel(actor.Level, actor.Experience)
+	if needed > 0 {
+		return NewUserError(fmt.Sprintf(
+			"You need %d more experience to reach level %d.",
+			needed, actor.Level+1))
+	}
 
-		msg := fmt.Sprintf("Congratulations! You have advanced to level %d!", actor.Level)
+	char.Gain()
 
-		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil, []byte(msg))
-		}
-		return nil
-	}, nil
+	msg := fmt.Sprintf("Congratulations! You have advanced to level %d!", actor.Level)
+
+	if f.pub != nil {
+		return f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte(msg))
+	}
+	return nil
 }

@@ -59,7 +59,7 @@ func TestExecuteAbility_APGating(t *testing.T) {
 			}
 			in := &CommandInput{Char: player}
 
-			err := executeAbility(ability, in, nil, nil, nil, nil)
+			err := executeAbility(ability, player, in, nil, nil, nil, nil)
 
 			if tc.wantErr != "" {
 				if err == nil {
@@ -153,7 +153,7 @@ func TestExecuteAbility_CostCheckOrdering(t *testing.T) {
 			}
 			in := &CommandInput{Char: player}
 
-			err := executeAbility(ability, in, nil, nil, nil, nil)
+			err := executeAbility(ability, player, in, nil, nil, nil, nil)
 
 			if tc.wantErr != "" {
 				if err == nil {
@@ -238,9 +238,7 @@ func TestRoomBuffEffect(t *testing.T) {
 				Name:   "test-ability",
 				Config: tc.config,
 			}
-			in := &CommandInput{Char: player}
-
-			err := effect.Execute(ability, in, nil)
+			err := effect.Execute(ability, player, nil)
 
 			if tc.wantErr != "" {
 				if err == nil {
@@ -281,7 +279,7 @@ func TestRoomBuffEffectExpiry(t *testing.T) {
 		},
 	}
 
-	if err := effect.Execute(ability, &CommandInput{Char: player}, nil); err != nil {
+	if err := effect.Execute(ability, player, nil); err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
@@ -367,7 +365,7 @@ func TestAttackEffect(t *testing.T) {
 				},
 			}
 
-			err := effect.Execute(ability, &CommandInput{Char: player}, tc.targets)
+			err := effect.Execute(ability, player, tc.targets)
 
 			if tc.wantErr != "" {
 				if err == nil {
@@ -417,7 +415,7 @@ func TestAttackEffect_PeacefulArea(t *testing.T) {
 		}},
 	}
 
-	err := effect.Execute(ability, &CommandInput{Char: player}, targets)
+	err := effect.Execute(ability, player, targets)
 	if err == nil {
 		t.Fatal("expected peaceful area error, got nil")
 	}
@@ -452,7 +450,7 @@ func TestDamageEffect_InitiatesCombat(t *testing.T) {
 		}},
 	}
 
-	if err := effect.Execute(ability, &CommandInput{Char: player}, targets); err != nil {
+	if err := effect.Execute(ability, player, targets); err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 

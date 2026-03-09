@@ -10,6 +10,15 @@ import (
 	"github.com/pixil98/go-mud/internal/game"
 )
 
+// MoveObjActor provides the character state needed by the move_obj handler.
+type MoveObjActor interface {
+	CommandActor
+	Location() (zoneId, roomId string)
+	GetInventory() *game.Inventory
+}
+
+var _ MoveObjActor = (*game.CharacterInstance)(nil)
+
 // ObjectHolder can have objects added and removed.
 type ObjectHolder interface {
 	ObjectRemover
@@ -55,81 +64,83 @@ func (f *MoveObjHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *MoveObjHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, in *CommandInput) error {
-		item := in.Targets["item"]
-		if item == nil || item.Obj == nil {
-			return NewUserError("Move what?")
-		}
+	return Adapt[MoveObjActor](f.handle), nil
+}
 
-		// Check immobile flag
-		if item.Obj.instance.Object.Get().HasFlag(assets.ObjectFlagImmobile) {
-			return NewUserError(fmt.Sprintf("You can't seem to move %s.", item.Obj.Name))
-		}
+func (f *MoveObjHandlerFactory) handle(ctx context.Context, char MoveObjActor, in *CommandInput) error {
+	item := in.Targets["item"]
+	if item == nil || item.Obj == nil {
+		return NewUserError("Move what?")
+	}
 
-		// Check self-targeting if configured
-		if noSelf := in.Config["no_self_target"]; noSelf != "" {
-			ref := in.Targets[noSelf]
-			if ref != nil && ref.Player != nil && ref.Player.CharId == in.Char.Id() {
-				return NewUserError("You can't give something to yourself.")
+	// Check immobile flag
+	if item.Obj.instance.Object.Get().HasFlag(assets.ObjectFlagImmobile) {
+		return NewUserError(fmt.Sprintf("You can't seem to move %s.", item.Obj.Name))
+	}
+
+	// Check self-targeting if configured
+	if noSelf := in.Config["no_self_target"]; noSelf != "" {
+		ref := in.Targets[noSelf]
+		if ref != nil && ref.Player != nil && ref.Player.CharId == char.Id() {
+			return NewUserError("You can't give something to yourself.")
+		}
+	}
+
+	// Resolve destination to an ObjectHolder
+	dest, err := f.resolveDestination(char, in)
+	if err != nil {
+		return err
+	}
+
+	// Remove from source
+	oi := item.Obj.source.RemoveObj(item.Obj.InstanceId)
+	if oi == nil {
+		return NewUserError(fmt.Sprintf("You don't have %s.", item.Obj.Name))
+	}
+
+	// Move
+	dest.AddObj(oi)
+
+	if f.pub != nil {
+		exclude := []string{char.Id()}
+
+		if selfMsg := in.Config["self_message"]; selfMsg != "" {
+			if err := f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte(selfMsg)); err != nil {
+				slog.Warn("failed to publish self message", "error", err)
 			}
 		}
 
-		// Resolve destination to an ObjectHolder
-		dest, err := f.resolveDestination(in)
-		if err != nil {
-			return err
-		}
-
-		// Remove from source
-		oi := item.Obj.source.RemoveObj(item.Obj.InstanceId)
-		if oi == nil {
-			return NewUserError(fmt.Sprintf("You don't have %s.", item.Obj.Name))
-		}
-
-		// Move
-		dest.AddObj(oi)
-
-		if f.pub != nil {
-			exclude := []string{in.Char.Id()}
-
-			if selfMsg := in.Config["self_message"]; selfMsg != "" {
-				if err := f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil, []byte(selfMsg)); err != nil {
-					slog.Warn("failed to publish self message", "error", err)
+		if targetMsg := in.Config["target_message"]; targetMsg != "" {
+			if ref := in.Targets[in.Config["destination"]]; ref != nil && ref.Type == targetTypePlayer {
+				if err := f.pub.Publish(game.SinglePlayer(ref.Player.CharId), nil, []byte(targetMsg)); err != nil {
+					slog.Warn("failed to publish target message", "error", err)
 				}
-			}
-
-			if targetMsg := in.Config["target_message"]; targetMsg != "" {
-				if ref := in.Targets[in.Config["destination"]]; ref != nil && ref.Type == targetTypePlayer {
-					if err := f.pub.Publish(game.SinglePlayer(ref.Player.CharId), nil, []byte(targetMsg)); err != nil {
-						slog.Warn("failed to publish target message", "error", err)
-					}
-					exclude = append(exclude, ref.Player.CharId)
-				}
-			}
-
-			zoneId, roomId := in.Char.Location()
-			room := f.zones.GetZone(zoneId).GetRoom(roomId)
-			if err := f.pub.Publish(room, exclude, []byte(in.Config["room_message"])); err != nil {
-				slog.Warn("failed to publish room message", "error", err)
+				exclude = append(exclude, ref.Player.CharId)
 			}
 		}
 
-		return nil
-	}, nil
+		zoneId, roomId := char.Location()
+		room := f.zones.GetZone(zoneId).GetRoom(roomId)
+		if err := f.pub.Publish(room, exclude, []byte(in.Config["room_message"])); err != nil {
+			slog.Warn("failed to publish room message", "error", err)
+		}
+	}
+
+	return nil
 }
 
 // resolveDestination maps the "destination" config to an ObjectHolder.
 // Returns "inventory" → session inventory, "room" → room holder,
 // or looks up a resolved target and returns its holder.
-func (f *MoveObjHandlerFactory) resolveDestination(in *CommandInput) (ObjectHolder, error) {
+func (f *MoveObjHandlerFactory) resolveDestination(char MoveObjActor, in *CommandInput) (ObjectHolder, error) {
 	dest := in.Config["destination"]
 
 	switch dest {
 	case "inventory":
-		return in.Char.GetInventory(), nil
+		return char.GetInventory(), nil
 
 	case "room":
-		zoneId, roomId := in.Char.Location()
+		zoneId, roomId := char.Location()
 		return f.zones.GetZone(zoneId).GetRoom(roomId), nil
 
 	default:

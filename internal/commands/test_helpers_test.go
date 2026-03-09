@@ -38,3 +38,19 @@ func newTestRoom(id, name, zoneId string) (*game.RoomInstance, error) {
 	}
 	return game.NewRoomInstance(storage.NewResolvedSmartIdentifier(id, room))
 }
+
+// newTestPlayer creates a CharacterInstance and adds it to the given room.
+// Use only where concrete CharacterInstance is unavoidable (e.g. room infrastructure tests).
+func newTestPlayer(charId, name string, room *game.RoomInstance) *game.CharacterInstance {
+	charRef := storage.NewResolvedSmartIdentifier(charId, &assets.Character{Name: name})
+	ps, _ := game.NewCharacterInstance(charRef, make(chan []byte, 10), room.Room.Get().Zone.Id(), room.Room.Id())
+	room.AddPlayer(charId, ps)
+	return ps
+}
+
+// newCharacterInstance creates a CharacterInstance in a throwaway room.
+// Use only where concrete CharacterInstance is unavoidable (e.g. room infrastructure tests).
+func newCharacterInstance(charId, name string) *game.CharacterInstance {
+	room, _ := newTestRoom(charId+"-room", "Room", charId+"-zone")
+	return newTestPlayer(charId, name, room)
+}

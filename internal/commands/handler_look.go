@@ -6,6 +6,14 @@ import (
 	"github.com/pixil98/go-mud/internal/game"
 )
 
+// LookActor provides the character state needed by the look handler.
+type LookActor interface {
+	CommandActor
+	Location() (zoneId, roomId string)
+}
+
+var _ LookActor = (*game.CharacterInstance)(nil)
+
 // LookHandlerFactory creates handlers that display the current room.
 type LookHandlerFactory struct {
 	zones ZoneLocator
@@ -30,35 +38,37 @@ func (f *LookHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *LookHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, in *CommandInput) error {
-		// Check if target was resolved (from targets section)
-		if target := in.Targets["target"]; target != nil {
-			return f.showTarget(in, target)
-		}
+	return Adapt[LookActor](f.handle), nil
+}
 
-		return f.showRoom(in)
-	}, nil
+func (f *LookHandlerFactory) handle(ctx context.Context, char LookActor, in *CommandInput) error {
+	// Check if target was resolved (from targets section)
+	if target := in.Targets["target"]; target != nil {
+		return f.showTarget(char, target)
+	}
+
+	return f.showRoom(char)
 }
 
 // showRoom displays the current room description.
-func (f *LookHandlerFactory) showRoom(in *CommandInput) error {
-	zoneId, roomId := in.Char.Location()
+func (f *LookHandlerFactory) showRoom(char LookActor) error {
+	zoneId, roomId := char.Location()
 
 	ri := f.zones.GetZone(zoneId).GetRoom(roomId)
 	if ri == nil {
 		return NewUserError("You are in an invalid location.")
 	}
 
-	roomDesc := ri.Describe(in.Char.Name())
+	roomDesc := ri.Describe(char.Name())
 	if f.pub != nil {
-		return f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil, []byte(roomDesc))
+		return f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte(roomDesc))
 	}
 
 	return nil
 }
 
 // showTarget displays information about a specific target.
-func (f *LookHandlerFactory) showTarget(in *CommandInput, target *TargetRef) error {
+func (f *LookHandlerFactory) showTarget(char LookActor, target *TargetRef) error {
 	var msg string
 	switch target.Type {
 	case targetTypePlayer:
@@ -72,7 +82,7 @@ func (f *LookHandlerFactory) showTarget(in *CommandInput, target *TargetRef) err
 	}
 
 	if f.pub != nil {
-		return f.pub.Publish(game.SinglePlayer(in.Char.Id()), nil, []byte(msg))
+		return f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte(msg))
 	}
 	return nil
 }

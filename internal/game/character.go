@@ -216,6 +216,11 @@ func (ci *CharacterInstance) Name() string {
 	return ci.Character.Get().Name
 }
 
+// Asset returns the underlying character asset data.
+func (ci *CharacterInstance) Asset() *assets.Character {
+	return ci.Character.Get()
+}
+
 // Location returns the player's current zone and room.
 func (ci *CharacterInstance) Location() (zoneId, roomId string) {
 	ci.mu.RLock()

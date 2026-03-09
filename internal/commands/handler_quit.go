@@ -2,7 +2,18 @@ package commands
 
 import (
 	"context"
+
+	"github.com/pixil98/go-mud/internal/game"
 )
+
+// QuitActor provides the character state needed by the quit handler.
+type QuitActor interface {
+	CommandActor
+	IsInCombat() bool
+	SetQuit(bool)
+}
+
+var _ QuitActor = (*game.CharacterInstance)(nil)
 
 // QuitHandlerFactory creates handlers that set the quit flag.
 // Character saving is handled by the player manager on session end.
@@ -21,12 +32,14 @@ func (f *QuitHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *QuitHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, in *CommandInput) error {
-		if in.Char.IsInCombat() {
-			return NewUserError("You can't quit while fighting!")
-		}
+	return Adapt[QuitActor](f.handle), nil
+}
 
-		in.Char.SetQuit(true)
-		return nil
-	}, nil
+func (f *QuitHandlerFactory) handle(ctx context.Context, char QuitActor, in *CommandInput) error {
+	if char.IsInCombat() {
+		return NewUserError("You can't quit while fighting!")
+	}
+
+	char.SetQuit(true)
+	return nil
 }

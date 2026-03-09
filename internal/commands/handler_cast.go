@@ -9,6 +9,15 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
+// CastActor extends AbilityActor with scope resolution methods needed to
+// resolve spell targets at cast time.
+type CastActor interface {
+	AbilityActor
+	ScopeActor
+}
+
+var _ CastActor = (*game.CharacterInstance)(nil)
+
 // CastHandlerFactory creates the handler for the "cast" command.
 // It looks up a spell by name, verifies the actor has it unlocked,
 // parses remaining arguments against the spell's embedded Command,
@@ -38,39 +47,41 @@ func (f *CastHandlerFactory) ValidateConfig(config map[string]any) error {
 }
 
 func (f *CastHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, in *CommandInput) error {
-		spellName := in.Config["spell"]
-		argsStr := in.Config["args"]
+	return Adapt[CastActor](f.handle), nil
+}
 
-		id, ability := f.findSpell(spellName)
-		if ability == nil {
-			return NewUserError("You don't know a spell called '" + spellName + "'.")
-		}
+func (f *CastHandlerFactory) handle(ctx context.Context, char CastActor, in *CommandInput) error {
+	spellName := in.Config["spell"]
+	argsStr := in.Config["args"]
 
-		// Check if the actor has unlocked this spell
-		if !in.Char.HasGrant(assets.PerkGrantUnlockAbility, id) {
-			return NewUserError("You don't know a spell called '" + spellName + "'.")
-		}
+	id, ability := f.findSpell(spellName)
+	if ability == nil {
+		return NewUserError("You don't know a spell called '" + spellName + "'.")
+	}
 
-		// Parse remaining args against spell's inputs
-		var rawArgs []string
-		if argsStr != "" {
-			rawArgs = strings.Fields(argsStr)
-		}
-		inputMap, err := parseInputs(ability.Command.Inputs, rawArgs)
-		if err != nil {
-			return err
-		}
+	// Check if the actor has unlocked this spell
+	if !char.HasGrant(assets.PerkGrantUnlockAbility, id) {
+		return NewUserError("You don't know a spell called '" + spellName + "'.")
+	}
 
-		// Resolve targets
-		resolver := NewTargetResolver(NewWorldScopes(f.world))
-		targets, err := resolver.ResolveSpecs(ability.Command.Targets, inputMap, in.Char)
-		if err != nil {
-			return err
-		}
+	// Parse remaining args against spell's inputs
+	var rawArgs []string
+	if argsStr != "" {
+		rawArgs = strings.Fields(argsStr)
+	}
+	inputMap, err := parseInputs(ability.Command.Inputs, rawArgs)
+	if err != nil {
+		return err
+	}
 
-		return executeAbility(ability, in, targets, f.world, f.pub, f.effects[ability.Handler])
-	}, nil
+	// Resolve targets
+	resolver := NewTargetResolver(NewWorldScopes(f.world))
+	targets, err := resolver.ResolveSpecs(ability.Command.Targets, inputMap, char)
+	if err != nil {
+		return err
+	}
+
+	return executeAbility(ability, char, in, targets, f.world, f.pub, f.effects[ability.Handler])
 }
 
 // findSpell looks up a spell by ID first, then by name case-insensitively.
