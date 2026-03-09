@@ -1,6 +1,7 @@
 package assets
 
 import (
+	"log/slog"
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/storage"
@@ -81,15 +82,28 @@ func (c *Character) Resolve(pronouns storage.Storer[*Pronoun], races storage.Sto
 	}
 	for i := range c.Inventory {
 		if err := c.Inventory[i].Resolve(objs); err != nil {
-			return err
+			slog.Warn("unresolvable inventory item, replacing with placeholder", "character", c.Name, "error", err)
+			c.Inventory[i].Object = unknownObject(c.Inventory[i].Object.Id())
 		}
 	}
 	for slot, spawn := range c.Equipment {
 		s := spawn
 		if err := s.Resolve(objs); err != nil {
-			return err
+			slog.Warn("unresolvable equipment item, replacing with placeholder", "character", c.Name, "slot", slot, "error", err)
+			s.Object = unknownObject(s.Object.Id())
 		}
 		c.Equipment[slot] = s
 	}
 	return nil
+}
+
+// unknownObject creates a pre-resolved SmartIdentifier backed by a placeholder
+// Object definition. The original ID is preserved so the item can be identified.
+func unknownObject(id string) storage.SmartIdentifier[*Object] {
+	return storage.NewResolvedSmartIdentifier(id, &Object{
+		Aliases:      []string{"unknown"},
+		ShortDesc:    "an unknown item [" + id + "]",
+		LongDesc:     "An unknown item lies here.",
+		DetailedDesc: "This item could not be loaded. Its original ID was: " + id,
+	})
 }
