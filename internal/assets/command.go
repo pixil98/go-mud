@@ -64,21 +64,26 @@ type TargetSpec struct {
 
 // Command defines a command loaded from JSON.
 type Command struct {
-	Handler     string         `json:"handler"`
-	Category    string         `json:"category,omitempty"`    // Grouping for help display
-	Description string         `json:"description,omitempty"` // Short description for help
-	Priority    int            `json:"priority,omitempty"`    // Higher values win prefix-match ties (default 0)
-	Aliases     []string       `json:"aliases,omitempty"`     // Alternative names that resolve to this command (e.g., "nw" for "northwest")
-	Config      map[string]any `json:"config"`                // Config passed to handler, may contain templates
-	Targets     []TargetSpec   `json:"targets"`               // Targets to resolve at runtime
-	Inputs      []InputSpec    `json:"inputs"`                // User input parameters
+	Handler     string            `json:"handler"`
+	Category    string            `json:"category,omitempty"`    // Grouping for help display
+	Description string            `json:"description,omitempty"` // Short description for help
+	Priority    int               `json:"priority,omitempty"`    // Higher values win prefix-match ties (default 0)
+	Aliases     []string          `json:"aliases,omitempty"`     // Alternative names that resolve to this command (e.g., "nw" for "northwest")
+	Config      map[string]string `json:"config"`                // Config passed to handler, may contain templates
+	Targets     []TargetSpec      `json:"targets"`               // Targets to resolve at runtime
+	Inputs      []InputSpec       `json:"inputs"`                // User input parameters
 }
 
 func (c *Command) Validate() error {
 	if c.Handler == "" {
 		return fmt.Errorf("command handler not set")
 	}
+	return c.ValidateInputsTargets()
+}
 
+// ValidateInputsTargets validates inputs and targets without requiring a handler.
+// Used by Ability.Validate where the handler is set at compile time.
+func (c *Command) ValidateInputsTargets() error {
 	for i, input := range c.Inputs {
 		if input.Name == "" {
 			return fmt.Errorf("input %d: name is required", i)

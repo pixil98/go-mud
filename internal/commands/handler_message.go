@@ -44,8 +44,8 @@ func (f *MessageHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
-func (f *MessageHandlerFactory) ValidateConfig(config map[string]any) error {
-	scope, _ := config["scope"].(string)
+func (f *MessageHandlerFactory) ValidateConfig(config map[string]string) error {
+	scope := config["scope"]
 	switch scope {
 	case "room", "zone", "world", "player", "group":
 		// valid

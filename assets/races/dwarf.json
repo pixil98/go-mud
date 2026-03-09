@@ -15,6 +15,7 @@
             { "type": "modifier", "key": "core.resource.mana.regen", "value": 2 },
             { "type": "modifier", "key": "core.combat.ac", "value": 10 },
             { "type": "modifier", "key": "core.action_points.max", "value": 1 },
+            { "type": "modifier", "key": "core.action_points.max", "value": 1 },
             { "type": "grant", "key": "darkvision" },
             { "type": "grant", "key": "unlock_ability", "arg": "attack" },
             { "type": "grant", "key": "unlock_ability", "arg": "fireball" },

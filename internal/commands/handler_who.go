@@ -24,7 +24,7 @@ func (f *WhoHandlerFactory) Spec() *HandlerSpec {
 	return nil
 }
 
-func (f *WhoHandlerFactory) ValidateConfig(config map[string]any) error {
+func (f *WhoHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 

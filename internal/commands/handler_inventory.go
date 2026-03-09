@@ -30,7 +30,7 @@ func (f *InventoryHandlerFactory) Spec() *HandlerSpec {
 	return nil
 }
 
-func (f *InventoryHandlerFactory) ValidateConfig(config map[string]any) error {
+func (f *InventoryHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 

@@ -10,38 +10,18 @@ func TestAbility_Validate(t *testing.T) {
 		ability Ability
 		expErr  string
 	}{
-		"valid spell": {
+		"valid ability with targets": {
 			ability: Ability{
-				Name:    "test-spell",
-				Type:    AbilityTypeSpell,
-				Handler: "test-handler",
+				Effects: []EffectSpec{{Type: "test-effect"}},
 				Command: Command{
 					Inputs:  []InputSpec{{Name: "test-target", Type: InputTypeString, Required: true}},
 					Targets: []TargetSpec{{Name: "test-target", Types: []string{TargetMobile}, Scopes: []string{ScopeRoom}, Input: "test-target"}},
 				},
-				Messages: AbilityMessages{Actor: "test-message"},
 			},
 		},
-		"valid skill": {
+		"valid ability with effect config": {
 			ability: Ability{
-				Name:    "test-skill",
-				Type:    AbilityTypeSkill,
-				Handler: "test-handler",
-				Command: Command{
-					Inputs:  []InputSpec{{Name: "test-target", Type: InputTypeString, Required: true}},
-					Targets: []TargetSpec{{Name: "test-target", Types: []string{TargetMobile}, Scopes: []string{ScopeRoom}, Input: "test-target"}},
-				},
-				Messages: AbilityMessages{Actor: "test-message"},
-			},
-		},
-		"valid spell with resource and ap cost": {
-			ability: Ability{
-				Name:         "test-spell",
-				Type:         AbilityTypeSpell,
-				Handler:      "test-handler",
-				Resource:     "test-resource",
-				ResourceCost: 10,
-				APCost:       2,
+				Effects: []EffectSpec{{Type: "test-effect", Config: map[string]string{"test-key": "test-value"}}},
 				Command: Command{
 					Inputs: []InputSpec{{Name: "test-target", Type: InputTypeString, Required: true}},
 					Targets: []TargetSpec{{
@@ -52,164 +32,37 @@ func TestAbility_Validate(t *testing.T) {
 						NotFound: "You don't see '{{ .Inputs.target }}' here.",
 					}},
 				},
-				Config: map[string]any{
-					"test-key": "test-value",
-				},
-				Messages: AbilityMessages{
-					Actor:  "test-actor-message {{ .Target.Name }}",
-					Target: "test-target-message {{ .Actor.Name }}",
-					Room:   "test-room-message {{ .Actor.Name }}",
-				},
 			},
 		},
-		"missing name": {
+		"missing effects": {
 			ability: Ability{
-				Type:    AbilityTypeSpell,
-				Handler: "test-handler",
-				Command: Command{
-					Inputs:  []InputSpec{{Name: "test-target", Type: InputTypeString}},
-					Targets: []TargetSpec{{Name: "test-target", Types: []string{TargetMobile}, Input: "test-target"}},
-				},
-				Messages: AbilityMessages{Actor: "test-message"},
-			},
-			expErr: "name is required",
-		},
-		"missing type": {
-			ability: Ability{
-				Name:    "test-ability",
-				Handler: "test-handler",
-				Command: Command{
-					Inputs:  []InputSpec{{Name: "test-target", Type: InputTypeString}},
-					Targets: []TargetSpec{{Name: "test-target", Types: []string{TargetMobile}, Input: "test-target"}},
-				},
-				Messages: AbilityMessages{Actor: "test-message"},
-			},
-			expErr: "type is required",
-		},
-		"invalid type": {
-			ability: Ability{
-				Name:    "test-ability",
-				Type:    "bogus",
-				Handler: "test-handler",
-				Command: Command{
-					Inputs:  []InputSpec{{Name: "test-target", Type: InputTypeString}},
-					Targets: []TargetSpec{{Name: "test-target", Types: []string{TargetMobile}, Input: "test-target"}},
-				},
-				Messages: AbilityMessages{Actor: "test-message"},
-			},
-			expErr: `type must be "spell" or "skill"`,
-		},
-		"missing handler": {
-			ability: Ability{
-				Name: "test-spell",
-				Type: AbilityTypeSpell,
-				Command: Command{
-					Inputs:  []InputSpec{{Name: "test-target", Type: InputTypeString}},
-					Targets: []TargetSpec{{Name: "test-target", Types: []string{TargetMobile}, Input: "test-target"}},
-				},
-				Messages: AbilityMessages{Actor: "test-message"},
-			},
-			expErr: "handler is required",
-		},
-		"cost without resource": {
-			ability: Ability{
-				Name:         "test-spell",
-				Type:         AbilityTypeSpell,
-				Handler:      "test-handler",
-				ResourceCost: 10,
-				Command: Command{
-					Inputs:  []InputSpec{{Name: "test-target", Type: InputTypeString}},
-					Targets: []TargetSpec{{Name: "test-target", Types: []string{TargetMobile}, Input: "test-target"}},
-				},
-				Messages: AbilityMessages{Actor: "test-message"},
-			},
-			expErr: "resource_cost requires resource",
-		},
-		"negative resource cost": {
-			ability: Ability{
-				Name:         "test-spell",
-				Type:         AbilityTypeSpell,
-				Handler:      "test-handler",
-				Resource:     "test-resource",
-				ResourceCost: -5,
-				Command: Command{
-					Inputs:  []InputSpec{{Name: "test-target", Type: InputTypeString}},
-					Targets: []TargetSpec{{Name: "test-target", Types: []string{TargetMobile}, Input: "test-target"}},
-				},
-				Messages: AbilityMessages{Actor: "test-message"},
-			},
-			expErr: "resource_cost must not be negative",
-		},
-		"negative ap cost": {
-			ability: Ability{
-				Name:    "test-spell",
-				Type:    AbilityTypeSpell,
-				Handler: "test-handler",
-				APCost:  -1,
-				Command: Command{
-					Inputs:  []InputSpec{{Name: "test-target", Type: InputTypeString}},
-					Targets: []TargetSpec{{Name: "test-target", Types: []string{TargetMobile}, Input: "test-target"}},
-				},
-				Messages: AbilityMessages{Actor: "test-message"},
-			},
-			expErr: "ap_cost must not be negative",
-		},
-		"no messages": {
-			ability: Ability{
-				Name:    "test-spell",
-				Type:    AbilityTypeSpell,
-				Handler: "test-handler",
 				Command: Command{
 					Inputs:  []InputSpec{{Name: "test-target", Type: InputTypeString}},
 					Targets: []TargetSpec{{Name: "test-target", Types: []string{TargetMobile}, Input: "test-target"}},
 				},
 			},
-			expErr: "at least one message is required",
+			expErr: "at least one effect is required",
 		},
-		"invalid message template": {
+		"effect missing type": {
 			ability: Ability{
-				Name:    "test-spell",
-				Type:    AbilityTypeSpell,
-				Handler: "test-handler",
-				Command: Command{
-					Inputs:  []InputSpec{{Name: "test-target", Type: InputTypeString}},
-					Targets: []TargetSpec{{Name: "test-target", Types: []string{TargetMobile}, Input: "test-target"}},
-				},
-				Messages: AbilityMessages{Actor: "{{ .Bad }"},
+				Effects: []EffectSpec{{}},
+				Command: Command{},
 			},
-			expErr: "messages.actor: invalid template:",
+			expErr: "effect 0: type is required",
 		},
 		"command validation propagates": {
 			ability: Ability{
-				Name:    "test-skill",
-				Type:    AbilityTypeSkill,
-				Handler: "test-handler",
+				Effects: []EffectSpec{{Type: "test-effect"}},
 				Command: Command{
 					Inputs: []InputSpec{{Type: InputTypeString}},
 				},
-				Messages: AbilityMessages{Actor: "test-message"},
 			},
 			expErr: "command: input 0: name is required",
 		},
-		"resource without cost is valid": {
-			ability: Ability{
-				Name:     "test-spell",
-				Type:     AbilityTypeSpell,
-				Handler:  "test-handler",
-				Resource: "test-resource",
-				Command: Command{
-					Inputs:  []InputSpec{{Name: "test-target", Type: InputTypeString}},
-					Targets: []TargetSpec{{Name: "test-target", Types: []string{TargetMobile}, Input: "test-target"}},
-				},
-				Messages: AbilityMessages{Actor: "test-message"},
-			},
-		},
 		"command with no inputs or targets is valid": {
 			ability: Ability{
-				Name:     "test-skill",
-				Type:     AbilityTypeSkill,
-				Handler:  "test-handler",
-				Messages: AbilityMessages{Actor: "test-message"},
+				Effects: []EffectSpec{{Type: "test-effect"}},
+				Command: Command{},
 			},
 		},
 	}

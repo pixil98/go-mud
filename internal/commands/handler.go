@@ -92,7 +92,7 @@ type HandlerFactory interface {
 	Spec() *HandlerSpec
 	// ValidateConfig performs custom validation on the config.
 	// Called after spec validation. Use for conditional logic that Spec can't express.
-	ValidateConfig(config map[string]any) error
+	ValidateConfig(config map[string]string) error
 	// Create creates a CommandFunc. Handlers read expanded config from CommandInput.
 	Create() (CommandFunc, error)
 }
@@ -128,7 +128,6 @@ func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, pub
 
 	// Register built-in handlers
 	h.RegisterFactory("assist", NewAssistHandlerFactory(combat, world, world, publisher))
-	h.RegisterFactory("cast", NewCastHandlerFactory(dict.Abilities, world, publisher, h.effects))
 	h.RegisterFactory("closure", NewClosureHandlerFactory(world, publisher))
 	h.RegisterFactory("equipment", NewEquipmentHandlerFactory(publisher))
 	h.RegisterFactory("follow", NewFollowHandlerFactory(world, publisher))
@@ -148,7 +147,6 @@ func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, pub
 	h.RegisterFactory("trees", NewTreesHandlerFactory(dict.Trees, publisher))
 	h.RegisterFactory("wear", NewWearHandlerFactory(world, publisher))
 	h.RegisterFactory("who", NewWhoHandlerFactory(world, publisher))
-
 	// Compile commands
 	for id, cmd := range cmds.GetAll() {
 		err := h.compile(id, cmd)
@@ -157,56 +155,35 @@ func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, pub
 		}
 	}
 
-	// Auto-register skill abilities as top-level commands
+	// Auto-register all abilities as top-level commands
 	for id, ability := range dict.Abilities.GetAll() {
-		if ability.Type == assets.AbilityTypeSkill {
-			if err := h.registerSkill(id, ability, world, publisher); err != nil {
-				return nil, fmt.Errorf("registering skill %q: %w", id, err)
-			}
+		if err := h.registerAbility(id, ability, world, publisher); err != nil {
+			return nil, fmt.Errorf("registering ability %q: %w", id, err)
 		}
 	}
 
 	return h, nil
 }
 
-// registerSkill registers a skill ability as a top-level command.
-// The skill's embedded Command provides input/target specs. The compiled
-// handler checks the actor's perks for unlock and sends ability messages.
-func (h *Handler) registerSkill(id string, ability *assets.Ability, world WorldView, pub game.Publisher) error {
+// registerAbility creates a per-ability factory (which resolves effects and
+// builds closures), then compiles through the standard path.
+func (h *Handler) registerAbility(id string, ability *assets.Ability, world WorldView, pub game.Publisher) error {
+	factoryName := "ability:" + id
+	factory, err := NewAbilityHandlerFactory(id, ability, h.effects, world, pub)
+	if err != nil {
+		return err
+	}
+	if err := h.RegisterFactory(factoryName, factory); err != nil {
+		return err
+	}
+
 	cmd := ability.Command // value copy
-	cmd.Handler = ability.Handler
-
-	effect, ok := h.effects[ability.Handler]
-	if !ok {
-		return fmt.Errorf("unknown effect handler %q", ability.Handler)
+	cmd.Handler = factoryName
+	if cmd.Config == nil {
+		cmd.Config = make(map[string]string)
 	}
-	cmdFunc := func(ctx context.Context, in *CommandInput) error {
-		actor, ok := in.Char.(AbilityActor)
-		if !ok {
-			return fmt.Errorf("character does not support abilities")
-		}
-		if !actor.HasGrant(assets.PerkGrantUnlockAbility, id) {
-			return NewUserError("You don't know how to do that.")
-		}
-		return executeAbility(ability, actor, in, in.Targets, world, pub, effect)
-	}
-
-	cc := &compiledCommand{cmd: &cmd, cmdFunc: cmdFunc}
-
-	if _, exists := h.compiled[id]; exists {
-		return fmt.Errorf("%q conflicts with an existing command or alias", id)
-	}
-	h.compiled[id] = cc
-
-	for _, alias := range cmd.Aliases {
-		aliasId := strings.ToLower(alias)
-		if _, exists := h.compiled[aliasId]; exists {
-			return fmt.Errorf("alias %q conflicts with an existing command or alias", alias)
-		}
-		h.compiled[aliasId] = cc
-	}
-
-	return nil
+	cmd.Config["ability_id"] = id
+	return h.compile(id, &cmd)
 }
 
 // RegisterFactory registers a handler factory by name.
@@ -510,7 +487,7 @@ type templateContext struct {
 }
 
 // expandConfig expands all template strings in config and returns map[string]string.
-func (h *Handler) expandConfig(config map[string]any, char *game.CharacterInstance, targets map[string]*TargetRef, inputs map[string]any) (map[string]string, error) {
+func (h *Handler) expandConfig(config map[string]string, char *game.CharacterInstance, targets map[string]*TargetRef, inputs map[string]any) (map[string]string, error) {
 	if config == nil {
 		return make(map[string]string), nil
 	}
@@ -524,11 +501,7 @@ func (h *Handler) expandConfig(config map[string]any, char *game.CharacterInstan
 
 	expanded := make(map[string]string, len(config))
 	for key, value := range config {
-		str, ok := value.(string)
-		if !ok {
-			return nil, fmt.Errorf("config key %q: expected string, got %T", key, value)
-		}
-		expandedStr, err := ExpandTemplate(str, tmplCtx)
+		expandedStr, err := ExpandTemplate(value, tmplCtx)
 		if err != nil {
 			return nil, fmt.Errorf("expanding config key %q: %w", key, err)
 		}

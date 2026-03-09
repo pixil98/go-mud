@@ -30,7 +30,7 @@ func (f *TreesHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
-func (f *TreesHandlerFactory) ValidateConfig(config map[string]any) error {
+func (f *TreesHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 

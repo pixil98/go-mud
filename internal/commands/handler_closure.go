@@ -44,8 +44,8 @@ func (f *ClosureHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
-func (f *ClosureHandlerFactory) ValidateConfig(config map[string]any) error {
-	action, _ := config["action"].(string)
+func (f *ClosureHandlerFactory) ValidateConfig(config map[string]string) error {
+	action := config["action"]
 	switch action {
 	case "open", "close", "lock", "unlock":
 		return nil

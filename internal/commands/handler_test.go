@@ -315,7 +315,7 @@ func (f *mockHandlerFactory) Spec() *HandlerSpec {
 	return nil
 }
 
-func (f *mockHandlerFactory) ValidateConfig(config map[string]any) error {
+func (f *mockHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 
@@ -489,7 +489,7 @@ func TestHandler_RegisterFactory(t *testing.T) {
 
 func TestHandler_expandConfig(t *testing.T) {
 	tests := map[string]struct {
-		config    map[string]any
+		config    map[string]string
 		actor     *assets.Character
 		targets   map[string]*TargetRef
 		inputs    map[string]any
@@ -497,7 +497,7 @@ func TestHandler_expandConfig(t *testing.T) {
 		expErr    string
 	}{
 		"simple input substitution": {
-			config: map[string]any{
+			config: map[string]string{
 				"message": "{{ .Actor.Name }} says, \"{{ .Inputs.text }}\"",
 			},
 			actor:   &assets.Character{Name: "Alice"},
@@ -510,7 +510,7 @@ func TestHandler_expandConfig(t *testing.T) {
 			},
 		},
 		"target used in template": {
-			config: map[string]any{
+			config: map[string]string{
 				"channel": "player-{{ .Targets.target.Player.Name | lower }}",
 				"message": "Hello {{ .Targets.target.Player.Name }}!",
 			},
@@ -525,7 +525,7 @@ func TestHandler_expandConfig(t *testing.T) {
 			},
 		},
 		"actor and target combined": {
-			config: map[string]any{
+			config: map[string]string{
 				"message": "{{ .Actor.Name }} tells {{ .Targets.target.Player.Name }}, \"{{ .Inputs.text }}\"",
 			},
 			actor: &assets.Character{Name: "Alice"},
@@ -540,7 +540,7 @@ func TestHandler_expandConfig(t *testing.T) {
 			},
 		},
 		"static config value": {
-			config: map[string]any{
+			config: map[string]string{
 				"direction": "north",
 			},
 			actor:   &assets.Character{Name: "Alice"},
@@ -551,7 +551,7 @@ func TestHandler_expandConfig(t *testing.T) {
 			},
 		},
 		"color in template": {
-			config: map[string]any{
+			config: map[string]string{
 				"message": "{{ .Color.Red }}hello{{ .Color.Reset }}",
 			},
 			actor:   &assets.Character{},
@@ -682,7 +682,7 @@ func TestHandler_validateSpec(t *testing.T) {
 		"missing required config": {
 			cmd: &assets.Command{
 				Handler: "test",
-				Config:  map[string]any{},
+				Config:  map[string]string{},
 			},
 			spec: &HandlerSpec{
 				Config: []ConfigRequirement{
@@ -694,7 +694,7 @@ func TestHandler_validateSpec(t *testing.T) {
 		"optional config missing is ok": {
 			cmd: &assets.Command{
 				Handler: "test",
-				Config:  map[string]any{},
+				Config:  map[string]string{},
 			},
 			spec: &HandlerSpec{
 				Config: []ConfigRequirement{
@@ -706,7 +706,7 @@ func TestHandler_validateSpec(t *testing.T) {
 		"extra config not in spec": {
 			cmd: &assets.Command{
 				Handler: "test",
-				Config: map[string]any{
+				Config: map[string]string{
 					"direction": "north",
 					"typo_key":  "value",
 				},
@@ -725,7 +725,7 @@ func TestHandler_validateSpec(t *testing.T) {
 					{Name: "item", Types: []string{"object"}, Input: "item"},
 					{Name: "recipient", Types: []string{"player"}, Input: "recipient"},
 				},
-				Config: map[string]any{
+				Config: map[string]string{
 					"message": "hello",
 				},
 			},

@@ -30,7 +30,7 @@ func (f *HelpHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
-func (f *HelpHandlerFactory) ValidateConfig(config map[string]any) error {
+func (f *HelpHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 

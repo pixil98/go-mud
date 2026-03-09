@@ -39,7 +39,7 @@ func (f *WearHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
-func (f *WearHandlerFactory) ValidateConfig(config map[string]any) error {
+func (f *WearHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 

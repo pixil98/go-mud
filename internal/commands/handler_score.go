@@ -35,7 +35,7 @@ func (f *ScoreHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
-func (f *ScoreHandlerFactory) ValidateConfig(config map[string]any) error {
+func (f *ScoreHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 

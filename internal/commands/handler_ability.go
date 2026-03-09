@@ -1,9 +1,11 @@
 package commands
 
 import (
-	"encoding/json"
+	"context"
 	"fmt"
 	"math/rand/v2"
+	"strconv"
+	"strings"
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/display"
@@ -39,29 +41,154 @@ type AbilityActor interface {
 
 var _ AbilityActor = (*game.CharacterInstance)(nil)
 
-// EffectHandler executes an ability's gameplay effect (damage, healing, etc.).
-//
-// TODO: Each effect implementation (attackEffect, damageEffect, etc.) should
-// define its own narrow actor interface instead of taking the full AbilityActor.
-// This would let effect tests use minimal mocks rather than satisfying the
-// entire AbilityActor contract.
+// EffectFunc is a compiled effect closure with config baked in at registration time.
+type EffectFunc func(actor AbilityActor, targets map[string]*TargetRef) error
+
+// EffectHandler defines an ability effect (damage, healing, buff, etc.).
+// ValidateConfig checks config at registration time. Create returns a closure
+// with the ability's config and target specs captured, so the closure only
+// needs runtime state (actor, resolved targets).
 type EffectHandler interface {
-	Execute(ability *assets.Ability, actor AbilityActor, targets map[string]*TargetRef) error
+	// Spec returns target/config requirements for compile-time validation.
+	// Return nil if the effect has no requirements.
+	Spec() *HandlerSpec
+	// ValidateConfig checks that the effect's config values are valid.
+	ValidateConfig(config map[string]string) error
+	// Create compiles the effect for a specific ability, returning a closure.
+	// The id is a deterministic key for timed effects (e.g. "fireball:0").
+	Create(id string, config map[string]string, targets []assets.TargetSpec) EffectFunc
 }
 
-// executeAbility runs an ability's effect handler and sends its messages.
-// If effect is nil, only messages are sent.
-func executeAbility(ability *assets.Ability, actor AbilityActor, in *CommandInput, targets map[string]*TargetRef, world WorldView, pub game.Publisher, effect EffectHandler) error {
+// AbilityHandlerFactory creates command handlers for abilities.
+// The constructor resolves effect specs, validates config, and builds closures,
+// capturing everything needed so Create() returns a lightweight runtime function.
+type AbilityHandlerFactory struct {
+	id          string
+	effects     []EffectHandler
+	effectFuncs []EffectFunc
+	world       WorldView
+	pub         game.Publisher
+}
+
+// NewAbilityHandlerFactory resolves the ability's effect specs against the
+// provided handlers, validates config, and creates compiled closures.
+func NewAbilityHandlerFactory(
+	id string,
+	ability *assets.Ability,
+	handlers map[string]EffectHandler,
+	world WorldView,
+	pub game.Publisher,
+) (*AbilityHandlerFactory, error) {
+	var effects []EffectHandler
+	var effectFuncs []EffectFunc
+	for i, es := range ability.Effects {
+		e, ok := handlers[es.Type]
+		if !ok {
+			return nil, fmt.Errorf("unknown effect %q", es.Type)
+		}
+		if err := e.ValidateConfig(es.Config); err != nil {
+			return nil, fmt.Errorf("effect %q: %w", es.Type, err)
+		}
+		effects = append(effects, e)
+		effectId := fmt.Sprintf("%s:%d", id, i)
+		fn := e.Create(effectId, es.Config, ability.Command.Targets)
+		effectFuncs = append(effectFuncs, fn)
+	}
+	return &AbilityHandlerFactory{
+		id:          id,
+		effects:     effects,
+		effectFuncs: effectFuncs,
+		world:       world,
+		pub:         pub,
+	}, nil
+}
+
+func (f *AbilityHandlerFactory) Spec() *HandlerSpec {
+	spec := &HandlerSpec{
+		Config: []ConfigRequirement{
+			{Name: "ability_id", Required: true},
+			{Name: "resource"},
+			{Name: "resource_cost"},
+			{Name: "ap_cost"},
+			{Name: "message_actor"},
+			{Name: "message_target"},
+			{Name: "message_room"},
+		},
+	}
+	// Union target requirements from all effects.
+	targets := make(map[string]TargetRequirement)
+	for _, e := range f.effects {
+		es := e.Spec()
+		if es == nil {
+			continue
+		}
+		for _, t := range es.Targets {
+			if existing, ok := targets[t.Name]; ok {
+				existing.Type |= t.Type
+				existing.Required = existing.Required || t.Required
+				targets[t.Name] = existing
+			} else {
+				targets[t.Name] = t
+			}
+		}
+	}
+	for _, t := range targets {
+		spec.Targets = append(spec.Targets, t)
+	}
+	return spec
+}
+
+func (f *AbilityHandlerFactory) ValidateConfig(config map[string]string) error {
+	if cost := config["resource_cost"]; cost != "" {
+		n, err := strconv.Atoi(cost)
+		if err != nil {
+			return fmt.Errorf("resource_cost: %w", err)
+		}
+		if n < 0 {
+			return fmt.Errorf("resource_cost must not be negative")
+		}
+		if n > 0 && config["resource"] == "" {
+			return fmt.Errorf("resource_cost requires resource")
+		}
+	}
+	if cost := config["ap_cost"]; cost != "" {
+		n, err := strconv.Atoi(cost)
+		if err != nil {
+			return fmt.Errorf("ap_cost: %w", err)
+		}
+		if n < 0 {
+			return fmt.Errorf("ap_cost must not be negative")
+		}
+	}
+	return nil
+}
+
+func (f *AbilityHandlerFactory) Create() (CommandFunc, error) {
+	return Adapt[AbilityActor](func(ctx context.Context, actor AbilityActor, in *CommandInput) error {
+		if !actor.HasGrant(assets.PerkGrantUnlockAbility, f.id) {
+			return NewUserError("You don't know how to do that.")
+		}
+
+		return executeAbility(actor, in, in.Targets, f.world, f.pub, f.effectFuncs)
+	}), nil
+}
+
+// executeAbility runs an ability's compiled effect closures and sends its messages.
+// Messages are read from in.Config: message_actor, message_target, message_room.
+func executeAbility(actor AbilityActor, in *CommandInput, targets map[string]*TargetRef, world WorldView, pub game.Publisher, effects []EffectFunc) error {
+	resource := in.Config["resource"]
+	resourceCost, _ := strconv.Atoi(in.Config["resource_cost"])
+	apCost, _ := strconv.Atoi(in.Config["ap_cost"])
+
 	// Check resource cost before spending any AP
-	if ability.ResourceCost > 0 {
-		cur, _ := actor.Resource(ability.Resource)
-		if cur < ability.ResourceCost {
-			return NewUserError(fmt.Sprintf("You don't have enough %s.", ability.Resource))
+	if resourceCost > 0 {
+		cur, _ := actor.Resource(resource)
+		if cur < resourceCost {
+			return NewUserError(fmt.Sprintf("You don't have enough %s.", resource))
 		}
 	}
 
 	// Check and spend action points
-	apCost := ability.APCost
 	if apCost == 0 {
 		apCost = 1
 	}
@@ -70,13 +197,13 @@ func executeAbility(ability *assets.Ability, actor AbilityActor, in *CommandInpu
 	}
 
 	// Deduct resource cost
-	if ability.ResourceCost > 0 {
-		actor.AdjustResource(ability.Resource, -ability.ResourceCost)
+	if resourceCost > 0 {
+		actor.AdjustResource(resource, -resourceCost)
 	}
 
-	// Run effect first — if it fails, don't send messages
-	if effect != nil {
-		if err := effect.Execute(ability, actor, targets); err != nil {
+	// Run effects in order — if any fails, don't send messages
+	for _, effect := range effects {
+		if err := effect(actor, targets); err != nil {
 			return err
 		}
 	}
@@ -91,11 +218,13 @@ func executeAbility(ability *assets.Ability, actor AbilityActor, in *CommandInpu
 		Color:   display.Color,
 	}
 
+	// Build exclude list as we send targeted messages.
 	charId := actor.Id()
+	exclude := []string{charId}
 
 	// Actor message
-	if ability.Messages.Actor != "" {
-		msg, err := ExpandTemplate(ability.Messages.Actor, ctx)
+	if tmpl := in.Config["message_actor"]; tmpl != "" {
+		msg, err := ExpandTemplate(tmpl, ctx)
 		if err != nil {
 			return fmt.Errorf("expanding actor message: %w", err)
 		}
@@ -105,33 +234,27 @@ func executeAbility(ability *assets.Ability, actor AbilityActor, in *CommandInpu
 	}
 
 	// Target message (send to first resolved player target)
-	if ability.Messages.Target != "" {
-		for _, spec := range ability.Command.Targets {
-			ref := targets[spec.Name]
+	if tmpl := in.Config["message_target"]; tmpl != "" {
+		for _, ref := range targets {
 			if ref != nil && ref.Player != nil {
-				msg, err := ExpandTemplate(ability.Messages.Target, ctx)
+				msg, err := ExpandTemplate(tmpl, ctx)
 				if err != nil {
 					return fmt.Errorf("expanding target message: %w", err)
 				}
 				if err := pub.Publish(game.SinglePlayer(ref.Player.CharId), nil, []byte(msg)); err != nil {
 					return err
 				}
+				exclude = append(exclude, ref.Player.CharId)
 				break
 			}
 		}
 	}
 
-	// Room message
-	if ability.Messages.Room != "" {
-		msg, err := ExpandTemplate(ability.Messages.Room, ctx)
+	// Room message (exclude actor and any targeted players)
+	if tmpl := in.Config["message_room"]; tmpl != "" {
+		msg, err := ExpandTemplate(tmpl, ctx)
 		if err != nil {
 			return fmt.Errorf("expanding room message: %w", err)
-		}
-		exclude := []string{charId}
-		for _, ref := range targets {
-			if ref != nil && ref.Player != nil {
-				exclude = append(exclude, ref.Player.CharId)
-			}
 		}
 		zoneId, roomId := actor.Location()
 		room := world.GetZone(zoneId).GetRoom(roomId)
@@ -144,96 +267,118 @@ func executeAbility(ability *assets.Ability, actor AbilityActor, in *CommandInpu
 }
 
 // attackEffect queues a manual attack for the next combat tick.
-// It calls StartCombat (idempotent) then QueueAttack so the tick resolves
-// the full attack sequence bundled with all other combat activity.
 type attackEffect struct {
 	combat CombatManager
 }
 
-func (e *attackEffect) Execute(ability *assets.Ability, actor AbilityActor, targets map[string]*TargetRef) error {
-	if actor.HasGrant(assets.PerkGrantPeaceful, "") {
-		return errPeacefulArea
+func (e *attackEffect) Spec() *HandlerSpec {
+	return &HandlerSpec{
+		Targets: []TargetRequirement{
+			{Name: "target", Type: targetTypeMobile, Required: true},
+		},
 	}
-	for _, spec := range ability.Command.Targets {
-		ref := targets[spec.Name]
-		if ref == nil || ref.Mob == nil {
-			continue
+}
+
+func (e *attackEffect) ValidateConfig(_ map[string]string) error { return nil }
+
+func (e *attackEffect) Create(_ string, _ map[string]string, targets []assets.TargetSpec) EffectFunc {
+	return func(actor AbilityActor, resolved map[string]*TargetRef) error {
+		if actor.HasGrant(assets.PerkGrantPeaceful, "") {
+			return errPeacefulArea
 		}
-		if err := e.combat.StartCombat(actor, ref.Mob.instance); err != nil {
-			return NewUserError(err.Error())
+		for _, spec := range targets {
+			ref := resolved[spec.Name]
+			if ref == nil || ref.Mob == nil {
+				continue
+			}
+			if err := e.combat.StartCombat(actor, ref.Mob.instance); err != nil {
+				return NewUserError(err.Error())
+			}
+			e.combat.QueueAttack(actor)
+			return nil
 		}
-		e.combat.QueueAttack(actor)
 		return nil
 	}
-	return nil
 }
 
 // damageEffect applies damage to the primary target and initiates combat if the target is a mob.
 //
 // Config fields:
-//   - "base_damage" (number, required): flat damage before modifiers.
-//   - "damage_types" ([]string, optional): damage type tags (e.g. ["fire"]).
-//     The caster's core.damage.<type>.pct modifiers are summed and applied as
-//     a percentage bonus. core.damage.<type>.crit_pct modifiers give a percent
-//     chance to double damage.
+//   - "damage" (int string, required): flat damage before modifiers.
+//   - "damage_types" (comma-separated string, optional): damage type tags (e.g. "fire,ice").
 //
 // The caster's core.combat.damage_mod is always added as flat bonus damage.
 type damageEffect struct {
 	combat CombatManager
 }
 
-func (e *damageEffect) Execute(ability *assets.Ability, actor AbilityActor, targets map[string]*TargetRef) error {
-	if actor.HasGrant(assets.PerkGrantPeaceful, "") {
-		return errPeacefulArea
+func (e *damageEffect) Spec() *HandlerSpec {
+	return &HandlerSpec{
+		Targets: []TargetRequirement{
+			{Name: "target", Type: targetTypeMobile | targetTypePlayer, Required: true},
+		},
 	}
-	baseDamage, ok := ability.Config["base_damage"].(float64)
-	if !ok {
-		return fmt.Errorf("damage effect: base_damage config required")
+}
+
+func (e *damageEffect) ValidateConfig(config map[string]string) error {
+	if _, err := strconv.Atoi(config["damage"]); err != nil {
+		return fmt.Errorf("damage config required")
 	}
-	damage := int(baseDamage)
+	return nil
+}
 
-	// Add flat damage_mod from caster perks
-	damage += actor.ModifierValue(assets.PerkKeyCombatDmgMod)
+func (e *damageEffect) Create(_ string, config map[string]string, targets []assets.TargetSpec) EffectFunc {
+	baseDamage, _ := strconv.Atoi(config["damage"])
 
-	// Apply damage type percentage bonuses and crit
-	if arr, ok := ability.Config["damage_types"].([]any); ok && len(arr) > 0 {
-		pctBonus := 0
-		critPct := 0
-		for _, v := range arr {
-			dt, ok := v.(string)
-			if !ok {
+	var damageTypes []string
+	if dt := config["damage_types"]; dt != "" {
+		damageTypes = strings.Split(dt, ",")
+	}
+
+	return func(actor AbilityActor, resolved map[string]*TargetRef) error {
+		if actor.HasGrant(assets.PerkGrantPeaceful, "") {
+			return errPeacefulArea
+		}
+		damage := baseDamage
+
+		// Add flat damage_mod from caster perks
+		damage += actor.ModifierValue(assets.PerkKeyCombatDmgMod)
+
+		// Apply damage type percentage bonuses and crit
+		if len(damageTypes) > 0 {
+			pctBonus := 0
+			critPct := 0
+			for _, dt := range damageTypes {
+				pctBonus += actor.ModifierValue(assets.DamageKey(dt, assets.DamageAspectPct))
+				critPct += actor.ModifierValue(assets.DamageKey(dt, assets.DamageAspectCritPct))
+			}
+			if pctBonus != 0 {
+				damage = damage * (100 + pctBonus) / 100
+			}
+			if critPct > 0 && randIntn(100) < critPct {
+				damage *= 2
+			}
+		}
+
+		if damage < 1 {
+			damage = 1
+		}
+
+		for _, spec := range targets {
+			ref := resolved[spec.Name]
+			if ref == nil {
 				continue
 			}
-			pctBonus += actor.ModifierValue(assets.DamageKey(dt, assets.DamageAspectPct))
-			critPct += actor.ModifierValue(assets.DamageKey(dt, assets.DamageAspectCritPct))
+			applyDamage(ref, damage)
+			if ref.Mob != nil {
+				_ = e.combat.StartCombat(actor, ref.Mob.instance)
+				e.combat.AddThreat(actor, ref.Mob.instance, damage)
+			}
+			return nil
 		}
-		if pctBonus != 0 {
-			damage = damage * (100 + pctBonus) / 100
-		}
-		if critPct > 0 && randIntn(100) < critPct {
-			damage *= 2
-		}
-	}
 
-	if damage < 1 {
-		damage = 1
-	}
-
-	// Apply to the first resolved target
-	for _, spec := range ability.Command.Targets {
-		ref := targets[spec.Name]
-		if ref == nil {
-			continue
-		}
-		applyDamage(ref, damage)
-		if ref.Mob != nil {
-			_ = e.combat.StartCombat(actor, ref.Mob.instance)
-			e.combat.AddThreat(actor, ref.Mob.instance, damage)
-		}
 		return nil
 	}
-
-	return nil
 }
 
 // applyDamage reduces a target's HP by amount.
@@ -246,119 +391,157 @@ func applyDamage(ref *TargetRef, amount int) {
 }
 
 // parsePerkBuffConfig extracts the common config fields for perk buff effects.
+// Each effect entry holds a single perk; repeat the effect for multiple perks.
 //
 // Config fields:
-//   - "perks" ([]Perk, required): perks to apply.
-//   - "duration" (number, required): number of ticks the perks last.
-//   - "name" (string, optional): entry name for the timed perk. Defaults to the ability name.
-func parsePerkBuffConfig(handler string, ability *assets.Ability) (string, []assets.Perk, int, error) {
-	dur, ok := ability.Config["duration"].(float64)
-	if !ok || dur <= 0 {
-		return "", nil, 0, fmt.Errorf("%s effect: positive duration config required", handler)
+//   - "perk_type" (string, required): perk type (e.g. "modifier", "grant").
+//   - "perk_key" (string, required): the perk key.
+//   - "perk_value" (int string, optional): perk value (for modifiers).
+//   - "perk_arg" (string, optional): perk argument (for grants).
+//   - "duration" (int string, required): number of ticks the perk lasts.
+//   - "name" (string, optional): entry name for the timed perk. Defaults to id.
+func parsePerkBuffConfig(id string, config map[string]string) (string, assets.Perk, int) {
+	dur, _ := strconv.Atoi(config["duration"])
+	perkValue, _ := strconv.Atoi(config["perk_value"])
+
+	perk := assets.Perk{
+		Type:  config["perk_type"],
+		Key:   config["perk_key"],
+		Value: perkValue,
+		Arg:   config["perk_arg"],
 	}
 
-	perksRaw, ok := ability.Config["perks"]
-	if !ok {
-		return "", nil, 0, fmt.Errorf("%s effect: perks config required", handler)
-	}
-	raw, err := json.Marshal(perksRaw)
-	if err != nil {
-		return "", nil, 0, fmt.Errorf("%s effect: marshaling perks: %w", handler, err)
-	}
-	var perks []assets.Perk
-	if err := json.Unmarshal(raw, &perks); err != nil {
-		return "", nil, 0, fmt.Errorf("%s effect: parsing perks: %w", handler, err)
-	}
-
-	name, _ := ability.Config["name"].(string)
+	name := config["name"]
 	if name == "" {
-		name = ability.Name
+		name = id
 	}
 
-	return name, perks, int(dur), nil
+	return name, perk, dur
 }
 
-// actorBuffEffect applies timed perks to a target player/mob, or self if no target.
-type actorBuffEffect struct{}
-
-func (e *actorBuffEffect) Execute(ability *assets.Ability, actor AbilityActor, targets map[string]*TargetRef) error {
-	name, perks, dur, err := parsePerkBuffConfig("actor_buff", ability)
-	if err != nil {
-		return err
+// validatePerkBuffConfig checks the required config for perk buff effects.
+func validatePerkBuffConfig(config map[string]string) error {
+	dur, err := strconv.Atoi(config["duration"])
+	if err != nil || dur <= 0 {
+		return fmt.Errorf("positive duration config required")
 	}
-
-	// Apply to the first resolved player or mob target.
-	for _, spec := range ability.Command.Targets {
-		ref := targets[spec.Name]
-		if ref == nil {
-			continue
-		}
-		if ref.Player != nil {
-			ref.Player.session.AddTimedPerks(name, perks, dur)
-			return nil
-		}
-		if ref.Mob != nil {
-			ref.Mob.instance.AddTimedPerks(name, perks, dur)
-			return nil
-		}
+	if config["perk_type"] == "" {
+		return fmt.Errorf("perk_type config required")
 	}
-
-	// No target resolved — apply to self.
-	actor.AddTimedPerks(name, perks, dur)
+	if config["perk_key"] == "" {
+		return fmt.Errorf("perk_key config required")
+	}
 	return nil
 }
 
-// roomBuffEffect applies timed perks to the caster's current room.
+// actorBuffEffect applies a timed perk to a target player/mob, or self if no target.
+type actorBuffEffect struct{}
+
+func (e *actorBuffEffect) Spec() *HandlerSpec {
+	return &HandlerSpec{
+		Targets: []TargetRequirement{
+			{Name: "target", Type: targetTypeMobile | targetTypePlayer, Required: false},
+		},
+	}
+}
+
+func (e *actorBuffEffect) ValidateConfig(config map[string]string) error {
+	return validatePerkBuffConfig(config)
+}
+
+func (e *actorBuffEffect) Create(id string, config map[string]string, targets []assets.TargetSpec) EffectFunc {
+	name, perk, dur := parsePerkBuffConfig(id, config)
+	perks := []assets.Perk{perk}
+
+	return func(actor AbilityActor, resolved map[string]*TargetRef) error {
+		for _, spec := range targets {
+			ref := resolved[spec.Name]
+			if ref == nil {
+				continue
+			}
+			if ref.Player != nil {
+				ref.Player.session.AddTimedPerks(name, perks, dur)
+				return nil
+			}
+			if ref.Mob != nil {
+				ref.Mob.instance.AddTimedPerks(name, perks, dur)
+				return nil
+			}
+		}
+		actor.AddTimedPerks(name, perks, dur)
+		return nil
+	}
+}
+
+// roomBuffEffect applies a timed perk to the caster's current room.
 type roomBuffEffect struct {
 	world ZoneLocator
 }
 
-func (e *roomBuffEffect) Execute(ability *assets.Ability, actor AbilityActor, _ map[string]*TargetRef) error {
-	name, perks, dur, err := parsePerkBuffConfig("room_buff", ability)
-	if err != nil {
-		return err
-	}
+func (e *roomBuffEffect) Spec() *HandlerSpec { return nil }
 
-	zoneId, roomId := actor.Location()
-	room := e.world.GetZone(zoneId).GetRoom(roomId)
-	if room == nil {
-		return fmt.Errorf("room_buff effect: room not found")
-	}
-	room.Perks.AddTimedPerks(name, perks, dur)
-	return nil
+func (e *roomBuffEffect) ValidateConfig(config map[string]string) error {
+	return validatePerkBuffConfig(config)
 }
 
-// zoneBuffEffect applies timed perks to the caster's current zone.
+func (e *roomBuffEffect) Create(id string, config map[string]string, _ []assets.TargetSpec) EffectFunc {
+	name, perk, dur := parsePerkBuffConfig(id, config)
+	perks := []assets.Perk{perk}
+
+	return func(actor AbilityActor, _ map[string]*TargetRef) error {
+		zoneId, roomId := actor.Location()
+		room := e.world.GetZone(zoneId).GetRoom(roomId)
+		if room == nil {
+			return fmt.Errorf("room_buff effect: room not found")
+		}
+		room.Perks.AddTimedPerks(name, perks, dur)
+		return nil
+	}
+}
+
+// zoneBuffEffect applies a timed perk to the caster's current zone.
 type zoneBuffEffect struct {
 	world WorldView
 }
 
-func (e *zoneBuffEffect) Execute(ability *assets.Ability, actor AbilityActor, _ map[string]*TargetRef) error {
-	name, perks, dur, err := parsePerkBuffConfig("zone_buff", ability)
-	if err != nil {
-		return err
-	}
+func (e *zoneBuffEffect) Spec() *HandlerSpec { return nil }
 
-	zoneId, _ := actor.Location()
-	zone := e.world.GetZone(zoneId)
-	if zone == nil {
-		return fmt.Errorf("zone_buff effect: zone not found")
-	}
-	zone.Perks.AddTimedPerks(name, perks, dur)
-	return nil
+func (e *zoneBuffEffect) ValidateConfig(config map[string]string) error {
+	return validatePerkBuffConfig(config)
 }
 
-// worldBuffEffect applies timed perks to the entire world.
+func (e *zoneBuffEffect) Create(id string, config map[string]string, _ []assets.TargetSpec) EffectFunc {
+	name, perk, dur := parsePerkBuffConfig(id, config)
+	perks := []assets.Perk{perk}
+
+	return func(actor AbilityActor, _ map[string]*TargetRef) error {
+		zoneId, _ := actor.Location()
+		zone := e.world.GetZone(zoneId)
+		if zone == nil {
+			return fmt.Errorf("zone_buff effect: zone not found")
+		}
+		zone.Perks.AddTimedPerks(name, perks, dur)
+		return nil
+	}
+}
+
+// worldBuffEffect applies a timed perk to the entire world.
 type worldBuffEffect struct {
 	world *game.WorldState
 }
 
-func (e *worldBuffEffect) Execute(ability *assets.Ability, _ AbilityActor, _ map[string]*TargetRef) error {
-	name, perks, dur, err := parsePerkBuffConfig("world_buff", ability)
-	if err != nil {
-		return err
-	}
+func (e *worldBuffEffect) Spec() *HandlerSpec { return nil }
 
-	e.world.Perks.AddTimedPerks(name, perks, dur)
-	return nil
+func (e *worldBuffEffect) ValidateConfig(config map[string]string) error {
+	return validatePerkBuffConfig(config)
+}
+
+func (e *worldBuffEffect) Create(id string, config map[string]string, _ []assets.TargetSpec) EffectFunc {
+	name, perk, dur := parsePerkBuffConfig(id, config)
+	perks := []assets.Perk{perk}
+
+	return func(_ AbilityActor, _ map[string]*TargetRef) error {
+		e.world.Perks.AddTimedPerks(name, perks, dur)
+		return nil
+	}
 }

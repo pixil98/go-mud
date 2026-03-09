@@ -34,7 +34,7 @@ func (f *TitleHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
-func (f *TitleHandlerFactory) ValidateConfig(config map[string]any) error {
+func (f *TitleHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 

@@ -108,7 +108,7 @@ func (f *GroupHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
-func (f *GroupHandlerFactory) ValidateConfig(config map[string]any) error { return nil }
+func (f *GroupHandlerFactory) ValidateConfig(config map[string]string) error { return nil }
 
 func (f *GroupHandlerFactory) Create() (CommandFunc, error) {
 	return Adapt[*game.CharacterInstance](f.handle), nil
@@ -255,7 +255,7 @@ func (f *UngroupHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
-func (f *UngroupHandlerFactory) ValidateConfig(config map[string]any) error { return nil }
+func (f *UngroupHandlerFactory) ValidateConfig(config map[string]string) error { return nil }
 
 func (f *UngroupHandlerFactory) Create() (CommandFunc, error) {
 	return Adapt[*game.CharacterInstance](f.handle), nil

@@ -78,7 +78,7 @@ func (f *AssistHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
-func (f *AssistHandlerFactory) ValidateConfig(config map[string]any) error {
+func (f *AssistHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 

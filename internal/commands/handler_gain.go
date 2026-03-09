@@ -31,7 +31,7 @@ func (f *GainHandlerFactory) Spec() *HandlerSpec {
 	return nil
 }
 
-func (f *GainHandlerFactory) ValidateConfig(config map[string]any) error {
+func (f *GainHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 

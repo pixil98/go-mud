@@ -33,7 +33,7 @@ func (f *LookHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
-func (f *LookHandlerFactory) ValidateConfig(config map[string]any) error {
+func (f *LookHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 

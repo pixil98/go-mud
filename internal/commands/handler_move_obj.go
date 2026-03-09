@@ -55,8 +55,8 @@ func (f *MoveObjHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
-func (f *MoveObjHandlerFactory) ValidateConfig(config map[string]any) error {
-	dest, _ := config["destination"].(string)
+func (f *MoveObjHandlerFactory) ValidateConfig(config map[string]string) error {
+	dest := config["destination"]
 	if dest == "" {
 		return fmt.Errorf("destination is required")
 	}

@@ -2,9 +2,11 @@ package commands
 
 import (
 	"fmt"
+	"strconv"
 	"testing"
 
 	"github.com/pixil98/go-mud/internal/assets"
+
 	"github.com/pixil98/go-mud/internal/game"
 )
 
@@ -51,15 +53,14 @@ func TestExecuteAbility_APGating(t *testing.T) {
 			player := newTestPlayer("player", "Player", room)
 			setPlayerAP(player, tc.startAP)
 
-			ability := &assets.Ability{
-				Name:     "test",
-				APCost:   tc.apCost,
-				Handler:  "test",
-				Messages: assets.AbilityMessages{},
+			in := &CommandInput{
+				Char: player,
+				Config: map[string]string{
+					"ap_cost": strconv.Itoa(tc.apCost),
+				},
 			}
-			in := &CommandInput{Char: player}
 
-			err := executeAbility(ability, player, in, nil, nil, nil, nil)
+			err := executeAbility(player, in, nil, nil, nil, nil)
 
 			if tc.wantErr != "" {
 				if err == nil {
@@ -143,17 +144,16 @@ func TestExecuteAbility_CostCheckOrdering(t *testing.T) {
 			player.SetResource("mana", tc.startMana)
 			player.ResetAP()
 
-			ability := &assets.Ability{
-				Name:         "test",
-				APCost:       tc.apCost,
-				Resource:     "mana",
-				ResourceCost: tc.resourceCost,
-				Handler:      "test",
-				Messages:     assets.AbilityMessages{},
+			in := &CommandInput{
+				Char: player,
+				Config: map[string]string{
+					"ap_cost":       strconv.Itoa(tc.apCost),
+					"resource":      "mana",
+					"resource_cost": strconv.Itoa(tc.resourceCost),
+				},
 			}
-			in := &CommandInput{Char: player}
 
-			err := executeAbility(ability, player, in, nil, nil, nil, nil)
+			err := executeAbility(player, in, nil, nil, nil, nil)
 
 			if tc.wantErr != "" {
 				if err == nil {
@@ -194,34 +194,35 @@ func newTestRoomInZone(roomId, name, zoneId string) (*game.RoomInstance, *game.Z
 
 func TestRoomBuffEffect(t *testing.T) {
 	tests := map[string]struct {
-		config  map[string]any
+		config  map[string]string
 		wantErr string
 		wantMod int
 		wantKey string
 	}{
-		"applies perks to room": {
-			config: map[string]any{
-				"duration": float64(5),
-				"perks": []any{
-					map[string]any{"type": "modifier", "key": "test-key", "value": float64(10)},
-				},
+		"applies perk to room": {
+			config: map[string]string{
+				"duration":   "5",
+				"perk_type":  "modifier",
+				"perk_key":   "test-key",
+				"perk_value": "10",
 			},
 			wantKey: "test-key",
 			wantMod: 10,
 		},
 		"missing duration": {
-			config: map[string]any{
-				"perks": []any{
-					map[string]any{"type": "modifier", "key": "test-key", "value": float64(1)},
-				},
+			config: map[string]string{
+				"perk_type":  "modifier",
+				"perk_key":   "test-key",
+				"perk_value": "1",
 			},
 			wantErr: "positive duration",
 		},
-		"missing perks": {
-			config: map[string]any{
-				"duration": float64(3),
+		"missing perk_type": {
+			config: map[string]string{
+				"duration": "3",
+				"perk_key": "test-key",
 			},
-			wantErr: "perks config required",
+			wantErr: "perk_type config required",
 		},
 	}
 
@@ -234,11 +235,19 @@ func TestRoomBuffEffect(t *testing.T) {
 			world := &mockZoneLocator{zones: map[string]*game.ZoneInstance{"test-zone": zone}}
 			effect := &roomBuffEffect{world: world}
 
-			ability := &assets.Ability{
-				Name:   "test-ability",
-				Config: tc.config,
+			// ValidateConfig first, then Create
+			if err := effect.ValidateConfig(tc.config); err != nil {
+				if tc.wantErr != "" {
+					if !containsStr(err.Error(), tc.wantErr) {
+						t.Fatalf("error = %q, want containing %q", err, tc.wantErr)
+					}
+					return
+				}
+				t.Fatalf("unexpected validate error: %v", err)
 			}
-			err := effect.Execute(ability, player, nil)
+
+			fn := effect.Create("test-ability:0", tc.config, nil)
+			err := fn(player, nil)
 
 			if tc.wantErr != "" {
 				if err == nil {
@@ -269,17 +278,15 @@ func TestRoomBuffEffectExpiry(t *testing.T) {
 
 	effect := &roomBuffEffect{world: &mockZoneLocator{zones: map[string]*game.ZoneInstance{"test-zone": zone}}}
 
-	ability := &assets.Ability{
-		Name: "test-ability",
-		Config: map[string]any{
-			"duration": float64(2),
-			"perks": []any{
-				map[string]any{"type": "modifier", "key": "test-key", "value": float64(5)},
-			},
-		},
+	config := map[string]string{
+		"duration":   "2",
+		"perk_type":  "modifier",
+		"perk_key":   "test-key",
+		"perk_value": "5",
 	}
+	fn := effect.Create("test-ability:0", config, nil)
 
-	if err := effect.Execute(ability, player, nil); err != nil {
+	if err := fn(player, nil); err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
@@ -359,13 +366,10 @@ func TestAttackEffect(t *testing.T) {
 
 			cm := &mockCombatManager{startedErr: tc.startErr}
 			effect := &attackEffect{combat: cm}
-			ability := &assets.Ability{
-				Command: assets.Command{
-					Targets: []assets.TargetSpec{{Name: "target"}},
-				},
-			}
+			targetSpecs := []assets.TargetSpec{{Name: "target"}}
 
-			err := effect.Execute(ability, player, tc.targets)
+			fn := effect.Create("test:0", nil, targetSpecs)
+			err := fn(player, tc.targets)
 
 			if tc.wantErr != "" {
 				if err == nil {
@@ -404,18 +408,15 @@ func TestAttackEffect_PeacefulArea(t *testing.T) {
 
 	cm := &mockCombatManager{}
 	effect := &attackEffect{combat: cm}
-	ability := &assets.Ability{
-		Command: assets.Command{
-			Targets: []assets.TargetSpec{{Name: "target"}},
-		},
-	}
+	targetSpecs := []assets.TargetSpec{{Name: "target"}}
 	targets := map[string]*TargetRef{
 		"target": {Type: targetTypeMobile, Mob: &MobileRef{
 			instance: newTestMobInstance("mob-1", "Goblin"),
 		}},
 	}
 
-	err := effect.Execute(ability, player, targets)
+	fn := effect.Create("test:0", nil, targetSpecs)
+	err := fn(player, targets)
 	if err == nil {
 		t.Fatal("expected peaceful area error, got nil")
 	}
@@ -436,12 +437,8 @@ func TestDamageEffect_InitiatesCombat(t *testing.T) {
 	cm := &mockCombatManager{}
 	effect := &damageEffect{combat: cm}
 
-	ability := &assets.Ability{
-		Config: map[string]any{"base_damage": float64(10)},
-		Command: assets.Command{
-			Targets: []assets.TargetSpec{{Name: "target"}},
-		},
-	}
+	config := map[string]string{"damage": "10"}
+	targetSpecs := []assets.TargetSpec{{Name: "target"}}
 	targets := map[string]*TargetRef{
 		"target": {Type: targetTypeMobile, Mob: &MobileRef{
 			InstanceId: "mob-1",
@@ -450,7 +447,8 @@ func TestDamageEffect_InitiatesCombat(t *testing.T) {
 		}},
 	}
 
-	if err := effect.Execute(ability, player, targets); err != nil {
+	fn := effect.Create("test:0", config, targetSpecs)
+	if err := fn(player, targets); err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 

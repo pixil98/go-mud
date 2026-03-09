@@ -63,7 +63,7 @@ func (f *FollowHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
-func (f *FollowHandlerFactory) ValidateConfig(config map[string]any) error {
+func (f *FollowHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 

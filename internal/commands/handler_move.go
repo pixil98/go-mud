@@ -40,9 +40,9 @@ func (f *MoveHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
-func (f *MoveHandlerFactory) ValidateConfig(config map[string]any) error {
-	direction, ok := config["direction"].(string)
-	if !ok || direction == "" {
+func (f *MoveHandlerFactory) ValidateConfig(config map[string]string) error {
+	direction := config["direction"]
+	if direction == "" {
 		return fmt.Errorf("direction is required")
 	}
 

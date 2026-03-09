@@ -2,26 +2,29 @@
     "version": 1,
     "id": "flame-ward",
     "spec": {
-        "name": "flame-ward",
-        "type": "spell",
-        "handler": "room_buff",
-        "description": "Ward the room with protective flames, granting fire resistance to all within.",
-        "resource": "mana",
-        "resource_cost": 20,
-        "ap_cost": 2,
+        "effects": [
+            {
+                "type": "room_buff",
+                "config": {
+                    "duration": "15",
+                    "perk_type": "modifier",
+                    "perk_key": "core.damage.fire.pct",
+                    "perk_value": "-25"
+                }
+            }
+        ],
         "command": {
+            "priority": 3,
+            "description": "Ward the room with protective flames, granting fire resistance to all within.",
+            "config": {
+                "resource": "mana",
+                "resource_cost": "20",
+                "ap_cost": "2",
+                "message_actor": "You trace a fiery sigil in the air. The room glows with a protective ward.",
+                "message_room": "{{ .Actor.Name }} traces a fiery sigil in the air. The room glows with a protective ward."
+            },
             "inputs": [],
             "targets": []
-        },
-        "config": {
-            "duration": 15,
-            "perks": [
-                {"type": "modifier", "key": "core.damage.fire.pct", "value": -25}
-            ]
-        },
-        "messages": {
-            "actor": "You trace a fiery sigil in the air. The room glows with a protective ward.",
-            "room": "{{ .Actor.Name }} traces a fiery sigil in the air. The room glows with a protective ward."
         }
     }
 }
