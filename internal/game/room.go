@@ -47,6 +47,16 @@ func NewRoomInstance(room storage.SmartIdentifier[*assets.Room]) (*RoomInstance,
 	return ri, nil
 }
 
+// Tick advances one game tick for the room: expires timed perks and ticks all mobs.
+func (ri *RoomInstance) Tick() {
+	ri.Perks.Tick()
+	ri.mu.RLock()
+	for _, mi := range ri.mobiles {
+		mi.Tick()
+	}
+	ri.mu.RUnlock()
+}
+
 // initExitClosures populates exitClosed/exitLocked from exit definitions.
 // Caller must hold the write lock or call before the instance is shared.
 func (ri *RoomInstance) initExitClosures() {

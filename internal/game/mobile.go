@@ -106,11 +106,15 @@ func (mi *MobileInstance) AdjustResource(name string, delta int) {
 	mi.adjustResource(name, delta)
 }
 
-// RegenTick regenerates all resources based on perk-driven regen values.
-func (mi *MobileInstance) RegenTick() {
-	mi.mu.Lock()
-	defer mi.mu.Unlock()
-	mi.regenTick()
+// Tick advances one game tick: expires timed perks and regenerates
+// resources when out of combat.
+func (mi *MobileInstance) Tick() {
+	mi.PerkCache.Tick()
+	if !mi.IsInCombat() {
+		mi.mu.Lock()
+		mi.regenTick()
+		mi.mu.Unlock()
+	}
 }
 
 // GetInventory returns the mobile's inventory.

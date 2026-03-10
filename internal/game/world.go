@@ -147,37 +147,21 @@ type Subscriber interface {
 	Subscribe(subject string, handler func(data []byte)) (unsubscribe func(), err error)
 }
 
-// Tick processes zone resets, timed perks, and regenerates out-of-combat entities.
+// Tick processes zone resets and ticks the full hierarchy:
+// world perks → players → zones → rooms → mobs.
 func (w *WorldState) Tick(_ context.Context) error {
 	for _, zi := range w.zones {
-		err := zi.Reset(false, w.zones)
-		if err != nil {
+		if err := zi.Reset(false, w.zones); err != nil {
 			return err
 		}
 	}
 
-	// Tick timed perks and regenerate out-of-combat entities.
 	w.Perks.Tick()
 	w.ForEachPlayer(func(_ string, ps *CharacterInstance) {
 		ps.Tick()
-		ps.ResetAP()
-		if !ps.IsInCombat() {
-			ps.RegenTick()
-		}
 	})
 	for _, zi := range w.zones {
-		zi.Perks.Tick()
-		for _, ri := range zi.rooms {
-			ri.Perks.Tick()
-			ri.mu.RLock()
-			for _, mi := range ri.mobiles {
-				mi.Tick()
-				if !mi.IsInCombat() {
-					mi.RegenTick()
-				}
-			}
-			ri.mu.RUnlock()
-		}
+		zi.Tick()
 	}
 
 	return nil

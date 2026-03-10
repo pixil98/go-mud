@@ -83,6 +83,14 @@ func (z *ZoneInstance) Reset(force bool, instances map[string]*ZoneInstance) err
 	return nil
 }
 
+// Tick advances one game tick for the zone: expires timed perks and ticks all rooms.
+func (z *ZoneInstance) Tick() {
+	z.Perks.Tick()
+	for _, ri := range z.rooms {
+		ri.Tick()
+	}
+}
+
 // ForEachPlayer yields each player across all rooms in the zone.
 func (z *ZoneInstance) ForEachPlayer(fn func(string, *CharacterInstance)) {
 	for _, ri := range z.rooms {

@@ -390,11 +390,16 @@ func (ci *CharacterInstance) AdjustResource(name string, delta int) {
 	ci.adjustResource(name, delta)
 }
 
-// RegenTick regenerates all resources based on perk-driven regen values.
-func (ci *CharacterInstance) RegenTick() {
-	ci.mu.Lock()
-	defer ci.mu.Unlock()
-	ci.regenTick()
+// Tick advances one game tick: expires timed perks, resets action points,
+// and regenerates resources when out of combat.
+func (ci *CharacterInstance) Tick() {
+	ci.PerkCache.Tick()
+	ci.ResetAP()
+	if !ci.IsInCombat() {
+		ci.mu.Lock()
+		ci.regenTick()
+		ci.mu.Unlock()
+	}
 }
 
 // GetInventory returns the character's inventory.
