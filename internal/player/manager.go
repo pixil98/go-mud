@@ -16,7 +16,9 @@ import (
 )
 
 const (
+	// DefaultLinklessTimeout is how long a disconnected player remains in the world before being saved and removed.
 	DefaultLinklessTimeout = 5 * time.Minute
+	// DefaultIdleTimeout is how long a connected but inactive player is allowed before being kicked.
 	DefaultIdleTimeout     = 15 * time.Minute
 )
 
@@ -33,6 +35,7 @@ func WithIdleTimeout(d time.Duration) PlayerManagerOpt {
 	return func(pm *PlayerManager) { pm.idleTimeout = d }
 }
 
+// PlayerManager manages player sessions, lifecycle, and timeouts.
 type PlayerManager struct {
 	cmdHandler *commands.Handler
 	world      *game.WorldState
@@ -49,6 +52,7 @@ type PlayerManager struct {
 	idleTimeout     time.Duration
 }
 
+// NewPlayerManager creates a PlayerManager with the given command handler, world state, and asset dictionary.
 func NewPlayerManager(cmd *commands.Handler, world *game.WorldState, dict *game.Dictionary, defaultZone, defaultRoom string, opts ...PlayerManagerOpt) *PlayerManager {
 	pm := &PlayerManager{
 		cmdHandler:      cmd,

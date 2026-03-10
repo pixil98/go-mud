@@ -21,6 +21,7 @@ type Tree struct {
 	Capstones   []Node `json:"capstones"`
 }
 
+// Validate checks that the tree has a name, description, and all nodes are valid with no duplicate IDs.
 func (t *Tree) Validate() error {
 	el := goerrors.NewErrorList()
 

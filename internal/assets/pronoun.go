@@ -15,10 +15,12 @@ type Pronoun struct {
 	Reflexive  string            `json:"reflexive"`
 }
 
+// Validate checks the pronoun fields (currently a no-op placeholder).
 func (p *Pronoun) Validate() error {
 	return nil
 }
 
+// Selector returns the subjective/objective pronoun pair as a display string.
 func (p *Pronoun) Selector() string {
 	return fmt.Sprintf("%s/%s", p.Subjective, p.Objective)
 }

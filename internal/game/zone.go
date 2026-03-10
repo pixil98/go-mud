@@ -9,6 +9,7 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
+// ZoneInstance holds the runtime state for a zone, including its rooms and reset schedule.
 type ZoneInstance struct {
 	Zone storage.SmartIdentifier[*assets.Zone]
 
@@ -20,6 +21,7 @@ type ZoneInstance struct {
 	Perks *PerkCache
 }
 
+// NewZoneInstance creates a ZoneInstance from a resolved zone asset.
 func NewZoneInstance(zone storage.SmartIdentifier[*assets.Zone]) (*ZoneInstance, error) {
 	def := zone.Get()
 	if def == nil {
@@ -105,6 +107,7 @@ func (z *ZoneInstance) IsOccupied() bool {
 	return false
 }
 
+// GetRoom returns the RoomInstance for the given room ID, or nil if not found.
 func (z *ZoneInstance) GetRoom(roomId string) *RoomInstance {
 	return z.rooms[roomId]
 }

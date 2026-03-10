@@ -25,6 +25,7 @@ func NewLookHandlerFactory(zones ZoneLocator, pub game.Publisher) *LookHandlerFa
 	return &LookHandlerFactory{zones: zones, pub: pub}
 }
 
+// Spec returns the handler's target and config requirements.
 func (f *LookHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
@@ -33,10 +34,12 @@ func (f *LookHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
+// ValidateConfig performs custom validation on the command config.
 func (f *LookHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 
+// Create returns a compiled CommandFunc for this handler.
 func (f *LookHandlerFactory) Create() (CommandFunc, error) {
 	return Adapt[LookActor](f.handle), nil
 }

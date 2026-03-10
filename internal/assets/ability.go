@@ -20,6 +20,7 @@ type Ability struct {
 	Command Command      `json:"command"` // inputs, targets, description, and all config including messages
 }
 
+// Validate checks that the ability has at least one effect and valid command inputs.
 func (a *Ability) Validate() error {
 	el := errors.NewErrorList()
 

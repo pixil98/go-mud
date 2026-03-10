@@ -3,6 +3,7 @@ package assets
 // StatKey identifies an ability score.
 type StatKey string
 
+// StatKey constants for the six core ability scores.
 const (
 	StatSTR StatKey = "str"
 	StatDEX StatKey = "dex"

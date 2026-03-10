@@ -23,10 +23,12 @@ type ScoreHandlerFactory struct {
 	pub game.Publisher
 }
 
+// NewScoreHandlerFactory creates a handler factory for score display commands.
 func NewScoreHandlerFactory(pub game.Publisher) *ScoreHandlerFactory {
 	return &ScoreHandlerFactory{pub: pub}
 }
 
+// Spec returns the handler's target and config requirements.
 func (f *ScoreHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
@@ -35,10 +37,12 @@ func (f *ScoreHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
+// ValidateConfig performs custom validation on the command config.
 func (f *ScoreHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 
+// Create returns a compiled CommandFunc for this handler.
 func (f *ScoreHandlerFactory) Create() (CommandFunc, error) {
 	return Adapt[ScoreActor](f.handle), nil
 }

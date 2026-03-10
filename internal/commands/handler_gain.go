@@ -23,18 +23,22 @@ type GainHandlerFactory struct {
 	pub game.Publisher
 }
 
+// NewGainHandlerFactory creates a handler factory for gain (level up) commands.
 func NewGainHandlerFactory(pub game.Publisher) *GainHandlerFactory {
 	return &GainHandlerFactory{pub: pub}
 }
 
+// Spec returns the handler's target and config requirements.
 func (f *GainHandlerFactory) Spec() *HandlerSpec {
 	return nil
 }
 
+// ValidateConfig performs custom validation on the command config.
 func (f *GainHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 
+// Create returns a compiled CommandFunc for this handler.
 func (f *GainHandlerFactory) Create() (CommandFunc, error) {
 	return Adapt[GainActor](f.handle), nil
 }

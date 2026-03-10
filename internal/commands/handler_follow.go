@@ -51,10 +51,12 @@ type FollowHandlerFactory struct {
 	pub     game.Publisher
 }
 
+// NewFollowHandlerFactory creates a handler factory for follow and unfollow commands.
 func NewFollowHandlerFactory(players PlayerLookup, pub game.Publisher) *FollowHandlerFactory {
 	return &FollowHandlerFactory{players: &followPlayerAdapter{inner: players}, pub: pub}
 }
 
+// Spec returns the handler's target and config requirements.
 func (f *FollowHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
@@ -63,10 +65,12 @@ func (f *FollowHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
+// ValidateConfig performs custom validation on the command config.
 func (f *FollowHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 
+// Create returns a compiled CommandFunc for this handler.
 func (f *FollowHandlerFactory) Create() (CommandFunc, error) {
 	return Adapt[FollowActor](f.handle), nil
 }

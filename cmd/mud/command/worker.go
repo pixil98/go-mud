@@ -12,6 +12,7 @@ import (
 	"github.com/pixil98/go-service"
 )
 
+// BuildWorkers assembles and returns all service workers from the config.
 func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	cfg, ok := config.(*Config)
 	if !ok {

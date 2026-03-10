@@ -74,6 +74,7 @@ type Command struct {
 	Inputs      []InputSpec       `json:"inputs"`                // User input parameters
 }
 
+// Validate checks that the handler is set and that inputs and targets are valid.
 func (c *Command) Validate() error {
 	if c.Handler == "" {
 		return fmt.Errorf("command handler not set")

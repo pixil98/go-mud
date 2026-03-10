@@ -23,18 +23,22 @@ type SaveHandlerFactory struct {
 	pub   game.Publisher
 }
 
+// NewSaveHandlerFactory creates a handler factory for character save commands.
 func NewSaveHandlerFactory(chars storage.Storer[*assets.Character], pub game.Publisher) *SaveHandlerFactory {
 	return &SaveHandlerFactory{chars: chars, pub: pub}
 }
 
+// Spec returns the handler's target and config requirements.
 func (f *SaveHandlerFactory) Spec() *HandlerSpec {
 	return nil
 }
 
+// ValidateConfig performs custom validation on the command config.
 func (f *SaveHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 
+// Create returns a compiled CommandFunc for this handler.
 func (f *SaveHandlerFactory) Create() (CommandFunc, error) {
 	return Adapt[SaveActor](f.handle), nil
 }

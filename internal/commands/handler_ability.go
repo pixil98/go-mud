@@ -3,7 +3,6 @@ package commands
 import (
 	"context"
 	"fmt"
-	"math/rand/v2"
 	"strconv"
 	"strings"
 
@@ -12,9 +11,6 @@ import (
 	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
 )
-
-// randIntn wraps rand.IntN for testability.
-var randIntn = rand.IntN
 
 // AbilityActor provides the character state needed by the ability and effect
 // subsystem. This is intentionally wide because the ability system genuinely
@@ -104,6 +100,7 @@ func NewAbilityHandlerFactory(
 	}, nil
 }
 
+// Spec returns the handler's config requirements and a union of all effect target requirements.
 func (f *AbilityHandlerFactory) Spec() *HandlerSpec {
 	spec := &HandlerSpec{
 		Config: []ConfigRequirement{
@@ -139,6 +136,7 @@ func (f *AbilityHandlerFactory) Spec() *HandlerSpec {
 	return spec
 }
 
+// ValidateConfig checks that resource_cost and ap_cost are non-negative integers.
 func (f *AbilityHandlerFactory) ValidateConfig(config map[string]string) error {
 	if cost := config["resource_cost"]; cost != "" {
 		n, err := strconv.Atoi(cost)
@@ -164,6 +162,7 @@ func (f *AbilityHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 
+// Create returns a compiled command function that checks the actor has the ability unlocked before executing effects.
 func (f *AbilityHandlerFactory) Create() (CommandFunc, error) {
 	return Adapt[AbilityActor](func(ctx context.Context, actor AbilityActor, in *CommandInput) error {
 		if !actor.HasGrant(assets.PerkGrantUnlockAbility, f.id) {

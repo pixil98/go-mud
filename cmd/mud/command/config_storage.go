@@ -10,6 +10,7 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
+// StorageConfig holds file paths for all game asset stores.
 type StorageConfig struct {
 	/* Core Parts */
 	Characters AssetConfig[*assets.Character] `json:"characters"`
@@ -24,6 +25,7 @@ type StorageConfig struct {
 	Abilities  AssetConfig[*assets.Ability]   `json:"abilities"`
 }
 
+// BuildDictionary creates and resolves all asset stores into a game.Dictionary.
 func (c *StorageConfig) BuildDictionary() (*game.Dictionary, error) {
 	chars, err := c.Characters.BuildFileStore()
 	if err != nil {
@@ -96,6 +98,7 @@ func (c *StorageConfig) validate() error {
 	return el.Err()
 }
 
+// AssetConfig holds the file path for a single asset type.
 type AssetConfig[T storage.ValidatingSpec] struct {
 	Path string `json:"path"`
 }

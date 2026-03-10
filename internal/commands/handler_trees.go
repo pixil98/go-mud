@@ -18,10 +18,12 @@ type TreesHandlerFactory struct {
 	pub   game.Publisher
 }
 
+// NewTreesHandlerFactory creates a handler factory for skill tree listing commands.
 func NewTreesHandlerFactory(trees storage.Storer[*assets.Tree], pub game.Publisher) *TreesHandlerFactory {
 	return &TreesHandlerFactory{trees: trees, pub: pub}
 }
 
+// Spec returns the handler's target and config requirements.
 func (f *TreesHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Config: []ConfigRequirement{
@@ -30,10 +32,12 @@ func (f *TreesHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
+// ValidateConfig performs custom validation on the command config.
 func (f *TreesHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 
+// Create returns a compiled CommandFunc for this handler.
 func (f *TreesHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, in *CommandInput) error {
 		charId := in.Char.Id()

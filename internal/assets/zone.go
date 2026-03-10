@@ -7,6 +7,7 @@ import (
 	"github.com/pixil98/go-errors"
 )
 
+// Zone reset mode constants.
 const (
 	ZoneResetNever    = "never"    // Zone never resets
 	ZoneResetLifespan = "lifespan" // Zone resets when lifespan is reached

@@ -96,10 +96,12 @@ type GroupHandlerFactory struct {
 	groupCore
 }
 
+// NewGroupHandlerFactory creates a handler factory for group management commands.
 func NewGroupHandlerFactory(players PlayerLookup, pub game.Publisher) *GroupHandlerFactory {
 	return &GroupHandlerFactory{groupCore{players: players, pub: pub}}
 }
 
+// Spec returns the handler's target and config requirements.
 func (f *GroupHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
@@ -108,8 +110,10 @@ func (f *GroupHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
+// ValidateConfig performs custom validation on the command config.
 func (f *GroupHandlerFactory) ValidateConfig(config map[string]string) error { return nil }
 
+// Create returns a compiled CommandFunc for this handler.
 func (f *GroupHandlerFactory) Create() (CommandFunc, error) {
 	return Adapt[*game.CharacterInstance](f.handle), nil
 }
@@ -243,10 +247,12 @@ type UngroupHandlerFactory struct {
 	groupCore
 }
 
+// NewUngroupHandlerFactory creates a handler factory for ungroup commands.
 func NewUngroupHandlerFactory(players PlayerLookup, pub game.Publisher) *UngroupHandlerFactory {
 	return &UngroupHandlerFactory{groupCore{players: players, pub: pub}}
 }
 
+// Spec returns the handler's target and config requirements.
 func (f *UngroupHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
@@ -255,8 +261,10 @@ func (f *UngroupHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
+// ValidateConfig performs custom validation on the command config.
 func (f *UngroupHandlerFactory) ValidateConfig(config map[string]string) error { return nil }
 
+// Create returns a compiled CommandFunc for this handler.
 func (f *UngroupHandlerFactory) Create() (CommandFunc, error) {
 	return Adapt[*game.CharacterInstance](f.handle), nil
 }

@@ -26,6 +26,7 @@ func NewTitleHandlerFactory(pub game.Publisher) *TitleHandlerFactory {
 	return &TitleHandlerFactory{pub: pub}
 }
 
+// Spec returns the handler's target and config requirements.
 func (f *TitleHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Config: []ConfigRequirement{
@@ -34,10 +35,12 @@ func (f *TitleHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
+// ValidateConfig performs custom validation on the command config.
 func (f *TitleHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 
+// Create returns a compiled CommandFunc for this handler.
 func (f *TitleHandlerFactory) Create() (CommandFunc, error) {
 	return Adapt[TitleActor](f.handle), nil
 }

@@ -18,6 +18,7 @@ type Race struct {
 	WearSlots    []string `json:"wear_slots,omitempty"`
 }
 
+// Validate checks that all perks on the race are valid.
 func (r *Race) Validate() error {
 	el := errors.NewErrorList()
 
@@ -41,6 +42,7 @@ func (r *Race) SlotCount(slot string) int {
 	return count
 }
 
+// Selector returns the race name for use in interactive selection prompts.
 func (r *Race) Selector() string {
 	return r.Name
 }

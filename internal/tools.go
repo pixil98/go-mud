@@ -7,28 +7,33 @@ import (
 	"strings"
 )
 
-type promptValidator func(string) (bool, string)
+// PromptValidator validates prompt input, returning (ok, errorMessage).
+type PromptValidator func(string) (bool, string)
 
 type promptConfig struct {
 	tries     int
-	validator promptValidator
+	validator PromptValidator
 }
 
-type promptOption func(*promptConfig)
+// PromptOption configures the behaviour of a Prompt call.
+type PromptOption func(*promptConfig)
 
-func WithValidator(v promptValidator) promptOption {
+// WithValidator sets a custom input validation function on a Prompt.
+func WithValidator(v PromptValidator) PromptOption {
 	return func(cfg *promptConfig) {
 		cfg.validator = v
 	}
 }
 
-func WithMaxTries(i int) promptOption {
+// WithMaxTries limits the number of input retries before Prompt returns an error.
+func WithMaxTries(i int) PromptOption {
 	return func(cfg *promptConfig) {
 		cfg.tries = i
 	}
 }
 
-func Prompt(rw io.ReadWriter, prompt string, opts ...promptOption) (string, error) {
+// Prompt writes a prompt to rw and reads one line of input, retrying on validation failure.
+func Prompt(rw io.ReadWriter, prompt string, opts ...PromptOption) (string, error) {
 	config := &promptConfig{}
 	for _, opt := range opts {
 		opt(config)
@@ -76,6 +81,7 @@ func Prompt(rw io.ReadWriter, prompt string, opts ...promptOption) (string, erro
 	}
 }
 
+// PromptYN prompts the user for a yes/no answer and returns true for yes.
 func PromptYN(rw io.ReadWriter, prompt string) (bool, error) {
 	str, err := Prompt(rw, prompt, WithValidator(
 		func(str string) (bool, string) {

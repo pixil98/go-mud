@@ -7,6 +7,7 @@ import "fmt"
 // for engine-interpreted values so they're discoverable and consistent.
 type PerkKey = string
 
+// PerkKey constants for engine-interpreted modifier and grant keys.
 const (
 	PerkKeySTR             PerkKey = "core.stats.str"
 	PerkKeyDEX             PerkKey = "core.stats.dex"
@@ -30,6 +31,7 @@ const ResourceKeyPrefix = "core.resource."
 // ResourceAspect identifies a specific aspect of a perk-driven resource pool.
 type ResourceAspect string
 
+// ResourceAspect constants.
 const (
 	ResourceAspectMax      ResourceAspect = "max"
 	ResourceAspectPerLevel ResourceAspect = "per_level"
@@ -70,6 +72,7 @@ const (
 // DamageAspect identifies a specific aspect of damage type scaling.
 type DamageAspect string
 
+// DamageAspect constants.
 const (
 	DamageAspectPct  DamageAspect = "pct"  // percent damage bonus
 	DamageAspectFlat DamageAspect = "flat" // flat damage bonus
@@ -89,6 +92,7 @@ const DefenseKeyPrefix = "core.defense."
 // DefenseAspect identifies a specific aspect of damage mitigation.
 type DefenseAspect string
 
+// DefenseAspect constants.
 const (
 	DefenseAspectAbsorb    DefenseAspect = "absorb"     // flat damage reduction after a hit lands
 	DefenseAspectAbsorbPct DefenseAspect = "absorb_pct" // percent damage reduction after a hit lands

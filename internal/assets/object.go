@@ -11,6 +11,7 @@ import (
 // ObjectFlag defines a boolean property of an object.
 type ObjectFlag int
 
+// ObjectFlag values.
 const (
 	ObjectFlagUnknown ObjectFlag = iota
 	ObjectFlagContainer

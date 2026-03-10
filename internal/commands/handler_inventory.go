@@ -26,14 +26,17 @@ func NewInventoryHandlerFactory(pub game.Publisher) *InventoryHandlerFactory {
 	return &InventoryHandlerFactory{pub: pub}
 }
 
+// Spec returns the handler's target and config requirements.
 func (f *InventoryHandlerFactory) Spec() *HandlerSpec {
 	return nil
 }
 
+// ValidateConfig performs custom validation on the command config.
 func (f *InventoryHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 
+// Create returns a compiled CommandFunc for this handler.
 func (f *InventoryHandlerFactory) Create() (CommandFunc, error) {
 	return Adapt[InventoryActor](f.handle), nil
 }

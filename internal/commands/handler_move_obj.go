@@ -35,10 +35,12 @@ type MoveObjHandlerFactory struct {
 	pub   game.Publisher
 }
 
+// NewMoveObjHandlerFactory creates a handler factory for object movement commands.
 func NewMoveObjHandlerFactory(zones ZoneLocator, pub game.Publisher) *MoveObjHandlerFactory {
 	return &MoveObjHandlerFactory{zones: zones, pub: pub}
 }
 
+// Spec returns the handler's target and config requirements.
 func (f *MoveObjHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
@@ -55,6 +57,7 @@ func (f *MoveObjHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
+// ValidateConfig performs custom validation on the command config.
 func (f *MoveObjHandlerFactory) ValidateConfig(config map[string]string) error {
 	dest := config["destination"]
 	if dest == "" {
@@ -63,6 +66,7 @@ func (f *MoveObjHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 
+// Create returns a compiled CommandFunc for this handler.
 func (f *MoveObjHandlerFactory) Create() (CommandFunc, error) {
 	return Adapt[MoveObjActor](f.handle), nil
 }

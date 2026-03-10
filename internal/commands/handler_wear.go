@@ -27,10 +27,12 @@ type WearHandlerFactory struct {
 	pub   game.Publisher
 }
 
+// NewWearHandlerFactory creates a handler factory for equipping wearable item commands.
 func NewWearHandlerFactory(zones ZoneLocator, pub game.Publisher) *WearHandlerFactory {
 	return &WearHandlerFactory{zones: zones, pub: pub}
 }
 
+// Spec returns the handler's target and config requirements.
 func (f *WearHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
@@ -39,10 +41,12 @@ func (f *WearHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
+// ValidateConfig performs custom validation on the command config.
 func (f *WearHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 
+// Create returns a compiled CommandFunc for this handler.
 func (f *WearHandlerFactory) Create() (CommandFunc, error) {
 	return Adapt[WearActor](f.handle), nil
 }

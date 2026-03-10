@@ -5,6 +5,7 @@ import (
 	"fmt"
 )
 
+// ExtensionState is a keyed bag of arbitrary JSON values used to attach extra state to game entities.
 type ExtensionState map[string]json.RawMessage
 
 // Set stores v under key after marshalling it to JSON.

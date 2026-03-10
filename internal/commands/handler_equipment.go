@@ -23,18 +23,22 @@ type EquipmentHandlerFactory struct {
 	pub game.Publisher
 }
 
+// NewEquipmentHandlerFactory creates a handler factory for equipment listing commands.
 func NewEquipmentHandlerFactory(pub game.Publisher) *EquipmentHandlerFactory {
 	return &EquipmentHandlerFactory{pub: pub}
 }
 
+// Spec returns the handler's target and config requirements.
 func (f *EquipmentHandlerFactory) Spec() *HandlerSpec {
 	return nil
 }
 
+// ValidateConfig performs custom validation on the command config.
 func (f *EquipmentHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 
+// Create returns a compiled CommandFunc for this handler.
 func (f *EquipmentHandlerFactory) Create() (CommandFunc, error) {
 	return Adapt[EquipmentActor](f.handle), nil
 }

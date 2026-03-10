@@ -10,21 +10,24 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
-type SshListener struct {
+// SSHListener accepts incoming SSH connections and hands them off to the ConnectionManager.
+type SSHListener struct {
 	port    uint16
 	cm      *ConnectionManager
 	hostKey ssh.Signer
 }
 
-func NewSshListener(port uint16, cm *ConnectionManager, hostKey ssh.Signer) *SshListener {
-	return &SshListener{
+// NewSSHListener creates an SSHListener on the given port using the provided host key.
+func NewSSHListener(port uint16, cm *ConnectionManager, hostKey ssh.Signer) *SSHListener {
+	return &SSHListener{
 		port:    port,
 		cm:      cm,
 		hostKey: hostKey,
 	}
 }
 
-func (l *SshListener) Start(ctx context.Context) error {
+// Start begins accepting SSH connections until ctx is canceled.
+func (l *SSHListener) Start(ctx context.Context) error {
 	config := &ssh.ServerConfig{
 		NoClientAuth: true,
 	}
@@ -69,7 +72,7 @@ func (l *SshListener) Start(ctx context.Context) error {
 	}
 }
 
-func (l *SshListener) handleConnection(ctx context.Context, conn net.Conn, config *ssh.ServerConfig) {
+func (l *SSHListener) handleConnection(ctx context.Context, conn net.Conn, config *ssh.ServerConfig) {
 	defer func() { _ = conn.Close() }()
 
 	sshConn, chans, reqs, err := ssh.NewServerConn(conn, config)

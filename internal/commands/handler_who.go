@@ -20,14 +20,17 @@ func NewWhoHandlerFactory(players game.PlayerGroup, pub game.Publisher) *WhoHand
 	return &WhoHandlerFactory{players: players, pub: pub}
 }
 
+// Spec returns the handler's target and config requirements.
 func (f *WhoHandlerFactory) Spec() *HandlerSpec {
 	return nil
 }
 
+// ValidateConfig performs custom validation on the command config.
 func (f *WhoHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 
+// Create returns a compiled CommandFunc for this handler.
 func (f *WhoHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, in *CommandInput) error {
 		var lines []string

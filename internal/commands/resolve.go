@@ -11,18 +11,22 @@ import (
 
 // --- Finder interfaces ---
 
+// PlayerFinder finds a player by name within a search scope.
 type PlayerFinder interface {
 	FindPlayer(string) *game.CharacterInstance
 }
 
+// ObjectFinder finds an object by name within a search scope.
 type ObjectFinder interface {
 	FindObj(string) *game.ObjectInstance
 }
 
+// MobileFinder finds a mobile by name within a search scope.
 type MobileFinder interface {
 	FindMob(string) *game.MobileInstance
 }
 
+// ExitFinder finds an exit by direction name within a search scope.
 type ExitFinder interface {
 	FindExit(string) (string, *assets.Exit)
 }

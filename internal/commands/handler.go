@@ -103,6 +103,7 @@ type compiledCommand struct {
 	cmdFunc CommandFunc
 }
 
+// Handler compiles and dispatches game commands.
 type Handler struct {
 	factories map[string]HandlerFactory
 	compiled  map[string]*compiledCommand
@@ -110,6 +111,7 @@ type Handler struct {
 	combat    CombatManager
 }
 
+// NewHandler creates a Handler, registers all built-in command factories, and compiles every command from the store.
 func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, publisher game.Publisher, world *game.WorldState, combat CombatManager) (*Handler, error) {
 	h := &Handler{
 		factories: make(map[string]HandlerFactory),

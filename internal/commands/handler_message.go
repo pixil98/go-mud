@@ -31,6 +31,7 @@ func NewMessageHandlerFactory(world WorldView, pub game.Publisher) *MessageHandl
 	return &MessageHandlerFactory{world: world, pub: pub}
 }
 
+// Spec returns the handler's target and config requirements.
 func (f *MessageHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Config: []ConfigRequirement{
@@ -44,6 +45,7 @@ func (f *MessageHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
+// ValidateConfig performs custom validation on the command config.
 func (f *MessageHandlerFactory) ValidateConfig(config map[string]string) error {
 	scope := config["scope"]
 	switch scope {
@@ -56,6 +58,7 @@ func (f *MessageHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 
+// Create returns a compiled CommandFunc for this handler.
 func (f *MessageHandlerFactory) Create() (CommandFunc, error) {
 	return Adapt[MessageActor](f.handle), nil
 }

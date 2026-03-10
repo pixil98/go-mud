@@ -19,6 +19,7 @@ type ObjectInstance struct {
 	Locked     bool                                    `json:"locked,omitempty"`   // Runtime lock state for containers with a Lock
 }
 
+// UnmarshalJSON deserializes an ObjectInstance and assigns it a new unique InstanceId.
 func (oi *ObjectInstance) UnmarshalJSON(b []byte) error {
 	type Alias ObjectInstance
 	err := json.Unmarshal(b, (*Alias)(oi))

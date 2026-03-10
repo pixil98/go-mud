@@ -8,6 +8,7 @@ import (
 	"github.com/pixil98/go-mud/internal/messaging"
 )
 
+// NatsConfig holds NATS server configuration.
 type NatsConfig struct {
 	Host         string `json:"host"`
 	Port         int    `json:"port"`
@@ -27,20 +28,20 @@ func (n *NatsConfig) validate() error {
 	return el.Err()
 }
 
-func (c *NatsConfig) buildNatsServer() (*messaging.NatsServer, error) {
+func (n *NatsConfig) buildNatsServer() (*messaging.NatsServer, error) {
 	var opts []messaging.NatsServerOpt
-	if c.StartTimeout != "" {
-		d, err := time.ParseDuration(c.StartTimeout)
+	if n.StartTimeout != "" {
+		d, err := time.ParseDuration(n.StartTimeout)
 		if err != nil {
 			return nil, fmt.Errorf("parsing start_timeout: %w", err)
 		}
 		opts = append(opts, messaging.WithStartTimeout(d))
 	}
-	if c.Host != "" {
-		opts = append(opts, messaging.WithHost(c.Host))
+	if n.Host != "" {
+		opts = append(opts, messaging.WithHost(n.Host))
 	}
-	if c.Port != 0 {
-		opts = append(opts, messaging.WithPort(c.Port))
+	if n.Port != 0 {
+		opts = append(opts, messaging.WithPort(n.Port))
 	}
 
 	s, err := messaging.NewNatsServer(opts...)

@@ -29,10 +29,12 @@ type ClosureHandlerFactory struct {
 	pub   game.Publisher
 }
 
+// NewClosureHandlerFactory creates a handler factory for open/close/lock/unlock commands.
 func NewClosureHandlerFactory(world WorldView, pub game.Publisher) *ClosureHandlerFactory {
 	return &ClosureHandlerFactory{world: world, pub: pub}
 }
 
+// Spec returns the required target (exit or container object) and config (action) for closure commands.
 func (f *ClosureHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
@@ -44,6 +46,7 @@ func (f *ClosureHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
+// ValidateConfig checks that action is one of open, close, lock, or unlock.
 func (f *ClosureHandlerFactory) ValidateConfig(config map[string]string) error {
 	action := config["action"]
 	switch action {
@@ -54,6 +57,7 @@ func (f *ClosureHandlerFactory) ValidateConfig(config map[string]string) error {
 	}
 }
 
+// Create returns a compiled command function for the configured closure action.
 func (f *ClosureHandlerFactory) Create() (CommandFunc, error) {
 	return Adapt[ClosureActor](f.handle), nil
 }

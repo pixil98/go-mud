@@ -12,11 +12,13 @@ import (
 	"github.com/iammegalith/telnet"
 )
 
+// TelnetListener accepts incoming Telnet connections and hands them off to the ConnectionManager.
 type TelnetListener struct {
 	port uint16
 	cm   *ConnectionManager
 }
 
+// NewTelnetListener creates a TelnetListener on the given port.
 func NewTelnetListener(port uint16, cm *ConnectionManager) *TelnetListener {
 	return &TelnetListener{
 		port: port,
@@ -24,6 +26,7 @@ func NewTelnetListener(port uint16, cm *ConnectionManager) *TelnetListener {
 	}
 }
 
+// Start begins accepting Telnet connections until ctx is canceled.
 func (l *TelnetListener) Start(ctx context.Context) error {
 	// Create a cancelable context for all connections
 	connCtx, cancelConns := context.WithCancel(context.Background())

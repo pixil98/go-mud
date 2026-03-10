@@ -10,12 +10,14 @@ import (
 	"sync"
 )
 
+// Storer provides save and retrieval operations for asset specs keyed by string.
 type Storer[T ValidatingSpec] interface {
 	Save(string, T) error
 	Get(string) T
 	GetAll() map[string]T
 }
 
+// FileStore loads and saves asset specs as JSON files in a directory, keyed by asset ID.
 type FileStore[T ValidatingSpec] struct {
 	path    string
 	records map[string]T
@@ -23,6 +25,7 @@ type FileStore[T ValidatingSpec] struct {
 	mu sync.RWMutex
 }
 
+// NewFileStore creates a FileStore by loading all JSON asset files from the given directory path.
 func NewFileStore[T ValidatingSpec](path string) (*FileStore[T], error) {
 	s := &FileStore[T]{
 		path:    path,

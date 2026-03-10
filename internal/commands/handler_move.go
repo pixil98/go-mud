@@ -32,6 +32,7 @@ func NewMoveHandlerFactory(zones ZoneLocator, pub game.Publisher) *MoveHandlerFa
 	return &MoveHandlerFactory{zones: zones, pub: pub}
 }
 
+// Spec returns the handler's target and config requirements.
 func (f *MoveHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Config: []ConfigRequirement{
@@ -40,6 +41,7 @@ func (f *MoveHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
+// ValidateConfig performs custom validation on the command config.
 func (f *MoveHandlerFactory) ValidateConfig(config map[string]string) error {
 	direction := config["direction"]
 	if direction == "" {
@@ -49,6 +51,7 @@ func (f *MoveHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 
+// Create returns a compiled CommandFunc for this handler.
 func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
 	return Adapt[MoveActor](f.handle), nil
 }

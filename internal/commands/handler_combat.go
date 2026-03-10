@@ -66,10 +66,12 @@ type AssistHandlerFactory struct {
 	pub     game.Publisher
 }
 
+// NewAssistHandlerFactory creates a handler factory for the assist command.
 func NewAssistHandlerFactory(combat CombatManager, zones ZoneLocator, players PlayerLookup, pub game.Publisher) *AssistHandlerFactory {
 	return &AssistHandlerFactory{combat: combat, zones: zones, players: &assistPlayerAdapter{inner: players}, pub: pub}
 }
 
+// Spec returns the optional target player requirement for the assist handler.
 func (f *AssistHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
@@ -78,10 +80,12 @@ func (f *AssistHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
+// ValidateConfig performs custom validation on the command config.
 func (f *AssistHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 
+// Create returns a compiled CommandFunc for this handler.
 func (f *AssistHandlerFactory) Create() (CommandFunc, error) {
 	return Adapt[AssistActor](f.handle), nil
 }

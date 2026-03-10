@@ -22,6 +22,7 @@ func NewHelpHandlerFactory(commands storage.Storer[*assets.Command], pub game.Pu
 	return &HelpHandlerFactory{commands: commands, pub: pub}
 }
 
+// Spec returns the handler's target and config requirements.
 func (f *HelpHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Config: []ConfigRequirement{
@@ -30,10 +31,12 @@ func (f *HelpHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
+// ValidateConfig performs custom validation on the command config.
 func (f *HelpHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 
+// Create returns a compiled CommandFunc for this handler.
 func (f *HelpHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, in *CommandInput) error {
 		command := in.Config["command"]

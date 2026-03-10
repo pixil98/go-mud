@@ -15,6 +15,7 @@ import (
 	"github.com/pixil98/go-mud/internal/game"
 )
 
+// Player represents an active player session, bridging the network connection to the game world.
 type Player struct {
 	conn       io.ReadWriter
 	charId     string
@@ -30,6 +31,7 @@ func (p *Player) Id() string {
 	return string(p.charId)
 }
 
+// Play runs the player's input/output loop until the connection closes, the player quits, or ctx is canceled.
 func (p *Player) Play(ctx context.Context) error {
 	// Start goroutine to read input lines into a channel
 	inputChan := make(chan string)

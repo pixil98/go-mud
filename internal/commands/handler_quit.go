@@ -19,18 +19,22 @@ var _ QuitActor = (*game.CharacterInstance)(nil)
 // Character saving is handled by the player manager on session end.
 type QuitHandlerFactory struct{}
 
+// NewQuitHandlerFactory creates a handler factory for quit commands.
 func NewQuitHandlerFactory() *QuitHandlerFactory {
 	return &QuitHandlerFactory{}
 }
 
+// Spec returns the handler's target and config requirements.
 func (f *QuitHandlerFactory) Spec() *HandlerSpec {
 	return nil
 }
 
+// ValidateConfig performs custom validation on the command config.
 func (f *QuitHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 
+// Create returns a compiled CommandFunc for this handler.
 func (f *QuitHandlerFactory) Create() (CommandFunc, error) {
 	return Adapt[QuitActor](f.handle), nil
 }
