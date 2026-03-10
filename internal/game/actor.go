@@ -38,7 +38,7 @@ func (a *ActorInstance) resourceMax(name string) int {
 
 // resource returns (current, max) for the named resource.
 // Returns (0, 0) if the resource doesn't exist.
-func (a *ActorInstance) resource(name string) (current, max int) {
+func (a *ActorInstance) resource(name string) (current, maximum int) {
 	cur, ok := a.resources[name]
 	if !ok {
 		return 0, 0
@@ -109,13 +109,13 @@ func (a *ActorInstance) regenTick() {
 func (a *ActorInstance) Level() int { return a.level }
 
 // ForEachResource calls fn for each resource. Caller must hold the owning type's lock.
-func (a *ActorInstance) ForEachResource(fn func(name string, current, max int)) {
+func (a *ActorInstance) ForEachResource(fn func(name string, current, maximum int)) {
 	for name, cur := range a.resources {
 		fn(name, cur, a.resourceMax(name))
 	}
 }
 
 // ResourceLine returns a formatted display line for a resource (e.g. "HP: 45/50").
-func ResourceLine(name string, current, max int) string {
-	return fmt.Sprintf("%s: %d/%d", name, current, max)
+func ResourceLine(name string, current, maximum int) string {
+	return fmt.Sprintf("%s: %d/%d", name, current, maximum)
 }

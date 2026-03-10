@@ -85,7 +85,7 @@ func (mi *MobileInstance) SetInCombat(v bool) {
 }
 
 // Resource returns the current and max for a named resource.
-func (mi *MobileInstance) Resource(name string) (current, max int) {
+func (mi *MobileInstance) Resource(name string) (current, maximum int) {
 	mi.mu.RLock()
 	defer mi.mu.RUnlock()
 	return mi.resource(name)

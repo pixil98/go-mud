@@ -1,0 +1,10 @@
+linters:
+  enable:
+    - revive
+
+linters-settings:
+  revive:
+    rules:
+      # Project convention: use Id (not ID) for identifiers.
+      - name: var-naming
+        disabled: true

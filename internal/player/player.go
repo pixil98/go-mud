@@ -166,7 +166,7 @@ func (p *Player) prompt() error {
 			parts = append(parts, game.ResourceLine(assets.ResourceHp, cur, mx))
 		}
 		var others []string
-		ps.ForEachResource(func(name string, current, max int) {
+		ps.ForEachResource(func(name string, _, _ int) {
 			if name != assets.ResourceHp {
 				others = append(others, name)
 			}

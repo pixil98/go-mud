@@ -148,7 +148,7 @@ type Subscriber interface {
 }
 
 // Tick processes zone resets, timed perks, and regenerates out-of-combat entities.
-func (w *WorldState) Tick(ctx context.Context) error {
+func (w *WorldState) Tick(_ context.Context) error {
 	for _, zi := range w.zones {
 		err := zi.Reset(false, w.zones)
 		if err != nil {

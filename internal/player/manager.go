@@ -78,7 +78,7 @@ func NewPlayerManager(cmd *commands.Handler, world *game.WorldState, dict *game.
 // Tick checks all players for linkless and idle timeouts.
 // Linkless players past the timeout are saved and removed from the world.
 // Idle connected players are marked linkless and kicked, dropping their connection.
-func (m *PlayerManager) Tick(ctx context.Context) error {
+func (m *PlayerManager) Tick(_ context.Context) error {
 	now := time.Now()
 	var linklessExpired []string
 	var idleExpired []string

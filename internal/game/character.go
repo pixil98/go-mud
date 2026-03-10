@@ -369,7 +369,7 @@ func (ci *CharacterInstance) MarkActive() {
 }
 
 // Resource returns the current and max for a named resource.
-func (ci *CharacterInstance) Resource(name string) (current, max int) {
+func (ci *CharacterInstance) Resource(name string) (current, maximum int) {
 	ci.mu.RLock()
 	defer ci.mu.RUnlock()
 	return ci.resource(name)
