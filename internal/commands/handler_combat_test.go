@@ -16,7 +16,6 @@ type mockCombatManager struct {
 	startCount   int
 	lastAttacker combat.Combatant
 	lastTarget   combat.Combatant
-	queued       bool
 	threatAdded  bool
 	threatAmount int
 	threatCount  int
@@ -36,9 +35,6 @@ func (m *mockCombatManager) AddThreat(_, _ combat.Combatant, amount int) {
 	m.threatAmount += amount
 }
 
-func (m *mockCombatManager) QueueAttack(_ combat.Combatant) {
-	m.queued = true
-}
 
 // mockAssistActor is a lightweight test double for AssistActor.
 // It also satisfies AssistedPlayer, so it can be used for both the actor and
@@ -65,6 +61,7 @@ func (m *mockAssistActor) ModifierValue(string) int        { return 0 }
 func (m *mockAssistActor) GrantArgs(string) []string       { return nil }
 func (m *mockAssistActor) CombatTargetId() string          { return m.combatTargetId }
 func (m *mockAssistActor) SetCombatTargetId(string)        {}
+func (m *mockAssistActor) AutoUses(string) []string        { return nil }
 func (m *mockAssistActor) Location() (string, string)      { return m.zoneId, m.roomId }
 func (m *mockAssistActor) Level() int                      { return 1 }
 func (m *mockAssistActor) OnDeath() []*game.ObjectInstance { return nil }

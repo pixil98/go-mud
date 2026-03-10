@@ -14,7 +14,6 @@ import (
 type CombatManager interface {
 	StartCombat(attacker, target combat.Combatant) error
 	AddThreat(source, target combat.Combatant, amount int)
-	QueueAttack(c combat.Combatant)
 }
 
 // AssistActor provides the character state needed by the assist handler.

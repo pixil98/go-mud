@@ -14,11 +14,10 @@ import (
 type MobileInstance struct {
 	mu sync.RWMutex
 
-	InstanceId string
-	Mobile     storage.SmartIdentifier[*assets.Mobile]
-	inCombat   bool
-	zoneId     string
-	roomId     string
+	Mobile   storage.SmartIdentifier[*assets.Mobile]
+	inCombat bool
+	zoneId   string
+	roomId   string
 
 	ActorInstance
 }
@@ -29,10 +28,10 @@ func NewMobileInstance(mob storage.SmartIdentifier[*assets.Mobile]) (*MobileInst
 	def := mob.Get()
 	eq := NewEquipment()
 	mi := &MobileInstance{
-		InstanceId: uuid.New().String(),
-		Mobile:     mob,
+		Mobile: mob,
 		ActorInstance: ActorInstance{
-			inventory: NewInventory(),
+			InstanceId: uuid.New().String(),
+			inventory:  NewInventory(),
 			equipment: eq,
 			level:     def.Level,
 			PerkCache: *NewPerkCache(def.Perks, map[string]PerkSource{"equipment": eq}),
@@ -59,11 +58,6 @@ func NewMobileInstance(mob storage.SmartIdentifier[*assets.Mobile]) (*MobileInst
 }
 
 // --- Accessor methods ---
-
-// Id returns the mobile instance's unique identifier.
-func (mi *MobileInstance) Id() string {
-	return mi.InstanceId
-}
 
 // Name returns the mobile's display name.
 func (mi *MobileInstance) Name() string {
@@ -162,7 +156,7 @@ func newCorpse(mi *MobileInstance) *ObjectInstance {
 		DetailedDesc: fmt.Sprintf("The lifeless body of %s. It may still be carrying some belongings.", name),
 		Flags:        []string{"container"},
 	}
-	si := storage.NewResolvedSmartIdentifier("corpse-"+mi.InstanceId, corpseObj)
+	si := storage.NewResolvedSmartIdentifier("corpse-"+mi.Id(), corpseObj)
 	corpse := &ObjectInstance{
 		InstanceId: uuid.New().String(),
 		Object:     si,

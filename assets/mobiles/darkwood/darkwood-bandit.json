@@ -33,12 +33,7 @@
             },
             {
                 "type": "grant",
-                "key": "attack",
-                "arg": "physical:1d4+1"
-            },
-            {
-                "type": "grant",
-                "key": "autoattack"
+                "key": "auto_use", "arg": "attack:1"
             }
         ]
     }

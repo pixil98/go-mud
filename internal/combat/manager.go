@@ -20,9 +20,8 @@ type Manager struct {
 }
 
 type combatantState struct {
-	c             Combatant
-	threat        map[string]int // enemy ID → accumulated threat
-	attackPending bool           // fire one manual attack next tick
+	c      Combatant
+	threat map[string]int // enemy ID → accumulated threat
 }
 
 // AttackResult holds the outcome of a single attack roll.
@@ -69,15 +68,6 @@ func (m *Manager) StartCombat(attacker, target Combatant) error {
 	return nil
 }
 
-// QueueAttack marks a combatant to fire one manual attack on the next Tick.
-// The target is resolved from the combatant's CombatTargetId or highest threat.
-func (m *Manager) QueueAttack(c Combatant) {
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	if state, ok := m.combatants[c.Id()]; ok {
-		state.attackPending = true
-	}
-}
 
 // AddThreat increases the threat that source has generated toward target.
 func (m *Manager) AddThreat(source, target Combatant, amount int) {
@@ -114,9 +104,9 @@ func PerformAttack(attacker, target Combatant) []AttackResult {
 	return results
 }
 
-// parseAttackArg extracts the damage type and dice expression from an attack grant arg.
+// ParseAttackArg extracts the damage type and dice expression from an attack grant arg.
 // Supports "<type>:<dice>" (e.g. "fire:2d6+3") or plain "<dice>" (defaults to "untyped").
-func parseAttackArg(arg string) (dmgType, diceExpr string) {
+func ParseAttackArg(arg string) (dmgType, diceExpr string) {
 	if i := strings.IndexByte(arg, ':'); i >= 0 {
 		return arg[:i], arg[i+1:]
 	}
@@ -126,7 +116,7 @@ func parseAttackArg(arg string) (dmgType, diceExpr string) {
 // rollOneAttack performs a single attack roll for the given attack grant arg.
 // Does NOT apply damage — PerformAttack handles that.
 func rollOneAttack(attacker, target Combatant, attackArg string) AttackResult {
-	dmgType, diceExpr := parseAttackArg(attackArg)
+	dmgType, diceExpr := ParseAttackArg(attackArg)
 
 	roll := RollAttack(attacker.ModifierValue(assets.PerkKeyCombatAttackMod))
 	if roll < target.ModifierValue(assets.PerkKeyCombatAC) {
@@ -169,35 +159,16 @@ func (m *Manager) Tick(_ context.Context) error {
 			continue
 		}
 
-		wantsAutoAttack := len(c.GrantArgs(assets.PerkGrantAutoAttack)) > 0
-		if !wantsAutoAttack && !state.attackPending {
-			continue
-		}
-		state.attackPending = false
-
 		target := m.resolveTarget(state)
 		if target == nil {
 			continue
 		}
 
-		results := PerformAttack(c, target)
-		totalDamage := 0
-		zoneId, roomId := c.Location()
-		for _, r := range results {
-			if r.Hit {
-				totalDamage += r.Damage
-				verb := DamageVerb(r.Damage)
-				addRoomLine(zoneId, roomId, fmt.Sprintf("%s %s %s!", c.Name(), verb, target.Name()))
-				if r.Reflected > 0 {
-					reflectVerb := DamageVerb(r.Reflected)
-					addRoomLine(zoneId, roomId, fmt.Sprintf("%s's ward %s %s back!", target.Name(), reflectVerb, c.Name()))
-				}
-			} else {
-				addRoomLine(zoneId, roomId, fmt.Sprintf("%s misses %s.", c.Name(), target.Name()))
+		if msgs := c.AutoUses(target.Id()); len(msgs) > 0 {
+			zoneId, roomId := c.Location()
+			for _, msg := range msgs {
+				addRoomLine(zoneId, roomId, msg)
 			}
-		}
-		if tState, ok := m.combatants[target.Id()]; ok {
-			tState.threat[c.Id()] += totalDamage + c.ModifierValue(assets.PerkKeyCombatThreatMod)
 		}
 	}
 

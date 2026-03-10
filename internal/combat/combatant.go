@@ -19,6 +19,7 @@ type Combatant interface {
 
 	CombatTargetId() string
 	SetCombatTargetId(id string)
+	AutoUses(targetId string) []string
 
 	Location() (zoneId, roomId string)
 	Level() int

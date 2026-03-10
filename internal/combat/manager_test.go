@@ -20,9 +20,11 @@ type mockCombatant struct {
 	level          int
 	modifiers      map[string]int
 	grants         map[string][]string
-	combatTargetId string
-	zoneId, roomId string
-	deathCalled    bool
+	combatTargetId     string
+	zoneId, roomId     string
+	deathCalled        bool
+	autoUsesCalled     bool
+	autoUsesTargetId   string
 }
 
 func (c *mockCombatant) Id() string   { return c.id }
@@ -63,6 +65,11 @@ func (c *mockCombatant) GrantArgs(key string) []string {
 
 func (c *mockCombatant) CombatTargetId() string          { return c.combatTargetId }
 func (c *mockCombatant) SetCombatTargetId(id string)     { c.combatTargetId = id }
+func (c *mockCombatant) AutoUses(targetId string) []string {
+	c.autoUsesCalled = true
+	c.autoUsesTargetId = targetId
+	return nil
+}
 func (c *mockCombatant) Location() (string, string)      { return c.zoneId, c.roomId }
 func (c *mockCombatant) Level() int                      { return c.level }
 func (c *mockCombatant) OnDeath() []*game.ObjectInstance { c.deathCalled = true; return nil }
@@ -216,35 +223,6 @@ func TestManager_AddThreat(t *testing.T) {
 	}
 }
 
-// --- QueueAttack tests ---
-
-func TestManager_QueueAttack(t *testing.T) {
-	m, _ := newTestManager()
-	a := newMC("a")
-	b := newMC("b")
-
-	if err := m.StartCombat(a, b); err != nil {
-		t.Fatalf("StartCombat: %v", err)
-	}
-
-	m.QueueAttack(a)
-
-	m.mu.Lock()
-	pending := m.combatants["a"].attackPending
-	m.mu.Unlock()
-
-	if !pending {
-		t.Error("attackPending not set after QueueAttack")
-	}
-}
-
-func TestManager_QueueAttack_UnregisteredIsNoop(t *testing.T) {
-	m, _ := newTestManager()
-	c := newMC("unregistered")
-	// Should not panic.
-	m.QueueAttack(c)
-}
-
 // --- PerformAttack tests ---
 
 func TestPerformAttack(t *testing.T) {
@@ -322,81 +300,24 @@ func TestPerformAttack(t *testing.T) {
 
 // --- Tick tests ---
 
-func TestManager_Tick_AutoAttack(t *testing.T) {
+func TestManager_Tick_CallsAutoUses(t *testing.T) {
 	m, _ := newTestManager()
 	a := newMC("a")
 	b := newMC("b")
-
-	a.grants[assets.PerkGrantAutoAttack] = []string{""}
-	a.grants[assets.PerkGrantAttack] = []string{"1d4"}
-	a.modifiers[assets.PerkKeyCombatAttackMod] = 100 // guaranteed hit
 
 	if err := m.StartCombat(a, b); err != nil {
 		t.Fatalf("StartCombat: %v", err)
 	}
 
-	startHP := b.hp
 	if err := m.Tick(context.Background()); err != nil {
 		t.Fatalf("Tick: %v", err)
 	}
 
-	if b.hp >= startHP {
-		t.Errorf("target HP should have decreased: %d → %d", startHP, b.hp)
+	if !a.autoUsesCalled {
+		t.Error("AutoUses was not called on combatant a")
 	}
-}
-
-func TestManager_Tick_NoAutoAttack(t *testing.T) {
-	m, _ := newTestManager()
-	a := newMC("a")
-	b := newMC("b")
-
-	// No autoattack grant, no pending attack.
-	if err := m.StartCombat(a, b); err != nil {
-		t.Fatalf("StartCombat: %v", err)
-	}
-
-	startHP := b.hp
-	if err := m.Tick(context.Background()); err != nil {
-		t.Fatalf("Tick: %v", err)
-	}
-
-	if b.hp != startHP {
-		t.Errorf("target HP should be unchanged: %d → %d", startHP, b.hp)
-	}
-}
-
-func TestManager_Tick_PendingAttackFiresOnce(t *testing.T) {
-	m, _ := newTestManager()
-	a := newMC("a")
-	b := newMC("b")
-	b.hp = 1000
-	b.hpMax = 1000
-
-	a.grants[assets.PerkGrantAttack] = []string{"1d4"}
-	a.modifiers[assets.PerkKeyCombatAttackMod] = 100 // guaranteed hit
-
-	if err := m.StartCombat(a, b); err != nil {
-		t.Fatalf("StartCombat: %v", err)
-	}
-	m.QueueAttack(a)
-
-	// First tick: pending attack fires.
-	if err := m.Tick(context.Background()); err != nil {
-		t.Fatalf("Tick 1: %v", err)
-	}
-	hpAfterTick1 := b.hp
-
-	if hpAfterTick1 >= 1000 {
-		t.Fatalf("expected HP to drop after first tick")
-	}
-
-	// Second tick: pending cleared, no autoattack grant → no attack.
-	if err := m.Tick(context.Background()); err != nil {
-		t.Fatalf("Tick 2: %v", err)
-	}
-
-	if b.hp != hpAfterTick1 {
-		t.Errorf("second tick should not fire: HP after tick 1 = %d, after tick 2 = %d", hpAfterTick1, b.hp)
+	if a.autoUsesTargetId != "b" {
+		t.Errorf("AutoUses target = %q, want %q", a.autoUsesTargetId, "b")
 	}
 }
 
@@ -404,17 +325,14 @@ func TestManager_Tick_DeathCleanup(t *testing.T) {
 	m, _ := newTestManager()
 	a := newMC("a")
 	b := newMC("b")
-	b.hp = 1
-	b.hpMax = 1
-
-	a.grants[assets.PerkGrantAutoAttack] = []string{""}
-	a.grants[assets.PerkGrantAttack] = []string{"1d4"}
-	a.modifiers[assets.PerkKeyCombatAttackMod] = 100                                    // guaranteed hit
-	a.modifiers[assets.DamageKey(assets.DamageTypeAll, assets.DamageAspectFlat)] = 1000 // guaranteed lethal
 
 	if err := m.StartCombat(a, b); err != nil {
 		t.Fatalf("StartCombat: %v", err)
 	}
+
+	// Simulate b being killed (e.g. by an auto-use ability) before tick processes deaths.
+	b.hp = 0
+	b.alive = false
 
 	if err := m.Tick(context.Background()); err != nil {
 		t.Fatalf("Tick: %v", err)

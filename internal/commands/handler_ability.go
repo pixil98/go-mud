@@ -33,6 +33,7 @@ type AbilityActor interface {
 	SetInCombat(bool)
 	CombatTargetId() string
 	SetCombatTargetId(id string)
+	AutoUses(targetId string) []string
 	OnDeath() []*game.ObjectInstance
 }
 
@@ -56,28 +57,25 @@ type EffectHandler interface {
 	Create(id string, config map[string]string, targets []assets.TargetSpec) EffectFunc
 }
 
-// AbilityHandlerFactory creates command handlers for abilities.
-// The constructor resolves effect specs, validates config, and builds closures,
-// capturing everything needed so Create() returns a lightweight runtime function.
-type AbilityHandlerFactory struct {
-	id          string
-	effects     []EffectHandler
-	effectFuncs []EffectFunc
-	world       WorldView
-	pub         game.Publisher
+// compiledAbility holds a pre-compiled ability with all config parsed at
+// registration time. Used for direct execution via Handler.ExecAbility and
+// wrapped by abilityCommandWrapper for command dispatch.
+type compiledAbility struct {
+	effectFuncs  []EffectFunc
+	spec         *HandlerSpec
+	resource     string
+	resourceCost int
+	apCost       int
+	msgActor     string
+	msgTarget    string
+	msgRoom      string
 }
 
-// NewAbilityHandlerFactory resolves the ability's effect specs against the
-// provided handlers, validates config, and creates compiled closures.
-func NewAbilityHandlerFactory(
-	id string,
-	ability *assets.Ability,
-	handlers map[string]EffectHandler,
-	world WorldView,
-	pub game.Publisher,
-) (*AbilityHandlerFactory, error) {
-	var effects []EffectHandler
+// newCompiledAbility resolves the ability's effect specs against the provided
+// handlers, validates config, compiles closures, and parses ability config.
+func newCompiledAbility(id string, ability *assets.Ability, handlers map[string]EffectHandler) (*compiledAbility, error) {
 	var effectFuncs []EffectFunc
+	targets := make(map[string]TargetRequirement)
 	for i, es := range ability.Effects {
 		e, ok := handlers[es.Type]
 		if !ok {
@@ -86,22 +84,22 @@ func NewAbilityHandlerFactory(
 		if err := e.ValidateConfig(es.Config); err != nil {
 			return nil, fmt.Errorf("effect %q: %w", es.Type, err)
 		}
-		effects = append(effects, e)
+		if es := e.Spec(); es != nil {
+			for _, t := range es.Targets {
+				if existing, ok := targets[t.Name]; ok {
+					existing.Type |= t.Type
+					existing.Required = existing.Required || t.Required
+					targets[t.Name] = existing
+				} else {
+					targets[t.Name] = t
+				}
+			}
+		}
 		effectId := fmt.Sprintf("%s:%d", id, i)
 		fn := e.Create(effectId, es.Config, ability.Command.Targets)
 		effectFuncs = append(effectFuncs, fn)
 	}
-	return &AbilityHandlerFactory{
-		id:          id,
-		effects:     effects,
-		effectFuncs: effectFuncs,
-		world:       world,
-		pub:         pub,
-	}, nil
-}
 
-// Spec returns the handler's config requirements and a union of all effect target requirements.
-func (f *AbilityHandlerFactory) Spec() *HandlerSpec {
 	spec := &HandlerSpec{
 		Config: []ConfigRequirement{
 			{Name: "ability_id", Required: true},
@@ -113,31 +111,118 @@ func (f *AbilityHandlerFactory) Spec() *HandlerSpec {
 			{Name: "message_room"},
 		},
 	}
-	// Union target requirements from all effects.
-	targets := make(map[string]TargetRequirement)
-	for _, e := range f.effects {
-		es := e.Spec()
-		if es == nil {
-			continue
-		}
-		for _, t := range es.Targets {
-			if existing, ok := targets[t.Name]; ok {
-				existing.Type |= t.Type
-				existing.Required = existing.Required || t.Required
-				targets[t.Name] = existing
-			} else {
-				targets[t.Name] = t
-			}
-		}
-	}
 	for _, t := range targets {
 		spec.Targets = append(spec.Targets, t)
 	}
-	return spec
+
+	config := ability.Command.Config
+	resourceCost, _ := strconv.Atoi(config["resource_cost"])
+	apCost, _ := strconv.Atoi(config["ap_cost"])
+
+	return &compiledAbility{
+		effectFuncs:  effectFuncs,
+		spec:         spec,
+		resource:     config["resource"],
+		resourceCost: resourceCost,
+		apCost:       apCost,
+		msgActor:     config["message_actor"],
+		msgTarget:    config["message_target"],
+		msgRoom:      config["message_room"],
+	}, nil
+}
+
+// exec runs the ability's effects and expands message templates, returning an
+// AbilityResult without publishing. This is the shared core used by both the
+// command handler (via abilityCommandWrapper.Create) and direct invocation
+// (via Handler.ExecAbility).
+func (ca *compiledAbility) exec(actor AbilityActor, targets map[string]*TargetRef, opts ExecAbilityOpts) (*AbilityResult, error) {
+	// Check resource cost before spending any AP.
+	if ca.resourceCost > 0 {
+		cur, _ := actor.Resource(ca.resource)
+		if cur < ca.resourceCost {
+			return nil, NewUserError(fmt.Sprintf("You don't have enough %s.", ca.resource))
+		}
+	}
+
+	// Check and spend action points.
+	if !opts.SkipAP {
+		apCost := ca.apCost
+		if apCost == 0 {
+			apCost = 1
+		}
+		if !actor.SpendAP(apCost) {
+			return nil, NewUserError("You're not ready to do that yet.")
+		}
+	}
+
+	// Deduct resource cost.
+	if ca.resourceCost > 0 {
+		actor.AdjustResource(ca.resource, -ca.resourceCost)
+	}
+
+	// Run effects in order — if any fails, don't build messages.
+	for _, effect := range ca.effectFuncs {
+		if err := effect(actor, targets); err != nil {
+			return nil, err
+		}
+	}
+
+	// Expand message templates.
+	result := &AbilityResult{}
+	tmplCtx := &templateContext{
+		Actor:   actor.Asset(),
+		Targets: targets,
+		Color:   display.Color,
+	}
+
+	if ca.msgActor != "" {
+		msg, err := ExpandTemplate(ca.msgActor, tmplCtx)
+		if err != nil {
+			return nil, fmt.Errorf("expanding actor message: %w", err)
+		}
+		result.ActorMsg = msg
+	}
+	if ca.msgTarget != "" {
+		msg, err := ExpandTemplate(ca.msgTarget, tmplCtx)
+		if err != nil {
+			return nil, fmt.Errorf("expanding target message: %w", err)
+		}
+		result.TargetMsg = msg
+		for _, ref := range targets {
+			if ref != nil && ref.Player != nil {
+				result.TargetId = ref.Player.CharId
+				break
+			}
+		}
+	}
+	if ca.msgRoom != "" {
+		msg, err := ExpandTemplate(ca.msgRoom, tmplCtx)
+		if err != nil {
+			return nil, fmt.Errorf("expanding room message: %w", err)
+		}
+		result.RoomMsg = msg
+	}
+
+	return result, nil
+}
+
+// abilityCommandWrapper wraps a compiledAbility so it can be registered as a
+// HandlerFactory for command dispatch. It adds the unlock check, message
+// publishing, and spec/validation that the command system requires.
+type abilityCommandWrapper struct {
+	id    string
+	ca    *compiledAbility
+	world WorldView
+	pub   game.Publisher
+}
+
+// Spec returns the compiled spec from the underlying compiledAbility.
+func (w *abilityCommandWrapper) Spec() *HandlerSpec {
+	return w.ca.spec
 }
 
 // ValidateConfig checks that resource_cost and ap_cost are non-negative integers.
-func (f *AbilityHandlerFactory) ValidateConfig(config map[string]string) error {
+func (w *abilityCommandWrapper) ValidateConfig(config map[string]string) error {
 	if cost := config["resource_cost"]; cost != "" {
 		n, err := strconv.Atoi(cost)
 		if err != nil {
@@ -162,111 +247,54 @@ func (f *AbilityHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 
-// Create returns a compiled command function that checks the actor has the ability unlocked before executing effects.
-func (f *AbilityHandlerFactory) Create() (CommandFunc, error) {
+// Create returns a compiled command function that checks unlock, executes the
+// ability via exec(), and publishes the result messages.
+func (w *abilityCommandWrapper) Create() (CommandFunc, error) {
 	return Adapt[AbilityActor](func(ctx context.Context, actor AbilityActor, in *CommandInput) error {
-		if !actor.HasGrant(assets.PerkGrantUnlockAbility, f.id) {
+		if !actor.HasGrant(assets.PerkGrantUnlockAbility, w.id) {
 			return NewUserError("You don't know how to do that.")
 		}
 
-		return executeAbility(actor, in, in.Targets, f.world, f.pub, f.effectFuncs)
+		result, err := w.ca.exec(actor, in.Targets, ExecAbilityOpts{})
+		if err != nil {
+			return err
+		}
+		return w.publishResult(result, actor)
 	}), nil
 }
 
-// executeAbility runs an ability's compiled effect closures and sends its messages.
-// Messages are read from in.Config: message_actor, message_target, message_room.
-func executeAbility(actor AbilityActor, in *CommandInput, targets map[string]*TargetRef, world WorldView, pub game.Publisher, effects []EffectFunc) error {
-	resource := in.Config["resource"]
-	resourceCost, _ := strconv.Atoi(in.Config["resource_cost"])
-	apCost, _ := strconv.Atoi(in.Config["ap_cost"])
-
-	// Check resource cost before spending any AP
-	if resourceCost > 0 {
-		cur, _ := actor.Resource(resource)
-		if cur < resourceCost {
-			return NewUserError(fmt.Sprintf("You don't have enough %s.", resource))
-		}
-	}
-
-	// Check and spend action points
-	if apCost == 0 {
-		apCost = 1
-	}
-	if !actor.SpendAP(apCost) {
-		return NewUserError("You're not ready to do that yet.")
-	}
-
-	// Deduct resource cost
-	if resourceCost > 0 {
-		actor.AdjustResource(resource, -resourceCost)
-	}
-
-	// Run effects in order — if any fails, don't send messages
-	for _, effect := range effects {
-		if err := effect(actor, targets); err != nil {
-			return err
-		}
-	}
-
-	if pub == nil {
+// publishResult delivers an AbilityResult's messages to the appropriate audiences.
+func (w *abilityCommandWrapper) publishResult(result *AbilityResult, actor AbilityActor) error {
+	if w.pub == nil {
 		return nil
 	}
 
-	ctx := &templateContext{
-		Actor:   actor.Asset(),
-		Targets: targets,
-		Color:   display.Color,
-	}
-
-	// Build exclude list as we send targeted messages.
 	charId := actor.Id()
 	exclude := []string{charId}
 
-	// Actor message
-	if tmpl := in.Config["message_actor"]; tmpl != "" {
-		msg, err := ExpandTemplate(tmpl, ctx)
-		if err != nil {
-			return fmt.Errorf("expanding actor message: %w", err)
-		}
-		if err := pub.Publish(game.SinglePlayer(charId), nil, []byte(msg)); err != nil {
+	if result.ActorMsg != "" {
+		if err := w.pub.Publish(game.SinglePlayer(charId), nil, []byte(result.ActorMsg)); err != nil {
 			return err
 		}
 	}
-
-	// Target message (send to first resolved player target)
-	if tmpl := in.Config["message_target"]; tmpl != "" {
-		for _, ref := range targets {
-			if ref != nil && ref.Player != nil {
-				msg, err := ExpandTemplate(tmpl, ctx)
-				if err != nil {
-					return fmt.Errorf("expanding target message: %w", err)
-				}
-				if err := pub.Publish(game.SinglePlayer(ref.Player.CharId), nil, []byte(msg)); err != nil {
-					return err
-				}
-				exclude = append(exclude, ref.Player.CharId)
-				break
-			}
+	if result.TargetMsg != "" && result.TargetId != "" {
+		if err := w.pub.Publish(game.SinglePlayer(result.TargetId), nil, []byte(result.TargetMsg)); err != nil {
+			return err
 		}
+		exclude = append(exclude, result.TargetId)
 	}
-
-	// Room message (exclude actor and any targeted players)
-	if tmpl := in.Config["message_room"]; tmpl != "" {
-		msg, err := ExpandTemplate(tmpl, ctx)
-		if err != nil {
-			return fmt.Errorf("expanding room message: %w", err)
-		}
+	if result.RoomMsg != "" {
 		zoneId, roomId := actor.Location()
-		room := world.GetZone(zoneId).GetRoom(roomId)
-		if err := pub.Publish(room, exclude, []byte(msg)); err != nil {
+		room := w.world.GetZone(zoneId).GetRoom(roomId)
+		if err := w.pub.Publish(room, exclude, []byte(result.RoomMsg)); err != nil {
 			return err
 		}
 	}
-
 	return nil
 }
 
-// attackEffect queues a manual attack for the next combat tick.
+// attackEffect reads the actor's attack grants and performs one attack roll per
+// grant. Each hit delegates to dealDamage for damage application and threat.
 type attackEffect struct {
 	combat CombatManager
 }
@@ -294,7 +322,22 @@ func (e *attackEffect) Create(_ string, _ map[string]string, targets []assets.Ta
 			if err := e.combat.StartCombat(actor, ref.Mob.instance); err != nil {
 				return NewUserError(err.Error())
 			}
-			e.combat.QueueAttack(actor)
+			attackArgs := actor.GrantArgs(assets.PerkGrantAttack)
+			if len(attackArgs) == 0 {
+				attackArgs = []string{"1d4"}
+			}
+			for _, arg := range attackArgs {
+				dmgType, diceExpr := combat.ParseAttackArg(arg)
+				roll := combat.RollAttack(actor.ModifierValue(assets.PerkKeyCombatAttackMod))
+				if roll < targetPerkReader(ref).ModifierValue(assets.PerkKeyCombatAC) {
+					continue // miss
+				}
+				dice, err := combat.ParseDice(diceExpr)
+				if err != nil {
+					dice = combat.DiceRoll{Count: 1, Sides: 4}
+				}
+				dealDamage(e.combat, actor, ref, dice.Roll(), dmgType)
+			}
 			return nil
 		}
 		return nil
@@ -304,9 +347,8 @@ func (e *attackEffect) Create(_ string, _ map[string]string, targets []assets.Ta
 // damageEffect applies damage to the primary target and initiates combat if the target is a mob.
 //
 // Config fields:
-//   - "damage" (int string, required): flat damage before modifiers.
+//   - "damage" (string, required): flat integer or dice expression (e.g. "25", "2d6+3").
 //   - "damage_types" (comma-separated string, optional): damage type tags (e.g. "fire,ice").
-//
 type damageEffect struct {
 	combat CombatManager
 }
@@ -320,14 +362,18 @@ func (e *damageEffect) Spec() *HandlerSpec {
 }
 
 func (e *damageEffect) ValidateConfig(config map[string]string) error {
-	if _, err := strconv.Atoi(config["damage"]); err != nil {
+	dmg := config["damage"]
+	if dmg == "" {
 		return fmt.Errorf("damage config required")
+	}
+	if _, err := combat.ParseDice(dmg); err != nil {
+		return fmt.Errorf("damage must be an integer or dice expression: %w", err)
 	}
 	return nil
 }
 
 func (e *damageEffect) Create(_ string, config map[string]string, targets []assets.TargetSpec) EffectFunc {
-	baseDamage, _ := strconv.Atoi(config["damage"])
+	dice, _ := combat.ParseDice(config["damage"])
 
 	var damageTypes []string
 	if dt := config["damage_types"]; dt != "" {
@@ -343,29 +389,32 @@ func (e *damageEffect) Create(_ string, config map[string]string, targets []asse
 			return errPeacefulArea
 		}
 
-		raw := baseDamage
-		if raw < 1 {
-			raw = 1
-		}
+		raw := dice.Roll()
 
 		for _, spec := range targets {
 			ref := resolved[spec.Name]
 			if ref == nil {
 				continue
 			}
-			damage, reflected := combat.CalcDamage(raw, primaryType, actor, targetPerkReader(ref))
-			applyDamage(ref, damage)
-			if reflected > 0 {
-				actor.AdjustResource(assets.ResourceHp, -reflected)
-			}
-			if ref.Mob != nil {
-				_ = e.combat.StartCombat(actor, ref.Mob.instance)
-				e.combat.AddThreat(actor, ref.Mob.instance, damage)
-			}
+			dealDamage(e.combat, actor, ref, raw, primaryType)
 			return nil
 		}
 
 		return nil
+	}
+}
+
+// dealDamage applies raw damage of the given type to a target, handling CalcDamage,
+// reflected damage, combat initiation, and threat.
+func dealDamage(cm CombatManager, actor AbilityActor, ref *TargetRef, raw int, dmgType string) {
+	damage, reflected := combat.CalcDamage(raw, dmgType, actor, targetPerkReader(ref))
+	applyDamage(ref, damage)
+	if reflected > 0 {
+		actor.AdjustResource(assets.ResourceHp, -reflected)
+	}
+	if ref.Mob != nil {
+		_ = cm.StartCombat(actor, ref.Mob.instance)
+		cm.AddThreat(actor, ref.Mob.instance, damage)
 	}
 }
 
@@ -383,14 +432,18 @@ type aoeDamageEffect struct {
 func (e *aoeDamageEffect) Spec() *HandlerSpec { return nil }
 
 func (e *aoeDamageEffect) ValidateConfig(config map[string]string) error {
-	if _, err := strconv.Atoi(config["damage"]); err != nil {
+	dmg := config["damage"]
+	if dmg == "" {
 		return fmt.Errorf("damage config required")
+	}
+	if _, err := combat.ParseDice(dmg); err != nil {
+		return fmt.Errorf("damage must be an integer or dice expression: %w", err)
 	}
 	return nil
 }
 
 func (e *aoeDamageEffect) Create(_ string, config map[string]string, _ []assets.TargetSpec) EffectFunc {
-	baseDamage, _ := strconv.Atoi(config["damage"])
+	dice, _ := combat.ParseDice(config["damage"])
 	dmgType := config["damage_type"]
 	if dmgType == "" {
 		dmgType = assets.DamageTypeUntyped
@@ -400,11 +453,6 @@ func (e *aoeDamageEffect) Create(_ string, config map[string]string, _ []assets.
 	return func(actor AbilityActor, _ map[string]*TargetRef) error {
 		if actor.HasGrant(assets.PerkGrantPeaceful, "") {
 			return errPeacefulArea
-		}
-
-		raw := baseDamage
-		if raw < 1 {
-			raw = 1
 		}
 
 		zoneId, roomId := actor.Location()
@@ -418,13 +466,8 @@ func (e *aoeDamageEffect) Create(_ string, config map[string]string, _ []assets.
 		}
 
 		ri.ForEachMob(func(mi *game.MobileInstance) {
-			damage, reflected := combat.CalcDamage(raw, dmgType, actor, mi)
-			mi.AdjustResource(assets.ResourceHp, -damage)
-			if reflected > 0 {
-				actor.AdjustResource(assets.ResourceHp, -reflected)
-			}
-			_ = e.combat.StartCombat(actor, mi)
-			e.combat.AddThreat(actor, mi, damage)
+			ref := &TargetRef{Mob: &MobileRef{instance: mi}}
+			dealDamage(e.combat, actor, ref, dice.Roll(), dmgType)
 		})
 
 		if hitPlayers {
@@ -433,11 +476,8 @@ func (e *aoeDamageEffect) Create(_ string, config map[string]string, _ []assets.
 				if charId == actorId {
 					return
 				}
-				damage, reflected := combat.CalcDamage(raw, dmgType, actor, ci)
-				ci.AdjustResource(assets.ResourceHp, -damage)
-				if reflected > 0 {
-					actor.AdjustResource(assets.ResourceHp, -reflected)
-				}
+				ref := &TargetRef{Player: &PlayerRef{session: ci, CharId: charId}}
+				dealDamage(e.combat, actor, ref, dice.Roll(), dmgType)
 			})
 		}
 

@@ -77,7 +77,8 @@ func NewCharacterInstance(char storage.SmartIdentifier[*assets.Character], msgs 
 		zoneId:    zoneId,
 		roomId:    roomId,
 		ActorInstance: ActorInstance{
-			inventory: inv,
+			InstanceId: char.Id(),
+			inventory:  inv,
 			equipment: eq,
 			level:     c.Level,
 			PerkCache: *NewPerkCache(racePerks, map[string]PerkSource{"equipment": eq}),
@@ -205,11 +206,6 @@ func (ci *CharacterInstance) MarkLinkless() {
 }
 
 // --- Accessor methods ---
-
-// Id returns the character's unique identifier.
-func (ci *CharacterInstance) Id() string {
-	return ci.Character.Id()
-}
 
 // Name returns the character's display name.
 func (ci *CharacterInstance) Name() string {

@@ -118,11 +118,11 @@ const (
 	PerkGrantUnlockAbility = "unlock_ability"
 	// PerkGrantAttack grants an attack with the given dice expression (e.g. "2d6").
 	PerkGrantAttack = "attack"
-	// PerkGrantAutoAttack enables automatic melee attacks each combat tick. No arg.
-	PerkGrantAutoAttack = "autoattack"
+	// PerkGrantAutoUse enables automatic ability use each combat tick.
+	// Arg format: "ability_id:cooldown_ticks" (e.g. "attack:1", "fireball:3").
+	PerkGrantAutoUse = "auto_use"
 	// PerkGrantPeaceful prevents the holder from initiating combat. Can be granted
-	// by a room, zone, world, or equipped item. Players inherit room/zone/world grants
-	// automatically via the perk chain.
+	// by a room, zone, world, or equipped item.
 	PerkGrantPeaceful = "peaceful"
 )
 

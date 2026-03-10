@@ -258,7 +258,7 @@ func (ri *RoomInstance) AddMob(mi *MobileInstance) {
 func (ri *RoomInstance) addMob(mi *MobileInstance) {
 	mi.zoneId = ri.Room.Get().Zone.Id()
 	mi.roomId = ri.Room.Id()
-	ri.mobiles[mi.InstanceId] = mi
+	ri.mobiles[mi.Id()] = mi
 }
 
 // FindObj searches room objects for one whose definition matches the given name.

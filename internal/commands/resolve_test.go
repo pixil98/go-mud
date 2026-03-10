@@ -159,8 +159,8 @@ func TestFindTarget_Player(t *testing.T) {
 
 func TestFindTarget_Mobile(t *testing.T) {
 	guard := &game.MobileInstance{
-		InstanceId: "guard-1",
-		Mobile:     storage.NewResolvedSmartIdentifier("guard", &assets.Mobile{Aliases: []string{"guard", "soldier"}, ShortDesc: "a burly guard"}),
+		Mobile:        storage.NewResolvedSmartIdentifier("guard", &assets.Mobile{Aliases: []string{"guard", "soldier"}, ShortDesc: "a burly guard"}),
+		ActorInstance: game.ActorInstance{InstanceId: "guard-1"},
 	}
 
 	tests := map[string]struct {
@@ -302,8 +302,8 @@ func TestFindTarget_Combined(t *testing.T) {
 		Character: storage.NewResolvedSmartIdentifier("bob", &assets.Character{Name: "Bob"}),
 	}
 	guard := &game.MobileInstance{
-		InstanceId: "guard-1",
-		Mobile:     storage.NewResolvedSmartIdentifier("guard", &assets.Mobile{Aliases: []string{"guard"}, ShortDesc: "a burly guard"}),
+		Mobile:        storage.NewResolvedSmartIdentifier("guard", &assets.Mobile{Aliases: []string{"guard"}, ShortDesc: "a burly guard"}),
+		ActorInstance: game.ActorInstance{InstanceId: "guard-1"},
 	}
 
 	tests := map[string]struct {
@@ -442,7 +442,7 @@ func TestFindTarget_TypeFiltering(t *testing.T) {
 			"bob": {Character: storage.NewResolvedSmartIdentifier("bob", &assets.Character{Name: "Bob"})},
 		},
 		mobs: map[string]*game.MobileInstance{
-			"bob-1": {InstanceId: "bob-1", Mobile: storage.NewResolvedSmartIdentifier("bob", &assets.Mobile{Aliases: []string{"bob"}, ShortDesc: "a mob named bob"})},
+			"bob-1": {Mobile: storage.NewResolvedSmartIdentifier("bob", &assets.Mobile{Aliases: []string{"bob"}, ShortDesc: "a mob named bob"}), ActorInstance: game.ActorInstance{InstanceId: "bob-1"}},
 		},
 	}
 	spaces := []SearchSpace{{Finder: finder}}

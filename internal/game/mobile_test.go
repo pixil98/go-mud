@@ -15,12 +15,10 @@ func newTestMob(level int) *MobileInstance {
 	})
 	eq := NewEquipment()
 	mi := &MobileInstance{
-		InstanceId: "test-instance",
-		Mobile:     mob,
-		zoneId:     "test-zone",
-		roomId:     "test-room",
+		Mobile: mob,
 		ActorInstance: ActorInstance{
-			inventory: NewInventory(),
+			InstanceId: "test-instance",
+			inventory:  NewInventory(),
 			equipment: eq,
 			level:     level,
 			PerkCache: *NewPerkCache(nil, map[string]PerkSource{"equipment": eq}),
@@ -113,7 +111,7 @@ func TestMobileInstance_OnDeath(t *testing.T) {
 
 	mi := newTestMob(3)
 	mi.inventory.AddObj(newTestObj("coin"))
-	ri.mobiles[mi.InstanceId] = mi
+	ri.mobiles[mi.Id()] = mi
 
 	drops := mi.OnDeath()
 

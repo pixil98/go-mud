@@ -48,7 +48,7 @@
             },
             {
                 "type": "grant",
-                "key": "autoattack"
+                "key": "auto_use", "arg": "attack:1"
             }
         ]
     }

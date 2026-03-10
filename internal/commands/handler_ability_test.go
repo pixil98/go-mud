@@ -2,7 +2,6 @@ package commands
 
 import (
 	"fmt"
-	"strconv"
 	"testing"
 
 	"github.com/pixil98/go-mud/internal/assets"
@@ -53,14 +52,8 @@ func TestExecuteAbility_APGating(t *testing.T) {
 			player := newTestPlayer("player", "Player", room)
 			setPlayerAP(player, tc.startAP)
 
-			in := &CommandInput{
-				Char: player,
-				Config: map[string]string{
-					"ap_cost": strconv.Itoa(tc.apCost),
-				},
-			}
-
-			err := executeAbility(player, in, nil, nil, nil, nil)
+			ca := &compiledAbility{apCost: tc.apCost}
+			_, err := ca.exec(player, nil, ExecAbilityOpts{})
 
 			if tc.wantErr != "" {
 				if err == nil {
@@ -144,16 +137,12 @@ func TestExecuteAbility_CostCheckOrdering(t *testing.T) {
 			player.SetResource("mana", tc.startMana)
 			player.ResetAP()
 
-			in := &CommandInput{
-				Char: player,
-				Config: map[string]string{
-					"ap_cost":       strconv.Itoa(tc.apCost),
-					"resource":      "mana",
-					"resource_cost": strconv.Itoa(tc.resourceCost),
-				},
+			ca := &compiledAbility{
+				apCost:       tc.apCost,
+				resource:     "mana",
+				resourceCost: tc.resourceCost,
 			}
-
-			err := executeAbility(player, in, nil, nil, nil, nil)
+			_, err := ca.exec(player, nil, ExecAbilityOpts{})
 
 			if tc.wantErr != "" {
 				if err == nil {
@@ -308,12 +297,11 @@ func TestRoomBuffEffectExpiry(t *testing.T) {
 func TestAttackEffect(t *testing.T) {
 	tests := map[string]struct {
 		targets    map[string]*TargetRef
-		startErr   error
-		wantErr    string
-		wantStart  bool
-		wantQueued bool
+		startErr  error
+		wantErr   string
+		wantStart bool
 	}{
-		"mob target: StartCombat and QueueAttack called": {
+		"mob target: starts combat and deals damage": {
 			targets: map[string]*TargetRef{
 				"target": {Type: targetTypeMobile, Mob: &MobileRef{
 					InstanceId: "mob-1",
@@ -321,29 +309,15 @@ func TestAttackEffect(t *testing.T) {
 					instance:   newTestMobInstance("mob-1", "Goblin", nil),
 				}},
 			},
-			wantStart:  true,
-			wantQueued: true,
-		},
-		"already in combat: StartCombat and QueueAttack still called": {
-			targets: map[string]*TargetRef{
-				"target": {Type: targetTypeMobile, Mob: &MobileRef{
-					InstanceId: "mob-1",
-					Name:       "Goblin",
-					instance:   newTestMobInstance("mob-1", "Goblin", nil),
-				}},
-			},
-			wantStart:  true,
-			wantQueued: true,
+			wantStart: true,
 		},
 		"no targets: no-op": {
-			targets:    map[string]*TargetRef{},
-			wantStart:  false,
-			wantQueued: false,
+			targets:   map[string]*TargetRef{},
+			wantStart: false,
 		},
 		"nil target ref: skipped": {
-			targets:    map[string]*TargetRef{"target": nil},
-			wantStart:  false,
-			wantQueued: false,
+			targets:   map[string]*TargetRef{"target": nil},
+			wantStart: false,
 		},
 		"StartCombat error: wrapped as user error": {
 			targets: map[string]*TargetRef{
@@ -385,9 +359,6 @@ func TestAttackEffect(t *testing.T) {
 			}
 			if cm.started != tc.wantStart {
 				t.Errorf("StartCombat called = %v, want %v", cm.started, tc.wantStart)
-			}
-			if cm.queued != tc.wantQueued {
-				t.Errorf("QueueAttack called = %v, want %v", cm.queued, tc.wantQueued)
 			}
 		})
 	}

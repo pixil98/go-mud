@@ -39,7 +39,12 @@ func ParseDice(expr string) (DiceRoll, error) {
 		dIdx = strings.IndexByte(expr, 'D')
 	}
 	if dIdx < 0 {
-		return DiceRoll{}, fmt.Errorf("invalid dice expression %q: missing 'd'", expr)
+		// Flat number: treat as 0d1+N so Roll() returns N (clamped to 1).
+		n, err := strconv.Atoi(expr)
+		if err != nil {
+			return DiceRoll{}, fmt.Errorf("invalid dice expression %q: missing 'd'", expr)
+		}
+		return DiceRoll{Count: 0, Sides: 1, Mod: n}, nil
 	}
 
 	var roll DiceRoll
