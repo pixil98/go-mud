@@ -1,3 +1,2 @@
-- Commands and spells/abilities use a different context struct so templating is slightly different
 - Consider replacing `autoattack` grant with `core.combat.auto_ability <ability-id>` so mobs/players can auto-use any ability (e.g. a spell) rather than a hardcoded melee attack.
 - attack <target> doesn't actually cause your attack to hit that target, it queues up an attack for which ever target you are currently hitting.
