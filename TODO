@@ -1,11 +1,5 @@
 - We should expose the current target they're fighting as a templatable thing for commands to use for defaulting in targets.
-- Wire Executor onto entities so auto_use grants fire during combat tick:
-  - Make Handler implement game.Executor interface (Exec and ExecAbility)
-  - Handler.ExecAbility needs to look up actor by ID, resolve targetId into a TargetRef, call internal exec with SkipAP, return messages
-  - Store world reference on Handler for actor/target lookup
-  - Set Handler as Executor on mobs at spawn time (addMob) and on players at login
-  - Requires a way to propagate the Executor to RoomInstance (e.g. store on WorldState, thread through addMob)
-- Abstract ActorInstance behind an interface so external packages don't need to construct structs directly for testing
-- Move zoneId/roomId location fields from CharacterInstance and MobileInstance to ActorInstance
 - Clean up unused PerformAttack/rollOneAttack/AttackResult from combat/manager.go (now only used by tests)
 - Update docs (combat.md, world-design.md) for auto_use replacing autoattack
+- A number of command handlers have their own interfaces that embed shared.Actor. They shouldn't unless they actually need a big interface.
+- Remove StatSections from CharacterInstance and format everything from Actor and perks

@@ -7,11 +7,12 @@ import (
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // EquipmentActor provides the character state needed by the equipment handler.
 type EquipmentActor interface {
-	CommandActor
+	shared.Actor
 	GetEquipment() *game.Equipment
 	Asset() *assets.Character
 }

@@ -6,21 +6,19 @@ import (
 	"log/slog"
 
 	"github.com/pixil98/go-mud/internal/assets"
-	"github.com/pixil98/go-mud/internal/combat"
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // CombatManager provides combat operations needed by command handlers.
 type CombatManager interface {
-	StartCombat(attacker, target combat.Combatant) error
-	AddThreat(source, target combat.Combatant, amount int)
+	StartCombat(attacker, target shared.Actor) error
+	AddThreat(source, target shared.Actor, amount int)
 }
 
 // AssistActor provides the character state needed by the assist handler.
 type AssistActor interface {
-	CommandActor
-	combat.Combatant // needed for StartCombat
-	HasGrant(key, arg string) bool
+	shared.Actor
 	GetFollowingId() string
 }
 
@@ -143,7 +141,7 @@ func (f *AssistHandlerFactory) handle(ctx context.Context, char AssistActor, in 
 // Returns the assisted player's charId and display name.
 func (f *AssistHandlerFactory) resolveAssisted(char AssistActor, in *CommandInput) (string, string, error) {
 	if target := in.Targets["target"]; target != nil {
-		return target.Player.CharId, target.Player.Name, nil
+		return target.Actor.CharId, target.Actor.Name, nil
 	}
 
 	leaderId := char.GetFollowingId()

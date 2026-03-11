@@ -10,37 +10,11 @@ import (
 	"github.com/pixil98/go-mud/internal/combat"
 	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/shared"
 )
 
-// AbilityActor provides the character state needed by the ability and effect
-// subsystem. This is intentionally wide because the ability system genuinely
-// touches resources, perks, combat, location, and asset data.
-type AbilityActor interface {
-	CommandActor
-	Location() (zoneId, roomId string)
-	Asset() *assets.Character
-	IsInCombat() bool
-	IsAlive() bool
-	Level() int
-	Resource(name string) (current, max int)
-	AdjustResource(name string, delta int)
-	SpendAP(cost int) bool
-	HasGrant(key, arg string) bool
-	ModifierValue(key string) int
-	GrantArgs(key string) []string
-	AddTimedPerks(name string, perks []assets.Perk, ticks int)
-	// combat.Combatant methods — needed by attack/damage effects that call StartCombat.
-	SetInCombat(bool)
-	CombatTargetId() string
-	SetCombatTargetId(id string)
-	AutoUses(targetId string) []string
-	OnDeath() []*game.ObjectInstance
-}
-
-var _ AbilityActor = (*game.CharacterInstance)(nil)
-
 // EffectFunc is a compiled effect closure with config baked in at registration time.
-type EffectFunc func(actor AbilityActor, targets map[string]*TargetRef) error
+type EffectFunc func(actor shared.Actor, targets map[string]*TargetRef) error
 
 // EffectHandler defines an ability effect (damage, healing, buff, etc.).
 // ValidateConfig checks config at registration time. Create returns a closure
@@ -135,7 +109,7 @@ func newCompiledAbility(id string, ability *assets.Ability, handlers map[string]
 // AbilityResult without publishing. This is the shared core used by both the
 // command handler (via abilityCommandWrapper.Create) and direct invocation
 // (via Handler.ExecAbility).
-func (ca *compiledAbility) exec(actor AbilityActor, targets map[string]*TargetRef, opts ExecAbilityOpts) (*AbilityResult, error) {
+func (ca *compiledAbility) exec(actor shared.Actor, targets map[string]*TargetRef, opts ExecAbilityOpts) (*AbilityResult, error) {
 	// Check resource cost before spending any AP.
 	if ca.resourceCost > 0 {
 		cur, _ := actor.Resource(ca.resource)
@@ -170,7 +144,7 @@ func (ca *compiledAbility) exec(actor AbilityActor, targets map[string]*TargetRe
 	// Expand message templates.
 	result := &AbilityResult{}
 	tmplCtx := &templateContext{
-		Actor:   actor.Asset(),
+		Actor:   actor,
 		Targets: targets,
 		Color:   display.Color,
 	}
@@ -189,8 +163,8 @@ func (ca *compiledAbility) exec(actor AbilityActor, targets map[string]*TargetRe
 		}
 		result.TargetMsg = msg
 		for _, ref := range targets {
-			if ref != nil && ref.Player != nil {
-				result.TargetId = ref.Player.CharId
+			if ref != nil && ref.Actor != nil && ref.Actor.CharId != "" {
+				result.TargetId = ref.Actor.CharId
 				break
 			}
 		}
@@ -250,7 +224,7 @@ func (w *abilityCommandWrapper) ValidateConfig(config map[string]string) error {
 // Create returns a compiled command function that checks unlock, executes the
 // ability via exec(), and publishes the result messages.
 func (w *abilityCommandWrapper) Create() (CommandFunc, error) {
-	return Adapt[AbilityActor](func(ctx context.Context, actor AbilityActor, in *CommandInput) error {
+	return Adapt[shared.Actor](func(ctx context.Context, actor shared.Actor, in *CommandInput) error {
 		if !actor.HasGrant(assets.PerkGrantUnlockAbility, w.id) {
 			return NewUserError("You don't know how to do that.")
 		}
@@ -264,7 +238,7 @@ func (w *abilityCommandWrapper) Create() (CommandFunc, error) {
 }
 
 // publishResult delivers an AbilityResult's messages to the appropriate audiences.
-func (w *abilityCommandWrapper) publishResult(result *AbilityResult, actor AbilityActor) error {
+func (w *abilityCommandWrapper) publishResult(result *AbilityResult, actor shared.Actor) error {
 	if w.pub == nil {
 		return nil
 	}
@@ -310,16 +284,16 @@ func (e *attackEffect) Spec() *HandlerSpec {
 func (e *attackEffect) ValidateConfig(_ map[string]string) error { return nil }
 
 func (e *attackEffect) Create(_ string, _ map[string]string, targets []assets.TargetSpec) EffectFunc {
-	return func(actor AbilityActor, resolved map[string]*TargetRef) error {
+	return func(actor shared.Actor, resolved map[string]*TargetRef) error {
 		if actor.HasGrant(assets.PerkGrantPeaceful, "") {
 			return errPeacefulArea
 		}
 		for _, spec := range targets {
 			ref := resolved[spec.Name]
-			if ref == nil || ref.Mob == nil {
+			if ref == nil || ref.Actor == nil {
 				continue
 			}
-			if err := e.combat.StartCombat(actor, ref.Mob.instance); err != nil {
+			if err := e.combat.StartCombat(actor, ref.Actor.Actor()); err != nil {
 				return NewUserError(err.Error())
 			}
 			attackArgs := actor.GrantArgs(assets.PerkGrantAttack)
@@ -329,14 +303,14 @@ func (e *attackEffect) Create(_ string, _ map[string]string, targets []assets.Ta
 			for _, arg := range attackArgs {
 				dmgType, diceExpr := combat.ParseAttackArg(arg)
 				roll := combat.RollAttack(actor.ModifierValue(assets.PerkKeyCombatAttackMod))
-				if roll < targetPerkReader(ref).ModifierValue(assets.PerkKeyCombatAC) {
+				if roll < ref.Actor.Actor().ModifierValue(assets.PerkKeyCombatAC) {
 					continue // miss
 				}
 				dice, err := combat.ParseDice(diceExpr)
 				if err != nil {
 					dice = combat.DiceRoll{Count: 1, Sides: 4}
 				}
-				dealDamage(e.combat, actor, ref, dice.Roll(), dmgType)
+				dealDamage(e.combat, actor, ref.Actor.Actor(), dice.Roll(), dmgType)
 			}
 			return nil
 		}
@@ -384,7 +358,7 @@ func (e *damageEffect) Create(_ string, config map[string]string, targets []asse
 		primaryType = damageTypes[0]
 	}
 
-	return func(actor AbilityActor, resolved map[string]*TargetRef) error {
+	return func(actor shared.Actor, resolved map[string]*TargetRef) error {
 		if actor.HasGrant(assets.PerkGrantPeaceful, "") {
 			return errPeacefulArea
 		}
@@ -396,7 +370,7 @@ func (e *damageEffect) Create(_ string, config map[string]string, targets []asse
 			if ref == nil {
 				continue
 			}
-			dealDamage(e.combat, actor, ref, raw, primaryType)
+			dealDamage(e.combat, actor, ref.Actor.Actor(), raw, primaryType)
 			return nil
 		}
 
@@ -406,16 +380,14 @@ func (e *damageEffect) Create(_ string, config map[string]string, targets []asse
 
 // dealDamage applies raw damage of the given type to a target, handling CalcDamage,
 // reflected damage, combat initiation, and threat.
-func dealDamage(cm CombatManager, actor AbilityActor, ref *TargetRef, raw int, dmgType string) {
-	damage, reflected := combat.CalcDamage(raw, dmgType, actor, targetPerkReader(ref))
-	applyDamage(ref, damage)
+func dealDamage(cm CombatManager, actor shared.Actor, target shared.Actor, raw int, dmgType string) {
+	damage, reflected := combat.CalcDamage(raw, dmgType, actor, target)
+	target.AdjustResource(assets.ResourceHp, -damage)
 	if reflected > 0 {
 		actor.AdjustResource(assets.ResourceHp, -reflected)
 	}
-	if ref.Mob != nil {
-		_ = cm.StartCombat(actor, ref.Mob.instance)
-		cm.AddThreat(actor, ref.Mob.instance, damage)
-	}
+	_ = cm.StartCombat(actor, target)
+	cm.AddThreat(actor, target, damage)
 }
 
 // aoeDamageEffect applies damage to all mobs and (optionally) players in the caster's room.
@@ -450,7 +422,7 @@ func (e *aoeDamageEffect) Create(_ string, config map[string]string, _ []assets.
 	}
 	hitPlayers := config["hit_players"] == "true"
 
-	return func(actor AbilityActor, _ map[string]*TargetRef) error {
+	return func(actor shared.Actor, _ map[string]*TargetRef) error {
 		if actor.HasGrant(assets.PerkGrantPeaceful, "") {
 			return errPeacefulArea
 		}
@@ -466,8 +438,7 @@ func (e *aoeDamageEffect) Create(_ string, config map[string]string, _ []assets.
 		}
 
 		ri.ForEachMob(func(mi *game.MobileInstance) {
-			ref := &TargetRef{Mob: &MobileRef{instance: mi}}
-			dealDamage(e.combat, actor, ref, dice.Roll(), dmgType)
+			dealDamage(e.combat, actor, mi, dice.Roll(), dmgType)
 		})
 
 		if hitPlayers {
@@ -476,37 +447,11 @@ func (e *aoeDamageEffect) Create(_ string, config map[string]string, _ []assets.
 				if charId == actorId {
 					return
 				}
-				ref := &TargetRef{Player: &PlayerRef{session: ci, CharId: charId}}
-				dealDamage(e.combat, actor, ref, dice.Roll(), dmgType)
+				dealDamage(e.combat, actor, ci, dice.Roll(), dmgType)
 			})
 		}
 
 		return nil
-	}
-}
-
-// targetPerkReader returns a combat.PerkReader for the target so CalcDamage can
-// apply defense perks. Falls back to a no-op reader if the ref has no instance.
-func targetPerkReader(ref *TargetRef) combat.PerkReader {
-	if ref.Player != nil {
-		return ref.Player.session
-	}
-	if ref.Mob != nil {
-		return ref.Mob.instance
-	}
-	return nopPerkReader{}
-}
-
-type nopPerkReader struct{}
-
-func (nopPerkReader) ModifierValue(_ string) int { return 0 }
-
-// applyDamage reduces a target's HP by amount.
-func applyDamage(ref *TargetRef, amount int) {
-	if ref.Player != nil {
-		ref.Player.session.AdjustResource(assets.ResourceHp, -amount)
-	} else if ref.Mob != nil {
-		ref.Mob.instance.AdjustResource(assets.ResourceHp, -amount)
 	}
 }
 
@@ -573,20 +518,14 @@ func (e *actorBuffEffect) Create(id string, config map[string]string, targets []
 	name, perk, dur := parsePerkBuffConfig(id, config)
 	perks := []assets.Perk{perk}
 
-	return func(actor AbilityActor, resolved map[string]*TargetRef) error {
+	return func(actor shared.Actor, resolved map[string]*TargetRef) error {
 		for _, spec := range targets {
 			ref := resolved[spec.Name]
-			if ref == nil {
+			if ref == nil || ref.Actor == nil {
 				continue
 			}
-			if ref.Player != nil {
-				ref.Player.session.AddTimedPerks(name, perks, dur)
-				return nil
-			}
-			if ref.Mob != nil {
-				ref.Mob.instance.AddTimedPerks(name, perks, dur)
-				return nil
-			}
+			ref.Actor.Actor().AddTimedPerks(name, perks, dur)
+			return nil
 		}
 		actor.AddTimedPerks(name, perks, dur)
 		return nil
@@ -608,7 +547,7 @@ func (e *roomBuffEffect) Create(id string, config map[string]string, _ []assets.
 	name, perk, dur := parsePerkBuffConfig(id, config)
 	perks := []assets.Perk{perk}
 
-	return func(actor AbilityActor, _ map[string]*TargetRef) error {
+	return func(actor shared.Actor, _ map[string]*TargetRef) error {
 		zoneId, roomId := actor.Location()
 		room := e.world.GetZone(zoneId).GetRoom(roomId)
 		if room == nil {
@@ -634,7 +573,7 @@ func (e *zoneBuffEffect) Create(id string, config map[string]string, _ []assets.
 	name, perk, dur := parsePerkBuffConfig(id, config)
 	perks := []assets.Perk{perk}
 
-	return func(actor AbilityActor, _ map[string]*TargetRef) error {
+	return func(actor shared.Actor, _ map[string]*TargetRef) error {
 		zoneId, _ := actor.Location()
 		zone := e.world.GetZone(zoneId)
 		if zone == nil {
@@ -660,7 +599,7 @@ func (e *worldBuffEffect) Create(id string, config map[string]string, _ []assets
 	name, perk, dur := parsePerkBuffConfig(id, config)
 	perks := []assets.Perk{perk}
 
-	return func(_ AbilityActor, _ map[string]*TargetRef) error {
+	return func(_ shared.Actor, _ map[string]*TargetRef) error {
 		e.world.Perks.AddTimedPerks(name, perks, dur)
 		return nil
 	}

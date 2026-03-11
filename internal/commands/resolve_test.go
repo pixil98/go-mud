@@ -147,11 +147,11 @@ func TestFindTarget_Player(t *testing.T) {
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			if result.Type != targetTypePlayer {
-				t.Errorf("Type = %q, expected %q", result.Type.String(), targetTypePlayer.String())
+			if result.Type != targetTypeActor {
+				t.Errorf("Type = %q, expected %q", result.Type.String(), targetTypeActor.String())
 			}
-			if result.Player.Name != tt.expPlayerName {
-				t.Errorf("Name = %q, expected %q", result.Player.Name, tt.expPlayerName)
+			if result.Actor.Name != tt.expPlayerName {
+				t.Errorf("Name = %q, expected %q", result.Actor.Name, tt.expPlayerName)
 			}
 		})
 	}
@@ -207,11 +207,11 @@ func TestFindTarget_Mobile(t *testing.T) {
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			if result.Type != targetTypeMobile {
-				t.Errorf("Type = %q, expected %q", result.Type.String(), targetTypeMobile.String())
+			if result.Type != targetTypeActor {
+				t.Errorf("Type = %q, expected %q", result.Type.String(), targetTypeActor.String())
 			}
-			if result.Mob.Name != tt.expMobName {
-				t.Errorf("Name = %q, expected %q", result.Mob.Name, tt.expMobName)
+			if result.Actor.Name != tt.expMobName {
+				t.Errorf("Name = %q, expected %q", result.Actor.Name, tt.expMobName)
 			}
 		})
 	}
@@ -318,14 +318,14 @@ func TestFindTarget_Combined(t *testing.T) {
 				mobs:    map[string]*game.MobileInstance{"guard-1": guard},
 			}}},
 			name:    "bob",
-			expType: targetTypePlayer,
+			expType: targetTypeActor,
 		},
 		"falls through to mob when no player": {
 			spaces: []SearchSpace{{Finder: &mockFinder{
 				mobs: map[string]*game.MobileInstance{"guard-1": guard},
 			}}},
 			name:    "guard",
-			expType: targetTypeMobile,
+			expType: targetTypeActor,
 		},
 		"not found returns generic label": {
 			spaces: []SearchSpace{{Finder: &mockFinder{}}},
@@ -452,8 +452,8 @@ func TestFindTarget_TypeFiltering(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if result.Type != targetTypeMobile {
-		t.Errorf("Type = %q, expected %q", result.Type.String(), targetTypeMobile.String())
+	if result.Type != targetTypeActor {
+		t.Errorf("Type = %q, expected %q", result.Type.String(), targetTypeActor.String())
 	}
 }
 
@@ -486,7 +486,7 @@ func TestResolveSpecs(t *testing.T) {
 			},
 			inputs:     map[string]any{"who": "bob"},
 			spaces:     []SearchSpace{{Finder: finder}},
-			expTargets: map[string]targetType{"target": targetTypePlayer},
+			expTargets: map[string]targetType{"target": targetTypeActor},
 		},
 		"resolves multiple targets": {
 			specs: []assets.TargetSpec{
@@ -495,7 +495,7 @@ func TestResolveSpecs(t *testing.T) {
 			},
 			inputs:     map[string]any{"who1": "bob", "who2": ""},
 			spaces:     []SearchSpace{{Finder: finder}},
-			expTargets: map[string]targetType{"first": targetTypePlayer},
+			expTargets: map[string]targetType{"first": targetTypeActor},
 			expNil:     []string{"second"},
 		},
 		"optional target with empty input": {

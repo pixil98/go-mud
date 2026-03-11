@@ -19,22 +19,14 @@ type StatSection struct {
 	Lines  []StatLine
 }
 
-// Executor provides command and ability execution for actors.
-// Implemented by the command handler; defined here to avoid circular imports.
-type Executor interface {
-	Exec(actorId string, cmdName string, args ...string) error
-	ExecAbility(actorId, abilityId, targetId string) ([]string, error)
-}
-
 // ActorInstance holds resource pools, inventory, equipment, and perks shared
 // between CharacterInstance and MobileInstance.
 type ActorInstance struct {
 	InstanceId string
-	inventory *Inventory
-	equipment *Equipment
-	resources map[string]int // current values only; max derived from PerkCache
-	level     int
-	Executor  Executor
+	inventory  *Inventory
+	equipment  *Equipment
+	resources  map[string]int // current values only; max derived from PerkCache
+	level      int
 	PerkCache
 }
 
@@ -112,29 +104,6 @@ func (a *ActorInstance) regenTick() {
 			a.adjustResource(name, regen)
 		}
 	}
-}
-
-// AutoUses iterates auto_use grants and executes each ability against the
-// given target via the Executor. Returns all room messages generated.
-func (a *ActorInstance) AutoUses(targetId string) []string {
-	if a.Executor == nil {
-		return nil
-	}
-	args := a.GrantArgs(assets.PerkGrantAutoUse)
-	if len(args) == 0 {
-		return nil
-	}
-	var msgs []string
-	for _, arg := range args {
-		abilityId := arg
-		if i := strings.IndexByte(arg, ':'); i >= 0 {
-			abilityId = arg[:i]
-		}
-		if result, err := a.Executor.ExecAbility(a.InstanceId, abilityId, targetId); err == nil {
-			msgs = append(msgs, result...)
-		}
-	}
-	return msgs
 }
 
 // Id returns the actor's unique identifier.

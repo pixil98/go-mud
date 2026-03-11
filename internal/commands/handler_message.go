@@ -5,11 +5,12 @@ import (
 	"fmt"
 
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // MessageActor provides the character state needed by the message handler.
 type MessageActor interface {
-	CommandActor
+	shared.Actor
 	Location() (zoneId, roomId string)
 	GetGroup() *game.Group
 }
@@ -96,10 +97,10 @@ func (f *MessageHandlerFactory) handle(ctx context.Context, char MessageActor, i
 
 	case "player":
 		target := in.Targets["target"]
-		if target == nil || target.Player == nil {
+		if target == nil || target.Actor == nil {
 			return NewUserError("They're not here.")
 		}
-		return f.pub.Publish(game.SinglePlayer(target.Player.CharId), nil, []byte(recipientMessage))
+		return f.pub.Publish(game.SinglePlayer(target.Actor.CharId), nil, []byte(recipientMessage))
 
 	case "group":
 		grp := char.GetGroup()

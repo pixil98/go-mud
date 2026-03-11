@@ -118,7 +118,7 @@ func TestMobileInstance_OnDeath(t *testing.T) {
 	if len(drops) != 1 {
 		t.Fatalf("OnDeath returned %d drops, want 1", len(drops))
 	}
-	corpse := drops[0]
+	corpse := drops[0].(*ObjectInstance)
 	if corpse == nil {
 		t.Fatal("drop is nil")
 	}

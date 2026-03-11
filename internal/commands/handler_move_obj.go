@@ -8,11 +8,12 @@ import (
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // MoveObjActor provides the character state needed by the move_obj handler.
 type MoveObjActor interface {
-	CommandActor
+	shared.Actor
 	Location() (zoneId, roomId string)
 	GetInventory() *game.Inventory
 }
@@ -85,7 +86,7 @@ func (f *MoveObjHandlerFactory) handle(ctx context.Context, char MoveObjActor, i
 	// Check self-targeting if configured
 	if noSelf := in.Config["no_self_target"]; noSelf != "" {
 		ref := in.Targets[noSelf]
-		if ref != nil && ref.Player != nil && ref.Player.CharId == char.Id() {
+		if ref != nil && ref.Actor != nil && ref.Actor.CharId == char.Id() {
 			return NewUserError("You can't give something to yourself.")
 		}
 	}
@@ -115,11 +116,11 @@ func (f *MoveObjHandlerFactory) handle(ctx context.Context, char MoveObjActor, i
 		}
 
 		if targetMsg := in.Config["target_message"]; targetMsg != "" {
-			if ref := in.Targets[in.Config["destination"]]; ref != nil && ref.Type == targetTypePlayer {
-				if err := f.pub.Publish(game.SinglePlayer(ref.Player.CharId), nil, []byte(targetMsg)); err != nil {
+			if ref := in.Targets[in.Config["destination"]]; ref != nil && ref.Actor != nil && ref.Actor.CharId != "" {
+				if err := f.pub.Publish(game.SinglePlayer(ref.Actor.CharId), nil, []byte(targetMsg)); err != nil {
 					slog.Warn("failed to publish target message", "error", err)
 				}
-				exclude = append(exclude, ref.Player.CharId)
+				exclude = append(exclude, ref.Actor.CharId)
 			}
 		}
 
@@ -153,19 +154,11 @@ func (f *MoveObjHandlerFactory) resolveDestination(char MoveObjActor, in *Comman
 }
 
 // holderForTarget returns an ObjectHolder for a resolved target.
-// For player targets, returns their session inventory.
+// For actor targets (player/mob), returns their inventory.
 // For object targets, validates the container flag and returns contents.
-// For mobile targets, returns their inventory.
 func (f *MoveObjHandlerFactory) holderForTarget(ref *TargetRef) (ObjectHolder, error) {
-	if ref.Player != nil {
-		if ref.Player.session == nil {
-			return nil, NewUserError(fmt.Sprintf("%s is no longer here.", ref.Player.Name))
-		}
-		return ref.Player.session.GetInventory(), nil
-	}
-
-	if ref.Mob != nil {
-		return ref.Mob.instance.GetInventory(), nil
+	if ref.Actor != nil {
+		return ref.Actor.GetInventory(), nil
 	}
 
 	if ref.Obj != nil {
@@ -182,5 +175,5 @@ func (f *MoveObjHandlerFactory) holderForTarget(ref *TargetRef) (ObjectHolder, e
 		return ref.Obj.instance.Contents, nil
 	}
 
-	return nil, fmt.Errorf("target has no player, mobile, or object")
+	return nil, fmt.Errorf("target has no actor or object")
 }

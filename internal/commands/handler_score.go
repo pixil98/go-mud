@@ -6,13 +6,14 @@ import (
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/shared"
 )
 
 const scoreBoxWidth = 40
 
 // ScoreActor provides the character state needed by the score handler.
 type ScoreActor interface {
-	CommandActor
+	shared.Actor
 	StatSections() []game.StatSection
 }
 
@@ -60,13 +61,12 @@ func (f *ScoreHandlerFactory) handle(ctx context.Context, char ScoreActor, in *C
 	return nil
 }
 
+// TODO: Remove StatSections from CharacterInstance/MobileInstance and build the
+// score display entirely from shared.Actor and perks.
 func (f *ScoreHandlerFactory) resolveSections(char ScoreActor, in *CommandInput) ([]game.StatSection, error) {
 	if target := in.Targets["target"]; target != nil {
-		switch target.Type {
-		case targetTypePlayer:
-			return target.Player.session.StatSections(), nil
-		case targetTypeMobile:
-			return target.Mob.instance.StatSections(), nil
+		if sv, ok := target.Actor.Actor().(interface{ StatSections() []game.StatSection }); ok {
+			return sv.StatSections(), nil
 		}
 	}
 

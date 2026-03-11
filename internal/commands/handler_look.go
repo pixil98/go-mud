@@ -4,11 +4,12 @@ import (
 	"context"
 
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // LookActor provides the character state needed by the look handler.
 type LookActor interface {
-	CommandActor
+	shared.Actor
 	Location() (zoneId, roomId string)
 }
 
@@ -74,10 +75,8 @@ func (f *LookHandlerFactory) showRoom(char LookActor) error {
 func (f *LookHandlerFactory) showTarget(char LookActor, target *TargetRef) error {
 	var msg string
 	switch target.Type {
-	case targetTypePlayer:
-		msg = target.Player.Describe()
-	case targetTypeMobile:
-		msg = target.Mob.Describe()
+	case targetTypeActor:
+		msg = target.Actor.Describe()
 	case targetTypeObject:
 		msg = target.Obj.Describe()
 	default:

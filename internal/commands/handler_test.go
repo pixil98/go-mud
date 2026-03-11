@@ -511,12 +511,12 @@ func TestHandler_expandConfig(t *testing.T) {
 		},
 		"target used in template": {
 			config: map[string]string{
-				"channel": "player-{{ .Targets.target.Player.Name | lower }}",
-				"message": "Hello {{ .Targets.target.Player.Name }}!",
+				"channel": "player-{{ .Targets.target.Actor.Name | lower }}",
+				"message": "Hello {{ .Targets.target.Actor.Name }}!",
 			},
 			actor: &assets.Character{Name: "Alice"},
 			targets: map[string]*TargetRef{
-				"target": {Type: targetTypePlayer, Player: &PlayerRef{Name: "Bob"}},
+				"target": {Type: targetTypeActor, Actor: &ActorRef{Name: "Bob"}},
 			},
 			inputs: map[string]any{},
 			expConfig: map[string]string{
@@ -526,11 +526,11 @@ func TestHandler_expandConfig(t *testing.T) {
 		},
 		"actor and target combined": {
 			config: map[string]string{
-				"message": "{{ .Actor.Name }} tells {{ .Targets.target.Player.Name }}, \"{{ .Inputs.text }}\"",
+				"message": "{{ .Actor.Name }} tells {{ .Targets.target.Actor.Name }}, \"{{ .Inputs.text }}\"",
 			},
 			actor: &assets.Character{Name: "Alice"},
 			targets: map[string]*TargetRef{
-				"target": {Type: targetTypePlayer, Player: &PlayerRef{Name: "Bob"}},
+				"target": {Type: targetTypeActor, Actor: &ActorRef{Name: "Bob"}},
 			},
 			inputs: map[string]any{
 				"text": "hello there",

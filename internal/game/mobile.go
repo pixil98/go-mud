@@ -142,8 +142,8 @@ func (mi *MobileInstance) Flags() []string {
 
 // OnDeath creates a corpse containing all of the mob's inventory and equipped items.
 // The combat manager places the returned objects in the room after calling this.
-func (mi *MobileInstance) OnDeath() []*ObjectInstance {
-	return []*ObjectInstance{newCorpse(mi)}
+func (mi *MobileInstance) OnDeath() []any {
+	return []any{newCorpse(mi)}
 }
 
 // newCorpse creates a container ObjectInstance holding all of the mob's loot.
@@ -185,6 +185,18 @@ func (mi *MobileInstance) CombatTargetId() string {
 
 // SetCombatTargetId is a no-op for mobs; their target is resolved from the threat table.
 func (mi *MobileInstance) SetCombatTargetId(_ string) {}
+
+// Asset returns a synthetic Character for template expansion in the ability system.
+// Mobs don't have a full Character spec, so only the name is populated.
+func (mi *MobileInstance) Asset() *assets.Character {
+	return &assets.Character{Name: mi.Name()}
+}
+
+// SpendAP always succeeds for mobs — they have no action point budget.
+func (mi *MobileInstance) SpendAP(_ int) bool { return true }
+
+// GetGroup returns nil; mobs are never in a player group.
+func (mi *MobileInstance) GetGroup() *Group { return nil }
 
 // StatSections returns the mobile's stat display sections.
 func (mi *MobileInstance) StatSections() []StatSection {

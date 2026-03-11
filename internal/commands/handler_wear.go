@@ -6,11 +6,12 @@ import (
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // WearActor provides the character state needed by the wear handler.
 type WearActor interface {
-	CommandActor
+	shared.Actor
 	Location() (zoneId, roomId string)
 	GetInventory() *game.Inventory
 	GetEquipment() *game.Equipment

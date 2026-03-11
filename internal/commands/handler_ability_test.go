@@ -303,10 +303,9 @@ func TestAttackEffect(t *testing.T) {
 	}{
 		"mob target: starts combat and deals damage": {
 			targets: map[string]*TargetRef{
-				"target": {Type: targetTypeMobile, Mob: &MobileRef{
-					InstanceId: "mob-1",
-					Name:       "Goblin",
-					instance:   newTestMobInstance("mob-1", "Goblin", nil),
+				"target": {Type: targetTypeActor, Actor: &ActorRef{
+					Name:  "Goblin",
+					actor: newTestMobInstance("mob-1", "Goblin", nil),
 				}},
 			},
 			wantStart: true,
@@ -321,10 +320,9 @@ func TestAttackEffect(t *testing.T) {
 		},
 		"StartCombat error: wrapped as user error": {
 			targets: map[string]*TargetRef{
-				"target": {Type: targetTypeMobile, Mob: &MobileRef{
-					InstanceId: "mob-1",
-					Name:       "Goblin",
-					instance:   newTestMobInstance("mob-1", "Goblin", nil),
+				"target": {Type: targetTypeActor, Actor: &ActorRef{
+					Name:  "Goblin",
+					actor: newTestMobInstance("mob-1", "Goblin", nil),
 				}},
 			},
 			startErr: fmt.Errorf("target is not alive"),
@@ -381,8 +379,8 @@ func TestAttackEffect_PeacefulArea(t *testing.T) {
 	effect := &attackEffect{combat: cm}
 	targetSpecs := []assets.TargetSpec{{Name: "target"}}
 	targets := map[string]*TargetRef{
-		"target": {Type: targetTypeMobile, Mob: &MobileRef{
-			instance: newTestMobInstance("mob-1", "Goblin", nil),
+		"target": {Type: targetTypeActor, Actor: &ActorRef{
+			actor: newTestMobInstance("mob-1", "Goblin", nil),
 		}},
 	}
 
@@ -411,10 +409,9 @@ func TestDamageEffect_InitiatesCombat(t *testing.T) {
 	config := map[string]string{"damage": "10"}
 	targetSpecs := []assets.TargetSpec{{Name: "target"}}
 	targets := map[string]*TargetRef{
-		"target": {Type: targetTypeMobile, Mob: &MobileRef{
-			InstanceId: "mob-1",
-			Name:       "Goblin",
-			instance:   mob,
+		"target": {Type: targetTypeActor, Actor: &ActorRef{
+			Name:  "Goblin",
+			actor: mob,
 		}},
 	}
 
@@ -465,6 +462,7 @@ func TestAoeDamageEffect(t *testing.T) {
 		"hits players when configured": {
 			mobCount:   0,
 			hitPlayers: true,
+			wantStarts: 1,
 			wantPlayer: true,
 		},
 	}

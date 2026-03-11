@@ -40,7 +40,7 @@ func (f *TreesHandlerFactory) ValidateConfig(config map[string]string) error {
 // Create returns a compiled CommandFunc for this handler.
 func (f *TreesHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, in *CommandInput) error {
-		charId := in.Char.Id()
+		charId := in.Actor.Id()
 		if name := in.Config["tree"]; name != "" {
 			return f.showTree(name, charId)
 		}

@@ -6,6 +6,7 @@ import (
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // --- mock helpers ---
@@ -23,8 +24,6 @@ type mockCombatant struct {
 	combatTargetId     string
 	zoneId, roomId     string
 	deathCalled        bool
-	autoUsesCalled     bool
-	autoUsesTargetId   string
 }
 
 func (c *mockCombatant) Id() string   { return c.id }
@@ -55,6 +54,10 @@ func (c *mockCombatant) AdjustResource(name string, delta int) {
 	}
 }
 
+func (c *mockCombatant) SpendAP(_ int) bool              { return true }
+func (c *mockCombatant) HasGrant(_, _ string) bool        { return false }
+func (c *mockCombatant) AddTimedPerks(_ string, _ []assets.Perk, _ int) {}
+
 func (c *mockCombatant) ModifierValue(key string) int {
 	return c.modifiers[key]
 }
@@ -65,14 +68,9 @@ func (c *mockCombatant) GrantArgs(key string) []string {
 
 func (c *mockCombatant) CombatTargetId() string          { return c.combatTargetId }
 func (c *mockCombatant) SetCombatTargetId(id string)     { c.combatTargetId = id }
-func (c *mockCombatant) AutoUses(targetId string) []string {
-	c.autoUsesCalled = true
-	c.autoUsesTargetId = targetId
-	return nil
-}
 func (c *mockCombatant) Location() (string, string)      { return c.zoneId, c.roomId }
 func (c *mockCombatant) Level() int                      { return c.level }
-func (c *mockCombatant) OnDeath() []*game.ObjectInstance { c.deathCalled = true; return nil }
+func (c *mockCombatant) OnDeath() []any { c.deathCalled = true; return nil }
 
 func newMC(id string) *mockCombatant {
 	return &mockCombatant{
@@ -300,9 +298,22 @@ func TestPerformAttack(t *testing.T) {
 
 // --- Tick tests ---
 
+type mockAbilityHandler struct {
+	calls []struct{ abilityId, actorId, targetId string }
+}
+
+func (h *mockAbilityHandler) ExecCombatAbility(abilityId string, actor, target shared.Actor) (string, error) {
+	h.calls = append(h.calls, struct{ abilityId, actorId, targetId string }{abilityId, actor.Id(), target.Id()})
+	return "", nil
+}
+
 func TestManager_Tick_CallsAutoUses(t *testing.T) {
 	m, _ := newTestManager()
+	ah := &mockAbilityHandler{}
+	m.SetAbilityHandler(ah)
+
 	a := newMC("a")
+	a.grants[assets.PerkGrantAutoUse] = []string{"fireball"}
 	b := newMC("b")
 
 	if err := m.StartCombat(a, b); err != nil {
@@ -313,11 +324,18 @@ func TestManager_Tick_CallsAutoUses(t *testing.T) {
 		t.Fatalf("Tick: %v", err)
 	}
 
-	if !a.autoUsesCalled {
-		t.Error("AutoUses was not called on combatant a")
+	if len(ah.calls) == 0 {
+		t.Fatal("ExecCombatAbility was not called")
 	}
-	if a.autoUsesTargetId != "b" {
-		t.Errorf("AutoUses target = %q, want %q", a.autoUsesTargetId, "b")
+	call := ah.calls[0]
+	if call.abilityId != "fireball" {
+		t.Errorf("abilityId = %q, want %q", call.abilityId, "fireball")
+	}
+	if call.actorId != "a" {
+		t.Errorf("actorId = %q, want %q", call.actorId, "a")
+	}
+	if call.targetId != "b" {
+		t.Errorf("targetId = %q, want %q", call.targetId, "b")
 	}
 }
 

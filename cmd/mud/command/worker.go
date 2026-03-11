@@ -62,6 +62,7 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	if err != nil {
 		return nil, fmt.Errorf("compiling commands: %w", err)
 	}
+	combatManager.SetAbilityHandler(cmdHandler)
 
 	// Create player manager
 	playerManager, err := cfg.PlayerManager.BuildPlayerManager(cmdHandler, world, dict)

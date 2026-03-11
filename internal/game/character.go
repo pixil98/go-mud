@@ -427,7 +427,7 @@ func (ci *CharacterInstance) Flags() []string {
 // OnDeath handles player death. The character is healed to full HP before the session
 // ends so they reconnect healthy. Location is not changed here; they will respawn
 // at their stored home location on next login.
-func (ci *CharacterInstance) OnDeath() []*ObjectInstance {
+func (ci *CharacterInstance) OnDeath() []any {
 	if ci.msgs != nil {
 		select {
 		case ci.msgs <- []byte("You have been slain! Darkness consumes you..."):

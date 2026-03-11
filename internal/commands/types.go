@@ -18,6 +18,8 @@ const (
 	targetTypeMobile
 	targetTypeObject
 	targetTypeExit
+
+	targetTypeActor = targetTypePlayer | targetTypeMobile
 )
 
 // String returns the lowercase name of a single target type, or "target" for combined types.

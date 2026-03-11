@@ -6,11 +6,12 @@ import (
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // TitleActor provides the character state needed by the title handler.
 type TitleActor interface {
-	CommandActor
+	shared.Actor
 	Asset() *assets.Character
 }
 

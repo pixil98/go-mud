@@ -7,6 +7,7 @@ import (
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // --- Finder interfaces ---
@@ -88,53 +89,57 @@ func describeActor(description, name string, currentHP, maxHP int, equipment *ga
 	return strings.Join(lines, "\n")
 }
 
-// PlayerRef is the template-facing view of a resolved player.
-type PlayerRef struct {
-	CharId      string
+// ActorRef is the template-facing view of a resolved player or mob.
+type ActorRef struct {
+	actor       shared.Actor
+	CharId      string // charId for players (used for message routing); empty for mobs
 	Name        string
 	Description string
-	session     *game.CharacterInstance
+	equipment   *game.Equipment
+	inventory   *game.Inventory
 }
 
-func playerRefFromState(ps *game.CharacterInstance) *PlayerRef {
-	return &PlayerRef{
+// Actor returns the underlying shared.Actor.
+func (r *ActorRef) Actor() shared.Actor { return r.actor }
+
+// GetInventory returns the actor's inventory.
+func (r *ActorRef) GetInventory() *game.Inventory { return r.inventory }
+
+func actorRefFromPlayer(ps *game.CharacterInstance) *ActorRef {
+	return &ActorRef{
+		actor:       ps,
 		CharId:      ps.Id(),
 		Name:        ps.Name(),
 		Description: ps.Character.Get().DetailedDesc,
-		session:     ps,
+		equipment:   ps.GetEquipment(),
+		inventory:   ps.GetInventory(),
 	}
 }
 
-// Describe returns a detailed description of the player, including equipped items.
-func (r *PlayerRef) Describe() string {
-	currentHP, maxHP := r.session.Resource(assets.ResourceHp)
-	return describeActor(r.Description, r.Name, currentHP, maxHP, r.session.GetEquipment())
-}
-
-// MobileRef is the template-facing view of a resolved mob.
-type MobileRef struct {
-	InstanceId  string
-	Name        string
-	Description string
-	instance    *game.MobileInstance
-}
-
-func mobRefFromInstance(mi *game.MobileInstance) *MobileRef {
+func actorRefFromMob(mi *game.MobileInstance) *ActorRef {
 	if mi == nil || mi.Mobile.Get() == nil {
 		return nil
 	}
-	return &MobileRef{
-		InstanceId:  mi.Id(),
+	return &ActorRef{
+		actor:       mi,
 		Name:        mi.Name(),
 		Description: mi.Mobile.Get().DetailedDesc,
-		instance:    mi,
+		equipment:   mi.GetEquipment(),
+		inventory:   mi.GetInventory(),
 	}
 }
 
-// Describe returns a detailed description of the mob, including equipped items.
-func (r *MobileRef) Describe() string {
-	currentHP, maxHP := r.instance.Resource(assets.ResourceHp)
-	return describeActor(r.Description, r.Name, currentHP, maxHP, r.instance.GetEquipment())
+func actorRefFromActor(a shared.Actor) *ActorRef {
+	return &ActorRef{
+		actor: a,
+		Name:  a.Name(),
+	}
+}
+
+// Describe returns a detailed description of the actor, including equipped items.
+func (r *ActorRef) Describe() string {
+	currentHP, maxHP := r.actor.Resource(assets.ResourceHp)
+	return describeActor(r.Description, r.Name, currentHP, maxHP, r.equipment)
 }
 
 // ObjectRef is the template-facing view of a resolved object.
@@ -202,20 +207,17 @@ func exitRefFrom(direction string, exit *assets.Exit) *ExitRef {
 
 // TargetRef is a polymorphic target reference that could be a player, mobile, object, or exit.
 type TargetRef struct {
-	Type   targetType // targetTypePlayer, targetTypeMobile, targetTypeObject, or targetTypeExit
-	Player *PlayerRef // Non-nil if Type == "player"
-	Mob    *MobileRef // Non-nil if Type == "mobile"
-	Obj    *ObjectRef // Non-nil if Type == "object"
-	Exit   *ExitRef   // Non-nil if Type == "exit"
+	Type  targetType // targetTypeActor, targetTypeObject, or targetTypeExit
+	Actor *ActorRef  // Non-nil if Type == targetTypeActor
+	Obj   *ObjectRef // Non-nil if Type == targetTypeObject
+	Exit  *ExitRef   // Non-nil if Type == targetTypeExit
 }
 
 // Name returns the display name of the target regardless of type.
 func (r *TargetRef) Name() string {
 	switch {
-	case r.Player != nil:
-		return r.Player.Name
-	case r.Mob != nil:
-		return r.Mob.Name
+	case r.Actor != nil:
+		return r.Actor.Name
 	case r.Obj != nil:
 		return r.Obj.Name
 	case r.Exit != nil:
@@ -242,16 +244,16 @@ func FindTarget(name string, tt targetType, spaces []SearchSpace) (*TargetRef, e
 		if tt&targetTypePlayer != 0 {
 			if ps := sp.Finder.FindPlayer(name); ps != nil {
 				return &TargetRef{
-					Type:   targetTypePlayer,
-					Player: playerRefFromState(ps),
+					Type:  targetTypeActor,
+					Actor: actorRefFromPlayer(ps),
 				}, nil
 			}
 		}
 		if tt&targetTypeMobile != 0 {
 			if mi := sp.Finder.FindMob(name); mi != nil {
 				return &TargetRef{
-					Type: targetTypeMobile,
-					Mob:  mobRefFromInstance(mi),
+					Type:  targetTypeActor,
+					Actor: actorRefFromMob(mi),
 				}, nil
 			}
 		}
@@ -279,7 +281,7 @@ func FindTarget(name string, tt targetType, spaces []SearchSpace) (*TargetRef, e
 
 // ScopeActor provides the character state needed for target scope resolution.
 type ScopeActor interface {
-	Location() (zoneId, roomId string)
+	shared.Actor
 	GetInventory() *game.Inventory
 	GetEquipment() *game.Equipment
 	GetGroup() *game.Group

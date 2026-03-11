@@ -2,8 +2,6 @@ package commands
 
 import (
 	"testing"
-
-	"github.com/pixil98/go-mud/internal/assets"
 )
 
 func TestExpandTemplate(t *testing.T) {
@@ -21,24 +19,24 @@ func TestExpandTemplate(t *testing.T) {
 		"expand actor name": {
 			tmplStr: "{{ .Actor.Name }} says hello",
 			data: &templateContext{
-				Actor: &assets.Character{Name: "test-actor"},
+				Actor: newCharacterInstance("test-actor", "test-actor"),
 			},
 			exp: "test-actor says hello",
 		},
 		"expand input value": {
 			tmplStr: "player-{{ .Inputs.target }}",
 			data: &templateContext{
-				Actor:  &assets.Character{},
+				Actor:  newCharacterInstance("a", "a"),
 				Inputs: map[string]any{"target": "test-target"},
 			},
 			exp: "player-test-target",
 		},
 		"expand multiple values": {
-			tmplStr: "{{ .Actor.Name }} targets {{ .Targets.target.Player.Name }}",
+			tmplStr: "{{ .Actor.Name }} targets {{ .Targets.target.Actor.Name }}",
 			data: &templateContext{
-				Actor: &assets.Character{Name: "test-actor"},
+				Actor: newCharacterInstance("test-actor", "test-actor"),
 				Targets: map[string]*TargetRef{
-					"target": {Type: targetTypePlayer, Player: &PlayerRef{Name: "test-target"}},
+					"target": {Type: targetTypeActor, Actor: &ActorRef{Name: "test-target"}},
 				},
 			},
 			exp: "test-actor targets test-target",

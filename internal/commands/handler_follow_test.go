@@ -5,6 +5,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 )
 
@@ -43,10 +44,25 @@ type mockFollowActor struct {
 	followingId string
 }
 
-func (m *mockFollowActor) Id() string              { return m.id }
-func (m *mockFollowActor) Name() string             { return m.name }
-func (m *mockFollowActor) GetFollowingId() string   { return m.followingId }
-func (m *mockFollowActor) SetFollowingId(id string) { m.followingId = id }
+func (m *mockFollowActor) Id() string                               { return m.id }
+func (m *mockFollowActor) Name() string                             { return m.name }
+func (m *mockFollowActor) Location() (string, string)               { return "", "" }
+func (m *mockFollowActor) IsInCombat() bool                         { return false }
+func (m *mockFollowActor) IsAlive() bool                            { return true }
+func (m *mockFollowActor) Level() int                               { return 1 }
+func (m *mockFollowActor) Resource(string) (int, int)               { return 0, 0 }
+func (m *mockFollowActor) AdjustResource(string, int)               {}
+func (m *mockFollowActor) SpendAP(int) bool                         { return true }
+func (m *mockFollowActor) HasGrant(string, string) bool             { return false }
+func (m *mockFollowActor) ModifierValue(string) int                 { return 0 }
+func (m *mockFollowActor) GrantArgs(string) []string                { return nil }
+func (m *mockFollowActor) AddTimedPerks(string, []assets.Perk, int) {}
+func (m *mockFollowActor) SetInCombat(bool)                         {}
+func (m *mockFollowActor) CombatTargetId() string                   { return "" }
+func (m *mockFollowActor) SetCombatTargetId(string)                 {}
+func (m *mockFollowActor) OnDeath() []any                           { return nil }
+func (m *mockFollowActor) GetFollowingId() string                   { return m.followingId }
+func (m *mockFollowActor) SetFollowingId(id string)                 { m.followingId = id }
 
 var _ FollowActor = (*mockFollowActor)(nil)
 var _ FollowedPlayer = (*mockFollowActor)(nil)
@@ -78,8 +94,8 @@ func TestFollowHandler(t *testing.T) {
 	}{
 		"follow a player": {
 			target: &TargetRef{
-				Type:   targetTypePlayer,
-				Player: &PlayerRef{CharId: "bob", Name: "Bob"},
+				Type:  targetTypeActor,
+				Actor: &ActorRef{CharId: "bob", Name: "Bob"},
 			},
 			expFollowId: "bob",
 			expMsgAlice: "You now follow Bob.",
@@ -87,8 +103,8 @@ func TestFollowHandler(t *testing.T) {
 		},
 		"follow yourself": {
 			target: &TargetRef{
-				Type:   targetTypePlayer,
-				Player: &PlayerRef{CharId: "alice", Name: "Alice"},
+				Type:  targetTypeActor,
+				Actor: &ActorRef{CharId: "alice", Name: "Alice"},
 			},
 			expErr: "You can't follow yourself.",
 		},
@@ -97,8 +113,8 @@ func TestFollowHandler(t *testing.T) {
 				alice.followingId = "bob"
 			},
 			target: &TargetRef{
-				Type:   targetTypePlayer,
-				Player: &PlayerRef{CharId: "bob", Name: "Bob"},
+				Type:  targetTypeActor,
+				Actor: &ActorRef{CharId: "bob", Name: "Bob"},
 			},
 			expErr: "You are already following Bob.",
 		},
@@ -107,8 +123,8 @@ func TestFollowHandler(t *testing.T) {
 				bob.followingId = "alice"
 			},
 			target: &TargetRef{
-				Type:   targetTypePlayer,
-				Player: &PlayerRef{CharId: "bob", Name: "Bob"},
+				Type:  targetTypeActor,
+				Actor: &ActorRef{CharId: "bob", Name: "Bob"},
 			},
 			expErr: "Sorry, following in loops is not allowed.",
 		},
@@ -118,8 +134,8 @@ func TestFollowHandler(t *testing.T) {
 				lookup.players["charlie"] = &mockFollowActor{id: "charlie", name: "Charlie"}
 			},
 			target: &TargetRef{
-				Type:   targetTypePlayer,
-				Player: &PlayerRef{CharId: "charlie", Name: "Charlie"},
+				Type:  targetTypeActor,
+				Actor: &ActorRef{CharId: "charlie", Name: "Charlie"},
 			},
 			expFollowId: "charlie",
 			expMsgAlice: "You now follow Charlie.",
@@ -160,7 +176,7 @@ func TestFollowHandler(t *testing.T) {
 			}
 
 			cmdCtx := &CommandInput{
-				Char:    alice,
+				Actor:   alice,
 				Targets: targets,
 				Config:  make(map[string]string),
 			}

@@ -9,6 +9,7 @@ import (
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // Manager runs the combat loop and tracks threat relationships between combatants.
@@ -17,10 +18,11 @@ type Manager struct {
 	combatants map[string]*combatantState
 	pub        game.Publisher
 	zones      ZoneLocator
+	abilities  AbilityHandler
 }
 
 type combatantState struct {
-	c      Combatant
+	c      shared.Actor
 	threat map[string]int // enemy ID → accumulated threat
 }
 
@@ -40,9 +42,15 @@ func NewManager(pub game.Publisher, zones ZoneLocator) *Manager {
 	}
 }
 
+// SetAbilityHandler sets the handler used to execute auto_use abilities during
+// the combat tick. Called after handler creation to break the init cycle.
+func (m *Manager) SetAbilityHandler(h AbilityHandler) {
+	m.abilities = h
+}
+
 // StartCombat registers both combatants and initialises mutual threat.
 // It is idempotent: re-entering after flee preserves existing threat entries.
-func (m *Manager) StartCombat(attacker, target Combatant) error {
+func (m *Manager) StartCombat(attacker, target shared.Actor) error {
 	if !attacker.IsAlive() {
 		return fmt.Errorf("%s is not alive", attacker.Name())
 	}
@@ -70,7 +78,7 @@ func (m *Manager) StartCombat(attacker, target Combatant) error {
 
 
 // AddThreat increases the threat that source has generated toward target.
-func (m *Manager) AddThreat(source, target Combatant, amount int) {
+func (m *Manager) AddThreat(source, target shared.Actor, amount int) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 
@@ -84,7 +92,7 @@ func (m *Manager) AddThreat(source, target Combatant, amount int) {
 // applies damage for each hit (including any reflected damage back to the attacker),
 // and returns the per-attack results.
 // Falls back to a single untyped 1d4 attack if no attack grants are present.
-func PerformAttack(attacker, target Combatant) []AttackResult {
+func PerformAttack(attacker, target shared.Actor) []AttackResult {
 	attackArgs := attacker.GrantArgs(assets.PerkGrantAttack)
 	if len(attackArgs) == 0 {
 		attackArgs = []string{"1d4"}
@@ -115,7 +123,7 @@ func ParseAttackArg(arg string) (dmgType, diceExpr string) {
 
 // rollOneAttack performs a single attack roll for the given attack grant arg.
 // Does NOT apply damage — PerformAttack handles that.
-func rollOneAttack(attacker, target Combatant, attackArg string) AttackResult {
+func rollOneAttack(attacker, target shared.Actor, attackArg string) AttackResult {
 	dmgType, diceExpr := ParseAttackArg(attackArg)
 
 	roll := RollAttack(attacker.ModifierValue(assets.PerkKeyCombatAttackMod))
@@ -151,6 +159,15 @@ func (m *Manager) Tick(_ context.Context) error {
 		}
 	}
 
+	// Collect auto_use tasks under the lock, then execute them unlocked
+	// to avoid deadlock (ability effects call StartCombat/AddThreat which also lock).
+	type autoUseTask struct {
+		abilityId string
+		actor     shared.Actor
+		target    shared.Actor
+	}
+	var autoUses []autoUseTask
+
 	m.mu.Lock()
 
 	for _, state := range m.combatants {
@@ -164,17 +181,31 @@ func (m *Manager) Tick(_ context.Context) error {
 			continue
 		}
 
-		if msgs := c.AutoUses(target.Id()); len(msgs) > 0 {
-			zoneId, roomId := c.Location()
-			for _, msg := range msgs {
-				addRoomLine(zoneId, roomId, msg)
+		if m.abilities != nil {
+			for _, arg := range c.GrantArgs(assets.PerkGrantAutoUse) {
+				abilityId := arg
+				if i := strings.IndexByte(arg, ':'); i >= 0 {
+					abilityId = arg[:i]
+				}
+				autoUses = append(autoUses, autoUseTask{abilityId: abilityId, actor: c, target: target})
 			}
 		}
 	}
 
+	m.mu.Unlock()
+
+	for _, task := range autoUses {
+		if msg, err := m.abilities.ExecCombatAbility(task.abilityId, task.actor, task.target); err == nil && msg != "" {
+			zoneId, roomId := task.actor.Location()
+			addRoomLine(zoneId, roomId, msg)
+		}
+	}
+
+	m.mu.Lock()
+
 	// Handle deaths.
 	type deadEntry struct {
-		c      Combatant
+		c      shared.Actor
 		threat map[string]int // snapshot of threat table at time of death
 	}
 	var dead []deadEntry
@@ -217,8 +248,10 @@ func (m *Manager) Tick(_ context.Context) error {
 		if zi := m.zones.GetZone(zoneId); zi != nil {
 			if ri := zi.GetRoom(roomId); ri != nil {
 				ri.RemoveMob(d.c.Id())
-				for _, obj := range drops {
-					ri.AddObj(obj)
+				for _, drop := range drops {
+					if obj, ok := drop.(*game.ObjectInstance); ok {
+						ri.AddObj(obj)
+					}
 				}
 			}
 		}
@@ -273,14 +306,14 @@ func (m *Manager) Tick(_ context.Context) error {
 // resolveTarget picks the attack target for a combatant.
 // Prefers the combatant's stored target ID; falls back to highest-threat alive enemy.
 // Caller must hold m.mu.
-func (m *Manager) resolveTarget(state *combatantState) Combatant {
+func (m *Manager) resolveTarget(state *combatantState) shared.Actor {
 	if tid := state.c.CombatTargetId(); tid != "" {
 		if ts, ok := m.combatants[tid]; ok && ts.c.IsAlive() {
 			return ts.c
 		}
 	}
 
-	var best Combatant
+	var best shared.Actor
 	bestThreat := 0
 	for enemyId, threat := range state.threat {
 		if ts, ok := m.combatants[enemyId]; ok && ts.c.IsAlive() {
@@ -295,7 +328,7 @@ func (m *Manager) resolveTarget(state *combatantState) Combatant {
 
 // register ensures a combatant is in the combatants map, returning its state.
 // Caller must hold m.mu.
-func (m *Manager) register(c Combatant) *combatantState {
+func (m *Manager) register(c shared.Actor) *combatantState {
 	if state, ok := m.combatants[c.Id()]; ok {
 		return state
 	}

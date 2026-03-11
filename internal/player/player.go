@@ -46,7 +46,7 @@ func (p *Player) Play(ctx context.Context) error {
 	}()
 
 	// Show the player their current room on login
-	err := p.cmdHandler.Exec(ctx, p.world, p.charId, "look")
+	err := p.cmdHandler.Exec(ctx, p.world.GetPlayer(p.charId), p.world, "look")
 	if err != nil {
 		var userErr *commands.UserError
 		if errors.As(err, &userErr) {
@@ -123,7 +123,7 @@ func (p *Player) Play(ctx context.Context) error {
 			}
 
 			// Execute the command
-			err = p.cmdHandler.Exec(ctx, p.world, p.charId, cmdName, args...)
+			err = p.cmdHandler.Exec(ctx, p.world.GetPlayer(p.charId), p.world, cmdName, args...)
 			if err != nil {
 				var userErr *commands.UserError
 				if errors.As(err, &userErr) {

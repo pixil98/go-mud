@@ -5,8 +5,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/pixil98/go-mud/internal/combat"
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // mockCombatManager is a test double for CombatManager.
@@ -14,14 +15,14 @@ type mockCombatManager struct {
 	startedErr   error // error to return from StartCombat
 	started      bool
 	startCount   int
-	lastAttacker combat.Combatant
-	lastTarget   combat.Combatant
+	lastAttacker shared.Actor
+	lastTarget   shared.Actor
 	threatAdded  bool
 	threatAmount int
 	threatCount  int
 }
 
-func (m *mockCombatManager) StartCombat(attacker, target combat.Combatant) error {
+func (m *mockCombatManager) StartCombat(attacker, target shared.Actor) error {
 	m.started = true
 	m.startCount++
 	m.lastAttacker = attacker
@@ -29,7 +30,7 @@ func (m *mockCombatManager) StartCombat(attacker, target combat.Combatant) error
 	return m.startedErr
 }
 
-func (m *mockCombatManager) AddThreat(_, _ combat.Combatant, amount int) {
+func (m *mockCombatManager) AddThreat(_, _ shared.Actor, amount int) {
 	m.threatAdded = true
 	m.threatCount++
 	m.threatAmount += amount
@@ -50,23 +51,24 @@ type mockAssistActor struct {
 	roomId         string
 }
 
-func (m *mockAssistActor) Id() string                      { return m.id }
-func (m *mockAssistActor) Name() string                    { return m.name }
-func (m *mockAssistActor) IsInCombat() bool                { return m.inCombat }
-func (m *mockAssistActor) SetInCombat(bool)                {}
-func (m *mockAssistActor) IsAlive() bool                   { return true }
-func (m *mockAssistActor) Resource(string) (int, int)      { return 0, 0 }
-func (m *mockAssistActor) AdjustResource(string, int)      {}
-func (m *mockAssistActor) ModifierValue(string) int        { return 0 }
-func (m *mockAssistActor) GrantArgs(string) []string       { return nil }
-func (m *mockAssistActor) CombatTargetId() string          { return m.combatTargetId }
-func (m *mockAssistActor) SetCombatTargetId(string)        {}
-func (m *mockAssistActor) AutoUses(string) []string        { return nil }
-func (m *mockAssistActor) Location() (string, string)      { return m.zoneId, m.roomId }
-func (m *mockAssistActor) Level() int                      { return 1 }
-func (m *mockAssistActor) OnDeath() []*game.ObjectInstance { return nil }
-func (m *mockAssistActor) GetFollowingId() string          { return m.followingId }
-func (m *mockAssistActor) HasGrant(key, _ string) bool     { return m.grants[key] }
+func (m *mockAssistActor) Id() string                         { return m.id }
+func (m *mockAssistActor) Name() string                       { return m.name }
+func (m *mockAssistActor) IsInCombat() bool                   { return m.inCombat }
+func (m *mockAssistActor) SetInCombat(bool)                   {}
+func (m *mockAssistActor) IsAlive() bool                      { return true }
+func (m *mockAssistActor) Resource(string) (int, int)         { return 0, 0 }
+func (m *mockAssistActor) AdjustResource(string, int)         {}
+func (m *mockAssistActor) SpendAP(int) bool                   { return true }
+func (m *mockAssistActor) ModifierValue(string) int           { return 0 }
+func (m *mockAssistActor) GrantArgs(string) []string          { return nil }
+func (m *mockAssistActor) CombatTargetId() string             { return m.combatTargetId }
+func (m *mockAssistActor) SetCombatTargetId(string)           {}
+func (m *mockAssistActor) Location() (string, string)         { return m.zoneId, m.roomId }
+func (m *mockAssistActor) Level() int                         { return 1 }
+func (m *mockAssistActor) OnDeath() []any                     { return nil }
+func (m *mockAssistActor) GetFollowingId() string             { return m.followingId }
+func (m *mockAssistActor) HasGrant(key, _ string) bool        { return m.grants[key] }
+func (m *mockAssistActor) AddTimedPerks(string, []assets.Perk, int) {}
 
 var _ AssistActor = (*mockAssistActor)(nil)
 var _ AssistedPlayer = (*mockAssistActor)(nil)
@@ -122,9 +124,9 @@ func TestAssistHandler(t *testing.T) {
 				}
 
 				cmdCtx := &CommandInput{
-					Char: actor,
+					Actor: actor,
 					Targets: map[string]*TargetRef{
-						"target": {Type: targetTypePlayer, Player: &PlayerRef{CharId: "bob", Name: "Bob"}},
+						"target": {Type: targetTypeActor, Actor: &ActorRef{CharId: "bob", Name: "Bob"}},
 					},
 					Config: make(map[string]string),
 				}
@@ -161,7 +163,7 @@ func TestAssistHandler(t *testing.T) {
 				}
 
 				cmdCtx := &CommandInput{
-					Char:    actor,
+					Actor:    actor,
 					Targets: map[string]*TargetRef{},
 					Config:  make(map[string]string),
 				}
@@ -180,7 +182,7 @@ func TestAssistHandler(t *testing.T) {
 
 				actor := &mockAssistActor{id: "alice", name: "Alice", inCombat: true}
 				cmdCtx := &CommandInput{
-					Char:    actor,
+					Actor:    actor,
 					Targets: map[string]*TargetRef{},
 					Config:  make(map[string]string),
 				}
@@ -197,7 +199,7 @@ func TestAssistHandler(t *testing.T) {
 
 				actor := &mockAssistActor{id: "alice", name: "Alice"}
 				cmdCtx := &CommandInput{
-					Char:    actor,
+					Actor:    actor,
 					Targets: map[string]*TargetRef{},
 					Config:  make(map[string]string),
 				}
@@ -215,9 +217,9 @@ func TestAssistHandler(t *testing.T) {
 
 				actor := &mockAssistActor{id: "alice", name: "Alice"}
 				cmdCtx := &CommandInput{
-					Char: actor,
+					Actor: actor,
 					Targets: map[string]*TargetRef{
-						"target": {Type: targetTypePlayer, Player: &PlayerRef{CharId: "bob", Name: "Bob"}},
+						"target": {Type: targetTypeActor, Actor: &ActorRef{CharId: "bob", Name: "Bob"}},
 					},
 					Config: make(map[string]string),
 				}
@@ -263,7 +265,7 @@ func TestAssistHandler(t *testing.T) {
 			if tt.expMsgAssisted != "" {
 				var assistedId string
 				if ref := cmdCtx.Targets["target"]; ref != nil {
-					assistedId = ref.Player.CharId
+					assistedId = ref.Actor.CharId
 				} else {
 					assistedId = actor.GetFollowingId()
 				}

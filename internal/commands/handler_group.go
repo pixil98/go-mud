@@ -176,7 +176,7 @@ func (f *GroupHandlerFactory) showGroup(char *game.CharacterInstance) error {
 
 func (f *GroupHandlerFactory) toggleMember(char *game.CharacterInstance, in *CommandInput, target *TargetRef) error {
 	actorId := char.Id()
-	targetId := target.Player.CharId
+	targetId := target.Actor.CharId
 
 	targetPs := f.players.GetPlayer(targetId)
 	if targetPs == nil {
@@ -190,7 +190,7 @@ func (f *GroupHandlerFactory) toggleMember(char *game.CharacterInstance, in *Com
 		if grp.LeaderId != actorId {
 			return NewUserError("Only the group leader can remove members.")
 		}
-		f.removeMember(char.Name(), actorId, targetId, target.Player.Name, targetPs, grp)
+		f.removeMember(char.Name(), actorId, targetId, target.Actor.Name, targetPs, grp)
 		if soloLeader(grp) {
 			f.disband(grp)
 		}
@@ -202,10 +202,10 @@ func (f *GroupHandlerFactory) toggleMember(char *game.CharacterInstance, in *Com
 		return NewUserError("You are already in your own group.")
 	}
 	if targetPs.GetFollowingId() != actorId {
-		return NewUserError(fmt.Sprintf("%s is not following you.", target.Player.Name))
+		return NewUserError(fmt.Sprintf("%s is not following you.", target.Actor.Name))
 	}
 	if targetPs.GetGroup() != nil {
-		return NewUserError(fmt.Sprintf("%s is already in a group.", target.Player.Name))
+		return NewUserError(fmt.Sprintf("%s is already in a group.", target.Actor.Name))
 	}
 	if grp != nil && grp.LeaderId != actorId {
 		return NewUserError("Only the group leader can add members.")
@@ -219,7 +219,7 @@ func (f *GroupHandlerFactory) toggleMember(char *game.CharacterInstance, in *Com
 	grp.AddMember(targetId, targetPs)
 	targetPs.SetGroup(grp)
 
-	joinMsg := fmt.Sprintf("%s has joined the group.", target.Player.Name)
+	joinMsg := fmt.Sprintf("%s has joined the group.", target.Actor.Name)
 	if err := f.pub.Publish(grp, []string{targetId}, []byte(joinMsg)); err != nil {
 		slog.Warn("failed to notify group of new member", "error", err)
 	}
@@ -309,7 +309,7 @@ func (f *UngroupHandlerFactory) disbandOrLeave(char *game.CharacterInstance) err
 
 func (f *UngroupHandlerFactory) removeTarget(char *game.CharacterInstance, in *CommandInput, target *TargetRef) error {
 	actorId := char.Id()
-	targetId := target.Player.CharId
+	targetId := target.Actor.CharId
 	grp := char.GetGroup()
 
 	if grp == nil {
@@ -326,11 +326,11 @@ func (f *UngroupHandlerFactory) removeTarget(char *game.CharacterInstance, in *C
 	}
 
 	if !grp.HasMember(targetId) {
-		return NewUserError(fmt.Sprintf("%s is not in your group.", target.Player.Name))
+		return NewUserError(fmt.Sprintf("%s is not in your group.", target.Actor.Name))
 	}
 
 	targetPs := f.players.GetPlayer(targetId)
-	f.removeMember(char.Name(), actorId, targetId, target.Player.Name, targetPs, grp)
+	f.removeMember(char.Name(), actorId, targetId, target.Actor.Name, targetPs, grp)
 
 	if soloLeader(grp) {
 		f.disband(grp)

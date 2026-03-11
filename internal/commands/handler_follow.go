@@ -6,11 +6,12 @@ import (
 	"log/slog"
 
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // FollowActor provides the character state needed by the follow handler.
 type FollowActor interface {
-	CommandActor
+	shared.Actor
 	GetFollowingId() string
 	SetFollowingId(string)
 }
@@ -85,7 +86,7 @@ func (f *FollowHandlerFactory) handle(ctx context.Context, char FollowActor, in 
 
 func (f *FollowHandlerFactory) follow(char FollowActor, target *TargetRef) error {
 	actorId := char.Id()
-	leaderId := target.Player.CharId
+	leaderId := target.Actor.CharId
 
 	// Can't follow yourself.
 	if leaderId == actorId {
@@ -94,7 +95,7 @@ func (f *FollowHandlerFactory) follow(char FollowActor, target *TargetRef) error
 
 	// Already following this person.
 	if char.GetFollowingId() == leaderId {
-		return NewUserError(fmt.Sprintf("You are already following %s.", target.Player.Name))
+		return NewUserError(fmt.Sprintf("You are already following %s.", target.Actor.Name))
 	}
 
 	// Prevent circular follows.
@@ -111,7 +112,7 @@ func (f *FollowHandlerFactory) follow(char FollowActor, target *TargetRef) error
 
 	// Notify both parties.
 	if err := f.pub.Publish(game.SinglePlayer(actorId), nil,
-		[]byte(fmt.Sprintf("You now follow %s.", target.Player.Name))); err != nil {
+		[]byte(fmt.Sprintf("You now follow %s.", target.Actor.Name))); err != nil {
 		slog.Warn("failed to notify follower", "error", err)
 	}
 	if err := f.pub.Publish(game.SinglePlayer(leaderId), nil,

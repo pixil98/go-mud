@@ -10,20 +10,13 @@ import (
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/shared"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
-// CommandActor is the minimal interface for the character executing a command.
-// Handlers that need more define their own interface extending CommandActor
-// and use Adapt to get compile-time type safety.
-type CommandActor interface {
-	Id() string
-	Name() string
-}
-
 // CommandInput is what handlers receive after config processing.
 type CommandInput struct {
-	Char    CommandActor          // Active character
+	Actor   shared.Actor          // The actor executing the command
 	Targets map[string]*TargetRef // Resolved targets by name
 	Config  map[string]string     // Expanded config values (all templates resolved)
 }
@@ -33,15 +26,15 @@ type CommandFunc func(ctx context.Context, in *CommandInput) error
 
 // HandlerFunc is a typed command handler that receives a handler-specific
 // actor interface. Use Adapt to wrap it into a CommandFunc for dispatch.
-type HandlerFunc[A CommandActor] func(ctx context.Context, char A, in *CommandInput) error
+type HandlerFunc[A shared.Actor] func(ctx context.Context, actor A, in *CommandInput) error
 
 // Adapt wraps a typed HandlerFunc into an untyped CommandFunc for the dispatch
 // map. The type assertion is safe: each handler file includes a compile-time
 // assertion (var _ XxxActor = (*game.CharacterInstance)(nil)) guaranteeing the
 // concrete type satisfies A.
-func Adapt[A CommandActor](fn HandlerFunc[A]) CommandFunc {
+func Adapt[A shared.Actor](fn HandlerFunc[A]) CommandFunc {
 	return func(ctx context.Context, in *CommandInput) error {
-		return fn(ctx, in.Char.(A), in)
+		return fn(ctx, in.Actor.(A), in)
 	}
 }
 
@@ -219,16 +212,22 @@ func (h *Handler) registerAbility(id string, ability *assets.Ability, world Worl
 	return h.compile(id, &cmd)
 }
 
-// ExecAbility executes a compiled ability directly, bypassing the command
-// dispatch path. Returns an AbilityResult with messages for the caller to
-// deliver. Used by the combat manager for auto-use and backs the normal
-// ability command handler.
-func (h *Handler) ExecAbility(abilityId string, actor AbilityActor, targets map[string]*TargetRef, opts ExecAbilityOpts) (*AbilityResult, error) {
+// ExecCombatAbility executes an ability during the combat tick. Builds the
+// target map from the provided actors, then delegates to the compiled ability.
+// Returns the room message for the caller to broadcast.
+func (h *Handler) ExecCombatAbility(abilityId string, actor, target shared.Actor) (string, error) {
 	ca, ok := h.abilities[abilityId]
 	if !ok {
-		return nil, fmt.Errorf("unknown ability %q", abilityId)
+		return "", fmt.Errorf("unknown ability %q", abilityId)
 	}
-	return ca.exec(actor, targets, opts)
+	targets := map[string]*TargetRef{
+		"target": {Type: targetTypeActor, Actor: actorRefFromActor(target)},
+	}
+	result, err := ca.exec(actor, targets, ExecAbilityOpts{SkipAP: true})
+	if err != nil {
+		return "", err
+	}
+	return result.RoomMsg, nil
 }
 
 // RegisterFactory registers a handler factory by name.
@@ -407,7 +406,7 @@ func (h *Handler) resolve(input string) (*compiledCommand, error) {
 }
 
 // Exec executes a command with the given arguments.
-func (h *Handler) Exec(ctx context.Context, world *game.WorldState, charId string, cmdName string, rawArgs ...string) error {
+func (h *Handler) Exec(ctx context.Context, actor ScopeActor, world *game.WorldState, cmdName string, rawArgs ...string) error {
 	compiled, err := h.resolve(cmdName)
 	if err != nil {
 		return err
@@ -419,23 +418,21 @@ func (h *Handler) Exec(ctx context.Context, world *game.WorldState, charId strin
 		return err
 	}
 
-	char := world.GetPlayer(charId)
-
 	// Resolve targets from targets section
 	resolver := NewTargetResolver(NewWorldScopes(world))
-	targets, err := resolver.ResolveSpecs(compiled.cmd.Targets, inputMap, char)
+	targets, err := resolver.ResolveSpecs(compiled.cmd.Targets, inputMap, actor)
 	if err != nil {
 		return err
 	}
 
 	// Expand config templates
-	expandedConfig, err := h.expandConfig(compiled.cmd.Config, char, targets, inputMap)
+	expandedConfig, err := h.expandConfig(compiled.cmd.Config, actor, targets, inputMap)
 	if err != nil {
 		return err
 	}
 
 	return compiled.cmdFunc(ctx, &CommandInput{
-		Char:    char,
+		Actor:   actor,
 		Targets: targets,
 		Config:  expandedConfig,
 	})
@@ -524,21 +521,22 @@ func parseValue(inputType string, raw string) (any, error) {
 }
 
 // templateContext holds data for template expansion.
+// Actor exposes Name() and other shared.Actor methods to templates via {{ .Actor.Name }}.
 type templateContext struct {
-	Actor   *assets.Character
+	Actor   shared.Actor
 	Targets map[string]*TargetRef
 	Inputs  map[string]any
 	Color   *display.Palette
 }
 
 // expandConfig expands all template strings in config and returns map[string]string.
-func (h *Handler) expandConfig(config map[string]string, char *game.CharacterInstance, targets map[string]*TargetRef, inputs map[string]any) (map[string]string, error) {
+func (h *Handler) expandConfig(config map[string]string, actor shared.Actor, targets map[string]*TargetRef, inputs map[string]any) (map[string]string, error) {
 	if config == nil {
 		return make(map[string]string), nil
 	}
 
 	tmplCtx := &templateContext{
-		Actor:   char.Character.Get(),
+		Actor:   actor,
 		Targets: targets,
 		Inputs:  inputs,
 		Color:   display.Color,

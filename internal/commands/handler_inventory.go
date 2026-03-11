@@ -6,11 +6,12 @@ import (
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // InventoryActor provides the character state needed by the inventory handler.
 type InventoryActor interface {
-	CommandActor
+	shared.Actor
 	GetInventory() *game.Inventory
 }
 

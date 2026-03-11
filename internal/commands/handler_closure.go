@@ -7,11 +7,12 @@ import (
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // ClosureActor provides the character state needed by the closure handler.
 type ClosureActor interface {
-	CommandActor
+	shared.Actor
 	Location() (zoneId, roomId string)
 	GetInventory() *game.Inventory
 }

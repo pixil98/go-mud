@@ -3,7 +3,6 @@ package combat
 import "github.com/pixil98/go-mud/internal/assets"
 
 // PerkReader can look up modifier perk values by key.
-// Satisfied by combat.Combatant, game.CharacterInstance, and game.MobileInstance.
 type PerkReader interface {
 	ModifierValue(key string) int
 }

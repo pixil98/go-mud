@@ -1,0 +1,16 @@
+{
+    "version": 1,
+    "id": "testing-ring",
+    "spec": {
+        "aliases": ["ring", "fire", "testing"],
+        "short_desc": "a ring of smoldering flame",
+        "long_desc": "A ring of dark iron, its band etched with tiny flames, lies here.",
+        "detailed_desc": "A ring of dark iron, warm to the touch. Tiny flames dance along the etched band, never quite dying out. The air around it shimmers with heat.",
+        "flags": ["wearable"],
+        "wear_slots": ["finger"],
+        "perks": [
+            { "type": "grant", "key": "auto_use", "arg": "fireball:3" },
+            { "type": "modifier", "key": "core.damage.fire.pct", "value": 10 }
+        ]
+    }
+}
