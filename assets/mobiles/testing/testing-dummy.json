@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "testing-dummy",
+    "spec": {
+        "aliases": ["dummy", "training", "golem"],
+        "short_desc": "a training dummy",
+        "long_desc": "A straw-stuffed training dummy stands here, crackling with faint sparks.",
+        "detailed_desc": "A crude figure made of bundled straw and old sackcloth, lashed to a wooden frame. Someone has enchanted it — its button eyes glow a dull orange, and wisps of smoke curl from its fingertips. It sways slightly, as if eager to fight.",
+        "level": 5,
+        "perks": [
+            { "type": "modifier", "key": "core.resource.hp.max", "value": 9999 },
+            { "type": "modifier", "key": "core.resource.mana.max", "value": 9999 },
+            { "type": "grant", "key": "attack", "arg": "1d4" },
+            { "type": "grant", "key": "auto_use", "arg": "attack:1" },
+            { "type": "grant", "key": "auto_use", "arg": "fireball:3" }
+        ]
+    }
+}

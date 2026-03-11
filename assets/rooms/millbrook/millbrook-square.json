@@ -9,7 +9,8 @@
             "north": {"room_id": "millbrook-clocktower-plaza"},
             "east":  {"room_id": "millbrook-market-road"},
             "south": {"room_id": "millbrook-south-road"},
-            "west":  {"room_id": "millbrook-residential"}
+            "west":  {"room_id": "millbrook-residential"},
+            "up":    {"zone_id": "testing", "room_id": "testing-arena"}
         },
         "mobile_spawns": ["millbrook-guard"],
         "object_spawns": [{"object_id": "millbrook-fountain"}]

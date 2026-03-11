@@ -3,3 +3,5 @@
 - Update docs (combat.md, world-design.md) for auto_use replacing autoattack
 - A number of command handlers have their own interfaces that embed shared.Actor. They shouldn't unless they actually need a big interface.
 - Remove StatSections from CharacterInstance and format everything from Actor and perks
+- auto_use doesn't respect the number, it always does it every round
+- auto_use attack doesn't show the proper hit message.

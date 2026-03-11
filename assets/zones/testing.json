@@ -1,0 +1,8 @@
+{
+    "version": 1,
+    "id": "testing",
+    "spec": {
+        "reset_mode": "empty",
+        "lifespan": "30m"
+    }
+}
