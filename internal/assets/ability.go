@@ -2,6 +2,7 @@ package assets
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/pixil98/go-errors"
 )
@@ -40,4 +41,29 @@ func (a *Ability) Validate() error {
 	}
 
 	return el.Err()
+}
+
+// Help returns a formatted help string including ability-specific cost info.
+func (a *Ability) Help(name string) string {
+	base := a.Command.Help(name)
+
+	var costs []string
+	if cost := a.Command.Config["ap_cost"]; cost != "" && cost != "0" {
+		costs = append(costs, fmt.Sprintf("%s AP", cost))
+	}
+	if resource := a.Command.Config["resource"]; resource != "" {
+		if cost := a.Command.Config["resource_cost"]; cost != "" {
+			costs = append(costs, fmt.Sprintf("%s %s", cost, resource))
+		}
+	}
+	if len(costs) > 0 {
+		base += "\nCost: " + strings.Join(costs, ", ")
+	}
+
+	return base
+}
+
+// HelpSummary returns the category and description for help listing.
+func (a *Ability) HelpSummary() (string, string) {
+	return a.Command.HelpSummary()
 }

@@ -17,6 +17,7 @@ type CombatManager interface {
 }
 
 // AssistActor provides the character state needed by the assist handler.
+// Embeds shared.Actor because the actor is passed to StartCombat.
 type AssistActor interface {
 	shared.Actor
 	GetFollowingId() string

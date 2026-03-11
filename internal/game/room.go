@@ -219,6 +219,7 @@ func (ri *RoomInstance) FindExit(name string) (string, *assets.Exit) {
 }
 
 // FindMob searches room mobs for one whose definition matches the given name.
+// Falls back to matching by instance ID if no name match is found.
 func (ri *RoomInstance) FindMob(name string) *MobileInstance {
 	ri.mu.RLock()
 	defer ri.mu.RUnlock()
@@ -228,7 +229,8 @@ func (ri *RoomInstance) FindMob(name string) *MobileInstance {
 			return mi
 		}
 	}
-	return nil
+	// Fall back to instance ID lookup (used by combat target defaulting).
+	return ri.mobiles[name]
 }
 
 // GetMob returns the MobileInstance with the given instanceId, or nil if not found.

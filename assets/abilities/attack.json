@@ -6,17 +6,18 @@
             {"type": "attack"}
         ],
         "command": {
+            "category": "combat",
             "priority": 5,
             "description": "Attack a target.",
-            "aliases": ["kill"],
+            "aliases": ["kill", "hit"],
             "config": {
                 "ap_cost": "1",
-                "message_actor": "You attack {{ .Targets.target.Name }}!",
-                "message_target": "{{ .Actor.Name }} attacks you!",
-                "message_room": "{{ .Actor.Name }} attacks {{ .Targets.target.Name }}!"
+                "message_actor": "{{ if not .Actor.IsInCombat }}You attack {{ .Targets.target.Name }}!{{ end }}",
+                "message_target": "{{ if not .Actor.IsInCombat }}{{ .Actor.Name }} attacks you!{{ end }}",
+                "message_room": "{{ if not .Actor.IsInCombat }}{{ .Actor.Name }} attacks {{ .Targets.target.Name }}!{{ end }}"
             },
             "inputs": [
-                {"name": "target", "type": "string", "required": true, "missing": "Attack whom?"}
+                {"name": "target", "type": "string", "required": false}
             ],
             "targets": [
                 {
@@ -24,6 +25,7 @@
                     "types": ["mobile"],
                     "scopes": ["room"],
                     "input": "target",
+                    "default": "combat_target",
                     "not_found": "You don't see '{{ .Inputs.target }}' here."
                 }
             ]

@@ -6,6 +6,7 @@
             {"type": "damage", "config": {"damage": "15"}}
         ],
         "command": {
+            "category": "combat",
             "priority": 3,
             "description": "Bash a target with your shield.",
             "config": {

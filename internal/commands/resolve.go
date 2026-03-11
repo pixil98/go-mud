@@ -324,6 +324,9 @@ func (r *TargetResolver) ResolveSpecs(specs []assets.TargetSpec, inputs map[stri
 	for _, spec := range specs {
 		// Get the input value; inputs were already parsed and validated.
 		name, _ := inputs[spec.Input].(string)
+		if name == "" && spec.Default == assets.DefaultCombatTarget {
+			name = session.CombatTargetId()
+		}
 		if name == "" {
 			if spec.Optional {
 				targets[spec.Name] = nil

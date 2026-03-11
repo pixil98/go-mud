@@ -221,81 +221,6 @@ func TestManager_AddThreat(t *testing.T) {
 	}
 }
 
-// --- PerformAttack tests ---
-
-func TestPerformAttack(t *testing.T) {
-	tests := map[string]struct {
-		attackMod   int
-		grants      []string // attack grant args
-		targetHP    int
-		wantHit     bool
-		wantHPDrop  bool // target HP decreased
-		wantResults int  // number of AttackResult entries
-	}{
-		"guaranteed hit": {
-			attackMod:   100,
-			grants:      []string{"1d4"},
-			targetHP:    100,
-			wantHit:     true,
-			wantHPDrop:  true,
-			wantResults: 1,
-		},
-		"guaranteed miss": {
-			attackMod:   -100,
-			grants:      []string{"1d4"},
-			targetHP:    100,
-			wantHit:     false,
-			wantHPDrop:  false,
-			wantResults: 1,
-		},
-		"two attack grants: two results": {
-			attackMod:   100,
-			grants:      []string{"1d4", "1d4"},
-			targetHP:    1000,
-			wantHit:     true,
-			wantHPDrop:  true,
-			wantResults: 2,
-		},
-		"no grants: fallback 1d4": {
-			attackMod:   100,
-			grants:      nil,
-			targetHP:    100,
-			wantHit:     true,
-			wantHPDrop:  true,
-			wantResults: 1,
-		},
-	}
-
-	for name, tc := range tests {
-		t.Run(name, func(t *testing.T) {
-			attacker := newMC("a")
-			attacker.modifiers[assets.PerkKeyCombatAttackMod] = tc.attackMod
-			attacker.grants[assets.PerkGrantAttack] = tc.grants
-
-			target := newMC("b")
-			target.hp = tc.targetHP
-			target.hpMax = tc.targetHP
-
-			results := PerformAttack(attacker, target)
-
-			if len(results) != tc.wantResults {
-				t.Errorf("results count = %d, want %d", len(results), tc.wantResults)
-			}
-			for i, r := range results {
-				if r.Hit != tc.wantHit {
-					t.Errorf("results[%d].Hit = %v, want %v", i, r.Hit, tc.wantHit)
-				}
-			}
-			if tc.wantHPDrop && target.hp >= tc.targetHP {
-				t.Errorf("target HP should have dropped: was %d, now %d", tc.targetHP, target.hp)
-			}
-			if !tc.wantHPDrop && target.hp != tc.targetHP {
-				t.Errorf("target HP should be unchanged: was %d, now %d", tc.targetHP, target.hp)
-			}
-		})
-	}
-}
-
 // --- Tick tests ---
 
 type mockAbilityHandler struct {
@@ -377,12 +302,107 @@ func TestManager_Tick_DeathCleanup(t *testing.T) {
 	}
 }
 
+func TestManager_Tick_AutoUseCooldown(t *testing.T) {
+	m, _ := newTestManager()
+	ah := &mockAbilityHandler{}
+	m.SetAbilityHandler(ah)
+
+	a := newMC("a")
+	a.grants[assets.PerkGrantAutoUse] = []string{"fireball:3"}
+	b := newMC("b")
+
+	if err := m.StartCombat(a, b); err != nil {
+		t.Fatalf("StartCombat: %v", err)
+	}
+
+	// Tick 1: should fire (cooldown starts at 0).
+	if err := m.Tick(context.Background()); err != nil {
+		t.Fatalf("Tick 1: %v", err)
+	}
+	if len(ah.calls) != 1 {
+		t.Fatalf("after tick 1: calls = %d, want 1", len(ah.calls))
+	}
+
+	// Ticks 2 and 3: cooldown, should NOT fire.
+	for tick := 2; tick <= 3; tick++ {
+		if err := m.Tick(context.Background()); err != nil {
+			t.Fatalf("Tick %d: %v", tick, err)
+		}
+		if len(ah.calls) != 1 {
+			t.Fatalf("after tick %d: calls = %d, want 1", tick, len(ah.calls))
+		}
+	}
+
+	// Tick 4: cooldown elapsed, should fire again.
+	if err := m.Tick(context.Background()); err != nil {
+		t.Fatalf("Tick 4: %v", err)
+	}
+	if len(ah.calls) != 2 {
+		t.Fatalf("after tick 4: calls = %d, want 2", len(ah.calls))
+	}
+}
+
+func TestManager_Tick_DuplicateAutoUseGrants(t *testing.T) {
+	m, _ := newTestManager()
+	ah := &mockAbilityHandler{}
+	m.SetAbilityHandler(ah)
+
+	a := newMC("a")
+	a.grants[assets.PerkGrantAutoUse] = []string{"attack", "attack"}
+	b := newMC("b")
+
+	if err := m.StartCombat(a, b); err != nil {
+		t.Fatalf("StartCombat: %v", err)
+	}
+
+	if err := m.Tick(context.Background()); err != nil {
+		t.Fatalf("Tick: %v", err)
+	}
+
+	if len(ah.calls) != 2 {
+		t.Fatalf("calls = %d, want 2 (one per duplicate grant)", len(ah.calls))
+	}
+}
+
+func TestManager_Tick_AddDuplicateGrantMidCombat(t *testing.T) {
+	m, _ := newTestManager()
+	ah := &mockAbilityHandler{}
+	m.SetAbilityHandler(ah)
+
+	a := newMC("a")
+	a.grants[assets.PerkGrantAutoUse] = []string{"attack"}
+	b := newMC("b")
+
+	if err := m.StartCombat(a, b); err != nil {
+		t.Fatalf("StartCombat: %v", err)
+	}
+
+	// Tick 1: one grant, should fire once.
+	if err := m.Tick(context.Background()); err != nil {
+		t.Fatalf("Tick 1: %v", err)
+	}
+	if len(ah.calls) != 1 {
+		t.Fatalf("after tick 1: calls = %d, want 1", len(ah.calls))
+	}
+
+	// Equip second ring mid-combat — adds a duplicate grant.
+	a.grants[assets.PerkGrantAutoUse] = []string{"attack", "attack"}
+
+	// Tick 2: both grants should fire.
+	if err := m.Tick(context.Background()); err != nil {
+		t.Fatalf("Tick 2: %v", err)
+	}
+	if len(ah.calls) != 3 {
+		t.Fatalf("after tick 2: calls = %d, want 3", len(ah.calls))
+	}
+}
+
 func TestManager_Tick_EmptyThreatCleanup(t *testing.T) {
 	m, _ := newTestManager()
 	a := newMC("a")
 
 	m.mu.Lock()
-	m.combatants["a"] = &combatantState{c: a, threat: make(map[string]int)}
+	m.combatants["a"] = &combatantState{c: a, threat: make(map[string]int), cooldown: make(map[string][]int)}
 	m.mu.Unlock()
 
 	if err := m.Tick(context.Background()); err != nil {

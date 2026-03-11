@@ -84,19 +84,21 @@ char.SpendAP(ability.APCost)
 
 AP is the universal rate limiter for abilities. Cooldown (`cooldown` on abilities) is not enforced in this implementation.
 
-### Auto-Attack
+### Auto-Use
 
-Auto-attack and AP are **independent systems**. The combat tick fires autoattack based purely on perk presence — it does not check or touch AP at all.
+Auto-use and AP are **independent systems**. The combat tick fires auto-use abilities based purely on perk presence — it does not check or touch AP at all.
 
-`PerkGrantAutoAttack = "autoattack"` — a grant perk in the melee tree (no arg). Every combat tick, any combatant with this perk attacks their target. Attack dice come from `GrantArgs("attack")` grants (weapons, class, etc.), defaulting to 1d4 if none.
+`PerkGrantAutoUse = "auto_use"` — a grant perk whose arg specifies which ability to fire and an optional cooldown. Arg format: `"ability_id"` or `"ability_id:cooldown_ticks"` (e.g. `"attack"`, `"attack:1"`, `"fireball:3"`). Every combat tick, any combatant with this perk executes the specified ability against their current target, subject to cooldown.
 
-This means a fighter/mage hybrid who invests in both trees gets both their spells (limited by AP) and their autoattack (always fires). This is intentional — they paid for both trees.
+Cooldown works per-ability: `"fireball:3"` means fire fireball on the first tick, then wait 3 ticks before firing again. Omitting the cooldown (or `:1`) fires every tick.
 
-A mage who hasn't taken the autoattack perk will never punch automatically, regardless of AP remaining.
+A combatant can have multiple `auto_use` grants. A fighter might have `"attack"` (fires every tick) while a hybrid might also have `"fireball:3"` (fires every 3rd tick). Each grant tracks its cooldown independently.
 
-### Autocast (Future — Not In This Design)
+This means a fighter/mage hybrid who invests in both trees gets both their spells and their auto-attacks. This is intentional — they paid for both trees.
 
-Autocast for casters raises balancing questions (resource costs, spell selection) that need more thought. For now, casters must actively use abilities each tick.
+A mage who hasn't taken any melee auto-use perk will never punch automatically, regardless of AP remaining. But they could have `"fireball:2"` auto-firing every other tick.
+
+**Resource costs**: Auto-use executes the ability normally, including resource costs. If the ability costs mana and the combatant is out, it silently fails. When designing auto-use grants, be aware of this — `attack` has no resource cost so it always fires, but pointing auto-use at a mana-spending ability will drain the pool. If needed, create a dedicated zero-cost variant of the ability for auto-use (e.g. a separate `fireball_auto` that skips the mana cost).
 
 ## The attack/kill Command
 
@@ -104,12 +106,10 @@ Autocast for casters raises balancing questions (resource costs, spell selection
 
 When typed:
 1. `executeAbility` checks and spends 1 AP
-2. The `attackEffect` handler calls `StartCombat` (idempotent) and then `QueueAttack`
-3. On the next combat tick, the queued attack fires alongside any autoattacks — all in one bundle
+2. The `attackEffect` handler rolls to hit, deals damage, and produces hit/miss messages
+3. `StartCombat` is called (idempotent) as part of the damage effect
 
-Queuing the attack (rather than firing immediately) keeps messages cohesive: the player's attack result appears with the rest of the round's combat output, not interleaved with prompts.
-
-Mages can type `attack` to get a queued 1d4 punch. Fighters with the autoattack perk don't need to type it every tick.
+Mages can type `attack` to get a 1d4 punch. Fighters with `auto_use: attack` don't need to type it every tick — the combat tick fires it automatically.
 
 ## Target Selection
 
@@ -128,16 +128,14 @@ Accumulate room messages (map of room key → []string)
 
 For each combatant in combat:
     if !alive or threat table empty: skip
-    wantsAutoAttack = len(GrantArgs("autoattack")) > 0
-    if !wantsAutoAttack and !attackPending: skip
-    attackPending = false  // consume the flag
-
     target = resolveTarget(combatant)
     if target == nil: skip
 
-    for each GrantArgs("attack") expr (or "1d4" if none):
-        resolve melee attack (roll vs AC, damage, absorb)
-        apply damage to target, add threat, append to room messages
+    for each GrantArgs("auto_use") arg:
+        parse ability_id and cooldown from arg (e.g. "attack:1", "fireball:3")
+        if cooldown not expired: decrement and skip
+        reset cooldown counter
+        execute ability against target via ability handler
 
 Handle deaths:
     for each dead combatant:
@@ -188,7 +186,7 @@ type CombatManager interface {
 ```
 
 - `damageEffect` calls `StartCombat` then `AddThreat` after dealing damage — any damage initiates combat automatically.
-- `attackEffect` calls `StartCombat` then `QueueAttack` — queued attack fires on the next tick.
+- `attackEffect` rolls to hit and deals damage directly — no queuing.
 - A future `threatEffect` handler could add/reduce threat for taunt/fade abilities.
 - AP is handled entirely in `executeAbility` on `CharacterInstance`; the combat manager never touches it.
 
@@ -235,9 +233,9 @@ type Manager struct {
 }
 
 type combatantState struct {
-    c             Combatant
-    threat        map[string]int  // enemy ID → threat amount
-    attackPending bool            // set by QueueAttack; fires once next Tick
+    c        Combatant
+    threat   map[string]int  // enemy ID → threat amount
+    cooldown map[string]int  // auto_use ability ID → ticks until next use
 }
 ```
 
@@ -287,4 +285,4 @@ No passive regen during combat. The world tick already gates regen on `!IsInComb
 | `PerkKeyCombatThreatMod` | `"core.combat.threat_mod"` | modifier |
 | `PerkKeyCombatAC` | `"core.combat.ac"` | modifier |
 | `PerkGrantAttack` | `"attack"` | grant (arg: dice expression e.g. `"2d6"`) |
-| `PerkGrantAutoAttack` | `"autoattack"` | grant (arg: `""`, boolean presence check) |
+| `PerkGrantAutoUse` | `"auto_use"` | grant (arg: `"ability_id"` or `"ability_id:cooldown_ticks"`) |

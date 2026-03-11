@@ -3,6 +3,7 @@ package assets
 import (
 	"fmt"
 	"slices"
+	"strings"
 	"text/template"
 
 	"github.com/Masterminds/sprig/v3"
@@ -20,6 +21,11 @@ const (
 	TargetMobile = "mobile"
 	TargetObject = "object"
 	TargetExit   = "exit"
+)
+
+// Default target constants.
+const (
+	DefaultCombatTarget = "combat_target" // Resolve to the actor's current combat target
 )
 
 // Scope constants.
@@ -58,6 +64,7 @@ type TargetSpec struct {
 	Scopes      []string `json:"scopes,omitempty"`       // Resolution scopes: room, world, zone, inventory, equipment, contents, group
 	Input       string   `json:"input"`                  // Which input provides the name to resolve
 	Optional    bool     `json:"optional,omitempty"`     // If true, missing input -> nil (no error)
+	Default     string   `json:"default,omitempty"`      // Default value when input is empty; "combat_target" resolves to actor's combat target
 	ScopeTarget string   `json:"scope_target,omitempty"` // Resolve inside this target's contents when present; falls back to normal scopes
 	NotFound    string   `json:"not_found,omitempty"`    // Custom template for "not found" error; supports {{ .Input }}
 }
@@ -72,6 +79,40 @@ type Command struct {
 	Config      map[string]string `json:"config"`                // Config passed to handler, may contain templates
 	Targets     []TargetSpec      `json:"targets"`               // Targets to resolve at runtime
 	Inputs      []InputSpec       `json:"inputs"`                // User input parameters
+}
+
+// Help returns a formatted help string for display to a player.
+func (c *Command) Help(name string) string {
+	var lines []string
+
+	lines = append(lines, fmt.Sprintf("%s - %s", strings.ToUpper(name), c.Description))
+
+	if len(c.Aliases) > 0 {
+		lower := make([]string, len(c.Aliases))
+		for i, a := range c.Aliases {
+			lower[i] = strings.ToLower(a)
+		}
+		lines = append(lines, fmt.Sprintf("Aliases: %s", strings.Join(lower, ", ")))
+	}
+
+	if len(c.Inputs) > 0 {
+		parts := []string{name}
+		for _, input := range c.Inputs {
+			if input.Required {
+				parts = append(parts, fmt.Sprintf("<%s>", input.Name))
+			} else {
+				parts = append(parts, fmt.Sprintf("[%s]", input.Name))
+			}
+		}
+		lines = append(lines, fmt.Sprintf("Usage: %s", strings.Join(parts, " ")))
+	}
+
+	return strings.Join(lines, "\n")
+}
+
+// HelpSummary returns the category and description for help listing.
+func (c *Command) HelpSummary() (string, string) {
+	return c.Category, c.Description
 }
 
 // Validate checks that the handler is set and that inputs and targets are valid.

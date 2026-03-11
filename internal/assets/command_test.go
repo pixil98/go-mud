@@ -5,6 +5,53 @@ import (
 	"testing"
 )
 
+func TestCommand_Help(t *testing.T) {
+	tests := map[string]struct {
+		cmd      Command
+		name     string
+		contains []string
+	}{
+		"basic": {
+			cmd:  Command{Description: "test description"},
+			name: "test-cmd",
+			contains: []string{
+				"TEST-CMD - test description",
+			},
+		},
+		"with aliases": {
+			cmd:  Command{Description: "test description", Aliases: []string{"a", "b"}},
+			name: "test-cmd",
+			contains: []string{
+				"Aliases: a, b",
+			},
+		},
+		"with inputs": {
+			cmd: Command{
+				Description: "test description",
+				Inputs: []InputSpec{
+					{Name: "target", Type: InputTypeString, Required: true},
+					{Name: "amount", Type: InputTypeNumber},
+				},
+			},
+			name: "test-cmd",
+			contains: []string{
+				"Usage: test-cmd <target> [amount]",
+			},
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			got := tc.cmd.Help(tc.name)
+			for _, want := range tc.contains {
+				if !strings.Contains(got, want) {
+					t.Errorf("Help() = %q, want to contain %q", got, want)
+				}
+			}
+		})
+	}
+}
+
 func TestCommand_Validate(t *testing.T) {
 	tests := map[string]struct {
 		cmd    Command

@@ -14,7 +14,9 @@ import (
 )
 
 // EffectFunc is a compiled effect closure with config baked in at registration time.
-type EffectFunc func(actor shared.Actor, targets map[string]*TargetRef) error
+// Effects may optionally set fields on the AbilityResult to override the
+// ability's template-based messages (e.g. attackEffect builds hit/miss lines).
+type EffectFunc func(actor shared.Actor, targets map[string]*TargetRef, result *AbilityResult) error
 
 // EffectHandler defines an ability effect (damage, healing, buff, etc.).
 // ValidateConfig checks config at registration time. Create returns a closure
@@ -134,14 +136,7 @@ func (ca *compiledAbility) exec(actor shared.Actor, targets map[string]*TargetRe
 		actor.AdjustResource(ca.resource, -ca.resourceCost)
 	}
 
-	// Run effects in order — if any fails, don't build messages.
-	for _, effect := range ca.effectFuncs {
-		if err := effect(actor, targets); err != nil {
-			return nil, err
-		}
-	}
-
-	// Expand message templates.
+	// Expand message templates first so effects can append detail lines.
 	result := &AbilityResult{}
 	tmplCtx := &templateContext{
 		Actor:   actor,
@@ -154,14 +149,18 @@ func (ca *compiledAbility) exec(actor shared.Actor, targets map[string]*TargetRe
 		if err != nil {
 			return nil, fmt.Errorf("expanding actor message: %w", err)
 		}
-		result.ActorMsg = msg
+		if msg != "" {
+			result.ActorLines = append(result.ActorLines, msg)
+		}
 	}
 	if ca.msgTarget != "" {
 		msg, err := ExpandTemplate(ca.msgTarget, tmplCtx)
 		if err != nil {
 			return nil, fmt.Errorf("expanding target message: %w", err)
 		}
-		result.TargetMsg = msg
+		if msg != "" {
+			result.TargetLines = append(result.TargetLines, msg)
+		}
 		for _, ref := range targets {
 			if ref != nil && ref.Actor != nil && ref.Actor.CharId != "" {
 				result.TargetId = ref.Actor.CharId
@@ -174,7 +173,16 @@ func (ca *compiledAbility) exec(actor shared.Actor, targets map[string]*TargetRe
 		if err != nil {
 			return nil, fmt.Errorf("expanding room message: %w", err)
 		}
-		result.RoomMsg = msg
+		if msg != "" {
+			result.RoomLines = append(result.RoomLines, msg)
+		}
+	}
+
+	// Run effects after template expansion — effects may append detail lines.
+	for _, effect := range ca.effectFuncs {
+		if err := effect(actor, targets, result); err != nil {
+			return nil, err
+		}
 	}
 
 	return result, nil
@@ -246,21 +254,21 @@ func (w *abilityCommandWrapper) publishResult(result *AbilityResult, actor share
 	charId := actor.Id()
 	exclude := []string{charId}
 
-	if result.ActorMsg != "" {
-		if err := w.pub.Publish(game.SinglePlayer(charId), nil, []byte(result.ActorMsg)); err != nil {
+	if len(result.ActorLines) > 0 {
+		if err := w.pub.Publish(game.SinglePlayer(charId), nil, []byte(strings.Join(result.ActorLines, "\n"))); err != nil {
 			return err
 		}
 	}
-	if result.TargetMsg != "" && result.TargetId != "" {
-		if err := w.pub.Publish(game.SinglePlayer(result.TargetId), nil, []byte(result.TargetMsg)); err != nil {
+	if len(result.TargetLines) > 0 && result.TargetId != "" {
+		if err := w.pub.Publish(game.SinglePlayer(result.TargetId), nil, []byte(strings.Join(result.TargetLines, "\n"))); err != nil {
 			return err
 		}
 		exclude = append(exclude, result.TargetId)
 	}
-	if result.RoomMsg != "" {
+	if len(result.RoomLines) > 0 {
 		zoneId, roomId := actor.Location()
 		room := w.world.GetZone(zoneId).GetRoom(roomId)
-		if err := w.pub.Publish(room, exclude, []byte(result.RoomMsg)); err != nil {
+		if err := w.pub.Publish(room, exclude, []byte(strings.Join(result.RoomLines, "\n"))); err != nil {
 			return err
 		}
 	}
@@ -284,7 +292,7 @@ func (e *attackEffect) Spec() *HandlerSpec {
 func (e *attackEffect) ValidateConfig(_ map[string]string) error { return nil }
 
 func (e *attackEffect) Create(_ string, _ map[string]string, targets []assets.TargetSpec) EffectFunc {
-	return func(actor shared.Actor, resolved map[string]*TargetRef) error {
+	return func(actor shared.Actor, resolved map[string]*TargetRef, result *AbilityResult) error {
 		if actor.HasGrant(assets.PerkGrantPeaceful, "") {
 			return errPeacefulArea
 		}
@@ -293,9 +301,12 @@ func (e *attackEffect) Create(_ string, _ map[string]string, targets []assets.Ta
 			if ref == nil || ref.Actor == nil {
 				continue
 			}
-			if err := e.combat.StartCombat(actor, ref.Actor.Actor()); err != nil {
+			target := ref.Actor.Actor()
+			if err := e.combat.StartCombat(actor, target); err != nil {
 				return NewUserError(err.Error())
 			}
+			actorName := actor.Name()
+			targetName := ref.Actor.Name
 			attackArgs := actor.GrantArgs(assets.PerkGrantAttack)
 			if len(attackArgs) == 0 {
 				attackArgs = []string{"1d4"}
@@ -303,14 +314,17 @@ func (e *attackEffect) Create(_ string, _ map[string]string, targets []assets.Ta
 			for _, arg := range attackArgs {
 				dmgType, diceExpr := combat.ParseAttackArg(arg)
 				roll := combat.RollAttack(actor.ModifierValue(assets.PerkKeyCombatAttackMod))
-				if roll < ref.Actor.Actor().ModifierValue(assets.PerkKeyCombatAC) {
-					continue // miss
+				var damage int
+				if roll >= target.ModifierValue(assets.PerkKeyCombatAC) {
+					dice, err := combat.ParseDice(diceExpr)
+					if err != nil {
+						dice = combat.DiceRoll{Count: 1, Sides: 4}
+					}
+					damage = dealDamage(e.combat, actor, target, dice.Roll(), dmgType)
 				}
-				dice, err := combat.ParseDice(diceExpr)
-				if err != nil {
-					dice = combat.DiceRoll{Count: 1, Sides: 4}
-				}
-				dealDamage(e.combat, actor, ref.Actor.Actor(), dice.Roll(), dmgType)
+				result.ActorLines = append(result.ActorLines, combat.HitMsgActor(targetName, damage))
+				result.TargetLines = append(result.TargetLines, combat.HitMsgTarget(actorName, damage))
+				result.RoomLines = append(result.RoomLines, combat.HitMsgRoom(actorName, targetName, damage))
 			}
 			return nil
 		}
@@ -358,7 +372,7 @@ func (e *damageEffect) Create(_ string, config map[string]string, targets []asse
 		primaryType = damageTypes[0]
 	}
 
-	return func(actor shared.Actor, resolved map[string]*TargetRef) error {
+	return func(actor shared.Actor, resolved map[string]*TargetRef, _ *AbilityResult) error {
 		if actor.HasGrant(assets.PerkGrantPeaceful, "") {
 			return errPeacefulArea
 		}
@@ -379,8 +393,8 @@ func (e *damageEffect) Create(_ string, config map[string]string, targets []asse
 }
 
 // dealDamage applies raw damage of the given type to a target, handling CalcDamage,
-// reflected damage, combat initiation, and threat.
-func dealDamage(cm CombatManager, actor shared.Actor, target shared.Actor, raw int, dmgType string) {
+// reflected damage, combat initiation, and threat. Returns the final damage dealt.
+func dealDamage(cm CombatManager, actor shared.Actor, target shared.Actor, raw int, dmgType string) int {
 	damage, reflected := combat.CalcDamage(raw, dmgType, actor, target)
 	target.AdjustResource(assets.ResourceHp, -damage)
 	if reflected > 0 {
@@ -388,6 +402,7 @@ func dealDamage(cm CombatManager, actor shared.Actor, target shared.Actor, raw i
 	}
 	_ = cm.StartCombat(actor, target)
 	cm.AddThreat(actor, target, damage)
+	return damage
 }
 
 // aoeDamageEffect applies damage to all mobs and (optionally) players in the caster's room.
@@ -422,7 +437,7 @@ func (e *aoeDamageEffect) Create(_ string, config map[string]string, _ []assets.
 	}
 	hitPlayers := config["hit_players"] == "true"
 
-	return func(actor shared.Actor, _ map[string]*TargetRef) error {
+	return func(actor shared.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
 		if actor.HasGrant(assets.PerkGrantPeaceful, "") {
 			return errPeacefulArea
 		}
@@ -518,7 +533,7 @@ func (e *actorBuffEffect) Create(id string, config map[string]string, targets []
 	name, perk, dur := parsePerkBuffConfig(id, config)
 	perks := []assets.Perk{perk}
 
-	return func(actor shared.Actor, resolved map[string]*TargetRef) error {
+	return func(actor shared.Actor, resolved map[string]*TargetRef, _ *AbilityResult) error {
 		for _, spec := range targets {
 			ref := resolved[spec.Name]
 			if ref == nil || ref.Actor == nil {
@@ -547,7 +562,7 @@ func (e *roomBuffEffect) Create(id string, config map[string]string, _ []assets.
 	name, perk, dur := parsePerkBuffConfig(id, config)
 	perks := []assets.Perk{perk}
 
-	return func(actor shared.Actor, _ map[string]*TargetRef) error {
+	return func(actor shared.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
 		zoneId, roomId := actor.Location()
 		room := e.world.GetZone(zoneId).GetRoom(roomId)
 		if room == nil {
@@ -573,7 +588,7 @@ func (e *zoneBuffEffect) Create(id string, config map[string]string, _ []assets.
 	name, perk, dur := parsePerkBuffConfig(id, config)
 	perks := []assets.Perk{perk}
 
-	return func(actor shared.Actor, _ map[string]*TargetRef) error {
+	return func(actor shared.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
 		zoneId, _ := actor.Location()
 		zone := e.world.GetZone(zoneId)
 		if zone == nil {
@@ -599,7 +614,7 @@ func (e *worldBuffEffect) Create(id string, config map[string]string, _ []assets
 	name, perk, dur := parsePerkBuffConfig(id, config)
 	perks := []assets.Perk{perk}
 
-	return func(_ shared.Actor, _ map[string]*TargetRef) error {
+	return func(_ shared.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
 		e.world.Perks.AddTimedPerks(name, perks, dur)
 		return nil
 	}

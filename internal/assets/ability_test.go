@@ -5,6 +5,72 @@ import (
 	"testing"
 )
 
+func TestAbility_Help(t *testing.T) {
+	tests := map[string]struct {
+		ability  Ability
+		name     string
+		contains []string
+	}{
+		"with ap and mana cost": {
+			ability: Ability{
+				Effects: []EffectSpec{{Type: "test-effect"}},
+				Command: Command{
+					Description: "test description",
+					Config: map[string]string{
+						"ap_cost":       "2",
+						"resource":      "mana",
+						"resource_cost": "15",
+					},
+					Inputs: []InputSpec{{Name: "target", Type: InputTypeString, Required: true}},
+				},
+			},
+			name: "test-ability",
+			contains: []string{
+				"TEST-ABILITY - test description",
+				"Usage: test-ability <target>",
+				"Cost: 2 AP, 15 mana",
+			},
+		},
+		"ap only": {
+			ability: Ability{
+				Effects: []EffectSpec{{Type: "test-effect"}},
+				Command: Command{
+					Description: "test description",
+					Config:      map[string]string{"ap_cost": "1"},
+				},
+			},
+			name: "test-ability",
+			contains: []string{
+				"Cost: 1 AP",
+			},
+		},
+		"no cost": {
+			ability: Ability{
+				Effects: []EffectSpec{{Type: "test-effect"}},
+				Command: Command{
+					Description: "test description",
+					Config:      map[string]string{},
+				},
+			},
+			name: "test-ability",
+			contains: []string{
+				"TEST-ABILITY - test description",
+			},
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			got := tc.ability.Help(tc.name)
+			for _, want := range tc.contains {
+				if !strings.Contains(got, want) {
+					t.Errorf("Help() = %q, want to contain %q", got, want)
+				}
+			}
+		})
+	}
+}
+
 func TestAbility_Validate(t *testing.T) {
 	tests := map[string]struct {
 		ability Ability

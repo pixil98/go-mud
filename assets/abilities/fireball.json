@@ -6,6 +6,7 @@
             {"type": "damage", "config": {"damage": "25"}}
         ],
         "command": {
+            "category": "combat",
             "priority": 3,
             "description": "Hurl a ball of fire at your target.",
             "config": {

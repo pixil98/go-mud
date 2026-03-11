@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"strconv"
 	"strings"
 	"sync"
 
@@ -22,15 +23,9 @@ type Manager struct {
 }
 
 type combatantState struct {
-	c      shared.Actor
-	threat map[string]int // enemy ID → accumulated threat
-}
-
-// AttackResult holds the outcome of a single attack roll.
-type AttackResult struct {
-	Damage    int
-	Hit       bool
-	Reflected int // damage reflected back to attacker (0 if none)
+	c        shared.Actor
+	threat   map[string]int   // enemy ID → accumulated threat
+	cooldown map[string][]int // auto_use arg → per-duplicate cooldown counters
 }
 
 // NewManager creates a combat Manager.
@@ -88,30 +83,6 @@ func (m *Manager) AddThreat(source, target shared.Actor, amount int) {
 	tState.threat[source.Id()] += amount + bonus
 }
 
-// PerformAttack executes one attack roll per attack grant perk the attacker has,
-// applies damage for each hit (including any reflected damage back to the attacker),
-// and returns the per-attack results.
-// Falls back to a single untyped 1d4 attack if no attack grants are present.
-func PerformAttack(attacker, target shared.Actor) []AttackResult {
-	attackArgs := attacker.GrantArgs(assets.PerkGrantAttack)
-	if len(attackArgs) == 0 {
-		attackArgs = []string{"1d4"}
-	}
-
-	results := make([]AttackResult, 0, len(attackArgs))
-	for _, arg := range attackArgs {
-		result := rollOneAttack(attacker, target, arg)
-		if result.Hit {
-			target.AdjustResource(assets.ResourceHp, -result.Damage)
-			if result.Reflected > 0 {
-				attacker.AdjustResource(assets.ResourceHp, -result.Reflected)
-			}
-		}
-		results = append(results, result)
-	}
-	return results
-}
-
 // ParseAttackArg extracts the damage type and dice expression from an attack grant arg.
 // Supports "<type>:<dice>" (e.g. "fire:2d6+3") or plain "<dice>" (defaults to "untyped").
 func ParseAttackArg(arg string) (dmgType, diceExpr string) {
@@ -121,27 +92,7 @@ func ParseAttackArg(arg string) (dmgType, diceExpr string) {
 	return assets.DamageTypeUntyped, arg
 }
 
-// rollOneAttack performs a single attack roll for the given attack grant arg.
-// Does NOT apply damage — PerformAttack handles that.
-func rollOneAttack(attacker, target shared.Actor, attackArg string) AttackResult {
-	dmgType, diceExpr := ParseAttackArg(attackArg)
-
-	roll := RollAttack(attacker.ModifierValue(assets.PerkKeyCombatAttackMod))
-	if roll < target.ModifierValue(assets.PerkKeyCombatAC) {
-		return AttackResult{Hit: false}
-	}
-
-	dice, err := ParseDice(diceExpr)
-	if err != nil {
-		dice = DiceRoll{Count: 1, Sides: 4}
-	}
-
-	raw := dice.Roll()
-	damage, reflected := CalcDamage(raw, dmgType, attacker, target)
-	return AttackResult{Damage: damage, Hit: true, Reflected: reflected}
-}
-
-// Tick processes one round of autoattacks for all active combatants.
+// Tick processes one round of auto_use abilities for all active combatants.
 func (m *Manager) Tick(_ context.Context) error {
 	type roomEntry struct {
 		zoneId string
@@ -182,11 +133,31 @@ func (m *Manager) Tick(_ context.Context) error {
 		}
 
 		if m.abilities != nil {
+			seen := make(map[string]int) // arg → how many times we've seen it so far
 			for _, arg := range c.GrantArgs(assets.PerkGrantAutoUse) {
 				abilityId := arg
+				cooldownTicks := 1
 				if i := strings.IndexByte(arg, ':'); i >= 0 {
 					abilityId = arg[:i]
+					if n, err := strconv.Atoi(arg[i+1:]); err == nil && n > 0 {
+						cooldownTicks = n
+					}
 				}
+
+				dupIdx := seen[arg]
+				seen[arg]++
+
+				// Grow the per-arg slice if this is a new duplicate.
+				for len(state.cooldown[arg]) <= dupIdx {
+					state.cooldown[arg] = append(state.cooldown[arg], 0)
+				}
+
+				remaining := state.cooldown[arg][dupIdx]
+				if remaining > 0 {
+					state.cooldown[arg][dupIdx] = remaining - 1
+					continue
+				}
+				state.cooldown[arg][dupIdx] = cooldownTicks - 1
 				autoUses = append(autoUses, autoUseTask{abilityId: abilityId, actor: c, target: target})
 			}
 		}
@@ -333,8 +304,9 @@ func (m *Manager) register(c shared.Actor) *combatantState {
 		return state
 	}
 	state := &combatantState{
-		c:      c,
-		threat: make(map[string]int),
+		c:        c,
+		threat:   make(map[string]int),
+		cooldown: make(map[string][]int),
 	}
 	m.combatants[c.Id()] = state
 	return state

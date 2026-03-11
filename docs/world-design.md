@@ -119,7 +119,7 @@ perks give multiple independent attack rolls per round (each checked against AC
 separately). Bosses often use this for a distinctive multi-attack feel.
 
 All combat mobs need:
-- `{ "type": "grant", "key": "autoattack" }` — mob attacks automatically each round
+- `{ "type": "grant", "key": "auto_use", "arg": "attack" }` — mob uses the attack ability automatically each round
 - At least one `{ "type": "grant", "key": "attack", "arg": "1d6" }` — attack dice
 
 ### Aliases

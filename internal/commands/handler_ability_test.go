@@ -236,7 +236,7 @@ func TestRoomBuffEffect(t *testing.T) {
 			}
 
 			fn := effect.Create("test-ability:0", tc.config, nil)
-			err := fn(player, nil)
+			err := fn(player, nil, &AbilityResult{})
 
 			if tc.wantErr != "" {
 				if err == nil {
@@ -275,7 +275,7 @@ func TestRoomBuffEffectExpiry(t *testing.T) {
 	}
 	fn := effect.Create("test-ability:0", config, nil)
 
-	if err := fn(player, nil); err != nil {
+	if err := fn(player, nil, &AbilityResult{}); err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
@@ -341,7 +341,7 @@ func TestAttackEffect(t *testing.T) {
 			targetSpecs := []assets.TargetSpec{{Name: "target"}}
 
 			fn := effect.Create("test:0", nil, targetSpecs)
-			err := fn(player, tc.targets)
+			err := fn(player, tc.targets, &AbilityResult{})
 
 			if tc.wantErr != "" {
 				if err == nil {
@@ -385,7 +385,7 @@ func TestAttackEffect_PeacefulArea(t *testing.T) {
 	}
 
 	fn := effect.Create("test:0", nil, targetSpecs)
-	err := fn(player, targets)
+	err := fn(player, targets, &AbilityResult{})
 	if err == nil {
 		t.Fatal("expected peaceful area error, got nil")
 	}
@@ -416,7 +416,7 @@ func TestDamageEffect_InitiatesCombat(t *testing.T) {
 	}
 
 	fn := effect.Create("test:0", config, targetSpecs)
-	if err := fn(player, targets); err != nil {
+	if err := fn(player, targets, &AbilityResult{}); err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
@@ -497,7 +497,7 @@ func TestAoeDamageEffect(t *testing.T) {
 			}
 
 			fn := effect.Create("test:0", config, nil)
-			if err := fn(player, nil); err != nil {
+			if err := fn(player, nil, &AbilityResult{}); err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
 
@@ -538,7 +538,7 @@ func TestAoeDamageEffect_PeacefulArea(t *testing.T) {
 	effect := &aoeDamageEffect{combat: cm, world: world}
 
 	fn := effect.Create("test:0", map[string]string{"damage": "10"}, nil)
-	err := fn(player, nil)
+	err := fn(player, nil, &AbilityResult{})
 	if err == nil {
 		t.Fatal("expected peaceful area error, got nil")
 	}
