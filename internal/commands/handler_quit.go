@@ -4,12 +4,10 @@ import (
 	"context"
 
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // QuitActor provides the character state needed by the quit handler.
 type QuitActor interface {
-	shared.Actor
 	IsInCombat() bool
 	SetQuit(bool)
 }

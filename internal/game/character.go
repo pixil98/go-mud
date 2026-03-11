@@ -44,8 +44,8 @@ type CharacterInstance struct {
 	combatTargetId string // InstanceId of the mob being auto-attacked; empty = not auto-attacking
 	currentAP      int    // remaining action points this tick; reset each world tick
 	followingId    string // charId of the player being followed (empty = not following)
-	group        *Group // current group, or nil if not grouped
-	lastActivity time.Time
+	group          *Group // current group, or nil if not grouped
+	lastActivity   time.Time
 
 	// Connection management: closed to signal the active Play() goroutine to exit.
 	done chan struct{}
@@ -79,9 +79,9 @@ func NewCharacterInstance(char storage.SmartIdentifier[*assets.Character], msgs 
 		ActorInstance: ActorInstance{
 			InstanceId: char.Id(),
 			inventory:  inv,
-			equipment: eq,
-			level:     c.Level,
-			PerkCache: *NewPerkCache(racePerks, map[string]PerkSource{"equipment": eq}),
+			equipment:  eq,
+			level:      c.Level,
+			PerkCache:  *NewPerkCache(racePerks, map[string]PerkSource{"equipment": eq}),
 		},
 		lastActivity: time.Now(),
 		done:         make(chan struct{}),
@@ -658,6 +658,10 @@ func (ci *CharacterInstance) StatSections() []StatSection {
 	}
 
 	return sections
+}
+
+func (ci *CharacterInstance) SetTitle(t string) {
+	ci.Character.Get().Title = t
 }
 
 // Gain advances the character to the next level. Resource maxes automatically

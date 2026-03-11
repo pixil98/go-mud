@@ -7,13 +7,13 @@ import (
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // MoveActor provides the character state needed by the move handler.
 type MoveActor interface {
-	shared.Actor
-	Location() (zoneId, roomId string)
+	Id() string
+	Name() string
+	Location() (string, string)
 	IsInCombat() bool
 	Move(from, to *game.RoomInstance)
 }

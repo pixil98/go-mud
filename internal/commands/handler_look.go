@@ -4,13 +4,13 @@ import (
 	"context"
 
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // LookActor provides the character state needed by the look handler.
 type LookActor interface {
-	shared.Actor
-	Location() (zoneId, roomId string)
+	Id() string
+	Name() string
+	Location() (string, string)
 }
 
 var _ LookActor = (*game.CharacterInstance)(nil)

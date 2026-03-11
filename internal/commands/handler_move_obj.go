@@ -8,13 +8,12 @@ import (
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // MoveObjActor provides the character state needed by the move_obj handler.
 type MoveObjActor interface {
-	shared.Actor
-	Location() (zoneId, roomId string)
+	Id() string
+	Location() (string, string)
 	GetInventory() *game.Inventory
 }
 

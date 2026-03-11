@@ -6,14 +6,13 @@ import (
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/shared"
 )
 
 const scoreBoxWidth = 40
 
 // ScoreActor provides the character state needed by the score handler.
 type ScoreActor interface {
-	shared.Actor
+	Id() string
 	StatSections() []game.StatSection
 }
 

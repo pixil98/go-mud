@@ -5,13 +5,12 @@ import (
 	"fmt"
 
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // MessageActor provides the character state needed by the message handler.
 type MessageActor interface {
-	shared.Actor
-	Location() (zoneId, roomId string)
+	Id() string
+	Location() (string, string)
 	GetGroup() *game.Group
 }
 

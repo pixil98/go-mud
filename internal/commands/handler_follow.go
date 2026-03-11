@@ -6,12 +6,12 @@ import (
 	"log/slog"
 
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // FollowActor provides the character state needed by the follow handler.
 type FollowActor interface {
-	shared.Actor
+	Id() string
+	Name() string
 	GetFollowingId() string
 	SetFollowingId(string)
 }

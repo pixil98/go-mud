@@ -6,12 +6,11 @@ import (
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // GainActor provides the character state needed by the gain handler.
 type GainActor interface {
-	shared.Actor
+	Id() string
 	IsInCombat() bool
 	Asset() *assets.Character
 	Gain()

@@ -6,13 +6,12 @@ import (
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/shared"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // SaveActor provides the character state needed by the save handler.
 type SaveActor interface {
-	shared.Actor
+	Id() string
 	SaveCharacter(storage.Storer[*assets.Character]) error
 }
 

@@ -4,15 +4,13 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // TitleActor provides the character state needed by the title handler.
 type TitleActor interface {
-	shared.Actor
-	Asset() *assets.Character
+	Id() string
+	SetTitle(string)
 }
 
 var _ TitleActor = (*game.CharacterInstance)(nil)
@@ -50,7 +48,7 @@ func (f *TitleHandlerFactory) handle(ctx context.Context, char TitleActor, in *C
 	// Read new_title from expanded config (input was templated into config)
 	title := in.Config["new_title"]
 
-	char.Asset().Title = title
+	char.SetTitle(title)
 
 	var output string
 	if title == "" {
