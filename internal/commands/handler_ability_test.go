@@ -433,7 +433,7 @@ func TestDamageEffect_InitiatesCombat(t *testing.T) {
 
 func TestAoeDamageEffect(t *testing.T) {
 	hpPerks := []assets.Perk{
-		{Type: assets.PerkTypeModifier, Key: assets.ResourceKey(assets.ResourceHp, assets.ResourceAspectMax), Value: 100},
+		{Type: assets.PerkTypeModifier, Key: assets.BuildKey(assets.ResourcePrefix, assets.ResourceHp, assets.ResourceAspectMax), Value: 100},
 	}
 
 	tests := map[string]struct {

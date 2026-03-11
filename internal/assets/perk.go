@@ -2,51 +2,44 @@ package assets
 
 import "fmt"
 
+// ---------------------------------------------------------------------------
+// Perk types
+// ---------------------------------------------------------------------------
+
+const (
+	PerkTypeModifier = "modifier"
+	PerkTypeGrant    = "grant"
+)
+
+// ---------------------------------------------------------------------------
+// Modifier suffixes (shared across all key builders that use flat/pct scaling)
+// ---------------------------------------------------------------------------
+
+const (
+	ModSuffixFlat = "flat" // flat additive bonus
+	ModSuffixPct  = "pct"  // percent scaling bonus
+)
+
+// ---------------------------------------------------------------------------
+// Stat keys — core.stats.<stat>
+// Individual keys with no flat/pct split.
+// ---------------------------------------------------------------------------
+
 // PerkKey identifies a well-known key for modifier perks. Asset-defined keys
 // (e.g. "evocation.fire.damage_pct") don't need consts — these are provided
 // for engine-interpreted values so they're discoverable and consistent.
 type PerkKey = string
 
-// PerkKey constants for engine-interpreted modifier and grant keys.
 const (
-	PerkKeySTR             PerkKey = "core.stats.str"
-	PerkKeyDEX             PerkKey = "core.stats.dex"
-	PerkKeyCON             PerkKey = "core.stats.con"
-	PerkKeyINT             PerkKey = "core.stats.int"
-	PerkKeyWIS             PerkKey = "core.stats.wis"
-	PerkKeyCHA             PerkKey = "core.stats.cha"
-	PerkKeyActionPointsMax PerkKey = "core.action_points.max"
-	PerkKeyCombatAC        PerkKey = "core.combat.ac"
-	PerkKeyCombatAttackMod PerkKey = "core.combat.attack_mod"
-	PerkKeyCombatThreatMod PerkKey = "core.combat.threat_mod"
+	PerkKeySTR PerkKey = "core.stats.str"
+	PerkKeyDEX PerkKey = "core.stats.dex"
+	PerkKeyCON PerkKey = "core.stats.con"
+	PerkKeyINT PerkKey = "core.stats.int"
+	PerkKeyWIS PerkKey = "core.stats.wis"
+	PerkKeyCHA PerkKey = "core.stats.cha"
 )
-
-// ResourceHp is the well-known resource name for hit points.
-const ResourceHp = "hp"
-
-// ResourceKeyPrefix is the perk key prefix for resource modifiers.
-// Resource perk keys follow: core.resource.<name>.<aspect>
-const ResourceKeyPrefix = "core.resource."
-
-// ResourceAspect identifies a specific aspect of a perk-driven resource pool.
-type ResourceAspect string
-
-// ResourceAspect constants.
-const (
-	ResourceAspectMax      ResourceAspect = "max"
-	ResourceAspectPerLevel ResourceAspect = "per_level"
-	ResourceAspectRegen    ResourceAspect = "regen"
-)
-
-// ResourceKey builds a perk key for a resource aspect
-// (e.g. ResourceKey("hp", ResourceAspectMax) -> "core.resource.hp.max").
-func ResourceKey(resource string, aspect ResourceAspect) string {
-	return ResourceKeyPrefix + resource + "." + string(aspect)
-}
 
 // StatPerkKeys maps stat-related PerkKey consts to their corresponding StatKey.
-// Use this to extract ability score modifiers from modifier perks without
-// hardcoding the key strings at the call site.
 var StatPerkKeys = map[PerkKey]StatKey{
 	PerkKeySTR: StatSTR,
 	PerkKeyDEX: StatDEX,
@@ -56,63 +49,83 @@ var StatPerkKeys = map[PerkKey]StatKey{
 	PerkKeyCHA: StatCHA,
 }
 
-// DamageKeyPrefix is the perk key prefix for damage type modifiers.
-// Damage perk keys follow: core.damage.<type>.<aspect>
-const DamageKeyPrefix = "core.damage."
+// ---------------------------------------------------------------------------
+// Action points — core.action_points.max (individual key, no flat/pct)
+// ---------------------------------------------------------------------------
+
+const PerkKeyActionPointsMax PerkKey = "core.action_points.max"
+
+// ---------------------------------------------------------------------------
+// Combat prefixes — core.combat.<property>.<suffix>
+// All combat modifiers use the flat/pct pattern via ApplyModifiers.
+// ---------------------------------------------------------------------------
+
+const (
+	CombatACPrefix     = "core.combat.ac"     // armor class
+	CombatAttackPrefix = "core.combat.attack" // attack roll bonus
+	CombatThreatPrefix = "core.combat.threat" // threat generation scaling
+)
+
+// ---------------------------------------------------------------------------
+// Key builder — joins parts with "." to form perk keys
+// ---------------------------------------------------------------------------
+
+// BuildKey joins the parts with "." to form a perk key.
+// (e.g. BuildKey(DamagePrefix, "fire", ModSuffixPct) -> "core.damage.fire.pct").
+func BuildKey(parts ...string) string {
+	if len(parts) == 0 {
+		return ""
+	}
+	key := parts[0]
+	for _, p := range parts[1:] {
+		key += "." + p
+	}
+	return key
+}
+
+// ---------------------------------------------------------------------------
+// Damage keys — core.damage.<type>.<suffix>
+// ---------------------------------------------------------------------------
+
+const DamagePrefix = "core.damage"
 
 // Well-known damage type strings.
 const (
-	// DamageTypeUntyped is the default damage type when no type is configured.
 	DamageTypeUntyped = "untyped"
-	// DamageTypeAll is used in defense keys to apply mitigation to all damage
-	// regardless of type (e.g. DefenseKey(DamageTypeAll, DefenseAspectAbsorb)).
-	DamageTypeAll = "all"
+	DamageTypeAll     = "all"
 )
 
-// DamageAspect identifies a specific aspect of damage type scaling.
-type DamageAspect string
+// ---------------------------------------------------------------------------
+// Defense keys — core.defense.<type>.<category>.<suffix>
+// ---------------------------------------------------------------------------
 
-// DamageAspect constants.
+const DefensePrefix = "core.defense"
+
+// Defense category constants.
 const (
-	DamageAspectPct  DamageAspect = "pct"  // percent damage bonus
-	DamageAspectFlat DamageAspect = "flat" // flat damage bonus
+	DefenseCategoryAbsorb  = "absorb"  // damage reduction after a hit lands
+	DefenseCategoryReflect = "reflect" // damage reflected back to the attacker
 )
 
-// DamageKey builds a perk key for a damage type aspect
-// (e.g. DamageKey("fire", DamageAspectPct) -> "core.damage.fire.pct").
-func DamageKey(damageType string, aspect DamageAspect) string {
-	return DamageKeyPrefix + damageType + "." + string(aspect)
-}
+// ---------------------------------------------------------------------------
+// Resource keys — core.resource.<name>.<aspect>
+// ---------------------------------------------------------------------------
 
-// DefenseKeyPrefix is the perk key prefix for defense type modifiers.
-// Defense perk keys follow: core.defense.<type>.<aspect>
-// Use DamageTypeAll as the type to apply to all incoming damage regardless of type.
-const DefenseKeyPrefix = "core.defense."
+const ResourceHp = "hp"
 
-// DefenseAspect identifies a specific aspect of damage mitigation.
-type DefenseAspect string
+const ResourcePrefix = "core.resource"
 
-// DefenseAspect constants.
+// Resource aspect constants.
 const (
-	DefenseAspectAbsorb    DefenseAspect = "absorb"     // flat damage reduction after a hit lands
-	DefenseAspectAbsorbPct DefenseAspect = "absorb_pct" // percent damage reduction after a hit lands
-	DefenseAspectReflect   DefenseAspect = "reflect"    // flat damage reflected back to the attacker
+	ResourceAspectMax      = "max"
+	ResourceAspectPerLevel = "per_level"
+	ResourceAspectRegen    = "regen"
 )
 
-// DefenseKey builds a perk key for a defense type aspect
-// (e.g. DefenseKey("fire", DefenseAspectAbsorb) -> "core.defense.fire.absorb",
-// DefenseKey("all", DefenseAspectAbsorb) -> "core.defense.all.absorb").
-func DefenseKey(damageType string, aspect DefenseAspect) string {
-	return DefenseKeyPrefix + damageType + "." + string(aspect)
-}
+// ---------------------------------------------------------------------------
+// Grant keys
+// ---------------------------------------------------------------------------
 
-// Perk type constants.
-const (
-	PerkTypeModifier = "modifier"
-	PerkTypeGrant    = "grant"
-)
-
-// Well-known grant keys for engine-interpreted grant perks.
 const (
 	// PerkGrantUnlockAbility grants access to an ability. Arg is the ability id.
 	PerkGrantUnlockAbility = "unlock_ability"
@@ -121,10 +134,13 @@ const (
 	// PerkGrantAutoUse enables automatic ability use each combat tick.
 	// Arg format: "ability_id:cooldown_ticks" (e.g. "attack:1", "fireball:3").
 	PerkGrantAutoUse = "auto_use"
-	// PerkGrantPeaceful prevents the holder from initiating combat. Can be granted
-	// by a room, zone, world, or equipped item.
+	// PerkGrantPeaceful prevents the holder from initiating combat.
 	PerkGrantPeaceful = "peaceful"
 )
+
+// ---------------------------------------------------------------------------
+// Perk struct
+// ---------------------------------------------------------------------------
 
 // Perk describes an effect granted by a race, tree node, or equipped object.
 // Which fields are meaningful depends on Type.
@@ -138,6 +154,7 @@ type Perk struct {
 	Arg   string `json:"arg,omitempty"`   // grant: optional argument (e.g. ability id, dice expression)
 }
 
+// Validate checks a perk's fields for correctness.
 func (p *Perk) validate() error {
 	if p.Type == "" {
 		return fmt.Errorf("type is required")
@@ -158,4 +175,39 @@ func (p *Perk) validate() error {
 		return fmt.Errorf("unknown perk type: %q", p.Type)
 	}
 	return nil
+}
+
+// ---------------------------------------------------------------------------
+// PerkReader + ApplyModifiers — shared modifier evaluation
+// ---------------------------------------------------------------------------
+
+// PerkReader can look up modifier perk values by key.
+type PerkReader interface {
+	ModifierValue(key string) int
+}
+
+// ApplyModifiers applies flat and percent perk modifiers to a raw value.
+// It looks up prefix+ModSuffixPct and prefix+ModSuffixFlat from the reader,
+// applies percent scaling first, then adds the flat bonus.
+// The result is floored at minVal.
+//
+// Multiple prefixes can be provided; their flat and pct values are summed
+// before applying (e.g. type-specific + "all" prefixes for damage).
+func ApplyModifiers(raw, minVal int, reader PerkReader, prefixes ...string) int {
+	var totalFlat, totalPct int
+	for _, prefix := range prefixes {
+		totalPct += reader.ModifierValue(BuildKey(prefix, ModSuffixPct))
+		totalFlat += reader.ModifierValue(BuildKey(prefix, ModSuffixFlat))
+	}
+
+	result := raw
+	if totalPct != 0 {
+		result = result * (100 + totalPct) / 100
+	}
+	result += totalFlat
+
+	if result < minVal {
+		result = minVal
+	}
+	return result
 }

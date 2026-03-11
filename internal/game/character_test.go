@@ -42,7 +42,7 @@ func TestCharacterInstance_OnDeath(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			hpMaxPerk := assets.Perk{
 				Type:  assets.PerkTypeModifier,
-				Key:   assets.ResourceKey(assets.ResourceHp, assets.ResourceAspectMax),
+				Key:   assets.BuildKey(assets.ResourcePrefix, assets.ResourceHp, assets.ResourceAspectMax),
 				Value: tc.maxHP,
 			}
 			char := storage.NewResolvedSmartIdentifier("test-char", &assets.Character{Name: "Tester"})

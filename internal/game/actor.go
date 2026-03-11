@@ -33,8 +33,8 @@ type ActorInstance struct {
 // resourceMax computes the max value for a named resource from perks.
 // Formula: sum(core.resource.<name>.max) + level * sum(core.resource.<name>.per_level)
 func (a *ActorInstance) resourceMax(name string) int {
-	return a.ModifierValue(assets.ResourceKey(name, assets.ResourceAspectMax)) +
-		a.level*a.ModifierValue(assets.ResourceKey(name, assets.ResourceAspectPerLevel))
+	return a.ModifierValue(assets.BuildKey(assets.ResourcePrefix, name, assets.ResourceAspectMax)) +
+		a.level*a.ModifierValue(assets.BuildKey(assets.ResourcePrefix, name, assets.ResourceAspectPerLevel))
 }
 
 // resource returns (current, max) for the named resource.
@@ -80,11 +80,12 @@ func (a *ActorInstance) initResources() {
 // resourceNames returns the set of resource names discovered from perk modifier keys.
 func (a *ActorInstance) resourceNames() map[string]struct{} {
 	names := make(map[string]struct{})
+	resourceKeyPrefix := assets.ResourcePrefix + "."
 	for key := range a.Modifiers() {
-		if !strings.HasPrefix(key, assets.ResourceKeyPrefix) {
+		if !strings.HasPrefix(key, resourceKeyPrefix) {
 			continue
 		}
-		rest := key[len(assets.ResourceKeyPrefix):]
+		rest := key[len(resourceKeyPrefix):]
 		dotIdx := strings.Index(rest, ".")
 		if dotIdx < 0 {
 			continue
@@ -99,7 +100,7 @@ func (a *ActorInstance) resourceNames() map[string]struct{} {
 // Caller must hold the owning type's write lock.
 func (a *ActorInstance) regenTick() {
 	for name := range a.resources {
-		regen := a.ModifierValue(assets.ResourceKey(name, assets.ResourceAspectRegen))
+		regen := a.ModifierValue(assets.BuildKey(assets.ResourcePrefix, name, assets.ResourceAspectRegen))
 		if regen > 0 {
 			a.adjustResource(name, regen)
 		}

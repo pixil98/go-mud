@@ -14,6 +14,8 @@ import (
 type CombatManager interface {
 	StartCombat(attacker, target shared.Actor) error
 	AddThreat(source, target shared.Actor, amount int)
+	SetThreat(source, target shared.Actor, amount int)
+	TopThreat(source, target shared.Actor)
 }
 
 // AssistActor provides the character state needed by the assist handler.

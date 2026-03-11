@@ -1,1 +1,2 @@
 - Remove StatSections from CharacterInstance and format everything from Actor and perks
+- the wear command should have a config option to limit the slots it can apply to and then we can implement wield and hold properly.

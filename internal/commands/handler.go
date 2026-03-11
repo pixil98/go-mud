@@ -140,6 +140,7 @@ func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, pub
 	h.effects["room_buff"] = &roomBuffEffect{world: world}
 	h.effects["zone_buff"] = &zoneBuffEffect{world: world}
 	h.effects["world_buff"] = &worldBuffEffect{world: world}
+	h.effects["threat"] = &threatEffect{combat: combat}
 
 	// Register built-in handlers
 	for _, reg := range []struct {

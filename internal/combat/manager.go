@@ -79,8 +79,37 @@ func (m *Manager) AddThreat(source, target shared.Actor, amount int) {
 
 	m.register(source)
 	tState := m.register(target)
-	bonus := source.ModifierValue(assets.PerkKeyCombatThreatMod)
-	tState.threat[source.Id()] += amount + bonus
+	modified := assets.ApplyModifiers(amount, 0, source, assets.CombatThreatPrefix)
+	tState.threat[source.Id()] += modified
+}
+
+// SetThreat sets the threat that source has on target's threat table to an
+// absolute value, ignoring the threat modifier.
+func (m *Manager) SetThreat(source, target shared.Actor, amount int) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+
+	m.register(source)
+	tState := m.register(target)
+	tState.threat[source.Id()] = amount
+}
+
+// TopThreat sets source's threat on target to one more than the current
+// highest entry, guaranteeing source becomes the top-threat enemy.
+func (m *Manager) TopThreat(source, target shared.Actor) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+
+	m.register(source)
+	tState := m.register(target)
+
+	maxThreat := 0
+	for _, v := range tState.threat {
+		if v > maxThreat {
+			maxThreat = v
+		}
+	}
+	tState.threat[source.Id()] = maxThreat + 1
 }
 
 // ParseAttackArg extracts the damage type and dice expression from an attack grant arg.

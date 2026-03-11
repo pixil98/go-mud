@@ -18,12 +18,12 @@
             },
             {
                 "type": "modifier",
-                "key": "core.combat.ac",
+                "key": "core.combat.ac.flat",
                 "value": 13
             },
             {
                 "type": "modifier",
-                "key": "core.combat.attack_mod",
+                "key": "core.combat.attack.flat",
                 "value": 5
             },
             {

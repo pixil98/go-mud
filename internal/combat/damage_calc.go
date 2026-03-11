@@ -2,54 +2,49 @@ package combat
 
 import "github.com/pixil98/go-mud/internal/assets"
 
-// PerkReader can look up modifier perk values by key.
-type PerkReader interface {
-	ModifierValue(key string) int
-}
-
 // CalcDamage applies all perk-based damage modifiers to a raw damage value for a
 // single damage type and returns the final damage dealt and any reflected damage.
 //
-// Pipeline: attacker type pct bonus → target % absorb → target flat absorb → reflect cap.
-func CalcDamage(raw int, dmgType string, attacker, target PerkReader) (damage, reflected int) {
-	damage = max(raw, 1)
+// Pipeline: attacker damage bonus → target absorb reduction → reflect cap.
+func CalcDamage(raw int, dmgType string, attacker, target assets.PerkReader) (damage, reflected int) {
+	// Attacker's damage bonus (pct then flat, type-specific + all).
+	damage = assets.ApplyModifiers(max(raw, 1), 1, attacker,
+		assets.BuildKey(assets.DamagePrefix, dmgType),
+		assets.BuildKey(assets.DamagePrefix, assets.DamageTypeAll),
+	)
 
-	// Attacker's damage type percentage bonus (type-specific + all).
-	dmgPct := attacker.ModifierValue(assets.DamageKey(dmgType, assets.DamageAspectPct)) +
-		attacker.ModifierValue(assets.DamageKey(assets.DamageTypeAll, assets.DamageAspectPct))
-	if dmgPct != 0 {
-		if damage = damage * (100 + dmgPct) / 100; damage < 1 {
-			damage = 1
-		}
-	}
+	// Target's absorb reduction (pct then flat, type-specific + all).
+	// Absorb subtracts, so we negate the modifiers: positive pct/flat = less damage taken.
+	absorbTypePrefix := assets.BuildKey(assets.DefensePrefix, dmgType, assets.DefenseCategoryAbsorb)
+	absorbAllPrefix := assets.BuildKey(assets.DefensePrefix, assets.DamageTypeAll, assets.DefenseCategoryAbsorb)
 
-	// Attacker's flat damage bonus (type-specific + all).
-	damage += attacker.ModifierValue(assets.DamageKey(dmgType, assets.DamageAspectFlat)) +
-		attacker.ModifierValue(assets.DamageKey(assets.DamageTypeAll, assets.DamageAspectFlat))
-	if damage < 1 {
-		damage = 1
-	}
-
-	// Percent absorption first (type-specific + all).
-	absorbPct := target.ModifierValue(assets.DefenseKey(dmgType, assets.DefenseAspectAbsorbPct)) +
-		target.ModifierValue(assets.DefenseKey(assets.DamageTypeAll,assets.DefenseAspectAbsorbPct))
+	absorbPct := target.ModifierValue(assets.BuildKey(absorbTypePrefix, assets.ModSuffixPct)) +
+		target.ModifierValue(assets.BuildKey(absorbAllPrefix, assets.ModSuffixPct))
 	if absorbPct > 0 {
 		if damage = damage * (100 - absorbPct) / 100; damage < 1 {
 			damage = 1
 		}
 	}
 
-	// Flat absorption (type-specific + all).
-	absorb := target.ModifierValue(assets.DefenseKey(dmgType, assets.DefenseAspectAbsorb)) +
-		target.ModifierValue(assets.DefenseKey(assets.DamageTypeAll,assets.DefenseAspectAbsorb))
-	if damage -= absorb; damage < 1 {
+	absorbFlat := target.ModifierValue(assets.BuildKey(absorbTypePrefix, assets.ModSuffixFlat)) +
+		target.ModifierValue(assets.BuildKey(absorbAllPrefix, assets.ModSuffixFlat))
+	if damage -= absorbFlat; damage < 1 {
 		damage = 1
 	}
 
-	// Reflect: capped at actual damage taken.
-	reflect := target.ModifierValue(assets.DefenseKey(dmgType, assets.DefenseAspectReflect)) +
-		target.ModifierValue(assets.DefenseKey(assets.DamageTypeAll,assets.DefenseAspectReflect))
-	reflected = min(reflect, damage)
+	// Reflect: pct then flat, capped at actual damage taken.
+	reflectTypePrefix := assets.BuildKey(assets.DefensePrefix, dmgType, assets.DefenseCategoryReflect)
+	reflectAllPrefix := assets.BuildKey(assets.DefensePrefix, assets.DamageTypeAll, assets.DefenseCategoryReflect)
+
+	reflectPct := target.ModifierValue(assets.BuildKey(reflectTypePrefix, assets.ModSuffixPct)) +
+		target.ModifierValue(assets.BuildKey(reflectAllPrefix, assets.ModSuffixPct))
+	reflectFlat := target.ModifierValue(assets.BuildKey(reflectTypePrefix, assets.ModSuffixFlat)) +
+		target.ModifierValue(assets.BuildKey(reflectAllPrefix, assets.ModSuffixFlat))
+	reflected = reflectFlat
+	if reflectPct > 0 {
+		reflected += damage * reflectPct / 100
+	}
+	reflected = min(reflected, damage)
 
 	return damage, reflected
 }

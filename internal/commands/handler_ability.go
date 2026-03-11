@@ -313,9 +313,11 @@ func (e *attackEffect) Create(_ string, _ map[string]string, targets []assets.Ta
 			}
 			for _, arg := range attackArgs {
 				dmgType, diceExpr := combat.ParseAttackArg(arg)
-				roll := combat.RollAttack(actor.ModifierValue(assets.PerkKeyCombatAttackMod))
+				attackBonus := assets.ApplyModifiers(0, 0, actor, assets.CombatAttackPrefix)
+				roll := combat.RollAttack(attackBonus)
+				ac := assets.ApplyModifiers(0, 0, target, assets.CombatACPrefix)
 				var damage int
-				if roll >= target.ModifierValue(assets.PerkKeyCombatAC) {
+				if roll >= ac {
 					dice, err := combat.ParseDice(diceExpr)
 					if err != nil {
 						dice = combat.DiceRoll{Count: 1, Sides: 4}
@@ -616,6 +618,78 @@ func (e *worldBuffEffect) Create(id string, config map[string]string, _ []assets
 
 	return func(_ shared.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
 		e.world.Perks.AddTimedPerks(name, perks, dur)
+		return nil
+	}
+}
+
+// Threat effect mode constants for the "mode" config field.
+const (
+	ThreatModeAdd        = "add"
+	ThreatModeSetToTop   = "set_to_top"
+	ThreatModeSetToValue = "set_to_value"
+)
+
+// threatEffect modifies threat tables on combat targets.
+//
+// Config fields:
+//   - "mode" (string, required): one of "add", "set_to_top", "set_to_value".
+//   - "amount" (int string): threat delta for "add", absolute value for "set_to_value".
+//     Required for "add" and "set_to_value" modes; ignored by "set_to_top".
+type threatEffect struct {
+	combat CombatManager
+}
+
+func (e *threatEffect) Spec() *HandlerSpec {
+	return &HandlerSpec{
+		Targets: []TargetRequirement{
+			{Name: "target", Type: targetTypeMobile | targetTypePlayer, Required: true},
+		},
+	}
+}
+
+func (e *threatEffect) ValidateConfig(config map[string]string) error {
+	mode := config["mode"]
+	switch mode {
+	case ThreatModeAdd, ThreatModeSetToValue:
+		if config["amount"] == "" {
+			return fmt.Errorf("amount config required for mode %q", mode)
+		}
+		if _, err := strconv.Atoi(config["amount"]); err != nil {
+			return fmt.Errorf("amount must be an integer: %w", err)
+		}
+	case ThreatModeSetToTop:
+		// No amount needed.
+	default:
+		return fmt.Errorf("unknown threat mode %q", mode)
+	}
+	return nil
+}
+
+func (e *threatEffect) Create(_ string, config map[string]string, targets []assets.TargetSpec) EffectFunc {
+	mode := config["mode"]
+	amount, _ := strconv.Atoi(config["amount"])
+
+	return func(actor shared.Actor, resolved map[string]*TargetRef, _ *AbilityResult) error {
+		ref := resolved["target"]
+		if ref == nil || ref.Actor == nil {
+			return nil
+		}
+		target := ref.Actor.Actor()
+
+		// Ensure the caster is in combat with the target.
+		if err := e.combat.StartCombat(actor, target); err != nil {
+			return NewUserError(err.Error())
+		}
+
+		switch mode {
+		case ThreatModeAdd:
+			e.combat.AddThreat(actor, target, amount)
+		case ThreatModeSetToTop:
+			e.combat.TopThreat(actor, target)
+		case ThreatModeSetToValue:
+			e.combat.SetThreat(actor, target, amount)
+		}
+
 		return nil
 	}
 }

@@ -591,8 +591,8 @@ func (ci *CharacterInstance) StatSections() []StatSection {
 	})
 
 	// Combat section
-	ac := stats[assets.StatDEX].Mod() + ci.ModifierValue(assets.PerkKeyCombatAC)
-	attackMod := stats[assets.StatSTR].Mod() + char.Level/2
+	ac := assets.ApplyModifiers(stats[assets.StatDEX].Mod(), 0, ci, assets.CombatACPrefix)
+	attackMod := assets.ApplyModifiers(stats[assets.StatSTR].Mod()+char.Level/2, 0, ci, assets.CombatAttackPrefix)
 
 	dmgParts := ci.GrantArgs(assets.PerkGrantAttack)
 	if len(dmgParts) == 0 {
@@ -633,11 +633,12 @@ func (ci *CharacterInstance) StatSections() []StatSection {
 		if _, isStat := assets.StatPerkKeys[key]; isStat {
 			continue
 		}
-		if strings.HasPrefix(key, assets.ResourceKeyPrefix) {
+		if strings.HasPrefix(key, assets.ResourcePrefix+".") {
 			continue
 		}
-		switch key {
-		case assets.PerkKeyCombatAC, assets.PerkKeyCombatAttackMod:
+		if strings.HasPrefix(key, assets.CombatACPrefix+".") ||
+			strings.HasPrefix(key, assets.CombatAttackPrefix+".") ||
+			strings.HasPrefix(key, assets.CombatThreatPrefix+".") {
 			continue
 		}
 		modLines = append(modLines, StatLine{Value: fmt.Sprintf("  %s: %+d", key, val)})

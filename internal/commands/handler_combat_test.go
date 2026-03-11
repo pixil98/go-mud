@@ -20,6 +20,9 @@ type mockCombatManager struct {
 	threatAdded  bool
 	threatAmount int
 	threatCount  int
+	setThreatCalled bool
+	setThreatAmount int
+	topThreatCalled bool
 }
 
 func (m *mockCombatManager) StartCombat(attacker, target shared.Actor) error {
@@ -34,6 +37,15 @@ func (m *mockCombatManager) AddThreat(_, _ shared.Actor, amount int) {
 	m.threatAdded = true
 	m.threatCount++
 	m.threatAmount += amount
+}
+
+func (m *mockCombatManager) SetThreat(_, _ shared.Actor, amount int) {
+	m.setThreatCalled = true
+	m.setThreatAmount = amount
+}
+
+func (m *mockCombatManager) TopThreat(_, _ shared.Actor) {
+	m.topThreatCalled = true
 }
 
 

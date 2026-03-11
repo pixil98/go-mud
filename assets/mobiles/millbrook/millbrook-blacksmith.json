@@ -9,7 +9,7 @@
         "level": 3,
         "perks": [
             { "type": "modifier", "key": "core.resource.hp.max", "value": 40 },
-            { "type": "modifier", "key": "core.combat.ac", "value": 11 }
+            { "type": "modifier", "key": "core.combat.ac.flat", "value": 11 }
         ]
     }
 }

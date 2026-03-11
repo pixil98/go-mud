@@ -196,7 +196,7 @@ func TestManager_AddThreat(t *testing.T) {
 		want            int
 	}{
 		"basic threat":    {amount: 10, want: 10},
-		"with threat mod": {sourceThreatMod: 5, amount: 10, want: 15},
+		"with threat mod": {sourceThreatMod: 5, amount: 10, want: 15}, // flat bonus
 		"zero amount":     {amount: 0, want: 0},
 		"accumulates":     {amount: 7, want: 7},
 	}
@@ -206,9 +206,94 @@ func TestManager_AddThreat(t *testing.T) {
 			m, _ := newTestManager()
 			source := newMC("source")
 			target := newMC("target")
-			source.modifiers[assets.PerkKeyCombatThreatMod] = tc.sourceThreatMod
+			source.modifiers[assets.BuildKey(assets.CombatThreatPrefix, assets.ModSuffixFlat)] = tc.sourceThreatMod
 
 			m.AddThreat(source, target, tc.amount)
+
+			m.mu.Lock()
+			got := m.combatants["target"].threat["source"]
+			m.mu.Unlock()
+
+			if got != tc.want {
+				t.Errorf("threat = %d, want %d", got, tc.want)
+			}
+		})
+	}
+}
+
+// --- SetThreat tests ---
+
+func TestManager_SetThreat(t *testing.T) {
+	tests := map[string]struct {
+		initial int
+		set     int
+		want    int
+	}{
+		"set from zero":    {initial: 0, set: 50, want: 50},
+		"overwrite higher": {initial: 100, set: 25, want: 25},
+		"set to zero":      {initial: 30, set: 0, want: 0},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			m, _ := newTestManager()
+			source := newMC("source")
+			target := newMC("target")
+
+			if tc.initial > 0 {
+				m.AddThreat(source, target, tc.initial)
+			}
+
+			m.SetThreat(source, target, tc.set)
+
+			m.mu.Lock()
+			got := m.combatants["target"].threat["source"]
+			m.mu.Unlock()
+
+			if got != tc.want {
+				t.Errorf("threat = %d, want %d", got, tc.want)
+			}
+		})
+	}
+}
+
+// --- TopThreat tests ---
+
+func TestManager_TopThreat(t *testing.T) {
+	tests := map[string]struct {
+		existing map[string]int // pre-set threat entries on target
+		want     int            // expected threat for "source" after TopThreat
+	}{
+		"empty table": {
+			existing: map[string]int{},
+			want:     1,
+		},
+		"already highest": {
+			existing: map[string]int{"source": 50, "other": 30},
+			want:     51,
+		},
+		"below other": {
+			existing: map[string]int{"source": 10, "other": 100},
+			want:     101,
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			m, _ := newTestManager()
+			source := newMC("source")
+			target := newMC("target")
+
+			// Pre-populate threat table.
+			m.mu.Lock()
+			state := m.register(target)
+			for k, v := range tc.existing {
+				m.register(newMC(k))
+				state.threat[k] = v
+			}
+			m.mu.Unlock()
+
+			m.TopThreat(source, target)
 
 			m.mu.Lock()
 			got := m.combatants["target"].threat["source"]

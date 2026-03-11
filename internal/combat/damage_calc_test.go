@@ -13,6 +13,14 @@ func (m mockPerkReader) ModifierValue(key string) int { return m[key] }
 func TestCalcDamage(t *testing.T) {
 	const dmgType = "test-type"
 
+	// Helper to build keys concisely.
+	dmgKey := func(typ, suffix string) string {
+		return assets.BuildKey(assets.DamagePrefix, typ, suffix)
+	}
+	defKey := func(typ, category, suffix string) string {
+		return assets.BuildKey(assets.DefensePrefix, typ, category, suffix)
+	}
+
 	tests := map[string]struct {
 		raw         int
 		attacker    mockPerkReader
@@ -26,95 +34,95 @@ func TestCalcDamage(t *testing.T) {
 
 		// Attacker damage pct.
 		"dmg pct type-specific": {raw: 10, attacker: mockPerkReader{
-			assets.DamageKey(dmgType, assets.DamageAspectPct): 50,
+			dmgKey(dmgType, assets.ModSuffixPct): 50,
 		}, target: mockPerkReader{}, wantDamage: 15},
 		"dmg pct all": {raw: 10, attacker: mockPerkReader{
-			assets.DamageKey(assets.DamageTypeAll, assets.DamageAspectPct): 50,
+			dmgKey(assets.DamageTypeAll, assets.ModSuffixPct): 50,
 		}, target: mockPerkReader{}, wantDamage: 15},
 		"dmg pct type + all stack": {raw: 10, attacker: mockPerkReader{
-			assets.DamageKey(dmgType, assets.DamageAspectPct):              25,
-			assets.DamageKey(assets.DamageTypeAll, assets.DamageAspectPct): 25,
+			dmgKey(dmgType, assets.ModSuffixPct):              25,
+			dmgKey(assets.DamageTypeAll, assets.ModSuffixPct): 25,
 		}, target: mockPerkReader{}, wantDamage: 15},
 		"dmg pct negative": {raw: 10, attacker: mockPerkReader{
-			assets.DamageKey(dmgType, assets.DamageAspectPct): -50,
+			dmgKey(dmgType, assets.ModSuffixPct): -50,
 		}, target: mockPerkReader{}, wantDamage: 5},
 
 		// Attacker flat damage bonus.
 		"flat type-specific": {raw: 10, attacker: mockPerkReader{
-			assets.DamageKey(dmgType, assets.DamageAspectFlat): 3,
+			dmgKey(dmgType, assets.ModSuffixFlat): 3,
 		}, target: mockPerkReader{}, wantDamage: 13},
 		"flat all": {raw: 10, attacker: mockPerkReader{
-			assets.DamageKey(assets.DamageTypeAll, assets.DamageAspectFlat): 3,
+			dmgKey(assets.DamageTypeAll, assets.ModSuffixFlat): 3,
 		}, target: mockPerkReader{}, wantDamage: 13},
 		"flat type + all stack": {raw: 10, attacker: mockPerkReader{
-			assets.DamageKey(dmgType, assets.DamageAspectFlat):              2,
-			assets.DamageKey(assets.DamageTypeAll, assets.DamageAspectFlat): 3,
+			dmgKey(dmgType, assets.ModSuffixFlat):              2,
+			dmgKey(assets.DamageTypeAll, assets.ModSuffixFlat): 3,
 		}, target: mockPerkReader{}, wantDamage: 15},
 		"flat negative": {raw: 10, attacker: mockPerkReader{
-			assets.DamageKey(dmgType, assets.DamageAspectFlat): -5,
+			dmgKey(dmgType, assets.ModSuffixFlat): -5,
 		}, target: mockPerkReader{}, wantDamage: 5},
 		"flat floors at 1": {raw: 10, attacker: mockPerkReader{
-			assets.DamageKey(dmgType, assets.DamageAspectFlat): -100,
+			dmgKey(dmgType, assets.ModSuffixFlat): -100,
 		}, target: mockPerkReader{}, wantDamage: 1},
 
 		// Pipeline order: pct before flat.
 		// raw=10, pct=50 → 15, flat=2 → 17
 		"pct then flat ordering": {raw: 10, attacker: mockPerkReader{
-			assets.DamageKey(dmgType, assets.DamageAspectPct):  50,
-			assets.DamageKey(dmgType, assets.DamageAspectFlat): 2,
+			dmgKey(dmgType, assets.ModSuffixPct):  50,
+			dmgKey(dmgType, assets.ModSuffixFlat): 2,
 		}, target: mockPerkReader{}, wantDamage: 17},
 
 		// Target pct absorb.
 		"absorb pct type-specific": {raw: 10, attacker: mockPerkReader{}, target: mockPerkReader{
-			assets.DefenseKey(dmgType, assets.DefenseAspectAbsorbPct): 50,
+			defKey(dmgType, assets.DefenseCategoryAbsorb, assets.ModSuffixPct): 50,
 		}, wantDamage: 5},
 		"absorb pct all": {raw: 10, attacker: mockPerkReader{}, target: mockPerkReader{
-			assets.DefenseKey(assets.DamageTypeAll, assets.DefenseAspectAbsorbPct): 50,
+			defKey(assets.DamageTypeAll, assets.DefenseCategoryAbsorb, assets.ModSuffixPct): 50,
 		}, wantDamage: 5},
 		"absorb pct type + all stack": {raw: 10, attacker: mockPerkReader{}, target: mockPerkReader{
-			assets.DefenseKey(dmgType, assets.DefenseAspectAbsorbPct):              25,
-			assets.DefenseKey(assets.DamageTypeAll, assets.DefenseAspectAbsorbPct): 25,
+			defKey(dmgType, assets.DefenseCategoryAbsorb, assets.ModSuffixPct):              25,
+			defKey(assets.DamageTypeAll, assets.DefenseCategoryAbsorb, assets.ModSuffixPct): 25,
 		}, wantDamage: 5},
 
 		// Target flat absorb.
 		"absorb flat type-specific": {raw: 10, attacker: mockPerkReader{}, target: mockPerkReader{
-			assets.DefenseKey(dmgType, assets.DefenseAspectAbsorb): 3,
+			defKey(dmgType, assets.DefenseCategoryAbsorb, assets.ModSuffixFlat): 3,
 		}, wantDamage: 7},
 		"absorb flat all": {raw: 10, attacker: mockPerkReader{}, target: mockPerkReader{
-			assets.DefenseKey(assets.DamageTypeAll, assets.DefenseAspectAbsorb): 3,
+			defKey(assets.DamageTypeAll, assets.DefenseCategoryAbsorb, assets.ModSuffixFlat): 3,
 		}, wantDamage: 7},
 		"absorb flat type + all stack": {raw: 10, attacker: mockPerkReader{}, target: mockPerkReader{
-			assets.DefenseKey(dmgType, assets.DefenseAspectAbsorb):              3,
-			assets.DefenseKey(assets.DamageTypeAll, assets.DefenseAspectAbsorb): 2,
+			defKey(dmgType, assets.DefenseCategoryAbsorb, assets.ModSuffixFlat):              3,
+			defKey(assets.DamageTypeAll, assets.DefenseCategoryAbsorb, assets.ModSuffixFlat): 2,
 		}, wantDamage: 5},
 		"absorb flat floors at 1": {raw: 10, attacker: mockPerkReader{}, target: mockPerkReader{
-			assets.DefenseKey(dmgType, assets.DefenseAspectAbsorb): 100,
+			defKey(dmgType, assets.DefenseCategoryAbsorb, assets.ModSuffixFlat): 100,
 		}, wantDamage: 1},
 
 		// Pipeline order: pct absorb before flat absorb.
 		// raw=10, absorbPct=50 → 5, flatAbsorb=2 → 3
 		"absorb pct then flat ordering": {raw: 10, attacker: mockPerkReader{}, target: mockPerkReader{
-			assets.DefenseKey(dmgType, assets.DefenseAspectAbsorbPct): 50,
-			assets.DefenseKey(dmgType, assets.DefenseAspectAbsorb):    2,
+			defKey(dmgType, assets.DefenseCategoryAbsorb, assets.ModSuffixPct):  50,
+			defKey(dmgType, assets.DefenseCategoryAbsorb, assets.ModSuffixFlat): 2,
 		}, wantDamage: 3},
 
 		// Reflect.
 		"reflect less than damage": {raw: 10, attacker: mockPerkReader{}, target: mockPerkReader{
-			assets.DefenseKey(dmgType, assets.DefenseAspectReflect): 3,
+			defKey(dmgType, assets.DefenseCategoryReflect, assets.ModSuffixFlat): 3,
 		}, wantDamage: 10, wantReflect: 3},
 		"reflect equals damage": {raw: 10, attacker: mockPerkReader{}, target: mockPerkReader{
-			assets.DefenseKey(dmgType, assets.DefenseAspectReflect): 10,
+			defKey(dmgType, assets.DefenseCategoryReflect, assets.ModSuffixFlat): 10,
 		}, wantDamage: 10, wantReflect: 10},
 		"reflect capped at damage": {raw: 10, attacker: mockPerkReader{}, target: mockPerkReader{
-			assets.DefenseKey(dmgType, assets.DefenseAspectReflect): 50,
+			defKey(dmgType, assets.DefenseCategoryReflect, assets.ModSuffixFlat): 50,
 		}, wantDamage: 10, wantReflect: 10},
 		"reflect type + all stack": {raw: 10, attacker: mockPerkReader{}, target: mockPerkReader{
-			assets.DefenseKey(dmgType, assets.DefenseAspectReflect):              3,
-			assets.DefenseKey(assets.DamageTypeAll, assets.DefenseAspectReflect): 2,
+			defKey(dmgType, assets.DefenseCategoryReflect, assets.ModSuffixFlat):              3,
+			defKey(assets.DamageTypeAll, assets.DefenseCategoryReflect, assets.ModSuffixFlat): 2,
 		}, wantDamage: 10, wantReflect: 5},
 		"reflect capped after absorb": {raw: 10, attacker: mockPerkReader{}, target: mockPerkReader{
-			assets.DefenseKey(dmgType, assets.DefenseAspectAbsorb):  3,
-			assets.DefenseKey(dmgType, assets.DefenseAspectReflect): 10,
+			defKey(dmgType, assets.DefenseCategoryAbsorb, assets.ModSuffixFlat):  3,
+			defKey(dmgType, assets.DefenseCategoryReflect, assets.ModSuffixFlat): 10,
 		}, wantDamage: 7, wantReflect: 7},
 	}
 

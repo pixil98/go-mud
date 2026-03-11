@@ -9,7 +9,7 @@
         "flags": ["wearable"],
         "wear_slots": ["off_hand"],
         "perks": [
-            { "type": "modifier", "key": "core.combat.ac", "value": 2 }
+            { "type": "modifier", "key": "core.combat.ac.flat", "value": 2 }
         ]
     }
 }
