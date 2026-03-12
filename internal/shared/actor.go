@@ -15,7 +15,7 @@ type Actor interface {
 	IsAlive() bool
 	Level() int
 	Resource(name string) (current, max int)
-	AdjustResource(name string, delta int)
+	AdjustResource(name string, delta int, overfill bool)
 	SpendAP(cost int) bool
 	HasGrant(key, arg string) bool
 	ModifierValue(key string) int
@@ -25,4 +25,5 @@ type Actor interface {
 	CombatTargetId() string
 	SetCombatTargetId(id string)
 	OnDeath() []any
+	IsCharacter() bool
 }

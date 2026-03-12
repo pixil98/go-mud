@@ -51,7 +51,7 @@ func (m *mockFollowActor) IsInCombat() bool                         { return fal
 func (m *mockFollowActor) IsAlive() bool                            { return true }
 func (m *mockFollowActor) Level() int                               { return 1 }
 func (m *mockFollowActor) Resource(string) (int, int)               { return 0, 0 }
-func (m *mockFollowActor) AdjustResource(string, int)               {}
+func (m *mockFollowActor) AdjustResource(string, int, bool)         {}
 func (m *mockFollowActor) SpendAP(int) bool                         { return true }
 func (m *mockFollowActor) HasGrant(string, string) bool             { return false }
 func (m *mockFollowActor) ModifierValue(string) int                 { return 0 }
@@ -61,6 +61,7 @@ func (m *mockFollowActor) SetInCombat(bool)                         {}
 func (m *mockFollowActor) CombatTargetId() string                   { return "" }
 func (m *mockFollowActor) SetCombatTargetId(string)                 {}
 func (m *mockFollowActor) OnDeath() []any                           { return nil }
+func (m *mockFollowActor) IsCharacter() bool                        { return true }
 func (m *mockFollowActor) GetFollowingId() string                   { return m.followingId }
 func (m *mockFollowActor) SetFollowingId(id string)                 { m.followingId = id }
 

@@ -314,7 +314,7 @@ type notFoundContext struct {
 // ResolveSpecs resolves all targets from the command's targets section.
 // Specs are processed in order so that scope_target references to earlier
 // targets work correctly. Inputs are assumed to have been validated by parseInputs.
-func (r *TargetResolver) ResolveSpecs(specs []assets.TargetSpec, inputs map[string]any, session ScopeActor) (map[string]*TargetRef, error) {
+func (r *TargetResolver) ResolveSpecs(specs []assets.TargetSpec, inputs map[string]any, actor ScopeActor) (map[string]*TargetRef, error) {
 	if len(specs) == 0 {
 		return make(map[string]*TargetRef), nil
 	}
@@ -324,8 +324,17 @@ func (r *TargetResolver) ResolveSpecs(specs []assets.TargetSpec, inputs map[stri
 	for _, spec := range specs {
 		// Get the input value; inputs were already parsed and validated.
 		name, _ := inputs[spec.Input].(string)
-		if name == "" && spec.Default == assets.DefaultCombatTarget {
-			name = session.CombatTargetId()
+		if name == "" {
+			switch spec.Default {
+			case assets.DefaultCombatTarget:
+				name = actor.CombatTargetId()
+			case assets.DefaultSelf:
+				targets[spec.Name] = &TargetRef{
+					Type:  targetTypeActor,
+					Actor: actorRefFromActor(actor),
+				}
+				continue
+			}
 		}
 		if name == "" {
 			if spec.Optional {
@@ -349,7 +358,7 @@ func (r *TargetResolver) ResolveSpecs(specs []assets.TargetSpec, inputs map[stri
 
 		// Normal scope resolution
 		s := parseScope(spec.Scopes)
-		spaces, err := r.scopes.SpacesFor(s, session)
+		spaces, err := r.scopes.SpacesFor(s, actor)
 		if err != nil {
 			return nil, err
 		}

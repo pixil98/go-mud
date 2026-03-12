@@ -48,6 +48,7 @@ func (m *mockCombatManager) TopThreat(_, _ shared.Actor) {
 	m.topThreatCalled = true
 }
 
+func (m *mockCombatManager) NotifyHeal(_, _ shared.Actor, _ int) {}
 
 // mockAssistActor is a lightweight test double for AssistActor.
 // It also satisfies AssistedPlayer, so it can be used for both the actor and
@@ -69,7 +70,7 @@ func (m *mockAssistActor) IsInCombat() bool                   { return m.inComba
 func (m *mockAssistActor) SetInCombat(bool)                   {}
 func (m *mockAssistActor) IsAlive() bool                      { return true }
 func (m *mockAssistActor) Resource(string) (int, int)         { return 0, 0 }
-func (m *mockAssistActor) AdjustResource(string, int)         {}
+func (m *mockAssistActor) AdjustResource(string, int, bool)   {}
 func (m *mockAssistActor) SpendAP(int) bool                   { return true }
 func (m *mockAssistActor) ModifierValue(string) int           { return 0 }
 func (m *mockAssistActor) GrantArgs(string) []string          { return nil }
@@ -78,6 +79,7 @@ func (m *mockAssistActor) SetCombatTargetId(string)           {}
 func (m *mockAssistActor) Location() (string, string)         { return m.zoneId, m.roomId }
 func (m *mockAssistActor) Level() int                         { return 1 }
 func (m *mockAssistActor) OnDeath() []any                     { return nil }
+func (m *mockAssistActor) IsCharacter() bool                  { return true }
 func (m *mockAssistActor) GetFollowingId() string             { return m.followingId }
 func (m *mockAssistActor) HasGrant(key, _ string) bool        { return m.grants[key] }
 func (m *mockAssistActor) AddTimedPerks(string, []assets.Perk, int) {}

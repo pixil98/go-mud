@@ -133,7 +133,7 @@ func (ca *compiledAbility) exec(actor shared.Actor, targets map[string]*TargetRe
 
 	// Deduct resource cost.
 	if ca.resourceCost > 0 {
-		actor.AdjustResource(ca.resource, -ca.resourceCost)
+		actor.AdjustResource(ca.resource, -ca.resourceCost, false)
 	}
 
 	// Expand message templates first so effects can append detail lines.
@@ -337,7 +337,7 @@ func (e *attackEffect) Create(_ string, _ map[string]string, targets []assets.Ta
 // damageEffect applies damage to the primary target and initiates combat if the target is a mob.
 //
 // Config fields:
-//   - "damage" (string, required): flat integer or dice expression (e.g. "25", "2d6+3").
+//   - "amount" (string, required): flat integer or dice expression (e.g. "25", "2d6+3").
 //   - "damage_types" (comma-separated string, optional): damage type tags (e.g. "fire,ice").
 type damageEffect struct {
 	combat CombatManager
@@ -352,18 +352,18 @@ func (e *damageEffect) Spec() *HandlerSpec {
 }
 
 func (e *damageEffect) ValidateConfig(config map[string]string) error {
-	dmg := config["damage"]
-	if dmg == "" {
-		return fmt.Errorf("damage config required")
+	amount := config["amount"]
+	if amount == "" {
+		return fmt.Errorf("amount config required")
 	}
-	if _, err := combat.ParseDice(dmg); err != nil {
-		return fmt.Errorf("damage must be an integer or dice expression: %w", err)
+	if _, err := combat.ParseDice(amount); err != nil {
+		return fmt.Errorf("amount must be an integer or dice expression: %w", err)
 	}
 	return nil
 }
 
 func (e *damageEffect) Create(_ string, config map[string]string, targets []assets.TargetSpec) EffectFunc {
-	dice, _ := combat.ParseDice(config["damage"])
+	dice, _ := combat.ParseDice(config["amount"])
 
 	var damageTypes []string
 	if dt := config["damage_types"]; dt != "" {
@@ -398,21 +398,22 @@ func (e *damageEffect) Create(_ string, config map[string]string, targets []asse
 // reflected damage, combat initiation, and threat. Returns the final damage dealt.
 func dealDamage(cm CombatManager, actor shared.Actor, target shared.Actor, raw int, dmgType string) int {
 	damage, reflected := combat.CalcDamage(raw, dmgType, actor, target)
-	target.AdjustResource(assets.ResourceHp, -damage)
+	target.AdjustResource(assets.ResourceHp, -damage, false)
 	if reflected > 0 {
-		actor.AdjustResource(assets.ResourceHp, -reflected)
+		actor.AdjustResource(assets.ResourceHp, -reflected, false)
 	}
 	_ = cm.StartCombat(actor, target)
 	cm.AddThreat(actor, target, damage)
 	return damage
 }
 
-// aoeDamageEffect applies damage to all mobs and (optionally) players in the caster's room.
+// aoeDamageEffect applies damage to enemies in the caster's room. Players hit
+// mobs; mobs hit players. The "hit_allies" config extends targeting to same-side.
 //
 // Config fields:
-//   - "damage" (int string, required): flat damage before modifiers.
+//   - "amount" (string, required): flat integer or dice expression before modifiers.
 //   - "damage_type" (string, optional): damage type tag. Defaults to untyped.
-//   - "hit_players" ("true"/"false", optional): whether to hit other players. Default false.
+//   - "hit_allies" ("true"/"false", optional): also damage same-side targets. Default false.
 type aoeDamageEffect struct {
 	combat CombatManager
 	world  ZoneLocator
@@ -421,23 +422,23 @@ type aoeDamageEffect struct {
 func (e *aoeDamageEffect) Spec() *HandlerSpec { return nil }
 
 func (e *aoeDamageEffect) ValidateConfig(config map[string]string) error {
-	dmg := config["damage"]
-	if dmg == "" {
-		return fmt.Errorf("damage config required")
+	amount := config["amount"]
+	if amount == "" {
+		return fmt.Errorf("amount config required")
 	}
-	if _, err := combat.ParseDice(dmg); err != nil {
-		return fmt.Errorf("damage must be an integer or dice expression: %w", err)
+	if _, err := combat.ParseDice(amount); err != nil {
+		return fmt.Errorf("amount must be an integer or dice expression: %w", err)
 	}
 	return nil
 }
 
 func (e *aoeDamageEffect) Create(_ string, config map[string]string, _ []assets.TargetSpec) EffectFunc {
-	dice, _ := combat.ParseDice(config["damage"])
+	dice, _ := combat.ParseDice(config["amount"])
 	dmgType := config["damage_type"]
 	if dmgType == "" {
 		dmgType = assets.DamageTypeUntyped
 	}
-	hitPlayers := config["hit_players"] == "true"
+	hitAllies := config["hit_allies"] == "true"
 
 	return func(actor shared.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
 		if actor.HasGrant(assets.PerkGrantPeaceful, "") {
@@ -454,20 +455,162 @@ func (e *aoeDamageEffect) Create(_ string, config map[string]string, _ []assets.
 			return nil
 		}
 
-		ri.ForEachMob(func(mi *game.MobileInstance) {
-			dealDamage(e.combat, actor, mi, dice.Roll(), dmgType)
-		})
+		actorId := actor.Id()
+		isChar := actor.IsCharacter()
 
-		if hitPlayers {
-			actorId := actor.Id()
+		// Hit enemies: players hit mobs, mobs hit players.
+		if isChar {
+			ri.ForEachMob(func(mi *game.MobileInstance) {
+				dealDamage(e.combat, actor, mi, dice.Roll(), dmgType)
+			})
+		} else {
 			ri.ForEachPlayer(func(charId string, ci *game.CharacterInstance) {
-				if charId == actorId {
-					return
-				}
 				dealDamage(e.combat, actor, ci, dice.Roll(), dmgType)
 			})
 		}
 
+		// Optionally hit allies (skip self).
+		if hitAllies {
+			if isChar {
+				ri.ForEachPlayer(func(charId string, ci *game.CharacterInstance) {
+					if charId == actorId {
+						return
+					}
+					dealDamage(e.combat, actor, ci, dice.Roll(), dmgType)
+				})
+			} else {
+				ri.ForEachMob(func(mi *game.MobileInstance) {
+					if mi.Id() == actorId {
+						return
+					}
+					dealDamage(e.combat, actor, mi, dice.Roll(), dmgType)
+				})
+			}
+		}
+
+		return nil
+	}
+}
+
+// aoeHealEffect heals allies in the caster's room. Players heal players; mobs
+// heal mobs. The "hit_enemies" config extends targeting to the opposite side.
+//
+// Config fields:
+//   - "amount" (string, required): flat integer or dice expression.
+//   - "overheal" ("true"/"false", optional): allow healing above max HP. Default false.
+//   - "hit_enemies" ("true"/"false", optional): also heal opposite-side targets. Default false.
+type aoeHealEffect struct {
+	combat CombatManager
+	world  ZoneLocator
+}
+
+func (e *aoeHealEffect) Spec() *HandlerSpec { return nil }
+
+func (e *aoeHealEffect) ValidateConfig(config map[string]string) error {
+	amount := config["amount"]
+	if amount == "" {
+		return fmt.Errorf("amount config required")
+	}
+	if _, err := combat.ParseDice(amount); err != nil {
+		return fmt.Errorf("amount must be an integer or dice expression: %w", err)
+	}
+	return nil
+}
+
+func (e *aoeHealEffect) Create(_ string, config map[string]string, _ []assets.TargetSpec) EffectFunc {
+	dice, _ := combat.ParseDice(config["amount"])
+	overheal := config["overheal"] == "true"
+	hitEnemies := config["hit_enemies"] == "true"
+
+	heal := func(actor shared.Actor, target shared.Actor) {
+		healAmount := dice.Roll()
+		target.AdjustResource(assets.ResourceHp, healAmount, overheal)
+		e.combat.NotifyHeal(actor, target, healAmount/2)
+	}
+
+	return func(actor shared.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
+		zoneId, roomId := actor.Location()
+		zi := e.world.GetZone(zoneId)
+		if zi == nil {
+			return nil
+		}
+		ri := zi.GetRoom(roomId)
+		if ri == nil {
+			return nil
+		}
+
+		isChar := actor.IsCharacter()
+
+		// Heal allies: players heal players, mobs heal mobs.
+		if isChar {
+			ri.ForEachPlayer(func(_ string, ci *game.CharacterInstance) {
+				heal(actor, ci)
+			})
+		} else {
+			ri.ForEachMob(func(mi *game.MobileInstance) {
+				heal(actor, mi)
+			})
+		}
+
+		// Optionally heal enemies.
+		if hitEnemies {
+			if isChar {
+				ri.ForEachMob(func(mi *game.MobileInstance) {
+					heal(actor, mi)
+				})
+			} else {
+				ri.ForEachPlayer(func(_ string, ci *game.CharacterInstance) {
+					heal(actor, ci)
+				})
+			}
+		}
+
+		return nil
+	}
+}
+
+// healEffect restores HP to the target and generates threat on all combatants
+// fighting the target at half the amount healed.
+//
+// Config fields:
+//   - "amount" (string, required): flat integer or dice expression (e.g. "25", "2d6+3").
+//   - "overheal" ("true"/"false", optional): allow healing above max HP. Default false.
+type healEffect struct {
+	combat CombatManager
+}
+
+func (e *healEffect) Spec() *HandlerSpec {
+	return &HandlerSpec{
+		Targets: []TargetRequirement{
+			{Name: "target", Type: targetTypeActor, Required: true},
+		},
+	}
+}
+
+func (e *healEffect) ValidateConfig(config map[string]string) error {
+	amount := config["amount"]
+	if amount == "" {
+		return fmt.Errorf("amount config required")
+	}
+	if _, err := combat.ParseDice(amount); err != nil {
+		return fmt.Errorf("amount must be an integer or dice expression: %w", err)
+	}
+	return nil
+}
+
+func (e *healEffect) Create(_ string, config map[string]string, _ []assets.TargetSpec) EffectFunc {
+	dice, _ := combat.ParseDice(config["amount"])
+	overheal := config["overheal"] == "true"
+
+	return func(actor shared.Actor, resolved map[string]*TargetRef, _ *AbilityResult) error {
+		ref := resolved["target"]
+		if ref == nil || ref.Actor == nil {
+			return nil
+		}
+		target := ref.Actor.Actor()
+		healAmount := dice.Roll()
+		target.AdjustResource(assets.ResourceHp, healAmount, overheal)
+		e.combat.NotifyHeal(actor, target, healAmount/2)
 		return nil
 	}
 }

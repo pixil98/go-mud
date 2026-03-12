@@ -138,3 +138,45 @@ func TestCalcDamage(t *testing.T) {
 		})
 	}
 }
+
+func TestCalcThreat(t *testing.T) {
+	threatKey := func(suffix string) string {
+		return assets.BuildKey(assets.CombatThreatPrefix, suffix)
+	}
+
+	tests := map[string]struct {
+		raw   int
+		actor mockPerkReader
+		want  int
+	}{
+		"no modifiers": {raw: 10, actor: mockPerkReader{}, want: 10},
+		"flat bonus": {raw: 10, actor: mockPerkReader{
+			threatKey(assets.ModSuffixFlat): 5,
+		}, want: 15},
+		"flat reduction": {raw: 10, actor: mockPerkReader{
+			threatKey(assets.ModSuffixFlat): -3,
+		}, want: 7},
+		"pct bonus": {raw: 10, actor: mockPerkReader{
+			threatKey(assets.ModSuffixPct): 50,
+		}, want: 15},
+		"pct reduction": {raw: 10, actor: mockPerkReader{
+			threatKey(assets.ModSuffixPct): -50,
+		}, want: 5},
+		"pct then flat": {raw: 10, actor: mockPerkReader{
+			threatKey(assets.ModSuffixPct):  50,
+			threatKey(assets.ModSuffixFlat): 2,
+		}, want: 17},
+		"floors at 0": {raw: 10, actor: mockPerkReader{
+			threatKey(assets.ModSuffixFlat): -100,
+		}, want: 0},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			got := CalcThreat(tc.raw, tc.actor)
+			if got != tc.want {
+				t.Errorf("CalcThreat(%d) = %d, want %d", tc.raw, got, tc.want)
+			}
+		})
+	}
+}

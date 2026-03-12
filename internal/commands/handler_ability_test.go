@@ -406,7 +406,7 @@ func TestDamageEffect_InitiatesCombat(t *testing.T) {
 	cm := &mockCombatManager{}
 	effect := &damageEffect{combat: cm}
 
-	config := map[string]string{"damage": "10"}
+	config := map[string]string{"amount": "10"}
 	targetSpecs := []assets.TargetSpec{{Name: "target"}}
 	targets := map[string]*TargetRef{
 		"target": {Type: targetTypeActor, Actor: &ActorRef{
@@ -438,7 +438,7 @@ func TestAoeDamageEffect(t *testing.T) {
 
 	tests := map[string]struct {
 		mobCount   int
-		hitPlayers bool
+		hitAllies bool
 		wantStarts int
 		wantHPDrop bool // whether mobs should take damage
 		wantPlayer bool // whether other player should take damage
@@ -452,16 +452,16 @@ func TestAoeDamageEffect(t *testing.T) {
 			mobCount:   0,
 			wantStarts: 0,
 		},
-		"does not hit players by default": {
+		"does not hit allies by default": {
 			mobCount:   1,
-			hitPlayers: false,
+			hitAllies: false,
 			wantStarts: 1,
 			wantHPDrop: true,
 			wantPlayer: false,
 		},
-		"hits players when configured": {
+		"hits allies when configured": {
 			mobCount:   0,
-			hitPlayers: true,
+			hitAllies: true,
 			wantStarts: 1,
 			wantPlayer: true,
 		},
@@ -491,9 +491,9 @@ func TestAoeDamageEffect(t *testing.T) {
 			world := &mockZoneLocator{zones: map[string]*game.ZoneInstance{"z": zone}}
 			effect := &aoeDamageEffect{combat: cm, world: world}
 
-			config := map[string]string{"damage": "10"}
-			if tc.hitPlayers {
-				config["hit_players"] = "true"
+			config := map[string]string{"amount": "10"}
+			if tc.hitAllies {
+				config["hit_allies"] = "true"
 			}
 
 			fn := effect.Create("test:0", config, nil)
@@ -537,7 +537,7 @@ func TestAoeDamageEffect_PeacefulArea(t *testing.T) {
 	world := &mockZoneLocator{zones: map[string]*game.ZoneInstance{"z": zone}}
 	effect := &aoeDamageEffect{combat: cm, world: world}
 
-	fn := effect.Create("test:0", map[string]string{"damage": "10"}, nil)
+	fn := effect.Create("test:0", map[string]string{"amount": "10"}, nil)
 	err := fn(player, nil, &AbilityResult{})
 	if err == nil {
 		t.Fatal("expected peaceful area error, got nil")

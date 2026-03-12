@@ -3,7 +3,7 @@
     "id": "fireball",
     "spec": {
         "effects": [
-            {"type": "damage", "config": {"damage": "25"}}
+            {"type": "damage", "config": {"amount": "25"}}
         ],
         "command": {
             "category": "combat",

@@ -26,6 +26,7 @@ const (
 // Default target constants.
 const (
 	DefaultCombatTarget = "combat_target" // Resolve to the actor's current combat target
+	DefaultSelf         = "self"          // Resolve to the actor themselves
 )
 
 // Scope constants.

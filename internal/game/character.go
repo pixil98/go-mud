@@ -110,12 +110,12 @@ func materializeInventoryEquipment(c *assets.Character) (*Inventory, *Equipment,
 	}
 
 	eq := NewEquipment()
-	for slot, spawn := range c.Equipment {
-		oi, err := SpawnObject(spawn)
+	for _, es := range c.Equipment {
+		oi, err := SpawnObject(es.ObjectSpawn)
 		if err != nil {
 			return nil, nil, err
 		}
-		if err := eq.Equip(slot, 0, oi); err != nil {
+		if err := eq.Equip(es.Slot, 0, oi); err != nil {
 			return nil, nil, err
 		}
 	}
@@ -380,10 +380,11 @@ func (ci *CharacterInstance) SetResource(name string, current int) {
 }
 
 // AdjustResource changes a resource's current value by delta, clamping to [0, max].
-func (ci *CharacterInstance) AdjustResource(name string, delta int) {
+// When overfill is true the max clamp is skipped, allowing values above maximum.
+func (ci *CharacterInstance) AdjustResource(name string, delta int, overfill bool) {
 	ci.mu.Lock()
 	defer ci.mu.Unlock()
-	ci.adjustResource(name, delta)
+	ci.adjustResource(name, delta, overfill)
 }
 
 // Tick advances one game tick: expires timed perks, resets action points,
@@ -440,6 +441,9 @@ func (ci *CharacterInstance) OnDeath() []any {
 	ci.Kick()
 	return nil
 }
+
+// IsCharacter returns true for player characters.
+func (ci *CharacterInstance) IsCharacter() bool { return true }
 
 // GainXP awards experience points to the character and returns true if the
 // character now has enough XP to advance to the next level.
@@ -501,10 +505,13 @@ func (ci *CharacterInstance) SaveCharacter(chars storage.Storer[*assets.Characte
 	})
 
 	// Convert runtime equipment to spawn specs (Equipment self-locks)
-	c.Equipment = make(map[string]assets.ObjectSpawn)
+	c.Equipment = nil
 	ci.equipment.ForEachSlot(func(slot EquipSlot) {
 		if slot.Obj != nil {
-			c.Equipment[slot.Slot] = objectInstanceToSpawn(slot.Obj)
+			c.Equipment = append(c.Equipment, assets.EquipmentSpawn{
+				Slot:        slot.Slot,
+				ObjectSpawn: objectInstanceToSpawn(slot.Obj),
+			})
 		}
 	})
 

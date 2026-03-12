@@ -79,8 +79,7 @@ func (m *Manager) AddThreat(source, target shared.Actor, amount int) {
 
 	m.register(source)
 	tState := m.register(target)
-	modified := assets.ApplyModifiers(amount, 0, source, assets.CombatThreatPrefix)
-	tState.threat[source.Id()] += modified
+	tState.threat[source.Id()] += CalcThreat(amount, source)
 }
 
 // SetThreat sets the threat that source has on target's threat table to an
@@ -110,6 +109,32 @@ func (m *Manager) TopThreat(source, target shared.Actor) {
 		}
 	}
 	tState.threat[source.Id()] = maxThreat + 1
+}
+
+// NotifyHeal adds heal-generated threat from healer to every combatant whose
+// threat table contains target. Threat modifiers are applied via CalcThreat.
+func (m *Manager) NotifyHeal(healer, target shared.Actor, amount int) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+
+	modified := CalcThreat(amount, healer)
+	if modified <= 0 {
+		return
+	}
+
+	healerId := healer.Id()
+	targetId := target.Id()
+	for _, state := range m.combatants {
+		if _, has := state.threat[targetId]; !has {
+			continue
+		}
+		if state.c.Id() == healerId {
+			continue
+		}
+		m.register(healer)
+		healer.SetInCombat(true)
+		state.threat[healerId] += modified
+	}
 }
 
 // ParseAttackArg extracts the damage type and dice expression from an attack grant arg.

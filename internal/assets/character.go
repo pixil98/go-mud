@@ -38,8 +38,8 @@ type Character struct {
 	Resources map[string]int `json:"resources,omitempty"`
 
 	// Inventory and equipment stored as spawn specs so objects are re-materialized on login
-	Inventory []ObjectSpawn          `json:"inventory,omitempty"`
-	Equipment map[string]ObjectSpawn `json:"equipment,omitempty"`
+	Inventory []ObjectSpawn   `json:"inventory,omitempty"`
+	Equipment []EquipmentSpawn `json:"equipment,omitempty"`
 }
 
 // NewCharacter creates a new level-0 character with default values.
@@ -86,13 +86,11 @@ func (c *Character) Resolve(pronouns storage.Storer[*Pronoun], races storage.Sto
 			c.Inventory[i].Object = unknownObject(c.Inventory[i].Object.Id())
 		}
 	}
-	for slot, spawn := range c.Equipment {
-		s := spawn
-		if err := s.Resolve(objs); err != nil {
-			slog.Warn("unresolvable equipment item, replacing with placeholder", "character", c.Name, "slot", slot, "error", err)
-			s.Object = unknownObject(s.Object.Id())
+	for i := range c.Equipment {
+		if err := c.Equipment[i].Resolve(objs); err != nil {
+			slog.Warn("unresolvable equipment item, replacing with placeholder", "character", c.Name, "slot", c.Equipment[i].Slot, "error", err)
+			c.Equipment[i].Object = unknownObject(c.Equipment[i].Object.Id())
 		}
-		c.Equipment[slot] = s
 	}
 	return nil
 }

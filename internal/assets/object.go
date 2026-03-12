@@ -146,3 +146,14 @@ func (s *ObjectSpawn) Resolve(objs storage.Storer[*Object]) error {
 	}
 	return el.Err()
 }
+
+// EquipmentSpawn pairs a slot name with an object spawn for equipment persistence.
+type EquipmentSpawn struct {
+	Slot string `json:"slot"`
+	ObjectSpawn
+}
+
+// Resolve resolves the embedded ObjectSpawn's foreign key references.
+func (es *EquipmentSpawn) Resolve(objs storage.Storer[*Object]) error {
+	return es.ObjectSpawn.Resolve(objs)
+}

@@ -48,3 +48,9 @@ func CalcDamage(raw int, dmgType string, attacker, target assets.PerkReader) (da
 
 	return damage, reflected
 }
+
+// CalcThreat applies perk-based threat modifiers to a raw threat value.
+// Returns the modified threat, floored at 0.
+func CalcThreat(raw int, actor assets.PerkReader) int {
+	return assets.ApplyModifiers(raw, 0, actor, assets.CombatThreatPrefix)
+}

@@ -29,7 +29,7 @@ type Mobile struct {
 	Inventory []ObjectSpawn `json:"inventory,omitempty"`
 
 	// Equipment is the mobile's starting equipment
-	Equipment map[string]ObjectSpawn `json:"equipment,omitempty"`
+	Equipment []EquipmentSpawn `json:"equipment,omitempty"`
 
 	Level int `json:"level,omitempty"`
 
@@ -75,10 +75,8 @@ func (m *Mobile) Resolve(objs storage.Storer[*Object]) error {
 	for i := range m.Inventory {
 		el.Add(m.Inventory[i].Resolve(objs))
 	}
-	for k := range m.Equipment {
-		eq := m.Equipment[k]
-		el.Add(eq.Resolve(objs))
-		m.Equipment[k] = eq
+	for i := range m.Equipment {
+		el.Add(m.Equipment[i].Resolve(objs))
 	}
 	return el.Err()
 }

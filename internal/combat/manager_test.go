@@ -41,13 +41,13 @@ func (c *mockCombatant) Resource(name string) (int, int) {
 	return 0, 0
 }
 
-func (c *mockCombatant) AdjustResource(name string, delta int) {
+func (c *mockCombatant) AdjustResource(name string, delta int, overfill bool) {
 	if name == assets.ResourceHp {
 		c.hp += delta
 		if c.hp < 0 {
 			c.hp = 0
 		}
-		if c.hp > c.hpMax {
+		if !overfill && c.hp > c.hpMax {
 			c.hp = c.hpMax
 		}
 		c.alive = c.hp > 0
@@ -70,7 +70,8 @@ func (c *mockCombatant) CombatTargetId() string          { return c.combatTarget
 func (c *mockCombatant) SetCombatTargetId(id string)     { c.combatTargetId = id }
 func (c *mockCombatant) Location() (string, string)      { return c.zoneId, c.roomId }
 func (c *mockCombatant) Level() int                      { return c.level }
-func (c *mockCombatant) OnDeath() []any { c.deathCalled = true; return nil }
+func (c *mockCombatant) OnDeath() []any  { c.deathCalled = true; return nil }
+func (c *mockCombatant) IsCharacter() bool { return false }
 
 func newMC(id string) *mockCombatant {
 	return &mockCombatant{
@@ -503,5 +504,125 @@ func TestManager_Tick_EmptyThreatCleanup(t *testing.T) {
 	}
 	if a.inCombat {
 		t.Error("removed combatant should have inCombat cleared")
+	}
+}
+
+func TestManager_NotifyHeal(t *testing.T) {
+	tests := map[string]struct {
+		setup    func(m *Manager) (healer, target *mockCombatant)
+		amount   int
+		wantThreat map[string]map[string]int // combatantId → {threatSourceId → threat}
+		wantInCombat bool
+	}{
+		"adds threat to mobs fighting target": {
+			setup: func(m *Manager) (*mockCombatant, *mockCombatant) {
+				healer := newMC("healer")
+				target := newMC("target")
+				mob := newMC("mob")
+				// mob is fighting target
+				if err := m.StartCombat(mob, target); err != nil {
+					panic(err)
+				}
+				return healer, target
+			},
+			amount: 20,
+			wantThreat: map[string]map[string]int{
+				"mob": {"healer": 20},
+			},
+			wantInCombat: true,
+		},
+		"no threat when no one fights target": {
+			setup: func(m *Manager) (*mockCombatant, *mockCombatant) {
+				healer := newMC("healer")
+				target := newMC("target")
+				return healer, target
+			},
+			amount:     20,
+			wantThreat: map[string]map[string]int{},
+		},
+		"applies threat modifiers": {
+			setup: func(m *Manager) (*mockCombatant, *mockCombatant) {
+				healer := newMC("healer")
+				healer.modifiers[assets.BuildKey(assets.CombatThreatPrefix, assets.ModSuffixFlat)] = 5
+				target := newMC("target")
+				mob := newMC("mob")
+				if err := m.StartCombat(mob, target); err != nil {
+					panic(err)
+				}
+				return healer, target
+			},
+			amount: 10,
+			wantThreat: map[string]map[string]int{
+				"mob": {"healer": 15}, // 10 + 5 flat
+			},
+			wantInCombat: true,
+		},
+		"skips self": {
+			setup: func(m *Manager) (*mockCombatant, *mockCombatant) {
+				healer := newMC("healer")
+				target := newMC("target")
+				// healer is fighting target (healer should not get threat on itself)
+				if err := m.StartCombat(healer, target); err != nil {
+					panic(err)
+				}
+				return healer, target
+			},
+			amount: 20,
+			wantThreat: map[string]map[string]int{
+				// healer already has threat from StartCombat, but NotifyHeal should not add more
+				"healer": {},
+			},
+		},
+		"multiple mobs fighting target": {
+			setup: func(m *Manager) (*mockCombatant, *mockCombatant) {
+				healer := newMC("healer")
+				target := newMC("target")
+				mob1 := newMC("mob1")
+				mob2 := newMC("mob2")
+				if err := m.StartCombat(mob1, target); err != nil {
+					panic(err)
+				}
+				if err := m.StartCombat(mob2, target); err != nil {
+					panic(err)
+				}
+				return healer, target
+			},
+			amount: 10,
+			wantThreat: map[string]map[string]int{
+				"mob1": {"healer": 10},
+				"mob2": {"healer": 10},
+			},
+			wantInCombat: true,
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			m, _ := newTestManager()
+			healer, target := tc.setup(m)
+
+			m.NotifyHeal(healer, target, tc.amount)
+
+			m.mu.Lock()
+			defer m.mu.Unlock()
+
+			for combatantId, expectedThreats := range tc.wantThreat {
+				state, ok := m.combatants[combatantId]
+				if !ok {
+					t.Errorf("combatant %q not found", combatantId)
+					continue
+				}
+				for sourceId, want := range expectedThreats {
+					got := state.threat[sourceId]
+					if got != want {
+						t.Errorf("combatant %q threat from %q = %d, want %d", combatantId, sourceId, got, want)
+					}
+				}
+			}
+
+			if tc.wantInCombat && !healer.inCombat {
+				t.Error("healer should be in combat")
+			}
+		})
 	}
 }

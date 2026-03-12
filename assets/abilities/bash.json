@@ -3,7 +3,7 @@
     "id": "bash",
     "spec": {
         "effects": [
-            {"type": "damage", "config": {"damage": "15"}}
+            {"type": "damage", "config": {"amount": "15"}}
         ],
         "command": {
             "category": "combat",

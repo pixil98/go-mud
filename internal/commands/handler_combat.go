@@ -16,6 +16,7 @@ type CombatManager interface {
 	AddThreat(source, target shared.Actor, amount int)
 	SetThreat(source, target shared.Actor, amount int)
 	TopThreat(source, target shared.Actor)
+	NotifyHeal(healer, target shared.Actor, amount int)
 }
 
 // AssistActor provides the character state needed by the assist handler.

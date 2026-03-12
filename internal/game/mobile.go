@@ -45,13 +45,13 @@ func NewMobileInstance(mob storage.SmartIdentifier[*assets.Mobile]) (*MobileInst
 		}
 		mi.inventory.AddObj(oi)
 	}
-	for slot, spawn := range def.Equipment {
-		oi, err := SpawnObject(spawn)
+	for _, es := range def.Equipment {
+		oi, err := SpawnObject(es.ObjectSpawn)
 		if err != nil {
 			return nil, fmt.Errorf("spawning equipment for %q: %w", mob.Id(), err)
 		}
-		if err := mi.equipment.Equip(slot, 0, oi); err != nil {
-			return nil, fmt.Errorf("equipping %q on %q: %w", slot, mob.Id(), err)
+		if err := mi.equipment.Equip(es.Slot, 0, oi); err != nil {
+			return nil, fmt.Errorf("equipping %q on %q: %w", es.Slot, mob.Id(), err)
 		}
 	}
 	return mi, nil
@@ -94,10 +94,11 @@ func (mi *MobileInstance) SetResource(name string, current int) {
 }
 
 // AdjustResource changes a resource's current value by delta, clamping to [0, max].
-func (mi *MobileInstance) AdjustResource(name string, delta int) {
+// When overfill is true the max clamp is skipped, allowing values above maximum.
+func (mi *MobileInstance) AdjustResource(name string, delta int, overfill bool) {
 	mi.mu.Lock()
 	defer mi.mu.Unlock()
-	mi.adjustResource(name, delta)
+	mi.adjustResource(name, delta, overfill)
 }
 
 // Tick advances one game tick: expires timed perks and regenerates
@@ -145,6 +146,9 @@ func (mi *MobileInstance) Flags() []string {
 func (mi *MobileInstance) OnDeath() []any {
 	return []any{newCorpse(mi)}
 }
+
+// IsCharacter returns false for mobs.
+func (mi *MobileInstance) IsCharacter() bool { return false }
 
 // newCorpse creates a container ObjectInstance holding all of the mob's loot.
 func newCorpse(mi *MobileInstance) *ObjectInstance {

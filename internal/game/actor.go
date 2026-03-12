@@ -56,14 +56,18 @@ func (a *ActorInstance) setResourceCurrent(name string, current int) {
 }
 
 // adjustResource changes a resource's current value by delta, clamping to [0, max].
+// When overfill is true the max clamp is skipped, allowing values above maximum.
 // No-op if the resource doesn't exist.
-func (a *ActorInstance) adjustResource(name string, delta int) {
+func (a *ActorInstance) adjustResource(name string, delta int, overfill bool) {
 	cur, ok := a.resources[name]
 	if !ok {
 		return
 	}
-	mx := a.resourceMax(name)
-	a.resources[name] = max(0, min(cur+delta, mx))
+	v := cur + delta
+	if !overfill {
+		v = min(v, a.resourceMax(name))
+	}
+	a.resources[name] = max(0, v)
 }
 
 // initResources discovers all resource perk keys and initializes current = max
@@ -102,7 +106,7 @@ func (a *ActorInstance) regenTick() {
 	for name := range a.resources {
 		regen := a.ModifierValue(assets.BuildKey(assets.ResourcePrefix, name, assets.ResourceAspectRegen))
 		if regen > 0 {
-			a.adjustResource(name, regen)
+			a.adjustResource(name, regen, false)
 		}
 	}
 }

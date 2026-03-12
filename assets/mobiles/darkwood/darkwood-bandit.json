@@ -10,11 +10,9 @@
         "long_desc": "A scruffy figure crouches near the old camp, picking through the remains with practiced efficiency.",
         "detailed_desc": "This person has the hollow-cheeked look of someone who has been living rough for a while, their clothing a patched combination of things that once belonged to other people. They carry a knife they clearly know how to use and watch you with the calculating attention of someone always weighing risk. Not a soldier \u2014 an opportunist.",
         "level": 3,
-        "equipment": {
-            "wield": {
-                "object_id": "darkwood-rusted-knife"
-            }
-        },
+        "equipment": [
+            {"slot": "wield", "object_id": "darkwood-rusted-knife"}
+        ],
         "perks": [
             {
                 "type": "modifier",
