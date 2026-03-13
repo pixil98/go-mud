@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "id": "plant",
+  "spec": {
+    "effects": [
+      {
+        "type": "plant_banner",
+        "config": {
+          "duration": "8",
+          "object_id": "banner"
+        }
+      }
+    ],
+    "command": {
+      "category": "warfare",
+      "priority": 5,
+      "description": "Plant your banner to steady the room.",
+      "aliases": [],
+      "config": {
+        "ap_cost": "2",
+        "message_actor": "You plant your banner.",
+        "message_room": "{{ .Actor.Name }} plants a banner."
+      },
+      "inputs": [],
+      "targets": []
+    }
+  }
+}

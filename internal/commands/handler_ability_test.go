@@ -547,6 +547,211 @@ func TestAoeDamageEffect_PeacefulArea(t *testing.T) {
 	}
 }
 
+func TestAoeThreatEffect(t *testing.T) {
+	tests := map[string]struct {
+		mode         string
+		amount       string
+		inCombatOnly bool
+		mobInCombat  []bool // per-mob combat state
+		startErr     error  // error returned by StartCombat
+		wantStarts   int
+		wantThreat   int  // total AddThreat calls
+		wantTop      bool // TopThreat called
+		wantSet      bool // SetThreat called
+	}{
+		"add mode hits all mobs": {
+			mode:        "add",
+			amount:      "50",
+			mobInCombat: []bool{false, false},
+			wantStarts:  2,
+			wantThreat:  2,
+		},
+		"add mode in_combat_only skips out-of-combat mobs": {
+			mode:         "add",
+			amount:       "50",
+			inCombatOnly: true,
+			mobInCombat:  []bool{true, false, true},
+			wantStarts:   2,
+			wantThreat:   2,
+		},
+		"set_to_top mode": {
+			mode:        "set_to_top",
+			mobInCombat: []bool{false},
+			wantStarts:  1,
+			wantTop:     true,
+		},
+		"set_to_value mode": {
+			mode:        "set_to_value",
+			amount:      "100",
+			mobInCombat: []bool{false},
+			wantStarts:  1,
+			wantSet:     true,
+		},
+		"empty room": {
+			mode:        "add",
+			amount:      "10",
+			mobInCombat: nil,
+			wantStarts:  0,
+			wantThreat:  0,
+		},
+		"in_combat_only with no mobs in combat": {
+			mode:         "add",
+			amount:       "10",
+			inCombatOnly: true,
+			mobInCombat:  []bool{false, false},
+			wantStarts:   0,
+			wantThreat:   0,
+		},
+		"StartCombat error skips mob": {
+			mode:        "add",
+			amount:      "50",
+			mobInCombat: []bool{false},
+			startErr:    fmt.Errorf("target is not alive"),
+			wantStarts:  1,
+			wantThreat:  0,
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			room, zone := newTestRoomInZone("r", "Room", "z")
+			player := newTestPlayer("player", "Player", room)
+
+			for i, inCombat := range tc.mobInCombat {
+				id := fmt.Sprintf("mob-%d", i)
+				mi := newTestMobInstance(id, "mob", nil)
+				mi.SetInCombat(inCombat)
+				room.AddMob(mi)
+			}
+
+			cm := &mockCombatManager{startedErr: tc.startErr}
+			world := &mockZoneLocator{zones: map[string]*game.ZoneInstance{"z": zone}}
+			effect := &aoeThreatEffect{combat: cm, world: world}
+
+			config := map[string]string{"mode": tc.mode}
+			if tc.amount != "" {
+				config["amount"] = tc.amount
+			}
+			if tc.inCombatOnly {
+				config["in_combat_only"] = "true"
+			}
+
+			if err := effect.ValidateConfig(config); err != nil {
+				t.Fatalf("unexpected validate error: %v", err)
+			}
+
+			fn := effect.Create("test:0", config, nil)
+			if err := fn(player, nil, &AbilityResult{}); err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+
+			if cm.startCount != tc.wantStarts {
+				t.Errorf("StartCombat count = %d, want %d", cm.startCount, tc.wantStarts)
+			}
+			if cm.threatCount != tc.wantThreat {
+				t.Errorf("AddThreat count = %d, want %d", cm.threatCount, tc.wantThreat)
+			}
+			if tc.wantTop && !cm.topThreatCalled {
+				t.Error("TopThreat not called")
+			}
+			if tc.wantSet && !cm.setThreatCalled {
+				t.Error("SetThreat not called")
+			}
+		})
+	}
+}
+
+func TestAoeThreatEffect_PeacefulArea(t *testing.T) {
+	room, zone := newTestRoomInZone("r", "Room", "z")
+	player := newTestPlayer("player", "Player", room)
+	player.AddSource("room", room.Perks)
+
+	room.Perks.SetOwn([]assets.Perk{
+		{Type: assets.PerkTypeGrant, Key: assets.PerkGrantPeaceful},
+	})
+
+	mi := newTestMobInstance("mob-0", "mob", nil)
+	room.AddMob(mi)
+
+	cm := &mockCombatManager{}
+	world := &mockZoneLocator{zones: map[string]*game.ZoneInstance{"z": zone}}
+	effect := &aoeThreatEffect{combat: cm, world: world}
+
+	fn := effect.Create("test:0", map[string]string{"mode": "add", "amount": "10"}, nil)
+	err := fn(player, nil, &AbilityResult{})
+	if err == nil {
+		t.Fatal("expected peaceful area error, got nil")
+	}
+	if !containsStr(err.Error(), "peaceful") {
+		t.Errorf("error = %q, want to contain \"peaceful\"", err.Error())
+	}
+	if cm.started {
+		t.Error("StartCombat should not have been called in a peaceful area")
+	}
+}
+
+func TestAoeThreatEffect_ValidateConfig(t *testing.T) {
+	tests := map[string]struct {
+		config  map[string]string
+		wantErr string
+	}{
+		"valid add": {
+			config: map[string]string{"mode": "add", "amount": "10"},
+		},
+		"valid set_to_top": {
+			config: map[string]string{"mode": "set_to_top"},
+		},
+		"valid set_to_value": {
+			config: map[string]string{"mode": "set_to_value", "amount": "50"},
+		},
+		"valid in_combat_only true": {
+			config: map[string]string{"mode": "add", "amount": "10", "in_combat_only": "true"},
+		},
+		"valid in_combat_only false": {
+			config: map[string]string{"mode": "add", "amount": "10", "in_combat_only": "false"},
+		},
+		"unknown mode": {
+			config:  map[string]string{"mode": "bogus"},
+			wantErr: "unknown threat mode",
+		},
+		"add missing amount": {
+			config:  map[string]string{"mode": "add"},
+			wantErr: "amount config required",
+		},
+		"set_to_value missing amount": {
+			config:  map[string]string{"mode": "set_to_value"},
+			wantErr: "amount config required",
+		},
+		"non-integer amount": {
+			config:  map[string]string{"mode": "add", "amount": "abc"},
+			wantErr: "amount must be an integer",
+		},
+		"in_combat_only typo rejected": {
+			config:  map[string]string{"mode": "add", "amount": "10", "in_combat_only": "yes"},
+			wantErr: "in_combat_only must be",
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			effect := &aoeThreatEffect{}
+			err := effect.ValidateConfig(tc.config)
+			if tc.wantErr != "" {
+				if err == nil {
+					t.Fatalf("expected error containing %q, got nil", tc.wantErr)
+				}
+				if !containsStr(err.Error(), tc.wantErr) {
+					t.Fatalf("error = %q, want containing %q", err, tc.wantErr)
+				}
+				return
+			}
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+		})
+	}
+}
+
 func containsStr(s, substr string) bool {
 	return len(s) >= len(substr) && searchStr(s, substr)
 }
