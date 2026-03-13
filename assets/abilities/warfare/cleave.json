@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "id": "cleave",
+  "spec": {
+    "effects": [
+      {
+        "type": "aoe_damage",
+        "config": {
+          "amount": "1d4+1",
+          "damage_type": "physical"
+        }
+      }
+    ],
+    "command": {
+      "category": "warfare",
+      "priority": 5,
+      "description": "Swing wide and hit enemies in the room.",
+      "aliases": [],
+      "config": {
+        "ap_cost": "1",
+        "message_actor": "You cleave through the crowd!",
+        "message_room": "{{ .Actor.Name }} cleaves through the crowd!"
+      },
+      "inputs": [],
+      "targets": []
+    }
+  }
+}

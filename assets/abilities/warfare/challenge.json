@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "id": "challenge",
+  "spec": {
+    "effects": [
+      {
+        "type": "aoe_threat",
+        "config": {
+          "mode": "add",
+          "amount": "35",
+          "in_combat_only": "true"
+        }
+      }
+    ],
+    "command": {
+      "category": "warfare",
+      "priority": 5,
+      "description": "Challenge the enemies engaged in the room.",
+      "aliases": [],
+      "config": {
+        "ap_cost": "2",
+        "message_actor": "You issue a challenge!",
+        "message_room": "{{ .Actor.Name }} issues a challenge!"
+      },
+      "inputs": [],
+      "targets": []
+    }
+  }
+}

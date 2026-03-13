@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "id": "guard",
+  "spec": {
+    "effects": [
+      {
+        "type": "actor_buff",
+        "config": {
+          "perk_type": "modifier",
+          "perk_key": "core.combat.threat.pct",
+          "duration": "3",
+          "perk_value": "25",
+          "name": "guard"
+        }
+      },
+      {
+        "type": "actor_buff",
+        "config": {
+          "perk_type": "modifier",
+          "perk_key": "core.combat.ac.flat",
+          "duration": "3",
+          "perk_value": "1",
+          "name": "guard"
+        }
+      }
+    ],
+    "command": {
+      "category": "warfare",
+      "priority": 5,
+      "description": "Commit to holding the line.",
+      "aliases": [],
+      "config": {
+        "ap_cost": "1",
+        "message_actor": "You set yourself to hold the line.",
+        "message_room": "{{ .Actor.Name }} sets their stance and holds the line."
+      },
+      "inputs": [],
+      "targets": []
+    }
+  }
+}
