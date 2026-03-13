@@ -1,0 +1,12 @@
+{
+    "version": 1,
+    "id": "millbrook-clocktower-top",
+    "spec": {
+        "name": "Atop the Clocktower",
+        "description": "The wind catches you as you emerge onto the narrow stone platform circling the clock mechanism. The gears and counterweights that drive the clock fill the center of the tower with a slow, deep ticking you feel more than hear. All of Millbrook spreads below: the market streets to the east, the riverside district to the west, and the quiet residential lanes between. Beyond the eastern gate, the canopy of the Darkwood is an unbroken dark mass stretching to the horizon. On a clear day you can make out the smoke of farms and woodcutter camps scattered across the foothills to the north. A narrow iron rail is all that stands between you and a very long drop.",
+        "zone_id": "millbrook",
+        "exits": {
+            "down": {"room_id": "millbrook-clocktower-plaza"}
+        }
+    }
+}

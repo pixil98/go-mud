@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "darkwood-creek",
+    "spec": {
+        "name": "Forest Creek",
+        "description": "A narrow forest creek crosses the trail here, running north to south over a bed of dark stones. The water is clear and cold, moving fast enough to keep the bottom clean, and the sound of it carries well in the quiet forest. The banks are thick with watercress and a low-growing herb whose smell — sharp, medicinal — rises when you step on it. Stepping stones have been laid across the creek, well-placed enough to suggest they were deliberately set. The stream comes from higher ground to the north.",
+        "zone_id": "darkwood",
+        "exits": {
+            "west":  {"room_id": "darkwood-deep-trail"},
+            "east":  {"room_id": "darkwood-ancient-grove"},
+            "south": {"room_id": "darkwood-glen"},
+            "north": {"room_id": "darkwood-stream-source"}
+        }
+    }
+}

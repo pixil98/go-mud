@@ -7,12 +7,15 @@ import (
 	"fmt"
 	"io"
 	"log/slog"
+	"sort"
 	"strings"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/commands"
 	"github.com/pixil98/go-mud/internal/game"
 )
 
+// Player represents an active player session, bridging the network connection to the game world.
 type Player struct {
 	conn       io.ReadWriter
 	charId     string
@@ -28,6 +31,7 @@ func (p *Player) Id() string {
 	return string(p.charId)
 }
 
+// Play runs the player's input/output loop until the connection closes, the player quits, or ctx is canceled.
 func (p *Player) Play(ctx context.Context) error {
 	// Start goroutine to read input lines into a channel
 	inputChan := make(chan string)
@@ -42,7 +46,7 @@ func (p *Player) Play(ctx context.Context) error {
 	}()
 
 	// Show the player their current room on login
-	err := p.cmdHandler.Exec(ctx, p.world, p.charId, "look")
+	err := p.cmdHandler.Exec(ctx, p.world.GetPlayer(p.charId), p.world, "look")
 	if err != nil {
 		var userErr *commands.UserError
 		if errors.As(err, &userErr) {
@@ -60,8 +64,12 @@ func (p *Player) Play(ctx context.Context) error {
 
 		case <-p.done:
 			ps := p.world.GetPlayer(p.charId)
+			if ps != nil && ps.IsQuit() {
+				// Death or voluntary quit — return nil so handleSessionEnd saves and removes the player.
+				return nil
+			}
 			var msg string
-			if ps != nil && ps.Linkless {
+			if ps != nil && ps.IsLinkless() {
 				msg = "\nDisconnected for inactivity."
 			} else {
 				msg = "\nAnother connection has taken over your session."
@@ -115,7 +123,7 @@ func (p *Player) Play(ctx context.Context) error {
 			}
 
 			// Execute the command
-			err = p.cmdHandler.Exec(ctx, p.world, p.charId, cmdName, args...)
+			err = p.cmdHandler.Exec(ctx, p.world.GetPlayer(p.charId), p.world, cmdName, args...)
 			if err != nil {
 				var userErr *commands.UserError
 				if errors.As(err, &userErr) {
@@ -134,8 +142,8 @@ func (p *Player) Play(ctx context.Context) error {
 			if state == nil {
 				return fmt.Errorf("player state not found for %s", p.charId)
 			}
-			if state.Quit {
-				p.writeLine("Goodbye!")
+			if state.IsQuit() {
+				_ = p.writeLine("Goodbye!")
 				// Quit handler already saved and unsubscribed isn't needed
 				// — HandleSessionEnd will remove the player from the world.
 				return nil
@@ -152,7 +160,28 @@ func (p *Player) Play(ctx context.Context) error {
 func (p *Player) prompt() error {
 	prompt := "> "
 	if ps := p.world.GetPlayer(p.charId); ps != nil {
-		prompt = fmt.Sprintf("[%d/%dHP] > ", ps.Character.Get().CurrentHP, ps.Character.Get().MaxHP)
+		var parts []string
+		// HP is always first.
+		if cur, mx := ps.Resource(assets.ResourceHp); mx > 0 {
+			parts = append(parts, game.ResourceLine(assets.ResourceHp, cur, mx))
+		}
+		var others []string
+		ps.ForEachResource(func(name string, _, _ int) {
+			if name != assets.ResourceHp {
+				others = append(others, name)
+			}
+		})
+		sort.Strings(others)
+		for _, name := range others {
+			cur, mx := ps.Resource(name)
+			parts = append(parts, game.ResourceLine(name, cur, mx))
+		}
+		if ap := ps.CurrentAP(); ap > 0 {
+			parts = append(parts, strings.Repeat("*", ap))
+		}
+		if len(parts) > 0 {
+			prompt = fmt.Sprintf("[%s] > ", strings.Join(parts, " | "))
+		}
 	}
 	_, err := p.conn.Write([]byte(prompt))
 	return err

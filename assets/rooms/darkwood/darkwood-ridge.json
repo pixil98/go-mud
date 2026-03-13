@@ -1,0 +1,12 @@
+{
+    "version": 1,
+    "id": "darkwood-ridge",
+    "spec": {
+        "name": "Rocky Ridge",
+        "description": "A rocky outcrop rises above the canopy here, the first high ground since leaving Millbrook's walls, and the view it offers is worth the scramble up. To the west, Millbrook's rooftops and the clocktower are visible above the treeline, closer than they feel. To the east, the Darkwood extends without visible interruption — a sea of dark canopy rolling away until distance and mist swallow it. The wind here is stronger and colder than in the forest below.",
+        "zone_id": "darkwood",
+        "exits": {
+            "south": {"room_id": "darkwood-deep-trail"}
+        }
+    }
+}

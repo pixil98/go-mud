@@ -6,6 +6,7 @@ import (
 	"github.com/muesli/reflow/wordwrap"
 )
 
+// DefaultWidth is the default terminal column width used for word-wrapping output.
 const DefaultWidth = 80
 
 // Wrap word-wraps text to DefaultWidth, preserving ANSI escape sequences.

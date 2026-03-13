@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "id": "plant",
+  "spec": {
+    "effects": [
+      {
+        "type": "spawn_obj",
+        "config": {
+          "object_id": "warfare-banner",
+          "destination": "room"
+        }
+      },
+      {
+        "type": "room_buff",
+        "config": {
+          "duration": "30",
+          "grant_key": "warfare.banner.perks"
+        }
+      }
+    ],
+    "command": {
+      "category": "warfare",
+      "priority": 5,
+      "description": "Plant your banner to steady the room.",
+      "aliases": [],
+      "config": {
+        "ap_cost": "2",
+        "message_actor": "You plant your banner.",
+        "message_room": "{{ .Actor.Name }} plants a banner."
+      },
+      "inputs": [],
+      "targets": []
+    }
+  }
+}

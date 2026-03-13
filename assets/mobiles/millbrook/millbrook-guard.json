@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "millbrook-guard",
+    "spec": {
+        "aliases": ["guard", "soldier"],
+        "short_desc": "a town guard",
+        "long_desc": "A town guard stands at attention, watching the area with quiet alertness.",
+        "detailed_desc": "The guard wears the blue-and-grey livery of Millbrook's garrison, slightly worn at the elbows but kept clean. He carries a short spear with a practiced ease that suggests he knows how to use it. His expression is alert but not unfriendly — the look of a professional doing a routine shift, present enough to handle trouble, bored enough to be glad of conversation.",
+        "level": 3,
+        "perks": [
+            { "type": "modifier", "key": "core.resource.hp.max", "value": 35 },
+            { "type": "modifier", "key": "core.combat.ac.flat", "value": 13 }
+        ]
+    }
+}

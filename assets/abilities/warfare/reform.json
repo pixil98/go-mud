@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "id": "reform",
+  "spec": {
+    "effects": [
+      {
+        "type": "room_buff",
+        "config": {
+          "perk_type": "modifier",
+          "perk_key": "core.combat.ac.flat",
+          "duration": "2",
+          "perk_value": "2",
+          "name": "reform"
+        }
+      }
+    ],
+    "command": {
+      "category": "warfare",
+      "priority": 5,
+      "description": "Tighten the line and reduce clean hits.",
+      "aliases": [],
+      "config": {
+        "ap_cost": "1",
+        "message_actor": "You call for a quick reform.",
+        "message_room": "{{ .Actor.Name }} calls for a quick reform."
+      },
+      "inputs": [],
+      "targets": []
+    }
+  }
+}

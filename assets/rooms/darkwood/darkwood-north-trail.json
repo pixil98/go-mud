@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "darkwood-north-trail",
+    "spec": {
+        "name": "North Trail",
+        "description": "A rougher path branches northwest from the deep forest trail, leaving the relative order of the main route for something more organic — a track made by animals and followed by whatever passes through here, its route defined by gaps in the undergrowth rather than intention. The trees on either side are large and very old, their bark marked with the long grooves of claws at a height suggesting something considerably bigger than a dog. The trail opens to the east into an area of massive deadfall, and continues north toward a territorial smell that sharpens with every step.",
+        "zone_id": "darkwood",
+        "exits": {
+            "southeast":    {"room_id": "darkwood-deep-trail"},
+            "north": {"room_id": "darkwood-wolf-territory"},
+            "east":  {"room_id": "darkwood-deadfall"}
+        }
+    }
+}

@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "id": "brace",
+  "spec": {
+    "effects": [
+      {
+        "type": "actor_buff",
+        "config": {
+          "perk_type": "modifier",
+          "perk_key": "core.combat.ac.flat",
+          "duration": "3",
+          "perk_value": "1",
+          "name": "brace"
+        }
+      },
+      {
+        "type": "actor_buff",
+        "config": {
+          "perk_type": "modifier",
+          "perk_key": "core.defense.all.absorb.flat",
+          "duration": "3",
+          "perk_value": "2",
+          "name": "brace"
+        }
+      }
+    ],
+    "command": {
+      "category": "warfare",
+      "priority": 5,
+      "description": "Brace yourself to reduce incoming damage.",
+      "aliases": [],
+      "config": {
+        "ap_cost": "1",
+        "message_actor": "You brace yourself.",
+        "message_room": "{{ .Actor.Name }} braces for impact."
+      },
+      "inputs": [],
+      "targets": []
+    }
+  }
+}

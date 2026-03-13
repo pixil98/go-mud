@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "darkwood-ruins-square",
+    "spec": {
+        "name": "Ruined Square",
+        "description": "The central square of the ruins is an open area whose original paving is still mostly intact, the stone flags cracked and grass-filled but still covering the ground. The buildings around the square have collapsed to their foundations, leaving only the lower course of walls to suggest their plan — a large hall to the east, a smaller structure to the north, a well in the square's centre whose stones are intact but whose water, when you look down into it, is black and very deep. The silence here is deeper than the surrounding forest.",
+        "zone_id": "darkwood",
+        "exits": {
+            "north": {"room_id": "darkwood-ruins-chapel"},
+            "east":  {"room_id": "darkwood-ruins-hall"},
+            "south": {"room_id": "darkwood-ruins-arch"}
+        },
+        "mobile_spawns": ["darkwood-ruin-shade", "darkwood-ruin-shade"]
+    }
+}

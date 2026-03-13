@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "millbrook-smithy",
+    "spec": {
+        "name": "The Ironclad Smithy",
+        "description": "A wall of dry heat hits you as you enter the Ironclad Smithy, rolling off the forge that dominates the rear of the building. The forge is a squat iron monster fed by bellows mounted on a wooden arm, its firebox currently banked to a low orange glow. Hooks, chains, tongs, and half-finished pieces of metalwork cover every available wall surface, and the floor is dusted with a permanent layer of iron filings that crunches underfoot. A battered weapon rack near the entrance holds the smith's current inventory, the pieces showing careful workmanship beneath a thin coat of protective oil. An armor stand beside it supports several pieces of completed equipment, each tagged with a strip of cured leather bearing the price.",
+        "zone_id": "millbrook",
+        "exits": {
+            "south": {"room_id": "millbrook-market-square"}
+        },
+        "mobile_spawns": ["millbrook-blacksmith"],
+        "object_spawns": [
+            {"object_id": "millbrook-weapon-rack", "contents": [
+                {"object_id": "millbrook-dagger"},
+                {"object_id": "millbrook-shortsword"},
+                {"object_id": "millbrook-longsword"},
+                {"object_id": "millbrook-staff"}
+            ]},
+            {"object_id": "millbrook-armor-stand", "contents": [
+                {"object_id": "millbrook-leather-armor"},
+                {"object_id": "millbrook-chainmail"},
+                {"object_id": "millbrook-iron-helm"},
+                {"object_id": "millbrook-wooden-shield"}
+            ]}
+        ]
+    }
+}

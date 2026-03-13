@@ -4,52 +4,69 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 )
+
+// GainActor provides the character state needed by the gain handler.
+type GainActor interface {
+	Id() string
+	IsInCombat() bool
+	Asset() *assets.Character
+	Gain()
+}
+
+var _ GainActor = (*game.CharacterInstance)(nil)
 
 // GainHandlerFactory creates handlers for the gain (level up) command.
 type GainHandlerFactory struct {
 	pub game.Publisher
 }
 
+// NewGainHandlerFactory creates a handler factory for gain (level up) commands.
 func NewGainHandlerFactory(pub game.Publisher) *GainHandlerFactory {
 	return &GainHandlerFactory{pub: pub}
 }
 
+// Spec returns the handler's target and config requirements.
 func (f *GainHandlerFactory) Spec() *HandlerSpec {
 	return nil
 }
 
-func (f *GainHandlerFactory) ValidateConfig(config map[string]any) error {
+// ValidateConfig performs custom validation on the command config.
+func (f *GainHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 
+// Create returns a compiled CommandFunc for this handler.
 func (f *GainHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		char := cmdCtx.Actor
+	return Adapt[GainActor](f.handle), nil
+}
 
-		if cmdCtx.Session.InCombat {
-			return NewUserError("You can't train while fighting!")
-		}
+func (f *GainHandlerFactory) handle(ctx context.Context, char GainActor, in *CommandInput) error {
+	if char.IsInCombat() {
+		return NewUserError("You can't train while fighting!")
+	}
 
-		if char.Level >= game.MaxLevel {
-			return NewUserError("You have reached the maximum level.")
-		}
+	actor := char.Asset()
 
-		needed := game.ExpToNextLevel(char.Level, char.Experience)
-		if needed > 0 {
-			return NewUserError(fmt.Sprintf(
-				"You need %d more experience to reach level %d.",
-				needed, char.Level+1))
-		}
+	if actor.Level >= game.MaxLevel {
+		return NewUserError("You have reached the maximum level.")
+	}
 
-		char.Gain()
+	needed := game.ExpToNextLevel(actor.Level, actor.Experience)
+	if needed > 0 {
+		return NewUserError(fmt.Sprintf(
+			"You need %d more experience to reach level %d.",
+			needed, actor.Level+1))
+	}
 
-		msg := fmt.Sprintf("Congratulations! You have advanced to level %d!", char.Level)
+	char.Gain()
 
-		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(msg))
-		}
-		return nil
-	}, nil
+	msg := fmt.Sprintf("Congratulations! You have advanced to level %d!", actor.Level)
+
+	if f.pub != nil {
+		return f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte(msg))
+	}
+	return nil
 }

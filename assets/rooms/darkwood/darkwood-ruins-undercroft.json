@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "darkwood-ruins-undercroft",
+    "spec": {
+        "name": "Ruins Undercroft",
+        "description": "The undercroft beneath the hall is cold and very dark, its vaulted ceiling intact, its floor flagged in stone that has been kept remarkably clear of debris. Something has lived down here for a very long time — paths worn between the entrance, the corners, and the far wall speak to centuries of occupation. On every surface within reach are the marks of something large and hard dragging itself across stone. The air smells of old rock and something faintly metallic. Whatever guards this place is already aware you are here.",
+        "zone_id": "darkwood",
+        "exits": {
+            "up": {"room_id": "darkwood-ruins-hall"}
+        },
+        "mobile_spawns": ["darkwood-stone-golem"]
+    }
+}

@@ -7,6 +7,7 @@ import (
 	"github.com/pixil98/go-errors"
 )
 
+// Config holds the top-level server configuration.
 type Config struct {
 	TickInterval  string              `json:"tick_interval"`
 	Listeners     []ListenerConfig    `json:"listeners"`
@@ -15,6 +16,7 @@ type Config struct {
 	PlayerManager PlayerManagerConfig `json:"player_manager"`
 }
 
+// Validate checks all sub-configs and ensures tick_interval is a valid duration of at least one second.
 func (c *Config) Validate() error {
 	el := errors.NewErrorList()
 

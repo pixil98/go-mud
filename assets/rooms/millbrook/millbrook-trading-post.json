@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "millbrook-trading-post",
+    "spec": {
+        "name": "Aldenmere Trading Post",
+        "description": "The Aldenmere Trading Post smells of pine resin, canvas, and old leather — the combined scent of a hundred different goods pressed into a space built for perhaps half as many. Shelves packed floor-to-ceiling line every wall, their contents organized with an almost defiant precision: rope coiled at exactly the same tension, jars of preserves arranged by size, bundles of trade goods labelled in a meticulous hand. The floor space between the shelves is barely wide enough for two people to pass without turning sideways. A glass-fronted display shelf beside the counter holds the more valuable items — travelling cloaks, quality buckles, and the occasional curiosity picked up from a caravan.",
+        "zone_id": "millbrook",
+        "exits": {
+            "south": {"room_id": "millbrook-market-road"}
+        },
+        "mobile_spawns": ["millbrook-shopkeeper"],
+        "object_spawns": [
+            {"object_id": "millbrook-shop-shelf", "contents": [
+                {"object_id": "millbrook-travelers-cloak"},
+                {"object_id": "millbrook-strongbox-key"}
+            ]}
+        ]
+    }
+}

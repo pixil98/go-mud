@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "millbrook-south-road",
+    "spec": {
+        "name": "South Road",
+        "description": "The south road descends gently from the town square toward the southern gate, the buildings thinning and the lots widening as the town gives way to its quieter margins. Flagstones here are older and less evenly laid than those near the square, and grass grows in the wider gaps between them. A path branches east toward the old graveyard, marked by a weathered wooden post that has lost whatever sign once hung from it. The southern stable sits set back from the road to the west, its large double doors usually standing open during the day, the smell of horses and hay drifting across the lane. On still evenings the road carries sounds from the cemetery's trees — a low sighing that has given the street a reputation for being slightly unpleasant to walk alone after dark.",
+        "zone_id": "millbrook",
+        "exits": {
+            "north": {"room_id": "millbrook-square"},
+            "south": {"room_id": "millbrook-south-gate"},
+            "east":  {"room_id": "millbrook-cemetery-path"},
+            "west":  {"room_id": "millbrook-stable"}
+        }
+    }
+}

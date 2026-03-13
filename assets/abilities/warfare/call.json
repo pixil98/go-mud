@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "id": "call",
+  "spec": {
+    "effects": [
+      {
+        "type": "room_buff",
+        "config": {
+          "perk_type": "modifier",
+          "perk_key": "core.combat.attack.flat",
+          "duration": "2",
+          "perk_value": "1",
+          "name": "call"
+        }
+      }
+    ],
+    "command": {
+      "category": "warfare",
+      "priority": 5,
+      "description": "Call the room to focus and finish work.",
+      "aliases": [],
+      "config": {
+        "ap_cost": "1",
+        "message_actor": "You call out clear orders.",
+        "message_room": "{{ .Actor.Name }} calls out clear orders."
+      },
+      "inputs": [],
+      "targets": []
+    }
+  }
+}

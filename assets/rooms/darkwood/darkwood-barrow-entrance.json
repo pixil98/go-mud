@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "darkwood-barrow-entrance",
+    "spec": {
+        "name": "Barrow Entrance",
+        "description": "A low stone passage enters the mound from its eastern face, the lintel stone massive and fitted without mortar in the way of very old construction. The passage is not high enough to stand upright in, and the walls on either side are flat stones fitted closely enough that no earth shows through. The air that moves out of the passage is cold and very still, carrying the particular smell of deep enclosed stone — dry, ancient, faintly mineral. A sense of considerable age attaches to everything here.",
+        "zone_id": "darkwood",
+        "exits": {
+            "west": {"room_id": "darkwood-barrow-hill"},
+            "east": {"room_id": "darkwood-barrow-hall"}
+        }
+    }
+}

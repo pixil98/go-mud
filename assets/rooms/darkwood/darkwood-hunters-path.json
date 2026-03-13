@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "darkwood-hunters-path",
+    "spec": {
+        "name": "Hunter's Path",
+        "description": "A narrow trail marked with a hunter's signs — notches cut into trees at eye level, small cairns of stacked stones — connects the woodcutter's camp westward to the main forest trail heading south. The marks suggest regular use by someone who knows what they're doing: snares have been set at intervals to either side of the path, visible only to someone looking for them. The undergrowth is pressed back from the trail more than in the surrounding forest, the ground worn by the passage of someone with a regular circuit.",
+        "zone_id": "darkwood",
+        "exits": {
+            "west":  {"room_id": "darkwood-woodcutter-camp"},
+            "south": {"room_id": "darkwood-trail"}
+        },
+        "mobile_spawns": ["darkwood-bandit"]
+    }
+}

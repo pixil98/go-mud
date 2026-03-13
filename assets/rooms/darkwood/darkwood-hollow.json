@@ -1,0 +1,16 @@
+{
+    "version": 1,
+    "id": "darkwood-hollow",
+    "spec": {
+        "name": "The Hollow",
+        "description": "The hollow is a bowl-shaped depression in the forest floor, its sides thick with fern and moss, its centre perpetually damp and sometimes standing with water in wet seasons. A thin grey mist hangs at knee height, constant and rising from the sodden earth. The sound of running water is audible — a small stream emerges from the cave mouth to the west, crosses the hollow floor, and drains away to the east into standing bog. The trees around the rim lean inward at odd angles, their roots gripping the bowl's edge, and the overall effect is of something enclosed and watched.",
+        "zone_id": "darkwood",
+        "exits": {
+            "north": {"room_id": "darkwood-hollow-descent"},
+            "west":  {"room_id": "darkwood-hollow-cave"},
+            "east":  {"room_id": "darkwood-bog"},
+            "northwest":    {"room_id": "darkwood-hollow-north"}
+        },
+        "mobile_spawns": ["darkwood-boar"]
+    }
+}

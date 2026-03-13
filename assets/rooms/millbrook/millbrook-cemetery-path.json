@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "millbrook-cemetery-path",
+    "spec": {
+        "name": "Cemetery Path",
+        "description": "A narrow footpath branches off the south road and winds eastward between ancient oaks whose roots have heaved the ground on either side into low, irregular ridges. Dead leaves collect in the hollows and drift across the path with any breeze, and the canopy overhead is dense enough that the light falls in scattered patches rather than evenly. The oaks are old — older, it is said, than Millbrook itself — and their bark has been carved with small symbols by those who have passed this way over generations, though the meanings of most have been forgotten. The path is well-trodden despite the destination, worn by the feet of mourners and the curious alike. Iron gates are visible through the trees ahead, standing slightly open as they always do.",
+        "zone_id": "millbrook",
+        "exits": {
+            "west": {"room_id": "millbrook-south-road"},
+            "east": {"room_id": "millbrook-cemetery-gate"}
+        }
+    }
+}

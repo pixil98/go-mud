@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "darkwood-silk-grove",
+    "spec": {
+        "name": "Silk Grove",
+        "description": "A stand of perhaps twenty trees has been encased entirely in webbing — the silk covers every branch, fills every gap, and has begun extending to the ground around the bases of the trunks. The result is a grove of white columns supporting a ceiling of continuous silk, a space that feels enclosed and very quiet. The webbing here has a dry, papery quality rather than the tacky freshness of the main web-work — it is old, and the oldest layers beneath have turned grey and begun to flake.",
+        "zone_id": "darkwood",
+        "exits": {
+            "west": {"room_id": "darkwood-glen-south"}
+        },
+        "mobile_spawns": ["darkwood-spider"]
+    }
+}

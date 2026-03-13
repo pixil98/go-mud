@@ -1,0 +1,11 @@
+{
+    "version": 1,
+    "id": "millbrook-fountain",
+    "spec": {
+        "aliases": ["fountain"],
+        "short_desc": "a stone fountain",
+        "long_desc": "A circular stone fountain stands here, its basin full of clear water.",
+        "detailed_desc": "A broad stone fountain, its basin carved from a single piece of local granite, sits at the centre of the square. A low continuous trickle of water feeds in from a pipe in the carved centrepiece — a stylised mill wheel — and drains through a grate in the basin floor. The water is clear and cold, and the stone rim is worn smooth from years of people sitting on it.",
+        "flags": ["immobile"]
+    }
+}

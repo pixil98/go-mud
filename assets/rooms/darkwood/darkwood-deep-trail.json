@@ -1,0 +1,16 @@
+{
+    "version": 1,
+    "id": "darkwood-deep-trail",
+    "spec": {
+        "name": "Deep Trail",
+        "description": "Beyond the trail junction, the Darkwood becomes perceptibly older and darker. The trees here are larger — oaks of a size that suggests centuries of growth — and their canopy is dense enough that the floor beneath has been cleared of undergrowth by shade, leaving bare earth and a deep carpet of dead leaves. Sound is absorbed differently here: footsteps muffle, voices flatten. The trail continues east, a rocky ridge rises to the north, and a rougher track branches northwest into older, wilder forest.",
+        "zone_id": "darkwood",
+        "exits": {
+            "west":  {"room_id": "darkwood-trail"},
+            "east":  {"room_id": "darkwood-creek"},
+            "north": {"room_id": "darkwood-ridge"},
+            "northwest":    {"room_id": "darkwood-north-trail"}
+        },
+        "mobile_spawns": ["darkwood-wolf", "darkwood-dire-wolf"]
+    }
+}

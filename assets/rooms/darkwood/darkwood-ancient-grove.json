@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "darkwood-ancient-grove",
+    "spec": {
+        "name": "Ancient Grove",
+        "description": "The trail ends in a grove of trees so old that the word feels inadequate — these oaks are vast, their trunks wider than a man is tall, their bark deeply ridged and hung with moss and bracket fungi. The canopy high above is a solid roof of interlocking branches, and the space beneath is dim and cathedral-quiet, the scale of the trees reducing everything else to appropriate smallness. Carved marks in the bark of the three largest oaks are worn smooth with weather — not recent, and not decorative.",
+        "zone_id": "darkwood",
+        "exits": {
+            "west":  {"room_id": "darkwood-creek"},
+            "north": {"room_id": "darkwood-stone-circle"},
+            "south": {"room_id": "darkwood-fallen-giant"}
+        },
+        "mobile_spawns": ["darkwood-dire-wolf"]
+    }
+}

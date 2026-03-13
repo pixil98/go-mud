@@ -1,0 +1,11 @@
+{
+    "version": 1,
+    "id": "millbrook-weapon-rack",
+    "spec": {
+        "aliases": ["rack", "weapon"],
+        "short_desc": "a weapon rack",
+        "long_desc": "A sturdy weapon rack stands here, holding several pieces of the smith's current inventory.",
+        "detailed_desc": "A heavy oak rack with padded horizontal bars for resting blades, the weapon rack holds the smith's current for-sale inventory in neat arrangement. Each piece bears a thin coat of protective oil and a small leather tag with a stamped price.",
+        "flags": ["container", "immobile"]
+    }
+}

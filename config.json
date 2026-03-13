@@ -34,6 +34,12 @@
         },
         "objects": {
             "path": "./assets/objects"
+        },
+        "trees": {
+            "path": "./assets/trees"
+        },
+        "abilities": {
+            "path": "./assets/abilities"
         }
     },
     "nats": {

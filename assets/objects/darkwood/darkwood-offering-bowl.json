@@ -1,0 +1,11 @@
+{
+    "version": 1,
+    "id": "darkwood-offering-bowl",
+    "spec": {
+        "aliases": ["bowl", "offering"],
+        "short_desc": "a stone offering bowl",
+        "long_desc": "A stone bowl sits on the altar, its interior stained with the residue of old offerings.",
+        "detailed_desc": "A shallow bowl of carved grey stone, its interior stained dark with what were once offerings of oil or grain or something less identifiable. It has sat here undisturbed for a very long time. At the centre of the bowl, partially concealed beneath old residue, something small catches the light.",
+        "flags": ["container", "immobile"]
+    }
+}

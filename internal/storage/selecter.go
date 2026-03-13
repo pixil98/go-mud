@@ -19,6 +19,7 @@ type validatingSelectable interface {
 	Selector() string
 }
 
+// SelectableStorer wraps a Storer and adds an interactive numbered-selection prompt.
 type SelectableStorer[T validatingSelectable] struct {
 	Storer[T]
 
@@ -31,6 +32,7 @@ type option[T validatingSelectable] struct {
 	val T
 }
 
+// NewSelectableStorer creates a SelectableStorer from an existing Storer, pre-building the display list.
 func NewSelectableStorer[T validatingSelectable](st Storer[T]) *SelectableStorer[T] {
 	s := &SelectableStorer[T]{Storer: st}
 

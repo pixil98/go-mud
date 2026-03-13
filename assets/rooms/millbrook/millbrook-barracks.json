@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "millbrook-barracks",
+    "spec": {
+        "name": "Guard Barracks",
+        "description": "The barracks carry the permanent smell of oil, leather, and close-quartered humanity. Bunk beds line the walls three high, each with a small wooden box at the foot for a guard's personal effects. Racks of polished equipment fill one corner — breastplates, bucklers, and shortswords in a state of meticulous maintenance that speaks to too much time and not enough work. A large hearth dominates the south wall, flanked by mismatched chairs clearly claimed from various parts of the town over the years. A worn chessboard sits abandoned on a table, mid-game, the pieces dusty as if the players simply walked away and never came back.",
+        "zone_id": "millbrook",
+        "exits": {
+            "west": {"room_id": "millbrook-clocktower-plaza"},
+            "east": {"room_id": "millbrook-jail"}
+        },
+        "mobile_spawns": ["millbrook-guard"]
+    }
+}

@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "darkwood-bog-island",
+    "spec": {
+        "name": "Bog Island",
+        "description": "A low rise of firmer ground emerges from the bog, its surface thickly overgrown with sedge and a scraggly hawthorn that has somehow established itself on this unlikely patch of dry land. The view from the island is the bog in all directions — black water, hummocks, the dead alders — and the sense of being in the middle of something that would prefer you weren't here. A pile of gnawed bones near the hawthorn's base suggests this island has served as a larder for something that lives in the surrounding water.",
+        "zone_id": "darkwood",
+        "exits": {
+            "west": {"room_id": "darkwood-bog-depths"}
+        },
+        "mobile_spawns": ["darkwood-giant-frog"]
+    }
+}

@@ -16,13 +16,14 @@ func NewNatsPublisher(server *NatsServer) *NatsPublisher {
 	return &NatsPublisher{server: server}
 }
 
+// Publish sends data to all players in targets, skipping any whose IDs appear in exclude.
 func (p *NatsPublisher) Publish(targets game.PlayerGroup, exclude []string, data []byte) error {
 	excludeSet := make(map[string]bool, len(exclude))
 	for _, id := range exclude {
 		excludeSet[id] = true
 	}
 	var firstErr error
-	targets.ForEachPlayer(func(charId string, _ *game.PlayerState) {
+	targets.ForEachPlayer(func(charId string, _ *game.CharacterInstance) {
 		if excludeSet[charId] {
 			return
 		}

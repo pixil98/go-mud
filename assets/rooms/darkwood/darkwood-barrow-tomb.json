@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "darkwood-barrow-tomb",
+    "spec": {
+        "name": "Barrow Tomb",
+        "description": "The innermost chamber is separated from the hall by a stone slab pushed aside from within, leaving a gap barely wide enough to squeeze through. The tomb itself is a narrow room, its walls dressed more finely than the outer chambers, the capstone overhead a single massive piece of stone carved with a frieze of stylised figures. The stone burial platform in the centre is empty — whatever lay on it is long risen. The air in here is very cold, and the feeling of being watched is pronounced and immediate.",
+        "zone_id": "darkwood",
+        "exits": {
+            "west": {"room_id": "darkwood-barrow-hall"}
+        },
+        "mobile_spawns": ["darkwood-barrow-lord"]
+    }
+}

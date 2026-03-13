@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "darkwood-glen-south",
+    "spec": {
+        "name": "Glen Depths",
+        "description": "The spider-infested forest extends further south, the webbing heavier here than at the glen's northern edge — the silk between the trunks in some places forms solid walls of grey-white material rather than the loose curtains of the northern approach. The ground beneath is mostly clear of vegetation, the webs above blocking enough light to discourage growth. Old silk wrappings that have emptied and dried are scattered across the ground, each one roughly person-sized.",
+        "zone_id": "darkwood",
+        "exits": {
+            "north": {"room_id": "darkwood-glen"},
+            "east":  {"room_id": "darkwood-silk-grove"}
+        },
+        "mobile_spawns": ["darkwood-spider", "darkwood-spider"]
+    }
+}

@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "millbrook-herbalist",
+    "spec": {
+        "name": "The Green Leaf Apothecary",
+        "description": "The Green Leaf Apothecary is small enough that you can nearly touch both side walls with outstretched arms, but every inch of space has been put to use. Bundles of drying herbs hang in dense rows from every rafter — lavender, wormwood, dried mushrooms of several varieties, and a dozen others you can't name — filling the air with a layered, complex perfume that sits at the back of the throat. Glass jars of powders, pressed leaves, and dark tinctures cover the shelves behind the wooden counter in strict alphabetical order. A hand-lettered sign reads: 'All sales final. No trade in forest specimens without prior arrangement.' The apothecary looks up from her ledger as you enter, studying you for a brief, assessing moment before returning to her work.",
+        "zone_id": "millbrook",
+        "exits": {
+            "north": {"room_id": "millbrook-market-road"}
+        },
+        "mobile_spawns": ["millbrook-apothecary"]
+    }
+}

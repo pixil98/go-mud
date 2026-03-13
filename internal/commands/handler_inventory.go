@@ -8,6 +8,14 @@ import (
 	"github.com/pixil98/go-mud/internal/game"
 )
 
+// InventoryActor provides the character state needed by the inventory handler.
+type InventoryActor interface {
+	Id() string
+	GetInventory() *game.Inventory
+}
+
+var _ InventoryActor = (*game.CharacterInstance)(nil)
+
 // InventoryHandlerFactory creates handlers that list the player's inventory.
 type InventoryHandlerFactory struct {
 	pub game.Publisher
@@ -18,38 +26,43 @@ func NewInventoryHandlerFactory(pub game.Publisher) *InventoryHandlerFactory {
 	return &InventoryHandlerFactory{pub: pub}
 }
 
+// Spec returns the handler's target and config requirements.
 func (f *InventoryHandlerFactory) Spec() *HandlerSpec {
 	return nil
 }
 
-func (f *InventoryHandlerFactory) ValidateConfig(config map[string]any) error {
+// ValidateConfig performs custom validation on the command config.
+func (f *InventoryHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 
+// Create returns a compiled CommandFunc for this handler.
 func (f *InventoryHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		lines := []string{"You are carrying:"}
-		lines = append(lines, FormatInventoryItems(cmdCtx.Actor.Inventory)...)
+	return Adapt[InventoryActor](f.handle), nil
+}
 
-		output := strings.Join(lines, "\n")
-		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(output))
-		}
+func (f *InventoryHandlerFactory) handle(ctx context.Context, char InventoryActor, in *CommandInput) error {
+	lines := []string{"You are carrying:"}
+	lines = append(lines, FormatInventoryItems(char.GetInventory())...)
 
-		return nil
-	}, nil
+	output := strings.Join(lines, "\n")
+	if f.pub != nil {
+		return f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte(output))
+	}
+
+	return nil
 }
 
 // FormatInventoryItems returns indented lines describing items in an inventory.
 // Returns ["  Nothing"] if the inventory is nil or empty.
 func FormatInventoryItems(inv *game.Inventory) []string {
-	if inv == nil || len(inv.Objs) == 0 {
+	if inv == nil || inv.Len() == 0 {
 		return []string{"  Nothing"}
 	}
 	var lines []string
-	for _, oi := range inv.Objs {
+	inv.ForEachObj(func(_ string, oi *game.ObjectInstance) {
 		lines = append(lines, fmt.Sprintf("  %s", oi.Object.Get().ShortDesc))
-	}
+	})
 	if len(lines) == 0 {
 		return []string{"  Nothing"}
 	}

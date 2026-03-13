@@ -2,6 +2,7 @@ package messaging
 
 import "time"
 
+// NatsServerOpt is a functional option for configuring a NatsServer.
 type NatsServerOpt func(*NatsServer)
 
 // WithStartTimeout sets the startup timeout for the nats server

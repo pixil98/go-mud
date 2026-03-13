@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "darkwood-barrow-side",
+    "spec": {
+        "name": "Barrow Side Chamber",
+        "description": "A secondary chamber opens from the main hall's north wall, smaller and lower-ceilinged, its purpose apparently the storage of offerings or significant objects. The stone shelves here are in better condition than the outer chamber's, and a rough stone box occupies the centre of the floor. Whatever rites were meant to preserve the contents of this room have held: the air is dry, the stone undisturbed, and the chamber has the feeling of something sealed and waiting.",
+        "zone_id": "darkwood",
+        "exits": {
+            "south": {"room_id": "darkwood-barrow-hall"}
+        },
+        "mobile_spawns": ["darkwood-skeleton"],
+        "object_spawns": [
+            {"object_id": "darkwood-bone-pile", "contents": [
+                {"object_id": "darkwood-barrow-blade"}
+            ]}
+        ]
+    }
+}

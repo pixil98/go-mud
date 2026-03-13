@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "darkwood-overgrown-road",
+    "spec": {
+        "name": "Overgrown Road",
+        "description": "What was once a proper road — wide enough for a cart, with a surface of laid stone still visible beneath accumulated leaf litter — extends westward from the logging camp, its purpose long since overtaken by the trees. Saplings have grown up through the gaps in the paving, and in places the stones have been heaved by roots into small ridges, but the line of the road is still clear enough to follow. It terminates perhaps two hundred yards on where a large oak has fallen directly across it and the forest beyond has closed in completely. The road clearly once connected somewhere to something, and neither is knowable now.",
+        "zone_id": "darkwood",
+        "exits": {
+            "east": {"room_id": "darkwood-woodcutter-camp"}
+        },
+        "mobile_spawns": ["darkwood-wolf"]
+    }
+}

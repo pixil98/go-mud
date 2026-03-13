@@ -11,8 +11,8 @@
         "targets": [
             {
                 "name": "target",
-                "type": ["object", "exit"],
-                "scope": ["inventory", "room"],
+                "types": ["object", "exit"],
+                "scopes": ["inventory", "room"],
                 "input": "target",
                 "not_found": "You don't see '{{ .Inputs.target }}' to lock."
             }

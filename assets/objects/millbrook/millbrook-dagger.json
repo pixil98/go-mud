@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "millbrook-dagger",
+    "spec": {
+        "aliases": ["dagger", "knife"],
+        "short_desc": "a plain dagger",
+        "long_desc": "A plain iron dagger lies here.",
+        "detailed_desc": "A serviceable iron dagger with a straight double-edged blade and a plain wooden handle. It is neither fine nor shoddy — exactly the kind of reliable, anonymous tool a working smith produces by the dozen.",
+        "flags": ["wearable"],
+        "wear_slots": ["wield", "off_hand"],
+        "perks": [
+            { "type": "grant", "key": "attack", "arg": "1d4" }
+        ]
+    }
+}

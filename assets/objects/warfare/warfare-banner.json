@@ -1,0 +1,12 @@
+{
+    "version": 1,
+    "id": "warfare-banner",
+    "spec": {
+        "aliases": ["banner"],
+        "short_desc": "a planted battle banner",
+        "long_desc": "A battle banner stands here, planted firmly in the ground.",
+        "detailed_desc": "A tall banner, its fabric taut against the shaft. The colors and sigil shift depending on who planted it, but its effect on the room is unmistakable — people fight better near it.",
+        "flags": ["immobile"],
+        "lifetime": 30
+    }
+}

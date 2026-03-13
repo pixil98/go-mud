@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "millbrook-ring-of-ward",
+    "spec": {
+        "aliases": ["ring", "ward"],
+        "short_desc": "a ring of warding",
+        "long_desc": "A small iron ring set with a pale blue stone lies here.",
+        "detailed_desc": "A plain iron ring set with a cabochon of pale blue stone — some variety of chalcedony, perhaps. The stone has the faint inner luminance of something more than decorative, and wearing it produces a subtle sense of stability, as though some harm is being redirected elsewhere.",
+        "flags": ["wearable"],
+        "wear_slots": ["finger"],
+        "perks": [
+            { "type": "modifier", "key": "core.combat.ac.flat", "value": 1 }
+        ]
+    }
+}

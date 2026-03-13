@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "millbrook-east-gate",
+    "spec": {
+        "name": "East Gate",
+        "description": "The east gate stands where Millbrook's wall meets the old forest road, a narrower arch than the north gate and fitted with a single iron-banded door that stands permanently open on a counterweight. The cobblestones of the market district give way to packed earth just a few strides past the arch, and beyond that the road becomes a rough track through thinning scrub. The canopy of the Darkwood begins only a hundred yards out, the ancient oaks rising suddenly and decisively into a solid wall of shadow. The air here is noticeably cooler than the market district, carrying a damp smell of leaf litter and fungus that sharpens when the wind turns east. The gatekeeper's post is bolted to the inside of the wall beside the arch, offering a narrow view through an arrow slit at whoever approaches from the forest.",
+        "zone_id": "millbrook",
+        "exits": {
+            "west": {"room_id": "millbrook-market-square"},
+            "east": {"zone_id": "darkwood", "room_id": "darkwood-edge"}
+        },
+        "mobile_spawns": ["millbrook-gatekeeper"]
+    }
+}

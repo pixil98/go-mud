@@ -11,18 +11,20 @@ import (
 
 var identifierPattern = regexp.MustCompile(`^[a-zA-Z0-9-]*$`)
 
+// ValidatingSpec is implemented by any asset spec that can validate its own fields.
 type ValidatingSpec interface {
 	Validate() error
 }
 
+// Asset is the on-disk envelope wrapping a versioned, identified spec value.
 type Asset[T ValidatingSpec] struct {
 	Version    uint   `json:"version"`
 	Identifier string `json:"id"`
 	Spec       T      `json:"spec"`
 }
 
-func (c *Asset[T]) Id() string {
-	return c.Identifier
+func (a *Asset[T]) Id() string {
+	return a.Identifier
 }
 
 func (a *Asset[T]) Validate() error {
@@ -45,15 +47,18 @@ func (a *Asset[T]) Validate() error {
 	return el.Err()
 }
 
+// SmartIdentifier holds an asset key and its resolved value, supporting lazy resolution from a Storer.
 type SmartIdentifier[T ValidatingSpec] struct {
 	key string
 	val T
 }
 
+// NewSmartIdentifier creates an unresolved SmartIdentifier with the given key.
 func NewSmartIdentifier[T ValidatingSpec](key string) SmartIdentifier[T] {
 	return SmartIdentifier[T]{key: key}
 }
 
+// NewResolvedSmartIdentifier creates a SmartIdentifier that is already resolved to the given value.
 func NewResolvedSmartIdentifier[T ValidatingSpec](key string, val T) SmartIdentifier[T] {
 	return SmartIdentifier[T]{key: key, val: val}
 }

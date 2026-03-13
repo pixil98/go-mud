@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "millbrook-wooden-shield",
+    "spec": {
+        "aliases": ["shield", "wooden"],
+        "short_desc": "a wooden shield",
+        "long_desc": "A round wooden shield lies here.",
+        "detailed_desc": "A round shield of layered hardwood faced with boiled leather, its rim banded with iron. A central iron boss protects the grip. It is heavier than it looks and the construction is sound — the kind of thing that will last.",
+        "flags": ["wearable"],
+        "wear_slots": ["off_hand"],
+        "perks": [
+            { "type": "modifier", "key": "core.combat.ac.flat", "value": 2 }
+        ]
+    }
+}

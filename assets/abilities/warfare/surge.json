@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "id": "surge",
+  "spec": {
+    "effects": [
+      {
+        "type": "room_buff",
+        "config": {
+          "perk_type": "modifier",
+          "perk_key": "core.damage.physical.pct",
+          "duration": "2",
+          "perk_value": "5",
+          "name": "surge"
+        }
+      }
+    ],
+    "command": {
+      "category": "warfare",
+      "priority": 5,
+      "description": "Drive the pace up and hit harder.",
+      "aliases": [],
+      "config": {
+        "ap_cost": "1",
+        "message_actor": "You drive the pace up.",
+        "message_room": "{{ .Actor.Name }} drives the pace up."
+      },
+      "inputs": [],
+      "targets": []
+    }
+  }
+}

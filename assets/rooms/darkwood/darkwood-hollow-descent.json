@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "darkwood-hollow-descent",
+    "spec": {
+        "name": "Hollow Descent",
+        "description": "The trail dips sharply here, following a natural shelf in the ground that descends into a low-lying hollow to the south. The air grows noticeably cooler and damper as you go down, and moisture beads on the broad leaves of the plants on either side. The slope is not steep but the footing is uncertain — the earth is soft and has been churned by the hooves of animals that use this path regularly.",
+        "zone_id": "darkwood",
+        "exits": {
+            "north": {"room_id": "darkwood-trail"},
+            "south": {"room_id": "darkwood-hollow"},
+            "west":  {"room_id": "darkwood-hollow-north"}
+        }
+    }
+}

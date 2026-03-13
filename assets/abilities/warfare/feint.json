@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "id": "feint",
+  "spec": {
+    "effects": [
+      {
+        "type": "actor_buff",
+        "config": {
+          "perk_type": "modifier",
+          "perk_key": "core.combat.attack.flat",
+          "duration": "2",
+          "perk_value": "1",
+          "name": "feint"
+        }
+      }
+    ],
+    "command": {
+      "category": "warfare",
+      "priority": 5,
+      "description": "Feint to create a small opening.",
+      "aliases": [],
+      "config": {
+        "ap_cost": "1",
+        "message_actor": "You feint, looking for an opening.",
+        "message_room": "{{ .Actor.Name }} feints, testing the guard."
+      },
+      "inputs": [],
+      "targets": []
+    }
+  }
+}

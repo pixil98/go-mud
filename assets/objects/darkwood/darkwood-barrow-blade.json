@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "darkwood-barrow-blade",
+    "spec": {
+        "aliases": ["blade", "barrow", "sword"],
+        "short_desc": "a barrow blade",
+        "long_desc": "An ancient sword lies here, its dark metal still keen after all these years.",
+        "detailed_desc": "A broad-bladed sword of a style that predates anything in Millbrook's smithy — the metal is a dark, almost black iron alloy that has resisted corrosion through centuries in the barrow, and the edge holds a sharpness that defies the age of the thing. The grip has rotted away and been replaced at some point with wrapped leather, but the blade itself is original. It is heavier than it looks and feels oddly balanced, as though made for a fighting style no longer practised.",
+        "flags": ["wearable"],
+        "wear_slots": ["wield"],
+        "perks": [
+            { "type": "grant", "key": "attack", "arg": "1d8+2" }
+        ]
+    }
+}

@@ -12,6 +12,7 @@ import (
 	"github.com/pixil98/go-service"
 )
 
+// BuildWorkers assembles and returns all service workers from the config.
 func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	cfg, ok := config.(*Config)
 	if !ok {
@@ -54,16 +55,14 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	publisher := messaging.NewNatsPublisher(natsServer)
 
 	// Create combat manager
-	defaultZone := cfg.PlayerManager.DefaultZone
-	defaultRoom := cfg.PlayerManager.DefaultRoom
-	combatEvents := combat.NewCombatEventHandler(world, publisher, defaultZone, defaultRoom)
-	combatManager := combat.NewManager(publisher, world, combatEvents)
+	combatManager := combat.NewManager(publisher, world)
 
 	// Create command handler and compile all commands
 	cmdHandler, err := commands.NewHandler(storeCmds, dict, publisher, world, combatManager)
 	if err != nil {
 		return nil, fmt.Errorf("compiling commands: %w", err)
 	}
+	combatManager.SetAbilityHandler(cmdHandler)
 
 	// Create player manager
 	playerManager, err := cfg.PlayerManager.BuildPlayerManager(cmdHandler, world, dict)

@@ -1,0 +1,12 @@
+{
+    "version": 1,
+    "id": "millbrook-docks",
+    "spec": {
+        "name": "Millbrook Docks",
+        "description": "The town docks are a modest affair — three timber jetties extending into the river, built for the flat-bottomed trading barges that come upriver from the lowlands twice a month with goods the town can't produce itself. The planks are dark with age and river damp, and the smell of fish, wet rope, and pitch is pervasive. A pair of barges are currently moored at the outermost jetty, their crew busy with ropes and cargo; stacked crates and sacking bundles wait on the dock for collection. A small dock office at the head of the main jetty has its shutter propped open, someone inside making entries in a ledger with the absorbed attention of a person who believes paperwork is the only thing holding civilization together. The river current here is slow, and the water between the jetties is a dark, still brown.",
+        "zone_id": "millbrook",
+        "exits": {
+            "east": {"room_id": "millbrook-riverside"}
+        }
+    }
+}

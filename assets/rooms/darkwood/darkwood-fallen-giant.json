@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "darkwood-fallen-giant",
+    "spec": {
+        "name": "The Fallen Giant",
+        "description": "One of the ancient oaks has fallen, its collapse creating a long wound in the canopy and leaving a trunk perhaps sixty feet long across the forest floor. The upended roots form a wall of tangled wood and earth twice a man's height, and the underside of the trunk where it met the earth is a gallery of fungi, insects, and small plants that have colonized the wet bark. Animals have been using the hollow space beneath the main trunk as shelter — the earth there is trampled smooth and the smell of multiple species lingers.",
+        "zone_id": "darkwood",
+        "exits": {
+            "north": {"room_id": "darkwood-ancient-grove"}
+        },
+        "mobile_spawns": ["darkwood-dire-wolf"]
+    }
+}

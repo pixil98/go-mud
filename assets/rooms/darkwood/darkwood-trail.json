@@ -1,0 +1,16 @@
+{
+    "version": 1,
+    "id": "darkwood-trail",
+    "spec": {
+        "name": "Forest Trail",
+        "description": "The trail narrows to barely a yard wide as it pushes deeper into the Darkwood, the undergrowth on either side thickening into dense walls of hazel and briar that discourage any departure from the path. Roots ridged across the trail make footing uncertain, and the canopy has closed almost completely overhead, the light reduced to a grey half-darkness that flattens distance and makes the trail feel longer than it is. A path branches south toward lower, damper ground; hunter's signs notched into the trees mark a second branch to the north.",
+        "zone_id": "darkwood",
+        "exits": {
+            "west":  {"room_id": "darkwood-clearing"},
+            "east":  {"room_id": "darkwood-deep-trail"},
+            "south": {"room_id": "darkwood-hollow-descent"},
+            "north": {"room_id": "darkwood-hunters-path"}
+        },
+        "mobile_spawns": ["darkwood-wolf"]
+    }
+}
