@@ -273,10 +273,8 @@ func (m *Manager) Tick(_ context.Context) error {
 		if zi := m.zones.GetZone(zoneId); zi != nil {
 			if ri := zi.GetRoom(roomId); ri != nil {
 				ri.RemoveMob(d.c.Id())
-				for _, drop := range drops {
-					if obj, ok := drop.(*game.ObjectInstance); ok {
-						ri.AddObj(obj)
-					}
+				for _, obj := range drops {
+					ri.AddObj(obj)
 				}
 			}
 		}

@@ -60,8 +60,9 @@ func (m *mockFollowActor) AddTimedPerks(string, []assets.Perk, int) {}
 func (m *mockFollowActor) SetInCombat(bool)                         {}
 func (m *mockFollowActor) CombatTargetId() string                   { return "" }
 func (m *mockFollowActor) SetCombatTargetId(string)                 {}
-func (m *mockFollowActor) OnDeath() []any                           { return nil }
+func (m *mockFollowActor) OnDeath() []*game.ObjectInstance           { return nil }
 func (m *mockFollowActor) IsCharacter() bool                        { return true }
+func (m *mockFollowActor) GetInventory() *game.Inventory             { return nil }
 func (m *mockFollowActor) GetFollowingId() string                   { return m.followingId }
 func (m *mockFollowActor) SetFollowingId(id string)                 { m.followingId = id }
 

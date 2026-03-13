@@ -70,8 +70,9 @@ func (c *mockCombatant) CombatTargetId() string          { return c.combatTarget
 func (c *mockCombatant) SetCombatTargetId(id string)     { c.combatTargetId = id }
 func (c *mockCombatant) Location() (string, string)      { return c.zoneId, c.roomId }
 func (c *mockCombatant) Level() int                      { return c.level }
-func (c *mockCombatant) OnDeath() []any  { c.deathCalled = true; return nil }
+func (c *mockCombatant) OnDeath() []*game.ObjectInstance { c.deathCalled = true; return nil }
 func (c *mockCombatant) IsCharacter() bool { return false }
+func (c *mockCombatant) GetInventory() *game.Inventory { return nil }
 
 func newMC(id string) *mockCombatant {
 	return &mockCombatant{

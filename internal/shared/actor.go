@@ -2,6 +2,7 @@ package shared
 
 import (
 	"github.com/pixil98/go-mud/internal/assets"
+	"github.com/pixil98/go-mud/internal/game"
 )
 
 // Actor is the shared interface satisfied by both CharacterInstance and
@@ -24,6 +25,7 @@ type Actor interface {
 	SetInCombat(bool)
 	CombatTargetId() string
 	SetCombatTargetId(id string)
-	OnDeath() []any
+	OnDeath() []*game.ObjectInstance
 	IsCharacter() bool
+	GetInventory() *game.Inventory
 }

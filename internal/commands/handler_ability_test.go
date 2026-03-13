@@ -211,7 +211,7 @@ func TestRoomBuffEffect(t *testing.T) {
 				"duration": "3",
 				"perk_key": "test-key",
 			},
-			wantErr: "perk_type config required",
+			wantErr: "perk_type or grant_key config required",
 		},
 	}
 

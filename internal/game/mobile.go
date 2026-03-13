@@ -105,6 +105,8 @@ func (mi *MobileInstance) AdjustResource(name string, delta int, overfill bool) 
 // resources when out of combat.
 func (mi *MobileInstance) Tick() {
 	mi.PerkCache.Tick()
+	mi.inventory.Tick()
+	mi.equipment.Tick()
 	if !mi.IsInCombat() {
 		mi.mu.Lock()
 		mi.regenTick()
@@ -143,8 +145,8 @@ func (mi *MobileInstance) Flags() []string {
 
 // OnDeath creates a corpse containing all of the mob's inventory and equipped items.
 // The combat manager places the returned objects in the room after calling this.
-func (mi *MobileInstance) OnDeath() []any {
-	return []any{newCorpse(mi)}
+func (mi *MobileInstance) OnDeath() []*ObjectInstance {
+	return []*ObjectInstance{newCorpse(mi)}
 }
 
 // IsCharacter returns false for mobs.
@@ -167,9 +169,11 @@ func newCorpse(mi *MobileInstance) *ObjectInstance {
 		Contents:   NewInventory(),
 	}
 	for _, oi := range mi.inventory.Drain() {
+		oi.ActivateDecay()
 		corpse.Contents.AddObj(oi)
 	}
 	for _, oi := range mi.equipment.Drain() {
+		oi.ActivateDecay()
 		corpse.Contents.AddObj(oi)
 	}
 	return corpse

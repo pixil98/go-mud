@@ -102,7 +102,8 @@ func (f *MoveObjHandlerFactory) handle(ctx context.Context, char MoveObjActor, i
 		return NewUserError(fmt.Sprintf("You don't have %s.", item.Obj.Name))
 	}
 
-	// Move
+	// Start the decay timer on first player interaction.
+	oi.ActivateDecay()
 	dest.AddObj(oi)
 
 	if f.pub != nil {

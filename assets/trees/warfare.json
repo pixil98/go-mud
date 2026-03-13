@@ -252,7 +252,7 @@
         },
         "perks": [
           { "type": "modifier", "key": "core.combat.ac.flat", "value": 1 },
-          { "type": "grant", "key": "banner.pick", "arg": "order" }
+          { "type": "grant", "key": "warfare.banner.perks", "arg": "modifier:core.combat.ac.flat:2" }
         ]
       },
       {
@@ -276,7 +276,7 @@
         },
         "perks": [
           { "type": "modifier", "key": "core.combat.attack.flat", "value": 1 },
-          { "type": "grant", "key": "banner.pick", "arg": "discipline" }
+          { "type": "grant", "key": "warfare.banner.perks", "arg": "modifier:core.combat.attack.flat:2" }
         ]
       },
       {
@@ -300,7 +300,7 @@
         },
         "perks": [
           { "type": "modifier", "key": "core.damage.physical.pct", "value": 2 },
-          { "type": "grant", "key": "banner.pick", "arg": "fury" }
+          { "type": "grant", "key": "warfare.banner.perks", "arg": "modifier:core.damage.physical.pct:5" }
         ]
       },
       {
@@ -670,7 +670,7 @@
         "description": "When your banner is up, the room gets one more action to work with.",
         "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.4" }, { "node": "warfare.t4.bl.command" } ] },
         "perks": [
-          { "type": "grant", "key": "banner.rider", "arg": "ap" }
+          { "type": "grant", "key": "warfare.banner.perks", "arg": "modifier:core.action_points.max:1" }
         ]
       },
       {

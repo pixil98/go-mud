@@ -27,14 +27,6 @@ func newTestMob(level int) *MobileInstance {
 	return mi
 }
 
-func newTestObj(id string) *ObjectInstance {
-	obj := storage.NewResolvedSmartIdentifier(id, &assets.Object{
-		Aliases:   []string{id},
-		ShortDesc: id,
-	})
-	oi, _ := NewObjectInstance(obj)
-	return oi
-}
 
 func TestNewCorpse(t *testing.T) {
 	tests := map[string]struct {
@@ -118,7 +110,7 @@ func TestMobileInstance_OnDeath(t *testing.T) {
 	if len(drops) != 1 {
 		t.Fatalf("OnDeath returned %d drops, want 1", len(drops))
 	}
-	corpse := drops[0].(*ObjectInstance)
+	corpse := drops[0]
 	if corpse == nil {
 		t.Fatal("drop is nil")
 	}

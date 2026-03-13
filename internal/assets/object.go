@@ -64,6 +64,11 @@ type Object struct {
 
 	// Perks granted while this item is equipped (AC, stat mods, damage mods, etc.).
 	Perks []Perk `json:"perks,omitempty"`
+
+	// Lifetime is the number of game ticks before a spawned instance of this
+	// object decays and is removed. Zero (the default) means permanent.
+	// Decayable items (Lifetime > 0) are not persisted across logout.
+	Lifetime int `json:"lifetime,omitempty"`
 }
 
 // MatchName returns true if name matches any of this object's aliases (case-insensitive).

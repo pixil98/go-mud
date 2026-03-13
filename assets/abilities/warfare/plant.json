@@ -4,10 +4,17 @@
   "spec": {
     "effects": [
       {
-        "type": "plant_banner",
+        "type": "spawn_obj",
         "config": {
-          "duration": "8",
-          "object_id": "banner"
+          "object_id": "warfare-banner",
+          "destination": "room"
+        }
+      },
+      {
+        "type": "room_buff",
+        "config": {
+          "duration": "30",
+          "grant_key": "warfare.banner.perks"
         }
       }
     ],

@@ -12,6 +12,7 @@ import (
 	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/shared"
+	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // EffectFunc is a compiled effect closure with config baked in at registration time.
@@ -626,23 +627,32 @@ func (e *healEffect) Create(_ string, config map[string]string, _ []assets.Targe
 //   - "perk_arg" (string, optional): perk argument (for grants).
 //   - "duration" (int string, required): number of ticks the perk lasts.
 //   - "name" (string, optional): entry name for the timed perk. Defaults to id.
-func parsePerkBuffConfig(id string, config map[string]string) (string, assets.Perk, int) {
+//
+// Grant-based mode (alternative to direct perk config):
+//   - "grant_key" (string): grant key to read from the actor at runtime. Each
+//     grant arg is parsed as a perk via parsePerkArg. When set, perk_type/
+//     perk_key/perk_value are not required.
+func parsePerkBuffConfig(id string, config map[string]string) (string, []assets.Perk, int) {
 	dur, _ := strconv.Atoi(config["duration"])
-	perkValue, _ := strconv.Atoi(config["perk_value"])
-
-	perk := assets.Perk{
-		Type:  config["perk_type"],
-		Key:   config["perk_key"],
-		Value: perkValue,
-		Arg:   config["perk_arg"],
-	}
 
 	name := config["name"]
 	if name == "" {
 		name = id
 	}
 
-	return name, perk, dur
+	// Grant-based mode: perks are resolved at runtime, not compile time.
+	if config["grant_key"] != "" {
+		return name, nil, dur
+	}
+
+	perkValue, _ := strconv.Atoi(config["perk_value"])
+	perk := assets.Perk{
+		Type:  config["perk_type"],
+		Key:   config["perk_key"],
+		Value: perkValue,
+		Arg:   config["perk_arg"],
+	}
+	return name, []assets.Perk{perk}, dur
 }
 
 // validatePerkBuffConfig checks the required config for perk buff effects.
@@ -651,13 +661,57 @@ func validatePerkBuffConfig(config map[string]string) error {
 	if err != nil || dur <= 0 {
 		return fmt.Errorf("positive duration config required")
 	}
+	if config["grant_key"] != "" {
+		return nil
+	}
 	if config["perk_type"] == "" {
-		return fmt.Errorf("perk_type config required")
+		return fmt.Errorf("perk_type or grant_key config required")
 	}
 	if config["perk_key"] == "" {
 		return fmt.Errorf("perk_key config required")
 	}
 	return nil
+}
+
+// parsePerkArg parses a grant arg string into a Perk.
+// Format: "modifier:key:value" or "grant:key:arg".
+func parsePerkArg(arg string) (assets.Perk, error) {
+	parts := strings.SplitN(arg, ":", 3)
+	if len(parts) < 2 {
+		return assets.Perk{}, fmt.Errorf("invalid perk arg %q: expected type:key[:value]", arg)
+	}
+	p := assets.Perk{Type: parts[0], Key: parts[1]}
+	if len(parts) == 3 {
+		switch p.Type {
+		case assets.PerkTypeModifier:
+			v, err := strconv.Atoi(parts[2])
+			if err != nil {
+				return assets.Perk{}, fmt.Errorf("invalid perk arg %q: bad value: %w", arg, err)
+			}
+			p.Value = v
+		case assets.PerkTypeGrant:
+			p.Arg = parts[2]
+		}
+	}
+	return p, nil
+}
+
+// resolveGrantPerks reads the actor's grant args for the given key and parses
+// each into a Perk. Returns nil if the actor has no grants for the key.
+func resolveGrantPerks(actor shared.Actor, grantKey string) ([]assets.Perk, error) {
+	args := actor.GrantArgs(grantKey)
+	if len(args) == 0 {
+		return nil, nil
+	}
+	perks := make([]assets.Perk, 0, len(args))
+	for _, arg := range args {
+		p, err := parsePerkArg(arg)
+		if err != nil {
+			return nil, err
+		}
+		perks = append(perks, p)
+	}
+	return perks, nil
 }
 
 // actorBuffEffect applies a timed perk to a target player/mob, or self if no target.
@@ -676,19 +730,29 @@ func (e *actorBuffEffect) ValidateConfig(config map[string]string) error {
 }
 
 func (e *actorBuffEffect) Create(id string, config map[string]string, targets []assets.TargetSpec) EffectFunc {
-	name, perk, dur := parsePerkBuffConfig(id, config)
-	perks := []assets.Perk{perk}
+	name, perks, dur := parsePerkBuffConfig(id, config)
+	grantKey := config["grant_key"]
 
 	return func(actor shared.Actor, resolved map[string]*TargetRef, _ *AbilityResult) error {
+		p := perks
+		if grantKey != "" {
+			var err error
+			if p, err = resolveGrantPerks(actor, grantKey); err != nil {
+				return err
+			}
+		}
+		if len(p) == 0 {
+			return nil
+		}
 		for _, spec := range targets {
 			ref := resolved[spec.Name]
 			if ref == nil || ref.Actor == nil {
 				continue
 			}
-			ref.Actor.Actor().AddTimedPerks(name, perks, dur)
+			ref.Actor.Actor().AddTimedPerks(name, p, dur)
 			return nil
 		}
-		actor.AddTimedPerks(name, perks, dur)
+		actor.AddTimedPerks(name, p, dur)
 		return nil
 	}
 }
@@ -705,16 +769,26 @@ func (e *roomBuffEffect) ValidateConfig(config map[string]string) error {
 }
 
 func (e *roomBuffEffect) Create(id string, config map[string]string, _ []assets.TargetSpec) EffectFunc {
-	name, perk, dur := parsePerkBuffConfig(id, config)
-	perks := []assets.Perk{perk}
+	name, perks, dur := parsePerkBuffConfig(id, config)
+	grantKey := config["grant_key"]
 
 	return func(actor shared.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
+		p := perks
+		if grantKey != "" {
+			var err error
+			if p, err = resolveGrantPerks(actor, grantKey); err != nil {
+				return err
+			}
+		}
+		if len(p) == 0 {
+			return nil
+		}
 		zoneId, roomId := actor.Location()
 		room := e.world.GetZone(zoneId).GetRoom(roomId)
 		if room == nil {
 			return fmt.Errorf("room_buff effect: room not found")
 		}
-		room.Perks.AddTimedPerks(name, perks, dur)
+		room.Perks.AddTimedPerks(name, p, dur)
 		return nil
 	}
 }
@@ -731,16 +805,26 @@ func (e *zoneBuffEffect) ValidateConfig(config map[string]string) error {
 }
 
 func (e *zoneBuffEffect) Create(id string, config map[string]string, _ []assets.TargetSpec) EffectFunc {
-	name, perk, dur := parsePerkBuffConfig(id, config)
-	perks := []assets.Perk{perk}
+	name, perks, dur := parsePerkBuffConfig(id, config)
+	grantKey := config["grant_key"]
 
 	return func(actor shared.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
+		p := perks
+		if grantKey != "" {
+			var err error
+			if p, err = resolveGrantPerks(actor, grantKey); err != nil {
+				return err
+			}
+		}
+		if len(p) == 0 {
+			return nil
+		}
 		zoneId, _ := actor.Location()
 		zone := e.world.GetZone(zoneId)
 		if zone == nil {
 			return fmt.Errorf("zone_buff effect: zone not found")
 		}
-		zone.Perks.AddTimedPerks(name, perks, dur)
+		zone.Perks.AddTimedPerks(name, p, dur)
 		return nil
 	}
 }
@@ -757,11 +841,21 @@ func (e *worldBuffEffect) ValidateConfig(config map[string]string) error {
 }
 
 func (e *worldBuffEffect) Create(id string, config map[string]string, _ []assets.TargetSpec) EffectFunc {
-	name, perk, dur := parsePerkBuffConfig(id, config)
-	perks := []assets.Perk{perk}
+	name, perks, dur := parsePerkBuffConfig(id, config)
+	grantKey := config["grant_key"]
 
-	return func(_ shared.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
-		e.world.Perks.AddTimedPerks(name, perks, dur)
+	return func(actor shared.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
+		p := perks
+		if grantKey != "" {
+			var err error
+			if p, err = resolveGrantPerks(actor, grantKey); err != nil {
+				return err
+			}
+		}
+		if len(p) == 0 {
+			return nil
+		}
+		e.world.Perks.AddTimedPerks(name, p, dur)
 		return nil
 	}
 }
@@ -915,6 +1009,76 @@ func (e *threatEffect) Create(_ string, config map[string]string, targets []asse
 			e.combat.SetThreat(actor, target, amount)
 		}
 
+		return nil
+	}
+}
+
+// Spawn destination constants for spawnObjEffect.
+const (
+	SpawnDestRoom      = "room"
+	SpawnDestInventory = "inventory"
+)
+
+// spawnObjEffect spawns an object into the caster's room or inventory.
+//
+// Config fields:
+//   - "object_id" (string, required): the asset ID of the object to spawn.
+//   - "destination" (string, optional): "room" (default) or "inventory".
+type spawnObjEffect struct {
+	objects storage.Storer[*assets.Object]
+	world   ZoneLocator
+}
+
+func (e *spawnObjEffect) Spec() *HandlerSpec { return nil }
+
+func (e *spawnObjEffect) ValidateConfig(config map[string]string) error {
+	objId := config["object_id"]
+	if objId == "" {
+		return fmt.Errorf("object_id config required")
+	}
+	if e.objects.Get(objId) == nil {
+		return fmt.Errorf("object %q not found", objId)
+	}
+	dest := config["destination"]
+	if dest != "" && dest != SpawnDestRoom && dest != SpawnDestInventory {
+		return fmt.Errorf("destination must be %q or %q", SpawnDestRoom, SpawnDestInventory)
+	}
+	return nil
+}
+
+func (e *spawnObjEffect) Create(_ string, config map[string]string, _ []assets.TargetSpec) EffectFunc {
+	objId := config["object_id"]
+	dest := config["destination"]
+	if dest == "" {
+		dest = SpawnDestRoom
+	}
+
+	return func(actor shared.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
+		si := storage.NewSmartIdentifier[*assets.Object](objId)
+		if err := si.Resolve(e.objects); err != nil {
+			return fmt.Errorf("spawn_obj: %w", err)
+		}
+		oi, err := game.NewObjectInstance(si)
+		if err != nil {
+			return fmt.Errorf("spawn_obj: %w", err)
+		}
+		oi.ActivateDecay()
+
+		switch dest {
+		case SpawnDestInventory:
+			actor.GetInventory().AddObj(oi)
+		case SpawnDestRoom:
+			zoneId, roomId := actor.Location()
+			zi := e.world.GetZone(zoneId)
+			if zi == nil {
+				return nil
+			}
+			ri := zi.GetRoom(roomId)
+			if ri == nil {
+				return nil
+			}
+			ri.AddObj(oi)
+		}
 		return nil
 	}
 }

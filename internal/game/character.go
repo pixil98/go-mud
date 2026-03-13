@@ -391,6 +391,8 @@ func (ci *CharacterInstance) AdjustResource(name string, delta int, overfill boo
 // and regenerates resources when out of combat.
 func (ci *CharacterInstance) Tick() {
 	ci.PerkCache.Tick()
+	ci.inventory.Tick()
+	ci.equipment.Tick()
 	ci.ResetAP()
 	if !ci.IsInCombat() {
 		ci.mu.Lock()
@@ -428,7 +430,7 @@ func (ci *CharacterInstance) Flags() []string {
 // OnDeath handles player death. The character is healed to full HP before the session
 // ends so they reconnect healthy. Location is not changed here; they will respawn
 // at their stored home location on next login.
-func (ci *CharacterInstance) OnDeath() []any {
+func (ci *CharacterInstance) OnDeath() []*ObjectInstance {
 	if ci.msgs != nil {
 		select {
 		case ci.msgs <- []byte("You have been slain! Darkness consumes you..."):
@@ -498,21 +500,25 @@ func (ci *CharacterInstance) SaveCharacter(chars storage.Storer[*assets.Characte
 	}
 	ci.mu.RUnlock()
 
-	// Convert runtime inventory to spawn specs (Inventory self-locks)
+	// Convert runtime inventory to spawn specs, skipping decayable items (Inventory self-locks).
 	c.Inventory = nil
 	ci.inventory.ForEachObj(func(_ string, oi *ObjectInstance) {
+		if oi.Object.Get().Lifetime > 0 {
+			return
+		}
 		c.Inventory = append(c.Inventory, objectInstanceToSpawn(oi))
 	})
 
-	// Convert runtime equipment to spawn specs (Equipment self-locks)
+	// Convert runtime equipment to spawn specs, skipping decayable items (Equipment self-locks).
 	c.Equipment = nil
 	ci.equipment.ForEachSlot(func(slot EquipSlot) {
-		if slot.Obj != nil {
-			c.Equipment = append(c.Equipment, assets.EquipmentSpawn{
-				Slot:        slot.Slot,
-				ObjectSpawn: objectInstanceToSpawn(slot.Obj),
-			})
+		if slot.Obj == nil || slot.Obj.Object.Get().Lifetime > 0 {
+			return
 		}
+		c.Equipment = append(c.Equipment, assets.EquipmentSpawn{
+			Slot:        slot.Slot,
+			ObjectSpawn: objectInstanceToSpawn(slot.Obj),
+		})
 	})
 
 	return chars.Save(ci.Character.Id(), c)
@@ -778,6 +784,20 @@ func (inv *Inventory) Clear() {
 	inv.objs = make(map[string]*ObjectInstance)
 }
 
+// Tick advances decay on all items. Each object's Tick is called, then any
+// object whose RemainingTicks has reached zero is removed.
+func (inv *Inventory) Tick() {
+	inv.mu.Lock()
+	defer inv.mu.Unlock()
+
+	for id, oi := range inv.objs {
+		oi.Tick()
+		if oi.Expired() {
+			delete(inv.objs, id)
+		}
+	}
+}
+
 // Drain atomically removes and returns all items.
 func (inv *Inventory) Drain() []*ObjectInstance {
 	inv.mu.Lock()
@@ -861,6 +881,29 @@ func (eq *Equipment) Drain() []*ObjectInstance {
 	eq.objs = []EquipSlot{}
 	eq.rebuildPerks()
 	return items
+}
+
+// Tick advances the embedded PerkCache tick and decays equipped items.
+// Expired items are removed and perks are rebuilt if needed.
+func (eq *Equipment) Tick() {
+	eq.PerkCache.Tick()
+
+	eq.mu.Lock()
+	defer eq.mu.Unlock()
+
+	n := 0
+	for _, slot := range eq.objs {
+		slot.Obj.Tick()
+		if slot.Obj.Expired() {
+			continue
+		}
+		eq.objs[n] = slot
+		n++
+	}
+	if n < len(eq.objs) {
+		eq.objs = eq.objs[:n]
+		eq.rebuildPerks()
+	}
 }
 
 // --- Queries ---

@@ -1,7 +1,6 @@
 package game
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/google/uuid"
@@ -12,22 +11,13 @@ import (
 // ObjectInstance represents a single spawned instance of an Object definition.
 // Location is tracked by the containing structure (room map or inventory).
 type ObjectInstance struct {
-	InstanceId string                                  `json:"-"` // Unique ID
-	Object     storage.SmartIdentifier[*assets.Object] `json:"object_id"`
-	Contents   *Inventory                              `json:"contents,omitempty"` // Non-nil for containers; holds objects stored inside
-	Closed     bool                                    `json:"closed,omitempty"`   // Runtime open/closed state for containers with a Closure
-	Locked     bool                                    `json:"locked,omitempty"`   // Runtime lock state for containers with a Lock
-}
-
-// UnmarshalJSON deserializes an ObjectInstance and assigns it a new unique InstanceId.
-func (oi *ObjectInstance) UnmarshalJSON(b []byte) error {
-	type Alias ObjectInstance
-	err := json.Unmarshal(b, (*Alias)(oi))
-	if err != nil {
-		return err
-	}
-	oi.InstanceId = uuid.New().String()
-	return nil
+	InstanceId     string
+	Object         storage.SmartIdentifier[*assets.Object]
+	Contents       *Inventory // Non-nil for containers; holds objects stored inside
+	Closed         bool       // Runtime open/closed state for containers with a Closure
+	Locked         bool       // Runtime lock state for containers with a Lock
+	RemainingTicks int        // Ticks until decay; 0 = not decaying
+	decaying       bool       // True once ActivateDecay has been called
 }
 
 // NewObjectInstance creates an ObjectInstance linked to its definition.
@@ -52,6 +42,32 @@ func NewObjectInstance(obj storage.SmartIdentifier[*assets.Object]) (*ObjectInst
 		}
 	}
 	return oi, nil
+}
+
+// ActivateDecay starts the decay timer if this object has a finite Lifetime
+// and hasn't already been activated. Call this when a player acquires the item.
+func (oi *ObjectInstance) ActivateDecay() {
+	if !oi.decaying && oi.Object.Get().Lifetime > 0 {
+		oi.RemainingTicks = oi.Object.Get().Lifetime
+		oi.decaying = true
+	}
+}
+
+// Expired returns true if this object was decaying and has run out of time.
+func (oi *ObjectInstance) Expired() bool {
+	return oi.decaying && oi.RemainingTicks == 0
+}
+
+// Tick decrements the decay timer if active and recursively ticks container
+// contents. The caller is responsible for removing this instance when
+// RemainingTicks reaches zero.
+func (oi *ObjectInstance) Tick() {
+	if oi.Contents != nil {
+		oi.Contents.Tick()
+	}
+	if oi.RemainingTicks > 0 {
+		oi.RemainingTicks--
+	}
 }
 
 // Resolve resolves this instance's object definition and recursively resolves

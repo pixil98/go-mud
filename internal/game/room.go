@@ -50,6 +50,7 @@ func NewRoomInstance(room storage.SmartIdentifier[*assets.Room]) (*RoomInstance,
 // Tick advances one game tick for the room: expires timed perks and ticks all mobs.
 func (ri *RoomInstance) Tick() {
 	ri.Perks.Tick()
+	ri.objects.Tick()
 	ri.mu.RLock()
 	for _, mi := range ri.mobiles {
 		mi.Tick()
