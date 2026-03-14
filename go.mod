@@ -1,6 +1,6 @@
 module github.com/pixil98/go-mud
 
-go 1.24.0
+go 1.25.0
 
 require (
 	github.com/Masterminds/sprig/v3 v3.3.0
@@ -13,7 +13,7 @@ require (
 	github.com/pixil98/go-service v0.0.0-20260129222240-12e23ec56a18
 	github.com/pixil98/go-testutil v0.0.0-20260123222118-fa427b8db36a
 	golang.org/x/crypto v0.47.0
-	golang.org/x/text v0.33.0
+	golang.org/x/text v0.35.0
 )
 
 require (
