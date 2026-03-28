@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "millbrook-tavern-cellar",
+    "spec": {
+        "name": "Tavern Cellar",
+        "description": "The cellar is cool and dark, reached by a steep wooden ladder from behind the bar above. Low stone walls are lined with timber racks holding row upon row of casks and barrels, their iron hoops green with verdigris from decades of damp. Cobwebs drape the far corners in thick curtains, and the packed-earth floor carries the cold even in summer. A single lantern hangs from a ceiling hook, casting uneven light across the storeroom's contents — sacks of grain, a broken chair awaiting repair, crates of empties stacked four high. Wedged behind the largest barrel rack, almost invisible unless you know to look, sits a heavy iron strongbox banded with reinforced straps.",
+        "zone_id": "millbrook",
+        "exits": {
+            "up": {"room_id": "millbrook-tavern-common"}
+        },
+        "object_spawns": [
+            {"object_id": "millbrook-strongbox", "contents": [
+                {"object_id": "millbrook-ring-of-ward"}
+            ]}
+        ]
+    }
+}

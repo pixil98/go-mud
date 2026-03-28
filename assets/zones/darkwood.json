@@ -2,7 +2,7 @@
     "version": 1,
     "id": "darkwood",
     "spec": {
-        "reset_mode": "lifespan",
-        "lifespan": "1m"
+        "reset_mode": "empty",
+        "lifespan": "30m"
     }
 }

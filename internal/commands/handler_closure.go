@@ -5,8 +5,19 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 )
+
+// ClosureActor provides the character state needed by the closure handler.
+type ClosureActor interface {
+	Id() string
+	Name() string
+	Location() (string, string)
+	GetInventory() *game.Inventory
+}
+
+var _ ClosureActor = (*game.CharacterInstance)(nil)
 
 // ClosureHandlerFactory creates handlers for open/close/lock/unlock commands.
 // Config:
@@ -19,14 +30,16 @@ type ClosureHandlerFactory struct {
 	pub   game.Publisher
 }
 
+// NewClosureHandlerFactory creates a handler factory for open/close/lock/unlock commands.
 func NewClosureHandlerFactory(world WorldView, pub game.Publisher) *ClosureHandlerFactory {
 	return &ClosureHandlerFactory{world: world, pub: pub}
 }
 
+// Spec returns the required target (exit or container object) and config (action) for closure commands.
 func (f *ClosureHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
-			{Name: "target", Type: TargetTypeObject | TargetTypeExit, Required: true},
+			{Name: "target", Type: targetTypeObject | targetTypeExit, Required: true},
 		},
 		Config: []ConfigRequirement{
 			{Name: "action", Required: true},
@@ -34,8 +47,9 @@ func (f *ClosureHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
-func (f *ClosureHandlerFactory) ValidateConfig(config map[string]any) error {
-	action, _ := config["action"].(string)
+// ValidateConfig checks that action is one of open, close, lock, or unlock.
+func (f *ClosureHandlerFactory) ValidateConfig(config map[string]string) error {
+	action := config["action"]
 	switch action {
 	case "open", "close", "lock", "unlock":
 		return nil
@@ -44,35 +58,38 @@ func (f *ClosureHandlerFactory) ValidateConfig(config map[string]any) error {
 	}
 }
 
+// Create returns a compiled command function for the configured closure action.
 func (f *ClosureHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		action := cmdCtx.Config["action"]
-		target := cmdCtx.Targets["target"]
-
-		switch target.Type {
-		case TargetTypeExit:
-			closure := target.Exit.exit.Closure
-			if closure == nil {
-				return NewUserError(fmt.Sprintf("You can't %s that.", action))
-			}
-			zoneId, roomId := cmdCtx.Session.Location()
-			room := f.world.GetRoom(zoneId, roomId)
-			return f.handleExit(action, target.Exit.Direction, closure, room, cmdCtx)
-
-		case TargetTypeObject:
-			oi := target.Obj.instance
-			if !oi.Object.Get().HasFlag(game.ObjectFlagContainer) || oi.Object.Get().Closure == nil {
-				return NewUserError(fmt.Sprintf("You can't %s that.", action))
-			}
-			return f.handleContainer(action, oi, cmdCtx)
-
-		default:
-			return NewUserError(fmt.Sprintf("You can't %s that.", action))
-		}
-	}, nil
+	return Adapt[ClosureActor](f.handle), nil
 }
 
-func (f *ClosureHandlerFactory) handleExit(action, direction string, closure *game.Closure, room *game.RoomInstance, cmdCtx *CommandContext) error {
+func (f *ClosureHandlerFactory) handle(ctx context.Context, char ClosureActor, in *CommandInput) error {
+	action := in.Config["action"]
+	target := in.Targets["target"]
+
+	switch target.Type {
+	case targetTypeExit:
+		closure := target.Exit.exit.Closure
+		if closure == nil {
+			return NewUserError(fmt.Sprintf("You can't %s that.", action))
+		}
+		zoneId, roomId := char.Location()
+		room := f.world.GetZone(zoneId).GetRoom(roomId)
+		return f.handleExit(action, target.Exit.Direction, closure, room, char)
+
+	case targetTypeObject:
+		oi := target.Obj.instance
+		if !oi.Object.Get().HasFlag(assets.ObjectFlagContainer) || oi.Object.Get().Closure == nil {
+			return NewUserError(fmt.Sprintf("You can't %s that.", action))
+		}
+		return f.handleContainer(action, oi, char)
+
+	default:
+		return NewUserError(fmt.Sprintf("You can't %s that.", action))
+	}
+}
+
+func (f *ClosureHandlerFactory) handleExit(action, direction string, closure *assets.Closure, room *game.RoomInstance, char ClosureActor) error {
 	name := closure.Name
 
 	switch action {
@@ -99,7 +116,7 @@ func (f *ClosureHandlerFactory) handleExit(action, direction string, closure *ga
 		if closure.Lock == nil {
 			return NewUserError(fmt.Sprintf("The %s has no lock.", name))
 		}
-		if err := f.checkKey(cmdCtx, closure.Lock); err != nil {
+		if err := f.checkKey(char, closure.Lock); err != nil {
 			return err
 		}
 
@@ -110,7 +127,7 @@ func (f *ClosureHandlerFactory) handleExit(action, direction string, closure *ga
 		if closure.Lock == nil {
 			return NewUserError(fmt.Sprintf("The %s has no lock.", name))
 		}
-		if err := f.checkKey(cmdCtx, closure.Lock); err != nil {
+		if err := f.checkKey(char, closure.Lock); err != nil {
 			return err
 		}
 	}
@@ -118,12 +135,12 @@ func (f *ClosureHandlerFactory) handleExit(action, direction string, closure *ga
 	// Apply state change to this exit and the other side of the door
 	exit := room.Room.Get().Exits[direction]
 	applyExitAction(action, room, direction)
-	zoneId, roomId := cmdCtx.Session.Location()
+	zoneId, roomId := char.Location()
 	if otherRoom, otherDir := game.FindOtherSide(exit, zoneId, roomId, f.world.Instances()); otherRoom != nil {
 		applyExitAction(action, otherRoom, otherDir)
 	}
 
-	return f.publish(cmdCtx, fmt.Sprintf("You %s the %s.", action, name), fmt.Sprintf("%s %ss the %s.", cmdCtx.Actor.Name, action, name))
+	return f.publish(char, fmt.Sprintf("You %s the %s.", action, name), fmt.Sprintf("%s %ss the %s.", char.Name(), action, name))
 }
 
 // applyExitAction applies a closure state change to a single exit.
@@ -140,7 +157,7 @@ func applyExitAction(action string, room *game.RoomInstance, direction string) {
 	}
 }
 
-func (f *ClosureHandlerFactory) handleContainer(action string, oi *game.ObjectInstance, cmdCtx *CommandContext) error {
+func (f *ClosureHandlerFactory) handleContainer(action string, oi *game.ObjectInstance, char ClosureActor) error {
 	closure := oi.Object.Get().Closure
 	name := closure.Name
 	if name == "" {
@@ -157,14 +174,14 @@ func (f *ClosureHandlerFactory) handleContainer(action string, oi *game.ObjectIn
 			return NewUserError(fmt.Sprintf("%s is already open.", capName))
 		}
 		oi.Closed = false
-		return f.publish(cmdCtx, fmt.Sprintf("You open %s.", name), fmt.Sprintf("%s opens %s.", cmdCtx.Actor.Name, name))
+		return f.publish(char, fmt.Sprintf("You open %s.", name), fmt.Sprintf("%s opens %s.", char.Name(), name))
 
 	case "close":
 		if oi.Closed {
 			return NewUserError(fmt.Sprintf("%s is already closed.", capName))
 		}
 		oi.Closed = true
-		return f.publish(cmdCtx, fmt.Sprintf("You close %s.", name), fmt.Sprintf("%s closes %s.", cmdCtx.Actor.Name, name))
+		return f.publish(char, fmt.Sprintf("You close %s.", name), fmt.Sprintf("%s closes %s.", char.Name(), name))
 
 	case "lock":
 		if !oi.Closed {
@@ -176,11 +193,11 @@ func (f *ClosureHandlerFactory) handleContainer(action string, oi *game.ObjectIn
 		if closure.Lock == nil {
 			return NewUserError(fmt.Sprintf("%s has no lock.", capName))
 		}
-		if err := f.checkKey(cmdCtx, closure.Lock); err != nil {
+		if err := f.checkKey(char, closure.Lock); err != nil {
 			return err
 		}
 		oi.Locked = true
-		return f.publish(cmdCtx, fmt.Sprintf("You lock %s.", name), fmt.Sprintf("%s locks %s.", cmdCtx.Actor.Name, name))
+		return f.publish(char, fmt.Sprintf("You lock %s.", name), fmt.Sprintf("%s locks %s.", char.Name(), name))
 
 	case "unlock":
 		if !oi.Locked {
@@ -189,31 +206,31 @@ func (f *ClosureHandlerFactory) handleContainer(action string, oi *game.ObjectIn
 		if closure.Lock == nil {
 			return NewUserError(fmt.Sprintf("%s has no lock.", capName))
 		}
-		if err := f.checkKey(cmdCtx, closure.Lock); err != nil {
+		if err := f.checkKey(char, closure.Lock); err != nil {
 			return err
 		}
 		oi.Locked = false
-		return f.publish(cmdCtx, fmt.Sprintf("You unlock %s.", name), fmt.Sprintf("%s unlocks %s.", cmdCtx.Actor.Name, name))
+		return f.publish(char, fmt.Sprintf("You unlock %s.", name), fmt.Sprintf("%s unlocks %s.", char.Name(), name))
 	}
 
 	return nil
 }
 
-func (f *ClosureHandlerFactory) checkKey(cmdCtx *CommandContext, lock *game.Lock) error {
-	if cmdCtx.Actor.Inventory.FindObjByDef(lock.KeyId.Id()) == nil {
+func (f *ClosureHandlerFactory) checkKey(char ClosureActor, lock *assets.Lock) error {
+	if char.GetInventory().FindObjByDef(lock.KeyId.Id()) == nil {
 		return NewUserError("You don't have the key.")
 	}
 	return nil
 }
 
-func (f *ClosureHandlerFactory) publish(cmdCtx *CommandContext, selfMsg, roomMsg string) error {
+func (f *ClosureHandlerFactory) publish(char ClosureActor, selfMsg, roomMsg string) error {
 	if f.pub == nil {
 		return nil
 	}
-	if err := f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(selfMsg)); err != nil {
+	if err := f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte(selfMsg)); err != nil {
 		return err
 	}
-	zoneId, roomId := cmdCtx.Session.Location()
-	room := f.world.GetRoom(zoneId, roomId)
-	return f.pub.Publish(room, []string{cmdCtx.Session.Character.Id()}, []byte(roomMsg))
+	zoneId, roomId := char.Location()
+	room := f.world.GetZone(zoneId).GetRoom(roomId)
+	return f.pub.Publish(room, []string{char.Id()}, []byte(roomMsg))
 }

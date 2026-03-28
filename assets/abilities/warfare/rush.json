@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "id": "rush",
+  "spec": {
+    "effects": [
+      {
+        "type": "actor_buff",
+        "config": {
+          "perk_type": "modifier",
+          "perk_key": "core.combat.attack.flat",
+          "duration": "3",
+          "perk_value": "1",
+          "name": "rush"
+        }
+      },
+      {
+        "type": "actor_buff",
+        "config": {
+          "perk_type": "modifier",
+          "perk_key": "core.damage.physical.pct",
+          "duration": "3",
+          "perk_value": "6",
+          "name": "rush"
+        }
+      }
+    ],
+    "command": {
+      "category": "warfare",
+      "priority": 5,
+      "description": "Throw yourself into momentum.",
+      "aliases": [],
+      "config": {
+        "ap_cost": "1",
+        "message_actor": "You rush forward, building momentum.",
+        "message_room": "{{ .Actor.Name }} rushes forward, building momentum."
+      },
+      "inputs": [],
+      "targets": []
+    }
+  }
+}

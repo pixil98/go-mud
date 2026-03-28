@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "id": "finish",
+  "spec": {
+    "effects": [
+      {
+        "type": "damage",
+        "config": {
+          "amount": "3d4+3",
+          "damage_types": "physical"
+        }
+      }
+    ],
+    "command": {
+      "category": "warfare",
+      "priority": 5,
+      "description": "End the fight with a decisive blow.",
+      "aliases": [],
+      "config": {
+        "ap_cost": "2",
+        "message_actor": "You go for the finish on {{ .Targets.target.Name }}.",
+        "message_target": "{{ .Actor.Name }} goes for the finish on you!",
+        "message_room": "{{ .Actor.Name }} goes for the finish on {{ .Targets.target.Name }}."
+      },
+      "inputs": [
+        {
+          "name": "target",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "targets": [
+        {
+          "name": "target",
+          "types": [
+            "mobile"
+          ],
+          "scopes": [
+            "room"
+          ],
+          "input": "target",
+          "optional": false,
+          "default": "combat_target",
+          "not_found": "You don't see '{{ .Inputs.target }}' here."
+        }
+      ]
+    }
+  }
+}

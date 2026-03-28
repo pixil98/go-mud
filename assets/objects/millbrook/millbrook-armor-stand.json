@@ -1,0 +1,11 @@
+{
+    "version": 1,
+    "id": "millbrook-armor-stand",
+    "spec": {
+        "aliases": ["stand", "armor"],
+        "short_desc": "an armor stand",
+        "long_desc": "A wooden armor stand holds several pieces of completed equipment, each tagged with a price.",
+        "detailed_desc": "A mannequin-style stand of shaped wood and iron, the armor stand supports several pieces of finished equipment for inspection. The pieces are displayed to show their construction, each tagged with a strip of cured leather bearing the smith's stamped price mark.",
+        "flags": ["container", "immobile"]
+    }
+}

@@ -7,6 +7,14 @@ import (
 	"github.com/pixil98/go-mud/internal/game"
 )
 
+// TitleActor provides the character state needed by the title handler.
+type TitleActor interface {
+	Id() string
+	SetTitle(string)
+}
+
+var _ TitleActor = (*game.CharacterInstance)(nil)
+
 // TitleHandlerFactory creates handlers that set a player's title.
 type TitleHandlerFactory struct {
 	pub game.Publisher
@@ -17,6 +25,7 @@ func NewTitleHandlerFactory(pub game.Publisher) *TitleHandlerFactory {
 	return &TitleHandlerFactory{pub: pub}
 }
 
+// Spec returns the handler's target and config requirements.
 func (f *TitleHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Config: []ConfigRequirement{
@@ -25,28 +34,32 @@ func (f *TitleHandlerFactory) Spec() *HandlerSpec {
 	}
 }
 
-func (f *TitleHandlerFactory) ValidateConfig(config map[string]any) error {
+// ValidateConfig performs custom validation on the command config.
+func (f *TitleHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 
+// Create returns a compiled CommandFunc for this handler.
 func (f *TitleHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		// Read new_title from expanded config (input was templated into config)
-		title := cmdCtx.Config["new_title"]
+	return Adapt[TitleActor](f.handle), nil
+}
 
-		cmdCtx.Actor.Title = title
+func (f *TitleHandlerFactory) handle(ctx context.Context, char TitleActor, in *CommandInput) error {
+	// Read new_title from expanded config (input was templated into config)
+	title := in.Config["new_title"]
 
-		var output string
-		if title == "" {
-			output = "Title cleared."
-		} else {
-			output = fmt.Sprintf("Title set to: %s", title)
-		}
+	char.SetTitle(title)
 
-		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(output))
-		}
+	var output string
+	if title == "" {
+		output = "Title cleared."
+	} else {
+		output = fmt.Sprintf("Title set to: %s", title)
+	}
 
-		return nil
-	}, nil
+	if f.pub != nil {
+		return f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte(output))
+	}
+
+	return nil
 }

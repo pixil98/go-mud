@@ -20,20 +20,23 @@ func NewWhoHandlerFactory(players game.PlayerGroup, pub game.Publisher) *WhoHand
 	return &WhoHandlerFactory{players: players, pub: pub}
 }
 
+// Spec returns the handler's target and config requirements.
 func (f *WhoHandlerFactory) Spec() *HandlerSpec {
 	return nil
 }
 
-func (f *WhoHandlerFactory) ValidateConfig(config map[string]any) error {
+// ValidateConfig performs custom validation on the command config.
+func (f *WhoHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 
+// Create returns a compiled CommandFunc for this handler.
 func (f *WhoHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
+	return func(ctx context.Context, in *CommandInput) error {
 		var lines []string
 
-		f.players.ForEachPlayer(func(charId string, state *game.PlayerState) {
-			if state.Linkless {
+		f.players.ForEachPlayer(func(charId string, state *game.CharacterInstance) {
+			if state.IsLinkless() {
 				return
 			}
 			char := state.Character.Get()
@@ -46,7 +49,7 @@ func (f *WhoHandlerFactory) Create() (CommandFunc, error) {
 
 		output := "Players Online:\n" + strings.Join(lines, "\n")
 		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(output))
+			return f.pub.Publish(game.SinglePlayer(in.Actor.Id()), nil, []byte(output))
 		}
 
 		return nil

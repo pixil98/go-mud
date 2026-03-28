@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "millbrook-cottage-lane",
+    "spec": {
+        "name": "Cottage Lane",
+        "description": "Cottage Lane is a short, unpaved track running south from the residential quarter, the last stretch of town before the fields begin. The houses here are smaller than those on the lanes to the north — single-storey cottages with low thatched roofs and small walled gardens, most of them showing the comfortable shabbiness of long habitation rather than neglect. Garden walls of stacked fieldstone line both sides of the track, draped in places with climbing plants that have been growing there long enough to have partly dismantled the stone. The air smells of woodsmoke and turned earth, and the lane is quiet enough in the afternoon that you can hear the river from here. A gap in the western wall opens onto a footpath leading down toward the riverside.",
+        "zone_id": "millbrook",
+        "exits": {
+            "north": {"room_id": "millbrook-residential"},
+            "west":  {"room_id": "millbrook-riverside"}
+        }
+    }
+}

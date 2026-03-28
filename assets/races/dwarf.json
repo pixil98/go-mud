@@ -4,12 +4,23 @@
     "spec": {
         "name": "Dwarf",
         "abbreviation": "Dw",
-        "stat_mods": {
-            "con": 2,
-            "cha": -2
-        },
         "perks": [
-            "darkvision"
+            { "type": "modifier", "key": "core.stats.con", "value": 2 },
+            { "type": "modifier", "key": "core.stats.cha", "value": -2 },
+            { "type": "modifier", "key": "core.resource.hp.max", "value": 20 },
+            { "type": "modifier", "key": "core.resource.hp.per_level", "value": 5 },
+            { "type": "modifier", "key": "core.resource.hp.regen", "value": 1 },
+            { "type": "modifier", "key": "core.resource.mana.max", "value": 30 },
+            { "type": "modifier", "key": "core.resource.mana.per_level", "value": 3 },
+            { "type": "modifier", "key": "core.resource.mana.regen", "value": 2 },
+            { "type": "modifier", "key": "core.combat.ac.flat", "value": 10 },
+            { "type": "modifier", "key": "core.action_points.max", "value": 1 },
+            { "type": "modifier", "key": "core.action_points.max", "value": 1 },
+            { "type": "grant", "key": "darkvision" },
+            { "type": "grant", "key": "unlock_ability", "arg": "attack" },
+            { "type": "grant", "key": "unlock_ability", "arg": "fireball" },
+            { "type": "grant", "key": "unlock_ability", "arg": "flame-ward" },
+            { "type": "grant", "key": "unlock_ability", "arg": "bash" }
         ],
         "wear_slots": [
             "light", "head", "neck", "neck", "about",

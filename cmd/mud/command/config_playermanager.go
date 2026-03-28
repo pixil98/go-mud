@@ -10,6 +10,7 @@ import (
 	"github.com/pixil98/go-mud/internal/player"
 )
 
+// PlayerManagerConfig holds configuration for the player manager.
 type PlayerManagerConfig struct {
 	DefaultZone     string `json:"default_zone"`
 	DefaultRoom     string `json:"default_room"`
@@ -30,6 +31,7 @@ func (c *PlayerManagerConfig) validate() error {
 	return el.Err()
 }
 
+// BuildPlayerManager creates a PlayerManager from this configuration.
 func (c *PlayerManagerConfig) BuildPlayerManager(cmdHandler *commands.Handler, world *game.WorldState, dict *game.Dictionary) (*player.PlayerManager, error) {
 	var opts []player.PlayerManagerOpt
 

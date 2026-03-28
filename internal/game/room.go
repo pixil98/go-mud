@@ -2,99 +2,35 @@ package game
 
 import (
 	"fmt"
+	"log/slog"
 	"maps"
 	"sort"
 	"strings"
 	"sync"
 
-	"github.com/google/uuid"
-	"github.com/pixil98/go-errors"
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/storage"
 )
-
-// Exit defines a destination for movement from a room.
-type Exit struct {
-	Zone    storage.SmartIdentifier[*Zone] `json:"zone_id"` // Optional; defaults to current zone
-	Room    storage.SmartIdentifier[*Room] `json:"room_id"`
-	Closure *Closure                       `json:"closure,omitempty"` // Optional open/close/lock barrier
-}
-
-// Room represents a location within a zone.
-type Room struct {
-	Name        string                             `json:"name"`
-	Description string                             `json:"description"`
-	Zone        storage.SmartIdentifier[*Zone]     `json:"zone_id"`
-	Exits       map[string]Exit                    `json:"exits"`         // direction -> destination
-	MobSpawns   []storage.SmartIdentifier[*Mobile] `json:"mobile_spawns"` // mobile IDs to spawn; list duplicates for multiple
-	ObjSpawns   []ObjectSpawn                      `json:"object_spawns"` // objects to spawn
-}
-
-// Validate a room definition
-func (r *Room) Validate() error {
-	el := errors.NewErrorList()
-
-	if r.Name == "" {
-		el.Add(fmt.Errorf("room name is required"))
-	}
-	el.Add(r.Zone.Validate())
-
-	for dir, exit := range r.Exits {
-		if err := exit.Room.Validate(); err != nil {
-			el.Add(fmt.Errorf("exit %s: %w", dir, err))
-		}
-		if exit.Closure != nil {
-			if exit.Closure.Name == "" {
-				el.Add(fmt.Errorf("exit %s closure: name is required", dir))
-			}
-			if err := exit.Closure.Validate(); err != nil {
-				el.Add(fmt.Errorf("exit %s closure: %w", dir, err))
-			}
-		}
-	}
-
-	return el.Err()
-}
-
-func (r *Room) Resolve(dict *Dictionary) error {
-	el := errors.NewErrorList()
-	el.Add(r.Zone.Resolve(dict.Zones))
-	for dir, exit := range r.Exits {
-		el.Add(exit.Room.Resolve(dict.Rooms))
-		if exit.Zone.Id() != "" {
-			el.Add(exit.Zone.Resolve(dict.Zones))
-		}
-		if exit.Closure != nil {
-			el.Add(exit.Closure.Resolve(dict.Objects))
-		}
-		r.Exits[dir] = exit
-	}
-
-	for i := range r.MobSpawns {
-		el.Add(r.MobSpawns[i].Resolve(dict.Mobiles))
-	}
-	for i := range r.ObjSpawns {
-		el.Add(r.ObjSpawns[i].Resolve(dict.Objects))
-	}
-	return el.Err()
-}
 
 // RoomInstance holds the runtime state for a room — spawned mobs, objects, and players.
 // The mutex protects the players, mobiles, and exit closure state. Object operations
 // delegate to the objects Inventory, which handles its own locking.
 type RoomInstance struct {
-	Room storage.SmartIdentifier[*Room]
+	Room storage.SmartIdentifier[*assets.Room]
 
 	mu         sync.RWMutex
 	mobiles    map[string]*MobileInstance
 	objects    *Inventory
-	players    map[string]*PlayerState
+	players    map[string]*CharacterInstance
 	exitClosed map[string]bool // runtime closed state for exits with a Closure
 	exitLocked map[string]bool // runtime locked state for exits with a Lock
+
+	Perks *PerkCache
 }
 
 // NewRoomInstance creates a RoomInstance from a resolved SmartIdentifier.
-func NewRoomInstance(room storage.SmartIdentifier[*Room]) (*RoomInstance, error) {
+func NewRoomInstance(room storage.SmartIdentifier[*assets.Room]) (*RoomInstance, error) {
 	if room.Get() == nil {
 		return nil, fmt.Errorf("unable to create instance from unresolved room %q", room.Id())
 	}
@@ -102,12 +38,24 @@ func NewRoomInstance(room storage.SmartIdentifier[*Room]) (*RoomInstance, error)
 		Room:       room,
 		mobiles:    make(map[string]*MobileInstance),
 		objects:    NewInventory(),
-		players:    make(map[string]*PlayerState),
+		players:    make(map[string]*CharacterInstance),
 		exitClosed: make(map[string]bool),
 		exitLocked: make(map[string]bool),
+		Perks:      NewPerkCache(room.Get().Perks, nil),
 	}
 	ri.initExitClosures()
 	return ri, nil
+}
+
+// Tick advances one game tick for the room: expires timed perks and ticks all mobs.
+func (ri *RoomInstance) Tick() {
+	ri.Perks.Tick()
+	ri.objects.Tick()
+	ri.mu.RLock()
+	for _, mi := range ri.mobiles {
+		mi.Tick()
+	}
+	ri.mu.RUnlock()
 }
 
 // initExitClosures populates exitClosed/exitLocked from exit definitions.
@@ -156,7 +104,7 @@ func (ri *RoomInstance) SetExitLocked(direction string, locked bool) {
 }
 
 // ExitClosure returns the Closure definition for the given direction, or nil.
-func (ri *RoomInstance) ExitClosure(direction string) *Closure {
+func (ri *RoomInstance) ExitClosure(direction string) *assets.Closure {
 	exit, ok := ri.Room.Get().Exits[direction]
 	if !ok {
 		return nil
@@ -168,7 +116,7 @@ func (ri *RoomInstance) ExitClosure(direction string) *Closure {
 // reverse exit that leads back to sourceZone/sourceRoom.
 // Returns the destination RoomInstance and the direction of the reverse exit,
 // or (nil, "") if no matching reverse exit with a closure is found.
-func FindOtherSide(exit Exit, sourceZone, sourceRoom string, instances map[string]*ZoneInstance) (*RoomInstance, string) {
+func FindOtherSide(exit assets.Exit, sourceZone, sourceRoom string, instances map[string]*ZoneInstance) (*RoomInstance, string) {
 	destZone := exit.Zone.Id()
 	if destZone == "" {
 		destZone = sourceZone
@@ -214,7 +162,7 @@ func (ri *RoomInstance) Reset(instances map[string]*ZoneInstance) error {
 			if exit.Closure == nil {
 				continue
 			}
-			if exit.Closure.Closed == false {
+			if !exit.Closure.Closed {
 				continue
 			}
 			destZone := exit.Zone.Id()
@@ -234,13 +182,18 @@ func (ri *RoomInstance) Reset(instances map[string]*ZoneInstance) error {
 	def := ri.Room.Get()
 	ri.mobiles = make(map[string]*MobileInstance)
 	for _, mob := range def.MobSpawns {
-		ri.spawnMob(mob)
+		mi, err := NewMobileInstance(mob)
+		if err != nil {
+			slog.Error("respawning mob", "mob", mob.Id(), "room", ri.Room.Id(), "error", err)
+			continue
+		}
+		ri.addMob(mi)
 	}
 	ri.mu.Unlock()
 
 	ri.objects.Clear()
 	for _, spawn := range def.ObjSpawns {
-		oi, err := spawn.Spawn()
+		oi, err := SpawnObject(spawn)
 		if err != nil {
 			return fmt.Errorf("resetting room %q: %w", ri.Room.Id(), err)
 		}
@@ -251,7 +204,7 @@ func (ri *RoomInstance) Reset(instances map[string]*ZoneInstance) error {
 
 // FindExit looks up an exit by direction key or closure name (case-insensitive).
 // Returns the direction key and a pointer to the exit, or ("", nil) if not found.
-func (ri *RoomInstance) FindExit(name string) (string, *Exit) {
+func (ri *RoomInstance) FindExit(name string) (string, *assets.Exit) {
 	name = strings.ToLower(name)
 	// Match by direction key first
 	if exit, ok := ri.Room.Get().Exits[name]; ok {
@@ -267,6 +220,7 @@ func (ri *RoomInstance) FindExit(name string) (string, *Exit) {
 }
 
 // FindMob searches room mobs for one whose definition matches the given name.
+// Falls back to matching by instance ID if no name match is found.
 func (ri *RoomInstance) FindMob(name string) *MobileInstance {
 	ri.mu.RLock()
 	defer ri.mu.RUnlock()
@@ -276,39 +230,38 @@ func (ri *RoomInstance) FindMob(name string) *MobileInstance {
 			return mi
 		}
 	}
-	return nil
+	// Fall back to instance ID lookup (used by combat target defaulting).
+	return ri.mobiles[name]
 }
 
-// spawnMob creates a new MobileInstance and adds it to the room.
-// Caller must hold the write lock.
-func (ri *RoomInstance) spawnMob(mob storage.SmartIdentifier[*Mobile]) (*MobileInstance, error) {
-	def := mob.Get()
-	mi := &MobileInstance{
-		InstanceId: uuid.New().String(),
-		Mobile:     mob,
-		ActorInstance: ActorInstance{
-			Inventory: NewInventory(),
-			Equipment: NewEquipment(),
-			MaxHP:     def.MaxHP,
-			CurrentHP: def.MaxHP,
-		},
+// GetMob returns the MobileInstance with the given instanceId, or nil if not found.
+func (ri *RoomInstance) GetMob(instanceId string) *MobileInstance {
+	ri.mu.RLock()
+	defer ri.mu.RUnlock()
+	return ri.mobiles[instanceId]
+}
+
+// ForEachMob calls fn for each mob in the room while holding the lock.
+func (ri *RoomInstance) ForEachMob(fn func(*MobileInstance)) {
+	ri.mu.Lock()
+	defer ri.mu.Unlock()
+	for _, mi := range ri.mobiles {
+		fn(mi)
 	}
-	for _, spawn := range def.Inventory {
-		oi, err := spawn.Spawn()
-		if err != nil {
-			return nil, fmt.Errorf("spawning %q: %w", mob.Id(), err)
-		}
-		mi.Inventory.AddObj(oi)
-	}
-	for slot, spawn := range def.Equipment {
-		oi, err := spawn.Spawn()
-		if err != nil {
-			return nil, fmt.Errorf("spawning %q: %w", mob.Id(), err)
-		}
-		mi.Equipment.Equip(slot, 0, oi)
-	}
-	ri.mobiles[mi.InstanceId] = mi
-	return mi, nil
+}
+
+// AddMob places an existing MobileInstance into the room, setting its location.
+func (ri *RoomInstance) AddMob(mi *MobileInstance) {
+	ri.mu.Lock()
+	defer ri.mu.Unlock()
+	ri.addMob(mi)
+}
+
+// addMob inserts a mob and sets its location. Caller must hold the write lock.
+func (ri *RoomInstance) addMob(mi *MobileInstance) {
+	mi.zoneId = ri.Room.Get().Zone.Id()
+	mi.roomId = ri.Room.Id()
+	ri.mobiles[mi.Id()] = mi
 }
 
 // FindObj searches room objects for one whose definition matches the given name.
@@ -316,18 +269,18 @@ func (ri *RoomInstance) FindObj(name string) *ObjectInstance {
 	return ri.objects.FindObj(name)
 }
 
-// Add places an object instance in this room.
+// AddObj places an object instance in this room.
 func (ri *RoomInstance) AddObj(obj *ObjectInstance) {
 	ri.objects.AddObj(obj)
 }
 
-// Remove removes an object instance from this room by instance ID.
+// RemoveObj removes an object instance from this room by instance ID.
 func (ri *RoomInstance) RemoveObj(instanceId string) *ObjectInstance {
 	return ri.objects.RemoveObj(instanceId)
 }
 
 // FindPlayer searches room players for one whose character name matches the given name.
-func (ri *RoomInstance) FindPlayer(name string) *PlayerState {
+func (ri *RoomInstance) FindPlayer(name string) *CharacterInstance {
 	ri.mu.RLock()
 	defer ri.mu.RUnlock()
 
@@ -340,7 +293,7 @@ func (ri *RoomInstance) FindPlayer(name string) *PlayerState {
 }
 
 // AddPlayer adds a player to the room.
-func (ri *RoomInstance) AddPlayer(charId string, ps *PlayerState) {
+func (ri *RoomInstance) AddPlayer(charId string, ps *CharacterInstance) {
 	ri.mu.Lock()
 	defer ri.mu.Unlock()
 
@@ -376,28 +329,28 @@ func (ri *RoomInstance) Describe(actorName string) string {
 	sb.WriteString("\n")
 
 	// Show objects
-	for _, oi := range ri.objects.Objs {
+	ri.objects.ForEachObj(func(_ string, oi *ObjectInstance) {
 		desc := oi.Object.Get().LongDesc
 		if desc == "" {
 			desc = fmt.Sprintf("%s is here.", oi.Object.Get().ShortDesc)
 		}
 		sb.WriteString(fmt.Sprintf("%s\n", display.Colorize(display.Color.Green, desc)))
-	}
+	})
 
 	ri.mu.RLock()
 	// Show mobs
 	for _, mi := range ri.mobiles {
 		desc := mi.Mobile.Get().LongDesc
 		if desc == "" {
-			desc = fmt.Sprintf("%s is here.", mi.Mobile.Get().ShortDesc)
+			desc = fmt.Sprintf("%s is here.", mi.Name())
 		}
 		sb.WriteString(fmt.Sprintf("%s%s\n", display.Colorize(display.Color.Yellow, desc), formatFlags(mi.Flags())))
 	}
 
 	// Show other players
 	for _, ps := range ri.players {
-		if ps.Character.Get().Name != actorName {
-			sb.WriteString(fmt.Sprintf("%s%s\n", display.Colorize(display.Color.Yellow, fmt.Sprintf("%s is here.", ps.Character.Get().Name)), formatFlags(ps.Flags())))
+		if ps.Name() != actorName {
+			sb.WriteString(fmt.Sprintf("%s%s\n", display.Colorize(display.Color.Yellow, fmt.Sprintf("%s is here.", ps.Name())), formatFlags(ps.Flags())))
 		}
 	}
 	ri.mu.RUnlock()
@@ -419,7 +372,7 @@ func (ri *RoomInstance) RemoveMob(instanceId string) *MobileInstance {
 }
 
 // ForEachPlayer calls fn for each player in the room while holding the lock.
-func (ri *RoomInstance) ForEachPlayer(fn func(string, *PlayerState)) {
+func (ri *RoomInstance) ForEachPlayer(fn func(string, *CharacterInstance)) {
 	ri.mu.Lock()
 	defer ri.mu.Unlock()
 	for id, ps := range ri.players {
@@ -443,7 +396,7 @@ func formatFlags(flags []string) string {
 	return s.String()
 }
 
-func formatExits(exits map[string]Exit, exitClosed, exitLocked map[string]bool) string {
+func formatExits(exits map[string]assets.Exit, exitClosed, exitLocked map[string]bool) string {
 	if len(exits) == 0 {
 		return "[Exits: none]"
 	}

@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "darkwood-venom-ring",
+    "spec": {
+        "aliases": ["ring", "venom"],
+        "short_desc": "a ring of venom warding",
+        "long_desc": "A ring of dark green stone set in twisted silver lies here.",
+        "detailed_desc": "A ring of dark green stone — jade, or something close to it — mounted in a twist of tarnished silver that has moulded itself to the stone as though grown there. It carries a faint smell of the web-silk that surrounded it for so long, and wearing it produces a sensation of something being kept at a careful distance. The stone has a depth to it that rewards looking at.",
+        "flags": ["wearable"],
+        "wear_slots": ["finger"],
+        "perks": [
+            { "type": "modifier", "key": "core.combat.ac.flat", "value": 2 }
+        ]
+    }
+}

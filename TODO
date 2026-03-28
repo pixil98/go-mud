@@ -1,1 +1,11 @@
-- Remove world.Instances() and switch to GetZone
+- Notify the player when a decayable item expires (e.g. "The rusty key crumbles to dust.")
+- Remove StatSections from CharacterInstance and format everything from Actor and perks
+- the wear command should have a config option to limit the slots it can apply to and then we can implement wield and hold properly.
+- ActorRef.CharId checks (CharId != "") could use actor.IsCharacter() instead.
+
+## Consider
+- Should overhealing generate threat? Currently heal threat is based on the full heal amount, even if the target is already at max HP.
+- Make threat multiplier configurable per effect. Currently damage generates 1:1 threat and heal generates 0.5x threat, both hardcoded. A config field (e.g. "threat_multiplier") would allow tuning per ability.
+- Should wear slots just be perks?
+- TimedPerkCaches in world/zone/room currently apply to all players and no mobs
+

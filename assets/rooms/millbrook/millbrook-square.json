@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "millbrook-square",
+    "spec": {
+        "name": "Town Square",
+        "description": "You stand in the heart of Millbrook, where four cobblestone roads converge around a weathered stone fountain that has stood here since the town's founding. The fountain's wide granite basin catches coins thrown by hopeful travellers, its water murky with age and algae. Centuries of footsteps have worn the surrounding stones to a mirror sheen in places, while others lie cracked and uneven where tree roots push up beneath. The smell of woodsmoke and fresh bread drifts from the surrounding buildings, mixing with the iron tang of the smithy and the faint sweetness of the herbalist's shop. Voices carry from every direction — the ambient hum of a town going about its daily business.",
+        "zone_id": "millbrook",
+        "exits": {
+            "north": {"room_id": "millbrook-clocktower-plaza"},
+            "east":  {"room_id": "millbrook-market-road"},
+            "south": {"room_id": "millbrook-south-road"},
+            "west":  {"room_id": "millbrook-residential"},
+            "up":    {"zone_id": "testing", "room_id": "testing-arena"}
+        },
+        "mobile_spawns": ["millbrook-guard"],
+        "object_spawns": [{"object_id": "millbrook-fountain"}]
+    }
+}

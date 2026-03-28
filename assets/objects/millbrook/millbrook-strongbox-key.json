@@ -1,0 +1,12 @@
+{
+    "version": 1,
+    "id": "millbrook-strongbox-key",
+    "spec": {
+        "aliases": ["key", "strongbox"],
+        "short_desc": "a small iron key",
+        "long_desc": "A small iron key lies here.",
+        "detailed_desc": "A plain iron key with a round bow and a three-bit arrangement. It bears no identifying marks and is the kind of thing that could open any number of similar locks — except that its particular combination of bits is a match for exactly one.",
+        "flags": ["wearable"],
+        "wear_slots": ["hold"]
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "millbrook-staff",
+    "spec": {
+        "aliases": ["staff", "quarterstaff"],
+        "short_desc": "a wooden staff",
+        "long_desc": "A sturdy wooden staff leans here.",
+        "detailed_desc": "A six-foot staff of dense hardwood, its ends capped with iron rings that serve both to protect the wood and to add weight at the striking point. It has been sanded smooth along the grip section and shows the patina of use.",
+        "flags": ["wearable"],
+        "wear_slots": ["wield"],
+        "perks": [
+            { "type": "grant", "key": "attack", "arg": "1d6" }
+        ]
+    }
+}

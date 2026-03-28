@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "darkwood-deer",
+    "spec": {
+        "aliases": ["deer", "doe"],
+        "short_desc": "a young deer",
+        "long_desc": "A young deer grazes peacefully on the forest floor.",
+        "detailed_desc": "This graceful deer has a soft brown coat dappled with white spots. Its large dark eyes watch you warily, ears twitching at every sound. It seems ready to bolt at the first sign of danger.",
+        "level": 1,
+        "perks": [
+            { "type": "modifier", "key": "core.resource.hp.max", "value": 12 },
+            { "type": "modifier", "key": "core.combat.ac.flat", "value": 10 },
+            { "type": "modifier", "key": "core.combat.attack.flat", "value": 1 },
+            { "type": "grant", "key": "attack", "arg": "1d4" },
+            { "type": "grant", "key": "auto_use", "arg": "attack:1" }
+        ]
+    }
+}

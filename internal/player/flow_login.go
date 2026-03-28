@@ -9,17 +9,17 @@ import (
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/pixil98/go-mud/internal"
-	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
 const maxPasswordTries = 3
 
 type loginFlow struct {
-	chars storage.Storer[*game.Character]
+	chars storage.Storer[*assets.Character]
 }
 
-func (f *loginFlow) Run(rw io.ReadWriter) (*game.Character, error) {
+func (f *loginFlow) Run(rw io.ReadWriter) (*assets.Character, error) {
 	_, err := rw.Write([]byte("Welcome to GoMud!\n"))
 	if err != nil {
 		return nil, err
@@ -81,7 +81,7 @@ func (f *loginFlow) Run(rw io.ReadWriter) (*game.Character, error) {
 	}
 }
 
-func (f *loginFlow) newCharacter(rw io.ReadWriter, username string) (*game.Character, error) {
+func (f *loginFlow) newCharacter(rw io.ReadWriter, username string) (*assets.Character, error) {
 	ok, err := internal.PromptYN(rw, fmt.Sprintf("Did I get that right, %s (Y/N)? ", username))
 	if err != nil {
 		return nil, err
@@ -122,6 +122,6 @@ func (f *loginFlow) newCharacter(rw io.ReadWriter, username string) (*game.Chara
 			return nil, fmt.Errorf("hashing password: %w", err)
 		}
 
-		return game.NewCharacter(username, string(hash)), nil
+		return assets.NewCharacter(username, string(hash)), nil
 	}
 }

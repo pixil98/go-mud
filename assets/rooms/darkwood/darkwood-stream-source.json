@@ -1,0 +1,12 @@
+{
+    "version": 1,
+    "id": "darkwood-stream-source",
+    "spec": {
+        "name": "Stream Source",
+        "description": "The creek narrows here to its source: a seep of cold, clear water from beneath a mossy rock face, trickling down into the streambed that deepens as it makes its way south. The same stream feeds the hollow cave further west, threading through the root systems underground before emerging again here. Watercress and marsh marigold grow in the wet zone around the seep, and a dipper — small, white-throated — works the shallows with methodical industry, apparently unconcerned by your presence. The sound here is gentle and the air is cold and very clean.",
+        "zone_id": "darkwood",
+        "exits": {
+            "south": {"room_id": "darkwood-creek"}
+        }
+    }
+}

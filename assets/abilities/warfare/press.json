@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "id": "press",
+  "spec": {
+    "effects": [
+      {
+        "type": "room_buff",
+        "config": {
+          "perk_type": "modifier",
+          "perk_key": "core.combat.attack.flat",
+          "duration": "2",
+          "perk_value": "2",
+          "name": "press"
+        }
+      }
+    ],
+    "command": {
+      "category": "warfare",
+      "priority": 5,
+      "description": "Push the attack for a brief moment.",
+      "aliases": [],
+      "config": {
+        "ap_cost": "1",
+        "message_actor": "You call the push.",
+        "message_room": "{{ .Actor.Name }} calls the push."
+      },
+      "inputs": [],
+      "targets": []
+    }
+  }
+}

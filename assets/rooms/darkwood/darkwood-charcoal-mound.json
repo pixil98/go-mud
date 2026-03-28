@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "darkwood-charcoal-mound",
+    "spec": {
+        "name": "Charcoal Mound",
+        "description": "The remains of a charcoal-burning operation occupy a clearing in the deep forest — a broad earth mound, blackened and compacted, that was once a slow-burn pile for producing charcoal. It is very old, the mound partly collapsed and overgrown with the particular plants that prefer disturbed, carbon-rich soil. The stumps of felled trees extend in all directions, now rotted to soft mounds of fungus-covered wood. Someone worked here a long time ago. The treeline to the south thins further, and through the gaps the pale shapes of worked stone are visible — the remains of something built.",
+        "zone_id": "darkwood",
+        "exits": {
+            "west":  {"room_id": "darkwood-deadfall"},
+            "south": {"room_id": "darkwood-ruins-path"}
+        }
+    }
+}

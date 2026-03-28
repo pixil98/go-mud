@@ -10,53 +10,66 @@ import (
 
 const scoreBoxWidth = 40
 
+// ScoreActor provides the character state needed by the score handler.
+type ScoreActor interface {
+	Id() string
+	StatSections() []game.StatSection
+}
+
+var _ ScoreActor = (*game.CharacterInstance)(nil)
+
 // ScoreHandlerFactory creates handlers that display character/mobile stats.
 type ScoreHandlerFactory struct {
 	pub game.Publisher
 }
 
+// NewScoreHandlerFactory creates a handler factory for score display commands.
 func NewScoreHandlerFactory(pub game.Publisher) *ScoreHandlerFactory {
 	return &ScoreHandlerFactory{pub: pub}
 }
 
+// Spec returns the handler's target and config requirements.
 func (f *ScoreHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
-			{Name: "target", Type: TargetTypePlayer | TargetTypeMobile, Required: false},
+			{Name: "target", Type: targetTypePlayer | targetTypeMobile, Required: false},
 		},
 	}
 }
 
-func (f *ScoreHandlerFactory) ValidateConfig(config map[string]any) error {
+// ValidateConfig performs custom validation on the command config.
+func (f *ScoreHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 
+// Create returns a compiled CommandFunc for this handler.
 func (f *ScoreHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		sections, err := f.resolveSections(cmdCtx)
-		if err != nil {
-			return err
-		}
-
-		output := renderBox(sections, scoreBoxWidth)
-		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil, []byte(output))
-		}
-		return nil
-	}, nil
+	return Adapt[ScoreActor](f.handle), nil
 }
 
-func (f *ScoreHandlerFactory) resolveSections(cmdCtx *CommandContext) ([]game.StatSection, error) {
-	if target := cmdCtx.Targets["target"]; target != nil {
-		switch target.Type {
-		case TargetTypePlayer:
-			return target.Player.session.Character.Get().StatSections(), nil
-		case TargetTypeMobile:
-			return target.Mob.instance.Mobile.Get().StatSections(), nil
+func (f *ScoreHandlerFactory) handle(ctx context.Context, char ScoreActor, in *CommandInput) error {
+	sections, err := f.resolveSections(char, in)
+	if err != nil {
+		return err
+	}
+
+	output := renderBox(sections, scoreBoxWidth)
+	if f.pub != nil {
+		return f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte(output))
+	}
+	return nil
+}
+
+// TODO: Remove StatSections from CharacterInstance/MobileInstance and build the
+// score display entirely from shared.Actor and perks.
+func (f *ScoreHandlerFactory) resolveSections(char ScoreActor, in *CommandInput) ([]game.StatSection, error) {
+	if target := in.Targets["target"]; target != nil {
+		if sv, ok := target.Actor.Actor().(interface{ StatSections() []game.StatSection }); ok {
+			return sv.StatSections(), nil
 		}
 	}
 
-	return cmdCtx.Actor.StatSections(), nil
+	return char.StatSections(), nil
 }
 
 // --- Box rendering ---

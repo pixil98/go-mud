@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "darkwood-ward-amulet",
+    "spec": {
+        "aliases": ["amulet", "ward", "pendant"],
+        "short_desc": "an amulet of warding",
+        "long_desc": "A small stone amulet on a tarnished chain lies here.",
+        "detailed_desc": "A flat disc of pale grey stone, perhaps two inches across, carved on one face with the same figure found throughout the ruins — the tree-water-fire motif — and smooth on the other. The stone is warm to the touch despite having sat in a cold chamber for who knows how long, and wearing it produces a diffuse sense of barriers between you and harm.",
+        "flags": ["wearable"],
+        "wear_slots": ["neck"],
+        "perks": [
+            { "type": "modifier", "key": "core.combat.ac.flat", "value": 2 }
+        ]
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "testing-arena",
+    "spec": {
+        "name": "Testing Arena",
+        "description": "A bare stone chamber hovering impossibly above the town square. The walls shimmer with faint gridlines, and the air smells of ozone. Various training equipment and discarded weapons litter the floor. A trapdoor in the floor leads back down to the square.",
+        "zone_id": "testing",
+        "exits": {
+            "down": {"zone_id": "millbrook", "room_id": "millbrook-square"}
+        },
+        "mobile_spawns": ["testing-dummy"],
+        "object_spawns": [
+            {"object_id": "testing-greatsword"},
+            {"object_id": "testing-ring"}
+        ]
+    }
+}

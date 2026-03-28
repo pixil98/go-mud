@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "millbrook-cemetery-gate",
+    "spec": {
+        "name": "Cemetery Gates",
+        "description": "Tall iron gates mark the entrance to the Whitmore Memorial Ground, their frame set into a stone arch carved with a weeping willow on either side. The black paint on the ironwork is worn to bare metal in most places, rust running in long streaks down the stone below — a project of repainting is apparently always planned and never begun. A carved inscription in the arch overhead reads WHITMORE MEMORIAL GROUND EST. 847, though the last digits are partly obscured by lichen. The gates themselves stand perpetually open, their hinges long since fused in place by rust. A small stone bench beside the gate offers a place to sit, its surface stained dark green by moss that grows back no matter how often it is scraped away.",
+        "zone_id": "millbrook",
+        "exits": {
+            "west": {"room_id": "millbrook-cemetery-path"},
+            "east": {"room_id": "millbrook-cemetery"}
+        }
+    }
+}

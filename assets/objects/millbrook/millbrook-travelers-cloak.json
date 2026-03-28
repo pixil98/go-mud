@@ -1,0 +1,12 @@
+{
+    "version": 1,
+    "id": "millbrook-travelers-cloak",
+    "spec": {
+        "aliases": ["cloak", "travelers"],
+        "short_desc": "a traveler's cloak",
+        "long_desc": "A heavy wool cloak hangs here.",
+        "detailed_desc": "A full-length cloak of grey-green wool, its hem slightly stained from road travel, with a deep hood and a good bronze clasp. It has been weatherproofed with wax and will turn rain for a while at least. A useful thing for someone moving between towns.",
+        "flags": ["wearable"],
+        "wear_slots": ["about"]
+    }
+}

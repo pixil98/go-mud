@@ -5,73 +5,56 @@ import (
 	"fmt"
 	"log/slog"
 
-	"github.com/pixil98/go-mud/internal/combat"
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // CombatManager provides combat operations needed by command handlers.
 type CombatManager interface {
-	StartCombat(attacker, target combat.Combatant, zoneID, roomID string) error
-	GetPlayerFighter(charId string) *combat.Fighter
+	StartCombat(attacker, target shared.Actor) error
+	AddThreat(source, target shared.Actor, amount int)
+	SetThreat(source, target shared.Actor, amount int)
+	TopThreat(source, target shared.Actor)
+	NotifyHeal(healer, target shared.Actor, amount int)
 }
 
-// KillHandlerFactory creates handlers for the kill command.
-type KillHandlerFactory struct {
-	combat CombatManager
-	rooms  RoomLocator
-	pub    game.Publisher
+// AssistActor provides the character state needed by the assist handler.
+// Embeds shared.Actor because the actor is passed to StartCombat.
+type AssistActor interface {
+	shared.Actor
+	GetFollowingId() string
 }
 
-func NewKillHandlerFactory(combat CombatManager, rooms RoomLocator, pub game.Publisher) *KillHandlerFactory {
-	return &KillHandlerFactory{combat: combat, rooms: rooms, pub: pub}
+var _ AssistActor = (*game.CharacterInstance)(nil)
+
+// AssistedPlayer provides the state the assist handler reads from the player
+// being assisted. This narrow interface lets tests mock the assisted player
+// without constructing a full CharacterInstance.
+type AssistedPlayer interface {
+	Name() string
+	CombatTargetId() string
+	Location() (zoneId, roomId string)
 }
 
-func (f *KillHandlerFactory) Spec() *HandlerSpec {
-	return &HandlerSpec{
-		Targets: []TargetRequirement{
-			{Name: "target", Type: TargetTypeMobile, Required: true},
-		},
-	}
+var _ AssistedPlayer = (*game.CharacterInstance)(nil)
+
+// AssistPlayerLookup finds players that can be assisted.
+type AssistPlayerLookup interface {
+	GetPlayer(charId string) AssistedPlayer
 }
 
-func (f *KillHandlerFactory) ValidateConfig(config map[string]any) error {
-	return nil
+// assistPlayerAdapter wraps a PlayerLookup to satisfy AssistPlayerLookup.
+type assistPlayerAdapter struct {
+	inner PlayerLookup
 }
 
-func (f *KillHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		if cmdCtx.Session.InCombat {
-			return NewUserError("You're already fighting!")
-		}
-
-		target := cmdCtx.Targets["target"]
-
-		mi := target.Mob.instance
-		attacker := &combat.PlayerCombatant{
-			Character: cmdCtx.Session.Character,
-			Player:    cmdCtx.Session,
-		}
-		defender := &combat.MobCombatant{Instance: mi}
-
-		zoneID, roomID := cmdCtx.Session.Location()
-		err := f.combat.StartCombat(attacker, defender, zoneID, roomID)
-		if err != nil {
-			return NewUserError(err.Error())
-		}
-
-		if err := f.pub.Publish(game.SinglePlayer(cmdCtx.Session.Character.Id()), nil,
-			[]byte(fmt.Sprintf("You attack %s!", mi.Mobile.Get().ShortDesc))); err != nil {
-			slog.Warn("failed to notify attacker", "error", err)
-		}
-
-		room := f.rooms.GetRoom(zoneID, roomID)
-		roomMsg := fmt.Sprintf("%s attacks %s!", cmdCtx.Actor.Name, mi.Mobile.Get().ShortDesc)
-		if err := f.pub.Publish(room, []string{cmdCtx.Session.Character.Id()}, []byte(roomMsg)); err != nil {
-			slog.Warn("failed to publish room attack message", "error", err)
-		}
-
+func (a *assistPlayerAdapter) GetPlayer(charId string) AssistedPlayer {
+	p := a.inner.GetPlayer(charId)
+	if p == nil {
 		return nil
-	}, nil
+	}
+	return p
 }
 
 // AssistHandlerFactory creates handlers for the assist command.
@@ -79,89 +62,97 @@ func (f *KillHandlerFactory) Create() (CommandFunc, error) {
 // When no target is given, the actor assists their follow leader.
 type AssistHandlerFactory struct {
 	combat  CombatManager
-	rooms   RoomLocator
-	players PlayerLookup
+	zones   ZoneLocator
+	players AssistPlayerLookup
 	pub     game.Publisher
 }
 
-func NewAssistHandlerFactory(combat CombatManager, rooms RoomLocator, players PlayerLookup, pub game.Publisher) *AssistHandlerFactory {
-	return &AssistHandlerFactory{combat: combat, rooms: rooms, players: players, pub: pub}
+// NewAssistHandlerFactory creates a handler factory for the assist command.
+func NewAssistHandlerFactory(combat CombatManager, zones ZoneLocator, players PlayerLookup, pub game.Publisher) *AssistHandlerFactory {
+	return &AssistHandlerFactory{combat: combat, zones: zones, players: &assistPlayerAdapter{inner: players}, pub: pub}
 }
 
+// Spec returns the optional target player requirement for the assist handler.
 func (f *AssistHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
-			{Name: "target", Type: TargetTypePlayer, Required: false},
+			{Name: "target", Type: targetTypePlayer, Required: false},
 		},
 	}
 }
 
-func (f *AssistHandlerFactory) ValidateConfig(config map[string]any) error {
+// ValidateConfig performs custom validation on the command config.
+func (f *AssistHandlerFactory) ValidateConfig(config map[string]string) error {
 	return nil
 }
 
+// Create returns a compiled CommandFunc for this handler.
 func (f *AssistHandlerFactory) Create() (CommandFunc, error) {
-	return func(ctx context.Context, cmdCtx *CommandContext) error {
-		if cmdCtx.Session.InCombat {
-			return NewUserError("You're already fighting!")
-		}
+	return Adapt[AssistActor](f.handle), nil
+}
 
-		// Resolve who we're assisting: explicit target or follow leader.
-		assistedId, assistedName, err := f.resolveAssisted(cmdCtx)
-		if err != nil {
-			return err
-		}
+func (f *AssistHandlerFactory) handle(ctx context.Context, char AssistActor, in *CommandInput) error {
+	if char.IsInCombat() {
+		return NewUserError("You're already fighting!")
+	}
+	if char.HasGrant(assets.PerkGrantPeaceful, "") {
+		return errPeacefulArea
+	}
 
-		// Look up the assisted player's current fight.
-		fighter := f.combat.GetPlayerFighter(assistedId)
-		if fighter == nil {
-			return NewUserError(fmt.Sprintf("%s isn't fighting anyone.", assistedName))
-		}
+	assistedId, assistedName, err := f.resolveAssisted(char, in)
+	if err != nil {
+		return err
+	}
 
-		attacker := &combat.PlayerCombatant{
-			Character: cmdCtx.Session.Character,
-			Player:    cmdCtx.Session,
-		}
+	assisted := f.players.GetPlayer(assistedId)
+	if assisted == nil {
+		return NewUserError(fmt.Sprintf("%s isn't here.", assistedName))
+	}
 
-		zoneID, roomID := cmdCtx.Session.Location()
-		if err := f.combat.StartCombat(attacker, fighter.Target, zoneID, roomID); err != nil {
-			return NewUserError(err.Error())
-		}
+	targetMobId := assisted.CombatTargetId()
+	if targetMobId == "" {
+		return NewUserError(fmt.Sprintf("%s isn't fighting anyone.", assistedName))
+	}
 
-		actorId := cmdCtx.Session.Character.Id()
+	assistedZone, assistedRoom := assisted.Location()
+	targetMob := f.zones.GetZone(assistedZone).GetRoom(assistedRoom).GetMob(targetMobId)
+	if err := f.combat.StartCombat(char, targetMob); err != nil {
+		return NewUserError(fmt.Sprintf("%s isn't fighting anything you can assist with.", assistedName))
+	}
 
-		if err := f.pub.Publish(game.SinglePlayer(actorId), nil,
-			[]byte(fmt.Sprintf("You jump to %s's aid!", assistedName))); err != nil {
-			slog.Warn("failed to notify actor of assist", "error", err)
-		}
-		if err := f.pub.Publish(game.SinglePlayer(assistedId), nil,
-			[]byte(fmt.Sprintf("%s jumps to your aid!", cmdCtx.Actor.Name))); err != nil {
-			slog.Warn("failed to notify assisted player", "error", err)
-		}
+	actorId := char.Id()
 
-		room := f.rooms.GetRoom(zoneID, roomID)
-		roomMsg := fmt.Sprintf("%s jumps to %s's aid!", cmdCtx.Actor.Name, assistedName)
-		if err := f.pub.Publish(room, []string{actorId, assistedId}, []byte(roomMsg)); err != nil {
-			slog.Warn("failed to publish room assist message", "error", err)
-		}
+	if err := f.pub.Publish(game.SinglePlayer(actorId), nil,
+		[]byte(fmt.Sprintf("You jump to %s's aid!", assistedName))); err != nil {
+		slog.Warn("failed to notify actor of assist", "error", err)
+	}
+	if err := f.pub.Publish(game.SinglePlayer(assistedId), nil,
+		[]byte(fmt.Sprintf("%s jumps to your aid!", char.Name()))); err != nil {
+		slog.Warn("failed to notify assisted player", "error", err)
+	}
 
-		return nil
-	}, nil
+	zoneID, roomID := char.Location()
+	room := f.zones.GetZone(zoneID).GetRoom(roomID)
+	roomMsg := fmt.Sprintf("%s jumps to %s's aid!", char.Name(), assistedName)
+	if err := f.pub.Publish(room, []string{actorId, assistedId}, []byte(roomMsg)); err != nil {
+		slog.Warn("failed to publish room assist message", "error", err)
+	}
+
+	return nil
 }
 
 // resolveAssisted determines who the actor wants to assist.
 // Returns the assisted player's charId and display name.
-func (f *AssistHandlerFactory) resolveAssisted(cmdCtx *CommandContext) (string, string, error) {
-	if target := cmdCtx.Targets["target"]; target != nil {
-		return target.Player.CharId, target.Player.Name, nil
+func (f *AssistHandlerFactory) resolveAssisted(char AssistActor, in *CommandInput) (string, string, error) {
+	if target := in.Targets["target"]; target != nil {
+		return target.Actor.CharId, target.Actor.Name, nil
 	}
 
-	// Fall back to follow leader.
-	leaderId := cmdCtx.Session.FollowingId
+	leaderId := char.GetFollowingId()
 	leader := f.players.GetPlayer(leaderId)
 	if leader == nil {
 		return "", "", NewUserError("Assist whom?")
 	}
 
-	return leaderId, leader.Character.Get().Name, nil
+	return leaderId, leader.Name(), nil
 }

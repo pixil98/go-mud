@@ -1,0 +1,12 @@
+{
+    "version": 1,
+    "id": "millbrook-stable",
+    "spec": {
+        "name": "Millbrook Stable",
+        "description": "The Millbrook stable is a long timber building set back from the south road, its wide double doors standing open during the day to let in light and air. Six stalls line each side, most occupied by horses of varying quality — a few fine animals toward the back, more utilitarian stock near the entrance. The smell of hay, horses, and packed earth is immediate and pervasive, the familiar compound scent of any working stable, softened slightly by bundles of dried lavender hung from nails along the central aisle. Tack and harness hang from wooden pegs on every available post: bridles, collar pads, lead ropes in various states of repair. A hay loft occupies the upper level, reached by a fixed wooden ladder at the building's far end, and the occasional cat can be spotted picking its way across the bales above.",
+        "zone_id": "millbrook",
+        "exits": {
+            "east": {"room_id": "millbrook-south-road"}
+        }
+    }
+}

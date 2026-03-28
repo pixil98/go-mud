@@ -10,6 +10,7 @@ import (
 	"github.com/nats-io/nats.go"
 )
 
+// NatsServer embeds and manages an in-process NATS server with an internal client connection.
 type NatsServer struct {
 	ns   *server.Server
 	conn *nats.Conn
@@ -19,7 +20,7 @@ type NatsServer struct {
 	port           int
 }
 
-// TODO add options
+// NewNatsServer creates and configures an in-process NATS server with the given options.
 func NewNatsServer(opts ...NatsServerOpt) (*NatsServer, error) {
 	s := &NatsServer{
 		startupTimeout: 10 * time.Second,
@@ -45,6 +46,7 @@ func NewNatsServer(opts ...NatsServerOpt) (*NatsServer, error) {
 	return s, nil
 }
 
+// Start launches the NATS server and blocks until ctx is canceled.
 func (n *NatsServer) Start(ctx context.Context) error {
 
 	n.ns.Start()
@@ -83,7 +85,7 @@ func (n *NatsServer) Subscribe(subject string, handler func(data []byte)) (func(
 	if err != nil {
 		return nil, err
 	}
-	return func() { sub.Unsubscribe() }, nil
+	return func() { _ = sub.Unsubscribe() }, nil
 }
 
 // Publish sends a message to the given subject

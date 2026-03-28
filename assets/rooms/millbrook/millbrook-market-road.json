@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "millbrook-market-road",
+    "spec": {
+        "name": "Market Road",
+        "description": "Market Road is the commercial spine of Millbrook, running east from the town square through a canyon of tightly-packed two-storey buildings. Shop signs in painted wood and wrought iron swing overhead on bracket arms, advertising everything from boot repairs to astrological services. The flagstone street is busy at most hours, traders pushing handcarts through gaps in the foot traffic and apprentices running errands with their arms full of parcels. The apothecary's carved green-leaf sign hangs above a low doorway to the south, the faint herbal scent finding its way out into the street. To the north, the Aldenmere Trading Post occupies a broader building set back slightly from the road, its entrance guarded by stacked crates.",
+        "zone_id": "millbrook",
+        "exits": {
+            "west":  {"room_id": "millbrook-square"},
+            "north": {"room_id": "millbrook-trading-post"},
+            "east":  {"room_id": "millbrook-market-square"},
+            "south": {"room_id": "millbrook-herbalist"}
+        }
+    }
+}

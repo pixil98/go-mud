@@ -2,6 +2,10 @@
     "version": 1,
     "id": "millbrook",
     "spec": {
-        "reset_mode": "never"
+        "reset_mode": "lifespan",
+        "lifespan": "6h",
+        "perks": [
+            { "type": "grant", "key": "peaceful" }
+        ]
     }
 }

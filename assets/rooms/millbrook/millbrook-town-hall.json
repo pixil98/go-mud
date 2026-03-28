@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "millbrook-town-hall",
+    "spec": {
+        "name": "Millbrook Town Hall",
+        "description": "Thick oak beams support the vaulted ceiling of Millbrook's town hall, a building that has served as courtroom, granary, and refuge during harder times. The main chamber is dominated by a raised dais at the far end, where the mayor's heavy oak desk sits beneath a window of rippled green glass. Long benches line the sides of the room, worn smooth by generations of citizens attending hearings and festivals. Portraits of past mayors hang in gilt frames along the stone walls, their painted eyes following you with varying degrees of stern disapproval. A municipal notice board near the entrance is covered in layered announcements, most of them months old.",
+        "zone_id": "millbrook",
+        "exits": {
+            "east": {"room_id": "millbrook-clocktower-plaza"}
+        },
+        "mobile_spawns": ["millbrook-mayor"]
+    }
+}

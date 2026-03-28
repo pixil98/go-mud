@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "id": "taunt",
+  "spec": {
+    "effects": [
+      {
+        "type": "threat",
+        "config": {
+          "mode": "set_to_top"
+        }
+      }
+    ],
+    "command": {
+      "category": "warfare",
+      "priority": 5,
+      "description": "Force a target to focus on you.",
+      "aliases": [],
+      "config": {
+        "ap_cost": "1",
+        "message_actor": "You taunt {{ .Targets.target.Name }}.",
+        "message_target": "{{ .Actor.Name }} taunts you!",
+        "message_room": "{{ .Actor.Name }} taunts {{ .Targets.target.Name }}."
+      },
+      "inputs": [
+        {
+          "name": "target",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "targets": [
+        {
+          "name": "target",
+          "types": [
+            "mobile"
+          ],
+          "scopes": [
+            "room"
+          ],
+          "input": "target",
+          "optional": false,
+          "default": "combat_target",
+          "not_found": "You don't see '{{ .Inputs.target }}' here."
+        }
+      ]
+    }
+  }
+}

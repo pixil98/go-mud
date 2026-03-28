@@ -9,13 +9,16 @@ import (
 	"strings"
 	"time"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/commands"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
 const (
+	// DefaultLinklessTimeout is how long a disconnected player remains in the world before being saved and removed.
 	DefaultLinklessTimeout = 5 * time.Minute
+	// DefaultIdleTimeout is how long a connected but inactive player is allowed before being kicked.
 	DefaultIdleTimeout     = 15 * time.Minute
 )
 
@@ -32,6 +35,7 @@ func WithIdleTimeout(d time.Duration) PlayerManagerOpt {
 	return func(pm *PlayerManager) { pm.idleTimeout = d }
 }
 
+// PlayerManager manages player sessions, lifecycle, and timeouts.
 type PlayerManager struct {
 	cmdHandler *commands.Handler
 	world      *game.WorldState
@@ -41,13 +45,14 @@ type PlayerManager struct {
 	defaultZone string
 	defaultRoom string
 
-	pronouns *storage.SelectableStorer[*game.Pronoun]
-	races    *storage.SelectableStorer[*game.Race]
+	pronouns *storage.SelectableStorer[*assets.Pronoun]
+	races    *storage.SelectableStorer[*assets.Race]
 
 	linklessTimeout time.Duration
 	idleTimeout     time.Duration
 }
 
+// NewPlayerManager creates a PlayerManager with the given command handler, world state, and asset dictionary.
 func NewPlayerManager(cmd *commands.Handler, world *game.WorldState, dict *game.Dictionary, defaultZone, defaultRoom string, opts ...PlayerManagerOpt) *PlayerManager {
 	pm := &PlayerManager{
 		cmdHandler:      cmd,
@@ -73,17 +78,17 @@ func NewPlayerManager(cmd *commands.Handler, world *game.WorldState, dict *game.
 // Tick checks all players for linkless and idle timeouts.
 // Linkless players past the timeout are saved and removed from the world.
 // Idle connected players are marked linkless and kicked, dropping their connection.
-func (m *PlayerManager) Tick(ctx context.Context) error {
+func (m *PlayerManager) Tick(_ context.Context) error {
 	now := time.Now()
 	var linklessExpired []string
 	var idleExpired []string
 
-	m.world.ForEachPlayer(func(charId string, ps *game.PlayerState) {
-		if ps.Linkless {
-			if now.Sub(ps.LinklessAt) >= m.linklessTimeout {
+	m.world.ForEachPlayer(func(charId string, ps *game.CharacterInstance) {
+		if ps.IsLinkless() {
+			if now.Sub(ps.GetLinklessAt()) >= m.linklessTimeout {
 				linklessExpired = append(linklessExpired, charId)
 			}
-		} else if now.Sub(ps.LastActivity) >= m.idleTimeout {
+		} else if now.Sub(ps.GetLastActivity()) >= m.idleTimeout {
 			idleExpired = append(idleExpired, charId)
 		}
 	})
@@ -142,7 +147,7 @@ func (m *PlayerManager) newPlayer(conn io.ReadWriter) (*Player, error) {
 	}
 
 	// Resolve foreign keys on the character
-	if err := char.Resolve(m.dict); err != nil {
+	if err := char.Resolve(m.dict.Pronouns, m.dict.Races, m.dict.Objects); err != nil {
 		return nil, fmt.Errorf("resolving character references: %w", err)
 	}
 
@@ -154,23 +159,25 @@ func (m *PlayerManager) newPlayer(conn io.ReadWriter) (*Player, error) {
 
 	charId := strings.ToLower(char.Name)
 	msgs := make(chan []byte, 100)
-	var zoneId, roomId string
-
-	if ps := m.world.GetPlayer(charId); ps != nil {
-		// Player already in world — kick old connection and reattach
+	if ps := m.world.GetPlayer(charId); ps != nil && !ps.IsQuit() {
+		// Player already in world with an active session — kick old connection and reattach.
 		slog.Info("player reconnecting", "charId", charId)
 		ps.Kick()
 		time.Sleep(10 * time.Millisecond)
 		ps.Reattach(msgs)
-		zoneId, roomId = ps.Location()
 		_, _ = conn.Write([]byte("Reconnecting...\n"))
 	} else {
 		// Fresh login
-		char := storage.NewSmartIdentifier[*game.Character](charId)
-		char.Resolve(m.dict.Characters)
-		zoneId, roomId = m.startingLocation(char.Get())
-		err = m.world.AddPlayer(char, msgs, zoneId, roomId)
+		charRef := storage.NewSmartIdentifier[*assets.Character](charId)
+		if err := charRef.Resolve(m.dict.Characters); err != nil {
+			return nil, fmt.Errorf("resolving character %q: %w", charId, err)
+		}
+		zoneId, roomId := m.startingLocation(charRef.Get())
+		ci, err := game.NewCharacterInstance(charRef, msgs, zoneId, roomId)
 		if err != nil {
+			return nil, fmt.Errorf("creating character instance: %w", err)
+		}
+		if err = m.world.AddPlayer(ci); err != nil {
 			return nil, fmt.Errorf("registering player in world: %w", err)
 		}
 	}
@@ -212,7 +219,7 @@ func (m *PlayerManager) handleSessionEnd(charId string, playErr error) {
 		slog.Warn("failed to save player on session end", "charId", charId, "error", err)
 	}
 
-	if ps.Quit {
+	if ps.IsQuit() {
 		ps.UnsubscribeAll()
 		if err := m.world.RemovePlayer(charId); err != nil {
 			slog.Warn("failed to remove player on quit", "charId", charId, "error", err)
@@ -225,21 +232,21 @@ func (m *PlayerManager) handleSessionEnd(charId string, playErr error) {
 }
 
 // subscribePlayer subscribes the player to their individual NATS channel.
-func (m *PlayerManager) subscribePlayer(ps *game.PlayerState, charId string) error {
+func (m *PlayerManager) subscribePlayer(ps *game.CharacterInstance, charId string) error {
 	if err := ps.Subscribe(fmt.Sprintf("player-%s", charId)); err != nil {
 		return fmt.Errorf("subscribing to player channel: %w", err)
 	}
 	return nil
 }
 
-// initCharacter prompts for any missing traits on a character.
-func (m *PlayerManager) initCharacter(rw io.ReadWriter, char *game.Character) error {
+// initCharacter prompts for any missing traits on a character and initializes HP for new characters.
+func (m *PlayerManager) initCharacter(rw io.ReadWriter, char *assets.Character) error {
 	for char.Pronoun.Id() == "" {
 		sel, err := m.pronouns.Prompt(rw, "What are your pronouns?")
 		if err != nil {
 			return fmt.Errorf("selecting pronouns: %w", err)
 		}
-		char.Pronoun = storage.NewSmartIdentifier[*game.Pronoun](string(sel))
+		char.Pronoun = storage.NewSmartIdentifier[*assets.Pronoun](string(sel))
 	}
 
 	for char.Race.Id() == "" {
@@ -247,19 +254,17 @@ func (m *PlayerManager) initCharacter(rw io.ReadWriter, char *game.Character) er
 		if err != nil {
 			return fmt.Errorf("selecting race: %w", err)
 		}
-		char.Race = storage.NewSmartIdentifier[*game.Race](string(sel))
+		char.Race = storage.NewSmartIdentifier[*assets.Race](string(sel))
 	}
 
+	if char.BaseStats == nil {
+		char.BaseStats = assets.DefaultBaseStats()
+	}
+
+	// Level 0 means brand new character — set to level 1. Resource pools
+	// (HP, etc.) are computed from perks when NewCharacterInstance runs.
 	if char.Level == 0 {
-		char.Gain()
-	}
-
-	if char.BaseStats == nil {
-		char.BaseStats = game.DefaultBaseStats()
-	}
-
-	if char.BaseStats == nil {
-		char.BaseStats = game.DefaultBaseStats()
+		char.Level = 1
 	}
 
 	return nil
@@ -267,7 +272,7 @@ func (m *PlayerManager) initCharacter(rw io.ReadWriter, char *game.Character) er
 
 // startingLocation returns the zone and room a character should start in.
 // Uses saved location if the zone and room are still valid, otherwise falls back to defaults.
-func (m *PlayerManager) startingLocation(char *game.Character) (string, string) {
+func (m *PlayerManager) startingLocation(char *assets.Character) (string, string) {
 	if char.LastZone == "" || char.LastRoom == "" {
 		return m.defaultZone, m.defaultRoom
 	}

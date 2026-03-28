@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "darkwood-edge",
+    "spec": {
+        "name": "Edge of Darkwood",
+        "description": "The packed earth track from Millbrook's east gate gives way here to the first real darkness of the Darkwood, the ancient oaks closing overhead in a sudden transition that the locals call the Edge. The road behind is still visible in both directions — Millbrook's stone arch a pale shape in the distance — but ahead the track narrows and the canopy thickens until the sky is almost invisible. The smell changes immediately: cold damp leaf litter, old bark, and something faintly organic beneath. Bird calls are different here than in the open land, and there are other sounds further in — movement in the undergrowth, the occasional crack of a branch — that the open road doesn't produce.",
+        "zone_id": "darkwood",
+        "exits": {
+            "west": {"zone_id": "millbrook", "room_id": "millbrook-east-gate"},
+            "east": {"room_id": "darkwood-clearing"}
+        },
+        "mobile_spawns": ["darkwood-deer"]
+    }
+}

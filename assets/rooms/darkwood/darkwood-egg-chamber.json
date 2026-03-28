@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "darkwood-egg-chamber",
+    "spec": {
+        "name": "Egg Chamber",
+        "description": "A secondary chamber accessible from the den above is completely given over to egg sacs — hundreds of them, anchored in rows to every surface, each one about the size of a man's fist. The chamber is warmer than the den, and the air is close and humid. The egg sacs are at various stages of development, ranging from the pale white of fresh sacs to the darkening grey of those approaching maturity. The sound here is a faint but continuous shifting — the movement of small things already in residence inside the silk.",
+        "zone_id": "darkwood",
+        "exits": {
+            "south": {"room_id": "darkwood-den"}
+        },
+        "mobile_spawns": ["darkwood-spider", "darkwood-spider", "darkwood-spider"]
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "millbrook-clocktower-plaza",
+    "spec": {
+        "name": "Clocktower Plaza",
+        "description": "A broad flagstone plaza opens at the base of Millbrook's ancient clocktower, which has kept the town's time for over two centuries. The tower rises four stories overhead, its four brass clock faces each showing a slightly different time — the mechanism has never quite recovered from a long-past lightning strike. Carved into the base of the tower is the town's motto: 'Diligence Before Fortune.' The town hall stands behind a row of stone pillars to the west, while the guard barracks occupy the eastern side of the plaza. A low iron fence encloses a flower bed at the tower's base, tended by a volunteer the locals call the Clockkeeper.",
+        "zone_id": "millbrook",
+        "exits": {
+            "north": {"room_id": "millbrook-north-gate"},
+            "south": {"room_id": "millbrook-square"},
+            "west":  {"room_id": "millbrook-town-hall"},
+            "east":  {"room_id": "millbrook-barracks"},
+            "up":    {"room_id": "millbrook-clocktower-top"}
+        },
+        "mobile_spawns": ["millbrook-guard"]
+    }
+}

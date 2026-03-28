@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "darkwood-den-depths",
+    "spec": {
+        "name": "Queen's Chamber",
+        "description": "The deepest part of the den is lower, its ceiling closer, the web construction here the densest and most complex. A central mass of silk in the far wall is clearly a nesting structure of some significance — huge, layered, and apparently tended carefully. The space radiates a stillness that is not peace; it is the stillness of something watching and deciding. Egg sacs the size of a man's torso are anchored to the walls in rows.",
+        "zone_id": "darkwood",
+        "exits": {
+            "up": {"room_id": "darkwood-den"}
+        },
+        "mobile_spawns": ["darkwood-spider-queen"],
+        "object_spawns": [
+            {"object_id": "darkwood-cocoon", "contents": [
+                {"object_id": "darkwood-venom-ring"}
+            ]}
+        ]
+    }
+}

@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "id": "command",
+  "spec": {
+    "effects": [
+      {
+        "type": "room_buff",
+        "config": {
+          "perk_type": "modifier",
+          "perk_key": "core.combat.attack.flat",
+          "duration": "2",
+          "perk_value": "2",
+          "name": "command"
+        }
+      },
+      {
+        "type": "room_buff",
+        "config": {
+          "perk_type": "modifier",
+          "perk_key": "core.combat.ac.flat",
+          "duration": "2",
+          "perk_value": "1",
+          "name": "command"
+        }
+      }
+    ],
+    "command": {
+      "category": "warfare",
+      "priority": 5,
+      "description": "A master call that snaps the room into clean action.",
+      "aliases": [],
+      "config": {
+        "ap_cost": "2",
+        "message_actor": "You bark a master command.",
+        "message_room": "{{ .Actor.Name }} barks a master command."
+      },
+      "inputs": [],
+      "targets": []
+    }
+  }
+}

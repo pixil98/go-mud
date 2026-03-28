@@ -1,0 +1,11 @@
+{
+    "version": 1,
+    "id": "darkwood-bone-pile",
+    "spec": {
+        "aliases": ["bones", "pile"],
+        "short_desc": "a pile of old bones",
+        "long_desc": "A pile of old bones and grave goods lies in the centre of the chamber.",
+        "detailed_desc": "The bones are very old and dry, the grave goods among them corroded beyond recognition except for a few pieces that have held up better than the rest. Someone or something has been through this before — the arrangement is disturbed — but there are items among the remains that survived.",
+        "flags": ["container", "immobile"]
+    }
+}

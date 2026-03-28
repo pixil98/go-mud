@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "darkwood-bog-depths",
+    "spec": {
+        "name": "Bog Depths",
+        "description": "The bog grows darker and deeper to the east, the hummocks giving way to longer stretches of open black water. The smell is worse here — more active decomposition, more sulphur — and the ground, where there is ground, is soft enough to pull at boots with each step. Something large has been moving through the shallows ahead; the water is clouded with disturbed sediment. The stunted alder trees here are half-dead, their upper branches bare and white, and the open water to the east seems to conceal a firmer island of sorts.",
+        "zone_id": "darkwood",
+        "exits": {
+            "west":  {"room_id": "darkwood-bog"},
+            "east":  {"room_id": "darkwood-bog-island"}
+        },
+        "mobile_spawns": ["darkwood-giant-frog"]
+    }
+}

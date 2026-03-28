@@ -1,0 +1,688 @@
+{
+  "version": 1,
+  "id": "warfare",
+  "spec": {
+    "name": "Warfare",
+    "description": "Warfare is the practical art of surviving melee: stance, timing, and pressure. It branches into Vanguard (threat and durability), Bannerlord (banners and coordination), and Juggernaut (big hits and momentum).",
+    "spine": [
+      {
+        "id": "warfare.spine.1",
+        "name": "Fighting Form",
+        "description": "You fall into a reliable fighting rhythm. When things go loud, your hands don’t.",
+        "prereqs": {
+          "type": "or",
+          "n": 2,
+          "terms": [
+            { "node": "warfare.t0.stoutheart" },
+            { "node": "warfare.t0.mailcraft" },
+            { "node": "warfare.t0.surehand" },
+            { "node": "warfare.t0.groundwork" },
+            { "node": "warfare.t0.hardhitter" },
+            { "node": "warfare.t0.breath" }
+          ]
+        },
+        "perks": [
+          { "type": "grant", "key": "auto_use", "arg": "attack:1" }
+        ]
+      },
+      {
+        "id": "warfare.spine.2",
+        "name": "Hard to Kill",
+        "description": "You’ve taken enough hits to learn what matters: stance, breath, and not giving ground for free.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.1" } ] },
+        "perks": [
+          { "type": "modifier", "key": "core.resource.hp.max", "value": 10 }
+        ]
+      },
+      {
+        "id": "warfare.spine.3",
+        "name": "Footwork",
+        "description": "You learn where to stand so a clean hit turns into a poor one.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.2" } ] },
+        "perks": [
+          { "type": "modifier", "key": "core.combat.ac.flat", "value": 1 }
+        ]
+      },
+      {
+        "id": "warfare.spine.4",
+        "name": "Battle Tempo",
+        "description": "You learn when to press and when to wait. Over a long fight, that timing adds up.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.3" } ] },
+        "perks": [
+          { "type": "modifier", "key": "core.action_points.max", "value": 1 }
+        ]
+      }
+    ],
+    "nodes": [
+      {
+        "id": "warfare.t0.stoutheart",
+        "name": "Stoutheart",
+        "description": "You can take more punishment than most.",
+        "max_rank": 3,
+        "perks": [
+          { "type": "modifier", "key": "core.resource.hp.per_level", "value": 2 }
+        ]
+      },
+      {
+        "id": "warfare.t0.mailcraft",
+        "name": "Mailcraft",
+        "description": "You wear armor without letting it steal your breath.",
+        "max_rank": 3,
+        "perks": [
+          { "type": "modifier", "key": "core.combat.ac.flat", "value": 1 }
+        ]
+      },
+      {
+        "id": "warfare.t0.surehand",
+        "name": "Surehand",
+        "description": "You stop wasting motion. Your strikes land more often.",
+        "max_rank": 3,
+        "perks": [
+          { "type": "modifier", "key": "core.combat.attack.flat", "value": 1 }
+        ]
+      },
+      {
+        "id": "warfare.t0.groundwork",
+        "name": "Groundwork",
+        "description": "You learn to stand your ground. A blow that finds you planted doesn't find you stumbling.",
+        "max_rank": 3,
+        "perks": [
+          { "type": "modifier", "key": "core.defense.all.absorb.flat", "value": 1 }
+        ]
+      },
+      {
+        "id": "warfare.t0.hardhitter",
+        "name": "Hard Hitter",
+        "description": "You learn to put your weight behind the blow.",
+        "max_rank": 3,
+        "perks": [
+          { "type": "modifier", "key": "core.damage.physical.pct", "value": 2 }
+        ]
+      },
+      {
+        "id": "warfare.t0.breath",
+        "name": "Steady Breath",
+        "description": "You recover faster between surges of effort.",
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.resource.hp.regen", "value": 1 }
+        ]
+      },
+      {
+        "id": "warfare.t0.feint",
+        "name": "Feint",
+        "description": "A small trick of timing that buys you an opening. Useful early, but it won’t win real fights by itself.",
+        "perks": [
+          { "type": "grant", "key": "unlock_ability", "arg": "feint" }
+        ]
+      },
+      {
+        "id": "warfare.t0.kick",
+        "name": "Kick",
+        "description": "A simple strike meant to interrupt and reposition, not to deal heavy damage.",
+        "perks": [
+          { "type": "grant", "key": "unlock_ability", "arg": "kick" }
+        ]
+      },
+      {
+        "id": "warfare.t1.ironheart",
+        "name": "Ironheart",
+        "description": "Punishment has a harder time sticking.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.1" }, { "node": "warfare.t0.stoutheart" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.resource.hp.per_level", "value": 3 }
+        ]
+      },
+      {
+        "id": "warfare.t1.armorcraft",
+        "name": "Armorcraft",
+        "description": "You move in full kit like it isn't there.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.1" }, { "node": "warfare.t0.mailcraft" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.combat.ac.flat", "value": 2 }
+        ]
+      },
+      {
+        "id": "warfare.t1.keenhand",
+        "name": "Keen Hand",
+        "description": "Your strikes find the gaps that sloppy form misses.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.1" }, { "node": "warfare.t0.surehand" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.combat.attack.flat", "value": 2 }
+        ]
+      },
+      {
+        "id": "warfare.t1.ironfooting",
+        "name": "Iron Footing",
+        "description": "Your stance has weight now. Hits land, but you're already past them.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.1" }, { "node": "warfare.t0.groundwork" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.defense.all.absorb.flat", "value": 2 }
+        ]
+      },
+      {
+        "id": "warfare.t1.drive",
+        "name": "Drive",
+        "description": "You've learned to put your full weight behind each blow.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.1" }, { "node": "warfare.t0.hardhitter" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.damage.physical.pct", "value": 4 }
+        ]
+      },
+      {
+        "id": "warfare.t1.vg.presence.1",
+        "name": "Command Presence I",
+        "description": "Enemies notice you first. If you step in, you become the problem.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.1" }, { "node": "warfare.t0.mailcraft" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.combat.threat.flat", "value": 5 }
+        ]
+      },
+      {
+        "id": "warfare.t1.vg.threatcraft.1",
+        "name": "Threatcraft I",
+        "description": "You learn what holds attention: timing, posture, pressure.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.t1.vg.presence.1" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.combat.threat.pct", "value": 5 }
+        ]
+      },
+      {
+        "id": "warfare.t1.vg.taunt",
+        "name": "Taunt",
+        "description": "You force the issue. The enemy’s attention snaps to you, whether they like it or not.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.t1.vg.presence.1" } ] },
+        "perks": [
+          { "type": "grant", "key": "unlock_ability", "arg": "taunt" }
+        ]
+      },
+      {
+        "id": "warfare.t1.vg.shieldline.1",
+        "name": "Shieldline I",
+        "description": "You don’t just block—you deny space.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.t1.vg.presence.1" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.combat.ac.flat", "value": 1 }
+        ]
+      },
+      {
+        "id": "warfare.t1.bl.standard",
+        "name": "Standard Training",
+        "description": "You know how a banner changes a room: it steadies people and gives them something to rally around.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.1" }, { "node": "warfare.t0.surehand" } ] },
+        "perks": [
+          { "type": "modifier", "key": "core.combat.attack.flat", "value": 1 }
+        ]
+      },
+      {
+        "id": "warfare.t1.bl.call",
+        "name": "Call",
+        "description": "You name the priority. The room stops splitting effort and starts finishing work.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.t1.bl.standard" } ] },
+        "perks": [
+          { "type": "grant", "key": "unlock_ability", "arg": "call" }
+        ]
+      },
+      {
+        "id": "warfare.t1.bl.pick.order",
+        "name": "Choose Banner: Order",
+        "description": "You favor formation. Even before you plant a banner, you carry that discipline into every fight.",
+        "prereqs": {
+          "type": "and",
+          "terms": [
+            { "node": "warfare.t1.bl.standard" },
+            {
+              "group": {
+                "type": "not",
+                "terms": [
+                  { "node": "warfare.t1.bl.pick.discipline" },
+                  { "node": "warfare.t1.bl.pick.fury" }
+                ]
+              }
+            }
+          ]
+        },
+        "perks": [
+          { "type": "modifier", "key": "core.combat.ac.flat", "value": 1 },
+          { "type": "grant", "key": "warfare.banner.perks", "arg": "modifier:core.combat.ac.flat:2" }
+        ]
+      },
+      {
+        "id": "warfare.t1.bl.pick.discipline",
+        "name": "Choose Banner: Discipline",
+        "description": "You favor control. You keep people from wasting swings.",
+        "prereqs": {
+          "type": "and",
+          "terms": [
+            { "node": "warfare.t1.bl.standard" },
+            {
+              "group": {
+                "type": "not",
+                "terms": [
+                  { "node": "warfare.t1.bl.pick.order" },
+                  { "node": "warfare.t1.bl.pick.fury" }
+                ]
+              }
+            }
+          ]
+        },
+        "perks": [
+          { "type": "modifier", "key": "core.combat.attack.flat", "value": 1 },
+          { "type": "grant", "key": "warfare.banner.perks", "arg": "modifier:core.combat.attack.flat:2" }
+        ]
+      },
+      {
+        "id": "warfare.t1.bl.pick.fury",
+        "name": "Choose Banner: Fury",
+        "description": "You favor pressure. Hesitation fades when you set the pace.",
+        "prereqs": {
+          "type": "and",
+          "terms": [
+            { "node": "warfare.t1.bl.standard" },
+            {
+              "group": {
+                "type": "not",
+                "terms": [
+                  { "node": "warfare.t1.bl.pick.order" },
+                  { "node": "warfare.t1.bl.pick.discipline" }
+                ]
+              }
+            }
+          ]
+        },
+        "perks": [
+          { "type": "modifier", "key": "core.damage.physical.pct", "value": 2 },
+          { "type": "grant", "key": "warfare.banner.perks", "arg": "modifier:core.damage.physical.pct:5" }
+        ]
+      },
+      {
+        "id": "warfare.t1.jg.heavyhands",
+        "name": "Heavy Hands",
+        "description": "When you commit to a swing, it matters.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.1" }, { "node": "warfare.t0.hardhitter" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.damage.physical.pct", "value": 2 }
+        ]
+      },
+      {
+        "id": "warfare.t1.jg.relentless.1",
+        "name": "Relentless I",
+        "description": "You don’t wait for openings. You make them.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.t1.jg.heavyhands" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.combat.attack.flat", "value": 1 }
+        ]
+      },
+      {
+        "id": "warfare.t1.jg.cleave",
+        "name": "Cleave",
+        "description": "You swing through a target instead of at it. Crowds become manageable.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.t1.jg.heavyhands" } ] },
+        "perks": [
+          { "type": "grant", "key": "unlock_ability", "arg": "cleave" }
+        ]
+      },
+      {
+        "id": "warfare.t2.lessons",
+        "name": "Hard Lessons",
+        "description": "You stop repeating mistakes that get people killed.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.2" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.combat.ac.flat", "value": 1 }
+        ]
+      },
+      {
+        "id": "warfare.t2.timing",
+        "name": "Clean Timing",
+        "description": "You learn when to move and when to hold.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.2" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.combat.attack.flat", "value": 1 }
+        ]
+      },
+      {
+        "id": "warfare.t2.vg.presence.2",
+        "name": "Command Presence II",
+        "description": "If you’re in the room, enemies behave like you matter.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.2" }, { "node": "warfare.t1.vg.presence.1" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.combat.threat.flat", "value": 5 }
+        ]
+      },
+      {
+        "id": "warfare.t2.vg.threatcraft.2",
+        "name": "Threatcraft II",
+        "description": "You stop losing attention to louder allies.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.t2.vg.presence.2" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.combat.threat.pct", "value": 5 }
+        ]
+      },
+      {
+        "id": "warfare.t2.vg.brace",
+        "name": "Brace",
+        "description": "You set your stance and take the hit on your terms, not theirs.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.2" }, { "node": "warfare.t1.vg.taunt" } ] },
+        "perks": [
+          { "type": "grant", "key": "unlock_ability", "arg": "brace" }
+        ]
+      },
+      {
+        "id": "warfare.t2.vg.shieldline.2",
+        "name": "Shieldline II",
+        "description": "You learn to hold ground without bleeding for it.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.t1.vg.shieldline.1" }, { "node": "warfare.spine.2" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.combat.ac.flat", "value": 1 },
+          { "type": "modifier", "key": "core.defense.all.absorb.flat", "value": 1 }
+        ]
+      },
+      {
+        "id": "warfare.t2.bl.sense",
+        "name": "Banner Sense",
+        "description": "You learn where a banner belongs—where it changes how people stand.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.2" }, { "node": "warfare.t1.bl.standard" } ] },
+        "perks": [
+          { "type": "modifier", "key": "core.combat.ac.flat", "value": 1 }
+        ]
+      },
+      {
+        "id": "warfare.t2.bl.plant",
+        "name": "Plant",
+        "description": "You plant a banner and make it count. The room fights cleaner while it stands.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.2" }, { "node": "warfare.t2.bl.sense" } ] },
+        "perks": [
+          { "type": "grant", "key": "unlock_ability", "arg": "plant" }
+        ]
+      },
+      {
+        "id": "warfare.t2.bl.work.1",
+        "name": "Banner Work I",
+        "description": "You learn to keep the banner up through noise, fear, and bad footing.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.t2.bl.plant" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.combat.ac.flat", "value": 1 }
+        ]
+      },
+      {
+        "id": "warfare.t2.bl.work.2",
+        "name": "Banner Work II",
+        "description": "You learn when to plant and when to wait so you don’t waste it.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.t2.bl.work.1" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.combat.attack.flat", "value": 1 }
+        ]
+      },
+      {
+        "id": "warfare.t2.jg.blows.1",
+        "name": "Heavy Blows I",
+        "description": "Your hits start forcing mistakes.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.2" }, { "node": "warfare.t1.jg.heavyhands" } ] },
+        "max_rank": 3,
+        "perks": [
+          { "type": "modifier", "key": "core.damage.physical.pct", "value": 2 }
+        ]
+      },
+      {
+        "id": "warfare.t2.jg.relentless.2",
+        "name": "Relentless II",
+        "description": "You keep pressure without falling apart.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.t2.jg.blows.1" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.combat.attack.flat", "value": 1 }
+        ]
+      },
+      {
+        "id": "warfare.t2.jg.overhand",
+        "name": "Overhand",
+        "description": "A committed strike that hits hard when it lands.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.2" }, { "node": "warfare.t1.jg.cleave" } ] },
+        "perks": [
+          { "type": "grant", "key": "unlock_ability", "arg": "overhand" }
+        ]
+      },
+      {
+        "id": "warfare.t2.jg.followthrough",
+        "name": "Follow-Through",
+        "description": "You stop pulling hits short.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.t2.jg.blows.1" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.damage.physical.pct", "value": 2 }
+        ]
+      },
+      {
+        "id": "warfare.t3.read",
+        "name": "Battle Read",
+        "description": "You recognize when a fight is turning before it’s obvious.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.3" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.combat.attack.flat", "value": 1 }
+        ]
+      },
+      {
+        "id": "warfare.t3.vg.anchor",
+        "name": "Anchor Step",
+        "description": "You stop getting moved by ordinary force.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.3" }, { "node": "warfare.t2.vg.shieldline.2" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.combat.ac.flat", "value": 1 }
+        ]
+      },
+      {
+        "id": "warfare.t3.vg.unyielding.1",
+        "name": "Unyielding I",
+        "description": "You don’t prevent the hit—you stay standing after it.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.3" }, { "node": "warfare.t2.vg.threatcraft.2" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.defense.all.absorb.pct", "value": 2 }
+        ]
+      },
+      {
+        "id": "warfare.t3.vg.guard",
+        "name": "Guard",
+        "description": "You commit to holding the line. For a short stretch, you’re harder to push past and harder to ignore.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.3" }, { "node": "warfare.t2.vg.brace" } ] },
+        "perks": [
+          { "type": "grant", "key": "unlock_ability", "arg": "guard" }
+        ]
+      },
+      {
+        "id": "warfare.t3.bl.work.3",
+        "name": "Banner Work III",
+        "description": "Your banner stops being “nice” and starts being structure.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.3" }, { "node": "warfare.t2.bl.work.2" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.combat.ac.flat", "value": 1 }
+        ]
+      },
+      {
+        "id": "warfare.t3.bl.reform",
+        "name": "Reform",
+        "description": "You tighten the line. People stand better, and the room takes fewer clean hits.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.3" }, { "node": "warfare.t1.bl.pick.order" }, { "node": "warfare.t2.bl.plant" } ] },
+        "perks": [
+          { "type": "grant", "key": "unlock_ability", "arg": "reform" }
+        ]
+      },
+      {
+        "id": "warfare.t3.bl.press",
+        "name": "Press",
+        "description": "You call the push. The room stops hesitating and starts landing hits.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.3" }, { "node": "warfare.t1.bl.pick.discipline" }, { "node": "warfare.t2.bl.plant" } ] },
+        "perks": [
+          { "type": "grant", "key": "unlock_ability", "arg": "press" }
+        ]
+      },
+      {
+        "id": "warfare.t3.bl.surge",
+        "name": "Surge",
+        "description": "You drive the pace up. For a short stretch, the room hits harder and commits to the work.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.3" }, { "node": "warfare.t1.bl.pick.fury" }, { "node": "warfare.t2.bl.plant" } ] },
+        "perks": [
+          { "type": "grant", "key": "unlock_ability", "arg": "surge" }
+        ]
+      },
+      {
+        "id": "warfare.t3.jg.blows.2",
+        "name": "Heavy Blows II",
+        "description": "You start breaking guards instead of bouncing off them.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.3" }, { "node": "warfare.t2.jg.blows.1" } ] },
+        "max_rank": 3,
+        "perks": [
+          { "type": "modifier", "key": "core.damage.physical.pct", "value": 2 }
+        ]
+      },
+      {
+        "id": "warfare.t3.jg.rush",
+        "name": "Rush",
+        "description": "You throw yourself into momentum. You’re not careful—you’re effective.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.3" }, { "node": "warfare.t2.jg.overhand" } ] },
+        "perks": [
+          { "type": "grant", "key": "unlock_ability", "arg": "rush" }
+        ]
+      },
+      {
+        "id": "warfare.t4.vg.threatcraft.3",
+        "name": "Threatcraft III",
+        "description": "You don’t just gain attention—you keep it.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.4" }, { "node": "warfare.t2.vg.threatcraft.2" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.combat.threat.pct", "value": 8 }
+        ]
+      },
+      {
+        "id": "warfare.t4.vg.unyielding.2",
+        "name": "Unyielding II",
+        "description": "You survive spikes that would drop someone else.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.4" }, { "node": "warfare.t3.vg.unyielding.1" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.defense.all.absorb.pct", "value": 2 }
+        ]
+      },
+      {
+        "id": "warfare.t4.vg.challenge",
+        "name": "Challenge",
+        "description": "You set the terms. Enemies can try to ignore you, but it costs them.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.4" }, { "node": "warfare.t3.vg.guard" } ] },
+        "perks": [
+          { "type": "grant", "key": "unlock_ability", "arg": "challenge" }
+        ]
+      },
+      {
+        "id": "warfare.t4.bl.mastery",
+        "name": "Banner Mastery",
+        "description": "You keep the banner useful when others would lose it.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.4" }, { "node": "warfare.t3.bl.work.3" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.combat.attack.flat", "value": 1 }
+        ]
+      },
+      {
+        "id": "warfare.t4.bl.lead",
+        "name": "Lead by Example",
+        "description": "Your presence reduces mistakes before they happen.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.4" }, { "node": "warfare.t4.bl.mastery" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.combat.ac.flat", "value": 1 }
+        ]
+      },
+      {
+        "id": "warfare.t4.bl.command",
+        "name": "Command",
+        "description": "A master call that snaps the room into clean action for a brief moment.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.4" }, { "node": "warfare.t2.bl.plant" } ] },
+        "perks": [
+          { "type": "grant", "key": "unlock_ability", "arg": "command" }
+        ]
+      },
+      {
+        "id": "warfare.t4.jg.momentum.1",
+        "name": "Momentum I",
+        "description": "Each hit makes the next hit easier to justify.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.4" }, { "node": "warfare.t3.jg.blows.2" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.damage.physical.pct", "value": 3 }
+        ]
+      },
+      {
+        "id": "warfare.t4.jg.momentum.2",
+        "name": "Momentum II",
+        "description": "You keep pressure without burning out.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.t4.jg.momentum.1" } ] },
+        "max_rank": 2,
+        "perks": [
+          { "type": "modifier", "key": "core.combat.attack.flat", "value": 1 }
+        ]
+      },
+      {
+        "id": "warfare.t4.jg.finish",
+        "name": "Finish",
+        "description": "You end fights. Not by style—by certainty.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.4" }, { "node": "warfare.t3.jg.rush" } ] },
+        "perks": [
+          { "type": "grant", "key": "unlock_ability", "arg": "finish" }
+        ]
+      }
+    ],
+    "capstones": [
+      {
+        "id": "warfare.cap.vanguard",
+        "name": "Vanguard — The Center Holds",
+        "description": "You are the anchor of the fight. Enemies stick to you, and allies learn where the danger is.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.4" }, { "node": "warfare.t4.vg.challenge" } ] },
+        "perks": [
+          { "type": "modifier", "key": "core.combat.threat.pct", "value": 15 },
+          { "type": "modifier", "key": "core.combat.ac.flat", "value": 1 },
+          { "type": "modifier", "key": "core.defense.all.absorb.pct", "value": 2 }
+        ]
+      },
+      {
+        "id": "warfare.cap.bannerlord",
+        "name": "Bannerlord — Standard of Tempo",
+        "description": "When your banner is up, the room gets one more action to work with.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.4" }, { "node": "warfare.t4.bl.command" } ] },
+        "perks": [
+          { "type": "grant", "key": "warfare.banner.perks", "arg": "modifier:core.action_points.max:1" }
+        ]
+      },
+      {
+        "id": "warfare.cap.juggernaut",
+        "name": "Juggernaut — Momentum Engine",
+        "description": "The longer you stay in the fight, the harder you are to deal with.",
+        "prereqs": { "type": "and", "terms": [ { "node": "warfare.spine.4" }, { "node": "warfare.t4.jg.finish" } ] },
+        "perks": [
+          { "type": "modifier", "key": "core.damage.physical.pct", "value": 10 },
+          { "type": "modifier", "key": "core.resource.hp.max", "value": 15 }
+        ]
+      }
+    ]
+  }
+}

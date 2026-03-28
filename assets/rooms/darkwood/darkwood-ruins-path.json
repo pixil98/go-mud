@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "darkwood-ruins-path",
+    "spec": {
+        "name": "Ruins Path",
+        "description": "A track leads south from the charcoal-burning site into a part of the forest where the undergrowth has thinned, replaced by broken masonry of worked stone emerging from the leaf litter — cut blocks, the curve of a foundation, an iron fitting green with oxidation. Whatever stood here was substantial, and the track follows the line of what was once a proper road through a settlement's outskirts. The forest ahead smells of old stone and something faintly mineral.",
+        "zone_id": "darkwood",
+        "exits": {
+            "north": {"room_id": "darkwood-charcoal-mound"},
+            "south": {"room_id": "darkwood-ruins-arch"}
+        },
+        "mobile_spawns": ["darkwood-ruin-shade"]
+    }
+}

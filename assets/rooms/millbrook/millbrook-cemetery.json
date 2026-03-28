@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "millbrook-cemetery",
+    "spec": {
+        "name": "The Old Cemetery",
+        "description": "The Whitmore Memorial Ground holds several generations of Millbrook's dead, their headstones arranged in rough rows that have grown less regular over time as space became a consideration. Most of the older stones near the walls are mossy and tilted at odd angles, their inscriptions worn smooth by weather to near illegibility — names and dates that survive only in the parish records kept at the town hall. Ancient elms grow along the cemetery's northern wall, their roots surfacing between the graves in long, knotted ridges, and the combination of shade and constant damp means the grass here is a peculiar dark green even in dry months. Newer graves toward the centre are better maintained, with fresh-cut flowers left on some and wilted ones on others. At the far eastern end of the ground, the low stone shape of the Whitmore family mausoleum sits against the cemetery wall, its door facing west toward the rest of the dead.",
+        "zone_id": "millbrook",
+        "exits": {
+            "west": {"room_id": "millbrook-cemetery-gate"},
+            "east": {"room_id": "millbrook-mausoleum"}
+        }
+    }
+}

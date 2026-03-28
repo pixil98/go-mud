@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "id": "fireball",
+    "spec": {
+        "effects": [
+            {"type": "damage", "config": {"amount": "25"}}
+        ],
+        "command": {
+            "category": "combat",
+            "priority": 3,
+            "description": "Hurl a ball of fire at your target.",
+            "config": {
+                "resource": "mana",
+                "resource_cost": "15",
+                "ap_cost": "2",
+                "message_actor": "You hurl a ball of fire at {{ .Targets.target.Name }}!",
+                "message_target": "{{ .Actor.Name }} hurls a ball of fire at you!",
+                "message_room": "{{ .Actor.Name }} hurls a ball of fire at {{ .Targets.target.Name }}!"
+            },
+            "inputs": [
+                {"name": "target", "type": "string", "required": true, "missing": "Cast fireball at whom?"}
+            ],
+            "targets": [
+                {
+                    "name": "target",
+                    "types": ["mobile", "player"],
+                    "scopes": ["room"],
+                    "input": "target",
+                    "not_found": "You don't see '{{ .Inputs.target }}' here."
+                }
+            ]
+        }
+    }
+}

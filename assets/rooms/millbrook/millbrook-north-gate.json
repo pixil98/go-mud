@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "millbrook-north-gate",
+    "spec": {
+        "name": "North Gate",
+        "description": "The north gate is a heavy timber and iron structure set into Millbrook's stone curtain wall, wide enough for two carts abreast and fitted with an iron portcullis that has not been lowered in living memory. The gate currently stands open, its massive oak doors propped against the wall with wedges, the hinges so thoroughly rusted that closing them would require a team of men and considerable persuasion. A guard post occupies a recess in the wall beside the gate, sheltered from the wind and offering a clear view down the road. Beyond the gate, a rutted dirt road leads north across open scrubland toward distant hills. The town's stone wall extends in both directions, its crenellations worn down to gentle curves by weather and time.",
+        "zone_id": "millbrook",
+        "exits": {
+            "south": {"room_id": "millbrook-clocktower-plaza"}
+        },
+        "mobile_spawns": ["millbrook-gatekeeper"]
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "millbrook-market-square",
+    "spec": {
+        "name": "Market Square",
+        "description": "Market Square is Millbrook's open-air trading heart, a paved expanse that fills with noise and colour on market days and never quite empties on the others. Rows of wooden stalls stretch across the square, their awnings of oiled canvas in sun-faded blues and reds straining against the wind. Vendors hawk pottery, tallow candles, preserved goods, and whatever else they've managed to haul in from surrounding farms and workshops. The smell is a complex blend: sawdust, hot metal from the smithy to the north, something sweetly rotten from a pile of bruised fruit under one stall, and the ever-present woodsmoke. A narrow alley cuts south through the buildings toward the sound of voices and clinking mugs, while the east gate arch is visible beyond the last row of stalls.",
+        "zone_id": "millbrook",
+        "exits": {
+            "west":  {"room_id": "millbrook-market-road"},
+            "north": {"room_id": "millbrook-smithy"},
+            "east":  {"room_id": "millbrook-east-gate"},
+            "south": {"room_id": "millbrook-tavern-alley"}
+        }
+    }
+}

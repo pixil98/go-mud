@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "millbrook-chainmail",
+    "spec": {
+        "aliases": ["chainmail", "chain", "mail"],
+        "short_desc": "a suit of chainmail",
+        "long_desc": "A suit of chainmail lies folded here.",
+        "detailed_desc": "A hauberk of close-linked iron rings extending to mid-thigh with sleeves to the elbow. The rings are clean and rust-free, treated with oil, and the work shows experience — links are tight and consistent throughout. Heavy, but reliable.",
+        "flags": ["wearable"],
+        "wear_slots": ["body"],
+        "perks": [
+            { "type": "modifier", "key": "core.combat.ac.flat", "value": 5 }
+        ]
+    }
+}

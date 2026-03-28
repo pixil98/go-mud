@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "darkwood-ruins-hall",
+    "spec": {
+        "name": "Ruined Hall",
+        "description": "The great hall's lower walls are still standing to shoulder height in places, the interior floor a mix of surviving stone and the loam that has built up over the collapsed roof. The hall was long and narrow, its purpose domestic or administrative rather than ceremonial. At the far end, a heavy iron door is set into the rear wall — corroded, but still on its hinges, and apparently functional. A set of stone stairs descend through the floor beside the door into a vaulted undercroft below.",
+        "zone_id": "darkwood",
+        "exits": {
+            "west": {"room_id": "darkwood-ruins-square"},
+            "down": {"room_id": "darkwood-ruins-undercroft"}
+        },
+        "mobile_spawns": ["darkwood-ruin-shade", "darkwood-ruin-shade"]
+    }
+}

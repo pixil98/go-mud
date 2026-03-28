@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "millbrook-tavern-alley",
+    "spec": {
+        "name": "Tavern Alley",
+        "description": "A narrow alley cuts south between the back walls of the market buildings, its flagstones uneven and perpetually damp from water dripping off the eaves above. The walls on either side are plastered with layers of old notices — events long past, missing persons from years ago, a price list from a vendor who hasn't operated here in a decade. The smell of the alley is a mix of torch smoke, spilled ale that never quite dried, and something faintly rotten from a drain near the wall. The sound of voices grows louder as the alley bends and the Rusty Nail's side entrance comes into view: a low door propped open with a boot.",
+        "zone_id": "millbrook",
+        "exits": {
+            "north": {"room_id": "millbrook-market-square"},
+            "south": {"room_id": "millbrook-tavern-common"}
+        }
+    }
+}

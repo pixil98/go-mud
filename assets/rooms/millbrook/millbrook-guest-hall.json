@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "millbrook-guest-hall",
+    "spec": {
+        "name": "Guest Room Hallway",
+        "description": "A narrow hallway runs the full length of the inn's upper floor, its floorboards announcing every footstep with a groan that has clearly discouraged late-night wandering for generations. A single tallow candle in a tarnished wall sconce provides dim, wavering light, its wax pooled in drips down the wall below. Five numbered doors line the corridor, their painted numbers rubbed nearly smooth — most stand closed, with the occasional muffled snore or creak of a rope bed audible through the thin walls. A small window at the hall's end looks out over the tiled rooftops and the market square beyond. The stairs creak loudly at the far end, a fact that the innkeeper likely considers a feature rather than a flaw.",
+        "zone_id": "millbrook",
+        "exits": {
+            "down": {"room_id": "millbrook-tavern-common"},
+            "east": {"room_id": "millbrook-guest-room"}
+        }
+    }
+}

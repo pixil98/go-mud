@@ -3,6 +3,7 @@ package commands
 import (
 	"strings"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 )
 
@@ -12,9 +13,9 @@ type objectOnlyFinder struct {
 	ObjectFinder
 }
 
-func (f objectOnlyFinder) FindPlayer(string) *game.PlayerState   { return nil }
-func (f objectOnlyFinder) FindMob(string) *game.MobileInstance   { return nil }
-func (f objectOnlyFinder) FindExit(string) (string, *game.Exit)  { return "", nil }
+func (f objectOnlyFinder) FindPlayer(string) *game.CharacterInstance { return nil }
+func (f objectOnlyFinder) FindMob(string) *game.MobileInstance       { return nil }
+func (f objectOnlyFinder) FindExit(string) (string, *assets.Exit)    { return "", nil }
 
 // playerOnlyFinder wraps a PlayerGroup into a full TargetFinder.
 // FindPlayer searches members by name; mobs, objects, and exits always return nil.
@@ -22,23 +23,23 @@ type playerOnlyFinder struct {
 	game.PlayerGroup
 }
 
-func (f playerOnlyFinder) FindPlayer(name string) *game.PlayerState {
+func (f playerOnlyFinder) FindPlayer(name string) *game.CharacterInstance {
 	lower := strings.ToLower(name)
-	var found *game.PlayerState
-	f.ForEachPlayer(func(_ string, ps *game.PlayerState) {
+	var found *game.CharacterInstance
+	f.ForEachPlayer(func(_ string, ps *game.CharacterInstance) {
 		if found != nil || ps == nil {
 			return
 		}
-		if strings.ToLower(ps.Character.Get().Name) == lower {
+		if strings.ToLower(ps.Name()) == lower {
 			found = ps
 		}
 	})
 	return found
 }
 
-func (f playerOnlyFinder) FindObj(string) *game.ObjectInstance  { return nil }
-func (f playerOnlyFinder) FindMob(string) *game.MobileInstance  { return nil }
-func (f playerOnlyFinder) FindExit(string) (string, *game.Exit) { return "", nil }
+func (f playerOnlyFinder) FindObj(string) *game.ObjectInstance    { return nil }
+func (f playerOnlyFinder) FindMob(string) *game.MobileInstance    { return nil }
+func (f playerOnlyFinder) FindExit(string) (string, *assets.Exit) { return "", nil }
 
 // WorldScopes implements TargetScopes using a WorldView.
 // It translates scope flags into the correct search spaces by looking up
@@ -54,47 +55,53 @@ func NewWorldScopes(world WorldView) *WorldScopes {
 
 // SpacesFor returns search spaces for the given scope flags, ordered from
 // narrowest (inventory) to broadest (world).
-func (ws *WorldScopes) SpacesFor(scope Scope, actor *game.Character, session *game.PlayerState) ([]SearchSpace, error) {
-	zoneId, roomId := session.Location()
+func (ws *WorldScopes) SpacesFor(s scope, actor ScopeActor) ([]SearchSpace, error) {
+	zoneId, roomId := actor.Location()
 
 	var spaces []SearchSpace
 
-	if scope&ScopeInventory != 0 && actor.Inventory != nil {
-		spaces = append(spaces, SearchSpace{
-			Finder:  objectOnlyFinder{actor.Inventory},
-			Remover: actor.Inventory,
-		})
+	if s&scopeInventory != 0 {
+		if i := actor.GetInventory(); i != nil {
+			spaces = append(spaces, SearchSpace{
+				Finder:  objectOnlyFinder{i},
+				Remover: i,
+			})
+		}
 	}
-	if scope&ScopeEquipment != 0 && actor.Equipment != nil {
-		spaces = append(spaces, SearchSpace{
-			Finder:  objectOnlyFinder{actor.Equipment},
-			Remover: actor.Equipment,
-		})
+	if s&scopeEquipment != 0 {
+		if eq := actor.GetEquipment(); eq != nil {
+			spaces = append(spaces, SearchSpace{
+				Finder:  objectOnlyFinder{eq},
+				Remover: eq,
+			})
+		}
 	}
-	if scope&ScopeRoom != 0 {
-		room := ws.world.GetRoom(zoneId, roomId)
+	if s&scopeRoom != 0 {
+		room := ws.world.GetZone(zoneId).GetRoom(roomId)
 		spaces = append(spaces, SearchSpace{
 			Finder:  room,
 			Remover: room,
 		})
 	}
-	if scope&ScopeZone != 0 {
+	if s&scopeGroup != 0 {
+		if grp := actor.GetGroup(); grp != nil {
+			spaces = append(spaces, SearchSpace{
+				Finder: playerOnlyFinder{grp},
+			})
+		}
+	}
+	if s&scopeZone != 0 {
 		zone := ws.world.GetZone(zoneId)
 		spaces = append(spaces, SearchSpace{
 			Finder: zone,
 		})
 	}
-	if scope&ScopeWorld != 0 {
+	if s&scopeWorld != 0 {
 		for _, zi := range ws.world.Instances() {
 			spaces = append(spaces, SearchSpace{
 				Finder: zi,
 			})
 		}
-	}
-	if scope&ScopeGroup != 0 && session.Group != nil {
-		spaces = append(spaces, SearchSpace{
-			Finder: playerOnlyFinder{session.Group},
-		})
 	}
 
 	return spaces, nil

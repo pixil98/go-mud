@@ -1,0 +1,11 @@
+{
+    "version": 1,
+    "id": "millbrook-shop-shelf",
+    "spec": {
+        "aliases": ["shelf", "display"],
+        "short_desc": "a display shelf",
+        "long_desc": "A glass-fronted display shelf holds the shop's more valuable items.",
+        "detailed_desc": "A narrow cabinet with a glass front panel, the display shelf holds the trading post's more valuable items — goods too pricey to leave in the open shelves. The glass is slightly clouded with age but clear enough to make out the contents.",
+        "flags": ["container", "immobile"]
+    }
+}

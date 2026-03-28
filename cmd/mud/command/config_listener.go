@@ -13,13 +13,16 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
+// ListenerType identifies the network protocol used by a listener.
 type ListenerType int
 
+// ListenerType values.
 const (
 	ListenerTypeTelnet ListenerType = iota
 	ListenerTypeSSH
 )
 
+// UnmarshalText decodes a JSON/YAML string into a ListenerType.
 func (lt *ListenerType) UnmarshalText(text []byte) error {
 	switch string(text) {
 	case "telnet":
@@ -32,6 +35,7 @@ func (lt *ListenerType) UnmarshalText(text []byte) error {
 	return nil
 }
 
+// ListenerConfig holds the configuration for a single network listener.
 type ListenerConfig struct {
 	Protocol    ListenerType `json:"protocol"`
 	Port        uint16       `json:"port"`
@@ -48,6 +52,7 @@ func (cl *ListenerConfig) validate() error {
 	return el.Err()
 }
 
+// BuildListener creates the appropriate service.Worker for this listener's protocol.
 func (cl *ListenerConfig) BuildListener(cm *listener.ConnectionManager) (service.Worker, error) {
 	switch cl.Protocol {
 	case ListenerTypeTelnet:
@@ -57,7 +62,7 @@ func (cl *ListenerConfig) BuildListener(cm *listener.ConnectionManager) (service
 		if err != nil {
 			return nil, fmt.Errorf("setting up ssh host key: %w", err)
 		}
-		return listener.NewSshListener(cl.Port, cm, hostKey), nil
+		return listener.NewSSHListener(cl.Port, cm, hostKey), nil
 	default:
 		return nil, fmt.Errorf("unknown listener type: %v", cl.Protocol)
 	}

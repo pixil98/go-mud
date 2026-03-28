@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "millbrook-leather-armor",
+    "spec": {
+        "aliases": ["leather", "armor"],
+        "short_desc": "leather armor",
+        "long_desc": "A set of leather armor lies here.",
+        "detailed_desc": "A set of cured leather armor covering the torso, upper arms, and thighs. The panels are riveted together with good workmanship and the lacings adjusted for a secure fit. It will turn a glancing blow and protect against abrasion.",
+        "flags": ["wearable"],
+        "wear_slots": ["body"],
+        "perks": [
+            { "type": "modifier", "key": "core.combat.ac.flat", "value": 2 }
+        ]
+    }
+}
