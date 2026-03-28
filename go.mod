@@ -16,8 +16,8 @@ require (
 	github.com/pixil98/go-testutil v0.0.0-20260123222118-fa427b8db36a
 	github.com/rivo/tview v0.42.0
 	github.com/yashikota/mermaigo v0.0.0-20260204123623-da6036fcd378
-	golang.org/x/crypto v0.47.0
-	golang.org/x/text v0.33.0
+	golang.org/x/crypto v0.49.0
+	golang.org/x/text v0.35.0
 )
 
 require (
@@ -78,9 +78,9 @@ require (
 	github.com/xo/terminfo v0.0.0-20210125001918-ca9a967f8778 // indirect
 	golang.org/x/arch v0.8.0 // indirect
 	golang.org/x/image v0.21.0 // indirect
-	golang.org/x/net v0.48.0 // indirect
-	golang.org/x/sys v0.40.0 // indirect
-	golang.org/x/term v0.39.0 // indirect
+	golang.org/x/net v0.51.0 // indirect
+	golang.org/x/sys v0.42.0 // indirect
+	golang.org/x/term v0.41.0 // indirect
 	golang.org/x/time v0.14.0 // indirect
 	google.golang.org/protobuf v1.34.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
