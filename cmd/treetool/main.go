@@ -72,8 +72,8 @@ func toMermaid(tree *assets.Tree) string {
 
 	// Spine chain.
 	for i := 0; i < len(tree.Spine)-1; i++ {
-		b.WriteString(fmt.Sprintf("    %s --> %s\n",
-			nameOf[tree.Spine[i].Id], nameOf[tree.Spine[i+1].Id]))
+		fmt.Fprintf(&b, "    %s --> %s\n",
+			nameOf[tree.Spine[i].Id], nameOf[tree.Spine[i+1].Id])
 	}
 
 	// Prereq edges for all non-spine nodes. Skip NOT groups (mutual-exclusion
@@ -89,7 +89,7 @@ func toMermaid(tree *assets.Tree) string {
 				continue
 			}
 			if _, ok := nameOf[pid]; ok {
-				b.WriteString(fmt.Sprintf("    %s --> %s\n", nameOf[pid], nameOf[n.Id]))
+				fmt.Fprintf(&b, "    %s --> %s\n", nameOf[pid], nameOf[n.Id])
 			}
 		}
 	}

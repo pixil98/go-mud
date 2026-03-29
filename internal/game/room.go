@@ -334,7 +334,7 @@ func (ri *RoomInstance) Describe(actorName string) string {
 		if desc == "" {
 			desc = fmt.Sprintf("%s is here.", oi.Object.Get().ShortDesc)
 		}
-		sb.WriteString(fmt.Sprintf("%s\n", display.Colorize(display.Color.Green, desc)))
+		fmt.Fprintf(&sb, "%s\n", display.Colorize(display.Color.Green, desc))
 	})
 
 	ri.mu.RLock()
