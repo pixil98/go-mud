@@ -17,7 +17,7 @@ require (
 	github.com/rivo/tview v0.42.0
 	github.com/yashikota/mermaigo v0.0.0-20260204123623-da6036fcd378
 	golang.org/x/crypto v0.47.0
-	golang.org/x/text v0.33.0
+	golang.org/x/text v0.35.0
 )
 
 require (
