@@ -5,7 +5,7 @@ go 1.25.6
 require (
 	github.com/AlexanderGrooff/mermaid-ascii v0.0.0-20260221123917-b5d02c35decf
 	github.com/Masterminds/sprig/v3 v3.3.0
-	github.com/gdamore/tcell/v2 v2.13.8
+	github.com/gdamore/tcell/v3 v3.1.2
 	github.com/google/uuid v1.6.0
 	github.com/iammegalith/telnet v0.0.0-20230201230822-b5765a6db0cf
 	github.com/muesli/reflow v0.3.0
