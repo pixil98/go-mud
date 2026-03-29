@@ -4,6 +4,7 @@
     "spec": {
         "handler": "move_obj",
         "category": "items",
+        "aliases": ["take"],
         "description": "Pick up an item from the room or a container.",
         "priority": 5,
         "config": {
