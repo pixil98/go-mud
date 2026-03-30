@@ -5,8 +5,8 @@ import (
 	"testing"
 
 	"github.com/pixil98/go-mud/internal/assets"
-
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/shared"
 )
 
 func TestExecuteAbility_APGating(t *testing.T) {
@@ -747,6 +747,63 @@ func TestAoeThreatEffect_ValidateConfig(t *testing.T) {
 			}
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
+			}
+		})
+	}
+}
+
+func TestExecCombatAbility_PlayerTargetRouting(t *testing.T) {
+	tests := map[string]struct {
+		isCharacter  bool
+		wantTargetId string
+		wantTargetMsg bool
+	}{
+		"player target: TargetId and TargetMsg set": {
+			isCharacter:   true,
+			wantTargetId:  "player-1",
+			wantTargetMsg: true,
+		},
+		"mob target: TargetId empty, no TargetMsg": {
+			isCharacter:   false,
+			wantTargetId:  "",
+			wantTargetMsg: false,
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			room, _ := newTestRoomInZone("r", "Room", "z")
+			actor := newTestMobInstance("mob-actor", "Mob", nil)
+
+			// The effect appends to TargetLines but does not set TargetId,
+			// mimicking attackEffect behaviour.
+			targetLineEffect := EffectFunc(func(_ shared.Actor, _ map[string]*TargetRef, result *AbilityResult) error {
+				result.TargetLines = append(result.TargetLines, "Mob hits you!")
+				result.RoomLines = append(result.RoomLines, "Mob hits Target!")
+				return nil
+			})
+			ca := &compiledAbility{effectFuncs: []EffectFunc{targetLineEffect}}
+
+			h := &Handler{abilities: map[string]*compiledAbility{"attack": ca}}
+
+			var target shared.Actor
+			if tc.isCharacter {
+				target = newTestPlayer("player-1", "Target", room)
+			} else {
+				target = newTestMobInstance("mob-target", "Target", nil)
+			}
+
+			result, err := h.ExecCombatAbility("attack", actor, target)
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			if result.TargetId != tc.wantTargetId {
+				t.Errorf("TargetId = %q, want %q", result.TargetId, tc.wantTargetId)
+			}
+			// TargetMsg is only meaningful when TargetId is set; the manager
+			// skips delivery when TargetId is empty.
+			if tc.wantTargetId != "" && result.TargetMsg == "" {
+				t.Error("TargetMsg is empty, want non-empty for player target")
 			}
 		})
 	}

@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/assets"
+	"github.com/pixil98/go-mud/internal/combat"
 	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/shared"
@@ -220,20 +221,32 @@ func (h *Handler) registerAbility(id string, ability *assets.Ability, world Worl
 
 // ExecCombatAbility executes an ability during the combat tick. Builds the
 // target map from the provided actors, then delegates to the compiled ability.
-// Returns the room message for the caller to broadcast.
-func (h *Handler) ExecCombatAbility(abilityId string, actor, target shared.Actor) (string, error) {
+// Returns a CombatAbilityResult so the manager can route messages to the target
+// player and to the room separately.
+func (h *Handler) ExecCombatAbility(abilityId string, actor, target shared.Actor) (combat.CombatAbilityResult, error) {
 	ca, ok := h.abilities[abilityId]
 	if !ok {
-		return "", fmt.Errorf("unknown ability %q", abilityId)
+		return combat.CombatAbilityResult{}, fmt.Errorf("unknown ability %q", abilityId)
 	}
 	targets := map[string]*TargetRef{
 		"target": {Type: targetTypeActor, Actor: actorRefFromActor(target)},
 	}
 	result, err := ca.exec(actor, targets, ExecAbilityOpts{SkipAP: true})
 	if err != nil {
-		return "", err
+		return combat.CombatAbilityResult{}, err
 	}
-	return strings.Join(result.RoomLines, "\n"), nil
+	// result.TargetId is only set when the ability has a message_target config.
+	// For effects like attackEffect that append TargetLines directly, derive the
+	// target player ID from the known target instead.
+	targetId := result.TargetId
+	if targetId == "" && target.IsCharacter() && len(result.TargetLines) > 0 {
+		targetId = target.Id()
+	}
+	return combat.CombatAbilityResult{
+		RoomMsg:   strings.Join(result.RoomLines, "\n"),
+		TargetMsg: strings.Join(result.TargetLines, "\n"),
+		TargetId:  targetId,
+	}, nil
 }
 
 // RegisterFactory registers a handler factory by name.

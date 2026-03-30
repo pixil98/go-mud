@@ -62,6 +62,7 @@ func (m *mockFollowActor) CombatTargetId() string                   { return "" 
 func (m *mockFollowActor) SetCombatTargetId(string)                 {}
 func (m *mockFollowActor) OnDeath() []*game.ObjectInstance           { return nil }
 func (m *mockFollowActor) IsCharacter() bool                        { return true }
+func (m *mockFollowActor) Notify(_ string)                          {}
 func (m *mockFollowActor) GetInventory() *game.Inventory             { return nil }
 func (m *mockFollowActor) GetFollowingId() string                   { return m.followingId }
 func (m *mockFollowActor) SetFollowingId(id string)                 { m.followingId = id }

@@ -152,6 +152,9 @@ func (mi *MobileInstance) OnDeath() []*ObjectInstance {
 // IsCharacter returns false for mobs.
 func (mi *MobileInstance) IsCharacter() bool { return false }
 
+// Notify is a no-op for mobs since they have no client connection.
+func (mi *MobileInstance) Notify(_ string) {}
+
 // newCorpse creates a container ObjectInstance holding all of the mob's loot.
 func newCorpse(mi *MobileInstance) *ObjectInstance {
 	name := mi.Name()

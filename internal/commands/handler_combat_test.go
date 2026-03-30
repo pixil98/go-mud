@@ -80,6 +80,7 @@ func (m *mockAssistActor) Location() (string, string)               { return m.z
 func (m *mockAssistActor) Level() int                               { return 1 }
 func (m *mockAssistActor) OnDeath() []*game.ObjectInstance           { return nil }
 func (m *mockAssistActor) IsCharacter() bool                        { return true }
+func (m *mockAssistActor) Notify(_ string)                          {}
 func (m *mockAssistActor) GetFollowingId() string                   { return m.followingId }
 func (m *mockAssistActor) HasGrant(key, _ string) bool              { return m.grants[key] }
 func (m *mockAssistActor) AddTimedPerks(string, []assets.Perk, int) {}

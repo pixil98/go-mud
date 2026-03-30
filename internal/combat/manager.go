@@ -172,6 +172,14 @@ func (m *Manager) Tick(_ context.Context) error {
 		target    shared.Actor
 	}
 	var autoUses []autoUseTask
+	// roomPublish holds a per-attack room message with a per-target exclusion.
+	type roomPublish struct {
+		zoneId  string
+		roomId  string
+		msg     string
+		exclude string // charId of the target player to exclude, or ""
+	}
+	var roomPublishes []roomPublish
 
 	m.mu.Lock()
 
@@ -220,9 +228,21 @@ func (m *Manager) Tick(_ context.Context) error {
 	m.mu.Unlock()
 
 	for _, task := range autoUses {
-		if msg, err := m.abilities.ExecCombatAbility(task.abilityId, task.actor, task.target); err == nil && msg != "" {
+		result, err := m.abilities.ExecCombatAbility(task.abilityId, task.actor, task.target)
+		if err != nil {
+			continue
+		}
+		if result.RoomMsg != "" {
 			zoneId, roomId := task.actor.Location()
-			addRoomLine(zoneId, roomId, msg)
+			roomPublishes = append(roomPublishes, roomPublish{
+				zoneId:  zoneId,
+				roomId:  roomId,
+				msg:     result.RoomMsg,
+				exclude: result.TargetId,
+			})
+		}
+		if result.TargetMsg != "" {
+			task.target.Notify(result.TargetMsg)
 		}
 	}
 
@@ -266,6 +286,26 @@ func (m *Manager) Tick(_ context.Context) error {
 
 	m.mu.Unlock()
 
+	// Publish per-attack room messages (3rd-person), excluding the target player
+	// who already received the 2nd-person TargetMsg via Notify above.
+	for _, rp := range roomPublishes {
+		zi := m.zones.GetZone(rp.zoneId)
+		if zi == nil {
+			continue
+		}
+		ri := zi.GetRoom(rp.roomId)
+		if ri == nil {
+			continue
+		}
+		var exclude []string
+		if rp.exclude != "" {
+			exclude = []string{rp.exclude}
+		}
+		if err := m.pub.Publish(ri, exclude, []byte(rp.msg)); err != nil {
+			slog.Warn("failed to publish room combat message", "error", err)
+		}
+	}
+
 	// Call OnDeath, remove mob, and place drops outside the lock (room operations acquire ri.mu).
 	for _, d := range dead {
 		drops := d.c.OnDeath()
@@ -280,7 +320,7 @@ func (m *Manager) Tick(_ context.Context) error {
 		}
 	}
 
-	// Publish bundled room messages after releasing the lock.
+	// Publish bundled death room messages after OnDeath.
 	for _, entry := range roomMessages {
 		zi := m.zones.GetZone(entry.zoneId)
 		if zi == nil {
@@ -317,9 +357,7 @@ func (m *Manager) Tick(_ context.Context) error {
 			if canAdvance {
 				msg += "\nYou feel ready to advance to the next level!"
 			}
-			if err := m.pub.Publish(game.SinglePlayer(charId), nil, []byte(msg)); err != nil {
-				slog.Warn("failed to publish xp message", "error", err)
-			}
+			ci.Notify(msg)
 		})
 	}
 

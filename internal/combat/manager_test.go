@@ -72,6 +72,7 @@ func (c *mockCombatant) Location() (string, string)      { return c.zoneId, c.ro
 func (c *mockCombatant) Level() int                      { return c.level }
 func (c *mockCombatant) OnDeath() []*game.ObjectInstance { c.deathCalled = true; return nil }
 func (c *mockCombatant) IsCharacter() bool { return false }
+func (c *mockCombatant) Notify(_ string)   {}
 func (c *mockCombatant) GetInventory() *game.Inventory { return nil }
 
 func newMC(id string) *mockCombatant {
@@ -314,9 +315,9 @@ type mockAbilityHandler struct {
 	calls []struct{ abilityId, actorId, targetId string }
 }
 
-func (h *mockAbilityHandler) ExecCombatAbility(abilityId string, actor, target shared.Actor) (string, error) {
+func (h *mockAbilityHandler) ExecCombatAbility(abilityId string, actor, target shared.Actor) (CombatAbilityResult, error) {
 	h.calls = append(h.calls, struct{ abilityId, actorId, targetId string }{abilityId, actor.Id(), target.Id()})
-	return "", nil
+	return CombatAbilityResult{}, nil
 }
 
 func TestManager_Tick_CallsAutoUses(t *testing.T) {

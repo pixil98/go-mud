@@ -130,10 +130,14 @@ func actorRefFromMob(mi *game.MobileInstance) *ActorRef {
 }
 
 func actorRefFromActor(a shared.Actor) *ActorRef {
-	return &ActorRef{
+	ref := &ActorRef{
 		actor: a,
 		Name:  a.Name(),
 	}
+	if a.IsCharacter() {
+		ref.CharId = a.Id()
+	}
+	return ref
 }
 
 // Describe returns a detailed description of the actor, including equipped items.

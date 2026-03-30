@@ -9,6 +9,7 @@ import (
 	"log/slog"
 	"sort"
 	"strings"
+	"time"
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/commands"
@@ -57,12 +58,17 @@ func (p *Player) Play(ctx context.Context) error {
 			return fmt.Errorf("initial look failed: %w", err)
 		}
 	}
+
+	// Main play loop
 	for {
 		select {
 		case <-ctx.Done():
 			return ctx.Err()
 
 		case <-p.done:
+			// Drain any messages that arrived before or alongside the
+			// done signal (e.g. the killing blow + death message).
+			p.drainMessages()
 			ps := p.world.GetPlayer(p.charId)
 			if ps != nil && ps.IsQuit() {
 				// Death or voluntary quit — return nil so handleSessionEnd saves and removes the player.
@@ -70,9 +76,9 @@ func (p *Player) Play(ctx context.Context) error {
 			}
 			var msg string
 			if ps != nil && ps.IsLinkless() {
-				msg = "\nDisconnected for inactivity."
+				msg = "Disconnected for inactivity."
 			} else {
-				msg = "\nAnother connection has taken over your session."
+				msg = "Another connection has taken over your session."
 			}
 			if err := p.writeLine(msg); err != nil {
 				slog.Warn("failed to write disconnect message to player", "charId", p.charId, "error", err)
@@ -80,11 +86,11 @@ func (p *Player) Play(ctx context.Context) error {
 			return game.ErrPlayerReconnected
 
 		case msg := <-p.msgs:
-			// Display NATS message to the player
-			err = p.writeLine("\n" + string(msg))
+			err = p.writeLine(string(msg))
 			if err != nil {
 				return err
 			}
+			p.drainMessages()
 			err = p.prompt()
 			if err != nil {
 				return err
@@ -92,17 +98,9 @@ func (p *Player) Play(ctx context.Context) error {
 
 		case line, ok := <-inputChan:
 			if !ok {
-				// Input channel closed (connection lost).
-				// Don't clean up subscriptions — caller decides (linkless vs quit).
-				select {
-				case err := <-inputErrChan:
-					return err
-				default:
-					return nil
-				}
+				return <-inputErrChan
 			}
 
-			// Any input resets the idle timer.
 			p.world.MarkPlayerActive(p.charId)
 
 			line = strings.TrimSpace(line)
@@ -114,38 +112,26 @@ func (p *Player) Play(ctx context.Context) error {
 				continue
 			}
 
-			// Parse command and arguments
 			parts := strings.Fields(line)
-			cmdName := parts[0]
-			var args []string
-			if len(parts) > 1 {
-				args = parts[1:]
+			ps := p.world.GetPlayer(p.charId)
+			if ps == nil {
+				return fmt.Errorf("player state not found for %s", p.charId)
 			}
 
-			// Execute the command
-			err = p.cmdHandler.Exec(ctx, p.world.GetPlayer(p.charId), p.world, cmdName, args...)
+			err = p.cmdHandler.Exec(ctx, ps, p.world, parts[0], parts[1:]...)
 			if err != nil {
 				var userErr *commands.UserError
 				if errors.As(err, &userErr) {
-					err = p.writeLine(userErr.Message)
-					if err != nil {
+					if err = p.writeLine(userErr.Message); err != nil {
 						return err
 					}
 				} else {
-					// System error - log and disconnect
 					return fmt.Errorf("command execution failed: %w", err)
 				}
 			}
 
-			// Check if player wants to quit
-			state := p.world.GetPlayer(p.charId)
-			if state == nil {
-				return fmt.Errorf("player state not found for %s", p.charId)
-			}
-			if state.IsQuit() {
+			if ps.IsQuit() {
 				_ = p.writeLine("Goodbye!")
-				// Quit handler already saved and unsubscribed isn't needed
-				// — HandleSessionEnd will remove the player from the world.
 				return nil
 			}
 
@@ -183,11 +169,29 @@ func (p *Player) prompt() error {
 			prompt = fmt.Sprintf("[%s] > ", strings.Join(parts, " | "))
 		}
 	}
-	_, err := p.conn.Write([]byte(prompt))
+	_, err := p.conn.Write([]byte("\n\n" + prompt))
 	return err
 }
 
+func (p *Player) drainMessages() {
+	for {
+		select {
+		case msg := <-p.msgs:
+			_ = p.writeLine(string(msg))
+		default:
+			// Channel empty — wait briefly for in-flight messages
+			// (e.g. NATS deliveries from the same tick) before returning.
+			select {
+			case msg := <-p.msgs:
+				_ = p.writeLine(string(msg))
+			case <-time.After(5 * time.Millisecond):
+				return
+			}
+		}
+	}
+}
+
 func (p *Player) writeLine(msg string) error {
-	_, err := p.conn.Write([]byte(msg + "\n\n"))
+	_, err := p.conn.Write([]byte("\n" + msg))
 	return err
 }

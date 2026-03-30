@@ -28,4 +28,5 @@ type Actor interface {
 	OnDeath() []*game.ObjectInstance
 	IsCharacter() bool
 	GetInventory() *game.Inventory
+	Notify(msg string)
 }
