@@ -27,6 +27,6 @@ type Actor interface {
 	SetCombatTargetId(id string)
 	OnDeath() []*game.ObjectInstance
 	IsCharacter() bool
-	GetInventory() *game.Inventory
+Inventory() *game.Inventory
 	Notify(msg string)
 }

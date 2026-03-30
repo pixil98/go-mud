@@ -11,8 +11,8 @@ import (
 // InventoryActor provides the character state needed by the inventory handler.
 type InventoryActor interface {
 	Id() string
-	Notify(msg string)
-	GetInventory() *game.Inventory
+Notify(msg string)
+	Inventory() *game.Inventory
 }
 
 var _ InventoryActor = (*game.CharacterInstance)(nil)
@@ -42,7 +42,7 @@ func (f *InventoryHandlerFactory) Create() (CommandFunc, error) {
 
 func (f *InventoryHandlerFactory) handle(ctx context.Context, char InventoryActor, in *CommandInput) error {
 	lines := []string{"You are carrying:"}
-	lines = append(lines, FormatInventoryItems(char.GetInventory())...)
+	lines = append(lines, FormatInventoryItems(char.Inventory())...)
 
 	char.Notify(strings.Join(lines, "\n"))
 	return nil

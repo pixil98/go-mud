@@ -82,10 +82,10 @@ func (m *mockAssistActor) Level() int                               { return 1 }
 func (m *mockAssistActor) OnDeath() []*game.ObjectInstance           { return nil }
 func (m *mockAssistActor) IsCharacter() bool                        { return true }
 func (m *mockAssistActor) Notify(msg string)                        { m.notified = append(m.notified, msg) }
-func (m *mockAssistActor) GetFollowingId() string                   { return m.followingId }
+func (m *mockAssistActor) FollowingId() string                   { return m.followingId }
 func (m *mockAssistActor) HasGrant(key, _ string) bool              { return m.grants[key] }
 func (m *mockAssistActor) AddTimedPerks(string, []assets.Perk, int) {}
-func (m *mockAssistActor) GetInventory() *game.Inventory            { return nil }
+func (m *mockAssistActor) Inventory() *game.Inventory            { return nil }
 
 var _ AssistActor = (*mockAssistActor)(nil)
 var _ AssistedPlayer = (*mockAssistActor)(nil)
@@ -283,7 +283,7 @@ func TestAssistHandler(t *testing.T) {
 				if ref := cmdCtx.Targets["target"]; ref != nil {
 					assistedId = ref.Actor.CharId
 				} else {
-					assistedId = actor.GetFollowingId()
+					assistedId = actor.FollowingId()
 				}
 				msgs := pub.messagesTo(assistedId)
 				if !containsSubstring(msgs, tt.expMsgAssisted) {

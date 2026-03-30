@@ -114,15 +114,15 @@ func (mi *MobileInstance) Tick() {
 	}
 }
 
-// GetInventory returns the mobile's inventory.
+// Inventory returns the mobile's inventory.
 // Inventory is self-locking; its methods are safe for concurrent use.
-func (mi *MobileInstance) GetInventory() *Inventory {
+func (mi *MobileInstance) Inventory() *Inventory {
 	return mi.inventory
 }
 
-// GetEquipment returns the mobile's equipment.
+// Equipment returns the mobile's equipment.
 // Equipment is self-locking; its methods are safe for concurrent use.
-func (mi *MobileInstance) GetEquipment() *Equipment {
+func (mi *MobileInstance) Equipment() *Equipment {
 	return mi.equipment
 }
 
@@ -206,8 +206,8 @@ func (mi *MobileInstance) Asset() *assets.Character {
 // SpendAP always succeeds for mobs — they have no action point budget.
 func (mi *MobileInstance) SpendAP(_ int) bool { return true }
 
-// GetGroup returns nil; mobs are never in a player group.
-func (mi *MobileInstance) GetGroup() *Group { return nil }
+// Group returns nil; mobs are never in a player group.
+func (mi *MobileInstance) Group() *Group { return nil }
 
 // StatSections returns the mobile's stat display sections.
 func (mi *MobileInstance) StatSections() []StatSection {

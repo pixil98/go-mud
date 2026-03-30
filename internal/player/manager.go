@@ -85,10 +85,10 @@ func (m *PlayerManager) Tick(_ context.Context) error {
 
 	m.world.ForEachPlayer(func(charId string, ps *game.CharacterInstance) {
 		if ps.IsLinkless() {
-			if now.Sub(ps.GetLinklessAt()) >= m.linklessTimeout {
+			if now.Sub(ps.LinklessAt()) >= m.linklessTimeout {
 				linklessExpired = append(linklessExpired, charId)
 			}
-		} else if now.Sub(ps.GetLastActivity()) >= m.idleTimeout {
+		} else if now.Sub(ps.LastActivity()) >= m.idleTimeout {
 			idleExpired = append(idleExpired, charId)
 		}
 	})

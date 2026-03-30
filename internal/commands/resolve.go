@@ -102,8 +102,8 @@ type ActorRef struct {
 // Actor returns the underlying shared.Actor.
 func (r *ActorRef) Actor() shared.Actor { return r.actor }
 
-// GetInventory returns the actor's inventory.
-func (r *ActorRef) GetInventory() *game.Inventory { return r.inventory }
+// Inventory returns the actor's inventory.
+func (r *ActorRef) Inventory() *game.Inventory { return r.inventory }
 
 func actorRefFromPlayer(ps *game.CharacterInstance) *ActorRef {
 	return &ActorRef{
@@ -111,8 +111,8 @@ func actorRefFromPlayer(ps *game.CharacterInstance) *ActorRef {
 		CharId:      ps.Id(),
 		Name:        ps.Name(),
 		Description: ps.Character.Get().DetailedDesc,
-		equipment:   ps.GetEquipment(),
-		inventory:   ps.GetInventory(),
+		equipment:   ps.Equipment(),
+		inventory:   ps.Inventory(),
 	}
 }
 
@@ -124,8 +124,8 @@ func actorRefFromMob(mi *game.MobileInstance) *ActorRef {
 		actor:       mi,
 		Name:        mi.Name(),
 		Description: mi.Mobile.Get().DetailedDesc,
-		equipment:   mi.GetEquipment(),
-		inventory:   mi.GetInventory(),
+		equipment:   mi.Equipment(),
+		inventory:   mi.Inventory(),
 	}
 }
 
@@ -286,9 +286,9 @@ func FindTarget(name string, tt targetType, spaces []SearchSpace) (*TargetRef, e
 // ScopeActor provides the character state needed for target scope resolution.
 type ScopeActor interface {
 	shared.Actor
-	GetInventory() *game.Inventory
-	GetEquipment() *game.Equipment
-	GetGroup() *game.Group
+	Inventory() *game.Inventory
+	Equipment() *game.Equipment
+	Group() *game.Group
 }
 
 // TargetScopes maps scope flags to search spaces for a given actor.

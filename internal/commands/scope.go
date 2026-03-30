@@ -61,7 +61,7 @@ func (ws *WorldScopes) SpacesFor(s scope, actor ScopeActor) ([]SearchSpace, erro
 	var spaces []SearchSpace
 
 	if s&scopeInventory != 0 {
-		if i := actor.GetInventory(); i != nil {
+		if i := actor.Inventory(); i != nil {
 			spaces = append(spaces, SearchSpace{
 				Finder:  objectOnlyFinder{i},
 				Remover: i,
@@ -69,7 +69,7 @@ func (ws *WorldScopes) SpacesFor(s scope, actor ScopeActor) ([]SearchSpace, erro
 		}
 	}
 	if s&scopeEquipment != 0 {
-		if eq := actor.GetEquipment(); eq != nil {
+		if eq := actor.Equipment(); eq != nil {
 			spaces = append(spaces, SearchSpace{
 				Finder:  objectOnlyFinder{eq},
 				Remover: eq,
@@ -84,7 +84,7 @@ func (ws *WorldScopes) SpacesFor(s scope, actor ScopeActor) ([]SearchSpace, erro
 		})
 	}
 	if s&scopeGroup != 0 {
-		if grp := actor.GetGroup(); grp != nil {
+		if grp := actor.Group(); grp != nil {
 			spaces = append(spaces, SearchSpace{
 				Finder: playerOnlyFinder{grp},
 			})

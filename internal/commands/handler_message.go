@@ -12,7 +12,7 @@ type MessageActor interface {
 	Id() string
 	Notify(msg string)
 	Location() (string, string)
-	GetGroup() *game.Group
+	Group() *game.Group
 }
 
 var _ MessageActor = (*game.CharacterInstance)(nil)
@@ -101,7 +101,7 @@ func (f *MessageHandlerFactory) handle(ctx context.Context, char MessageActor, i
 		return f.pub.Publish(game.SinglePlayer(target.Actor.CharId), nil, []byte(recipientMessage))
 
 	case "group":
-		grp := char.GetGroup()
+		grp := char.Group()
 		if grp == nil {
 			return NewUserError("You are not in a group.")
 		}

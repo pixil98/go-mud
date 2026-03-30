@@ -62,7 +62,7 @@ func (e *spawnObjEffect) Create(_ string, config map[string]string, _ []assets.T
 
 		switch dest {
 		case SpawnDestInventory:
-			actor.GetInventory().AddObj(oi)
+			actor.Inventory().AddObj(oi)
 		case SpawnDestRoom:
 			zoneId, roomId := actor.Location()
 			zi := e.world.GetZone(zoneId)

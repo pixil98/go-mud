@@ -294,8 +294,8 @@ func (ci *CharacterInstance) ResetAP() {
 	ci.currentAP = ci.ModifierValue(assets.PerkKeyActionPointsMax)
 }
 
-// GetFollowingId returns the charId of the player being followed, or empty.
-func (ci *CharacterInstance) GetFollowingId() string {
+// FollowingId returns the charId of the player being followed, or empty.
+func (ci *CharacterInstance) FollowingId() string {
 	ci.mu.RLock()
 	defer ci.mu.RUnlock()
 	return ci.followingId
@@ -308,8 +308,8 @@ func (ci *CharacterInstance) SetFollowingId(id string) {
 	ci.followingId = id
 }
 
-// GetGroup returns the character's current group, or nil.
-func (ci *CharacterInstance) GetGroup() *Group {
+// Group returns the character's current group, or nil.
+func (ci *CharacterInstance) Group() *Group {
 	ci.mu.RLock()
 	defer ci.mu.RUnlock()
 	return ci.group
@@ -343,15 +343,15 @@ func (ci *CharacterInstance) IsLinkless() bool {
 	return ci.linkless
 }
 
-// GetLastActivity returns the time of the player's last activity.
-func (ci *CharacterInstance) GetLastActivity() time.Time {
+// LastActivity returns the time of the player's last activity.
+func (ci *CharacterInstance) LastActivity() time.Time {
 	ci.mu.RLock()
 	defer ci.mu.RUnlock()
 	return ci.lastActivity
 }
 
-// GetLinklessAt returns the time the player went linkless.
-func (ci *CharacterInstance) GetLinklessAt() time.Time {
+// LinklessAt returns the time the player went linkless.
+func (ci *CharacterInstance) LinklessAt() time.Time {
 	ci.mu.RLock()
 	defer ci.mu.RUnlock()
 	return ci.linklessAt
@@ -401,15 +401,15 @@ func (ci *CharacterInstance) Tick() {
 	}
 }
 
-// GetInventory returns the character's inventory.
+// Inventory returns the character's inventory.
 // Inventory is self-locking; its methods are safe for concurrent use.
-func (ci *CharacterInstance) GetInventory() *Inventory {
+func (ci *CharacterInstance) Inventory() *Inventory {
 	return ci.inventory
 }
 
-// GetEquipment returns the character's equipment.
+// Equipment returns the character's equipment.
 // Equipment is self-locking; its methods are safe for concurrent use.
-func (ci *CharacterInstance) GetEquipment() *Equipment {
+func (ci *CharacterInstance) Equipment() *Equipment {
 	return ci.equipment
 }
 
@@ -692,291 +692,3 @@ func (ci *CharacterInstance) Gain() {
 	ci.mu.Unlock()
 }
 
-// --- Inventory ---
-
-// Inventory holds object instances carried by a character or mobile.
-// All methods are safe for concurrent use.
-type Inventory struct {
-	mu   sync.RWMutex
-	objs map[string]*ObjectInstance
-}
-
-// NewInventory creates an empty inventory.
-func NewInventory() *Inventory {
-	return &Inventory{
-		objs: make(map[string]*ObjectInstance),
-	}
-}
-
-// AddObj adds an object instance to the inventory.
-func (inv *Inventory) AddObj(obj *ObjectInstance) {
-	inv.mu.Lock()
-	defer inv.mu.Unlock()
-
-	if inv.objs == nil {
-		inv.objs = make(map[string]*ObjectInstance)
-	}
-	inv.objs[obj.InstanceId] = obj
-}
-
-// RemoveObj removes an object instance from the inventory.
-// Returns the removed instance, or nil if not found.
-func (inv *Inventory) RemoveObj(instanceId string) *ObjectInstance {
-	inv.mu.Lock()
-	defer inv.mu.Unlock()
-
-	if obj, ok := inv.objs[instanceId]; ok {
-		delete(inv.objs, instanceId)
-		return obj
-	}
-	return nil
-}
-
-// FindObj searches inventory items for one whose definition matches the given alias.
-// Returns nil if not found.
-func (inv *Inventory) FindObj(name string) *ObjectInstance {
-	inv.mu.RLock()
-	defer inv.mu.RUnlock()
-
-	for _, oi := range inv.objs {
-		if oi.Object.Get().MatchName(name) {
-			return oi
-		}
-	}
-	return nil
-}
-
-// FindObjByDef searches for an object whose definition ID matches defId.
-// Returns nil if not found.
-func (inv *Inventory) FindObjByDef(defId string) *ObjectInstance {
-	inv.mu.RLock()
-	defer inv.mu.RUnlock()
-
-	for _, oi := range inv.objs {
-		if oi.Object.Id() == defId {
-			return oi
-		}
-	}
-	return nil
-}
-
-// ForEachObj calls fn for each object in the inventory while holding the read lock.
-func (inv *Inventory) ForEachObj(fn func(string, *ObjectInstance)) {
-	inv.mu.RLock()
-	defer inv.mu.RUnlock()
-	for id, oi := range inv.objs {
-		fn(id, oi)
-	}
-}
-
-// Len returns the number of items in the inventory.
-func (inv *Inventory) Len() int {
-	inv.mu.RLock()
-	defer inv.mu.RUnlock()
-	return len(inv.objs)
-}
-
-// Clear removes all items.
-func (inv *Inventory) Clear() {
-	inv.mu.Lock()
-	defer inv.mu.Unlock()
-
-	inv.objs = make(map[string]*ObjectInstance)
-}
-
-// Tick advances decay on all items. Each object's Tick is called, then any
-// object whose RemainingTicks has reached zero is removed.
-func (inv *Inventory) Tick() {
-	inv.mu.Lock()
-	defer inv.mu.Unlock()
-
-	for id, oi := range inv.objs {
-		oi.Tick()
-		if oi.Expired() {
-			delete(inv.objs, id)
-		}
-	}
-}
-
-// Drain atomically removes and returns all items.
-func (inv *Inventory) Drain() []*ObjectInstance {
-	inv.mu.Lock()
-	defer inv.mu.Unlock()
-
-	items := make([]*ObjectInstance, 0, len(inv.objs))
-	for _, obj := range inv.objs {
-		items = append(items, obj)
-	}
-	inv.objs = make(map[string]*ObjectInstance)
-	return items
-}
-
-// --- Equipment ---
-
-// EquipSlot pairs a slot type name with the equipped object instance.
-type EquipSlot struct {
-	Slot string          `json:"slot"`
-	Obj  *ObjectInstance `json:"obj"`
-}
-
-// Equipment holds items equipped by a character or mobile.
-// Multiple items may share the same slot type (e.g., two rings in "finger").
-// All methods are safe for concurrent use.
-type Equipment struct {
-	mu   sync.RWMutex
-	objs []EquipSlot
-	PerkCache
-}
-
-// NewEquipment creates an empty equipment set.
-func NewEquipment() *Equipment {
-	return &Equipment{
-		PerkCache: *NewPerkCache(nil, nil),
-	}
-}
-
-// --- Equip / Unequip ---
-
-// Equip adds an object to the given slot type. maxSlots limits how many items
-// can occupy that slot type (0 means no limit). Returns an error if the slot
-// is already at capacity.
-func (eq *Equipment) Equip(slot string, maxSlots int, obj *ObjectInstance) error {
-	eq.mu.Lock()
-	defer eq.mu.Unlock()
-
-	if maxSlots > 0 && eq.slotCount(slot) >= maxSlots {
-		return fmt.Errorf("no available %q slot", slot)
-	}
-	eq.objs = append(eq.objs, EquipSlot{Slot: slot, Obj: obj})
-	eq.rebuildPerks()
-	return nil
-}
-
-// RemoveObj finds and unequips an object by instance ID.
-func (eq *Equipment) RemoveObj(instanceId string) *ObjectInstance {
-	eq.mu.Lock()
-	defer eq.mu.Unlock()
-
-	for i, item := range eq.objs {
-		if item.Obj.InstanceId == instanceId {
-			eq.objs = append(eq.objs[:i], eq.objs[i+1:]...)
-			eq.rebuildPerks()
-			return item.Obj
-		}
-	}
-	return nil
-}
-
-// Drain atomically removes and returns all equipped objects.
-func (eq *Equipment) Drain() []*ObjectInstance {
-	eq.mu.Lock()
-	defer eq.mu.Unlock()
-
-	var items []*ObjectInstance
-	for _, slot := range eq.objs {
-		if slot.Obj != nil {
-			items = append(items, slot.Obj)
-		}
-	}
-	eq.objs = []EquipSlot{}
-	eq.rebuildPerks()
-	return items
-}
-
-// Tick advances the embedded PerkCache tick and decays equipped items.
-// Expired items are removed and perks are rebuilt if needed.
-func (eq *Equipment) Tick() {
-	eq.PerkCache.Tick()
-
-	eq.mu.Lock()
-	defer eq.mu.Unlock()
-
-	n := 0
-	for _, slot := range eq.objs {
-		slot.Obj.Tick()
-		if slot.Obj.Expired() {
-			continue
-		}
-		eq.objs[n] = slot
-		n++
-	}
-	if n < len(eq.objs) {
-		eq.objs = eq.objs[:n]
-		eq.rebuildPerks()
-	}
-}
-
-// --- Queries ---
-
-// SlotCount returns how many items are equipped in the given slot type.
-func (eq *Equipment) SlotCount(slot string) int {
-	eq.mu.RLock()
-	defer eq.mu.RUnlock()
-
-	return eq.slotCount(slot)
-}
-
-// FindObj searches equipped items for one whose definition matches the given alias.
-func (eq *Equipment) FindObj(name string) *ObjectInstance {
-	eq.mu.RLock()
-	defer eq.mu.RUnlock()
-
-	for _, slot := range eq.objs {
-		if slot.Obj == nil {
-			continue
-		}
-		if slot.Obj.Object.Get().MatchName(name) {
-			return slot.Obj
-		}
-	}
-	return nil
-}
-
-// ForEachSlot calls fn for each equipment slot while holding the read lock.
-func (eq *Equipment) ForEachSlot(fn func(EquipSlot)) {
-	eq.mu.RLock()
-	defer eq.mu.RUnlock()
-	for _, slot := range eq.objs {
-		fn(slot)
-	}
-}
-
-// Len returns the number of equipped items.
-func (eq *Equipment) Len() int {
-	eq.mu.RLock()
-	defer eq.mu.RUnlock()
-	return len(eq.objs)
-}
-
-// --- Perks ---
-
-// Snapshot returns the pre-resolved equipment perks and version atomically.
-func (eq *Equipment) Snapshot() (*ResolvedPerks, uint64) {
-	eq.mu.RLock()
-	defer eq.mu.RUnlock()
-	return eq.PerkCache.Snapshot()
-}
-
-// rebuildPerks aggregates perks from all equipped items into the embedded PerkCache.
-// Caller must hold the write lock.
-func (eq *Equipment) rebuildPerks() {
-	var perks []assets.Perk
-	for _, slot := range eq.objs {
-		if slot.Obj != nil {
-			perks = append(perks, slot.Obj.Object.Get().Perks...)
-		}
-	}
-	eq.SetOwn(perks)
-}
-
-// slotCount returns how many items are equipped in the given slot type.
-// Caller must hold at least a read lock.
-func (eq *Equipment) slotCount(slot string) int {
-	count := 0
-	for _, item := range eq.objs {
-		if item.Slot == slot {
-			count++
-		}
-	}
-	return count
-}

@@ -64,8 +64,8 @@ func (m *mockFollowActor) SetCombatTargetId(string)                 {}
 func (m *mockFollowActor) OnDeath() []*game.ObjectInstance           { return nil }
 func (m *mockFollowActor) IsCharacter() bool                        { return true }
 func (m *mockFollowActor) Notify(msg string)                        { m.notified = append(m.notified, msg) }
-func (m *mockFollowActor) GetInventory() *game.Inventory             { return nil }
-func (m *mockFollowActor) GetFollowingId() string                   { return m.followingId }
+func (m *mockFollowActor) Inventory() *game.Inventory             { return nil }
+func (m *mockFollowActor) FollowingId() string                   { return m.followingId }
 func (m *mockFollowActor) SetFollowingId(id string)                 { m.followingId = id }
 
 var _ FollowActor = (*mockFollowActor)(nil)
@@ -201,8 +201,8 @@ func TestFollowHandler(t *testing.T) {
 				t.Fatalf("unexpected error: %v", err)
 			}
 
-			if alice.GetFollowingId() != tt.expFollowId {
-				t.Errorf("FollowingId = %q, expected %q", alice.GetFollowingId(), tt.expFollowId)
+			if alice.FollowingId() != tt.expFollowId {
+				t.Errorf("FollowingId = %q, expected %q", alice.FollowingId(), tt.expFollowId)
 			}
 
 			if tt.expMsgAlice != "" {

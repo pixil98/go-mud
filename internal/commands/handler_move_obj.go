@@ -15,7 +15,7 @@ type MoveObjActor interface {
 	Id() string
 	Notify(msg string)
 	Location() (string, string)
-	GetInventory() *game.Inventory
+	Inventory() *game.Inventory
 }
 
 var _ MoveObjActor = (*game.CharacterInstance)(nil)
@@ -141,7 +141,7 @@ func (f *MoveObjHandlerFactory) resolveDestination(char MoveObjActor, in *Comman
 
 	switch dest {
 	case "inventory":
-		return char.GetInventory(), nil
+		return char.Inventory(), nil
 
 	case "room":
 		zoneId, roomId := char.Location()
@@ -157,7 +157,7 @@ func (f *MoveObjHandlerFactory) resolveDestination(char MoveObjActor, in *Comman
 // For object targets, validates the container flag and returns contents.
 func (f *MoveObjHandlerFactory) holderForTarget(ref *TargetRef) (ObjectHolder, error) {
 	if ref.Actor != nil {
-		return ref.Actor.GetInventory(), nil
+		return ref.Actor.Inventory(), nil
 	}
 
 	if ref.Obj != nil {

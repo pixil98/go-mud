@@ -15,7 +15,7 @@ type ClosureActor interface {
 	Name() string
 	Notify(msg string)
 	Location() (string, string)
-	GetInventory() *game.Inventory
+	Inventory() *game.Inventory
 }
 
 var _ ClosureActor = (*game.CharacterInstance)(nil)
@@ -218,7 +218,7 @@ func (f *ClosureHandlerFactory) handleContainer(action string, oi *game.ObjectIn
 }
 
 func (f *ClosureHandlerFactory) checkKey(char ClosureActor, lock *assets.Lock) error {
-	if char.GetInventory().FindObjByDef(lock.KeyId.Id()) == nil {
+	if char.Inventory().FindObjByDef(lock.KeyId.Id()) == nil {
 		return NewUserError("You don't have the key.")
 	}
 	return nil

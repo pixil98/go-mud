@@ -12,8 +12,8 @@ import (
 type FollowActor interface {
 	Id() string
 	Name() string
-	Notify(msg string)
-	GetFollowingId() string
+Notify(msg string)
+	FollowingId() string
 	SetFollowingId(string)
 }
 
@@ -22,7 +22,7 @@ var _ FollowActor = (*game.CharacterInstance)(nil)
 // FollowedPlayer provides the state the follow handler reads from a looked-up player.
 type FollowedPlayer interface {
 	Name() string
-	GetFollowingId() string
+	FollowingId() string
 }
 
 var _ FollowedPlayer = (*game.CharacterInstance)(nil)
@@ -95,7 +95,7 @@ func (f *FollowHandlerFactory) follow(char FollowActor, target *TargetRef) error
 	}
 
 	// Already following this person.
-	if char.GetFollowingId() == leaderId {
+	if char.FollowingId() == leaderId {
 		return NewUserError(fmt.Sprintf("You are already following %s.", target.Actor.Name))
 	}
 
@@ -105,7 +105,7 @@ func (f *FollowHandlerFactory) follow(char FollowActor, target *TargetRef) error
 	}
 
 	// Stop following old leader first.
-	if char.GetFollowingId() != "" {
+	if char.FollowingId() != "" {
 		f.notifyStopFollowing(char)
 	}
 
@@ -122,7 +122,7 @@ func (f *FollowHandlerFactory) follow(char FollowActor, target *TargetRef) error
 }
 
 func (f *FollowHandlerFactory) unfollow(char FollowActor) error {
-	if char.GetFollowingId() == "" {
+	if char.FollowingId() == "" {
 		return NewUserError("You aren't following anyone.")
 	}
 
@@ -134,7 +134,7 @@ func (f *FollowHandlerFactory) unfollow(char FollowActor) error {
 // notifyStopFollowing sends stop-following messages to both parties and does NOT
 // clear FollowingId — the caller is responsible for that.
 func (f *FollowHandlerFactory) notifyStopFollowing(char FollowActor) {
-	leaderId := char.GetFollowingId()
+leaderId := char.FollowingId()
 
 	leaderPs := f.players.GetPlayer(leaderId)
 	if leaderPs != nil {
@@ -153,13 +153,13 @@ func wouldCreateLoop(players FollowPlayerLookup, followerId, leaderId string) bo
 	current := leaderId
 	for i := 0; i < 100; i++ {
 		ps := players.GetPlayer(current)
-		if ps == nil || ps.GetFollowingId() == "" {
+		if ps == nil || ps.FollowingId() == "" {
 			return false
 		}
-		if ps.GetFollowingId() == followerId {
+		if ps.FollowingId() == followerId {
 			return true
 		}
-		current = ps.GetFollowingId()
+		current = ps.FollowingId()
 	}
 	// Safety: if we walked 100 links, treat as a loop.
 	return true

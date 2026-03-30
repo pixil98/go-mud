@@ -73,7 +73,7 @@ func (c *mockCombatant) Level() int                      { return c.level }
 func (c *mockCombatant) OnDeath() []*game.ObjectInstance { c.deathCalled = true; return nil }
 func (c *mockCombatant) IsCharacter() bool { return false }
 func (c *mockCombatant) Notify(_ string)   {}
-func (c *mockCombatant) GetInventory() *game.Inventory { return nil }
+func (c *mockCombatant) Inventory() *game.Inventory { return nil }
 
 func newMC(id string) *mockCombatant {
 	return &mockCombatant{

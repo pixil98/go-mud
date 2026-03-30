@@ -27,7 +27,7 @@ func clearFollow(leaderId string, ps *game.CharacterInstance) bool {
 		return false
 	}
 	ps.SetGroup(nil)
-	if ps.GetFollowingId() == leaderId {
+	if ps.FollowingId() == leaderId {
 		ps.SetFollowingId("")
 		return true
 	}
@@ -119,7 +119,7 @@ func (f *GroupHandlerFactory) handle(ctx context.Context, char *game.CharacterIn
 }
 
 func (f *GroupHandlerFactory) showGroup(char *game.CharacterInstance) error {
-	grp := char.GetGroup()
+grp := char.Group()
 	if grp == nil {
 		return NewUserError("You are not in a group.")
 	}
@@ -175,7 +175,7 @@ func (f *GroupHandlerFactory) toggleMember(char *game.CharacterInstance, in *Com
 		return NewUserError("They are not available.")
 	}
 
-	grp := char.GetGroup()
+	grp := char.Group()
 
 	// Toggle out: target is already in this group — remove them.
 	if grp != nil && grp.HasMember(targetId) {
@@ -193,10 +193,10 @@ func (f *GroupHandlerFactory) toggleMember(char *game.CharacterInstance, in *Com
 	if targetId == actorId {
 		return NewUserError("You are already in your own group.")
 	}
-	if targetPs.GetFollowingId() != actorId {
+	if targetPs.FollowingId() != actorId {
 		return NewUserError(fmt.Sprintf("%s is not following you.", target.Actor.Name))
 	}
-	if targetPs.GetGroup() != nil {
+	if targetPs.Group() != nil {
 		return NewUserError(fmt.Sprintf("%s is already in a group.", target.Actor.Name))
 	}
 	if grp != nil && grp.LeaderId != actorId {
@@ -268,7 +268,7 @@ func (f *UngroupHandlerFactory) handle(ctx context.Context, char *game.Character
 
 func (f *UngroupHandlerFactory) disbandOrLeave(char *game.CharacterInstance) error {
 	actorId := char.Id()
-	grp := char.GetGroup()
+	grp := char.Group()
 	if grp == nil {
 		return NewUserError("You are not in a group.")
 	}
@@ -297,7 +297,7 @@ func (f *UngroupHandlerFactory) disbandOrLeave(char *game.CharacterInstance) err
 func (f *UngroupHandlerFactory) removeTarget(char *game.CharacterInstance, in *CommandInput, target *TargetRef) error {
 	actorId := char.Id()
 	targetId := target.Actor.CharId
-	grp := char.GetGroup()
+	grp := char.Group()
 
 	if grp == nil {
 		return NewUserError("You are not in a group.")

@@ -13,8 +13,8 @@ type WearActor interface {
 	Id() string
 	Notify(msg string)
 	Location() (zoneId, roomId string)
-	GetInventory() *game.Inventory
-	GetEquipment() *game.Equipment
+	Inventory() *game.Inventory
+	Equipment() *game.Equipment
 	Asset() *assets.Character
 }
 
@@ -76,7 +76,7 @@ func (f *WearHandlerFactory) handle(ctx context.Context, char WearActor, in *Com
 		if maxSlots == 0 {
 			continue // Race doesn't have this slot type
 		}
-		if char.GetEquipment().SlotCount(s) < maxSlots {
+		if char.Equipment().SlotCount(s) < maxSlots {
 			slot = s
 			break
 		}
@@ -103,10 +103,10 @@ func (f *WearHandlerFactory) handle(ctx context.Context, char WearActor, in *Com
 	}
 
 	maxSlots := race.SlotCount(slot)
-	err := char.GetEquipment().Equip(slot, maxSlots, oi)
+	err := char.Equipment().Equip(slot, maxSlots, oi)
 	if err != nil {
 		// Put it back on failure
-		char.GetInventory().AddObj(oi)
+		char.Inventory().AddObj(oi)
 		return NewUserError("You're already wearing something in that slot.")
 	}
 

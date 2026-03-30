@@ -23,7 +23,7 @@ type CombatManager interface {
 // Embeds shared.Actor because the actor is passed to StartCombat.
 type AssistActor interface {
 	shared.Actor
-	GetFollowingId() string
+	FollowingId() string
 }
 
 var _ AssistActor = (*game.CharacterInstance)(nil)
@@ -144,7 +144,7 @@ func (f *AssistHandlerFactory) resolveAssisted(char AssistActor, in *CommandInpu
 		return target.Actor.CharId, target.Actor.Name, nil
 	}
 
-	leaderId := char.GetFollowingId()
+	leaderId := char.FollowingId()
 	leader := f.players.GetPlayer(leaderId)
 	if leader == nil {
 		return "", "", NewUserError("Assist whom?")

@@ -136,7 +136,7 @@ func (f *MoveHandlerFactory) moveFollowers(leaderId, leaderName string, fromRoom
 	// Snapshot followers while holding the room lock.
 	var followers []follower
 	fromRoom.ForEachPlayer(func(charId string, ps *game.CharacterInstance) {
-		if ps.GetFollowingId() == leaderId {
+		if ps.FollowingId() == leaderId {
 			followers = append(followers, follower{charId: charId, ps: ps})
 		}
 	})
