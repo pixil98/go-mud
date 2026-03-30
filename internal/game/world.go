@@ -16,7 +16,7 @@ type WorldState struct {
 	players    map[string]*CharacterInstance
 
 	zones map[string]*ZoneInstance
-	Perks *PerkCache
+	perks *PerkCache
 }
 
 // NewWorldState creates a new WorldState with zone and room instances initialized.
@@ -50,8 +50,13 @@ func NewWorldState(sub Subscriber, zones storage.Storer[*assets.Zone], rooms sto
 		subscriber: sub,
 		players:    make(map[string]*CharacterInstance),
 		zones:      instances,
-		Perks:      worldPerks,
+		perks:      worldPerks,
 	}, nil
+}
+
+// Perks returns the world-level perk cache.
+func (w *WorldState) Perks() *PerkCache {
+	return w.perks
 }
 
 // Instances returns all zone instances.
@@ -156,7 +161,7 @@ func (w *WorldState) Tick(_ context.Context) error {
 		}
 	}
 
-	w.Perks.Tick()
+	w.perks.Tick()
 	w.ForEachPlayer(func(_ string, ps *CharacterInstance) {
 		ps.Tick()
 	})

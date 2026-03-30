@@ -221,8 +221,8 @@ func TestRoomBuffEffect(t *testing.T) {
 			player := newTestPlayer("test-player", "Tester", room)
 			player.AddSource("room", room.Perks)
 
-			world := &mockZoneLocator{zones: map[string]*game.ZoneInstance{"test-zone": zone}}
-			effect := &roomBuffEffect{world: world}
+			world := &mockBuffWorld{zones: map[string]*game.ZoneInstance{"test-zone": zone}}
+			effect := &buffEffect{scope: buffScopeRoom, world: world}
 
 			// ValidateConfig first, then Create
 			if err := effect.ValidateConfig(tc.config); err != nil {
@@ -265,7 +265,7 @@ func TestRoomBuffEffectExpiry(t *testing.T) {
 	player := newTestPlayer("test-player", "Tester", room)
 	player.AddSource("room", room.Perks)
 
-	effect := &roomBuffEffect{world: &mockZoneLocator{zones: map[string]*game.ZoneInstance{"test-zone": zone}}}
+	effect := &buffEffect{scope: buffScopeRoom, world: &mockBuffWorld{zones: map[string]*game.ZoneInstance{"test-zone": zone}}}
 
 	config := map[string]string{
 		"duration":   "2",

@@ -137,10 +137,10 @@ func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, pub
 	h.effects["attack"] = &attackEffect{combat: combat}
 	h.effects["damage"] = &damageEffect{combat: combat}
 	h.effects["aoe_damage"] = &aoeDamageEffect{combat: combat, world: world}
-	h.effects["actor_buff"] = &actorBuffEffect{}
-	h.effects["room_buff"] = &roomBuffEffect{world: world}
-	h.effects["zone_buff"] = &zoneBuffEffect{world: world}
-	h.effects["world_buff"] = &worldBuffEffect{world: world}
+	h.effects["actor_buff"] = &buffEffect{scope: buffScopeActor}
+	h.effects["room_buff"] = &buffEffect{scope: buffScopeRoom, world: world}
+	h.effects["zone_buff"] = &buffEffect{scope: buffScopeZone, world: world}
+	h.effects["world_buff"] = &buffEffect{scope: buffScopeWorld, world: world}
 	h.effects["threat"] = &threatEffect{combat: combat}
 	h.effects["aoe_threat"] = &aoeThreatEffect{combat: combat, world: world}
 	h.effects["heal"] = &healEffect{combat: combat}

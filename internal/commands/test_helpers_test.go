@@ -18,6 +18,23 @@ func (m *mockZoneLocator) GetZone(zoneId string) *game.ZoneInstance {
 	return m.zones[zoneId]
 }
 
+// mockBuffWorld is a test double for buffWorld (ZoneLocator + Perks()).
+type mockBuffWorld struct {
+	zones     map[string]*game.ZoneInstance
+	perkCache *game.PerkCache
+}
+
+func (m *mockBuffWorld) GetZone(zoneId string) *game.ZoneInstance {
+	if m.zones == nil {
+		return nil
+	}
+	return m.zones[zoneId]
+}
+
+func (m *mockBuffWorld) Perks() *game.PerkCache {
+	return m.perkCache
+}
+
 func newTestMobInstance(instanceId, name string, perks []assets.Perk) *game.MobileInstance {
 	return &game.MobileInstance{
 		Mobile: storage.NewResolvedSmartIdentifier(instanceId+"-spec", &assets.Mobile{ShortDesc: name}),

@@ -615,62 +615,6 @@ func (e *healEffect) Create(_ string, config map[string]string, _ []assets.Targe
 	}
 }
 
-// parsePerkBuffConfig extracts the common config fields for perk buff effects.
-// Each effect entry holds a single perk; repeat the effect for multiple perks.
-//
-// Config fields:
-//   - "perk_type" (string, required): perk type (e.g. "modifier", "grant").
-//   - "perk_key" (string, required): the perk key.
-//   - "perk_value" (int string, optional): perk value (for modifiers).
-//   - "perk_arg" (string, optional): perk argument (for grants).
-//   - "duration" (int string, required): number of ticks the perk lasts.
-//   - "name" (string, optional): entry name for the timed perk. Defaults to id.
-//
-// Grant-based mode (alternative to direct perk config):
-//   - "grant_key" (string): grant key to read from the actor at runtime. Each
-//     grant arg is parsed as a perk via parsePerkArg. When set, perk_type/
-//     perk_key/perk_value are not required.
-func parsePerkBuffConfig(id string, config map[string]string) (string, []assets.Perk, int) {
-	dur, _ := strconv.Atoi(config["duration"])
-
-	name := config["name"]
-	if name == "" {
-		name = id
-	}
-
-	// Grant-based mode: perks are resolved at runtime, not compile time.
-	if config["grant_key"] != "" {
-		return name, nil, dur
-	}
-
-	perkValue, _ := strconv.Atoi(config["perk_value"])
-	perk := assets.Perk{
-		Type:  config["perk_type"],
-		Key:   config["perk_key"],
-		Value: perkValue,
-		Arg:   config["perk_arg"],
-	}
-	return name, []assets.Perk{perk}, dur
-}
-
-// validatePerkBuffConfig checks the required config for perk buff effects.
-func validatePerkBuffConfig(config map[string]string) error {
-	dur, err := strconv.Atoi(config["duration"])
-	if err != nil || dur <= 0 {
-		return fmt.Errorf("positive duration config required")
-	}
-	if config["grant_key"] != "" {
-		return nil
-	}
-	if config["perk_type"] == "" {
-		return fmt.Errorf("perk_type or grant_key config required")
-	}
-	if config["perk_key"] == "" {
-		return fmt.Errorf("perk_key config required")
-	}
-	return nil
-}
-
 // parsePerkArg parses a grant arg string into a Perk.
 // Format: "modifier:key:value" or "grant:key:arg".
 func parsePerkArg(arg string) (assets.Perk, error) {
@@ -712,23 +656,75 @@ func resolveGrantPerks(actor shared.Actor, grantKey string) ([]assets.Perk, erro
 	return perks, nil
 }
 
-// actorBuffEffect applies a timed perk to a target player/mob, or self if no target.
-type actorBuffEffect struct{}
+// buffScope identifies what a buff effect targets.
+type buffScope int
 
-func (e *actorBuffEffect) Spec() *HandlerSpec {
-	return &HandlerSpec{
-		Targets: []TargetRequirement{
-			{Name: "target", Type: targetTypeMobile | targetTypePlayer, Required: false},
-		},
+const (
+	buffScopeActor buffScope = iota
+	buffScopeRoom
+	buffScopeZone
+	buffScopeWorld
+)
+
+// buffWorld provides the zone/room lookup and world-level perks needed by buffEffect.
+type buffWorld interface {
+	ZoneLocator
+	Perks() *game.PerkCache
+}
+
+// buffEffect applies timed perks to a target determined by scope: a specific
+// actor (or self), the caster's room, zone, or the entire world.
+type buffEffect struct {
+	scope buffScope
+	world buffWorld
+}
+
+func (e *buffEffect) Spec() *HandlerSpec {
+	if e.scope == buffScopeActor {
+		return &HandlerSpec{
+			Targets: []TargetRequirement{
+				{Name: "target", Type: targetTypeMobile | targetTypePlayer, Required: false},
+			},
+		}
 	}
+	return nil
 }
 
-func (e *actorBuffEffect) ValidateConfig(config map[string]string) error {
-	return validatePerkBuffConfig(config)
+func (e *buffEffect) ValidateConfig(config map[string]string) error {
+	dur, err := strconv.Atoi(config["duration"])
+	if err != nil || dur <= 0 {
+		return fmt.Errorf("positive duration config required")
+	}
+	if config["grant_key"] != "" {
+		return nil
+	}
+	if config["perk_type"] == "" {
+		return fmt.Errorf("perk_type or grant_key config required")
+	}
+	if config["perk_key"] == "" {
+		return fmt.Errorf("perk_key config required")
+	}
+	return nil
 }
 
-func (e *actorBuffEffect) Create(id string, config map[string]string, targets []assets.TargetSpec) EffectFunc {
-	name, perks, dur := parsePerkBuffConfig(id, config)
+func (e *buffEffect) Create(id string, config map[string]string, targets []assets.TargetSpec) EffectFunc {
+	dur, _ := strconv.Atoi(config["duration"])
+	name := config["name"]
+	if name == "" {
+		name = id
+	}
+
+	var perks []assets.Perk
+	if config["grant_key"] == "" {
+		perkValue, _ := strconv.Atoi(config["perk_value"])
+		perks = []assets.Perk{{
+			Type:  config["perk_type"],
+			Key:   config["perk_key"],
+			Value: perkValue,
+			Arg:   config["perk_arg"],
+		}}
+	}
+
 	grantKey := config["grant_key"]
 
 	return func(actor shared.Actor, resolved map[string]*TargetRef, _ *AbilityResult) error {
@@ -742,118 +738,35 @@ func (e *actorBuffEffect) Create(id string, config map[string]string, targets []
 		if len(p) == 0 {
 			return nil
 		}
-		for _, spec := range targets {
-			ref := resolved[spec.Name]
-			if ref == nil || ref.Actor == nil {
-				continue
+
+		switch e.scope {
+		case buffScopeActor:
+			for _, spec := range targets {
+				ref := resolved[spec.Name]
+				if ref == nil || ref.Actor == nil {
+					continue
+				}
+				ref.Actor.Actor().AddTimedPerks(name, p, dur)
+				return nil
 			}
-			ref.Actor.Actor().AddTimedPerks(name, p, dur)
-			return nil
-		}
-		actor.AddTimedPerks(name, p, dur)
-		return nil
-	}
-}
-
-// roomBuffEffect applies a timed perk to the caster's current room.
-type roomBuffEffect struct {
-	world ZoneLocator
-}
-
-func (e *roomBuffEffect) Spec() *HandlerSpec { return nil }
-
-func (e *roomBuffEffect) ValidateConfig(config map[string]string) error {
-	return validatePerkBuffConfig(config)
-}
-
-func (e *roomBuffEffect) Create(id string, config map[string]string, _ []assets.TargetSpec) EffectFunc {
-	name, perks, dur := parsePerkBuffConfig(id, config)
-	grantKey := config["grant_key"]
-
-	return func(actor shared.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
-		p := perks
-		if grantKey != "" {
-			var err error
-			if p, err = resolveGrantPerks(actor, grantKey); err != nil {
-				return err
+			actor.AddTimedPerks(name, p, dur)
+		case buffScopeRoom:
+			zoneId, roomId := actor.Location()
+			room := e.world.GetZone(zoneId).GetRoom(roomId)
+			if room == nil {
+				return fmt.Errorf("buff effect: room not found")
 			}
-		}
-		if len(p) == 0 {
-			return nil
-		}
-		zoneId, roomId := actor.Location()
-		room := e.world.GetZone(zoneId).GetRoom(roomId)
-		if room == nil {
-			return fmt.Errorf("room_buff effect: room not found")
-		}
-		room.Perks.AddTimedPerks(name, p, dur)
-		return nil
-	}
-}
-
-// zoneBuffEffect applies a timed perk to the caster's current zone.
-type zoneBuffEffect struct {
-	world WorldView
-}
-
-func (e *zoneBuffEffect) Spec() *HandlerSpec { return nil }
-
-func (e *zoneBuffEffect) ValidateConfig(config map[string]string) error {
-	return validatePerkBuffConfig(config)
-}
-
-func (e *zoneBuffEffect) Create(id string, config map[string]string, _ []assets.TargetSpec) EffectFunc {
-	name, perks, dur := parsePerkBuffConfig(id, config)
-	grantKey := config["grant_key"]
-
-	return func(actor shared.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
-		p := perks
-		if grantKey != "" {
-			var err error
-			if p, err = resolveGrantPerks(actor, grantKey); err != nil {
-				return err
+			room.Perks.AddTimedPerks(name, p, dur)
+		case buffScopeZone:
+			zoneId, _ := actor.Location()
+			zone := e.world.GetZone(zoneId)
+			if zone == nil {
+				return fmt.Errorf("buff effect: zone not found")
 			}
+			zone.Perks.AddTimedPerks(name, p, dur)
+		case buffScopeWorld:
+			e.world.Perks().AddTimedPerks(name, p, dur)
 		}
-		if len(p) == 0 {
-			return nil
-		}
-		zoneId, _ := actor.Location()
-		zone := e.world.GetZone(zoneId)
-		if zone == nil {
-			return fmt.Errorf("zone_buff effect: zone not found")
-		}
-		zone.Perks.AddTimedPerks(name, p, dur)
-		return nil
-	}
-}
-
-// worldBuffEffect applies a timed perk to the entire world.
-type worldBuffEffect struct {
-	world *game.WorldState
-}
-
-func (e *worldBuffEffect) Spec() *HandlerSpec { return nil }
-
-func (e *worldBuffEffect) ValidateConfig(config map[string]string) error {
-	return validatePerkBuffConfig(config)
-}
-
-func (e *worldBuffEffect) Create(id string, config map[string]string, _ []assets.TargetSpec) EffectFunc {
-	name, perks, dur := parsePerkBuffConfig(id, config)
-	grantKey := config["grant_key"]
-
-	return func(actor shared.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
-		p := perks
-		if grantKey != "" {
-			var err error
-			if p, err = resolveGrantPerks(actor, grantKey); err != nil {
-				return err
-			}
-		}
-		if len(p) == 0 {
-			return nil
-		}
-		e.world.Perks.AddTimedPerks(name, p, dur)
 		return nil
 	}
 }
@@ -873,19 +786,8 @@ type aoeThreatEffect struct {
 func (e *aoeThreatEffect) Spec() *HandlerSpec { return nil }
 
 func (e *aoeThreatEffect) ValidateConfig(config map[string]string) error {
-	mode := config["mode"]
-	switch mode {
-	case ThreatModeAdd, ThreatModeSetToValue:
-		if config["amount"] == "" {
-			return fmt.Errorf("amount config required for mode %q", mode)
-		}
-		if _, err := strconv.Atoi(config["amount"]); err != nil {
-			return fmt.Errorf("amount must be an integer: %w", err)
-		}
-	case ThreatModeSetToTop:
-		// No amount needed.
-	default:
-		return fmt.Errorf("unknown threat mode %q", mode)
+	if err := validateThreatConfig(config); err != nil {
+		return err
 	}
 	if v := config["in_combat_only"]; v != "" && v != "true" && v != "false" {
 		return fmt.Errorf("in_combat_only must be \"true\" or \"false\", got %q", v)
@@ -965,6 +867,11 @@ func (e *threatEffect) Spec() *HandlerSpec {
 }
 
 func (e *threatEffect) ValidateConfig(config map[string]string) error {
+	return validateThreatConfig(config)
+}
+
+// validateThreatConfig checks the mode/amount fields shared by threat effects.
+func validateThreatConfig(config map[string]string) error {
 	mode := config["mode"]
 	switch mode {
 	case ThreatModeAdd, ThreatModeSetToValue:
