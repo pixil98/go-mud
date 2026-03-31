@@ -86,15 +86,9 @@ func (p *Player) Play(ctx context.Context) error {
 			return game.ErrPlayerReconnected
 
 		case msg := <-p.msgs:
-			err = p.writeLine(string(msg))
-			if err != nil {
-				return err
-			}
-			p.drainMessages()
-			err = p.prompt()
-			if err != nil {
-				return err
-			}
+			// Write the message that woke us; drainMessages below
+			// picks up any remaining.
+			_ = p.writeLine(string(msg))
 
 		case line, ok := <-inputChan:
 			if !ok {
@@ -104,45 +98,37 @@ func (p *Player) Play(ctx context.Context) error {
 			p.world.MarkPlayerActive(p.charId)
 
 			line = strings.TrimSpace(line)
-			if line == "" {
-				err = p.prompt()
+			if line != "" {
+				parts := strings.Fields(line)
+				ps := p.world.GetPlayer(p.charId)
+				if ps == nil {
+					return fmt.Errorf("player state not found for %s", p.charId)
+				}
+
+				err = p.cmdHandler.Exec(ctx, ps, p.world, parts[0], parts[1:]...)
 				if err != nil {
-					return err
-				}
-				continue
-			}
-
-			parts := strings.Fields(line)
-			ps := p.world.GetPlayer(p.charId)
-			if ps == nil {
-				return fmt.Errorf("player state not found for %s", p.charId)
-			}
-
-			err = p.cmdHandler.Exec(ctx, ps, p.world, parts[0], parts[1:]...)
-			if err != nil {
-				var userErr *commands.UserError
-				if errors.As(err, &userErr) {
-					if err = p.writeLine(userErr.Message); err != nil {
-						return err
+					var userErr *commands.UserError
+					if errors.As(err, &userErr) {
+						if err = p.writeLine(userErr.Message); err != nil {
+							return err
+						}
+					} else {
+						return fmt.Errorf("command execution failed: %w", err)
 					}
-				} else {
-					return fmt.Errorf("command execution failed: %w", err)
+				}
+
+				if ps.IsQuit() {
+					_ = p.writeLine("Goodbye!\n")
+					return nil
 				}
 			}
+		}
 
-			// Drain any messages produced by the command (via Notify)
-			// so they appear before the prompt.
-			p.drainMessages()
-
-			if ps.IsQuit() {
-				_ = p.writeLine("Goodbye!")
-				return nil
-			}
-
-			err = p.prompt()
-			if err != nil {
-				return err
-			}
+		// After every non-returning iteration, flush pending messages
+		// and show the prompt.
+		p.drainMessages()
+		if err := p.prompt(); err != nil {
+			return err
 		}
 	}
 }
