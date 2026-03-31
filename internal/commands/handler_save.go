@@ -12,6 +12,7 @@ import (
 // SaveActor provides the character state needed by the save handler.
 type SaveActor interface {
 	Id() string
+	Notify(msg string)
 	SaveCharacter(storage.Storer[*assets.Character]) error
 }
 
@@ -20,12 +21,11 @@ var _ SaveActor = (*game.CharacterInstance)(nil)
 // SaveHandlerFactory creates handlers that persist the player's character.
 type SaveHandlerFactory struct {
 	chars storage.Storer[*assets.Character]
-	pub   game.Publisher
 }
 
 // NewSaveHandlerFactory creates a handler factory for character save commands.
-func NewSaveHandlerFactory(chars storage.Storer[*assets.Character], pub game.Publisher) *SaveHandlerFactory {
-	return &SaveHandlerFactory{chars: chars, pub: pub}
+func NewSaveHandlerFactory(chars storage.Storer[*assets.Character]) *SaveHandlerFactory {
+	return &SaveHandlerFactory{chars: chars}
 }
 
 // Spec returns the handler's target and config requirements.
@@ -48,9 +48,6 @@ func (f *SaveHandlerFactory) handle(ctx context.Context, char SaveActor, in *Com
 		return fmt.Errorf("saving character: %w", err)
 	}
 
-	if f.pub != nil {
-		return f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte("Character saved."))
-	}
-
+	char.Notify("Character saved.")
 	return nil
 }

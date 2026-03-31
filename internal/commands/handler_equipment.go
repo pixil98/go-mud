@@ -12,6 +12,7 @@ import (
 // EquipmentActor provides the character state needed by the equipment handler.
 type EquipmentActor interface {
 	Id() string
+	Notify(msg string)
 	GetEquipment() *game.Equipment
 	Asset() *assets.Character
 }
@@ -19,13 +20,11 @@ type EquipmentActor interface {
 var _ EquipmentActor = (*game.CharacterInstance)(nil)
 
 // EquipmentHandlerFactory creates handlers that list the player's equipped items.
-type EquipmentHandlerFactory struct {
-	pub game.Publisher
-}
+type EquipmentHandlerFactory struct{}
 
 // NewEquipmentHandlerFactory creates a handler factory for equipment listing commands.
-func NewEquipmentHandlerFactory(pub game.Publisher) *EquipmentHandlerFactory {
-	return &EquipmentHandlerFactory{pub: pub}
+func NewEquipmentHandlerFactory() *EquipmentHandlerFactory {
+	return &EquipmentHandlerFactory{}
 }
 
 // Spec returns the handler's target and config requirements.
@@ -56,11 +55,7 @@ func (f *EquipmentHandlerFactory) handle(ctx context.Context, char EquipmentActo
 	lines := []string{"You are wearing:"}
 	lines = append(lines, FormatEquipmentSlots(eq, slots)...)
 
-	output := strings.Join(lines, "\n")
-	if f.pub != nil {
-		return f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte(output))
-	}
-
+	char.Notify(strings.Join(lines, "\n"))
 	return nil
 }
 

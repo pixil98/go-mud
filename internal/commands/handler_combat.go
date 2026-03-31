@@ -120,17 +120,13 @@ func (f *AssistHandlerFactory) handle(ctx context.Context, char AssistActor, in 
 		return NewUserError(fmt.Sprintf("%s isn't fighting anything you can assist with.", assistedName))
 	}
 
-	actorId := char.Id()
-
-	if err := f.pub.Publish(game.SinglePlayer(actorId), nil,
-		[]byte(fmt.Sprintf("You jump to %s's aid!", assistedName))); err != nil {
-		slog.Warn("failed to notify actor of assist", "error", err)
-	}
+	char.Notify(fmt.Sprintf("You jump to %s's aid!", assistedName))
 	if err := f.pub.Publish(game.SinglePlayer(assistedId), nil,
 		[]byte(fmt.Sprintf("%s jumps to your aid!", char.Name()))); err != nil {
 		slog.Warn("failed to notify assisted player", "error", err)
 	}
 
+	actorId := char.Id()
 	zoneID, roomID := char.Location()
 	room := f.zones.GetZone(zoneID).GetRoom(roomID)
 	roomMsg := fmt.Sprintf("%s jumps to %s's aid!", char.Name(), assistedName)

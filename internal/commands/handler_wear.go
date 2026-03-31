@@ -11,6 +11,7 @@ import (
 // WearActor provides the character state needed by the wear handler.
 type WearActor interface {
 	Id() string
+	Notify(msg string)
 	Location() (zoneId, roomId string)
 	GetInventory() *game.Inventory
 	GetEquipment() *game.Equipment
@@ -110,10 +111,7 @@ func (f *WearHandlerFactory) handle(ctx context.Context, char WearActor, in *Com
 	}
 
 	// Send self message
-	selfMsg := fmt.Sprintf("You wear %s.", obj.ShortDesc)
-	if err := f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte(selfMsg)); err != nil {
-		return err
-	}
+	char.Notify(fmt.Sprintf("You wear %s.", obj.ShortDesc))
 
 	// Broadcast to room
 	roomMsg := fmt.Sprintf("%s wears %s.", actor.Name, obj.ShortDesc)

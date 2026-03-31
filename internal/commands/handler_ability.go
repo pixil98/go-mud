@@ -257,9 +257,7 @@ func (w *abilityCommandWrapper) publishResult(result *AbilityResult, actor share
 	exclude := []string{charId}
 
 	if len(result.ActorLines) > 0 {
-		if err := w.pub.Publish(game.SinglePlayer(charId), nil, []byte(strings.Join(result.ActorLines, "\n"))); err != nil {
-			return err
-		}
+		actor.Notify(strings.Join(result.ActorLines, "\n"))
 	}
 	if len(result.TargetLines) > 0 && result.TargetId != "" {
 		if err := w.pub.Publish(game.SinglePlayer(result.TargetId), nil, []byte(strings.Join(result.TargetLines, "\n"))); err != nil {

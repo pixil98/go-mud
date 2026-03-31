@@ -12,6 +12,7 @@ import (
 type FollowActor interface {
 	Id() string
 	Name() string
+	Notify(msg string)
 	GetFollowingId() string
 	SetFollowingId(string)
 }
@@ -111,10 +112,7 @@ func (f *FollowHandlerFactory) follow(char FollowActor, target *TargetRef) error
 	char.SetFollowingId(leaderId)
 
 	// Notify both parties.
-	if err := f.pub.Publish(game.SinglePlayer(actorId), nil,
-		[]byte(fmt.Sprintf("You now follow %s.", target.Actor.Name))); err != nil {
-		slog.Warn("failed to notify follower", "error", err)
-	}
+	char.Notify(fmt.Sprintf("You now follow %s.", target.Actor.Name))
 	if err := f.pub.Publish(game.SinglePlayer(leaderId), nil,
 		[]byte(fmt.Sprintf("%s now follows you.", char.Name()))); err != nil {
 		slog.Warn("failed to notify leader", "error", err)
@@ -136,16 +134,12 @@ func (f *FollowHandlerFactory) unfollow(char FollowActor) error {
 // notifyStopFollowing sends stop-following messages to both parties and does NOT
 // clear FollowingId — the caller is responsible for that.
 func (f *FollowHandlerFactory) notifyStopFollowing(char FollowActor) {
-	actorId := char.Id()
 	leaderId := char.GetFollowingId()
 
 	leaderPs := f.players.GetPlayer(leaderId)
 	if leaderPs != nil {
 		leaderName := leaderPs.Name()
-		if err := f.pub.Publish(game.SinglePlayer(actorId), nil,
-			[]byte(fmt.Sprintf("You stop following %s.", leaderName))); err != nil {
-			slog.Warn("failed to notify follower", "error", err)
-		}
+		char.Notify(fmt.Sprintf("You stop following %s.", leaderName))
 		if err := f.pub.Publish(game.SinglePlayer(leaderId), nil,
 			[]byte(fmt.Sprintf("%s stops following you.", char.Name()))); err != nil {
 			slog.Warn("failed to notify leader", "error", err)

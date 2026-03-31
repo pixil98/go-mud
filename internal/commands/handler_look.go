@@ -11,6 +11,7 @@ type LookActor interface {
 	Id() string
 	Name() string
 	Location() (string, string)
+	Notify(msg string)
 }
 
 var _ LookActor = (*game.CharacterInstance)(nil)
@@ -18,12 +19,11 @@ var _ LookActor = (*game.CharacterInstance)(nil)
 // LookHandlerFactory creates handlers that display the current room.
 type LookHandlerFactory struct {
 	zones ZoneLocator
-	pub   game.Publisher
 }
 
 // NewLookHandlerFactory creates a new LookHandlerFactory with access to world state.
-func NewLookHandlerFactory(zones ZoneLocator, pub game.Publisher) *LookHandlerFactory {
-	return &LookHandlerFactory{zones: zones, pub: pub}
+func NewLookHandlerFactory(zones ZoneLocator) *LookHandlerFactory {
+	return &LookHandlerFactory{zones: zones}
 }
 
 // Spec returns the handler's target and config requirements.
@@ -55,24 +55,20 @@ func (f *LookHandlerFactory) handle(ctx context.Context, char LookActor, in *Com
 }
 
 // showRoom displays the current room description.
-func (f *LookHandlerFactory) showRoom(char LookActor) error {
-	zoneId, roomId := char.Location()
+func (f *LookHandlerFactory) showRoom(actor LookActor) error {
+	zoneId, roomId := actor.Location()
 
 	ri := f.zones.GetZone(zoneId).GetRoom(roomId)
 	if ri == nil {
 		return NewUserError("You are in an invalid location.")
 	}
 
-	roomDesc := ri.Describe(char.Name())
-	if f.pub != nil {
-		return f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte(roomDesc))
-	}
-
+	actor.Notify(ri.Describe(actor.Name()))
 	return nil
 }
 
 // showTarget displays information about a specific target.
-func (f *LookHandlerFactory) showTarget(char LookActor, target *TargetRef) error {
+func (f *LookHandlerFactory) showTarget(actor LookActor, target *TargetRef) error {
 	var msg string
 	switch target.Type {
 	case targetTypeActor:
@@ -83,8 +79,6 @@ func (f *LookHandlerFactory) showTarget(char LookActor, target *TargetRef) error
 		return NewUserError("You can't look at that.")
 	}
 
-	if f.pub != nil {
-		return f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte(msg))
-	}
+	actor.Notify(msg)
 	return nil
 }

@@ -10,19 +10,18 @@ import (
 // TitleActor provides the character state needed by the title handler.
 type TitleActor interface {
 	Id() string
+	Notify(msg string)
 	SetTitle(string)
 }
 
 var _ TitleActor = (*game.CharacterInstance)(nil)
 
 // TitleHandlerFactory creates handlers that set a player's title.
-type TitleHandlerFactory struct {
-	pub game.Publisher
-}
+type TitleHandlerFactory struct{}
 
 // NewTitleHandlerFactory creates a new TitleHandlerFactory.
-func NewTitleHandlerFactory(pub game.Publisher) *TitleHandlerFactory {
-	return &TitleHandlerFactory{pub: pub}
+func NewTitleHandlerFactory() *TitleHandlerFactory {
+	return &TitleHandlerFactory{}
 }
 
 // Spec returns the handler's target and config requirements.
@@ -57,9 +56,6 @@ func (f *TitleHandlerFactory) handle(ctx context.Context, char TitleActor, in *C
 		output = fmt.Sprintf("Title set to: %s", title)
 	}
 
-	if f.pub != nil {
-		return f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte(output))
-	}
-
+	char.Notify(output)
 	return nil
 }

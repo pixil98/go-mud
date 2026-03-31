@@ -8,19 +8,18 @@ import (
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/display"
-	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/shared"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // TreesHandlerFactory creates handlers for listing and viewing skill trees.
 type TreesHandlerFactory struct {
 	trees storage.Storer[*assets.Tree]
-	pub   game.Publisher
 }
 
 // NewTreesHandlerFactory creates a handler factory for skill tree listing commands.
-func NewTreesHandlerFactory(trees storage.Storer[*assets.Tree], pub game.Publisher) *TreesHandlerFactory {
-	return &TreesHandlerFactory{trees: trees, pub: pub}
+func NewTreesHandlerFactory(trees storage.Storer[*assets.Tree]) *TreesHandlerFactory {
+	return &TreesHandlerFactory{trees: trees}
 }
 
 // Spec returns the handler's target and config requirements.
@@ -40,15 +39,14 @@ func (f *TreesHandlerFactory) ValidateConfig(config map[string]string) error {
 // Create returns a compiled CommandFunc for this handler.
 func (f *TreesHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, in *CommandInput) error {
-		charId := in.Actor.Id()
 		if name := in.Config["tree"]; name != "" {
-			return f.showTree(name, charId)
+			return f.showTree(name, in.Actor)
 		}
-		return f.listTrees(charId)
+		return f.listTrees(in.Actor)
 	}, nil
 }
 
-func (f *TreesHandlerFactory) listTrees(charId string) error {
+func (f *TreesHandlerFactory) listTrees(actor shared.Actor) error {
 	all := f.trees.GetAll()
 
 	ids := make([]string, 0, len(all))
@@ -63,15 +61,17 @@ func (f *TreesHandlerFactory) listTrees(charId string) error {
 		lines = append(lines, fmt.Sprintf("  %-16s - %s", t.Name, firstSentence(t.Description)))
 	}
 
-	return f.publish(charId, strings.Join(lines, "\n"))
+	actor.Notify(strings.Join(lines, "\n"))
+	return nil
 }
 
-func (f *TreesHandlerFactory) showTree(name string, charId string) error {
+func (f *TreesHandlerFactory) showTree(name string, actor shared.Actor) error {
 	tree := f.findTree(name)
 	if tree == nil {
 		return NewUserError(fmt.Sprintf("No skill tree named %q.", name))
 	}
-	return f.publish(charId, renderTree(tree))
+	actor.Notify(renderTree(tree))
+	return nil
 }
 
 // findTree looks up a tree by ID first, then by name case-insensitively.
@@ -84,13 +84,6 @@ func (f *TreesHandlerFactory) findTree(name string) *assets.Tree {
 		if strings.ToLower(t.Name) == lower {
 			return t
 		}
-	}
-	return nil
-}
-
-func (f *TreesHandlerFactory) publish(charId, text string) error {
-	if f.pub != nil {
-		return f.pub.Publish(game.SinglePlayer(charId), nil, []byte(text))
 	}
 	return nil
 }

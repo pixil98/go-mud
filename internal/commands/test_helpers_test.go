@@ -45,10 +45,21 @@ func newTestRoom(id, name, zoneId string) (*game.RoomInstance, error) {
 // newTestPlayer creates a CharacterInstance and adds it to the given room.
 // Use only where concrete CharacterInstance is unavoidable (e.g. room infrastructure tests).
 func newTestPlayer(charId, name string, room *game.RoomInstance) *game.CharacterInstance {
+	msgs := make(chan []byte, 10)
 	charRef := storage.NewResolvedSmartIdentifier(charId, &assets.Character{Name: name})
-	ps, _ := game.NewCharacterInstance(charRef, make(chan []byte, 10), room.Room.Get().Zone.Id(), room.Room.Id())
+	ps, _ := game.NewCharacterInstance(charRef, msgs, room.Room.Get().Zone.Id(), room.Room.Id())
 	room.AddPlayer(charId, ps)
 	return ps
+}
+
+// newTestPlayerWithMsgs creates a CharacterInstance and returns it with its msgs channel
+// so tests can assert on messages delivered via Notify.
+func newTestPlayerWithMsgs(charId, name string, room *game.RoomInstance) (*game.CharacterInstance, chan []byte) {
+	msgs := make(chan []byte, 10)
+	charRef := storage.NewResolvedSmartIdentifier(charId, &assets.Character{Name: name})
+	ps, _ := game.NewCharacterInstance(charRef, msgs, room.Room.Get().Zone.Id(), room.Room.Id())
+	room.AddPlayer(charId, ps)
+	return ps, msgs
 }
 
 // newCharacterInstance creates a CharacterInstance in a throwaway room.

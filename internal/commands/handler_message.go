@@ -10,6 +10,7 @@ import (
 // MessageActor provides the character state needed by the message handler.
 type MessageActor interface {
 	Id() string
+	Notify(msg string)
 	Location() (string, string)
 	GetGroup() *game.Group
 }
@@ -70,9 +71,7 @@ func (f *MessageHandlerFactory) handle(ctx context.Context, char MessageActor, i
 
 	// Send 2nd-person message to actor if configured
 	if senderMessage != "" {
-		if err := f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte(senderMessage)); err != nil {
-			return err
-		}
+		char.Notify(senderMessage)
 	}
 
 	// Send message to scope targets, excluding actor only if they got a sender_message

@@ -3,7 +3,6 @@ package commands
 import (
 	"context"
 	"fmt"
-	"log/slog"
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/game"
@@ -13,6 +12,7 @@ import (
 type MoveActor interface {
 	Id() string
 	Name() string
+	Notify(msg string)
 	Location() (string, string)
 	IsInCombat() bool
 	Move(from, to *game.RoomInstance)
@@ -25,12 +25,11 @@ var _ MoveActor = (*game.CharacterInstance)(nil)
 //   - direction (required): the direction to move (north, south, east, west, up, down)
 type MoveHandlerFactory struct {
 	zones ZoneLocator
-	pub   game.Publisher
 }
 
 // NewMoveHandlerFactory creates a new MoveHandlerFactory with access to world state.
-func NewMoveHandlerFactory(zones ZoneLocator, pub game.Publisher) *MoveHandlerFactory {
-	return &MoveHandlerFactory{zones: zones, pub: pub}
+func NewMoveHandlerFactory(zones ZoneLocator) *MoveHandlerFactory {
+	return &MoveHandlerFactory{zones: zones}
 }
 
 // Spec returns the handler's target and config requirements.
@@ -109,12 +108,7 @@ func (f *MoveHandlerFactory) handle(ctx context.Context, char MoveActor, in *Com
 	char.Move(fromRoom, toRoom)
 
 	// Send room description to player
-	roomDesc := toRoom.Describe(char.Name())
-	if f.pub != nil {
-		if err := f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte(roomDesc)); err != nil {
-			slog.Warn("failed to send room description", "error", err)
-		}
-	}
+	char.Notify(toRoom.Describe(char.Name()))
 
 	// Move any followers in the old room
 	f.moveFollowers(char.Id(), char.Name(), fromRoom, toRoom, direction)
@@ -149,24 +143,14 @@ func (f *MoveHandlerFactory) moveFollowers(leaderId, leaderName string, fromRoom
 
 	for _, fl := range followers {
 		if canMove(fl.ps) != nil {
-			if f.pub != nil {
-				if err := f.pub.Publish(game.SinglePlayer(fl.charId), nil,
-					[]byte(fmt.Sprintf("%s leaves %s without you.", leaderName, direction))); err != nil {
-					slog.Warn("failed to notify follower left behind", "error", err)
-				}
-			}
+			fl.ps.Notify(fmt.Sprintf("%s leaves %s without you.", leaderName, direction))
 			continue
 		}
 
 		fl.ps.Move(fromRoom, toRoom)
 
-		if f.pub != nil {
-			roomDesc := toRoom.Describe(fl.ps.Name())
-			msg := fmt.Sprintf("You follow %s.\n%s", leaderName, roomDesc)
-			if err := f.pub.Publish(game.SinglePlayer(fl.charId), nil, []byte(msg)); err != nil {
-				slog.Warn("failed to send room description to follower", "error", err)
-			}
-		}
+		roomDesc := toRoom.Describe(fl.ps.Name())
+		fl.ps.Notify(fmt.Sprintf("You follow %s.\n%s", leaderName, roomDesc))
 
 		// Recurse: move this follower's followers too.
 		f.moveFollowers(fl.charId, fl.ps.Name(), fromRoom, toRoom, direction)

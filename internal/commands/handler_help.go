@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/assets"
-	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/shared"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
@@ -21,12 +21,11 @@ type Helpable interface {
 type HelpHandlerFactory struct {
 	entries map[string]Helpable // primary name → helpable
 	aliases map[string]string   // alias → primary name
-	pub     game.Publisher
 }
 
 // NewHelpHandlerFactory creates a new HelpHandlerFactory by indexing all
 // commands and abilities.
-func NewHelpHandlerFactory(cmds storage.Storer[*assets.Command], abilities storage.Storer[*assets.Ability], pub game.Publisher) *HelpHandlerFactory {
+func NewHelpHandlerFactory(cmds storage.Storer[*assets.Command], abilities storage.Storer[*assets.Ability]) *HelpHandlerFactory {
 	entries := make(map[string]Helpable)
 	aliases := make(map[string]string)
 
@@ -43,7 +42,7 @@ func NewHelpHandlerFactory(cmds storage.Storer[*assets.Command], abilities stora
 		}
 	}
 
-	return &HelpHandlerFactory{entries: entries, aliases: aliases, pub: pub}
+	return &HelpHandlerFactory{entries: entries, aliases: aliases}
 }
 
 // Spec returns the handler's target and config requirements.
@@ -65,15 +64,15 @@ func (f *HelpHandlerFactory) Create() (CommandFunc, error) {
 	return func(ctx context.Context, in *CommandInput) error {
 		command := in.Config["command"]
 		if command != "" {
-			return f.showCommand(command, in.Actor.Id())
+			return f.showCommand(command, in.Actor)
 		}
 
-		return f.listCommands(in.Actor.Id())
+		return f.listCommands(in.Actor)
 	}, nil
 }
 
 // listCommands displays all commands grouped by category.
-func (f *HelpHandlerFactory) listCommands(charId string) error {
+func (f *HelpHandlerFactory) listCommands(actor shared.Actor) error {
 	groups := make(map[string][]string)
 	for name, h := range f.entries {
 		category, _ := h.HelpSummary()
@@ -97,14 +96,12 @@ func (f *HelpHandlerFactory) listCommands(charId string) error {
 		lines = append(lines, fmt.Sprintf("  %s: %s", label, strings.Join(cmds, ", ")))
 	}
 
-	if f.pub != nil {
-		return f.pub.Publish(game.SinglePlayer(charId), nil, []byte(strings.Join(lines, "\n")))
-	}
+	actor.Notify(strings.Join(lines, "\n"))
 	return nil
 }
 
 // showCommand displays detailed help for a specific command.
-func (f *HelpHandlerFactory) showCommand(name string, charId string) error {
+func (f *HelpHandlerFactory) showCommand(name string, actor shared.Actor) error {
 	lower := strings.ToLower(name)
 
 	h, ok := f.entries[lower]
@@ -118,8 +115,6 @@ func (f *HelpHandlerFactory) showCommand(name string, charId string) error {
 		return NewUserError(fmt.Sprintf("Command %q is unknown.", name))
 	}
 
-	if f.pub != nil {
-		return f.pub.Publish(game.SinglePlayer(charId), nil, []byte(h.Help(lower)))
-	}
+	actor.Notify(h.Help(lower))
 	return nil
 }

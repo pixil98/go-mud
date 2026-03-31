@@ -11,6 +11,7 @@ import (
 // GainActor provides the character state needed by the gain handler.
 type GainActor interface {
 	Id() string
+	Notify(msg string)
 	IsInCombat() bool
 	Asset() *assets.Character
 	Gain()
@@ -19,13 +20,11 @@ type GainActor interface {
 var _ GainActor = (*game.CharacterInstance)(nil)
 
 // GainHandlerFactory creates handlers for the gain (level up) command.
-type GainHandlerFactory struct {
-	pub game.Publisher
-}
+type GainHandlerFactory struct{}
 
 // NewGainHandlerFactory creates a handler factory for gain (level up) commands.
-func NewGainHandlerFactory(pub game.Publisher) *GainHandlerFactory {
-	return &GainHandlerFactory{pub: pub}
+func NewGainHandlerFactory() *GainHandlerFactory {
+	return &GainHandlerFactory{}
 }
 
 // Spec returns the handler's target and config requirements.
@@ -63,10 +62,6 @@ func (f *GainHandlerFactory) handle(ctx context.Context, char GainActor, in *Com
 
 	char.Gain()
 
-	msg := fmt.Sprintf("Congratulations! You have advanced to level %d!", actor.Level)
-
-	if f.pub != nil {
-		return f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte(msg))
-	}
+	char.Notify(fmt.Sprintf("Congratulations! You have advanced to level %d!", actor.Level))
 	return nil
 }

@@ -40,19 +40,13 @@ func clearFollow(leaderId string, ps *game.CharacterInstance) bool {
 func (c *groupCore) removeMember(leaderName, leaderId, targetId, targetName string, targetPs *game.CharacterInstance, grp *game.Group) {
 	grp.RemoveMember(targetId)
 	if clearFollow(leaderId, targetPs) {
-		if err := c.pub.Publish(game.SinglePlayer(targetId), nil,
-			[]byte(fmt.Sprintf("You stop following %s.", leaderName))); err != nil {
-			slog.Warn("failed to notify follower", "error", err)
-		}
+		targetPs.Notify(fmt.Sprintf("You stop following %s.", leaderName))
 		if err := c.pub.Publish(game.SinglePlayer(leaderId), nil,
 			[]byte(fmt.Sprintf("%s stops following you.", targetName))); err != nil {
 			slog.Warn("failed to notify leader", "error", err)
 		}
 	}
-	if err := c.pub.Publish(game.SinglePlayer(targetId), nil,
-		[]byte(fmt.Sprintf("You have been removed from the group by %s.", leaderName))); err != nil {
-		slog.Warn("failed to notify removed member", "error", err)
-	}
+	targetPs.Notify(fmt.Sprintf("You have been removed from the group by %s.", leaderName))
 	if err := c.pub.Publish(grp, nil,
 		[]byte(fmt.Sprintf("%s has been removed from the group.", targetName))); err != nil {
 		slog.Warn("failed to notify group of removal", "error", err)
@@ -68,9 +62,7 @@ func (c *groupCore) disband(grp *game.Group) {
 		if charId == leaderId {
 			msg = "You have disbanded the group."
 		}
-		if err := c.pub.Publish(game.SinglePlayer(charId), nil, []byte(msg)); err != nil {
-			slog.Warn("failed to notify member of disband", "error", err)
-		}
+		ps.Notify(msg)
 	})
 }
 
@@ -127,7 +119,6 @@ func (f *GroupHandlerFactory) handle(ctx context.Context, char *game.CharacterIn
 }
 
 func (f *GroupHandlerFactory) showGroup(char *game.CharacterInstance) error {
-	actorId := char.Id()
 	grp := char.GetGroup()
 	if grp == nil {
 		return NewUserError("You are not in a group.")
@@ -171,7 +162,8 @@ func (f *GroupHandlerFactory) showGroup(char *game.CharacterInstance) error {
 	for _, m := range members {
 		lines = append(lines, m.line)
 	}
-	return f.pub.Publish(game.SinglePlayer(actorId), nil, []byte(strings.Join(lines, "\n")))
+	char.Notify(strings.Join(lines, "\n"))
+	return nil
 }
 
 func (f *GroupHandlerFactory) toggleMember(char *game.CharacterInstance, in *CommandInput, target *TargetRef) error {
@@ -223,10 +215,7 @@ func (f *GroupHandlerFactory) toggleMember(char *game.CharacterInstance, in *Com
 	if err := f.pub.Publish(grp, []string{targetId}, []byte(joinMsg)); err != nil {
 		slog.Warn("failed to notify group of new member", "error", err)
 	}
-	if err := f.pub.Publish(game.SinglePlayer(targetId), nil,
-		[]byte(fmt.Sprintf("You join %s's group.", char.Name()))); err != nil {
-		slog.Warn("failed to notify new member", "error", err)
-	}
+	targetPs.Notify(fmt.Sprintf("You join %s's group.", char.Name()))
 
 	return nil
 }
@@ -293,9 +282,7 @@ func (f *UngroupHandlerFactory) disbandOrLeave(char *game.CharacterInstance) err
 	grp.RemoveMember(actorId)
 	_ = clearFollow(grp.LeaderId, f.players.GetPlayer(actorId))
 
-	if err := f.pub.Publish(game.SinglePlayer(actorId), nil, []byte("You leave the group.")); err != nil {
-		slog.Warn("failed to notify leaving member", "error", err)
-	}
+	char.Notify("You leave the group.")
 	if err := f.pub.Publish(grp, nil,
 		[]byte(fmt.Sprintf("%s has left the group.", char.Name()))); err != nil {
 		slog.Warn("failed to notify group of member leaving", "error", err)

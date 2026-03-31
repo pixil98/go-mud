@@ -13,19 +13,18 @@ const scoreBoxWidth = 40
 // ScoreActor provides the character state needed by the score handler.
 type ScoreActor interface {
 	Id() string
+	Notify(msg string)
 	StatSections() []game.StatSection
 }
 
 var _ ScoreActor = (*game.CharacterInstance)(nil)
 
 // ScoreHandlerFactory creates handlers that display character/mobile stats.
-type ScoreHandlerFactory struct {
-	pub game.Publisher
-}
+type ScoreHandlerFactory struct{}
 
 // NewScoreHandlerFactory creates a handler factory for score display commands.
-func NewScoreHandlerFactory(pub game.Publisher) *ScoreHandlerFactory {
-	return &ScoreHandlerFactory{pub: pub}
+func NewScoreHandlerFactory() *ScoreHandlerFactory {
+	return &ScoreHandlerFactory{}
 }
 
 // Spec returns the handler's target and config requirements.
@@ -53,10 +52,7 @@ func (f *ScoreHandlerFactory) handle(ctx context.Context, char ScoreActor, in *C
 		return err
 	}
 
-	output := renderBox(sections, scoreBoxWidth)
-	if f.pub != nil {
-		return f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte(output))
-	}
+	char.Notify(renderBox(sections, scoreBoxWidth))
 	return nil
 }
 

@@ -130,6 +130,10 @@ func (p *Player) Play(ctx context.Context) error {
 				}
 			}
 
+			// Drain any messages produced by the command (via Notify)
+			// so they appear before the prompt.
+			p.drainMessages()
+
 			if ps.IsQuit() {
 				_ = p.writeLine("Goodbye!")
 				return nil

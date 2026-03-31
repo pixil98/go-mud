@@ -2,6 +2,12 @@
 - Remove StatSections from CharacterInstance and format everything from Actor and perks
 - the wear command should have a config option to limit the slots it can apply to and then we can implement wield and hold properly.
 - ActorRef.CharId checks (CharId != "") could use actor.IsCharacter() instead.
+- moveFollowers, group, and ungroup handlers are tightly coupled to *game.CharacterInstance.
+  They iterate rooms/groups and call methods directly on CharacterInstance (Move, Notify,
+  GetFollowingId, SetFollowingId, etc.). These should operate on interfaces instead, which
+  would enable mobs to participate as followers and group members (needed for summoning).
+  The move test (handler_move_test.go) also depends on concrete CharacterInstance channels
+  for message assertions — this should use mock actors once the interface exists.
 
 ## Consider
 - Should overhealing generate threat? Currently heal threat is based on the full heal amount, even if the target is already at max HP.

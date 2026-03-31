@@ -62,6 +62,7 @@ type mockAssistActor struct {
 	grants         map[string]bool // key -> granted
 	zoneId         string
 	roomId         string
+	notified       []string
 }
 
 func (m *mockAssistActor) Id() string                               { return m.id }
@@ -80,7 +81,7 @@ func (m *mockAssistActor) Location() (string, string)               { return m.z
 func (m *mockAssistActor) Level() int                               { return 1 }
 func (m *mockAssistActor) OnDeath() []*game.ObjectInstance           { return nil }
 func (m *mockAssistActor) IsCharacter() bool                        { return true }
-func (m *mockAssistActor) Notify(_ string)                          {}
+func (m *mockAssistActor) Notify(msg string)                        { m.notified = append(m.notified, msg) }
 func (m *mockAssistActor) GetFollowingId() string                   { return m.followingId }
 func (m *mockAssistActor) HasGrant(key, _ string) bool              { return m.grants[key] }
 func (m *mockAssistActor) AddTimedPerks(string, []assets.Perk, int) {}
@@ -273,9 +274,8 @@ func TestAssistHandler(t *testing.T) {
 			actorId := actor.Id()
 
 			if tt.expMsgActor != "" {
-				msgs := pub.messagesTo(actorId)
-				if !containsSubstring(msgs, tt.expMsgActor) {
-					t.Errorf("expected message to actor containing %q, got %v", tt.expMsgActor, msgs)
+				if !containsSubstring(actor.notified, tt.expMsgActor) {
+					t.Errorf("expected Notify to actor containing %q, got %v", tt.expMsgActor, actor.notified)
 				}
 			}
 			if tt.expMsgAssisted != "" {

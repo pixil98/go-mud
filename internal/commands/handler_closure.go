@@ -13,6 +13,7 @@ import (
 type ClosureActor interface {
 	Id() string
 	Name() string
+	Notify(msg string)
 	Location() (string, string)
 	GetInventory() *game.Inventory
 }
@@ -224,11 +225,9 @@ func (f *ClosureHandlerFactory) checkKey(char ClosureActor, lock *assets.Lock) e
 }
 
 func (f *ClosureHandlerFactory) publish(char ClosureActor, selfMsg, roomMsg string) error {
+	char.Notify(selfMsg)
 	if f.pub == nil {
 		return nil
-	}
-	if err := f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte(selfMsg)); err != nil {
-		return err
 	}
 	zoneId, roomId := char.Location()
 	room := f.world.GetZone(zoneId).GetRoom(roomId)

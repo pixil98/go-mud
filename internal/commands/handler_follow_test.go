@@ -42,6 +42,7 @@ type mockFollowActor struct {
 	id          string
 	name        string
 	followingId string
+	notified    []string
 }
 
 func (m *mockFollowActor) Id() string                               { return m.id }
@@ -62,7 +63,7 @@ func (m *mockFollowActor) CombatTargetId() string                   { return "" 
 func (m *mockFollowActor) SetCombatTargetId(string)                 {}
 func (m *mockFollowActor) OnDeath() []*game.ObjectInstance           { return nil }
 func (m *mockFollowActor) IsCharacter() bool                        { return true }
-func (m *mockFollowActor) Notify(_ string)                          {}
+func (m *mockFollowActor) Notify(msg string)                        { m.notified = append(m.notified, msg) }
 func (m *mockFollowActor) GetInventory() *game.Inventory             { return nil }
 func (m *mockFollowActor) GetFollowingId() string                   { return m.followingId }
 func (m *mockFollowActor) SetFollowingId(id string)                 { m.followingId = id }
@@ -205,16 +206,8 @@ func TestFollowHandler(t *testing.T) {
 			}
 
 			if tt.expMsgAlice != "" {
-				msgs := pub.messagesTo("alice")
-				found := false
-				for _, m := range msgs {
-					if strings.Contains(m, tt.expMsgAlice) {
-						found = true
-						break
-					}
-				}
-				if !found {
-					t.Errorf("expected message to alice containing %q, got %v", tt.expMsgAlice, msgs)
+				if !containsSubstring(alice.notified, tt.expMsgAlice) {
+					t.Errorf("expected Notify to alice containing %q, got %v", tt.expMsgAlice, alice.notified)
 				}
 			}
 

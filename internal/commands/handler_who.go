@@ -12,12 +12,11 @@ import (
 // WhoHandlerFactory creates handlers that list online players.
 type WhoHandlerFactory struct {
 	players game.PlayerGroup
-	pub     game.Publisher
 }
 
 // NewWhoHandlerFactory creates a new WhoHandlerFactory.
-func NewWhoHandlerFactory(players game.PlayerGroup, pub game.Publisher) *WhoHandlerFactory {
-	return &WhoHandlerFactory{players: players, pub: pub}
+func NewWhoHandlerFactory(players game.PlayerGroup) *WhoHandlerFactory {
+	return &WhoHandlerFactory{players: players}
 }
 
 // Spec returns the handler's target and config requirements.
@@ -47,11 +46,7 @@ func (f *WhoHandlerFactory) Create() (CommandFunc, error) {
 			lines = append(lines, fmt.Sprintf("[%s] %s %s", bracket, char.Name, char.Title))
 		})
 
-		output := "Players Online:\n" + strings.Join(lines, "\n")
-		if f.pub != nil {
-			return f.pub.Publish(game.SinglePlayer(in.Actor.Id()), nil, []byte(output))
-		}
-
+		in.Actor.Notify("Players Online:\n" + strings.Join(lines, "\n"))
 		return nil
 	}, nil
 }

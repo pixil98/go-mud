@@ -13,6 +13,7 @@ import (
 // MoveObjActor provides the character state needed by the move_obj handler.
 type MoveObjActor interface {
 	Id() string
+	Notify(msg string)
 	Location() (string, string)
 	GetInventory() *game.Inventory
 }
@@ -106,14 +107,12 @@ func (f *MoveObjHandlerFactory) handle(ctx context.Context, char MoveObjActor, i
 	oi.ActivateDecay()
 	dest.AddObj(oi)
 
+	if selfMsg := in.Config["self_message"]; selfMsg != "" {
+		char.Notify(selfMsg)
+	}
+
 	if f.pub != nil {
 		exclude := []string{char.Id()}
-
-		if selfMsg := in.Config["self_message"]; selfMsg != "" {
-			if err := f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte(selfMsg)); err != nil {
-				slog.Warn("failed to publish self message", "error", err)
-			}
-		}
 
 		if targetMsg := in.Config["target_message"]; targetMsg != "" {
 			if ref := in.Targets[in.Config["destination"]]; ref != nil && ref.Actor != nil && ref.Actor.CharId != "" {

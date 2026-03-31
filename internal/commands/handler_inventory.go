@@ -11,19 +11,18 @@ import (
 // InventoryActor provides the character state needed by the inventory handler.
 type InventoryActor interface {
 	Id() string
+	Notify(msg string)
 	GetInventory() *game.Inventory
 }
 
 var _ InventoryActor = (*game.CharacterInstance)(nil)
 
 // InventoryHandlerFactory creates handlers that list the player's inventory.
-type InventoryHandlerFactory struct {
-	pub game.Publisher
-}
+type InventoryHandlerFactory struct{}
 
 // NewInventoryHandlerFactory creates a new InventoryHandlerFactory.
-func NewInventoryHandlerFactory(pub game.Publisher) *InventoryHandlerFactory {
-	return &InventoryHandlerFactory{pub: pub}
+func NewInventoryHandlerFactory() *InventoryHandlerFactory {
+	return &InventoryHandlerFactory{}
 }
 
 // Spec returns the handler's target and config requirements.
@@ -45,11 +44,7 @@ func (f *InventoryHandlerFactory) handle(ctx context.Context, char InventoryActo
 	lines := []string{"You are carrying:"}
 	lines = append(lines, FormatInventoryItems(char.GetInventory())...)
 
-	output := strings.Join(lines, "\n")
-	if f.pub != nil {
-		return f.pub.Publish(game.SinglePlayer(char.Id()), nil, []byte(output))
-	}
-
+	char.Notify(strings.Join(lines, "\n"))
 	return nil
 }
 

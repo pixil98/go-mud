@@ -9,40 +9,46 @@ import (
 
 func TestMoveFollowers(t *testing.T) {
 	tests := map[string]struct {
-		setup          func(from, to *game.RoomInstance) (leaderId, leaderName string, players map[string]*game.CharacterInstance)
+		setup          func(from, to *game.RoomInstance) (leaderId, leaderName string, players map[string]*game.CharacterInstance, msgChans map[string]chan []byte)
 		expMovedTo     []string          // charIds expected in toRoom after move
 		expStayedIn    []string          // charIds expected in fromRoom after move
 		expMsgContains map[string]string // charId -> expected message substring
 	}{
 		"follower moves with leader": {
-			setup: func(from, to *game.RoomInstance) (string, string, map[string]*game.CharacterInstance) {
+			setup: func(from, to *game.RoomInstance) (string, string, map[string]*game.CharacterInstance, map[string]chan []byte) {
 				leader := newTestPlayer("leader", "Leader", from)
-				follower := newTestPlayer("follower", "Follower", from)
+				follower, fMsgs := newTestPlayerWithMsgs("follower", "Follower", from)
 				follower.SetFollowingId("leader")
-				return "leader", "Leader", map[string]*game.CharacterInstance{"leader": leader, "follower": follower}
+				return "leader", "Leader",
+					map[string]*game.CharacterInstance{"leader": leader, "follower": follower},
+					map[string]chan []byte{"follower": fMsgs}
 			},
 			expMovedTo:     []string{"follower"},
 			expMsgContains: map[string]string{"follower": "You follow Leader."},
 		},
 		"follower in combat stays behind": {
-			setup: func(from, to *game.RoomInstance) (string, string, map[string]*game.CharacterInstance) {
+			setup: func(from, to *game.RoomInstance) (string, string, map[string]*game.CharacterInstance, map[string]chan []byte) {
 				leader := newTestPlayer("leader", "Leader", from)
-				follower := newTestPlayer("follower", "Follower", from)
+				follower, fMsgs := newTestPlayerWithMsgs("follower", "Follower", from)
 				follower.SetFollowingId("leader")
 				follower.SetInCombat(true)
-				return "leader", "Leader", map[string]*game.CharacterInstance{"leader": leader, "follower": follower}
+				return "leader", "Leader",
+					map[string]*game.CharacterInstance{"leader": leader, "follower": follower},
+					map[string]chan []byte{"follower": fMsgs}
 			},
 			expStayedIn:    []string{"follower"},
 			expMsgContains: map[string]string{"follower": "Leader leaves north without you."},
 		},
 		"recursive following": {
-			setup: func(from, to *game.RoomInstance) (string, string, map[string]*game.CharacterInstance) {
+			setup: func(from, to *game.RoomInstance) (string, string, map[string]*game.CharacterInstance, map[string]chan []byte) {
 				leader := newTestPlayer("leader", "Leader", from)
-				mid := newTestPlayer("mid", "Mid", from)
+				mid, midMsgs := newTestPlayerWithMsgs("mid", "Mid", from)
 				mid.SetFollowingId("leader")
-				tail := newTestPlayer("tail", "Tail", from)
+				tail, tailMsgs := newTestPlayerWithMsgs("tail", "Tail", from)
 				tail.SetFollowingId("mid")
-				return "leader", "Leader", map[string]*game.CharacterInstance{"leader": leader, "mid": mid, "tail": tail}
+				return "leader", "Leader",
+					map[string]*game.CharacterInstance{"leader": leader, "mid": mid, "tail": tail},
+					map[string]chan []byte{"mid": midMsgs, "tail": tailMsgs}
 			},
 			expMovedTo: []string{"mid", "tail"},
 			expMsgContains: map[string]string{
@@ -51,10 +57,12 @@ func TestMoveFollowers(t *testing.T) {
 			},
 		},
 		"non-follower stays": {
-			setup: func(from, to *game.RoomInstance) (string, string, map[string]*game.CharacterInstance) {
+			setup: func(from, to *game.RoomInstance) (string, string, map[string]*game.CharacterInstance, map[string]chan []byte) {
 				leader := newTestPlayer("leader", "Leader", from)
 				bystander := newTestPlayer("bystander", "Bystander", from)
-				return "leader", "Leader", map[string]*game.CharacterInstance{"leader": leader, "bystander": bystander}
+				return "leader", "Leader",
+					map[string]*game.CharacterInstance{"leader": leader, "bystander": bystander},
+					nil
 			},
 			expStayedIn: []string{"bystander"},
 		},
@@ -70,10 +78,9 @@ func TestMoveFollowers(t *testing.T) {
 			if err != nil {
 				t.Fatalf("failed to create to room: %v", err)
 			}
-			pub := &recordingPublisher{}
-			factory := &MoveHandlerFactory{pub: pub}
+			factory := &MoveHandlerFactory{}
 
-			leaderId, leaderName, players := tt.setup(fromRoom, toRoom)
+			leaderId, leaderName, players, msgChans := tt.setup(fromRoom, toRoom)
 
 			factory.moveFollowers(leaderId, leaderName, fromRoom, toRoom, "north")
 
@@ -94,7 +101,11 @@ func TestMoveFollowers(t *testing.T) {
 			}
 
 			for charId, expMsg := range tt.expMsgContains {
-				msgs := pub.messagesTo(charId)
+				ch := msgChans[charId]
+				if ch == nil {
+					t.Fatalf("no msgs channel for %q", charId)
+				}
+				msgs := drainChan(ch)
 				found := false
 				for _, m := range msgs {
 					if strings.Contains(m, expMsg) {
@@ -107,6 +118,19 @@ func TestMoveFollowers(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+// drainChan reads all pending messages from a channel.
+func drainChan(ch chan []byte) []string {
+	var msgs []string
+	for {
+		select {
+		case msg := <-ch:
+			msgs = append(msgs, string(msg))
+		default:
+			return msgs
+		}
 	}
 }
 
