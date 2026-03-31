@@ -7,7 +7,7 @@
         "description": "Whisper a private message to someone in the room.",
         "config": {
             "scope": "player",
-            "sender_message": "You whisper to {{ .Targets.target.Player.Name }}, \"{{ .Inputs.text }}\"",
+            "sender_message": "You whisper to {{ .Targets.target.Actor.Name }}, \"{{ .Inputs.text }}\"",
             "recipient_message": "{{ .Actor.Name }} whispers to you, \"{{ .Inputs.text }}\""
         },
         "targets": [

@@ -7,7 +7,7 @@
         "description": "Send a private message to another player.",
         "config": {
             "scope": "player",
-            "sender_message": "{{ .Color.Red }}You tell {{ .Targets.target.Player.Name }}, \"{{ .Inputs.text }}\"{{ .Color.Reset }}",
+            "sender_message": "{{ .Color.Red }}You tell {{ .Targets.target.Actor.Name }}, \"{{ .Inputs.text }}\"{{ .Color.Reset }}",
             "recipient_message": "{{ .Color.Red }}{{ .Actor.Name }} tells you, \"{{ .Inputs.text }}\"{{ .Color.Reset }}"
         },
         "targets": [
