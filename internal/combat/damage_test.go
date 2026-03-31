@@ -10,6 +10,39 @@ type mockPerkReader map[string]int
 
 func (m mockPerkReader) ModifierValue(key string) int { return m[key] }
 
+func TestDamageMessagesSorted(t *testing.T) {
+	for i := 1; i < len(damageMessages); i++ {
+		if damageMessages[i].maxDamage <= damageMessages[i-1].maxDamage {
+			t.Errorf("damageMessages[%d].maxDamage (%d) <= damageMessages[%d].maxDamage (%d)",
+				i, damageMessages[i].maxDamage, i-1, damageMessages[i-1].maxDamage)
+		}
+	}
+}
+
+func TestDamageVerb(t *testing.T) {
+	tests := map[string]struct {
+		damage int
+		exp    string
+	}{
+		"zero":           {damage: 0, exp: "misses"},
+		"low boundary":   {damage: 2, exp: "barely scratches"},
+		"above low":      {damage: 3, exp: "tickles"},
+		"mid":            {damage: 10, exp: "hits"},
+		"high boundary":  {damage: 80, exp: "annihilates"},
+		"above max":      {damage: 81, exp: "does UNSPEAKABLE things to"},
+		"well above max": {damage: 999, exp: "does UNSPEAKABLE things to"},
+	}
+
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			got := damageVerb(tt.damage)
+			if got != tt.exp {
+				t.Errorf("damageVerb(%d) = %q, want %q", tt.damage, got, tt.exp)
+			}
+		})
+	}
+}
+
 func TestCalcDamage(t *testing.T) {
 	const dmgType = "test-type"
 

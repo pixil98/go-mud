@@ -2,6 +2,10 @@
 - Remove StatSections from CharacterInstance and format everything from Actor and perks
 - the wear command should have a config option to limit the slots it can apply to and then we can implement wield and hold properly.
 - ActorRef.CharId checks (CharId != "") could use actor.IsCharacter() instead.
+- OnDeath in CharacterInstance (character.go) heals the player to full HP before ending the
+  session. This means the player sees a full HP prompt right before being disconnected, which
+  looks wrong. Decide on a proper death/respawn policy (e.g. respawn at 1 HP, or defer the
+  heal until login) and update the test in character_test.go to match.
 - moveFollowers, group, and ungroup handlers are tightly coupled to *game.CharacterInstance.
   They iterate rooms/groups and call methods directly on CharacterInstance (Move, Notify,
   GetFollowingId, SetFollowingId, etc.). These should operate on interfaces instead, which
