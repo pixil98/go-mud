@@ -15,6 +15,55 @@ const (
 	SpawnDestInventory = "inventory"
 )
 
+// spawnMobEffect spawns a mobile instance into the caster's room.
+//
+// Config fields:
+//   - "mobile_id" (string, required): the asset ID of the mobile to spawn.
+type spawnMobEffect struct {
+	mobiles storage.Storer[*assets.Mobile]
+	world   ZoneLocator
+}
+
+func (e *spawnMobEffect) Spec() *HandlerSpec { return nil }
+
+func (e *spawnMobEffect) ValidateConfig(config map[string]string) error {
+	mobId := config["mobile_id"]
+	if mobId == "" {
+		return fmt.Errorf("mobile_id config required")
+	}
+	if e.mobiles.Get(mobId) == nil {
+		return fmt.Errorf("mobile %q not found", mobId)
+	}
+	return nil
+}
+
+func (e *spawnMobEffect) Create(_ string, config map[string]string, _ []assets.TargetSpec) EffectFunc {
+	mobId := config["mobile_id"]
+
+	return func(actor shared.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
+		si := storage.NewSmartIdentifier[*assets.Mobile](mobId)
+		if err := si.Resolve(e.mobiles); err != nil {
+			return fmt.Errorf("spawn_mob: %w", err)
+		}
+		mi, err := game.NewMobileInstance(si)
+		if err != nil {
+			return fmt.Errorf("spawn_mob: %w", err)
+		}
+
+		zoneId, roomId := actor.Location()
+		zi := e.world.GetZone(zoneId)
+		if zi == nil {
+			return nil
+		}
+		ri := zi.GetRoom(roomId)
+		if ri == nil {
+			return nil
+		}
+		ri.AddMob(mi)
+		return nil
+	}
+}
+
 // spawnObjEffect spawns an object into the caster's room or inventory.
 //
 // Config fields:

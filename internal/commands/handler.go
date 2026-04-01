@@ -146,6 +146,7 @@ func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, pub
 	h.effects["heal"] = &healEffect{combat: combat}
 	h.effects["aoe_heal"] = &aoeHealEffect{combat: combat, world: world}
 	h.effects["spawn_obj"] = &spawnObjEffect{objects: dict.Objects, world: world}
+	h.effects["spawn_mob"] = &spawnMobEffect{mobiles: dict.Mobiles, world: world}
 
 	// Register built-in handlers
 	for _, reg := range []struct {
