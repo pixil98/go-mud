@@ -2,6 +2,7 @@ package commands
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/pixil98/go-mud/internal/assets"
@@ -14,7 +15,7 @@ type WearActor interface {
 	Notify(msg string)
 	Location() (zoneId, roomId string)
 	Inventory() *game.Inventory
-	Equipment() *game.Equipment
+	Equip(slot string, obj *game.ObjectInstance) error
 	Asset() *assets.Character
 }
 
@@ -52,7 +53,7 @@ func (f *WearHandlerFactory) Create() (CommandFunc, error) {
 	return Adapt[WearActor](f.handle), nil
 }
 
-func (f *WearHandlerFactory) handle(ctx context.Context, char WearActor, in *CommandInput) error {
+func (f *WearHandlerFactory) handle(ctx context.Context, actor WearActor, in *CommandInput) error {
 	target := in.Targets["target"]
 	if target == nil || target.Obj == nil {
 		return NewUserError("Wear what?")
@@ -66,56 +67,39 @@ func (f *WearHandlerFactory) handle(ctx context.Context, char WearActor, in *Com
 		return NewUserError(fmt.Sprintf("You can't wear %s.", obj.ShortDesc))
 	}
 
-	actor := char.Asset()
-	race := actor.Race.Get()
-
-	// Find first wear slot that the race supports and has capacity
-	var slot string
-	for _, s := range obj.WearSlots {
-		maxSlots := race.SlotCount(s)
-		if maxSlots == 0 {
-			continue // Race doesn't have this slot type
-		}
-		if char.Equipment().SlotCount(s) < maxSlots {
-			slot = s
-			break
-		}
-	}
-	if slot == "" {
-		// Distinguish "race can't wear this" from "slots full"
-		hasSlot := false
-		for _, s := range obj.WearSlots {
-			if race.SlotCount(s) > 0 {
-				hasSlot = true
-				break
-			}
-		}
-		if !hasSlot {
-			return NewUserError(fmt.Sprintf("Your body can't wear %s.", obj.ShortDesc))
-		}
-		return NewUserError("You're already wearing something in that slot.")
-	}
-
-	// Remove from source and equip
+	// Remove from source
 	oi := target.Obj.source.RemoveObj(target.Obj.InstanceId)
 	if oi == nil {
 		return NewUserError(fmt.Sprintf("You're not carrying %s.", target.Obj.Name))
 	}
 
-	maxSlots := race.SlotCount(slot)
-	err := char.Equipment().Equip(slot, maxSlots, oi)
-	if err != nil {
-		// Put it back on failure
-		char.Inventory().AddObj(oi)
-		return NewUserError("You're already wearing something in that slot.")
+	// Try each slot the item supports until one succeeds
+	var slot string
+	var slotFull bool
+	for _, s := range obj.WearSlots {
+		err := actor.Equip(s, oi)
+		if err == nil {
+			slot = s
+			break
+		}
+		if errors.Is(err, game.ErrSlotFull) {
+			slotFull = true
+		}
+	}
+	if slot == "" {
+		actor.Inventory().AddObj(oi)
+		if slotFull {
+			return NewUserError("You're already wearing something in that slot.")
+		}
+		return NewUserError(fmt.Sprintf("You have nowhere to wear %s.", obj.ShortDesc))
 	}
 
 	// Send self message
-	char.Notify(fmt.Sprintf("You wear %s.", obj.ShortDesc))
+	actor.Notify(fmt.Sprintf("You wear %s.", obj.ShortDesc))
 
 	// Broadcast to room
-	roomMsg := fmt.Sprintf("%s wears %s.", actor.Name, obj.ShortDesc)
-	zoneId, roomId := char.Location()
+	roomMsg := fmt.Sprintf("%s wears %s.", actor.Asset().Name, obj.ShortDesc)
+	zoneId, roomId := actor.Location()
 	room := f.zones.GetZone(zoneId).GetRoom(roomId)
-	return f.pub.Publish(room, []string{char.Id()}, []byte(roomMsg))
+	return f.pub.Publish(room, []string{actor.Id()}, []byte(roomMsg))
 }

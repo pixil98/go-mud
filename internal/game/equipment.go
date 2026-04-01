@@ -1,7 +1,6 @@
 package game
 
 import (
-	"fmt"
 	"sync"
 
 	"github.com/pixil98/go-mud/internal/assets"
@@ -31,19 +30,15 @@ func NewEquipment() *Equipment {
 
 // --- Equip / Unequip ---
 
-// Equip adds an object to the given slot type. maxSlots limits how many items
-// can occupy that slot type (0 means no limit). Returns an error if the slot
-// is already at capacity.
-func (eq *Equipment) Equip(slot string, maxSlots int, obj *ObjectInstance) error {
+// equip adds an object to the given slot and rebuilds perks.
+// No capacity check is performed; CharacterInstance.Equip and
+// MobileInstance.Equip wrap this with appropriate validation.
+func (eq *Equipment) equip(slot string, obj *ObjectInstance) {
 	eq.mu.Lock()
 	defer eq.mu.Unlock()
 
-	if maxSlots > 0 && eq.slotCount(slot) >= maxSlots {
-		return fmt.Errorf("no available %q slot", slot)
-	}
 	eq.objs = append(eq.objs, EquipSlot{Slot: slot, Obj: obj})
 	eq.rebuildPerks()
-	return nil
 }
 
 // RemoveObj finds and unequips an object by instance ID.

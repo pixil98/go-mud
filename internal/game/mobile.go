@@ -32,9 +32,9 @@ func NewMobileInstance(mob storage.SmartIdentifier[*assets.Mobile]) (*MobileInst
 		ActorInstance: ActorInstance{
 			InstanceId: uuid.New().String(),
 			inventory:  NewInventory(),
-			equipment: eq,
-			level:     def.Level,
-			PerkCache: *NewPerkCache(def.Perks, map[string]PerkSource{"equipment": eq}),
+			equipment:  eq,
+			level:      def.Level,
+			PerkCache:  *NewPerkCache(def.Perks, map[string]PerkSource{"equipment": eq}),
 		},
 	}
 	mi.initResources()
@@ -50,9 +50,7 @@ func NewMobileInstance(mob storage.SmartIdentifier[*assets.Mobile]) (*MobileInst
 		if err != nil {
 			return nil, fmt.Errorf("spawning equipment for %q: %w", mob.Id(), err)
 		}
-		if err := mi.equipment.Equip(es.Slot, 0, oi); err != nil {
-			return nil, fmt.Errorf("equipping %q on %q: %w", es.Slot, mob.Id(), err)
-		}
+		mi.equipment.equip(es.Slot, oi)
 	}
 	return mi, nil
 }

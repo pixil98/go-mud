@@ -5,16 +5,15 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 )
 
 // EquipmentActor provides the character state needed by the equipment handler.
 type EquipmentActor interface {
 	Id() string
-Notify(msg string)
+	Notify(msg string)
 	Equipment() *game.Equipment
-	Asset() *assets.Character
+	WearSlots() []string
 }
 
 var _ EquipmentActor = (*game.CharacterInstance)(nil)
@@ -45,7 +44,7 @@ func (f *EquipmentHandlerFactory) Create() (CommandFunc, error) {
 func (f *EquipmentHandlerFactory) handle(ctx context.Context, char EquipmentActor, in *CommandInput) error {
 	// Build the slot list to display: race slots if available, otherwise equipped slots
 	eq := char.Equipment()
-	slots := char.Asset().Race.Get().WearSlots
+	slots := char.WearSlots()
 	if len(slots) == 0 && eq != nil {
 		eq.ForEachSlot(func(item game.EquipSlot) {
 			slots = append(slots, item.Slot)

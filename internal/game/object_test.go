@@ -209,9 +209,7 @@ func TestEquipment_Tick(t *testing.T) {
 				if tc.activate {
 					oi.ActivateDecay()
 				}
-				if err := eq.Equip("test", 0, oi); err != nil {
-					t.Fatal(err)
-				}
+				eq.equip("test", oi)
 			}
 			for range tc.ticks {
 				eq.Tick()

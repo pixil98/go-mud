@@ -1,6 +1,7 @@
 package game
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 	"sync"
@@ -8,6 +9,13 @@ import (
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/storage"
+)
+
+var (
+	// ErrNoSuchSlot is returned when a character lacks the slot type entirely.
+	ErrNoSuchSlot = errors.New("no such slot")
+	// ErrSlotFull is returned when all slots of the given type are occupied.
+	ErrSlotFull = errors.New("slot full")
 )
 
 // Stat is an ability score value (e.g., 10 for average).
@@ -115,9 +123,7 @@ func materializeInventoryEquipment(c *assets.Character) (*Inventory, *Equipment,
 		if err != nil {
 			return nil, nil, err
 		}
-		if err := eq.Equip(es.Slot, 0, oi); err != nil {
-			return nil, nil, err
-		}
+		eq.equip(es.Slot, oi)
 	}
 
 	return inv, eq, nil
@@ -399,6 +405,22 @@ func (ci *CharacterInstance) Tick() {
 		ci.regenTick()
 		ci.mu.Unlock()
 	}
+}
+
+// Equip validates that the character has an available equipment slot of the
+// given type (derived from PerkGrantWearSlot grants) and equips the object.
+// Returns ErrNoSuchSlot if the character lacks that slot type entirely, or
+// ErrSlotFull if all slots of that type are occupied.
+func (ci *CharacterInstance) Equip(slot string, obj *ObjectInstance) error {
+	maxSlots := countSlot(ci.GrantArgs(assets.PerkGrantWearSlot), slot)
+	if maxSlots == 0 {
+		return ErrNoSuchSlot
+	}
+	if ci.equipment.SlotCount(slot) >= maxSlots {
+		return ErrSlotFull
+	}
+	ci.equipment.equip(slot, obj)
+	return nil
 }
 
 // Inventory returns the character's inventory.

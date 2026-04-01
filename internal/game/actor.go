@@ -111,6 +111,24 @@ func (a *ActorInstance) regenTick() {
 	}
 }
 
+// WearSlots returns the ordered list of equipment slot types granted to this
+// actor via PerkGrantWearSlot perks. Duplicate entries represent multiple
+// slots of the same type (e.g. two "finger" entries = two ring slots).
+func (a *ActorInstance) WearSlots() []string {
+	return a.GrantArgs(assets.PerkGrantWearSlot)
+}
+
+// countSlot returns how many times slot appears in the list.
+func countSlot(slots []string, slot string) int {
+	count := 0
+	for _, s := range slots {
+		if s == slot {
+			count++
+		}
+	}
+	return count
+}
+
 // Id returns the actor's unique identifier.
 // TODO: abstract ActorInstance behind an interface so external packages don't
 // need to construct structs directly for testing.

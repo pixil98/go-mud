@@ -136,6 +136,10 @@ const (
 	PerkGrantAutoUse = "auto_use"
 	// PerkGrantPeaceful prevents the holder from initiating combat.
 	PerkGrantPeaceful = "peaceful"
+	// PerkGrantWearSlot grants one equipment slot of the type given in Arg
+	// (e.g. "head", "finger"). Duplicate grants of the same type create
+	// multiple slots (e.g. two "finger" grants = two ring slots).
+	PerkGrantWearSlot = "wear_slot"
 )
 
 // ---------------------------------------------------------------------------
