@@ -21,9 +21,9 @@ type mockCombatant struct {
 	level          int
 	modifiers      map[string]int
 	grants         map[string][]string
-	combatTargetId     string
-	zoneId, roomId     string
-	deathCalled        bool
+	combatTargetId string
+	zoneId, roomId string
+	deathCalled    bool
 }
 
 func (c *mockCombatant) Id() string   { return c.id }
@@ -54,8 +54,8 @@ func (c *mockCombatant) AdjustResource(name string, delta int, overfill bool) {
 	}
 }
 
-func (c *mockCombatant) SpendAP(_ int) bool              { return true }
-func (c *mockCombatant) HasGrant(_, _ string) bool        { return false }
+func (c *mockCombatant) SpendAP(_ int) bool                             { return true }
+func (c *mockCombatant) HasGrant(_, _ string) bool                      { return false }
 func (c *mockCombatant) AddTimedPerks(_ string, _ []assets.Perk, _ int) {}
 
 func (c *mockCombatant) ModifierValue(key string) int {
@@ -66,14 +66,23 @@ func (c *mockCombatant) GrantArgs(key string) []string {
 	return c.grants[key]
 }
 
-func (c *mockCombatant) CombatTargetId() string          { return c.combatTargetId }
-func (c *mockCombatant) SetCombatTargetId(id string)     { c.combatTargetId = id }
-func (c *mockCombatant) Location() (string, string)      { return c.zoneId, c.roomId }
-func (c *mockCombatant) Level() int                      { return c.level }
-func (c *mockCombatant) OnDeath() []*game.ObjectInstance { c.deathCalled = true; return nil }
-func (c *mockCombatant) IsCharacter() bool { return false }
-func (c *mockCombatant) Notify(_ string)   {}
-func (c *mockCombatant) Inventory() *game.Inventory { return nil }
+func (c *mockCombatant) CombatTargetId() string                { return c.combatTargetId }
+func (c *mockCombatant) SetCombatTargetId(id string)           { c.combatTargetId = id }
+func (c *mockCombatant) Location() (string, string)            { return c.zoneId, c.roomId }
+func (c *mockCombatant) Level() int                            { return c.level }
+func (c *mockCombatant) OnDeath() []*game.ObjectInstance       { c.deathCalled = true; return nil }
+func (c *mockCombatant) IsCharacter() bool                     { return false }
+func (c *mockCombatant) Notify(_ string)                       {}
+func (c *mockCombatant) Inventory() *game.Inventory            { return nil }
+func (c *mockCombatant) Following() game.FollowTarget          { return nil }
+func (c *mockCombatant) SetFollowing(game.FollowTarget)        {}
+func (c *mockCombatant) Followers() []game.FollowTarget        { return nil }
+func (c *mockCombatant) AddFollower(game.FollowTarget)         {}
+func (c *mockCombatant) RemoveFollower(string)                 {}
+func (c *mockCombatant) SetFollowerGrouped(string, bool)       {}
+func (c *mockCombatant) IsFollowerGrouped(string) bool         { return false }
+func (c *mockCombatant) GroupedFollowers() []game.FollowTarget { return nil }
+func (c *mockCombatant) Move(_, _ *game.RoomInstance)          {}
 
 func newMC(id string) *mockCombatant {
 	return &mockCombatant{
@@ -511,9 +520,9 @@ func TestManager_Tick_EmptyThreatCleanup(t *testing.T) {
 
 func TestManager_NotifyHeal(t *testing.T) {
 	tests := map[string]struct {
-		setup    func(m *Manager) (healer, target *mockCombatant)
-		amount   int
-		wantThreat map[string]map[string]int // combatantId → {threatSourceId → threat}
+		setup        func(m *Manager) (healer, target *mockCombatant)
+		amount       int
+		wantThreat   map[string]map[string]int // combatantId → {threatSourceId → threat}
 		wantInCombat bool
 	}{
 		"adds threat to mobs fighting target": {

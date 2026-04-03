@@ -19,15 +19,6 @@ type CombatManager interface {
 	NotifyHeal(healer, target shared.Actor, amount int)
 }
 
-// AssistActor provides the character state needed by the assist handler.
-// Embeds shared.Actor because the actor is passed to StartCombat.
-type AssistActor interface {
-	shared.Actor
-	FollowingId() string
-}
-
-var _ AssistActor = (*game.CharacterInstance)(nil)
-
 // AssistedPlayer provides the state the assist handler reads from the player
 // being assisted. This narrow interface lets tests mock the assisted player
 // without constructing a full CharacterInstance.
@@ -88,10 +79,11 @@ func (f *AssistHandlerFactory) ValidateConfig(config map[string]string) error {
 
 // Create returns a compiled CommandFunc for this handler.
 func (f *AssistHandlerFactory) Create() (CommandFunc, error) {
-	return Adapt[AssistActor](f.handle), nil
+	return f.handle, nil
 }
 
-func (f *AssistHandlerFactory) handle(ctx context.Context, char AssistActor, in *CommandInput) error {
+func (f *AssistHandlerFactory) handle(ctx context.Context, in *CommandInput) error {
+	char := in.Actor
 	if char.IsInCombat() {
 		return NewUserError("You're already fighting!")
 	}
@@ -99,9 +91,9 @@ func (f *AssistHandlerFactory) handle(ctx context.Context, char AssistActor, in 
 		return errPeacefulArea
 	}
 
-	assistedId, assistedName, err := f.resolveAssisted(char, in)
-	if err != nil {
-		return err
+	assistedId, assistedName := f.resolveAssisted(char, in)
+	if assistedId == "" {
+		return NewUserError("Assist whom?")
 	}
 
 	assisted := f.players.GetPlayer(assistedId)
@@ -138,17 +130,17 @@ func (f *AssistHandlerFactory) handle(ctx context.Context, char AssistActor, in 
 }
 
 // resolveAssisted determines who the actor wants to assist.
-// Returns the assisted player's charId and display name.
-func (f *AssistHandlerFactory) resolveAssisted(char AssistActor, in *CommandInput) (string, string, error) {
+// Returns the assisted player's charId and display name, or empty strings if
+// no target could be resolved.
+func (f *AssistHandlerFactory) resolveAssisted(char shared.Actor, in *CommandInput) (string, string) {
 	if target := in.Targets["target"]; target != nil {
-		return target.Actor.CharId, target.Actor.Name, nil
+		return target.Actor.CharId, target.Actor.Name
 	}
 
-	leaderId := char.FollowingId()
-	leader := f.players.GetPlayer(leaderId)
+	leader := char.Following()
 	if leader == nil {
-		return "", "", NewUserError("Assist whom?")
+		return "", ""
 	}
 
-	return leaderId, leader.Name(), nil
+	return leader.Id(), leader.Name()
 }

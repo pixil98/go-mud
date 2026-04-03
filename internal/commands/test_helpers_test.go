@@ -69,16 +69,6 @@ func newTestPlayer(charId, name string, room *game.RoomInstance) *game.Character
 	return ps
 }
 
-// newTestPlayerWithMsgs creates a CharacterInstance and returns it with its msgs channel
-// so tests can assert on messages delivered via Notify.
-func newTestPlayerWithMsgs(charId, name string, room *game.RoomInstance) (*game.CharacterInstance, chan []byte) {
-	msgs := make(chan []byte, 10)
-	charRef := storage.NewResolvedSmartIdentifier(charId, &assets.Character{Name: name})
-	ps, _ := game.NewCharacterInstance(charRef, msgs, room.Room.Get().Zone.Id(), room.Room.Id())
-	room.AddPlayer(charId, ps)
-	return ps, msgs
-}
-
 // newCharacterInstance creates a CharacterInstance in a throwaway room.
 // Use only where concrete CharacterInstance is unavoidable (e.g. room infrastructure tests).
 func newCharacterInstance(charId, name string) *game.CharacterInstance {

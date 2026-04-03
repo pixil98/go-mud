@@ -286,9 +286,7 @@ func FindTarget(name string, tt targetType, spaces []SearchSpace) (*TargetRef, e
 // ScopeActor provides the character state needed for target scope resolution.
 type ScopeActor interface {
 	shared.Actor
-	Inventory() *game.Inventory
 	Equipment() *game.Equipment
-	Group() *game.Group
 }
 
 // TargetScopes maps scope flags to search spaces for a given actor.

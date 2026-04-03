@@ -27,6 +27,15 @@ type Actor interface {
 	SetCombatTargetId(id string)
 	OnDeath() []*game.ObjectInstance
 	IsCharacter() bool
-Inventory() *game.Inventory
+	Inventory() *game.Inventory
 	Notify(msg string)
+	Following() game.FollowTarget
+	SetFollowing(game.FollowTarget)
+	Followers() []game.FollowTarget
+	AddFollower(game.FollowTarget)
+	RemoveFollower(id string)
+	SetFollowerGrouped(id string, grouped bool)
+	IsFollowerGrouped(id string) bool
+	GroupedFollowers() []game.FollowTarget
+	Move(from, to *game.RoomInstance)
 }

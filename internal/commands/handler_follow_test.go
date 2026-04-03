@@ -36,72 +36,63 @@ func (p *recordingPublisher) messagesTo(charId string) []string {
 	return msgs
 }
 
-// mockFollowActor is a lightweight test double for FollowActor.
-// It also satisfies FollowedPlayer, so it can be used for looked-up players too.
-type mockFollowActor struct {
-	id          string
-	name        string
-	followingId string
-	notified    []string
+// TODO: create a common mockActor for the commands package that satisfies
+// both shared.Actor and game.FollowTarget, replacing per-test mock types.
+
+// mockActor satisfies shared.Actor and game.FollowTarget for follow handler tests.
+type mockActor struct {
+	id        string
+	name      string
+	notified  []string
+	following game.FollowTarget
+	followers []game.FollowTarget
 }
 
-func (m *mockFollowActor) Id() string                               { return m.id }
-func (m *mockFollowActor) Name() string                             { return m.name }
-func (m *mockFollowActor) Location() (string, string)               { return "", "" }
-func (m *mockFollowActor) IsInCombat() bool                         { return false }
-func (m *mockFollowActor) IsAlive() bool                            { return true }
-func (m *mockFollowActor) Level() int                               { return 1 }
-func (m *mockFollowActor) Resource(string) (int, int)               { return 0, 0 }
-func (m *mockFollowActor) AdjustResource(string, int, bool)         {}
-func (m *mockFollowActor) SpendAP(int) bool                         { return true }
-func (m *mockFollowActor) HasGrant(string, string) bool             { return false }
-func (m *mockFollowActor) ModifierValue(string) int                 { return 0 }
-func (m *mockFollowActor) GrantArgs(string) []string                { return nil }
-func (m *mockFollowActor) AddTimedPerks(string, []assets.Perk, int) {}
-func (m *mockFollowActor) SetInCombat(bool)                         {}
-func (m *mockFollowActor) CombatTargetId() string                   { return "" }
-func (m *mockFollowActor) SetCombatTargetId(string)                 {}
-func (m *mockFollowActor) OnDeath() []*game.ObjectInstance           { return nil }
-func (m *mockFollowActor) IsCharacter() bool                        { return true }
-func (m *mockFollowActor) Notify(msg string)                        { m.notified = append(m.notified, msg) }
-func (m *mockFollowActor) Inventory() *game.Inventory             { return nil }
-func (m *mockFollowActor) FollowingId() string                   { return m.followingId }
-func (m *mockFollowActor) SetFollowingId(id string)                 { m.followingId = id }
-
-var _ FollowActor = (*mockFollowActor)(nil)
-var _ FollowedPlayer = (*mockFollowActor)(nil)
-
-// mockFollowPlayerLookup is a test double for FollowPlayerLookup.
-type mockFollowPlayerLookup struct {
-	players map[string]*mockFollowActor
-}
-
-func (m *mockFollowPlayerLookup) GetPlayer(charId string) FollowedPlayer {
-	if m.players == nil {
-		return nil
-	}
-	p := m.players[charId]
-	if p == nil {
-		return nil
-	}
-	return p
-}
+func (m *mockActor) Id() string                               { return m.id }
+func (m *mockActor) Name() string                             { return m.name }
+func (m *mockActor) Notify(msg string)                        { m.notified = append(m.notified, msg) }
+func (m *mockActor) Location() (string, string)               { return "", "" }
+func (m *mockActor) IsInCombat() bool                         { return false }
+func (m *mockActor) IsAlive() bool                            { return true }
+func (m *mockActor) Level() int                               { return 1 }
+func (m *mockActor) Resource(string) (int, int)               { return 0, 0 }
+func (m *mockActor) AdjustResource(string, int, bool)         {}
+func (m *mockActor) SpendAP(int) bool                         { return true }
+func (m *mockActor) HasGrant(string, string) bool             { return false }
+func (m *mockActor) ModifierValue(string) int                 { return 0 }
+func (m *mockActor) GrantArgs(string) []string                { return nil }
+func (m *mockActor) AddTimedPerks(string, []assets.Perk, int) {}
+func (m *mockActor) SetInCombat(bool)                         {}
+func (m *mockActor) CombatTargetId() string                   { return "" }
+func (m *mockActor) SetCombatTargetId(string)                 {}
+func (m *mockActor) OnDeath() []*game.ObjectInstance          { return nil }
+func (m *mockActor) IsCharacter() bool                        { return true }
+func (m *mockActor) Inventory() *game.Inventory               { return nil }
+func (m *mockActor) Following() game.FollowTarget             { return m.following }
+func (m *mockActor) SetFollowing(ft game.FollowTarget)        { m.following = ft }
+func (m *mockActor) Followers() []game.FollowTarget           { return m.followers }
+func (m *mockActor) AddFollower(ft game.FollowTarget)         { m.followers = append(m.followers, ft) }
+func (m *mockActor) RemoveFollower(string)                    {}
+func (m *mockActor) SetFollowerGrouped(string, bool)          {}
+func (m *mockActor) IsFollowerGrouped(string) bool            { return false }
+func (m *mockActor) GroupedFollowers() []game.FollowTarget    { return nil }
+func (m *mockActor) Move(_, _ *game.RoomInstance)             {}
 
 func TestFollowHandler(t *testing.T) {
 	tests := map[string]struct {
-		setup       func(lookup *mockFollowPlayerLookup, alice, bob *mockFollowActor)
+		setup       func(alice, bob *mockActor, charlie *mockActor)
 		target      *TargetRef // nil means unfollow path
 		expErr      string
-		expFollowId string // expected FollowingId on alice after handler runs
-		expMsgAlice string // substring expected in message to alice
-		expMsgBob   string // substring expected in message to bob
+		expFollow   string // expected Id() of who alice follows after handler, "" means nil
+		expMsgAlice string // substring expected in alice's notifications
+		expMsgBob   string // substring expected in bob's notifications
 	}{
 		"follow a player": {
 			target: &TargetRef{
 				Type:  targetTypeActor,
 				Actor: &ActorRef{CharId: "bob", Name: "Bob"},
 			},
-			expFollowId: "bob",
+			expFollow:   "bob",
 			expMsgAlice: "You now follow Bob.",
 			expMsgBob:   "Alice now follows you.",
 		},
@@ -113,8 +104,8 @@ func TestFollowHandler(t *testing.T) {
 			expErr: "You can't follow yourself.",
 		},
 		"already following target": {
-			setup: func(lookup *mockFollowPlayerLookup, alice, bob *mockFollowActor) {
-				alice.followingId = "bob"
+			setup: func(alice, bob, charlie *mockActor) {
+				alice.following = bob
 			},
 			target: &TargetRef{
 				Type:  targetTypeActor,
@@ -123,8 +114,8 @@ func TestFollowHandler(t *testing.T) {
 			expErr: "You are already following Bob.",
 		},
 		"circular follow": {
-			setup: func(lookup *mockFollowPlayerLookup, alice, bob *mockFollowActor) {
-				bob.followingId = "alice"
+			setup: func(alice, bob, charlie *mockActor) {
+				bob.following = alice
 			},
 			target: &TargetRef{
 				Type:  targetTypeActor,
@@ -133,23 +124,22 @@ func TestFollowHandler(t *testing.T) {
 			expErr: "Sorry, following in loops is not allowed.",
 		},
 		"switch leader": {
-			setup: func(lookup *mockFollowPlayerLookup, alice, bob *mockFollowActor) {
-				alice.followingId = "bob"
-				lookup.players["charlie"] = &mockFollowActor{id: "charlie", name: "Charlie"}
+			setup: func(alice, bob, charlie *mockActor) {
+				alice.following = bob
 			},
 			target: &TargetRef{
 				Type:  targetTypeActor,
 				Actor: &ActorRef{CharId: "charlie", Name: "Charlie"},
 			},
-			expFollowId: "charlie",
+			expFollow:   "charlie",
 			expMsgAlice: "You now follow Charlie.",
 		},
 		"unfollow when following": {
-			setup: func(lookup *mockFollowPlayerLookup, alice, bob *mockFollowActor) {
-				alice.followingId = "bob"
+			setup: func(alice, bob, charlie *mockActor) {
+				alice.following = bob
 			},
 			target:      nil,
-			expFollowId: "",
+			expFollow:   "",
 			expMsgAlice: "You stop following Bob.",
 			expMsgBob:   "Alice stops following you.",
 		},
@@ -161,31 +151,40 @@ func TestFollowHandler(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			alice := &mockFollowActor{id: "alice", name: "Alice"}
-			bob := &mockFollowActor{id: "bob", name: "Bob"}
-			lookup := &mockFollowPlayerLookup{
-				players: map[string]*mockFollowActor{"alice": alice, "bob": bob},
-			}
-			pub := &recordingPublisher{}
+			alice := &mockActor{id: "alice", name: "Alice"}
+			bob := &mockActor{id: "bob", name: "Bob"}
+			charlie := &mockActor{id: "charlie", name: "Charlie"}
 
 			if tt.setup != nil {
-				tt.setup(lookup, alice, bob)
+				tt.setup(alice, bob, charlie)
 			}
 
-			factory := &FollowHandlerFactory{players: lookup, pub: pub}
+			// Wire the target's ActorRef to point at the right mock.
+			if tt.target != nil && tt.target.Actor != nil {
+				switch tt.target.Actor.CharId {
+				case "bob":
+					tt.target.Actor.actor = bob
+				case "charlie":
+					tt.target.Actor.actor = charlie
+				case "alice":
+					tt.target.Actor.actor = alice
+				}
+			}
+
+			factory := &FollowHandlerFactory{}
 
 			targets := make(map[string]*TargetRef)
 			if tt.target != nil {
 				targets["target"] = tt.target
 			}
 
-			cmdCtx := &CommandInput{
+			in := &CommandInput{
 				Actor:   alice,
 				Targets: targets,
 				Config:  make(map[string]string),
 			}
 
-			err := factory.handle(context.Background(), alice, cmdCtx)
+			err := factory.handle(context.Background(), alice, in)
 
 			if tt.expErr != "" {
 				if err == nil {
@@ -201,8 +200,16 @@ func TestFollowHandler(t *testing.T) {
 				t.Fatalf("unexpected error: %v", err)
 			}
 
-			if alice.FollowingId() != tt.expFollowId {
-				t.Errorf("FollowingId = %q, expected %q", alice.FollowingId(), tt.expFollowId)
+			if tt.expFollow == "" {
+				if alice.following != nil {
+					t.Errorf("expected following to be nil, got %q", alice.following.Id())
+				}
+			} else {
+				if alice.following == nil {
+					t.Errorf("expected following %q, got nil", tt.expFollow)
+				} else if alice.following.Id() != tt.expFollow {
+					t.Errorf("following = %q, expected %q", alice.following.Id(), tt.expFollow)
+				}
 			}
 
 			if tt.expMsgAlice != "" {
@@ -212,16 +219,8 @@ func TestFollowHandler(t *testing.T) {
 			}
 
 			if tt.expMsgBob != "" {
-				msgs := pub.messagesTo("bob")
-				found := false
-				for _, m := range msgs {
-					if strings.Contains(m, tt.expMsgBob) {
-						found = true
-						break
-					}
-				}
-				if !found {
-					t.Errorf("expected message to bob containing %q, got %v", tt.expMsgBob, msgs)
+				if !containsSubstring(bob.notified, tt.expMsgBob) {
+					t.Errorf("expected Notify to bob containing %q, got %v", tt.expMsgBob, bob.notified)
 				}
 			}
 		})
@@ -230,58 +229,48 @@ func TestFollowHandler(t *testing.T) {
 
 func TestWouldCreateLoop(t *testing.T) {
 	tests := map[string]struct {
-		setup      func(lookup *mockFollowPlayerLookup)
-		followerId string
-		leaderId   string
-		exp        bool
+		setup func() (followerId string, leader game.FollowTarget)
+		exp   bool
 	}{
 		"no loop": {
-			setup: func(lookup *mockFollowPlayerLookup) {
-				lookup.players["a"] = &mockFollowActor{id: "a", name: "A"}
-				lookup.players["b"] = &mockFollowActor{id: "b", name: "B"}
+			setup: func() (string, game.FollowTarget) {
+				b := &mockActor{id: "b", name: "B"}
+				return "a", b
 			},
-			followerId: "a",
-			leaderId:   "b",
-			exp:        false,
+			exp: false,
 		},
 		"direct loop": {
-			setup: func(lookup *mockFollowPlayerLookup) {
-				lookup.players["a"] = &mockFollowActor{id: "a", name: "A", followingId: "b"}
-				lookup.players["b"] = &mockFollowActor{id: "b", name: "B"}
+			setup: func() (string, game.FollowTarget) {
+				a := &mockActor{id: "a", name: "A"}
+				b := &mockActor{id: "b", name: "B", following: a}
+				return "a", b
 			},
-			followerId: "b",
-			leaderId:   "a",
-			exp:        true,
+			exp: true,
 		},
 		"indirect loop": {
-			setup: func(lookup *mockFollowPlayerLookup) {
-				lookup.players["a"] = &mockFollowActor{id: "a", name: "A", followingId: "c"}
-				lookup.players["b"] = &mockFollowActor{id: "b", name: "B", followingId: "a"}
-				lookup.players["c"] = &mockFollowActor{id: "c", name: "C"}
+			setup: func() (string, game.FollowTarget) {
+				c := &mockActor{id: "c", name: "C"}
+				a := &mockActor{id: "a", name: "A", following: c}
+				b := &mockActor{id: "b", name: "B", following: a}
+				return "c", b
 			},
-			followerId: "c",
-			leaderId:   "b",
-			exp:        true,
+			exp: true,
 		},
 		"leader not following anyone": {
-			setup: func(lookup *mockFollowPlayerLookup) {
-				lookup.players["a"] = &mockFollowActor{id: "a", name: "A"}
-				lookup.players["b"] = &mockFollowActor{id: "b", name: "B"}
+			setup: func() (string, game.FollowTarget) {
+				b := &mockActor{id: "b", name: "B"}
+				return "a", b
 			},
-			followerId: "a",
-			leaderId:   "b",
-			exp:        false,
+			exp: false,
 		},
 	}
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			lookup := &mockFollowPlayerLookup{players: make(map[string]*mockFollowActor)}
-			tt.setup(lookup)
-
-			got := wouldCreateLoop(lookup, tt.followerId, tt.leaderId)
+			followerId, leader := tt.setup()
+			got := wouldCreateLoop(followerId, leader)
 			if got != tt.exp {
-				t.Errorf("wouldCreateLoop(%q, %q) = %v, expected %v", tt.followerId, tt.leaderId, got, tt.exp)
+				t.Errorf("wouldCreateLoop(%q, %q) = %v, expected %v", followerId, leader.Id(), got, tt.exp)
 			}
 		})
 	}

@@ -8,18 +8,6 @@ import (
 	"github.com/pixil98/go-mud/internal/game"
 )
 
-// MoveActor provides the character state needed by the move handler.
-type MoveActor interface {
-	Id() string
-	Name() string
-	Notify(msg string)
-	Location() (string, string)
-	IsInCombat() bool
-	Move(from, to *game.RoomInstance)
-}
-
-var _ MoveActor = (*game.CharacterInstance)(nil)
-
 // MoveHandlerFactory creates handlers that move players between rooms.
 // Config:
 //   - direction (required): the direction to move (north, south, east, west, up, down)
@@ -53,10 +41,11 @@ func (f *MoveHandlerFactory) ValidateConfig(config map[string]string) error {
 
 // Create returns a compiled CommandFunc for this handler.
 func (f *MoveHandlerFactory) Create() (CommandFunc, error) {
-	return Adapt[MoveActor](f.handle), nil
+	return f.handle, nil
 }
 
-func (f *MoveHandlerFactory) handle(ctx context.Context, char MoveActor, in *CommandInput) error {
+func (f *MoveHandlerFactory) handle(ctx context.Context, in *CommandInput) error {
+	char := in.Actor
 	if char.IsInCombat() {
 		return NewUserError("You can't move while fighting!")
 	}
@@ -111,48 +100,28 @@ func (f *MoveHandlerFactory) handle(ctx context.Context, char MoveActor, in *Com
 	char.Notify(toRoom.Describe(char.Name()))
 
 	// Move any followers in the old room
-	f.moveFollowers(char.Id(), char.Name(), fromRoom, toRoom, direction)
+	moveFollowers(char, fromRoom, toRoom, direction)
 
 	return nil
 }
 
-// canMove returns a UserError if the player cannot move, or nil if they can.
-func canMove(ps *game.CharacterInstance) error {
-	if ps.IsInCombat() {
-		return NewUserError("You can't move while fighting!")
-	}
-	return nil
-}
-
-// moveFollowers moves all players following leaderId from fromRoom to toRoom.
-// Followers who can't move stay behind with a message. Recurses for each moved
-// follower so that chains (A follows B follows C) cascade correctly.
-func (f *MoveHandlerFactory) moveFollowers(leaderId, leaderName string, fromRoom, toRoom *game.RoomInstance, direction string) {
-	type follower struct {
-		charId string
-		ps     *game.CharacterInstance
-	}
-
-	// Snapshot followers while holding the room lock.
-	var followers []follower
-	fromRoom.ForEachPlayer(func(charId string, ps *game.CharacterInstance) {
-		if ps.FollowingId() == leaderId {
-			followers = append(followers, follower{charId: charId, ps: ps})
+// moveFollowers walks the leader's follower tree and moves each follower from
+// fromRoom to toRoom. Followers not in the same room or in combat are skipped
+// along with their entire subtree.
+func moveFollowers(leader game.FollowTarget, fromRoom, toRoom *game.RoomInstance, direction string) {
+	fromRoomId := fromRoom.Room.Id()
+	for _, fl := range leader.Followers() {
+		_, followerRoom := fl.Location()
+		if followerRoom != fromRoomId {
+			continue
 		}
-	})
-
-	for _, fl := range followers {
-		if canMove(fl.ps) != nil {
-			fl.ps.Notify(fmt.Sprintf("%s leaves %s without you.", leaderName, direction))
+		if fl.IsInCombat() {
+			fl.Notify(fmt.Sprintf("%s leaves %s without you.", leader.Name(), direction))
 			continue
 		}
 
-		fl.ps.Move(fromRoom, toRoom)
-
-		roomDesc := toRoom.Describe(fl.ps.Name())
-		fl.ps.Notify(fmt.Sprintf("You follow %s.\n%s", leaderName, roomDesc))
-
-		// Recurse: move this follower's followers too.
-		f.moveFollowers(fl.charId, fl.ps.Name(), fromRoom, toRoom, direction)
+		fl.Move(fromRoom, toRoom)
+		fl.Notify(fmt.Sprintf("You follow %s.\n%s", leader.Name(), toRoom.Describe(fl.Name())))
+		moveFollowers(fl, fromRoom, toRoom, direction)
 	}
 }

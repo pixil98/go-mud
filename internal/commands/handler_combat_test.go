@@ -50,19 +50,17 @@ func (m *mockCombatManager) TopThreat(_, _ shared.Actor) {
 
 func (m *mockCombatManager) NotifyHeal(_, _ shared.Actor, _ int) {}
 
-// mockAssistActor is a lightweight test double for AssistActor.
-// It also satisfies AssistedPlayer, so it can be used for both the actor and
-// the assisted player in tests.
+// mockAssistActor satisfies shared.Actor for assist handler tests.
 type mockAssistActor struct {
 	id             string
 	name           string
 	inCombat       bool
-	followingId    string
 	combatTargetId string
-	grants         map[string]bool // key -> granted
+	grants         map[string]bool
 	zoneId         string
 	roomId         string
 	notified       []string
+	following      game.FollowTarget
 }
 
 func (m *mockAssistActor) Id() string                               { return m.id }
@@ -79,15 +77,23 @@ func (m *mockAssistActor) CombatTargetId() string                   { return m.c
 func (m *mockAssistActor) SetCombatTargetId(string)                 {}
 func (m *mockAssistActor) Location() (string, string)               { return m.zoneId, m.roomId }
 func (m *mockAssistActor) Level() int                               { return 1 }
-func (m *mockAssistActor) OnDeath() []*game.ObjectInstance           { return nil }
+func (m *mockAssistActor) OnDeath() []*game.ObjectInstance          { return nil }
 func (m *mockAssistActor) IsCharacter() bool                        { return true }
 func (m *mockAssistActor) Notify(msg string)                        { m.notified = append(m.notified, msg) }
-func (m *mockAssistActor) FollowingId() string                   { return m.followingId }
 func (m *mockAssistActor) HasGrant(key, _ string) bool              { return m.grants[key] }
 func (m *mockAssistActor) AddTimedPerks(string, []assets.Perk, int) {}
-func (m *mockAssistActor) Inventory() *game.Inventory            { return nil }
+func (m *mockAssistActor) Inventory() *game.Inventory               { return nil }
+func (m *mockAssistActor) Following() game.FollowTarget             { return m.following }
+func (m *mockAssistActor) SetFollowing(ft game.FollowTarget)        { m.following = ft }
+func (m *mockAssistActor) Followers() []game.FollowTarget           { return nil }
+func (m *mockAssistActor) AddFollower(game.FollowTarget)            {}
+func (m *mockAssistActor) RemoveFollower(string)                    {}
+func (m *mockAssistActor) SetFollowerGrouped(string, bool)          {}
+func (m *mockAssistActor) IsFollowerGrouped(string) bool            { return false }
+func (m *mockAssistActor) GroupedFollowers() []game.FollowTarget    { return nil }
+func (m *mockAssistActor) Move(_, _ *game.RoomInstance)             {}
 
-var _ AssistActor = (*mockAssistActor)(nil)
+var _ shared.Actor = (*mockAssistActor)(nil)
 var _ AssistedPlayer = (*mockAssistActor)(nil)
 
 // mockAssistPlayerLookup is a test double for AssistPlayerLookup.
@@ -169,7 +175,7 @@ func TestAssistHandler(t *testing.T) {
 				cm := &mockCombatManager{}
 
 				bob := &mockAssistActor{id: "bob", name: "Bob", combatTargetId: "mob:test-mob", zoneId: "test-zone", roomId: "test-room"}
-				actor := &mockAssistActor{id: "alice", name: "Alice", followingId: "bob", zoneId: "test-zone", roomId: "test-room"}
+				actor := &mockAssistActor{id: "alice", name: "Alice", following: bob, zoneId: "test-zone", roomId: "test-room"}
 
 				players := &mockAssistPlayerLookup{players: map[string]AssistedPlayer{"bob": bob}}
 				f := &AssistHandlerFactory{
@@ -250,7 +256,7 @@ func TestAssistHandler(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			factory, cmdCtx, actor := tt.setup()
 
-			err := factory.handle(context.Background(), actor, cmdCtx)
+			err := factory.handle(context.Background(), cmdCtx)
 
 			if tt.expErr != "" {
 				if err == nil {
@@ -282,8 +288,8 @@ func TestAssistHandler(t *testing.T) {
 				var assistedId string
 				if ref := cmdCtx.Targets["target"]; ref != nil {
 					assistedId = ref.Actor.CharId
-				} else {
-					assistedId = actor.FollowingId()
+				} else if leader := actor.Following(); leader != nil {
+					assistedId = leader.Id()
 				}
 				msgs := pub.messagesTo(assistedId)
 				if !containsSubstring(msgs, tt.expMsgAssisted) {

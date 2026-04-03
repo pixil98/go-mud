@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/pixil98/go-mud/internal/assets"
@@ -28,37 +27,22 @@ func (s Stat) Mod() int {
 
 // CharacterInstance holds all mutable state for an active player.
 type CharacterInstance struct {
-	mu sync.RWMutex
-
 	subscriber Subscriber
 	msgs       chan []byte
 
 	Character storage.SmartIdentifier[*assets.Character]
 
-	// Location
-	zoneId string
-	roomId string
-
-	// Runtime inventory, equipment, and resources (persisted to Character on save).
-	// PerkCache (embedded in ActorInstance) aggregates race + equipment perks.
 	ActorInstance
 
-	// Subscriptions
 	subs map[string]func()
 
-	// Session state
 	quit           bool
-	inCombat       bool
-	combatTargetId string // InstanceId of the mob being auto-attacked; empty = not auto-attacking
-	currentAP      int    // remaining action points this tick; reset each world tick
-	followingId    string // charId of the player being followed (empty = not following)
-	group          *Group // current group, or nil if not grouped
+	combatTargetId string
+	currentAP      int
 	lastActivity   time.Time
 
-	// Connection management: closed to signal the active Play() goroutine to exit.
 	done chan struct{}
 
-	// Linkless state: player's connection dropped but they remain in the world.
 	linkless   bool
 	linklessAt time.Time
 }
@@ -82,18 +66,20 @@ func NewCharacterInstance(char storage.SmartIdentifier[*assets.Character], msgs 
 		subs:      make(map[string]func()),
 		msgs:      msgs,
 		Character: char,
-		zoneId:    zoneId,
-		roomId:    roomId,
 		ActorInstance: ActorInstance{
 			InstanceId: char.Id(),
 			inventory:  inv,
 			equipment:  eq,
 			level:      c.Level,
+			zoneId:     zoneId,
+			roomId:     roomId,
 			PerkCache:  *NewPerkCache(racePerks, map[string]PerkSource{"equipment": eq}),
 		},
 		lastActivity: time.Now(),
 		done:         make(chan struct{}),
 	}
+
+	ci.self = ci
 
 	// Initialize resource pools from perks, then restore persisted current values.
 	ci.initResources()
@@ -223,33 +209,6 @@ func (ci *CharacterInstance) Asset() *assets.Character {
 	return ci.Character.Get()
 }
 
-// Location returns the player's current zone and room.
-func (ci *CharacterInstance) Location() (zoneId, roomId string) {
-	ci.mu.RLock()
-	defer ci.mu.RUnlock()
-	return ci.zoneId, ci.roomId
-}
-
-// IsInCombat returns whether the character is currently in combat.
-func (ci *CharacterInstance) IsInCombat() bool {
-	ci.mu.RLock()
-	defer ci.mu.RUnlock()
-	return ci.inCombat
-}
-
-// SetInCombat sets the character's combat state.
-func (ci *CharacterInstance) SetInCombat(v bool) {
-	ci.mu.Lock()
-	defer ci.mu.Unlock()
-	ci.inCombat = v
-}
-
-// IsAlive returns whether the character has more than zero hit points.
-func (ci *CharacterInstance) IsAlive() bool {
-	cur, _ := ci.Resource(assets.ResourceHp)
-	return cur > 0
-}
-
 // CombatTargetId returns the InstanceId of the mob being auto-attacked, or empty.
 func (ci *CharacterInstance) CombatTargetId() string {
 	ci.mu.RLock()
@@ -300,34 +259,6 @@ func (ci *CharacterInstance) ResetAP() {
 	ci.currentAP = ci.ModifierValue(assets.PerkKeyActionPointsMax)
 }
 
-// FollowingId returns the charId of the player being followed, or empty.
-func (ci *CharacterInstance) FollowingId() string {
-	ci.mu.RLock()
-	defer ci.mu.RUnlock()
-	return ci.followingId
-}
-
-// SetFollowingId sets the charId of the player being followed.
-func (ci *CharacterInstance) SetFollowingId(id string) {
-	ci.mu.Lock()
-	defer ci.mu.Unlock()
-	ci.followingId = id
-}
-
-// Group returns the character's current group, or nil.
-func (ci *CharacterInstance) Group() *Group {
-	ci.mu.RLock()
-	defer ci.mu.RUnlock()
-	return ci.group
-}
-
-// SetGroup sets the character's current group.
-func (ci *CharacterInstance) SetGroup(g *Group) {
-	ci.mu.Lock()
-	defer ci.mu.Unlock()
-	ci.group = g
-}
-
 // IsQuit returns whether the quit flag is set.
 func (ci *CharacterInstance) IsQuit() bool {
 	ci.mu.RLock()
@@ -370,29 +301,6 @@ func (ci *CharacterInstance) MarkActive() {
 	ci.lastActivity = time.Now()
 }
 
-// Resource returns the current and max for a named resource.
-func (ci *CharacterInstance) Resource(name string) (current, maximum int) {
-	ci.mu.RLock()
-	defer ci.mu.RUnlock()
-	return ci.resource(name)
-}
-
-// SetResource sets the current value for a named resource, clamped to [0, max].
-func (ci *CharacterInstance) SetResource(name string, current int) {
-	ci.mu.Lock()
-	defer ci.mu.Unlock()
-	mx := ci.resourceMax(name)
-	ci.setResourceCurrent(name, max(0, min(current, mx)))
-}
-
-// AdjustResource changes a resource's current value by delta, clamping to [0, max].
-// When overfill is true the max clamp is skipped, allowing values above maximum.
-func (ci *CharacterInstance) AdjustResource(name string, delta int, overfill bool) {
-	ci.mu.Lock()
-	defer ci.mu.Unlock()
-	ci.adjustResource(name, delta, overfill)
-}
-
 // Tick advances one game tick: expires timed perks, resets action points,
 // and regenerates resources when out of combat.
 func (ci *CharacterInstance) Tick() {
@@ -405,34 +313,6 @@ func (ci *CharacterInstance) Tick() {
 		ci.regenTick()
 		ci.mu.Unlock()
 	}
-}
-
-// Equip validates that the character has an available equipment slot of the
-// given type (derived from PerkGrantWearSlot grants) and equips the object.
-// Returns ErrNoSuchSlot if the character lacks that slot type entirely, or
-// ErrSlotFull if all slots of that type are occupied.
-func (ci *CharacterInstance) Equip(slot string, obj *ObjectInstance) error {
-	maxSlots := countSlot(ci.GrantArgs(assets.PerkGrantWearSlot), slot)
-	if maxSlots == 0 {
-		return ErrNoSuchSlot
-	}
-	if ci.equipment.SlotCount(slot) >= maxSlots {
-		return ErrSlotFull
-	}
-	ci.equipment.equip(slot, obj)
-	return nil
-}
-
-// Inventory returns the character's inventory.
-// Inventory is self-locking; its methods are safe for concurrent use.
-func (ci *CharacterInstance) Inventory() *Inventory {
-	return ci.inventory
-}
-
-// Equipment returns the character's equipment.
-// Equipment is self-locking; its methods are safe for concurrent use.
-func (ci *CharacterInstance) Equipment() *Equipment {
-	return ci.equipment
 }
 
 // Flags returns display labels for the player's current state.
@@ -714,3 +594,18 @@ func (ci *CharacterInstance) Gain() {
 	ci.mu.Unlock()
 }
 
+// Equip validates that the character has an available equipment slot of the
+// given type (derived from PerkGrantWearSlot grants) and equips the object.
+// Returns ErrNoSuchSlot if the character lacks that slot type entirely, or
+// ErrSlotFull if all slots of that type are occupied.
+func (ci *CharacterInstance) Equip(slot string, obj *ObjectInstance) error {
+	maxSlots := countSlot(ci.GrantArgs(assets.PerkGrantWearSlot), slot)
+	if maxSlots == 0 {
+		return ErrNoSuchSlot
+	}
+	if ci.equipment.SlotCount(slot) >= maxSlots {
+		return ErrSlotFull
+	}
+	ci.equipment.equip(slot, obj)
+	return nil
+}

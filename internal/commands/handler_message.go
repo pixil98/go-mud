@@ -7,16 +7,6 @@ import (
 	"github.com/pixil98/go-mud/internal/game"
 )
 
-// MessageActor provides the character state needed by the message handler.
-type MessageActor interface {
-	Id() string
-	Notify(msg string)
-	Location() (string, string)
-	Group() *game.Group
-}
-
-var _ MessageActor = (*game.CharacterInstance)(nil)
-
 // MessageHandlerFactory creates handlers that publish messages to scoped groups.
 // Config:
 //   - scope (required): "room", "zone", "world", or "player"
@@ -61,24 +51,25 @@ func (f *MessageHandlerFactory) ValidateConfig(config map[string]string) error {
 
 // Create returns a compiled CommandFunc for this handler.
 func (f *MessageHandlerFactory) Create() (CommandFunc, error) {
-	return Adapt[MessageActor](f.handle), nil
+	return f.handle, nil
 }
 
-func (f *MessageHandlerFactory) handle(ctx context.Context, char MessageActor, in *CommandInput) error {
+func (f *MessageHandlerFactory) handle(ctx context.Context, in *CommandInput) error {
+	actor := in.Actor
 	scope := in.Config["scope"]
 	recipientMessage := in.Config["recipient_message"]
 	senderMessage := in.Config["sender_message"]
 
 	// Send 2nd-person message to actor if configured
 	if senderMessage != "" {
-		char.Notify(senderMessage)
+		actor.Notify(senderMessage)
 	}
 
 	// Send message to scope targets, excluding actor only if they got a sender_message
-	zoneId, roomId := char.Location()
+	zoneId, roomId := actor.Location()
 	var exclude []string
 	if senderMessage != "" {
-		exclude = []string{char.Id()}
+		exclude = []string{actor.Id()}
 	}
 
 	switch scope {
@@ -101,11 +92,11 @@ func (f *MessageHandlerFactory) handle(ctx context.Context, char MessageActor, i
 		return f.pub.Publish(game.SinglePlayer(target.Actor.CharId), nil, []byte(recipientMessage))
 
 	case "group":
-		grp := char.Group()
-		if grp == nil {
+		leader := groupLeader(actor)
+		if leader == nil {
 			return NewUserError("You are not in a group.")
 		}
-		return f.pub.Publish(grp, exclude, []byte(recipientMessage))
+		return f.pub.Publish(game.GroupPublishTarget(leader), exclude, []byte(recipientMessage))
 	}
 
 	return nil

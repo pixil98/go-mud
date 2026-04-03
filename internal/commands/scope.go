@@ -84,9 +84,9 @@ func (ws *WorldScopes) SpacesFor(s scope, actor ScopeActor) ([]SearchSpace, erro
 		})
 	}
 	if s&scopeGroup != 0 {
-		if grp := actor.Group(); grp != nil {
+		if leader := groupLeader(actor); leader != nil {
 			spaces = append(spaces, SearchSpace{
-				Finder: playerOnlyFinder{grp},
+				Finder: playerOnlyFinder{game.GroupPublishTarget(leader)},
 			})
 		}
 	}

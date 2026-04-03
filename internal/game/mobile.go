@@ -2,7 +2,6 @@ package game
 
 import (
 	"fmt"
-	"sync"
 
 	"github.com/google/uuid"
 	"github.com/pixil98/go-mud/internal/assets"
@@ -12,12 +11,7 @@ import (
 // MobileInstance represents a single spawned instance of a Mobile definition.
 // Location is set at spawn time and tracks which zone/room contains this mob.
 type MobileInstance struct {
-	mu sync.RWMutex
-
-	Mobile   storage.SmartIdentifier[*assets.Mobile]
-	inCombat bool
-	zoneId   string
-	roomId   string
+	Mobile storage.SmartIdentifier[*assets.Mobile]
 
 	ActorInstance
 }
@@ -32,11 +26,13 @@ func NewMobileInstance(mob storage.SmartIdentifier[*assets.Mobile]) (*MobileInst
 		ActorInstance: ActorInstance{
 			InstanceId: uuid.New().String(),
 			inventory:  NewInventory(),
-			equipment:  eq,
-			level:      def.Level,
-			PerkCache:  *NewPerkCache(def.Perks, map[string]PerkSource{"equipment": eq}),
+			equipment: eq,
+			level:     def.Level,
+			PerkCache: *NewPerkCache(def.Perks, map[string]PerkSource{"equipment": eq}),
 		},
 	}
+	mi.self = mi
+
 	mi.initResources()
 	for _, spawn := range def.Inventory {
 		oi, err := SpawnObject(spawn)
@@ -62,43 +58,6 @@ func (mi *MobileInstance) Name() string {
 	return mi.Mobile.Get().ShortDesc
 }
 
-// IsInCombat returns whether the mobile is currently in combat.
-func (mi *MobileInstance) IsInCombat() bool {
-	mi.mu.RLock()
-	defer mi.mu.RUnlock()
-	return mi.inCombat
-}
-
-// SetInCombat sets the mobile's combat state.
-func (mi *MobileInstance) SetInCombat(v bool) {
-	mi.mu.Lock()
-	defer mi.mu.Unlock()
-	mi.inCombat = v
-}
-
-// Resource returns the current and max for a named resource.
-func (mi *MobileInstance) Resource(name string) (current, maximum int) {
-	mi.mu.RLock()
-	defer mi.mu.RUnlock()
-	return mi.resource(name)
-}
-
-// SetResource sets the current value for a named resource, clamped to [0, max].
-func (mi *MobileInstance) SetResource(name string, current int) {
-	mi.mu.Lock()
-	defer mi.mu.Unlock()
-	mx := mi.resourceMax(name)
-	mi.setResourceCurrent(name, max(0, min(current, mx)))
-}
-
-// AdjustResource changes a resource's current value by delta, clamping to [0, max].
-// When overfill is true the max clamp is skipped, allowing values above maximum.
-func (mi *MobileInstance) AdjustResource(name string, delta int, overfill bool) {
-	mi.mu.Lock()
-	defer mi.mu.Unlock()
-	mi.adjustResource(name, delta, overfill)
-}
-
 // Tick advances one game tick: expires timed perks and regenerates
 // resources when out of combat.
 func (mi *MobileInstance) Tick() {
@@ -112,24 +71,6 @@ func (mi *MobileInstance) Tick() {
 	}
 }
 
-// Inventory returns the mobile's inventory.
-// Inventory is self-locking; its methods are safe for concurrent use.
-func (mi *MobileInstance) Inventory() *Inventory {
-	return mi.inventory
-}
-
-// Equipment returns the mobile's equipment.
-// Equipment is self-locking; its methods are safe for concurrent use.
-func (mi *MobileInstance) Equipment() *Equipment {
-	return mi.equipment
-}
-
-// IsAlive returns whether the mobile has more than zero hit points.
-func (mi *MobileInstance) IsAlive() bool {
-	cur, _ := mi.Resource(assets.ResourceHp)
-	return cur > 0
-}
-
 // Flags returns display labels for the mobile's current state.
 func (mi *MobileInstance) Flags() []string {
 	mi.mu.RLock()
@@ -139,6 +80,12 @@ func (mi *MobileInstance) Flags() []string {
 		flags = append(flags, "fighting")
 	}
 	return flags
+}
+
+// Move updates the mob's location between rooms.
+func (mi *MobileInstance) Move(fromRoom, toRoom *RoomInstance) {
+	fromRoom.RemoveMob(mi.Id())
+	toRoom.AddMob(mi)
 }
 
 // OnDeath creates a corpse containing all of the mob's inventory and equipped items.
@@ -180,13 +127,6 @@ func newCorpse(mi *MobileInstance) *ObjectInstance {
 	return corpse
 }
 
-// Location returns the zone and room ID where this mob is spawned.
-func (mi *MobileInstance) Location() (zoneId, roomId string) {
-	mi.mu.RLock()
-	defer mi.mu.RUnlock()
-	return mi.zoneId, mi.roomId
-}
-
 // CombatTargetId returns an empty string; mobs select targets via their threat table.
 func (mi *MobileInstance) CombatTargetId() string {
 	return ""
@@ -203,9 +143,6 @@ func (mi *MobileInstance) Asset() *assets.Character {
 
 // SpendAP always succeeds for mobs — they have no action point budget.
 func (mi *MobileInstance) SpendAP(_ int) bool { return true }
-
-// Group returns nil; mobs are never in a player group.
-func (mi *MobileInstance) Group() *Group { return nil }
 
 // StatSections returns the mobile's stat display sections.
 func (mi *MobileInstance) StatSections() []StatSection {
