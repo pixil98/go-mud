@@ -6,13 +6,8 @@
   session. This means the player sees a full HP prompt right before being disconnected, which
   looks wrong. Decide on a proper death/respawn policy (e.g. respawn at 1 HP, or defer the
   heal until login) and update the test in character_test.go to match.
-- Create a common mockActor implementation for the commands test package that satisfies both
-  shared.Actor and game.FollowTarget, replacing the per-test mock types (mockAssistActor,
-  mockFollowTarget, mockActor, etc.).
-
 ## Consider
 - Should overhealing generate threat? Currently heal threat is based on the full heal amount, even if the target is already at max HP.
 - Make threat multiplier configurable per effect. Currently damage generates 1:1 threat and heal generates 0.5x threat, both hardcoded. A config field (e.g. "threat_multiplier") would allow tuning per ability.
-- Should wear slots just be perks?
 - TimedPerkCaches in world/zone/room currently apply to all players and no mobs
 

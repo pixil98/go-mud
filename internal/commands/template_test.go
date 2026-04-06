@@ -19,14 +19,14 @@ func TestExpandTemplate(t *testing.T) {
 		"expand actor name": {
 			tmplStr: "{{ .Actor.Name }} says hello",
 			data: &templateContext{
-				Actor: newCharacterInstance("test-actor", "test-actor"),
+				Actor: &mockActor{id: "test-actor", name: "test-actor"},
 			},
 			exp: "test-actor says hello",
 		},
 		"expand input value": {
 			tmplStr: "player-{{ .Inputs.target }}",
 			data: &templateContext{
-				Actor:  newCharacterInstance("a", "a"),
+				Actor:  &mockActor{id: "a", name: "a"},
 				Inputs: map[string]any{"target": "test-target"},
 			},
 			exp: "player-test-target",
@@ -34,7 +34,7 @@ func TestExpandTemplate(t *testing.T) {
 		"expand multiple values": {
 			tmplStr: "{{ .Actor.Name }} targets {{ .Targets.target.Actor.Name }}",
 			data: &templateContext{
-				Actor: newCharacterInstance("test-actor", "test-actor"),
+				Actor: &mockActor{id: "test-actor", name: "test-actor"},
 				Targets: map[string]*TargetRef{
 					"target": {Type: targetTypeActor, Actor: &ActorRef{Name: "test-target"}},
 				},

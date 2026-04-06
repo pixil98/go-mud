@@ -531,8 +531,7 @@ func TestResolveSpecs(t *testing.T) {
 		},
 	}
 
-	actor := &assets.Character{Name: "Actor"}
-	session := &game.CharacterInstance{Character: storage.NewResolvedSmartIdentifier("actor", actor)}
+	session := &mockActor{id: "actor", name: "Actor"}
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
@@ -653,8 +652,7 @@ func TestResolveSpecs_ScopeTarget(t *testing.T) {
 		},
 	}
 
-	actor := &assets.Character{Name: "Actor"}
-	session := &game.CharacterInstance{Character: storage.NewResolvedSmartIdentifier("actor", actor)}
+	session := &mockActor{id: "actor", name: "Actor"}
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {

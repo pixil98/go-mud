@@ -6,8 +6,6 @@ import (
 	"testing"
 
 	"github.com/pixil98/go-mud/internal/assets"
-	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/storage"
 )
 
 func TestHandler_parseValue(t *testing.T) {
@@ -567,9 +565,9 @@ func TestHandler_expandConfig(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			h := &Handler{}
 
-			session := &game.CharacterInstance{Character: storage.NewResolvedSmartIdentifier("alice", tt.actor)}
+			actor := &mockActor{id: "alice", name: tt.actor.Name}
 
-			expandedConfig, err := h.expandConfig(tt.config, session, tt.targets, tt.inputs)
+			expandedConfig, err := h.expandConfig(tt.config, actor, tt.targets, tt.inputs)
 
 			if tt.expErr != "" {
 				if err == nil {

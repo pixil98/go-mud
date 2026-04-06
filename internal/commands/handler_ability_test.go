@@ -11,49 +11,33 @@ import (
 
 func TestExecuteAbility_APGating(t *testing.T) {
 	tests := map[string]struct {
-		startAP int
-		apCost  int
-		wantErr string
-		wantAP  int // AP remaining after the call
+		apCost       int
+		spendAPFails bool
+		wantErr      string
+		wantSpentAP  int // cost passed to SpendAP
 	}{
 		"sufficient ap succeeds": {
-			startAP: 2,
-			apCost:  1,
-			wantAP:  1,
-		},
-		"exact ap succeeds": {
-			startAP: 1,
-			apCost:  1,
-			wantAP:  0,
+			apCost:      1,
+			wantSpentAP: 1,
 		},
 		"zero ap_cost treated as 1": {
-			startAP: 1,
-			apCost:  0,
-			wantAP:  0,
+			apCost:      0,
+			wantSpentAP: 1,
 		},
 		"insufficient ap fails": {
-			startAP: 0,
-			apCost:  1,
-			wantErr: "not ready",
-			wantAP:  0,
-		},
-		"cost exceeds available ap fails": {
-			startAP: 1,
-			apCost:  2,
-			wantErr: "not ready",
-			wantAP:  1,
+			apCost:       1,
+			spendAPFails: true,
+			wantErr:      "not ready",
+			wantSpentAP:  1,
 		},
 	}
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			room, zone := newTestRoomInZone("r", "Room", "z")
-			_ = zone
-			player := newTestPlayer("player", "Player", room)
-			setPlayerAP(player, tc.startAP)
+			actor := &mockActor{id: "player", name: "Player", spendAPFails: tc.spendAPFails}
 
 			ca := &compiledAbility{apCost: tc.apCost}
-			_, err := ca.exec(player, nil, ExecAbilityOpts{})
+			_, err := ca.exec(actor, nil, ExecAbilityOpts{})
 
 			if tc.wantErr != "" {
 				if err == nil {
@@ -66,83 +50,66 @@ func TestExecuteAbility_APGating(t *testing.T) {
 				t.Fatalf("unexpected error: %v", err)
 			}
 
-			if got := player.CurrentAP(); got != tc.wantAP {
-				t.Errorf("AP after execute = %d, want %d", got, tc.wantAP)
+			if actor.spentAP != tc.wantSpentAP {
+				t.Errorf("SpendAP called with %d, want %d", actor.spentAP, tc.wantSpentAP)
 			}
 		})
 	}
 }
 
 func TestExecuteAbility_CostCheckOrdering(t *testing.T) {
-	const manaMax = 10
 	tests := map[string]struct {
-		startAP      int
-		apCost       int
 		startMana    int
 		resourceCost int
+		spendAPFails bool
 		wantErr      string
-		wantAP       int
 		wantMana     int
+		wantSpentAP  int // 0 means SpendAP was never called
 	}{
 		"insufficient resource does not spend AP": {
-			startAP:      1,
-			apCost:       1,
 			startMana:    5,
 			resourceCost: 10,
 			wantErr:      "mana",
-			wantAP:       1,
 			wantMana:     5,
+			wantSpentAP:  0,
 		},
 		"insufficient AP does not spend resource": {
-			startAP:      0,
-			apCost:       1,
 			startMana:    10,
 			resourceCost: 5,
+			spendAPFails: true,
 			wantErr:      "not ready",
-			wantAP:       0,
 			wantMana:     10,
+			wantSpentAP:  1,
 		},
 		"both sufficient: AP and resource deducted": {
-			startAP:      1,
-			apCost:       1,
 			startMana:    10,
 			resourceCost: 5,
-			wantAP:       0,
 			wantMana:     5,
+			wantSpentAP:  1,
 		},
 		"no resource cost: only AP spent": {
-			startAP:      1,
-			apCost:       1,
 			startMana:    10,
 			resourceCost: 0,
-			wantAP:       0,
 			wantMana:     10,
+			wantSpentAP:  1,
 		},
 	}
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			room, zone := newTestRoomInZone("r", "Room", "z")
-			_ = zone
-			player := newTestPlayer("player", "Player", room)
-
-			// Set up both perks at once so mana.max is in place when SetResource is called.
-			perks := []assets.Perk{
-				{Type: assets.PerkTypeModifier, Key: "core.resource.mana.max", Value: manaMax},
+			actor := &mockActor{
+				id:           "player",
+				name:         "Player",
+				spendAPFails: tc.spendAPFails,
+				resources:    map[string][2]int{"mana": {tc.startMana, 10}},
 			}
-			if tc.startAP > 0 {
-				perks = append(perks, assets.Perk{Type: assets.PerkTypeModifier, Key: assets.PerkKeyActionPointsMax, Value: tc.startAP})
-			}
-			player.SetOwn(perks)
-			player.SetResource("mana", tc.startMana)
-			player.ResetAP()
 
 			ca := &compiledAbility{
-				apCost:       tc.apCost,
+				apCost:       1,
 				resource:     "mana",
 				resourceCost: tc.resourceCost,
 			}
-			_, err := ca.exec(player, nil, ExecAbilityOpts{})
+			_, err := ca.exec(actor, nil, ExecAbilityOpts{})
 
 			if tc.wantErr != "" {
 				if err == nil {
@@ -155,10 +122,10 @@ func TestExecuteAbility_CostCheckOrdering(t *testing.T) {
 				t.Fatalf("unexpected error: %v", err)
 			}
 
-			if got := player.CurrentAP(); got != tc.wantAP {
-				t.Errorf("AP after execute = %d, want %d", got, tc.wantAP)
+			if actor.spentAP != tc.wantSpentAP {
+				t.Errorf("SpendAP called with %d, want %d", actor.spentAP, tc.wantSpentAP)
 			}
-			if cur, _ := player.Resource("mana"); cur != tc.wantMana {
+			if cur, _ := actor.Resource("mana"); cur != tc.wantMana {
 				t.Errorf("mana after execute = %d, want %d", cur, tc.wantMana)
 			}
 		})

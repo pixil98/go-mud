@@ -5,7 +5,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 )
 
@@ -35,48 +34,6 @@ func (p *recordingPublisher) messagesTo(charId string) []string {
 	}
 	return msgs
 }
-
-// TODO: create a common mockActor for the commands package that satisfies
-// both shared.Actor and game.FollowTarget, replacing per-test mock types.
-
-// mockActor satisfies shared.Actor and game.FollowTarget for follow handler tests.
-type mockActor struct {
-	id        string
-	name      string
-	notified  []string
-	following game.FollowTarget
-	followers []game.FollowTarget
-}
-
-func (m *mockActor) Id() string                               { return m.id }
-func (m *mockActor) Name() string                             { return m.name }
-func (m *mockActor) Notify(msg string)                        { m.notified = append(m.notified, msg) }
-func (m *mockActor) Location() (string, string)               { return "", "" }
-func (m *mockActor) IsInCombat() bool                         { return false }
-func (m *mockActor) IsAlive() bool                            { return true }
-func (m *mockActor) Level() int                               { return 1 }
-func (m *mockActor) Resource(string) (int, int)               { return 0, 0 }
-func (m *mockActor) AdjustResource(string, int, bool)         {}
-func (m *mockActor) SpendAP(int) bool                         { return true }
-func (m *mockActor) HasGrant(string, string) bool             { return false }
-func (m *mockActor) ModifierValue(string) int                 { return 0 }
-func (m *mockActor) GrantArgs(string) []string                { return nil }
-func (m *mockActor) AddTimedPerks(string, []assets.Perk, int) {}
-func (m *mockActor) SetInCombat(bool)                         {}
-func (m *mockActor) CombatTargetId() string                   { return "" }
-func (m *mockActor) SetCombatTargetId(string)                 {}
-func (m *mockActor) OnDeath() []*game.ObjectInstance          { return nil }
-func (m *mockActor) IsCharacter() bool                        { return true }
-func (m *mockActor) Inventory() *game.Inventory               { return nil }
-func (m *mockActor) Following() game.FollowTarget             { return m.following }
-func (m *mockActor) SetFollowing(ft game.FollowTarget)        { m.following = ft }
-func (m *mockActor) Followers() []game.FollowTarget           { return m.followers }
-func (m *mockActor) AddFollower(ft game.FollowTarget)         { m.followers = append(m.followers, ft) }
-func (m *mockActor) RemoveFollower(string)                    {}
-func (m *mockActor) SetFollowerGrouped(string, bool)          {}
-func (m *mockActor) IsFollowerGrouped(string) bool            { return false }
-func (m *mockActor) GroupedFollowers() []game.FollowTarget    { return nil }
-func (m *mockActor) Move(_, _ *game.RoomInstance)             {}
 
 func TestFollowHandler(t *testing.T) {
 	tests := map[string]struct {

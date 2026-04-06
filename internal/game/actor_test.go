@@ -348,3 +348,80 @@ func TestGroupPublishTarget(t *testing.T) {
 
 var _ FollowTarget = (*CharacterInstance)(nil)
 var _ FollowTarget = (*MobileInstance)(nil)
+
+func TestActorInstance_SetResource(t *testing.T) {
+	const resourceMax = 20
+	perks := []assets.Perk{
+		{Type: assets.PerkTypeModifier, Key: assets.BuildKey(assets.ResourcePrefix, "a", assets.ResourceAspectMax), Value: resourceMax},
+	}
+
+	tests := map[string]struct {
+		set     int
+		wantCur int
+	}{
+		"within range":      {set: 10, wantCur: 10},
+		"clamps above max":  {set: resourceMax + 5, wantCur: resourceMax},
+		"clamps below zero": {set: -5, wantCur: 0},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			a := &ActorInstance{PerkCache: *NewPerkCache(perks, nil)}
+			a.initResources()
+
+			a.SetResource("a", tc.set)
+
+			cur, mx := a.Resource("a")
+			if cur != tc.wantCur {
+				t.Errorf("current = %d, want %d", cur, tc.wantCur)
+			}
+			if mx != resourceMax {
+				t.Errorf("max = %d, want %d", mx, resourceMax)
+			}
+		})
+	}
+}
+
+func TestActorInstance_AdjustResource(t *testing.T) {
+	const resourceMax = 20
+	perks := []assets.Perk{
+		{Type: assets.PerkTypeModifier, Key: assets.BuildKey(assets.ResourcePrefix, "a", assets.ResourceAspectMax), Value: resourceMax},
+	}
+
+	tests := map[string]struct {
+		startCur int
+		delta    int
+		overfill bool
+		wantCur  int
+	}{
+		"positive delta":       {startCur: 10, delta: 5, wantCur: 15},
+		"negative delta":       {startCur: 10, delta: -3, wantCur: 7},
+		"clamps at zero":       {startCur: 5, delta: -10, wantCur: 0},
+		"clamps at max":        {startCur: 15, delta: 10, wantCur: resourceMax},
+		"overfill exceeds max": {startCur: 15, delta: 10, overfill: true, wantCur: 25},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			a := &ActorInstance{PerkCache: *NewPerkCache(perks, nil)}
+			a.initResources()
+			a.setResourceCurrent("a", tc.startCur)
+
+			a.AdjustResource("a", tc.delta, tc.overfill)
+
+			cur, _ := a.Resource("a")
+			if cur != tc.wantCur {
+				t.Errorf("current = %d, want %d", cur, tc.wantCur)
+			}
+		})
+	}
+
+	t.Run("non-existent resource is no-op", func(t *testing.T) {
+		a := &ActorInstance{PerkCache: *NewPerkCache(nil, nil)}
+		a.AdjustResource("b", 10, false)
+		cur, mx := a.Resource("b")
+		if cur != 0 || mx != 0 {
+			t.Errorf("non-existent resource = (%d, %d), want (0, 0)", cur, mx)
+		}
+	})
+}
