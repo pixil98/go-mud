@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5327",
+    "spec": {
+        "name": "A Stairway",
+        "description": "You stand now at the head of a stairway that goes down into darkness. The steps and walls are smooth sandy stone, covered with a thick layer of dust. Some inscriptions are carved into the wall here.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "east": {
+                "room_id": "the-great-pyramid-5326",
+                "description": "You see the backside of the coffin lid, featureless stone.",
+                "closure": {
+                    "name": "coffin",
+                    "closed": true
+                }
+            },
+            "down": {
+                "room_id": "the-great-pyramid-5328",
+                "description": "It is too dark to see down the stairway."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "inscriptions"
+                ],
+                "description": "You blow dust away from the inscriptions to read: Beware the curse of the mummy."
+            },
+            {
+                "keywords": [
+                    "coffin",
+                    "lid"
+                ],
+                "description": "On this side the coffin lid is smooth featureless stone."
+            }
+        ]
+    }
+}

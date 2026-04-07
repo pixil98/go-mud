@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2647",
+    "spec": {
+        "name": "The End Of The Corridor",
+        "description": "You are at the end of a long corridor. The obsidian walls come to an abrupt halt at the edge of a golden archway here. The hum of power is so strong it nearly numbs your body. The archway lies before you, glowing and pulsing with energy.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2646"
+            },
+            "south": {
+                "room_id": "the-high-tower-of-magic-2648"
+            }
+        }
+    }
+}

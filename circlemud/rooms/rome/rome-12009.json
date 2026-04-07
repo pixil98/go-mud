@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "rome-12009",
+    "spec": {
+        "name": "The Practice And Warm-up Area",
+        "description": "There are many gladiators, chariot drivers and their coaches here, warming up in preparation for the games. The dust rising from the parched earth makes you want to sneeze. A short tunnel leads east and the thunder of pounding hooves and the clash of weapons can be heard coming from the south.",
+        "zone_id": "rome",
+        "exits": {
+            "east": {
+                "room_id": "rome-12016",
+                "description": "There is a large oval dirt-track in that direction."
+            },
+            "south": {
+                "room_id": "rome-12010",
+                "description": "You can hear the clash of weapons and the thunder of hooves in that direction."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "gladiator"
+                ],
+                "description": "He is a big muscular man with lots of armor. He sizes you up and decides that you aren't worth his time or trouble."
+            },
+            {
+                "keywords": [
+                    "driver"
+                ],
+                "description": "The driver is too busy changing a wheel on his chariot to notice you."
+            },
+            {
+                "keywords": [
+                    "chariot"
+                ],
+                "description": "You see a two wheeled open cart which is obviously meant to be pulled by horses. The flaming paint-job and the large '01' stenciled on the side identify the chariot as belonging to Drucilis 'Lightning-whip' Octavious, a favorite driver of the masses."
+            },
+            {
+                "keywords": [
+                    "coach",
+                    "trainer"
+                ],
+                "description": "The coach tell you \"Stop bothering my athletes and get lost!\""
+            }
+        ]
+    }
+}

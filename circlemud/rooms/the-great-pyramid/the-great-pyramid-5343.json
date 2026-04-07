@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5343",
+    "spec": {
+        "name": "A Dead End",
+        "description": "The dust-covered hallway has come to an abrupt end at a stony, featureless wall. Here and there are signs of the recent passage of others in the dust.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "south": {
+                "room_id": "the-great-pyramid-5342",
+                "description": "The dusty hall continues to the south."
+            },
+            "down": {
+                "room_id": "the-great-pyramid-5344",
+                "description": "The floor is quite dusty, and made of stone. You see some cracks.",
+                "closure": {
+                    "name": "floor",
+                    "closed": true
+                }
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "cracks"
+                ],
+                "description": "The cracks look like you might be able to pull away some pieces of the floor, perhaps even fit your body through the space you make."
+            }
+        ]
+    }
+}

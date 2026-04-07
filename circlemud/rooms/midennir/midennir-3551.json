@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "midennir-3551",
+    "spec": {
+        "name": "Deep In The Forest Of Miden'nir",
+        "description": "The branches above you block out all direct sunlight, making the forest in this area very dark. The forest continues west, but mountains block further exploration in all other directions, except south, where you notice a small tunnel dug into the mountainside.",
+        "zone_id": "midennir",
+        "exits": {
+            "south": {
+                "room_id": "midennir-3552",
+                "description": "The tunnel leads into the mountainside."
+            },
+            "west": {
+                "room_id": "midennir-3523",
+                "description": "The forest continues, but appears to be getting lighter."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

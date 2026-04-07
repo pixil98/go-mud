@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7007",
+    "spec": {
+        "name": "The Muddy Sewer Bend",
+        "description": "This isn't your idea of a place to stay too long. You're in up to your knees in something that resembles mud, but you're not quite sure. The bend in which you stand leads west and south.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "west": {
+                "room_id": "the-sewer-first-level-7002",
+                "description": "The pipe (still filled with mud) leads into a intersection that goes north and south. Interesting."
+            },
+            "south": {
+                "room_id": "the-sewer-first-level-7008",
+                "description": "The pipe leads into a intersection that goes south and east. The floor here is still covered in mud."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "mud"
+                ],
+                "description": "It is as dark as tar and looks like something out of a toilet, on top of that, the smell is absolutely overwhelming."
+            }
+        ]
+    }
+}

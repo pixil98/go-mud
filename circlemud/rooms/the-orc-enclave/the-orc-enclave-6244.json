@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6244",
+    "spec": {
+        "name": "A Tunnel",
+        "description": "The floor is slick with the humidity that boils out of the lower reaches of this cave, bringing that most awful smell with it. Again, you consider saving your nose the trip west and down the tunnel, and heading back east to the cave entrance.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "east": {
+                "room_id": "the-orc-enclave-6243"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6245"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

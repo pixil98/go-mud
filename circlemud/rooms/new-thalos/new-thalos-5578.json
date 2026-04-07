@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "new-thalos-5578",
+    "spec": {
+        "name": "The Sultan's Garden",
+        "description": "You have entered the Sultan's private gardens. A light sweat breaks out on your skin from the humidity here. All around you are thousands of exotic plants and flowers. The sweet smell of jasmine and honeysuckle reminds you of happier days at home. Off to the north, through the palm trees, you see a delicate white gazebo. A path leads out into the hallway and west towards the gazebo. To your right stands a gold sign.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5573"
+            },
+            "west": {
+                "room_id": "new-thalos-5583"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "sign"
+                ],
+                "description": "========================================================================= ========================================================================= || || || || || || || || || Welcome to my humble garden. I have created this || || tiny bit of paradise for the pleasure of my people. || || Take only memories... Leave only footprints... || || || || || || || || The Sultan || || || || || || || ========================================================================= ========================================================================="
+            }
+        ]
+    }
+}

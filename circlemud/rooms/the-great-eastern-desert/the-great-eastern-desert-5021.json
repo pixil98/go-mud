@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5021",
+    "spec": {
+        "name": "The Fungus Temple",
+        "description": "You find yourself standing inside of a giant mushroom. The inside is decorated in the fashion of a temple.",
+        "zone_id": "the-great-eastern-desert",
+        "exits": {
+            "north": {
+                "room_id": "the-great-eastern-desert-5020"
+            },
+            "east": {
+                "room_id": "the-great-eastern-desert-5022"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

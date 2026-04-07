@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5489",
+    "spec": {
+        "name": "A Dark Passage",
+        "description": "The small passage continues east and west from here. Again you notice something peculiar about the wall, this time to the north, but you fail to find any secret doors. Voices can be faintly heard from the north.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5490"
+            },
+            "west": {
+                "room_id": "new-thalos-5488"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

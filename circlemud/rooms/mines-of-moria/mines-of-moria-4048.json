@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4048",
+    "spec": {
+        "name": "The Foothills",
+        "description": "A short trek through the foothills and you find yourself facing a trail that leads between the mountains to the west. The trail through them looks to be very long and probably quite tiring. You spot a narrow trail leading away to the northwest not too far distant to the west.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "east": {
+                "room_id": "mines-of-moria-4049",
+                "description": "You can head towards the narrow trail this way."
+            },
+            "west": {
+                "room_id": "mines-of-moria-4046",
+                "description": "The trail leading through the mountains seems to go on forever."
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

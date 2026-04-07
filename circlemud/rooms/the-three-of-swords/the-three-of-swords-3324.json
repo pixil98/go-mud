@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3324",
+    "spec": {
+        "name": "A Cave Passageway",
+        "description": "The passageway you are in leads south and west from here. Many large stones and rocks are on the floor of the cave, making walking difficult in the dim light from the sconces on the walls. You hear the continued echo of voices, seemingly fainter now. Must be the strange acoustics of this place...",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "south": {
+                "room_id": "the-three-of-swords-3325"
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3322"
+            }
+        }
+    }
+}

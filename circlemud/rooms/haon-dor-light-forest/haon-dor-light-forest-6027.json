@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6027",
+    "spec": {
+        "name": "On The Lake",
+        "description": "You are in the middle of a small lake, fed from a small stream coming through the forest from the northwest. The water is not that clear, but you can see fish swimming around below you. The bank is clear to the south, providing a safe place to get back to the field.",
+        "zone_id": "haon-dor-light-forest",
+        "exits": {
+            "south": {
+                "room_id": "haon-dor-light-forest-6025",
+                "description": "Some animals have gathered on the bank to watch you, curious about what you are doing."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "fish"
+                ],
+                "description": "Trout and perhaps a catfish or two swim about below you, totally ignoring your presence."
+            },
+            {
+                "keywords": [
+                    "lake"
+                ],
+                "description": "Animals from all around come here to drink. The lake itself is not very big, but it stretches off to the north from here."
+            },
+            {
+                "keywords": [
+                    "tree",
+                    "trees",
+                    "thicket"
+                ],
+                "description": "Trees cover the bank on most sides, preventing you from docking there."
+            },
+            {
+                "keywords": [
+                    "reed",
+                    "reeds"
+                ],
+                "description": "Reeds grow up around the edges of the lake, providing cover for the small water fowl that live here."
+            }
+        ]
+    }
+}

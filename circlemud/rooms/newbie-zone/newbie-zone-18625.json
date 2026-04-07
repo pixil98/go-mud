@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "newbie-zone-18625",
+    "spec": {
+        "name": "A Large Room",
+        "description": "The passage opens into a large oval room. There really isn't much of interest here though.",
+        "zone_id": "newbie-zone",
+        "exits": {
+            "east": {
+                "room_id": "newbie-zone-18626"
+            },
+            "south": {
+                "room_id": "newbie-zone-18631"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

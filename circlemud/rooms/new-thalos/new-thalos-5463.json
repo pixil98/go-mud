@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "new-thalos-5463",
+    "spec": {
+        "name": "Guildsman's Row",
+        "description": "After the guilds were built the people of the city used some of the extra space to erect a shrine to their patron saints. The result of this labor became the Museum of the Greater Gods. You may enter the sacred hall to the east.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5462"
+            },
+            "east": {
+                "room_id": "new-thalos-5516"
+            },
+            "south": {
+                "room_id": "new-thalos-5464"
+            }
+        }
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3059",
+    "spec": {
+        "name": "Behind The Temple Altar",
+        "description": "You are on a dirt path leading away from the Temple Altar which is south of here. To the north, the path continues through the lush contryside of Midgaard towards the Dragonhelm Mountains far off to the north.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "north": {
+                "room_id": "northern-midgaard-main-city-3060",
+                "description": "You see the lush, green countryside of Midgaard."
+            },
+            "south": {
+                "room_id": "northern-midgaard-main-city-3054",
+                "description": "You see the Temple Altar."
+            }
+        }
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5333",
+    "spec": {
+        "name": "A Ransacked Tomb",
+        "description": "This tomb has been completely ransacked and destroyed by the actions of pyramid thieves and looters. The floor is littered with junk.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "east": {
+                "room_id": "the-great-pyramid-5334",
+                "description": "To the east is a low-ceilinged tunnel."
+            },
+            "west": {
+                "room_id": "the-great-pyramid-5325",
+                "description": "To the west is another tomb."
+            }
+        }
+    }
+}

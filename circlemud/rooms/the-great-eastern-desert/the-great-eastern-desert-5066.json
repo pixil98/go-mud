@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5066",
+    "spec": {
+        "name": "A Wide Tunnel",
+        "description": "This tunnel seems to go on forever into the darkness. You carefully feel your way along the walls.",
+        "zone_id": "the-great-eastern-desert",
+        "exits": {
+            "east": {
+                "room_id": "the-great-eastern-desert-5065"
+            },
+            "west": {
+                "room_id": "the-great-eastern-desert-5067"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

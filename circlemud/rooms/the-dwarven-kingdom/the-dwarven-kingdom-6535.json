@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6535",
+    "spec": {
+        "name": "Granite Head's Bakery",
+        "description": "The aroma coming from this room is astonishing. You can almost taste the pastries dissolving in your mouth.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "east": {
+                "room_id": "the-dwarven-kingdom-6517"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ]
+    }
+}

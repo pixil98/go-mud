@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "rands-tower-6432",
+    "spec": {
+        "name": "A Sitting Room",
+        "description": "This is a simply furnished room, with chairs all about. A fireplace is inset into an inner wall, the chimney undoubtedly directed by magic... This would be a nice place to rest awhile...",
+        "zone_id": "rands-tower",
+        "exits": {
+            "east": {
+                "room_id": "rands-tower-6431"
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

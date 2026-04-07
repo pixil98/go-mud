@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6510",
+    "spec": {
+        "name": "On The Path To The Castle",
+        "description": "You are on a path that will eventually lead to the castle. It continues north to the castle, and there is a door in the southern wall.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "north": {
+                "room_id": "the-dwarven-kingdom-6511"
+            },
+            "south": {
+                "room_id": "the-dwarven-kingdom-6509",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "the-dwarven-kingdom-6503",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        }
+    }
+}

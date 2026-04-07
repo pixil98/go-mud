@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15038",
+    "spec": {
+        "name": "The Guest Wing",
+        "description": "You have arrived at the part of the Castle where prominent guests are housed. To the east there is a large, ornamented door, and a somewhat smaller one leads north.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "north": {
+                "room_id": "king-welmars-castle-15043",
+                "description": "The door seems to lead to a guest room.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "east": {
+                "room_id": "king-welmars-castle-15039",
+                "description": "You see the guest suite behind the ornamented door.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "south": {
+                "room_id": "king-welmars-castle-15033",
+                "description": "You see the corridor."
+            }
+        }
+    }
+}

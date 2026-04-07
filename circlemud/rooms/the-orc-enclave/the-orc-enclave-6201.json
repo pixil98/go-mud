@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6201",
+    "spec": {
+        "name": "In The Forest",
+        "description": "To the west the mountains rise high up, rocky and lifeless. The trail you are walking on heads west to the end of the forest, and back east. Each way the strange energy barrier stands just to the north, inscrutable, magical, and impenetrable.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "east": {
+                "room_id": "the-orc-enclave-6202"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6200"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "barrier",
+                    "energy"
+                ],
+                "description": "You can faintly see the woods continue beyond it, but it seems there's no way through. The field rises high up into the air, and seems to form a ceiling above the woods, preventing a flying entrance. You'd also bet it extends deep into the ground."
+            }
+        ]
+    }
+}

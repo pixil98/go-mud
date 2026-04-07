@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5324",
+    "spec": {
+        "name": "A Crack In The Wall",
+        "description": "You exhale, and squeeze yourself into the narrow crack in the wall. Dust fills your eyes as you disturb it, and chunks of mortar and stone mixed with a touch of sand fall on you as you scrape your way through.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "north": {
+                "room_id": "the-great-pyramid-5309",
+                "description": "You see a musty chamber."
+            },
+            "south": {
+                "room_id": "the-great-pyramid-5325",
+                "description": "You see a tomb."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

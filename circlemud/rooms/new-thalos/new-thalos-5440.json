@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "new-thalos-5440",
+    "spec": {
+        "name": "East Ishtar Drive",
+        "description": "Even in broad daylight, you can hardly see into the back alley that begins here and heads north. Sounds of loud drunken folk and the occasional screaming cat emenate from the direction. Luckily you have the choice of going east or west down the drive as well.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5468",
+                "description": "You see murky darkness."
+            },
+            "east": {
+                "room_id": "new-thalos-5441"
+            },
+            "west": {
+                "room_id": "new-thalos-5438"
+            }
+        }
+    }
+}

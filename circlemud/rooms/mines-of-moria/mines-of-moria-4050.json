@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4050",
+    "spec": {
+        "name": "The Tunnel",
+        "description": "You are at a bend in the tunnel here. It turns from an eastwards heading to a southwards one. The walls are cold and seem to be damp with moisture. you can see some greenish moss growing up near the roof of the passageway on the northern wall.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "east": {
+                "room_id": "mines-of-moria-4051"
+            },
+            "south": {
+                "room_id": "mines-of-moria-4053"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

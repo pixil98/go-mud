@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3110",
+    "spec": {
+        "name": "Cityguard HeadQuarters",
+        "description": "You are inside a tidy office.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "east": {
+                "room_id": "southern-part-of-midgaard-3111",
+                "description": "You see Park Road.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "southern-part-of-midgaard-3105",
+                        "locked": true
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7900",
+    "spec": {
+        "name": "Outside Redferne's Residence",
+        "description": "A huge cloud forms the plateau on which you are now standing. The wind here is absolutely quiet and the sun is shining warmly upon you. From under the cloud you can hear the faint sounds of Midgaard. Right before you to the north lies the grand Mansion of Naris.",
+        "zone_id": "redfernes-residence",
+        "exits": {
+            "north": {
+                "room_id": "redfernes-residence-7901",
+                "description": "You see an enormous arched gate leading into this magnificent building.",
+                "closure": {
+                    "name": "gate",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "redfernes-residence-7901",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            },
+            "down": {
+                "room_id": "redfernes-residence-7918",
+                "description": "You see a Huge Chain that anchors the Mansion of Naris to the ground."
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

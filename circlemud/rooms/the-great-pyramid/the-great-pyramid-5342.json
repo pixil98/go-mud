@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5342",
+    "spec": {
+        "name": "A Turn In The Hallway",
+        "description": "You are standing in an elbow turn in a dust-covered stone hallway, that dead ends to the north and continues on to the west. To the south the stones of the pyramid have been torn asunder by thieves, making a low-ceilinged tunnel.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "north": {
+                "room_id": "the-great-pyramid-5343",
+                "description": "The hallway ends to the north."
+            },
+            "south": {
+                "room_id": "the-great-pyramid-5336",
+                "description": "The tunnel is dark."
+            },
+            "west": {
+                "room_id": "the-great-pyramid-5341",
+                "description": "The dust-covered hallway continues to the west."
+            }
+        }
+    }
+}

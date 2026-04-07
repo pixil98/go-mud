@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "drow-city-5146",
+    "spec": {
+        "name": "The Slave Cells",
+        "description": "This is the main room to the cell chambers for the slaves to be sacrificed. You notice there are no guards around.",
+        "zone_id": "drow-city",
+        "exits": {
+            "north": {
+                "room_id": "drow-city-5147",
+                "closure": {
+                    "name": "cell",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "drow-city-5142",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

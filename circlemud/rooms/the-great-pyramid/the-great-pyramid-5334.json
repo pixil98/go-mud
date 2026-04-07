@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5334",
+    "spec": {
+        "name": "A Tunnel",
+        "description": "The low-ceilinged tunnel runs east-west.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "east": {
+                "room_id": "the-great-pyramid-5335",
+                "description": "You cannot see into the darkness of the low tunnel."
+            },
+            "west": {
+                "room_id": "the-great-pyramid-5333",
+                "description": "You see a tomb."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

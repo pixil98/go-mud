@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "new-thalos-5554",
+    "spec": {
+        "name": "City Hall",
+        "description": "You stand inside the administrative head of the city. Here the decisions regarding city policy are made. Although the Sultan's word is law, he usually spends his time on affairs outside the city wall.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5445"
+            }
+        }
+    }
+}

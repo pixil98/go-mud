@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6211",
+    "spec": {
+        "name": "By The Barrier",
+        "description": "To the west the magical energy barrier crackles and hums to itself, almost looking harmless. Almost -- all around on the ground are charred corpses and bodies. Several poles with skulls on top face to the west, warning travellers on the forest paths away from here. The air smells of death and decay, and the air is very still. You feel uncomfortable.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "east": {
+                "room_id": "the-orc-enclave-6210"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6212"
+            }
+        },
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "corpse",
+                    "body",
+                    "bodies",
+                    "corpses",
+                    "skull",
+                    "skulls"
+                ],
+                "description": "Demi-human, from the size. The foreheads slop down to a blocky brow, and the braincase seems rather small. On a hunch, you check one of the feet of a torched body. Cloven, like a pig's... Orcs."
+            }
+        ]
+    }
+}

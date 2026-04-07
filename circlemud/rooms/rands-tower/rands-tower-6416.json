@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "rands-tower-6416",
+    "spec": {
+        "name": "The Hidden Treasure Room",
+        "description": "Jackpot! A small room filled with treasure chests! Go get them!",
+        "zone_id": "rands-tower",
+        "exits": {
+            "up": {
+                "room_id": "rands-tower-6414",
+                "closure": {
+                    "name": "trapdoor",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

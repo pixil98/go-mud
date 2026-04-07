@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "newbie-zone-18609",
+    "spec": {
+        "name": "The End Of The Passage",
+        "description": "Ahhh... at last, the end of the hallway... you can exit into open air to the west,or return to the east and make sure you didn't miss anything.",
+        "zone_id": "newbie-zone",
+        "exits": {
+            "east": {
+                "room_id": "newbie-zone-18610",
+                "description": "More of the hallway there... how exciting!"
+            },
+            "west": {
+                "room_id": "newbie-zone-18608",
+                "description": "An open field near The Great Field of Midgaard can be seen."
+            }
+        }
+    }
+}

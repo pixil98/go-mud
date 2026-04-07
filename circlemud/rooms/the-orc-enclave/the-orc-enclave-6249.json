@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6249",
+    "spec": {
+        "name": "A Cave",
+        "description": "A few sleeping pallets, made of moldy straw and stinking furs are arranged around a small firepit here. A wooden cup, carved by a crude tool and cruder hands sits near the ashes filled with water you consider undrinkable. Somewhere to the east you hear an orc child's whining cry, and a voice hushes it urgently. Beware, orcs! Adventurers are here! Hide your children!",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "north": {
+                "room_id": "the-orc-enclave-6246"
+            },
+            "east": {
+                "room_id": "the-orc-enclave-6250"
+            },
+            "south": {
+                "room_id": "the-orc-enclave-6252"
+            }
+        }
+    }
+}

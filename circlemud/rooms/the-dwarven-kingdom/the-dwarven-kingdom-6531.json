@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6531",
+    "spec": {
+        "name": "The Queen's Waiting Room",
+        "description": "This is the Queen's waiting room. Here the men literally 'wait' for the queen. You've heard that the queen really likes to get to 'know' her people, in the biblical sense. The Queen's bedroom is to the north, and you can see stairs to the west.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "north": {
+                "room_id": "the-dwarven-kingdom-6532",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "the-dwarven-kingdom-6530"
+            }
+        }
+    }
+}

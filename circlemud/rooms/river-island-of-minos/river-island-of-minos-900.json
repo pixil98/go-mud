@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-900",
+    "spec": {
+        "name": "On The Swift Flowing River",
+        "description": "As the river exits the city of Midgaard it picks up speed and whisks you along high banks flanked by the trees of Haon-Dor. As the city fades in the east, you approach a gloomy forest to the west.",
+        "zone_id": "river-island-of-minos",
+        "exits": {
+            "east": {
+                "room_id": "southern-part-of-midgaard-3200",
+                "zone_id": "southern-part-of-midgaard"
+            },
+            "west": {
+                "room_id": "river-island-of-minos-901"
+            }
+        }
+    }
+}

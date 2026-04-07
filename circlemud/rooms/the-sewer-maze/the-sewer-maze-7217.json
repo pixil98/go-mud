@@ -1,0 +1,43 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7217",
+    "spec": {
+        "name": "The Half-Dry Drain",
+        "description": "You are in a half-dry sewer drain. To the north the drain runs a little bit downwards into some water to the east you can see a small hole. To the west you see another drain.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "north": {
+                "room_id": "the-sewer-maze-7216",
+                "description": "You see the drain running down into some water."
+            },
+            "east": {
+                "room_id": "the-sewer-maze-7218",
+                "description": "Through the hole you can just make out a very small room."
+            },
+            "west": {
+                "room_id": "the-sewer-maze-7219",
+                "description": "You see a drain running to the west."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "water"
+                ],
+                "description": "The water is dirty but it looks like you would be able to swim in it."
+            },
+            {
+                "keywords": [
+                    "hole"
+                ],
+                "description": "Through the hole you can just make out a very small room."
+            }
+        ]
+    }
+}

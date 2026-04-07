@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2586",
+    "spec": {
+        "name": "A Laboratory",
+        "description": "You are in a small laboratory. Many strange instruments, vials, bottles and some scrawled notes are piled about a workbench. This room is very untidy, looking almost abandoned, or used by a madman. The only apparent exits are east and north.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2584",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "east": {
+                "room_id": "the-high-tower-of-magic-2588"
+            }
+        }
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6150",
+    "spec": {
+        "name": "The Narrow Trail",
+        "description": "This trail looks much spookier than any other that's you have seen. The usual animal claw marks and bites on the trees are becoming few and far between. The trail continues north.",
+        "zone_id": "haon-dor-dark-forest",
+        "exits": {
+            "north": {
+                "room_id": "haon-dor-dark-forest-6151",
+                "description": "The narrow trail continues north."
+            },
+            "south": {
+                "room_id": "haon-dor-dark-forest-6103",
+                "description": "The trail intersects the main forest path."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

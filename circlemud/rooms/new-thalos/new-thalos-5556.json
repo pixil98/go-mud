@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "new-thalos-5556",
+    "spec": {
+        "name": "The Masons' Guild",
+        "description": "There is no doubt that the Dwarves here know what they're doing. They have been invaluable in the building of this beautiful city. Here they are hard at work doing what they do best. The hammers fly in a blur as these talented craftsmen work the stone into ornate bricks, pillars, trim, and many other forms.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "west": {
+                "room_id": "new-thalos-5460"
+            }
+        }
+    }
+}

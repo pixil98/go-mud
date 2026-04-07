@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "new-thalos-5413",
+    "spec": {
+        "name": "Inside The South Gate Of New Thalos",
+        "description": "Two large stone towers rise up to greet you with the massive iron gate swinging on ornately crafted hinges and emblazoned with the crest of New Thalos. The makers of the city spared no expense in rebuilding the defenses or their home. The River Ishtar bridge lies to the north and the desert to the south.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5412"
+            },
+            "south": {
+                "room_id": "new-thalos-5411",
+                "closure": {
+                    "name": "gate",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "new-thalos-5401",
+                        "locked": true
+                    }
+                }
+            }
+        }
+    }
+}

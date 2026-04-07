@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15054",
+    "spec": {
+        "name": "The Top Of The Tower",
+        "description": "This is the highest of all the towers, and is obviously used for lookout purposes. The view is splendid in all four directions. All around you, the rich countryside spreads out to the horizon. To the north and east you see a vast mountain range, and far to the west a beautiful lake. A bit closer, the town of Midgaard lies at the end of the King's Road. The only exit you can see is down again.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "down": {
+                "room_id": "king-welmars-castle-15048",
+                "description": "You see the stairs going back down to the second floor."
+            }
+        }
+    }
+}

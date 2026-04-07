@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4102",
+    "spec": {
+        "name": "The Long Tunnel",
+        "description": "As you travel along this long tunnel, you begin to wonder just how long it is. The walls are fairly far apart, but you can see that they begin to close in rather rapidly to the east. In fact, the manner in which they come together almost reminds you of a funnel.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "east": {
+                "room_id": "mines-of-moria-4103"
+            },
+            "west": {
+                "room_id": "mines-of-moria-4101"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

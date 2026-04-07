@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2664",
+    "spec": {
+        "name": "The Inner Chamber",
+        "description": "You are in a small dark chamber. Upon the walls are glowing sigils of dark power, scrawled and traced in an evil language no longer known to most of this plane of existence. There is an obsidian altar here which seems to glow, but does not shed any light, in fact it seems to be taking light in.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "west": {
+                "room_id": "the-high-tower-of-magic-2661"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

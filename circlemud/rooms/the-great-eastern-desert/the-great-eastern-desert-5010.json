@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5010",
+    "spec": {
+        "name": "A Cave Entrance",
+        "description": "You stand in the middle of a large and beautiful cave. A path leads deeper into the darkness.",
+        "zone_id": "the-great-eastern-desert",
+        "exits": {
+            "south": {
+                "room_id": "the-great-eastern-desert-5009"
+            },
+            "down": {
+                "room_id": "the-great-eastern-desert-5011",
+                "description": "You look down into the cave. Bones are strewn about everywhere."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

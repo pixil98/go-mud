@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3048",
+    "spec": {
+        "name": "Grubby Inn",
+        "description": "You are inside the old Grubby Inn. This place has not been cleaned for several decades; vile smells make you dizzy.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "north": {
+                "room_id": "northern-midgaard-main-city-3024",
+                "description": "You see the alley."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ]
+    }
+}

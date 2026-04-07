@@ -144,6 +144,11 @@ const (
 	// When granted by a room, all occupants are affected unless they have
 	// a countering effect (e.g. infravision, a light source).
 	PerkGrantDark = "dark"
+	// PerkGrantInfravision lets the holder see in dark rooms (personal).
+	PerkGrantInfravision = "infravision"
+	// PerkGrantLight provides light to the entire room. Checked by scanning
+	// all actors in the room — if anyone has it, darkness is negated for all.
+	PerkGrantLight = "light"
 	// PerkGrantNoMagic prevents the holder from casting spells.
 	PerkGrantNoMagic = "nomagic"
 )

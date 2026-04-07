@@ -1,0 +1,16 @@
+{
+    "version": 1,
+    "id": "limbo---internal-3",
+    "spec": {
+        "name": "A Totally Empty Room",
+        "description": "The walls are completely bare... nothing at all in the room. How... utterly bizarre and completely weird. There is a strange portal just above you, and it almost looks as if there is some sort of room above you.",
+        "zone_id": "limbo---internal",
+        "exits": {
+            "up": {
+                "room_id": "northern-midgaard-main-city-3048",
+                "zone_id": "northern-midgaard-main-city",
+                "description": "You notice that the portal above you looks almost like glass, albeit very dirty glass."
+            }
+        }
+    }
+}

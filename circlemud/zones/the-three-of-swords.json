@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords",
+    "spec": {
+        "name": "The Three Of Swords",
+        "reset_mode": "lifespan",
+        "lifespan": "30m"
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "new-thalos-5596",
+    "spec": {
+        "name": "The Secret Cell",
+        "description": "This room seems more like a lair than a cell. Small bits of hay lie strewn about the floor covering bones of unkown origin. Spatterd blood and tufts of grey hair lie matted in one corner. As you turn to leave you notice a pair of small red eyes peering at you from the darkness.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "west": {
+                "room_id": "new-thalos-5595",
+                "closure": {
+                    "name": "crack",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "new-thalos-5400",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

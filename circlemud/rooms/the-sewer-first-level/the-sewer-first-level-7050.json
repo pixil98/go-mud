@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7050",
+    "spec": {
+        "name": "The Small Room",
+        "description": "The only thing in this room of interest is a chair, and that appears to have been bolted to the rock floor. A doorway leads south and another leads east into darkness.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "east": {
+                "room_id": "the-sewer-first-level-7055",
+                "description": "Utter darkness..."
+            },
+            "south": {
+                "room_id": "the-sewer-first-level-7051",
+                "description": "You can see a room with a lot of light in it. You can't make out any details."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

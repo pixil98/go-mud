@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "new-thalos-5444",
+    "spec": {
+        "name": "West Casbah",
+        "description": "The air takes on a somber note as you stand before the entrance to the jailhouse of New Thalos. Hopefully you won't ever see this structure from the inside. The northwest tower stands here with a spiral staircase leading up. The Avenue ends here, only exiting to the east.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5445"
+            },
+            "south": {
+                "room_id": "new-thalos-5553",
+                "closure": {
+                    "name": "gate",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "new-thalos-5493",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            },
+            "up": {
+                "room_id": "new-thalos-5559"
+            }
+        }
+    }
+}

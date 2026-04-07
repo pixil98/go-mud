@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1510",
+    "spec": {
+        "name": "Temptation",
+        "description": "Old tales tell of a conversation between the devil and the Prophet Jesus: the devil offered him a kingdom, vast riches, the temptation of a glorious near-death saved by his angels. Even this Messenger of God was forced to stop and think. Imagine how hard it could be for the rest.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "north": {
+                "room_id": "the-straight-path-1511"
+            },
+            "south": {
+                "room_id": "the-straight-path-1509"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

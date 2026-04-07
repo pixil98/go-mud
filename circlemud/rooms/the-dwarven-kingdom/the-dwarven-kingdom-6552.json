@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6552",
+    "spec": {
+        "name": "The End Of The Maze",
+        "description": "You have solved the maze. You can tell by the last few moves that there is no way that a dumb worker could have figured that out. It seems pretty desolate here. To the south is a bleak room. To the north, you see the maze. There is a sign above the south exit: THOSE WHO ENTER, PLAN ON A TIMELY DEATH. (ESPECIALLY IF YOU'RE LOYAL TO THE QUEEN)",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "north": {
+                "room_id": "the-dwarven-kingdom-6550"
+            },
+            "south": {
+                "room_id": "the-dwarven-kingdom-6553"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

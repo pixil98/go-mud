@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "new-thalos-5564",
+    "spec": {
+        "name": "The Tanners' Guild",
+        "description": "You first notice the pungent smell of freshly tanned leather goods as you enter this strange place. The next thing that grabs your attention is the many colors that these people have transformed the beautiful skins into. The people are streaching the leather and cutting it into the shapes they need. You notice a small message on a wall.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5462"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "message"
+                ],
+                "description": "The message appears to read: I hate being a Tanner"
+            }
+        ]
+    }
+}

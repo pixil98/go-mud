@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3050",
+    "spec": {
+        "name": "The Deserted Warehouse",
+        "description": "You are inside the warehouse. The room is decorated with various old items from ships.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "north": {
+                "room_id": "northern-midgaard-main-city-3046",
+                "description": "You see the alley."
+            }
+        }
+    }
+}

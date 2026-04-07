@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5433",
+    "spec": {
+        "name": "West Ishtar Drive",
+        "description": "This is the warehouse district of New Thalos. Strong men walk back and forth from the docks to the warehouse carrying large crates loading and unloading the boats as they sail down the river. To the north is one of the entrances of the warehouse and West Ishtar leads east.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5540"
+            },
+            "east": {
+                "room_id": "new-thalos-5434"
+            }
+        }
+    }
+}

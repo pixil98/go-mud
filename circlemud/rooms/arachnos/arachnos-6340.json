@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "arachnos-6340",
+    "spec": {
+        "name": "The Elder Wormkin's Room",
+        "description": "A more mature wormkin it seems resides here. Various tomes of arcane lore clutter the area, along with shards of armor and weaponry.",
+        "zone_id": "arachnos",
+        "exits": {
+            "down": {
+                "room_id": "arachnos-6331"
+            }
+        }
+    }
+}

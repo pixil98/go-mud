@@ -1,0 +1,43 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7013",
+    "spec": {
+        "name": "A Muddy Intersection",
+        "description": "You wouldn't want to know the true feeling of standing in this mud up to your hips. >BWAADR<. All that fills your mind right now is the dream of a hot bath. This is NOT very clean mud you know, remember you're in the sewer! The pipes leads north, south and east.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "north": {
+                "room_id": "the-sewer-first-level-7012",
+                "description": "North. Sludge and sediment fills this corridor of the sewer that leads into a bend going west."
+            },
+            "east": {
+                "room_id": "the-sewer-first-level-7026",
+                "description": "East. You can see absolutely nothing of interest in that direction (Maybe that is why it is so damn interesting...) There is no mud in that direction either, GREAT!"
+            },
+            "south": {
+                "room_id": "the-sewer-first-level-7014",
+                "description": "South. All you can see is more mud! Although the pipe goes into a bend leading west."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "mud"
+                ],
+                "description": "It is as dark as tar and looks like something out of a toilet, on top of that, the smell is absolutely overwhelming."
+            },
+            {
+                "keywords": [
+                    "sediment"
+                ],
+                "description": "It is NOT the kind of matter that would concern you too much, normally, but as you are in the middle of it, it just might become your main concern. REAL YUCKY!"
+            }
+        ]
+    }
+}

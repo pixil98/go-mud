@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15009",
+    "spec": {
+        "name": "Under The Tower",
+        "description": "You are below one the three mighty towers of the Castle. There are no guards here, and you sense that this part of the Castle is largely unused. There are stairs going up to the tower, and there is also an exit to the north.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "north": {
+                "room_id": "king-welmars-castle-15014",
+                "description": "You see a small, dimly lit passage."
+            },
+            "up": {
+                "room_id": "king-welmars-castle-15034",
+                "description": "The stairs are old, but in good repair. They lead up into the tower."
+            }
+        },
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "stairs"
+                ],
+                "description": "The stairs are old, but in good repair. They lead up into the tower."
+            }
+        ]
+    }
+}

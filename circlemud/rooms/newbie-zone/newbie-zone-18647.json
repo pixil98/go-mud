@@ -1,0 +1,43 @@
+{
+    "version": 1,
+    "id": "newbie-zone-18647",
+    "spec": {
+        "name": "The South Stairs",
+        "description": "Here, the hall opens into a wide room, with a high domed roof. Now that that you have come clear of the enclosed passage, you can see that the stair leads upward to an open air balcony overlooking the area. to the north the room continues, and another stair is visible matching the one in front of you.",
+        "zone_id": "newbie-zone",
+        "exits": {
+            "north": {
+                "room_id": "newbie-zone-18642",
+                "description": "Another stairway is to the north, as well as a passage to the west."
+            },
+            "south": {
+                "room_id": "newbie-zone-18604",
+                "description": "A narrow passage to the south, ending in a wood door."
+            },
+            "west": {
+                "room_id": "newbie-zone-18646",
+                "description": "Back down the bright hallway."
+            },
+            "up": {
+                "room_id": "newbie-zone-18645",
+                "description": "An open air balcony."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "staircase",
+                    "stair",
+                    "stairs"
+                ],
+                "description": "They are constructed of smooth, beautiful marble."
+            }
+        ]
+    }
+}

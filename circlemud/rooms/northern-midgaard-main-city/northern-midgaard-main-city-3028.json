@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3028",
+    "spec": {
+        "name": "The Thieves' Bar",
+        "description": "The bar of the thieves. Once upon a time this place was beautifully furnished, but now it seems almost empty. To the south is the yard, and to the west is the entrance hall. (Maybe the furniture has been stolen?!)",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "south": {
+                "room_id": "northern-midgaard-main-city-3029",
+                "description": "You see the secret yard."
+            },
+            "west": {
+                "room_id": "northern-midgaard-main-city-3027",
+                "description": "You see the entrance hall to the thieves' guild."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "furniture"
+                ],
+                "description": "As you look at the furniture, the chair you sit on disappears."
+            }
+        ]
+    }
+}

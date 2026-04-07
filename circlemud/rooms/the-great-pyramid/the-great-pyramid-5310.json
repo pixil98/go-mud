@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5310",
+    "spec": {
+        "name": "The Fire Pool",
+        "description": "This room is dominated by a massive raised pool that is filled with not water but flames of intense heat. The multicoloured flames lick out at you, searching for things to burn. The pool proceeds to the east into a small chamber.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "east": {
+                "room_id": "the-great-pyramid-5309",
+                "description": "You see a large stone door.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "the-great-pyramid-5311",
+                "description": "You see a small chamber filled with fire."
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

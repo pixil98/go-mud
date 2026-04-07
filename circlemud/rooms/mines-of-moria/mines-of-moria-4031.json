@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4031",
+    "spec": {
+        "name": "The Valley",
+        "description": "You are in a small valley, surrounded by hills and a mountain to the south. In the mountain there is a cave. To the north you can enter the hills. There is a small trail leading up a steep hill to the east.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4032"
+            },
+            "east": {
+                "room_id": "mines-of-moria-4045",
+                "description": "You spot a small trail leading into the hills to the east."
+            },
+            "south": {
+                "room_id": "mines-of-moria-4029"
+            }
+        }
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-909",
+    "spec": {
+        "name": "The Last Stop",
+        "description": "The delta meets the sea here. To the west you see nothing but ocean on the horizon. Sea birds squawk noisily at your approach and take flight from a nearby beach head on the island. It looks as though this could be the last stop for those heading out to sea.",
+        "zone_id": "river-island-of-minos",
+        "exits": {
+            "north": {
+                "room_id": "river-island-of-minos-910"
+            },
+            "east": {
+                "room_id": "river-island-of-minos-908"
+            }
+        }
+    }
+}

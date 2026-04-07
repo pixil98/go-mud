@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2544",
+    "spec": {
+        "name": "The Apprentices' Barracks",
+        "description": "You are in the barracks of the apprentice magic users. Here and there, a young apprentice sits engrossed in magical study, or practicing a feeble cantrip. Cots line the walls, and the room continues east.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "east": {
+                "room_id": "the-high-tower-of-magic-2542"
+            },
+            "south": {
+                "room_id": "the-high-tower-of-magic-2543",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

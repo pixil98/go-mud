@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6017",
+    "spec": {
+        "name": "A Small Path In The Dense Forest",
+        "description": "You are at a turn on a small path leading through the dense forest. The forest seems to become lighter to the west. The path continues north and west.",
+        "zone_id": "haon-dor-light-forest",
+        "exits": {
+            "north": {
+                "room_id": "haon-dor-light-forest-6016",
+                "description": "The small path leads north through the trees."
+            },
+            "west": {
+                "room_id": "haon-dor-light-forest-6018",
+                "description": "The small path leads west through the trees to a lighter part of the forest."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "path",
+                    "paths"
+                ],
+                "description": "The narrow path is probably used by the animals living in the forest."
+            },
+            {
+                "keywords": [
+                    "tree",
+                    "trees"
+                ],
+                "description": "The crowns of the old trees leave the forest in an unreal twilight illumination. A large branch looms above you, over the path."
+            },
+            {
+                "keywords": [
+                    "up",
+                    "branches",
+                    "branch",
+                    "large"
+                ],
+                "description": "The branch of a large oak stretches out above the path from the east."
+            }
+        ]
+    }
+}

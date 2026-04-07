@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "new-thalos-5698",
+    "spec": {
+        "name": "Under The dock",
+        "description": "You are swiming underneath the dock. You can see the four wooden pylons that support the structure. The murky water clouds you vision as you gaze westward, but you think you can make out an iron grating in that direction.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "west": {
+                "room_id": "new-thalos-5699",
+                "closure": {
+                    "name": "grate",
+                    "closed": true
+                }
+            },
+            "up": {
+                "room_id": "new-thalos-5697"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

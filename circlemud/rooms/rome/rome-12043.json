@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "rome-12043",
+    "spec": {
+        "name": "The Waiting Room",
+        "description": "You are standing in a very large room with a high ceiling and there are a few people waiting here to see the Emperor on urgent matters. The master scheduler tells you to have a seat and sends a page to inform the his highness of your arrival. There are large doors to the east and west and an exit leads south to the foyer.",
+        "zone_id": "rome",
+        "exits": {
+            "east": {
+                "room_id": "rome-12050",
+                "description": "There is a sign on the door that says: MUNICIPAL COURT OF ROME. It appears to be open."
+            },
+            "south": {
+                "room_id": "rome-12044",
+                "description": "The foyer is directly to the south."
+            },
+            "west": {
+                "room_id": "rome-12036",
+                "description": "There is a large door to the west.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "rome-12035",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        }
+    }
+}

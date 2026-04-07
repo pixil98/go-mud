@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "rands-tower-6440",
+    "spec": {
+        "name": "An Alcove",
+        "description": "This alcove leads into a huge room to your north, and to stairs leading down to the east, and stairs going up to your west.",
+        "zone_id": "rands-tower",
+        "exits": {
+            "north": {
+                "room_id": "rands-tower-6441"
+            },
+            "east": {
+                "room_id": "rands-tower-6442"
+            },
+            "west": {
+                "room_id": "rands-tower-6439"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

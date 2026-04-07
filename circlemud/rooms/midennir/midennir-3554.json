@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "midennir-3554",
+    "spec": {
+        "name": "A Small Alcove",
+        "description": "A small alcove has been carved out here. There are a bunch of twigs and leaves thrown into a pile here, probably serving as a bed.",
+        "zone_id": "midennir",
+        "exits": {
+            "west": {
+                "room_id": "midennir-3553",
+                "description": "You see the main passageway."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "twigs",
+                    "leaves",
+                    "bead"
+                ],
+                "description": "The twigs and leaves have all been piled together as a makeshift bed for some small humanoid."
+            }
+        ]
+    }
+}

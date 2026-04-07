@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3128",
+    "spec": {
+        "name": "On The Concourse",
+        "description": "The Concourse continues both east and west. Emerald Avenue is north of here.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "north": {
+                "room_id": "southern-part-of-midgaard-3125"
+            },
+            "east": {
+                "room_id": "southern-part-of-midgaard-3129"
+            },
+            "west": {
+                "room_id": "southern-part-of-midgaard-3127"
+            }
+        }
+    }
+}

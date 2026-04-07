@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3155",
+    "spec": {
+        "name": "Inside The Chapel",
+        "description": "You are in a small, dark chapel. The dark brown glass in the tiny windows do not let much light through. A few rows of worn wooden benches stand here and an ancient altar sits in the middle of the floor.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "north": {
+                "room_id": "southern-part-of-midgaard-3154",
+                "description": "The chapel door is made of dark wood.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "glass",
+                    "windows"
+                ],
+                "description": "The windows must be meant to be dark. At least they are completely clean."
+            },
+            {
+                "keywords": [
+                    "altar"
+                ],
+                "description": "The altar looks very old... you examine the floor around the altar and notice that it seems less dusty than the rest of the room... someone must clean here regularly... maybe that old guy in Park Cafe, he looked like that sort..."
+            },
+            {
+                "keywords": [
+                    "benches",
+                    "rows"
+                ],
+                "description": "The benches are not of the comfortable kind."
+            }
+        ]
+    }
+}

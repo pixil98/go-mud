@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3367",
+    "spec": {
+        "name": "A Small, Dangerous Path",
+        "description": "This path leads up, up, up the side of the mountain, to the evil-seeming cave. It also heads down to the south--a lot safer place to be. In fact, you hear footsteps above your head...",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "south": {
+                "room_id": "the-three-of-swords-3366"
+            },
+            "up": {
+                "room_id": "the-three-of-swords-3368"
+            }
+        }
+    }
+}

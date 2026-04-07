@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "rome-12008",
+    "spec": {
+        "name": "Peanut Heaven",
+        "description": "You are now so high up that you begin to feel lightheaded and your nose feels like it is going to start bleeding. There aren't even benches to sit on here; just bare dirty stone. The view of the surrounding country is spectacular. Unfortunately you can barely see the playing field. There is a set of steps here, leading down.",
+        "zone_id": "rome",
+        "exits": {
+            "down": {
+                "room_id": "rome-12015",
+                "description": "Watch your step!"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "landscape",
+                    "country"
+                ],
+                "description": "You can see the entire city of Rome from here. The buildings housing the Roman government are to the east. To the south east, off in the distance, is the massive aqueduct and further in that direction lies the Mountain of the Gods."
+            }
+        ]
+    }
+}

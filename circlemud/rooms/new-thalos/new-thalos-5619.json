@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "new-thalos-5619",
+    "spec": {
+        "name": "The Headwaters Of The River Of Lost Souls",
+        "description": "You are at the headwaters of what is oft called the darkest river in the land. Looking at the swampy water pooling in this rocky valley, you can see why the water downstream is so dark. The rock walls reach up around you blocking all exits except that to the north up onto the banks, and to the south where the river flows.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "the-straight-path-1500",
+                "zone_id": "the-straight-path",
+                "description": "There is a small path leading away from the bank just to the north."
+            },
+            "south": {
+                "room_id": "new-thalos-5634",
+                "description": "The waters of this swampy pool are flowing slowly towards the south."
+            }
+        }
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4002",
+    "spec": {
+        "name": "The End Of The Path",
+        "description": "The path stops here, to the north is a single mountain and around you are some threatening hills. A small trail leads up the hillside through the rocks to a dark cave located to the north. Off to the northeast, you can see the southern end of what appears to be a large mountain range.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4010"
+            },
+            "south": {
+                "room_id": "mines-of-moria-4001"
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

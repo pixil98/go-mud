@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "new-thalos-5478",
+    "spec": {
+        "name": "Underground",
+        "description": "The alley turns again here and heads south and west. You notice a small glint of light from above.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "south": {
+                "room_id": "new-thalos-5457"
+            },
+            "west": {
+                "room_id": "new-thalos-5477"
+            },
+            "up": {
+                "room_id": "new-thalos-5470",
+                "closure": {
+                    "name": "manhole",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

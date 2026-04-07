@@ -1,0 +1,10 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3055",
+    "spec": {
+        "name": "Odin's Store",
+        "description": "This is the small dark room in which Odin keeps the player items that he takes care of. It is vital that this room's virtual number is exactly one larger than the room by the temple altar.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {}
+    }
+}

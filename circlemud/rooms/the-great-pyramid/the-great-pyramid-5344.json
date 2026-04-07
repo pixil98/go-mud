@@ -1,0 +1,51 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5344",
+    "spec": {
+        "name": "The Tomb Entrance",
+        "description": "You are in a small, dark chamber that has stood undisturbed for many years. To the north stands a massive stone tomb, which is covered in hieroglyphics and gold-lined carvings that mark it as the final resting place of the mighty pharoahs of this land.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "north": {
+                "room_id": "the-great-pyramid-5345",
+                "description": "You see the tomb of the pharoahs.",
+                "closure": {
+                    "name": "tomb",
+                    "closed": true
+                }
+            },
+            "up": {
+                "room_id": "the-great-pyramid-5343",
+                "description": "The stone ceiling has some cracks in it, through which a dim light streams.",
+                "closure": {
+                    "name": "ceiling",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "tomb"
+                ],
+                "description": "The tomb looks like it has stood for many years, much like the pyramid which encloses it. It is covered in small hieroglyphics."
+            },
+            {
+                "keywords": [
+                    "hieroglyphics",
+                    "carvings"
+                ],
+                "description": "The markings indicate that this tomb is indeed the tomb of the greatest pharoahs of the ancient civilization that built this massive pyramid."
+            }
+        ]
+    }
+}

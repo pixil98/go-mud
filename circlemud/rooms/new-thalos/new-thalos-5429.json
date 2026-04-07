@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5429",
+    "spec": {
+        "name": "East Main Street",
+        "description": "As you walk by the mercenary guild a cold chill causes you to shiver uncontrollably. You see some shady looking characters lurking about the entrance to this house of 'helpful' people. Perhaps curiosity gets the best of you, but you wonder what could be going on inside. To the north you see the open doors of the apothecary shop where one may buy many magical livations. Main Street continues east and west from here.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5523"
+            },
+            "east": {
+                "room_id": "new-thalos-5430"
+            },
+            "south": {
+                "room_id": "new-thalos-5530"
+            },
+            "west": {
+                "room_id": "new-thalos-5428"
+            }
+        }
+    }
+}

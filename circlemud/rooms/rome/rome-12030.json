@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "rome-12030",
+    "spec": {
+        "name": "Nero Drive",
+        "description": "You are walking on a paved road that runs south through the city of Rome. A great gate is directly north of here. The Roman citizens are very friendly and tip their hats or say hello as you pass.",
+        "zone_id": "rome",
+        "exits": {
+            "north": {
+                "room_id": "rome-12029",
+                "description": "To the north, you can see a gate leading out of the city."
+            },
+            "south": {
+                "room_id": "rome-12031",
+                "description": "Nero Drive continues in that direction."
+            },
+            "west": {
+                "room_id": "rome-12062",
+                "description": "You see the bakery of Rome."
+            }
+        }
+    }
+}

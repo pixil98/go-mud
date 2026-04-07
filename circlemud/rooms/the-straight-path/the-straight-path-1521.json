@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1521",
+    "spec": {
+        "name": "The Light of the Rashidun",
+        "description": "Every majestic and happy tale must end, usually all too soon, and thus it was with the golden age of the Caliphate. The Rashidun were pure men, good men, true to the path, but their followers soon began to bicker, and civil war was on the horizon.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "south": {
+                "room_id": "the-straight-path-1520"
+            },
+            "north": {
+                "room_id": "the-straight-path-1522"
+            }
+        }
+    }
+}

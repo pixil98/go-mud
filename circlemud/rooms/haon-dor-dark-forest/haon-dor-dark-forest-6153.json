@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6153",
+    "spec": {
+        "name": "Inside The Great Tree",
+        "description": "You have stepped inside of this hollowed tree. From here steps lead down into darkness or you can exit the tree by going west.",
+        "zone_id": "haon-dor-dark-forest",
+        "exits": {
+            "west": {
+                "room_id": "haon-dor-dark-forest-6152",
+                "description": "The door is carved beautifully.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "down": {
+                "room_id": "haon-dor-dark-forest-6154",
+                "description": "The steps look appear like they will hold your weight."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1523",
+    "spec": {
+        "name": "Spritual Reward",
+        "description": "Behold, Allah is the Provider, the most Generous. He would not suffer his believers to walk the path of light without guidance. He provided the Prophets, may peace be upon them, and in the examples of their own growth, we shall find the truth of our own.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "north": {
+                "room_id": "the-straight-path-1524"
+            },
+            "west": {
+                "room_id": "the-straight-path-1507"
+            }
+        }
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "newbie-zone-18608",
+    "spec": {
+        "name": "An Open Field By The Great Field",
+        "description": "Finally, you are in an open field... it is so nice to breathe fresh air again! You can return to that dank, smelly place to the east, or take the exit to the north which appears to lead into a large field.",
+        "zone_id": "newbie-zone",
+        "exits": {
+            "north": {
+                "room_id": "northern-midgaard-main-city-3061",
+                "zone_id": "northern-midgaard-main-city",
+                "description": "There appears to be a field road to the north."
+            },
+            "east": {
+                "room_id": "newbie-zone-18609",
+                "description": "The end of that darn hallway lies back to the east."
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

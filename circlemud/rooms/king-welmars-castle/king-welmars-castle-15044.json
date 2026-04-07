@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15044",
+    "spec": {
+        "name": "The Bedroom",
+        "description": "This room is dominated by the huge four-poster bed, that stands against the northern wall. The room is large and cosy, and the bed virtually begs you to lie down in it and sleep.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "south": {
+                "room_id": "king-welmars-castle-15039",
+                "description": "You see the living room of the suite."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "bed"
+                ],
+                "description": "Large, comfortable, bolstered... Invites you to sleep in it."
+            }
+        ]
+    }
+}

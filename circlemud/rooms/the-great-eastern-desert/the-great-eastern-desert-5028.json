@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5028",
+    "spec": {
+        "name": "The Great Eastern Desert",
+        "description": "A vast desert stretches for miles, the sands constantly shifting around you. A pyramid lies to the north-east and a snow-capped mountain range to the west. You spy a narrow dirt trail leading away to the west into the foothills.",
+        "zone_id": "the-great-eastern-desert",
+        "exits": {
+            "north": {
+                "room_id": "the-great-eastern-desert-5027",
+                "description": "Sand as far as the eye can see."
+            },
+            "east": {
+                "room_id": "the-great-eastern-desert-5033",
+                "description": "Sand as far as the eye can see."
+            },
+            "south": {
+                "room_id": "the-great-eastern-desert-5029",
+                "description": "Sand as far as the eye can see."
+            },
+            "west": {
+                "room_id": "rome-12068",
+                "zone_id": "rome",
+                "description": "A small dirt trail leads off to the west where it joins a large clay road some distance away."
+            }
+        }
+    }
+}

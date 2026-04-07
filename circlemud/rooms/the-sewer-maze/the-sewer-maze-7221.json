@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7221",
+    "spec": {
+        "name": "The Sewer Drain",
+        "description": "You are in a sewer drain, there is nothing special in here, except for a loud echo.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "east": {
+                "room_id": "the-sewer-maze-7222",
+                "description": "You can see another sewer drain."
+            },
+            "west": {
+                "room_id": "the-sewer-maze-7220",
+                "description": "You can make out a sewer drain to the west."
+            },
+            "up": {
+                "room_id": "the-second-sewer-7129",
+                "zone_id": "the-second-sewer",
+                "description": "You can see a sewer line."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

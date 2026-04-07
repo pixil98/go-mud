@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "arachnos-6302",
+    "spec": {
+        "name": "The Webby Passage",
+        "description": "You find that footing here is very good, almost too good. The limbs are coated with cobwebs and seem unusually strong for tree branches. Paths lead in four directions. The eastward path goes down a bit.",
+        "zone_id": "arachnos",
+        "exits": {
+            "north": {
+                "room_id": "arachnos-6304"
+            },
+            "east": {
+                "room_id": "arachnos-6305"
+            },
+            "south": {
+                "room_id": "arachnos-6301"
+            },
+            "west": {
+                "room_id": "arachnos-6303"
+            }
+        }
+    }
+}

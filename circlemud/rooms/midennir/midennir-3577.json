@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "midennir-3577",
+    "spec": {
+        "name": "The Bard's Table",
+        "description": "You are in a darker corner in the Inn. A large round table with a few wooden chairs sits here. There is a large stain on the table, the remnants of a spilled drink.",
+        "zone_id": "midennir",
+        "exits": {
+            "east": {
+                "room_id": "midennir-3574",
+                "description": "You see the main floor of the Inn to the east."
+            }
+        }
+    }
+}

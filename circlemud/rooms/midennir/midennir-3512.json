@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "midennir-3512",
+    "spec": {
+        "name": "The Miden'nir",
+        "description": "The trees of Miden'nir are lush and green, hiding the evil that lurks in these woods. You can go north toward the mountains, or west to the forest, but the steep mountains prevent any movement east.",
+        "zone_id": "midennir",
+        "exits": {
+            "north": {
+                "room_id": "midennir-3550",
+                "description": "The mountains can be seen to the north."
+            },
+            "south": {
+                "room_id": "midennir-3513",
+                "description": "A light section of forest."
+            },
+            "west": {
+                "room_id": "midennir-3509",
+                "description": "The forest continues here."
+            }
+        }
+    }
+}

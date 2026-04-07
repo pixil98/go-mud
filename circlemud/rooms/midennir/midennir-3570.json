@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "midennir-3570",
+    "spec": {
+        "name": "The Front Of The Inn",
+        "description": "You are standing on a well-worn path which opens into a clearing. An old, wooden building is here with smoke billowing from its chimney. A painted sign is visible on the porch to the west. You could go north or south around the building or leave this place and return to the forest.",
+        "zone_id": "midennir",
+        "exits": {
+            "north": {
+                "room_id": "midennir-3571",
+                "description": "You can go north around the Inn."
+            },
+            "east": {
+                "room_id": "midennir-3505",
+                "description": "Back through the trees to the Miden'nir."
+            },
+            "south": {
+                "room_id": "midennir-3572",
+                "description": "You can go south around the Inn."
+            },
+            "west": {
+                "room_id": "midennir-3574",
+                "description": "The front door of the Inn beckons."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "sign"
+                ],
+                "description": "The sign reads: The Woodsman"
+            }
+        ]
+    }
+}

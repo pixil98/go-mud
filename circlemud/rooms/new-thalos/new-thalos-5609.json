@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5609",
+    "spec": {
+        "name": "On A Rope Bridge",
+        "description": "The small rope bridge shudders under your weight as you make your way across the valley.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5627"
+            },
+            "west": {
+                "room_id": "new-thalos-5608"
+            }
+        }
+    }
+}

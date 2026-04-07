@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7920",
+    "spec": {
+        "name": "The Free Fall From The Chain",
+        "description": "This is probably the third worst place to be in this entire MUD right now. You fall . . . and fall . . . and fall . . . and HIT THE GROUND WITH SUCH A *SPLUTCH* that you die horribly, but instantly. Good-bye cruel world.",
+        "zone_id": "redfernes-residence",
+        "exits": {
+            "north": {
+                "room_id": "redfernes-residence-7914"
+            },
+            "east": {
+                "room_id": "redfernes-residence-7915"
+            },
+            "south": {
+                "room_id": "redfernes-residence-7916"
+            },
+            "west": {
+                "room_id": "redfernes-residence-7917"
+            },
+            "up": {
+                "room_id": "redfernes-residence-7918"
+            },
+            "down": {
+                "room_id": "southern-part-of-midgaard-3120",
+                "zone_id": "southern-part-of-midgaard"
+            }
+        },
+        "flags": [
+            "death"
+        ]
+    }
+}

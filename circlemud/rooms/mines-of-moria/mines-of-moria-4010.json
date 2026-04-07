@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4010",
+    "spec": {
+        "name": "The Cave",
+        "description": "You are standing in a small cave, about fifteen feet across at the widest point and about forty feet long. Off to the south you sense fresh air and you surmise that the entrance must be located off in that direction. To the north a small tunnel continues into the mountain.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "south": {
+                "room_id": "mines-of-moria-4002"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

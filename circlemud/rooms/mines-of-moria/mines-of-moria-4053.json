@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4053",
+    "spec": {
+        "name": "The Tunnel",
+        "description": "You continue along the tunnel to find yourself at a right angle turn. The passage leads north and east from here. The way to the north seems to be a longer tunnel which continues on through the gloom of the underearth. The way to the east is a fresh change from what would normally be found this far underground in that the tunnel seems to open up into a fairly large and well lit cave.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4050"
+            },
+            "east": {
+                "room_id": "mines-of-moria-4054"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

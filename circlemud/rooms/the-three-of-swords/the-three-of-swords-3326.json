@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3326",
+    "spec": {
+        "name": "A Cave Passageway",
+        "description": "You can head north and west through the cave passageways here, both ways dimly lit by the ever-present sconces on the walls. The echoes you heard earlier seem to be getting louder, and seem to be coming from the northern passage. You feeled a bit chilled from the cooled cave air and shiver a bit in the faint whisper of a breeze. This place is a little too eerie and dark to be comfortable in.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "north": {
+                "room_id": "the-three-of-swords-3327"
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3325"
+            }
+        }
+    }
+}

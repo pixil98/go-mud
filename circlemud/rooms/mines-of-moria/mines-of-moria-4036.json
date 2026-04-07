@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4036",
+    "spec": {
+        "name": "The Plains",
+        "description": "You are in the plains. The path leads to the south. As you look around you notice a small almost invisible trail leading away to the west towards a copse of trees.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "south": {
+                "room_id": "mines-of-moria-4035"
+            },
+            "west": {
+                "room_id": "mines-of-moria-4075"
+            }
+        }
+    }
+}

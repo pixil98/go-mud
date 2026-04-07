@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "midennir-3516",
+    "spec": {
+        "name": "Some Muddy Ground",
+        "description": "The ground is quite muddy here and puddles are all around. Your boots make a disgusting SQUISH as you walk here. You can go in any of the four cardinal directions from here. Hopefully, it will be dryer.",
+        "zone_id": "midennir",
+        "exits": {
+            "north": {
+                "room_id": "midennir-3510",
+                "description": "The Miden'nir continues."
+            },
+            "east": {
+                "room_id": "midennir-3517",
+                "description": "More trees."
+            },
+            "south": {
+                "room_id": "midennir-3519",
+                "description": "The trees get VERY thick to the south. You can barely see..."
+            },
+            "west": {
+                "room_id": "midennir-3515",
+                "description": "Some light trees and daylight."
+            }
+        }
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "new-thalos-5557",
+    "spec": {
+        "name": "The Guard House",
+        "description": "You stand inside the southern of the two main guard houses. The stone interior has a spartan look to it, only the bare neccesities. A few weapons are mounted on the walls in case they might be needed.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5550"
+            }
+        }
+    }
+}

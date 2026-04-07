@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6232",
+    "spec": {
+        "name": "A Forest Trail",
+        "description": "The trail is widening to the west, where the path leads all the way up to the side of the mountains that enclose this valley. Many of the trees have been cut down around here, and it definitely looks as if the forest is ending. Eastwards the trail leads on into the thick of the forest. A small split off trail leads away to the south here.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "east": {
+                "room_id": "the-orc-enclave-6230"
+            },
+            "south": {
+                "room_id": "the-orc-enclave-6227"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6233"
+            }
+        }
+    }
+}

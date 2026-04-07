@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "new-thalos-5454",
+    "spec": {
+        "name": "The Casbah",
+        "description": "The Avenue ends here, turning south to become Kali Row. Traveling in that direction will take you to the Library and the grand dance hall of the city. The northeast tower of the wall is accessible here up a spiral staircase.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "south": {
+                "room_id": "new-thalos-5455"
+            },
+            "west": {
+                "room_id": "new-thalos-5453"
+            },
+            "up": {
+                "room_id": "new-thalos-5562"
+            }
+        }
+    }
+}

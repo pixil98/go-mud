@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "arachnos-6371",
+    "spec": {
+        "name": "The Single Spider Line",
+        "description": "A single spider line supports you once more. As you look across the ether you seen a single shack up ahead with a light in the window. You sense a great evil coming from the north and feel inclined to go back on the ethereal web and take your chances there.",
+        "zone_id": "arachnos",
+        "exits": {
+            "north": {
+                "room_id": "arachnos-6331"
+            },
+            "south": {
+                "room_id": "arachnos-6372"
+            }
+        }
+    }
+}

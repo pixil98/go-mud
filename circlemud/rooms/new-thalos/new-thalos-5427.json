@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5427",
+    "spec": {
+        "name": "East Main Street",
+        "description": "Here on East Main, you smell the odor of freshly slaughtered meat and, hear the pounding of new metal from the armory. The Square is to the west and a junction is to the East.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5428"
+            },
+            "west": {
+                "room_id": "new-thalos-5417"
+            }
+        }
+    }
+}

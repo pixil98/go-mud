@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2666",
+    "spec": {
+        "name": "A Bright Hallway",
+        "description": "You are in a long well lit hallway leading east and west. The walls here are a milky white colour, and glow with a warm luminescence, as does the floor. A feeling of goodness permeates the area, and you feel unworthy to tread upon these sacred floors. A huge set of double doors in finely worked ivory can be seen to the west.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "east": {
+                "room_id": "the-high-tower-of-magic-2665"
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2667",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

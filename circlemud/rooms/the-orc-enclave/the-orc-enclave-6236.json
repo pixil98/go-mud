@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6236",
+    "spec": {
+        "name": "A Forest Trail",
+        "description": "The trail continues here to the east and west, with a small trail splitting off towards a large clearing to the south. Two wooden poles with skulls on top warn you away from the south, and succeed in making you feel quite uncomfortable. Strange...",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "east": {
+                "room_id": "the-orc-enclave-6235"
+            },
+            "south": {
+                "room_id": "the-orc-enclave-6237"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6238"
+            }
+        }
+    }
+}

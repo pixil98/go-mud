@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "drow-city-5112",
+    "spec": {
+        "name": "The Throne Room",
+        "description": "The throne room of the 1st house is in one word...awesome. It is so horrifying it is almost beautiful.",
+        "zone_id": "drow-city",
+        "exits": {
+            "north": {
+                "room_id": "drow-city-5113",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "east": {
+                "room_id": "drow-city-5111"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

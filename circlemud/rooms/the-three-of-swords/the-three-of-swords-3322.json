@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3322",
+    "spec": {
+        "name": "A Cave Passageway",
+        "description": "This is a T-intersection in the cave passageway, the north leading back towards the cave's entrance (you think!), the west leading towards a well-lighted area. Eastwards the passageway continues into the shadowy recesses of the mountain uninvitingly. The echoes of voices are confusing you a bit, and you are not sure whether you should try to remain quiet or not.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "north": {
+                "room_id": "the-three-of-swords-3321"
+            },
+            "east": {
+                "room_id": "the-three-of-swords-3324"
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3323"
+            }
+        }
+    }
+}

@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "id": "rands-tower-6423",
+    "spec": {
+        "name": "The Dining Hall",
+        "description": "This is a large dining hall, with a long table that runs down the length of it. Chairs are set up along the sides to accomodate approximately 10 people. There are paintings and tapestries on the walls, adding color to the stonework, The cooled lava that had poured in the windows makes the place seem eerie somehow . There is a door to the north, and the stairwell is to the east.",
+        "zone_id": "rands-tower",
+        "exits": {
+            "north": {
+                "room_id": "rands-tower-6424",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "east": {
+                "room_id": "rands-tower-6422"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "tapestry",
+                    "tapestries",
+                    "painting",
+                    "paintings"
+                ],
+                "description": "Many of these show scenes of high magic and heroism. Just like almost every tapestry and painting you've seen."
+            }
+        ]
+    }
+}

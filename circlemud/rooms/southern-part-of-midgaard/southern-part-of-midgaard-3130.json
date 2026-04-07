@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3130",
+    "spec": {
+        "name": "On The Concourse",
+        "description": "You are at the southeast corner of the city wall. The Concourse leads both north and west.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "north": {
+                "room_id": "southern-part-of-midgaard-3104"
+            },
+            "west": {
+                "room_id": "southern-part-of-midgaard-3129"
+            }
+        }
+    }
+}

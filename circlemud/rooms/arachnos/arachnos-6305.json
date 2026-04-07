@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "arachnos-6305",
+    "spec": {
+        "name": "Beneath The Busy Path",
+        "description": "You here the sounds of crawling arachnids above. The rhythms of the footsteps suggest a primitive order in there movement. The light seems brighter upwards.",
+        "zone_id": "arachnos",
+        "exits": {
+            "west": {
+                "room_id": "arachnos-6304"
+            },
+            "up": {
+                "room_id": "arachnos-6306"
+            }
+        }
+    }
+}

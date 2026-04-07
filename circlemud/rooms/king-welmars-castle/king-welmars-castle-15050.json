@@ -1,0 +1,48 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15050",
+    "spec": {
+        "name": "The Cosy Room",
+        "description": "You have entered a large, cosy living room. There is a fireplace with a fire burning, and a few comfortable chairs around a little table. There is a door to the west, and also an exit to the east.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "east": {
+                "room_id": "king-welmars-castle-15051",
+                "description": "You see a large bedroom."
+            },
+            "west": {
+                "room_id": "king-welmars-castle-15049",
+                "description": "The door is large, and made out of oak.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "king-welmars-castle-15014",
+                        "locked": true
+                    }
+                }
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "fire",
+                    "fireplace"
+                ],
+                "description": "The fire is built out of logs, and seems to be able to burn for quite a while longer."
+            },
+            {
+                "keywords": [
+                    "table"
+                ],
+                "description": "The table is made of mahogany, and elegant in a cosy way(!)"
+            },
+            {
+                "keywords": [
+                    "chairs"
+                ],
+                "description": "The chairs are arranged around the fireplace."
+            }
+        ]
+    }
+}

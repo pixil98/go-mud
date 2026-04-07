@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "rome-12061",
+    "spec": {
+        "name": "The Torture Chamber",
+        "description": "You are standing in a very small room in which there are many tools designed specifically for inflicting pain and suffering. Some of them are familiar, such as the rack and the iron maidens. Others, you have never seen before and they make you wonder about the kind of sadistic mind that dreamt them up. The only exit is to the west.",
+        "zone_id": "rome",
+        "exits": {
+            "west": {
+                "room_id": "rome-12060",
+                "description": "The holding cells lie in that direction."
+            }
+        }
+    }
+}

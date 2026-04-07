@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6138",
+    "spec": {
+        "name": "On The Narrow Trail",
+        "description": "The trail continues to the north and south as it leads through the heavy underbrush of this part of the Haon-Dor Forest. Ancient grey trees loom all around you. The brush seems to be bending closely over the path in a somewhat ominous manner, but you easily shrug it off. The trail looks to open up somewhat a short distance to the south.",
+        "zone_id": "haon-dor-dark-forest",
+        "exits": {
+            "north": {
+                "room_id": "haon-dor-dark-forest-6139",
+                "description": "The narrow trail continues northwards through the underbrush."
+            },
+            "south": {
+                "room_id": "haon-dor-dark-forest-6137",
+                "description": "The dusty trail leads east through the trees."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "tree",
+                    "trees",
+                    "trunk",
+                    "trunks"
+                ],
+                "description": "The ancient grey giants seem to observe you silently."
+            }
+        ]
+    }
+}

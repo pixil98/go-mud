@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "the-straight-path",
+    "spec": {
+        "name": "The Straight Path",
+        "reset_mode": "lifespan",
+        "lifespan": "10m"
+    }
+}

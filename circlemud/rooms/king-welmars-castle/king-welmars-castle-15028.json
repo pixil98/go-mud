@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15028",
+    "spec": {
+        "name": "The Guards' Barracks",
+        "description": "You are standing in a very large room with bunks all over. It is obvious, that this is where the guards off duty spend most of their time, drinking and gambling or, probably, mostly sleeping.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "south": {
+                "room_id": "king-welmars-castle-15023",
+                "description": "The door is large and heavy.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "bunk",
+                    "bunks"
+                ],
+                "description": "They look a bit hard, but you could sleep in them."
+            }
+        ]
+    }
+}

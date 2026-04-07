@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "rands-tower-6436",
+    "spec": {
+        "name": "The Doorway",
+        "description": "This was the entrance to the tower. Now lava has blocked it up completely. However: It seems when the lava came down a man was outside the doors. He was blasted into the doors, and died instantly, but his skeleton still clutches a staff in perfect condition...",
+        "zone_id": "rands-tower",
+        "exits": {
+            "east": {
+                "room_id": "rands-tower-6435",
+                "description": "These double doors have the outline of a man blasted into them...",
+                "closure": {
+                    "name": "double",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "limbo---internal-0",
+                        "locked": true
+                    }
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7045",
+    "spec": {
+        "name": "The Sewer Room",
+        "description": "You are standing in a large room with chairs set in the walls. You have the feeling of being watched. To the south there is an entrance to a larger room. The room is lit by five torches, also set in the walls. To the west there is a doorway leading out to the sewers.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "south": {
+                "room_id": "the-sewer-first-level-7046",
+                "description": "You can see an even larger room than this one, filled with light."
+            },
+            "west": {
+                "room_id": "the-sewer-first-level-7038",
+                "description": "To the west you can see the sewers.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

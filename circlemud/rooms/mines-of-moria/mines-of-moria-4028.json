@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4028",
+    "spec": {
+        "name": "The Smelly Tunnel",
+        "description": "You are in a fairly small north-south leading tunnel. There is a a small light visible off to the north. As you stop for a moment, you notice a strange smell from the north.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4030"
+            },
+            "south": {
+                "room_id": "mines-of-moria-4026"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

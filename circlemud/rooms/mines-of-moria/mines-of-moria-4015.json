@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4015",
+    "spec": {
+        "name": "The Tunnel",
+        "description": "You clamber on through this narrow tunnel. The walls are damp with condensation and the weight of the rock above you is beginning to make you feel almost claustrophobic. The tunnel makes a jagged turn from west to north here.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4019"
+            },
+            "west": {
+                "room_id": "mines-of-moria-4014"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

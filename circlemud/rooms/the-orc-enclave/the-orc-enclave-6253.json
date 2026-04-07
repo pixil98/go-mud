@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6253",
+    "spec": {
+        "name": "A Cave",
+        "description": "Many sleeping pallets are arranged near the walls, each made of heavy fur padding for comfort and warmth. Many are covered with blood and other, unidentifiable substances. Looking around, your only coherent thought is, 'Don't want to know... don't want to know...'",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "north": {
+                "room_id": "the-orc-enclave-6250"
+            },
+            "east": {
+                "room_id": "the-orc-enclave-6254"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6252"
+            }
+        }
+    }
+}

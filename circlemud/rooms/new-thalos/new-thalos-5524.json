@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "new-thalos-5524",
+    "spec": {
+        "name": "Braheem's Magic Shop",
+        "description": "You enter a shop crowded with bookshelves and clutterd with scrolls. The owner seems to be hard at work on his latest magical creation. You see a small sign on the wall.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "south": {
+                "room_id": "new-thalos-5430"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "sign"
+                ],
+                "description": "The sign reads: Welcome to Braheem's... LIST - Shows you all of my wonderful creations. VALUE - Shows what an item might be worth to me. SELL - Allows you to rid yourself of excessive magic items. BUY - Allows you to rid youself of excessive cash."
+            }
+        ]
+    }
+}

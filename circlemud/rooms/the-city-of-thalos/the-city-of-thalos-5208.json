@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5208",
+    "spec": {
+        "name": "The Market Place",
+        "description": "You stand at the end of the market square. Stands and carts line each side, filled with remnants of fine foods and exquisite goods.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "north": {
+                "room_id": "the-city-of-thalos-5222",
+                "description": "Tattered carpets and ruined bales of silk sit idly by a run down stand."
+            },
+            "east": {
+                "room_id": "the-city-of-thalos-5207",
+                "description": "The center of the market lies this way."
+            },
+            "south": {
+                "room_id": "the-city-of-thalos-5217",
+                "description": "From the massive stench, this must have been a meat and poultry stand. It lies totally bare."
+            }
+        }
+    }
+}

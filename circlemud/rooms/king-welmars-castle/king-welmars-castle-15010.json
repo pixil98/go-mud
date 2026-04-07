@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15010",
+    "spec": {
+        "name": "The Small Passage",
+        "description": "You are standing in a small passage, that is clearly intended mainly for the servants of the Castle. The passage leads north and south.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "north": {
+                "room_id": "king-welmars-castle-15015",
+                "description": "You see a small, dimly lit passage."
+            },
+            "south": {
+                "room_id": "king-welmars-castle-15005",
+                "description": "You hear the clanging of pots, and smell cooking meat."
+            }
+        }
+    }
+}

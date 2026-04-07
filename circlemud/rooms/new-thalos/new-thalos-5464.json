@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5464",
+    "spec": {
+        "name": "Guildsman's Row",
+        "description": "This small cramped road is worn with travel as apprentices to the guilds run merchandise from the guildhouses to the shops on Market Square. The guildhouses lie to the north and Main street is to the south.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5463"
+            },
+            "south": {
+                "room_id": "new-thalos-5428"
+            }
+        }
+    }
+}

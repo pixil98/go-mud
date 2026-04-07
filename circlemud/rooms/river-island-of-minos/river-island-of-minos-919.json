@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-919",
+    "spec": {
+        "name": "The Fifth Trial Of Minos",
+        "description": "This is General Woundwort's quarters. Hraka abound. The frayed corpses of rabbits lie scattered about this hell-hole. The General is not a very neat person as you can tell.",
+        "zone_id": "river-island-of-minos",
+        "exits": {
+            "east": {
+                "room_id": "river-island-of-minos-920"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

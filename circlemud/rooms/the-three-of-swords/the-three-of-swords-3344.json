@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3344",
+    "spec": {
+        "name": "The Mountain Tavern",
+        "description": "Hmm. Looks like there's no one here, not even an bartender. Evidently you've come during off hours, since no bar could be THIS dull. The walls are decorated with mounted animal heads and arrows and longbows and other hunting equipment/trophies. All of it looks rather plain.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "south": {
+                "room_id": "the-three-of-swords-3343"
+            }
+        }
+    }
+}

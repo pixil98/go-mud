@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6010",
+    "spec": {
+        "name": "Inside The Cabin",
+        "description": "You are inside a small one-room cabin made entirely from heavy logs. It is very sparsely furnished, containing only the most basic housekeeping equipment, such as a bed, a chair and a table.",
+        "zone_id": "haon-dor-light-forest",
+        "exits": {
+            "south": {
+                "room_id": "haon-dor-light-forest-6009",
+                "description": "The wooden door leads south.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "bed"
+                ],
+                "description": "It is definitely not the most comfortable bed you have seen in your life."
+            },
+            {
+                "keywords": [
+                    "chair"
+                ],
+                "description": "It is made from oak and looks strong and sturdy."
+            },
+            {
+                "keywords": [
+                    "table"
+                ],
+                "description": "A heavy table that doesn't even appear to rock. It seems to have something carved on it."
+            },
+            {
+                "keywords": [
+                    "carving",
+                    "carvings",
+                    "carved"
+                ],
+                "description": "On the table is carved : /) /) Danny and Mari, Oct 31, 1991 ( o o ) = x = m m ***(========-"
+            }
+        ]
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5020",
+    "spec": {
+        "name": "The Fungus Path",
+        "description": "As you walk along the path, millions of spores are shot at you. It is difficult to breathe.",
+        "zone_id": "the-great-eastern-desert",
+        "exits": {
+            "south": {
+                "room_id": "the-great-eastern-desert-5021",
+                "description": "A giant mushroom temple stands to the south."
+            },
+            "west": {
+                "room_id": "the-great-eastern-desert-5019",
+                "description": "The fragrant smell of spores continues to the west."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

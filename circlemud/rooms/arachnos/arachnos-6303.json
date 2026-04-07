@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "arachnos-6303",
+    "spec": {
+        "name": "The Wasp Hive",
+        "description": "Drones scuttle about in this room. The cells on the walls are honeycomb in shape and many of the maggots and wasps you see have fang-marks on their bodies. You sense some order in their markings.",
+        "zone_id": "arachnos",
+        "exits": {
+            "east": {
+                "room_id": "arachnos-6302"
+            }
+        }
+    }
+}

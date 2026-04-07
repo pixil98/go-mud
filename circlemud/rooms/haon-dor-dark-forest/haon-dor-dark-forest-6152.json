@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6152",
+    "spec": {
+        "name": "The Circle Of Trees",
+        "description": "The trees here seem to form a circle around the enormous tree in the center. You notice a wooden door carved into the huge tree to the east. The trail that you followed to get here seems to end at the base of the tree.",
+        "zone_id": "haon-dor-dark-forest",
+        "exits": {
+            "east": {
+                "room_id": "haon-dor-dark-forest-6153",
+                "description": "The tree door is carved beautifully.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "haon-dor-dark-forest-6151",
+                "description": "The bend on the trail."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

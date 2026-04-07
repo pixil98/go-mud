@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5209",
+    "spec": {
+        "name": "A Side Street",
+        "description": "This small side street leads east and west into back alleys while to the south you see the temple. The incessant howling tears at your mind.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "east": {
+                "room_id": "the-city-of-thalos-5243"
+            },
+            "south": {
+                "room_id": "the-city-of-thalos-5210"
+            },
+            "west": {
+                "room_id": "the-city-of-thalos-5228"
+            }
+        }
+    }
+}

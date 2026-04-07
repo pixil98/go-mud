@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "new-thalos-5643",
+    "spec": {
+        "name": "The River Of Lost Souls",
+        "description": "The river makes a sharp bend here and heads south into a large mountain and north through a valley. On a ledge above you, and to the west, you can see movement.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5642"
+            },
+            "south": {
+                "room_id": "the-great-eastern-desert-5004",
+                "zone_id": "the-great-eastern-desert"
+            }
+        }
+    }
+}

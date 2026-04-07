@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3363",
+    "spec": {
+        "name": "A Mountain Trail",
+        "description": "This mountain trail leads straight up into the evil looking mountains. High above you, one mountain peak seems to radiate danger and fear, and the trail seems to be leading straight up to it. You wonder if it is wise to continue this way... The trail goes even higher up to the west, and back down to the west.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "west": {
+                "room_id": "the-three-of-swords-3364"
+            },
+            "down": {
+                "room_id": "the-three-of-swords-3360"
+            }
+        }
+    }
+}

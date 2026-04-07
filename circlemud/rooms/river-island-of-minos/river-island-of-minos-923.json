@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-923",
+    "spec": {
+        "name": "Above, On The Beach",
+        "description": "You sit amongst the rocks above a small beach at the southern end of the island. You could clamber down easy enough, but getting back up would be another story.",
+        "zone_id": "river-island-of-minos",
+        "exits": {
+            "down": {
+                "room_id": "river-island-of-minos-910"
+            }
+        }
+    }
+}

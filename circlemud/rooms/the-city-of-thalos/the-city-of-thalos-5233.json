@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5233",
+    "spec": {
+        "name": "The East Wing Of The City Hall",
+        "description": "Here lies the remnants of a fancy office, possibly the mayor's. A few withered plants and broken pieces of furniture make this place anything but fancy, though. The only thing remaining intact here is a large glass cabinet. A long hallway leads west back to the reception area and an ivy-covered archway leads south into a private courtyard.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "south": {
+                "room_id": "the-city-of-thalos-5234"
+            },
+            "west": {
+                "room_id": "the-city-of-thalos-5232"
+            }
+        }
+    }
+}

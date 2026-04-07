@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "new-thalos-5475",
+    "spec": {
+        "name": "Underground",
+        "description": "You are in a small underground passage beneath the city. You see a small glint of light from above and the passage continues south.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "south": {
+                "room_id": "new-thalos-5476"
+            },
+            "up": {
+                "room_id": "new-thalos-5459",
+                "closure": {
+                    "name": "man",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

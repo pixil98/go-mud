@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6254",
+    "spec": {
+        "name": "A Cave",
+        "description": "This area of the cave is one vast orc sickroom. Mutated and mangled orcs lie on the floor, seeming quiet, lifeless. They're not even worth your time, you think, unless you've the mercy to put them out of their misery. You look at the corruption of nature's design and wonder what forces are at work here... the barrier, the orcs... What's going on here?",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "north": {
+                "room_id": "the-orc-enclave-6251"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6253"
+            }
+        }
+    }
+}

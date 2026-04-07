@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2525",
+    "spec": {
+        "name": "The Stagnant Pool",
+        "description": "You are at the edge of a stagnant pool of water. The smell here is quite nauseating. This is apparently where the denizens of the tower dispose of their garbage. Faint gurgling can be heard from beneath the surface of the pool. Exits lead back north, or perhaps for the very adventurous, down into the pool.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2522"
+            },
+            "down": {
+                "room_id": "the-high-tower-of-magic-2529",
+                "description": "No light penetrates the gloom of the stagnant pool."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "arachnos-6310",
+    "spec": {
+        "name": "A Fuzzy Tree Limb",
+        "description": "You are on a 'fuzzy' tree limb. Interesting, since the branches seem to have 'hairs' sprouting from its bark. As you look closer you see millions of aphids covering each limb.",
+        "zone_id": "arachnos",
+        "exits": {
+            "south": {
+                "room_id": "arachnos-6309"
+            },
+            "west": {
+                "room_id": "arachnos-6311"
+            }
+        }
+    }
+}

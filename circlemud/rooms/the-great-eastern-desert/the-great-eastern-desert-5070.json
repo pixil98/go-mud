@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5070",
+    "spec": {
+        "name": "A Small Shaft",
+        "description": "From within this shaft you can see a narrow hole in the roof just large enough for one person. Back east is the cavern.",
+        "zone_id": "the-great-eastern-desert",
+        "exits": {
+            "east": {
+                "room_id": "the-great-eastern-desert-5069"
+            },
+            "up": {
+                "room_id": "the-great-eastern-desert-5009"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

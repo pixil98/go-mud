@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6504",
+    "spec": {
+        "name": "The Narrow Path",
+        "description": "This is a narrow path leading to the Dwarven Kingdom. It looks less travelled than the others, and it is very creepy. The path opens up to the south, and continues to the north.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "north": {
+                "room_id": "the-dwarven-kingdom-6506"
+            },
+            "south": {
+                "room_id": "the-dwarven-kingdom-6540"
+            }
+        }
+    }
+}

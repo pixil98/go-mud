@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "new-thalos-5555",
+    "spec": {
+        "name": "The Boyer/Fletchers' Guild",
+        "description": "The walls in this room are covered with pegs that hold various types of bows. There are few people working here, lending to the fact that the skills are rare to come by in the general populas. A few boys are busy in the corner preparing feathers for the fine shafts used in making arrows. Some Elven craftsmen are carefuly inspecting each bow as it is finnished.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5460"
+            }
+        }
+    }
+}

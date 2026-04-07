@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "arachnos-6313",
+    "spec": {
+        "name": "The Wolf Spider Lair",
+        "description": "Very dark, as all lairs of spiders are. Not much of furnishings save an exit. The wolf spider keeps no corpses here, but rather throws them out at her leisure.",
+        "zone_id": "arachnos",
+        "exits": {
+            "east": {
+                "room_id": "arachnos-6312"
+            }
+        }
+    }
+}

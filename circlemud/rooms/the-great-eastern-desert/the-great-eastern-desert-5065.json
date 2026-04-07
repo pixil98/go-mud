@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5065",
+    "spec": {
+        "name": "The Mysterious Lair",
+        "description": "You have stumbled upon the home of something. From the treasure haphazardly strewn about and the rotting carcasses, you would guess that this is a dragon's lair. As to what type, you can't really say. The cave narrows out into a tunnel to the west.",
+        "zone_id": "the-great-eastern-desert",
+        "exits": {
+            "east": {
+                "room_id": "the-great-eastern-desert-5064"
+            },
+            "west": {
+                "room_id": "the-great-eastern-desert-5066"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            },
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ]
+    }
+}

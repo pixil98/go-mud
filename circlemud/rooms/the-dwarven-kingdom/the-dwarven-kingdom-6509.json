@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6509",
+    "spec": {
+        "name": "The Door To The Kingdom",
+        "description": "Here the path turns to the west. You can see a door in front of you, and the path continues to the west and south.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "north": {
+                "room_id": "the-dwarven-kingdom-6510",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "the-dwarven-kingdom-6503",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            },
+            "south": {
+                "room_id": "the-dwarven-kingdom-6508"
+            },
+            "west": {
+                "room_id": "the-dwarven-kingdom-6522"
+            }
+        }
+    }
+}

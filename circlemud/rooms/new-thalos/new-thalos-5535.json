@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "new-thalos-5535",
+    "spec": {
+        "name": "The Bread Stand",
+        "description": "A small stand has been set up here, showing the shopkeep's humble selection. You notice he has added a few things to his list.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5408"
+            }
+        }
+    }
+}

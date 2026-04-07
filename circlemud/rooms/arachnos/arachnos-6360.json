@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "arachnos-6360",
+    "spec": {
+        "name": "Yevaud's Lair",
+        "description": "Yevaud, the Usurper of Midgaard, resides here. A voice cries out, 'BEWARE, the Usurper of Midgaard lives here! FLEE while you can!' But even Yevaud has his master... or so you deduce.",
+        "zone_id": "arachnos",
+        "exits": {
+            "south": {
+                "room_id": "arachnos-6355"
+            }
+        }
+    }
+}

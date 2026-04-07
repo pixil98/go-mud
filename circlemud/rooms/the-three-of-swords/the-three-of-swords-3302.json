@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3302",
+    "spec": {
+        "name": "A Groomed Path",
+        "description": "You are standing in the western end of a very, very small valley, just about room enough for the one house standing to your east. You can see from here that the door to the cozy cottage is open and inviting, but the interior seems very dark. A path bordered by shrubberies leads up to the structure, and ends where you are standing; right by the easiest path back up into the mountains.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "east": {
+                "room_id": "the-three-of-swords-3303"
+            },
+            "up": {
+                "room_id": "the-three-of-swords-3301"
+            }
+        }
+    }
+}

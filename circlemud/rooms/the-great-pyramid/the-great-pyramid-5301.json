@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5301",
+    "spec": {
+        "name": "At The Base Of The Pyramid",
+        "description": "The mighty pyramid towers above you out of the hot desert sands, made from huge blocks of stone that have been coated over with a rough sandy plaster-like substance. The face of the pyramid is steep, but you think you might be able to climb it.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "south": {
+                "room_id": "the-great-pyramid-5300",
+                "description": "Sand as far as the eye can see."
+            },
+            "up": {
+                "room_id": "the-great-pyramid-5302",
+                "description": "The steep slope of the pyramid rises up before you."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "pyramid"
+                ],
+                "description": "You wonder how anyone could have built such a massive thing out in this heat."
+            }
+        ]
+    }
+}

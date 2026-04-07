@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6266",
+    "spec": {
+        "name": "The Laboratory",
+        "description": "This is a fairly roomy laboratory that extends to the north, with cages set on the east side of the room. A metal table here is empty, although you can see some outlines in the dust that suggest books had laid here once.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "north": {
+                "room_id": "the-orc-enclave-6263"
+            },
+            "east": {
+                "room_id": "the-orc-enclave-6267",
+                "description": "A steel cell door.",
+                "closure": {
+                    "name": "cell",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "the-orc-enclave-6200",
+                        "locked": true
+                    }
+                }
+            },
+            "south": {
+                "room_id": "the-orc-enclave-6258"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6265"
+            }
+        }
+    }
+}

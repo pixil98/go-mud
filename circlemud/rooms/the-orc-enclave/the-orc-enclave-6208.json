@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6208",
+    "spec": {
+        "name": "In The Forest",
+        "description": "Here the field changes color, becoming almost transparent. Beyond, you think you can make out a few shapes, but nothing too terribly distinct. From the north comes the rushing sound of water, and through the trees you believe you can see a river cutting through the forest. The trail you are on leads north-south through the woods, following the energy barrier all along its length.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "north": {
+                "room_id": "the-orc-enclave-6209"
+            },
+            "south": {
+                "room_id": "the-orc-enclave-6207"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6210"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "barrier",
+                    "energy"
+                ],
+                "description": "You can see a clearing beyond, the barrier not fully blocking out the area behind. You think it might be possible to push your way through, if the damn thing doesn't kill you first."
+            }
+        ]
+    }
+}

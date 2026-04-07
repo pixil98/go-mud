@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15070",
+    "spec": {
+        "name": "A Small Cottage",
+        "description": "This cottage looks to have been left in exactly the same shape as it was in quite some time ago. It looks as if the residents left one day and haven't returned home yet. Oddly enough, the furniture is dust free and the food on the table still looks fresh. This house is really strange, perhaps it wuld be in your best interests to leave as soon as humanly possible. The road is back through the open doorway to the east.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "east": {
+                "room_id": "king-welmars-castle-15066",
+                "description": "You can see the dirt road through the doorway to the east."
+            }
+        }
+    }
+}

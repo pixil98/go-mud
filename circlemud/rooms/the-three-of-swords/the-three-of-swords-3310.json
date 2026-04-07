@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3310",
+    "spec": {
+        "name": "A Small Plateau",
+        "description": "You are standing upon another mini-plateau, bordered by a sheer wall of rock to the north. You can climb up the slope to the east, or continue along the flat area to the west. Another slope leads downwards to the south, looking unsafe but climbable.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "east": {
+                "room_id": "the-three-of-swords-3309"
+            },
+            "south": {
+                "room_id": "the-three-of-swords-3314"
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3311"
+            }
+        }
+    }
+}

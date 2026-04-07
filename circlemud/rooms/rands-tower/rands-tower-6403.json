@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "rands-tower-6403",
+    "spec": {
+        "name": "Near The Mountain's Peak",
+        "description": "The peak of this mountain is another couple hundred feet above you, but here is where the trail leads down into the valley... What an odd valley! The valley seems to have been filled up by a hundreds of feet of lava many years ago. It gives the valley an odd, 'flat' look and darkish ground. The path leads down east into the valley, and west back to civilization.",
+        "zone_id": "rands-tower",
+        "exits": {
+            "east": {
+                "room_id": "rands-tower-6404"
+            },
+            "west": {
+                "room_id": "rands-tower-6402"
+            }
+        }
+    }
+}

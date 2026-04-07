@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5219",
+    "spec": {
+        "name": "The Guild House",
+        "description": "You are standing in what once was this city's ONLY guild house. Tables and chairs have been smashed and broken weapons lie strewn about the floor as if some massive battle had taken place here. Draped along the back wall is a tattered, jet-black banner with the symbol of the Darkside set upon it.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "east": {
+                "room_id": "the-city-of-thalos-5213",
+                "description": "A small side street runs past the building."
+            }
+        }
+    }
+}

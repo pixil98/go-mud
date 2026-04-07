@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "new-thalos-5565",
+    "spec": {
+        "name": "A Hall",
+        "description": "You have come to the eastern end of the northern hallway. The only exit is west except for the simple wooden door to the north. There is a golden plaque above the door.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5566",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "new-thalos-5574"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "plaque"
+                ],
+                "description": "Engraved on the plaque are the following words: The Holy Shrine of Allah"
+            }
+        ]
+    }
+}

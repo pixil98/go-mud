@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3054",
+    "spec": {
+        "name": "By The Temple Altar",
+        "description": "You are by the temple altar in the northern end of the Temple of Midgaard. A huge altar made from white polished marble is standing in front of you and behind it is a ten foot tall sitting statue of Odin, the King of the Gods. To the north, steps lead out the back of the temple towards the countryside.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "north": {
+                "room_id": "northern-midgaard-main-city-3059",
+                "description": "You see the vast Midgaard countryside."
+            },
+            "south": {
+                "room_id": "northern-midgaard-main-city-3001",
+                "description": "You see the southern end of the temple."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "altar"
+                ],
+                "description": "Even though the altar is more than ten feet long it appears to be made from a single block of white virgin marble."
+            },
+            {
+                "keywords": [
+                    "statue",
+                    "odin",
+                    "king",
+                    "god"
+                ],
+                "description": "The statue represents the one-eyed Odin sitting on a his throne. He has long, grey hair and beard and a strict look on his face. On top of the throne, just above his shoulders, his two ravens Hugin and Munin are sitting and at his feet are his wolves Gere and Freke."
+            }
+        ]
+    }
+}

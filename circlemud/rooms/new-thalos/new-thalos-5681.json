@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5681",
+    "spec": {
+        "name": "On The Plains",
+        "description": "You stand on an open expanse of grass extending in all directions. To the south of you stand the might northern gates of New Thalos. East and west of you the grassy fields continue and north, in the distance, you see a line of trees.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5682"
+            },
+            "east": {
+                "room_id": "new-thalos-5681"
+            },
+            "south": {
+                "room_id": "new-thalos-5567"
+            },
+            "west": {
+                "room_id": "new-thalos-5681"
+            }
+        }
+    }
+}

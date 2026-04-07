@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15072",
+    "spec": {
+        "name": "A Dark Path",
+        "description": "As you move away form the open air into the darkness of the path and the sinister looking woods around you, you get a feeling of awe and something almost akin to horror. The wood around is completely silent, not even the rustling of leaves or the cracking of branches breaks the silence. The final thing you notice is that the darkness all around you seems to be almost contrived, and doesn't seem natural for this kind of vegitation. The path continues west and you can see light to the east.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "east": {
+                "room_id": "king-welmars-castle-15065",
+                "description": "The path continues towards a small intersection with a dirt road."
+            },
+            "west": {
+                "room_id": "king-welmars-castle-15073",
+                "description": "The path continues through the darkness."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "new-thalos-5653",
+    "spec": {
+        "name": "In The Mountains",
+        "description": "You are walking over rocks and stones through the mountains between the Ishtar and Dark rivers. It is funny how all the rocks look alike.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5654"
+            },
+            "east": {
+                "room_id": "new-thalos-5639",
+                "description": "You see a large boulder blocking your path.",
+                "closure": {
+                    "name": "boulder",
+                    "closed": true
+                }
+            },
+            "south": {
+                "room_id": "new-thalos-5656"
+            },
+            "west": {
+                "room_id": "new-thalos-5657"
+            }
+        }
+    }
+}

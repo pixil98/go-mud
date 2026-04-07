@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "rome-12067",
+    "spec": {
+        "name": "The End Of The Clay Road",
+        "description": "The mighty clay road turns into lesser, but still well traveled roads here. You feel a surge run through your body as you look East into the lands that Rome turned into its mighty empire.",
+        "zone_id": "rome",
+        "exits": {
+            "east": {
+                "room_id": "rome-12068",
+                "description": "A dirt trail leads towards the desert to the east."
+            },
+            "west": {
+                "room_id": "rome-12066",
+                "description": "The mighty clay road leads off in this direction."
+            }
+        }
+    }
+}

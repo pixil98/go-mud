@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3340",
+    "spec": {
+        "name": "The End Of The Passage",
+        "description": "The tunnel stops abruptly here at a fissure in the stone. All around on the ground are rocks and gravel, mined from the fissure in an attempt to widen it enough for passage. A few pieces of paper litter and wrappers tells you that the work here is relatively recent.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "west": {
+                "room_id": "the-three-of-swords-3339"
+            }
+        }
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "new-thalos-5560",
+    "spec": {
+        "name": "The Guard House",
+        "description": "You stand inside the northern of the two main guard houses. Strong guards are seated here, playing cards. The stone interior is clean but bare walled save the weapons and armor mounted in the walls. The only exit is south.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "south": {
+                "room_id": "new-thalos-5550"
+            }
+        }
+    }
+}

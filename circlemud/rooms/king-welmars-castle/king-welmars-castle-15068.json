@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15068",
+    "spec": {
+        "name": "A House",
+        "description": "This house is a wreck, furniture has been strewn all about the room, and it looks like a tornado landed right in the middle of the room. The destruction that has taken place in this room is almost beyond belief. The oddest part of it all though, is how it all seems so recent, since there are no cobwebs, and there is no dust on anything. The dirt road can be seen to the east through the doorway.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "east": {
+                "room_id": "king-welmars-castle-15064",
+                "description": "You can see the dirt road through the doorway to the east."
+            }
+        }
+    }
+}

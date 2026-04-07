@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4074",
+    "spec": {
+        "name": "The Hole",
+        "description": "You are at a small hole in the floor. Alas, you can only leave north because to leave down into the unknown, you must be able to fit through the hole, which is far too small for you!",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4072"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "hole",
+                    "floor"
+                ],
+                "description": "The small hole in the floor refuses to give up its secrets about what can be found below."
+            }
+        ]
+    }
+}

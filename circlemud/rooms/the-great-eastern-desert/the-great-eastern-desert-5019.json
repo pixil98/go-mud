@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5019",
+    "spec": {
+        "name": "A Fungus Patch",
+        "description": "As you walk through the fungus patch, you are shot at by many millions of spores. You can hardly breathe.",
+        "zone_id": "the-great-eastern-desert",
+        "exits": {
+            "north": {
+                "room_id": "the-great-eastern-desert-5017"
+            },
+            "east": {
+                "room_id": "the-great-eastern-desert-5020",
+                "description": "The fragrant smell of fungus spores continues to the east."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

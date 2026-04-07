@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6124",
+    "spec": {
+        "name": "A Dead End Path In The Deep, Dark Forest",
+        "description": "You are on a narrow path leading through the deep, dark forest. The ancient trees stand so close that the path disappears between the dusty roots. To the south a dark river flows from east to west. The only exit appears to be west.",
+        "zone_id": "haon-dor-dark-forest",
+        "exits": {
+            "west": {
+                "room_id": "haon-dor-dark-forest-6123",
+                "description": "The narrow path winds its way through the trees to the west."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "river"
+                ],
+                "description": "The river flows fast and strong. It is black or looks so in the gloom."
+            },
+            {
+                "keywords": [
+                    "bank",
+                    "banks",
+                    "tree",
+                    "trees",
+                    "trunk",
+                    "trunks"
+                ],
+                "description": "The ancient crowns of trees on both banks reach together forming a dense roof above the dark river."
+            },
+            {
+                "keywords": [
+                    "path"
+                ],
+                "description": "The path seems all too frail. One of the giant roots could probably crush it in a single blow."
+            }
+        ]
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3114",
+    "spec": {
+        "name": "The Pond",
+        "description": "You are swimming around in the pond, feeling rather stupid. You can get back on the path from the eastern and western end of the pond.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "east": {
+                "room_id": "southern-part-of-midgaard-3115"
+            },
+            "west": {
+                "room_id": "southern-part-of-midgaard-3113"
+            }
+        }
+    }
+}

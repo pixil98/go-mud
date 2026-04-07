@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "midennir",
+    "spec": {
+        "name": "Miden'Nir",
+        "reset_mode": "lifespan",
+        "lifespan": "60m"
+    }
+}

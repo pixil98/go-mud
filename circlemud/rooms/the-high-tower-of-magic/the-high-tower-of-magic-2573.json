@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2573",
+    "spec": {
+        "name": "The Master Scribe's Workshop",
+        "description": "You are in the workshop of the tower's master scribe. Many half finished scrolls lay on the writing table in the center of the room. A giant candle flickering with soft blue flames provides the only light here. The only apparent exit is the way you came in.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "east": {
+                "room_id": "the-high-tower-of-magic-2571",
+                "closure": {
+                    "name": "curtain",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

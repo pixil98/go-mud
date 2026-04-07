@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7010",
+    "spec": {
+        "name": "A Bend In The Sewer Pipe",
+        "description": "You are in a bend in the sewer pipe. A strong smell seeps in from the north. The sewer goes north and east.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "north": {
+                "room_id": "the-sewer-first-level-7009",
+                "description": "North. You are staring into a huge junction with exits in all directions."
+            },
+            "east": {
+                "room_id": "the-sewer-first-level-7018",
+                "description": "East. The Pipe leads into utter darkness that way."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

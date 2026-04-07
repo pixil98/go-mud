@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5015",
+    "spec": {
+        "name": "An Underground Pool",
+        "description": "You are wading in a knee deep pool of lime-water.",
+        "zone_id": "the-great-eastern-desert",
+        "exits": {
+            "east": {
+                "room_id": "the-great-eastern-desert-5016"
+            },
+            "west": {
+                "room_id": "the-great-eastern-desert-5014"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

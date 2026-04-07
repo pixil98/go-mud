@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15055",
+    "spec": {
+        "name": "The Bottom Of The Stairs",
+        "description": "The stairs lead down to a damp part of the castle, you can hear water dripping somewhere around you. The area is lit by a single torch flickering in the room which this staircase is built off of. The stairs lead upwards and they open up onto a fairly small room to the east.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "east": {
+                "room_id": "king-welmars-castle-15056",
+                "description": "A small room opens up to the east."
+            },
+            "up": {
+                "room_id": "king-welmars-castle-15029",
+                "description": "The stairs lead upwards out of this dank, dark place."
+            }
+        }
+    }
+}

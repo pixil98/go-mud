@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6072",
+    "spec": {
+        "name": "A Shaded Path Though The Forest",
+        "description": "You are on a small shaded path leading between the trees. The forest gradually becomes more dense to the west. Paths lead north and east, and you see a small clearing to the south.",
+        "zone_id": "haon-dor-light-forest",
+        "exits": {
+            "north": {
+                "room_id": "haon-dor-light-forest-6075",
+                "description": "The path winds its way between the trees."
+            },
+            "east": {
+                "room_id": "haon-dor-light-forest-6071",
+                "description": "The path winds its way between the trees."
+            },
+            "south": {
+                "room_id": "haon-dor-light-forest-6067",
+                "description": "A lightly traveled path heads southward to a small clearing."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "path",
+                    "paths",
+                    "shaded"
+                ],
+                "description": "The shaded path is probably used by the small animals living in the forest."
+            },
+            {
+                "keywords": [
+                    "tree",
+                    "trees"
+                ],
+                "description": "The trees are mostly old beeches and oaks."
+            }
+        ]
+    }
+}

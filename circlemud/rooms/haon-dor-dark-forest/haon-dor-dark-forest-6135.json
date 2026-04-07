@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6135",
+    "spec": {
+        "name": "A Dusty Trail In The Deep, Dark Forest",
+        "description": "You are on a dusty trail leading through the deep, dark forest. Ancient grey trees loom all around you. The trail continues north and east.",
+        "zone_id": "haon-dor-dark-forest",
+        "exits": {
+            "north": {
+                "room_id": "haon-dor-dark-forest-6136",
+                "description": "The dusty trail leads north through the trees."
+            },
+            "east": {
+                "room_id": "haon-dor-dark-forest-6129",
+                "description": "The dusty trail leads east through the trees."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "tree",
+                    "trees",
+                    "trunk",
+                    "trunks"
+                ],
+                "description": "The ancient grey giants seem to observe you silently."
+            }
+        ]
+    }
+}

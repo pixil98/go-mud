@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "new-thalos-5604",
+    "spec": {
+        "name": "The Cell",
+        "description": "You are in a cold, cramped chamber with only one exit.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5595",
+                "closure": {
+                    "name": "cell",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "new-thalos-5493",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

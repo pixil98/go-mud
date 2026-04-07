@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "id": "new-thalos-5582",
+    "spec": {
+        "name": "A Hall",
+        "description": "You have reached the western end of the southern hallway. The only exit is east except for the doors in the southern and western walls.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5577"
+            },
+            "south": {
+                "room_id": "new-thalos-5581",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "new-thalos-5587",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "new-thalos-5401",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        }
+    }
+}

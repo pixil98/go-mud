@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5330",
+    "spec": {
+        "name": "The Ancient Hall",
+        "description": "Here the air is deathly still, motes of dust thickly obscuring your vision. Several stone statues line the walls of the hall, depicting the gods of an ancient society. Strange glyphs and sigils cover the walls, a peculiar pictorial form of written language that you don't understand. Some steps lead to a raised dais to the south.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "north": {
+                "room_id": "the-great-pyramid-5329",
+                "description": "You see a seam in the stone wall.",
+                "closure": {
+                    "name": "stone",
+                    "closed": true
+                }
+            },
+            "south": {
+                "room_id": "the-great-pyramid-5331",
+                "description": "You see a small raised dais."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "writings",
+                    "glyphs",
+                    "sigils",
+                    "hieroglyphics",
+                    "symbols"
+                ],
+                "description": "You don't understand the meaning of these symbols."
+            }
+        ]
+    }
+}

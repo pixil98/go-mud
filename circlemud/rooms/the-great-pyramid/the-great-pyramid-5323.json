@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5323",
+    "spec": {
+        "name": "The Vault Of The Lamp",
+        "description": "The jaws of the massive stone tiger part wide to reveal a great vault. An arched ceiling lies far above your head... and all about you is a low guttural rumbling noise and a chill wind. Giant heaps of ancient treasure, gold coins, and valuables surround you on all sides.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "north": {
+                "room_id": "the-great-pyramid-5322",
+                "description": "Through the jaws of the tiger you see the blackness of the crevasse.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "the-great-pyramid-5323",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "treasure",
+                    "gold",
+                    "coins",
+                    "valuables"
+                ],
+                "description": "You reach for some of the tasty goodies, when you hear a loud rumbling sound and see a bright flash of light... Then the words: 'TAKE ONLY THE LAMP... TOUCH NOTHING ELSE.' ... All is silent once again."
+            }
+        ]
+    }
+}

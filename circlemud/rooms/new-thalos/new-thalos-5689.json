@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "new-thalos-5689",
+    "spec": {
+        "name": "The Dragon Sea",
+        "description": "You are on the clear blue seas of the Dragon Sea. Water extends in all directions as far as the eye can see. Off in the distance you think you might see a small dock to the west.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5697"
+            },
+            "east": {
+                "room_id": "new-thalos-5689"
+            },
+            "south": {
+                "room_id": "new-thalos-5696"
+            },
+            "west": {
+                "room_id": "new-thalos-5695"
+            },
+            "down": {
+                "room_id": "new-thalos-5698"
+            }
+        }
+    }
+}

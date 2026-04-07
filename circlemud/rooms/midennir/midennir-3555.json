@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "midennir-3555",
+    "spec": {
+        "name": "A Tunnel In The Mountains",
+        "description": "As you explore further into the mountainside, the tunnel gets smaller and smaller to the south. You almost have to hunch over to make your way through this area. A small archway to the south leads into a large chamber.",
+        "zone_id": "midennir",
+        "exits": {
+            "north": {
+                "room_id": "midennir-3553",
+                "description": "The tunnel continues north."
+            },
+            "south": {
+                "room_id": "midennir-3556",
+                "description": "You see a small cavern."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

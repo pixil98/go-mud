@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "drow-city-5142",
+    "spec": {
+        "name": "The Eastern Side Of The Main Chamber",
+        "description": "You are on the eastern side of the chamber overlooking the pit. To the east is a door while to the north is an altar.",
+        "zone_id": "drow-city",
+        "exits": {
+            "north": {
+                "room_id": "drow-city-5145"
+            },
+            "east": {
+                "room_id": "drow-city-5146",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "south": {
+                "room_id": "drow-city-5141"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

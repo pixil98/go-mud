@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2632",
+    "spec": {
+        "name": "A Corridor",
+        "description": "You are in a long corridor leading north and south. Obsidian walls engraved with ancient runes of power stretch out before you. Magical energies seem to crackle with power all around and whisper in tongues long forgotten, almost as if the corridor itself were alive.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2631"
+            },
+            "south": {
+                "room_id": "the-high-tower-of-magic-2633"
+            }
+        }
+    }
+}

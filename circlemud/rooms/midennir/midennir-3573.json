@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "midennir-3573",
+    "spec": {
+        "name": "Behind The Inn",
+        "description": "You now stand behind the Inn. The smell here is not so pleasant as the keeper and his help throw a good deal of garbage here. A couple of piles of rubbish are to the west, but you will smell the worse for meddling there. As a clean alternative, you can go north or east around the Inn.",
+        "zone_id": "midennir",
+        "exits": {
+            "east": {
+                "room_id": "midennir-3572",
+                "description": "You can go around the Inn this way."
+            },
+            "west": {
+                "room_id": "midennir-3578",
+                "description": "Only rats and fool adventurers play in garbage."
+            }
+        }
+    }
+}

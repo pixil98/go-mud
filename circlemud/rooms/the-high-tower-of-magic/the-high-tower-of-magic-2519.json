@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2519",
+    "spec": {
+        "name": "The Magic Shop",
+        "description": "You are in the High Tower's store of magic. This place sells all sorts of herbs, parchment and other reagents used in magical studies. The only exit leads back east to the common room.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "east": {
+                "room_id": "the-high-tower-of-magic-2514"
+            }
+        }
+    }
+}

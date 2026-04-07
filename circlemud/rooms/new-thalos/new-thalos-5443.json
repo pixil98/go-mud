@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "new-thalos-5443",
+    "spec": {
+        "name": "The Boat Ramp",
+        "description": "This sloped slab of stone allows easy passage to and from the River Ishtar. Boats are moored to the docks here awaiting their masters to return from the warehouses and the pubs. The waters of the River Ishtar lap at your feet to the south and Ishtar Drive is to the north.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5435"
+            },
+            "south": {
+                "room_id": "new-thalos-5486"
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

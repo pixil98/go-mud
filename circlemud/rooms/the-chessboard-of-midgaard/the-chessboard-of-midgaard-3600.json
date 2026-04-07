@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-chessboard-of-midgaard-3600",
+    "spec": {
+        "name": "The Great Chessboard Of Midgaard",
+        "description": "You stand in the archway of the Chessboard of Midgaard. The giant wooden gate is rusted open. A narrow dirt path leads eastwards into the thick grass and the chessboard opens up to the west.",
+        "zone_id": "the-chessboard-of-midgaard",
+        "exits": {
+            "east": {
+                "room_id": "northern-midgaard-main-city-3066",
+                "zone_id": "northern-midgaard-main-city",
+                "description": "A dirt path leads away through the great field north of Midgaard."
+            },
+            "west": {
+                "room_id": "the-chessboard-of-midgaard-3632",
+                "description": "The huge chessboard opens up to the west."
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

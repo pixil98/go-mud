@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7914",
+    "spec": {
+        "name": "On The Huge Chain",
+        "description": "This place has quite a good view over Midgaard. Your possibilities of movement seem to extend only to the up and down directions. Unless you want to let go of the secure and seemingly unmovable chain, then those are the directions you should take from here.",
+        "zone_id": "redfernes-residence",
+        "exits": {
+            "up": {
+                "room_id": "redfernes-residence-7915",
+                "description": "Upwards, you see the chain disappearing into the clouds above."
+            },
+            "down": {
+                "room_id": "southern-part-of-midgaard-3120",
+                "zone_id": "southern-part-of-midgaard",
+                "description": "Down below, you see the huge chain anchored to the ground at the Road Crossing of southern Midgaard."
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

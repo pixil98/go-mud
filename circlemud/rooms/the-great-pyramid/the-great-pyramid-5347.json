@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5347",
+    "spec": {
+        "name": "A Sandstone Crypt",
+        "description": "This small crypt is lit by a hole in the wall to the south, through which sand pours from the desert outside. A hot wind blows in from the desert, drying your skin instantly. To the east and north the arched hallway continues.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "north": {
+                "room_id": "the-great-pyramid-5346",
+                "description": "The arched hallway collapses into rubble shortly to the north."
+            },
+            "east": {
+                "room_id": "the-great-pyramid-5348",
+                "description": "You see a beautifully arched hallway."
+            },
+            "south": {
+                "room_id": "the-great-pyramid-5353",
+                "description": "You see a lot of sand."
+            }
+        }
+    }
+}

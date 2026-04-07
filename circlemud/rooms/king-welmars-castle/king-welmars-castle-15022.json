@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15022",
+    "spec": {
+        "name": "The End Of The Servants' Corridor",
+        "description": "The corridor leads only west from here, but there is a door to the north.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "north": {
+                "room_id": "king-welmars-castle-15027",
+                "description": "The door leads to a room intended for the butler.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "king-welmars-castle-15009",
+                        "locked": true
+                    }
+                }
+            },
+            "west": {
+                "room_id": "king-welmars-castle-15021",
+                "description": "You see the corridor continue."
+            }
+        }
+    }
+}

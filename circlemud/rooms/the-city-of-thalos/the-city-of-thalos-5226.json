@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5226",
+    "spec": {
+        "name": "A Ruined Clay Dwelling",
+        "description": "This was once a very plain house with nothing more than a few chairs and a bed. A cold fireplace suggests that the city has been abandoned for quite a while. Almost nothing remains of this humble abode.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "east": {
+                "room_id": "the-city-of-thalos-5210",
+                "description": "Outside is a small side street."
+            }
+        }
+    }
+}

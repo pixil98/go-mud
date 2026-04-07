@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7231",
+    "spec": {
+        "name": "The Strange Sewer",
+        "description": "You are in an ordinary sewer except for a lot of scratches on the sewer wall, and a lot of debris on the floor.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "east": {
+                "room_id": "the-sewer-maze-7230",
+                "description": "You see a sewer."
+            },
+            "west": {
+                "room_id": "the-sewer-maze-7232",
+                "description": "You see another sewer."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "debris"
+                ],
+                "description": "You see a lot of organic decay on the floor."
+            }
+        ]
+    }
+}

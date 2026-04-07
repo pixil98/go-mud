@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-908",
+    "spec": {
+        "name": "Mired In Seaweed",
+        "description": "The going is rough here. The tide struggles with the normal flow of the river and here near the edge of the sea there is a large amount of growth. To the west the channel passes the southern tip of the island and heads for open waters.",
+        "zone_id": "river-island-of-minos",
+        "exits": {
+            "north": {
+                "room_id": "river-island-of-minos-906"
+            },
+            "east": {
+                "room_id": "river-island-of-minos-907"
+            },
+            "west": {
+                "room_id": "river-island-of-minos-909"
+            }
+        }
+    }
+}

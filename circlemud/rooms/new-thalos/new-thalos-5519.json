@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "new-thalos-5519",
+    "spec": {
+        "name": "Nectar Of The Gods",
+        "description": "You are startled by the lavishness of this place. From what you know of clerics they are supposed to be humble people, giving all their material goods to their cause. Perhaps because only clerics are allowed to enter this bar they have condoned making it as comfortable as possible. In the corner stands a staircase leading down to the meditaion chambers.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5512"
+            },
+            "down": {
+                "room_id": "new-thalos-5503"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "peaceful"
+            },
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ]
+    }
+}

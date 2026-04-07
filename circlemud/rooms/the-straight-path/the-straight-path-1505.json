@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1505",
+    "spec": {
+        "name": "A Test for the Faithful",
+        "description": "It is here finally that decisions must be made. The first one that confronts you is simple enough, to walk in the darkness, or to walk in the light. Only the depths of your soul can decide, but remember this much: the same truth lies at the end of both paths.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "up": {
+                "room_id": "the-straight-path-1507"
+            },
+            "down": {
+                "room_id": "the-straight-path-1506"
+            }
+        }
+    }
+}

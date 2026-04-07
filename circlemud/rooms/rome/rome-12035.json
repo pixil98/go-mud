@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "rome-12035",
+    "spec": {
+        "name": "The South Gate",
+        "description": "This is the southern gateway to the city of Rome. The bronze gate is closed and locked. Looking through the bars, you see a heavily traveled road leading out of the city. Nero Drive starts here and runs north and a wizard's shop lies to the east.",
+        "zone_id": "rome",
+        "exits": {
+            "north": {
+                "room_id": "rome-12034",
+                "description": "Nero Drive leads towards the center of town."
+            },
+            "east": {
+                "room_id": "rome-12042",
+                "description": "A small store, from which an occasional detonation can be heard, lies off in that direction. It appears to be surrounded by a rolling pink mist."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "gate"
+                ],
+                "description": "The gate appears to be closed and locked against intruders."
+            }
+        ]
+    }
+}

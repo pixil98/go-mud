@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2620",
+    "spec": {
+        "name": "The Meditation Chamber",
+        "description": "You are in a meditation chamber. It is very silent here, in fact you can not even hear your own footsteps. You feel very peaceful.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2619",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "peaceful"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ]
+    }
+}

@@ -6,6 +6,22 @@
   session. This means the player sees a full HP prompt right before being disconnected, which
   looks wrong. Decide on a proper death/respawn policy (e.g. respawn at 1 HP, or defer the
   heal until login) and update the test in character_test.go to match.
+## Light and Darkness
+Current implementation: rooms grant `dark` perk to occupants. Two counters:
+- `infravision` — personal grant (race, spell, item). Only the holder can see.
+- `light` — equipment grant. Look handler scans all actors in the room; if anyone has it, darkness is negated for everyone.
+
+Only affects the look handler today. Still needed:
+- Darkness affecting target resolution beyond look (combat targeting, get, etc.)
+- Light source objects with finite duration (burn time)
+- Intrinsic-light objects (glowing crystal on the ground lights the room without being equipped) — would need an object flag or a room-level perk from the object
+- Utility "light" spell: non-combat spell that adds a timed `light` grant to the room's PerkCache (e.g. 2 ticks). Uses existing timed-perk infrastructure. Requires distinguishing combat vs utility abilities so utility spells can auto-cast outside of combat.
+
+## CircleMUD Import
+- Object vnum 12104 (key referenced by rome-12038) doesn't exist in the CircleMUD source data.
+  Stubbed as rome-12104 for now. Investigate whether the original .wld file is broken or if the
+  parser missed it.
+
 ## Consider
 - Should overhealing generate threat? Currently heal threat is based on the full heal amount, even if the target is already at max HP.
 - Make threat multiplier configurable per effect. Currently damage generates 1:1 threat and heal generates 0.5x threat, both hardcoded. A config field (e.g. "threat_multiplier") would allow tuning per ability.

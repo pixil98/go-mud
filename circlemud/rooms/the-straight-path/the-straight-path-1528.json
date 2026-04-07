@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1528",
+    "spec": {
+        "name": "Repentance",
+        "description": "God forgives those who commit evil in ignorance, for He is all-knowing and wise. But He will not forgive those who do evil, and when death comes to them, say: \"Now we repent!\" For those We have prepared a woeful scourge.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "up": {
+                "room_id": "the-straight-path-1534"
+            },
+            "east": {
+                "room_id": "the-straight-path-1529"
+            },
+            "south": {
+                "room_id": "the-straight-path-1512"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

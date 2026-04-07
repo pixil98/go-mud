@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "rome-12048",
+    "spec": {
+        "name": "The Aqueduct",
+        "description": "You are in a massive stone structure that has been designed to channel water into the city of Rome. Due to the recent drought, the water level is low, allowing passage without a boat. The walls and floor are covered with algae and slime, producing treacherous footing conditions. There are exits in all four cardinal directions.",
+        "zone_id": "rome",
+        "exits": {
+            "north": {
+                "room_id": "rome-12057",
+                "description": "The aqueduct continues."
+            },
+            "east": {
+                "room_id": "rome-12041",
+                "description": "The aqueduct continues."
+            },
+            "south": {
+                "room_id": "rome-12041",
+                "description": "The aqueduct continues."
+            },
+            "west": {
+                "room_id": "rome-12048",
+                "description": "The aqueduct continues."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "slime",
+                    "algae"
+                ],
+                "description": "Due to the availability of moisture and nutrients, a green viscous slime has grown and covered everything with a slippery coating. It seems to go out of its way to drip on you."
+            }
+        ]
+    }
+}

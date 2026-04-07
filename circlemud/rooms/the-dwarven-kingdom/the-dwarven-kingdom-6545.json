@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6545",
+    "spec": {
+        "name": "The Coal Room",
+        "description": "You are inside the storage area for the raw materials that are found down here. The room is very unsturdy as the supports are very rickety.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "west": {
+                "room_id": "the-dwarven-kingdom-6544"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

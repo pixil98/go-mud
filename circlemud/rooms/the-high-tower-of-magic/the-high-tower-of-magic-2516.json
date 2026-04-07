@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2516",
+    "spec": {
+        "name": "The Dining Room",
+        "description": "You are in the dining area of the student mages. From the number of tables and chairs here, you can see that this room could easily seat several hundred people. It is oddly deserted here, obviously not meal time. Exits lead west to the kitchen, and back east.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "east": {
+                "room_id": "the-high-tower-of-magic-2513"
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2520",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

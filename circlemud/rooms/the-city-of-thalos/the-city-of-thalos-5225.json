@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5225",
+    "spec": {
+        "name": "The Jewellery Stand",
+        "description": "A table has been tipped over, spilling fine jewellery and gems across the market place. Most of these trinkets are battered and tarnished and few would have any value anymore.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "south": {
+                "room_id": "the-city-of-thalos-5207",
+                "description": "The market place is deserted."
+            },
+            "west": {
+                "room_id": "the-city-of-thalos-5222",
+                "description": "Next to you is a stand full of ruined clothes and rugs."
+            }
+        }
+    }
+}

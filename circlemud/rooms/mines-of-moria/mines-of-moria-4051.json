@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4051",
+    "spec": {
+        "name": "The Tunnel",
+        "description": "Standing in this part of the tunnel, you notice that not only does the tunnel get suddenly narrower, but the floor does not seem to be nearly as smooth as it was before. In fact, the floor drops almost five feet in jagged steps as you look eastward. The western path seems to be quite smooth however.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "east": {
+                "room_id": "mines-of-moria-4052"
+            },
+            "west": {
+                "room_id": "mines-of-moria-4050"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

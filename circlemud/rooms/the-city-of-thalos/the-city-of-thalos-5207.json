@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5207",
+    "spec": {
+        "name": "The Market Place",
+        "description": "You stand in the middle of a large square lined on each side with baskets, carts, and stands of all shapes and sizes. Abandoned, these little shops still contain some of their goods once sold to a demanding public.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "north": {
+                "room_id": "the-city-of-thalos-5225",
+                "description": "A small table has been toppled over, spilling fine jewellery and gems onto the ground."
+            },
+            "east": {
+                "room_id": "the-city-of-thalos-5205",
+                "description": "A small garden path encircles a large domed temple in the center of the city."
+            },
+            "south": {
+                "room_id": "the-city-of-thalos-5220",
+                "description": "Rotted remains of fruits and vegetables lie strewn about."
+            },
+            "west": {
+                "room_id": "the-city-of-thalos-5208",
+                "description": "The market place continues."
+            }
+        }
+    }
+}

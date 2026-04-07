@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5336",
+    "spec": {
+        "name": "A Tunnel",
+        "description": "The low-ceilinged tunnel makes a turn to the west and ends to the north as it spills out into a dusty hallway.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "north": {
+                "room_id": "the-great-pyramid-5342",
+                "description": "The mouth of the tunnel is stone that has been torn away by looters."
+            },
+            "west": {
+                "room_id": "the-great-pyramid-5335",
+                "description": "You cannot see into the darkness of the low tunnel."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

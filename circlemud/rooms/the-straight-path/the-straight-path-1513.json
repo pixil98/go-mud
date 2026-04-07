@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1513",
+    "spec": {
+        "name": "Spiritual Danger",
+        "description": "Some evils are tangible, solid, so evident that they spit you right in the face. Others are more clever, more subtle, and it is these that present the greatest danger. Looking down the hall before you, a great fear fills your heart, and a great, heavy longing.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "north": {
+                "room_id": "the-straight-path-1514"
+            },
+            "west": {
+                "room_id": "the-straight-path-1506"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

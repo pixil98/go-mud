@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2571",
+    "spec": {
+        "name": "A Small Office",
+        "description": "You are in a small office. It looks like a calligrapher's study, there are quills, inkpots and parchments all about on desks and worktables. A section to the west seems to be curtained off, but the flicker of a candle can be seen through the curtain.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "south": {
+                "room_id": "the-high-tower-of-magic-2570",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2573",
+                "closure": {
+                    "name": "curtain",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

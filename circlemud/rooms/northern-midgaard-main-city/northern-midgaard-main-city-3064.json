@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3064",
+    "spec": {
+        "name": "The Cryogenic Center",
+        "description": "You are standing in an impossible white sterile room with cylindrical body-length canisters lined up against the walls. The Reception is to the south.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "south": {
+                "room_id": "northern-midgaard-main-city-3008",
+                "description": "The Reception is to the south."
+            }
+        }
+    }
+}

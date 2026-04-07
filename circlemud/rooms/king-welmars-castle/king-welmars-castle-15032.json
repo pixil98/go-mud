@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15032",
+    "spec": {
+        "name": "The Corridor",
+        "description": "You are standing in a long corridor, decorated with tapestries depicting old times and old heroes. It leads east and west.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "east": {
+                "room_id": "king-welmars-castle-15033",
+                "description": "You see the corridor continue."
+            },
+            "west": {
+                "room_id": "king-welmars-castle-15031",
+                "description": "You see the corridor continue."
+            }
+        }
+    }
+}

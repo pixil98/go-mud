@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7336",
+    "spec": {
+        "name": "The Entrance To The Lair",
+        "description": "The smell here is awful. To the south you can see some smoke. A tunnel leads north and east.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "north": {
+                "room_id": "the-sewer-maze-7335"
+            },
+            "south": {
+                "room_id": "the-sewer-maze-7337",
+                "description": "The only thing you can see is smoke."
+            },
+            "east": {
+                "room_id": "the-sewer-maze-7322",
+                "description": "A small cave is to the east."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ]
+    }
+}

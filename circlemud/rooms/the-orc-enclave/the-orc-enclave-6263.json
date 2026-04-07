@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6263",
+    "spec": {
+        "name": "The Laboratory",
+        "description": "A rack stands near the cages on the eastern wall, filled with shackles and manacles, bullwhips and worse. They all look well-used. You give a shiver, and carry on.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "north": {
+                "room_id": "the-orc-enclave-6260"
+            },
+            "east": {
+                "room_id": "the-orc-enclave-6264",
+                "description": "A steel cell door.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "the-orc-enclave-6200",
+                        "locked": true
+                    }
+                }
+            },
+            "south": {
+                "room_id": "the-orc-enclave-6266"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6262"
+            }
+        }
+    }
+}

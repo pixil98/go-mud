@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "new-thalos-5477",
+    "spec": {
+        "name": "Underground",
+        "description": "The tunnel branches here going north, east, and west.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5476"
+            },
+            "east": {
+                "room_id": "new-thalos-5478"
+            },
+            "west": {
+                "room_id": "new-thalos-5479"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

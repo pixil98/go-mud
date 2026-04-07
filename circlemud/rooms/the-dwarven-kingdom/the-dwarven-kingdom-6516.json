@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6516",
+    "spec": {
+        "name": "The Hide & Tooth Shop",
+        "description": "You are in the Hide & Tooth shop. Here you may buy the finest in Dwarven weapons and armors. The path continues to the north and east.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "north": {
+                "room_id": "the-dwarven-kingdom-6517"
+            },
+            "east": {
+                "room_id": "the-dwarven-kingdom-6515"
+            }
+        }
+    }
+}

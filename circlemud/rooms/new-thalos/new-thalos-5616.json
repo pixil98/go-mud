@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5616",
+    "spec": {
+        "name": "On A Road",
+        "description": "This long road continues to the east and south.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5617"
+            },
+            "south": {
+                "room_id": "new-thalos-5633"
+            }
+        }
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "new-thalos-5408",
+    "spec": {
+        "name": "Southwestern Market Square",
+        "description": "This area of the market seems relatively quiet, save the high pitch banter of the shopkeepers attempting to lure you into their stores. South you see the bread stand and west is the entrance to the general store. The market's sprawl continues east and north of here.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5409"
+            },
+            "east": {
+                "room_id": "new-thalos-5405"
+            },
+            "south": {
+                "room_id": "new-thalos-5535",
+                "description": "You see the grocer's."
+            },
+            "west": {
+                "room_id": "new-thalos-5528",
+                "description": "You see the general store."
+            }
+        }
+    }
+}

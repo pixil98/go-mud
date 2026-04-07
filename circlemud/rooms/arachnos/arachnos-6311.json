@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "arachnos-6311",
+    "spec": {
+        "name": "The Tree Trunk",
+        "description": "You feel that you can rest here safely. There is evidence of webbing here, but it is of a finer quality.",
+        "zone_id": "arachnos",
+        "exits": {
+            "east": {
+                "room_id": "arachnos-6310"
+            },
+            "south": {
+                "room_id": "arachnos-6312"
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

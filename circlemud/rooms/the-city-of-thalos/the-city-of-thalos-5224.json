@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5224",
+    "spec": {
+        "name": "Under The Watchtower",
+        "description": "You stand under one of the city watchtowers built to protect the city from invaders. Obviously, it failed.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "east": {
+                "room_id": "the-city-of-thalos-5228"
+            },
+            "south": {
+                "room_id": "the-city-of-thalos-5223"
+            },
+            "up": {
+                "room_id": "the-city-of-thalos-5246",
+                "description": "Above you looms a tall watchtower."
+            }
+        }
+    }
+}

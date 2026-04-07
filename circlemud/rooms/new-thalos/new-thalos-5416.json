@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5416",
+    "spec": {
+        "name": "Northeastern Market Square",
+        "description": "Pandemonium. Chaos. Madness. A few other choice words come to mind as you gaze into this corner of the market. The vegetable stand seems quiet enough so you have to assume the noise comes from the Butchery. You have to think for a while before you muster the will to enter this shop. The market continues to the south and west.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5515"
+            },
+            "east": {
+                "room_id": "new-thalos-5522"
+            },
+            "south": {
+                "room_id": "new-thalos-5417"
+            },
+            "west": {
+                "room_id": "new-thalos-5415"
+            }
+        }
+    }
+}

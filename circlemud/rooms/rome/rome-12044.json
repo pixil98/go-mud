@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "rome-12044",
+    "spec": {
+        "name": "The Entrance Foyer",
+        "description": "You have just entered the main government building of the Roman Empire and are standing in a massive room with an elaborately decorated domed roof. There are many people here; messengers and senators being the most numerous. There is a large, ornate door to the west, a hallway leads north and marble stairs that lead out of the building are to the south.",
+        "zone_id": "rome",
+        "exits": {
+            "north": {
+                "room_id": "rome-12043",
+                "description": "You see a hallway leading north to what looks like a waiting room."
+            },
+            "west": {
+                "room_id": "rome-12037",
+                "description": "There is a large door to the west that blocks your path.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "rome-12036",
+                        "locked": true
+                    }
+                }
+            },
+            "down": {
+                "room_id": "rome-12045",
+                "description": "You see a stairway leading out of the building."
+            }
+        }
+    }
+}

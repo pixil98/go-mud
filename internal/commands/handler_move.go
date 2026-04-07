@@ -102,7 +102,7 @@ func (f *MoveHandlerFactory) handle(ctx context.Context, in *CommandInput) error
 	char.Move(fromRoom, toRoom)
 
 	// Send room description to player
-	char.Notify(toRoom.Describe(char.Name()))
+	char.Notify(DescribeRoom(char, toRoom))
 
 	// Move any followers in the old room
 	moveFollowers(char, fromRoom, toRoom, direction)
@@ -126,7 +126,7 @@ func moveFollowers(leader game.FollowTarget, fromRoom, toRoom *game.RoomInstance
 		}
 
 		fl.Move(fromRoom, toRoom)
-		fl.Notify(fmt.Sprintf("You follow %s.\n%s", leader.Name(), toRoom.Describe(fl.Name())))
+		fl.Notify(fmt.Sprintf("You follow %s.\n%s", leader.Name(), DescribeRoom(fl, toRoom)))
 		moveFollowers(fl, fromRoom, toRoom, direction)
 	}
 }

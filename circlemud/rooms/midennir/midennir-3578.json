@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "midennir-3578",
+    "spec": {
+        "name": "The Garbage Dump",
+        "description": "You stand knee deep in garbage. YECCH!!! It smells terrible and who knows what vermin live in these piles of filth...",
+        "zone_id": "midennir",
+        "exits": {
+            "east": {
+                "room_id": "midennir-3573",
+                "description": "You can return to cleaner lands this way."
+            }
+        }
+    }
+}

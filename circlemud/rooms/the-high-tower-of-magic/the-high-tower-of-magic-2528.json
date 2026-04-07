@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2528",
+    "spec": {
+        "name": "The Jailor's office",
+        "description": "You are in the Jailor's office. It is rather messy here. Judging by the sleeping form of the Jailor on duty, you can surmise that very few, if any prisoners survive long enough to spend much time in these dank dungeons. The only exit leads back west.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "west": {
+                "room_id": "the-high-tower-of-magic-2524",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

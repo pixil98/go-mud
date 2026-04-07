@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "arachnos-6346",
+    "spec": {
+        "name": "The Quiet Tree Top",
+        "description": "This is a quiet tree top. Downwards you can see a familiar path that may lead back to Midgaard.",
+        "zone_id": "arachnos",
+        "exits": {
+            "east": {
+                "room_id": "arachnos-6345"
+            },
+            "west": {
+                "room_id": "arachnos-6347"
+            },
+            "down": {
+                "room_id": "haon-dor-dark-forest-6132",
+                "zone_id": "haon-dor-dark-forest"
+            }
+        }
+    }
+}

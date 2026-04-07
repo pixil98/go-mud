@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5473",
+    "spec": {
+        "name": "Alley",
+        "description": "This is a small corner in the alley behind the warehouses and the guild of warriors. You notice some small scrapings to the west.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5472"
+            },
+            "east": {
+                "room_id": "new-thalos-5474"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

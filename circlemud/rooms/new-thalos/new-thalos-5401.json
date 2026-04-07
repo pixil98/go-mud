@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "new-thalos-5401",
+    "spec": {
+        "name": "The Reception Area",
+        "description": "You are now standing in the reception of New Thalos. A huge mahogany desk is here along with two sofas and a coffee table covered in magazines. The plush carpeting under your feet is a nice change from the rugged paths you are used to travelling. A chrome stairway spirals downstairs to the tavern of the Dancing Daemon Inn, and your future adventures in New Thalos.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "down": {
+                "room_id": "new-thalos-5400",
+                "description": "The stairs lead down to the Daemon."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "peaceful"
+            },
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ]
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2517",
+    "spec": {
+        "name": "A Dark Hallway",
+        "description": "You are in a dark hallway. It is apparent that this area is seldom used by the regular occupants of the tower. Dust covers the floors here. The faint outline of a trapdoor can be seen in the dust.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "south": {
+                "room_id": "the-high-tower-of-magic-2514"
+            },
+            "down": {
+                "room_id": "the-high-tower-of-magic-2521",
+                "closure": {
+                    "name": "trapdoor",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

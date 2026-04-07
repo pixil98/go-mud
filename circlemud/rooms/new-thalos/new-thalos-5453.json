@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5453",
+    "spec": {
+        "name": "The Casbah",
+        "description": "You have almost reached the end of the Avenue in this direction. Walking towards the north-east corner of the city you notice the population density here is much less then the rest of the town. A few old men hobbling on canes and young men intent on studies are the only travelers of the path to the library on a regular basis. The Avenue continues east and west from here.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5454"
+            },
+            "west": {
+                "room_id": "new-thalos-5452"
+            }
+        }
+    }
+}

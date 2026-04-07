@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4059",
+    "spec": {
+        "name": "The Tunnel",
+        "description": "You are standing in a tunnel deep inside the heart of Mount Moria. A small rivulet of water runs alongside the wall to the north as the tunnel seems to lead slightly down towards the east. The tunnel continues on to the east as it plunges deeper into the earth, and upwards a bit towards the west where the air seems to be quite damp.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "east": {
+                "room_id": "mines-of-moria-4060"
+            },
+            "west": {
+                "room_id": "mines-of-moria-4024"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ]
+    }
+}

@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4118",
+    "spec": {
+        "name": "The Cave",
+        "description": "This rather large cave is surprisingly very well lit. There are about twenty torches spread about the room set in sconces which hang several feet above your head. The dancing shadows created by the flickering flames catch your eyes for a few minutes and threaten to hold you entranced. Looking about the cave, it appears to continue to the west and south. In the north wall a strange vertical crack looks as if it may lead somewhere.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4126",
+                "description": "It looks like quite the tight fit."
+            },
+            "south": {
+                "room_id": "mines-of-moria-4123"
+            },
+            "west": {
+                "room_id": "mines-of-moria-4119"
+            }
+        }
+    }
+}

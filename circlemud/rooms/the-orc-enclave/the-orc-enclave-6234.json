@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6234",
+    "spec": {
+        "name": "A Rocky Trail",
+        "description": "The ground is getting very rocky here, causing the trees of the woods to become more sparse. Several bushes have found purchase in the soil, but not near enough to block free movement in this area. The trail leads on up to what appears to be a cave in the side of the mountain to the west, and a side trail runs along the forest's edge to the north. To the east, the trail runs deep into the forest out of sight.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "north": {
+                "room_id": "the-orc-enclave-6241"
+            },
+            "east": {
+                "room_id": "the-orc-enclave-6233"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6242"
+            }
+        }
+    }
+}

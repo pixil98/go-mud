@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6073",
+    "spec": {
+        "name": "A Shadowy Path Through The Dense Forest",
+        "description": "You are on a small shadowy path leading through the dense forest. To the north the terrain becomes quite hilly and rough. The crowns of the old trees leave the forest in an unreal twilight illumination. The path continues north and south.",
+        "zone_id": "haon-dor-light-forest",
+        "exits": {
+            "north": {
+                "room_id": "haon-dor-light-forest-6076",
+                "description": "The path winds its way into the hills and denser forest."
+            },
+            "south": {
+                "room_id": "haon-dor-light-forest-6068",
+                "description": "The path winds its way between the trees."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "path",
+                    "paths",
+                    "shadowy"
+                ],
+                "description": "The shadowy path is probably used by the animals living in the forest."
+            },
+            {
+                "keywords": [
+                    "tree",
+                    "trees"
+                ],
+                "description": "The trees are mostly old beeches and oaks."
+            },
+            {
+                "keywords": [
+                    "hill",
+                    "hills",
+                    "terrain"
+                ],
+                "description": "To the northwest you see hills covered by dense forest."
+            }
+        ]
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3309",
+    "spec": {
+        "name": "A Steep Slope",
+        "description": "This slopes leads down and to the west from here. Up above, you see a plateau at the southern end of a long mountain ridge. Surpisingly, there seems to be signs of traffic in this area, leading into the large depression here. The going looks somewhat dangerous, and you decide to exercise a little caution.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "north": {
+                "room_id": "the-three-of-swords-3308"
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3310"
+            },
+            "up": {
+                "room_id": "the-three-of-swords-3308"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "signs",
+                    "tracks"
+                ],
+                "description": "A few boot prints lead way in the dust here. There is definitely traffic here, but this area is not what you would call well-travelled."
+            }
+        ]
+    }
+}

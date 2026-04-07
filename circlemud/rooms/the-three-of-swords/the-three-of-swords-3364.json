@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3364",
+    "spec": {
+        "name": "A Mountain Trail",
+        "description": "The trail leads up even higher into the mountains to the west here. You shiver as the cold mountain air washes over you, and your back prickles as you wonder if anything lives up here, or anything _dangerous_ for that matter. Maybe heading back down to the east would be a good idea...",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "east": {
+                "room_id": "the-three-of-swords-3363"
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3365"
+            }
+        }
+    }
+}

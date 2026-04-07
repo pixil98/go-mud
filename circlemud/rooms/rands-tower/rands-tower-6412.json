@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "rands-tower-6412",
+    "spec": {
+        "name": "The Library",
+        "description": "A great mages' library is contained on this floor of the tower. You feel you could learn anything you wanted to if you only looked and read long enough. A door opens up back on the stairwell to the east.",
+        "zone_id": "rands-tower",
+        "exits": {
+            "east": {
+                "room_id": "rands-tower-6413",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "rands-tower-6414",
+                "description": "A big bookcase, that looks rather odd.",
+                "closure": {
+                    "name": "bookcase",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "book",
+                    "books"
+                ],
+                "description": "There are lots of books about everything here!"
+            }
+        ]
+    }
+}

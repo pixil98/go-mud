@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3049",
+    "spec": {
+        "name": "The Levee",
+        "description": "You are at the levee. South of here you see the river gently flowing west. The river bank is very low making it possible to enter the river.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "north": {
+                "room_id": "northern-midgaard-main-city-3045",
+                "description": "You see the alley."
+            },
+            "south": {
+                "room_id": "southern-part-of-midgaard-3203",
+                "zone_id": "southern-part-of-midgaard",
+                "description": "You see the river flowing west."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ]
+    }
+}

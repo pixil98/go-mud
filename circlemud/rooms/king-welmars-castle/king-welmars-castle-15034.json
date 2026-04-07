@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15034",
+    "spec": {
+        "name": "In The South-East Tower",
+        "description": "This part of the tower is fairly uninteresting, but it leads further upwards...",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "up": {
+                "room_id": "king-welmars-castle-15052",
+                "description": "The room at the top of the tower seems darkish for some reason."
+            },
+            "down": {
+                "room_id": "king-welmars-castle-15009",
+                "description": "You see the stairs at the bottom of the tower."
+            }
+        }
+    }
+}

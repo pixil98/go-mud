@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7060",
+    "spec": {
+        "name": "The Dark Passageway",
+        "description": "You can't see anything but the ground where you put your feet. The passageway seems to continue west and north. To the east there is water covering the floor and that leads through an arched entry to a watery sewer.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "north": {
+                "room_id": "the-sewer-first-level-7059",
+                "description": "You can't see anything in that direction and your light isn't enough to light that far."
+            },
+            "east": {
+                "room_id": "the-sewer-first-level-7068",
+                "description": "You can't see anything in that direction and your light isn't enough to light that far."
+            },
+            "west": {
+                "room_id": "the-sewer-first-level-7049",
+                "description": "You can just make out a triple junction leading north and west."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "water"
+                ],
+                "description": "It looks dark and murky, and emanates a foul stench."
+            }
+        ]
+    }
+}

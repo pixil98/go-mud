@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "new-thalos-5523",
+    "spec": {
+        "name": "The Witch's Brew",
+        "description": "The first thing you notice as you walk into this spacious shop is the hundreds of candles that line the shelves. The swirling mist that surrounds your feet makes it seem that you have stepped into a gateway to another plane. A cluttered table stands near the far wall, opposite the doorway.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "south": {
+                "room_id": "new-thalos-5429"
+            }
+        }
+    }
+}

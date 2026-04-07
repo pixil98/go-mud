@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2657",
+    "spec": {
+        "name": "A Bedroom",
+        "description": "You are in the bedroom of the Master Magician of Neutrality. Curtained windows can be seen on the south wall. A large comfortable looking bed takes up most of the room.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2654"
+            }
+        }
+    }
+}

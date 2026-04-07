@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3027",
+    "spec": {
+        "name": "The Entrance Hall To The Guild Of Thieves",
+        "description": "The entrance hall to the thieves' and assassins' guild. A place where you can lose both your life and your money, if you are not careful. To the north is the dark alley and to the east is the thieves' bar.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "north": {
+                "room_id": "northern-midgaard-main-city-3026",
+                "description": "You see the alley."
+            },
+            "east": {
+                "room_id": "northern-midgaard-main-city-3028",
+                "description": "You see the thieves bar, where everything disappears."
+            }
+        }
+    }
+}

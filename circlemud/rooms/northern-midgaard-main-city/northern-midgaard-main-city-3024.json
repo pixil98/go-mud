@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3024",
+    "spec": {
+        "name": "The Eastern End Of Poor Alley",
+        "description": "You are at the poor alley. South of here is the Grubby Inn and to the east you see common square. The alley continues further west.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "east": {
+                "room_id": "northern-midgaard-main-city-3025",
+                "description": "You see the common square."
+            },
+            "south": {
+                "room_id": "northern-midgaard-main-city-3048",
+                "description": "You see the Inn."
+            },
+            "west": {
+                "room_id": "northern-midgaard-main-city-3044",
+                "description": "You see the poor alley."
+            }
+        }
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3374",
+    "spec": {
+        "name": "A Sloping Tunnel",
+        "description": "A bright light greets your eyes from the north, in direct contrast to the darkness of the tunnel overhead. You break out in a sweat due to the overwhelming warmth of the air. The musky odor has grown quite intense, drowning out everything else in the air and making it hard to breathe. Something in your gut begins squirming uncomfortably as you wonder what's ahead...",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "north": {
+                "room_id": "the-three-of-swords-3375"
+            },
+            "up": {
+                "room_id": "the-three-of-swords-3373"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

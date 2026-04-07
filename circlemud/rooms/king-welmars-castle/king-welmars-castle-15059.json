@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15059",
+    "spec": {
+        "name": "Ergan's Cell",
+        "description": "This large cell is almost like a living quarters with a cot in one corner serving as a bed, a small table built out of the wall in another corner. There is even a rug in the center of the floor to keep some warmth. It seems that the prisoner kept here is treated quite well, almost too well for a murderer of an entire town...",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "north": {
+                "room_id": "king-welmars-castle-15057",
+                "description": "The cell door to the north leads back to the prison hallway.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "king-welmars-castle-15017",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        }
+    }
+}

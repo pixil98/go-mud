@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3365",
+    "spec": {
+        "name": "A Mountain Trail",
+        "description": "The trail leads up the side of the tallest mountain in the range -- the one that sticks up into the dark sky like a monument to death and futility. The trail leads back to safety to the east, and goes even higher to the west.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "east": {
+                "room_id": "the-three-of-swords-3364"
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3366"
+            }
+        }
+    }
+}

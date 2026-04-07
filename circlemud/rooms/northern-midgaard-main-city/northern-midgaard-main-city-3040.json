@@ -1,0 +1,59 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3040",
+    "spec": {
+        "name": "Inside The West Gate Of Midgaard",
+        "description": "You are by two small towers that have been built into the city wall and connected with a footbridge across the heavy wooden gate. Main Street leads east and Wall Road leads south from here.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "east": {
+                "room_id": "northern-midgaard-main-city-3012",
+                "description": "You see Main Street."
+            },
+            "south": {
+                "room_id": "northern-midgaard-main-city-3042",
+                "description": "You see the road running along the inner side of the city wall. You notice that it is called Wall Road."
+            },
+            "west": {
+                "room_id": "northern-midgaard-main-city-3052",
+                "description": "The city gate is to the west.",
+                "closure": {
+                    "name": "gate",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "southern-part-of-midgaard-3112",
+                        "locked": true
+                    }
+                }
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "bridge",
+                    "footbridge"
+                ],
+                "description": "It is too high up to reach but it looks as if one easily could walk across it from one tower to the other."
+            },
+            {
+                "keywords": [
+                    "gate"
+                ],
+                "description": "It is a set of very big double doors made from hard wood. They have been reinforced with large iron bands to make them even more sturdy. One of the doors is equipped with a very big lock."
+            },
+            {
+                "keywords": [
+                    "tower",
+                    "towers"
+                ],
+                "description": "Both of the towers are built from large grey rocks that have been fastened to each other with some kind of mortar, just like the city wall."
+            },
+            {
+                "keywords": [
+                    "wall"
+                ],
+                "description": "It is built from large grey rocks that have been fastened to each other with some kind of mortar. It is far too high to climb."
+            }
+        ]
+    }
+}

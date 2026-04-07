@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "midennir-3556",
+    "spec": {
+        "name": "The Goblin HeadQuarters",
+        "description": "The tunnel widens into a large (well, large for goblins) cavern that serves as the living quarters for the goblins of Miden'nir. The bones of numbers woodland creatures are strewn about the room, the remanents of a recent meal.",
+        "zone_id": "midennir",
+        "exits": {
+            "north": {
+                "room_id": "midennir-3555",
+                "description": "The tunnel heads north."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "rome-12002",
+    "spec": {
+        "name": "Caesar's Private Box",
+        "description": "This is the best view in the house! You can see gladiators fighting or the chariot races with an unobstructed view. The seats are upholstered in red velvet and are in top-notch condition. There is a rickety ladder leading up and a marble staircase leading down.",
+        "zone_id": "rome",
+        "exits": {
+            "up": {
+                "room_id": "rome-12001",
+                "description": "You see a rickety ladder with a trapdoor leading up.",
+                "closure": {
+                    "name": "trapdoor",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "rome-12033",
+                        "locked": true
+                    }
+                }
+            },
+            "down": {
+                "room_id": "rome-12003",
+                "description": "There is a marble staircase leading down."
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

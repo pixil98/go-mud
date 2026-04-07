@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6503",
+    "spec": {
+        "name": "The Top Of The Mountain",
+        "description": "You are now on the top of the mountain. To the south you see a path leading down the mountain. To the east and west you see entrances to what seems like mines.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "east": {
+                "room_id": "the-dwarven-kingdom-6540",
+                "description": "An entrance to the mountain which seems to lead underground."
+            },
+            "south": {
+                "room_id": "the-dwarven-kingdom-6502",
+                "description": "The path leads down the mountain to the main city of Midgaard."
+            },
+            "west": {
+                "room_id": "the-dwarven-kingdom-6505",
+                "description": "There is an entrance to the mountain."
+            }
+        }
+    }
+}

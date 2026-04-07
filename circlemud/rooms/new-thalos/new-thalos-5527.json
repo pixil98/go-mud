@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "new-thalos-5527",
+    "spec": {
+        "name": "The Repair Shop",
+        "description": "One of the most popular shops in New Thalos, this shop is always a hive of activity. It is almost inhuman the way one man can fix all types of armour singlehandedly. If you have an item in need of repair simply give it to the man behind the counter. There is a small sign on the counter.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5424"
+            }
+        },
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "sign"
+                ],
+                "description": "The sign reads: Closed for renovations"
+            }
+        ]
+    }
+}

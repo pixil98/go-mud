@@ -1,0 +1,54 @@
+{
+    "version": 1,
+    "id": "the-second-sewer-7116",
+    "spec": {
+        "name": "The Northeastern Corner Of The Ledge",
+        "description": "You stand, swaying out from the ledge, with only a couple of inches of safe, solid ledge under your feet. The ledge continues to the west and leads south from here into darkness.",
+        "zone_id": "the-second-sewer",
+        "exits": {
+            "south": {
+                "room_id": "the-second-sewer-7117"
+            },
+            "west": {
+                "room_id": "the-second-sewer-7113",
+                "description": "The ledge continues west."
+            },
+            "down": {
+                "room_id": "the-sewer-maze-7280",
+                "zone_id": "the-sewer-maze",
+                "description": "You can just make out the outline of a trapdoor here in the soil. The earth is probably there to conceal a secret entrance. This looks as if it leads down into the seemingly solid rock face of the ledge.",
+                "closure": {
+                    "name": "trapdoor",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "ground",
+                    "ledge",
+                    "rock"
+                ],
+                "description": "The ground here seems a little different from all the other ledges along the Abyss. There is a kind of soft soil on this ledge, maybe you should look carefully at this. It seems to be of some interest."
+            },
+            {
+                "keywords": [
+                    "soil",
+                    "soft",
+                    "earth"
+                ],
+                "description": "You can just make out the outline of a trapdoor here in the soil. The earth is probably there to conceal a secret entrance. This looks as if it leads down into the seemingly solid rock face of the ledge."
+            }
+        ]
+    }
+}

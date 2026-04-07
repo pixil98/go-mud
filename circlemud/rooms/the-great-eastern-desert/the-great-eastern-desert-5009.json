@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5009",
+    "spec": {
+        "name": "At The Foot Of The Rubble",
+        "description": "You are at the bottom of a large pile of rubble. A tunnel branches off to the north and east.",
+        "zone_id": "the-great-eastern-desert",
+        "exits": {
+            "north": {
+                "room_id": "the-great-eastern-desert-5010"
+            },
+            "east": {
+                "room_id": "the-great-eastern-desert-5012"
+            },
+            "up": {
+                "room_id": "the-great-eastern-desert-5008"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

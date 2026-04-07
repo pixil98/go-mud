@@ -1,0 +1,42 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6119",
+    "spec": {
+        "name": "A Small Path In The Deep, Dark Forest",
+        "description": "You are on a narrow path leading through the deep, dark forest. Huge, ancient trees are on all sides. The path continues north and south.",
+        "zone_id": "haon-dor-dark-forest",
+        "exits": {
+            "north": {
+                "room_id": "haon-dor-dark-forest-6118",
+                "description": "The narrow path winds its way through the trees to the north."
+            },
+            "south": {
+                "room_id": "haon-dor-dark-forest-6120",
+                "description": "The narrow path winds its way through the trees to the south."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "tree",
+                    "trees",
+                    "trunk",
+                    "trunks"
+                ],
+                "description": "You feel as if they are watching you."
+            },
+            {
+                "keywords": [
+                    "path"
+                ],
+                "description": "The path seems all too frail. One of the giant roots could probably crush it in a single blow."
+            }
+        ]
+    }
+}

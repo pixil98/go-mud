@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3335",
+    "spec": {
+        "name": "A Cave Passageway",
+        "description": "This area darker than the rest of the passageway, due to the fact that the sconces along the walls stop abruptly here. The way to the south is completely dark, in direct contrast to the tunnels to the west. You peer hard to the south, but can make out nothing in the impenetrable darkness. And still that distant thumping impinges on your consciousness...",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "south": {
+                "room_id": "the-three-of-swords-3336"
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3334"
+            }
+        }
+    }
+}

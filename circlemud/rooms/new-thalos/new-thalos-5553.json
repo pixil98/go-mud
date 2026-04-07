@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "id": "new-thalos-5553",
+    "spec": {
+        "name": "The Jail",
+        "description": "You are in jail. For some reason, someone feels that you've screwed up pretty bad and should be put away safely for a while.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5444",
+                "closure": {
+                    "name": "gate",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "new-thalos-5493",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "peaceful"
+            },
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ]
+    }
+}

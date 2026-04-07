@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5235",
+    "spec": {
+        "name": "A Small Guard House",
+        "description": "This was once the barracks for Thalos' Cityguards. Now just an empty shell, this small shack still stands guarding the entrance both to the city and to the city hall.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "north": {
+                "room_id": "the-city-of-thalos-5201",
+                "description": "Main street runs by this building."
+            }
+        }
+    }
+}

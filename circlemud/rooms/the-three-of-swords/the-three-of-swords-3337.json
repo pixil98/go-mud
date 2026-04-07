@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3337",
+    "spec": {
+        "name": "A Cave Passageway",
+        "description": "The passageway switches directions again in the dark gloom of the mountain, heading to the north and east from here. As you round the corner, a trick of the acoustics make the deep thrumming and pounding you've been hearing sound as if its coming from two feet away! Very unsettling.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "north": {
+                "room_id": "the-three-of-swords-3336"
+            },
+            "east": {
+                "room_id": "the-three-of-swords-3338"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

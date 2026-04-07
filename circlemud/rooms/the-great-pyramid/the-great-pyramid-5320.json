@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5320",
+    "spec": {
+        "name": "A Small Fire",
+        "description": "Here a small fire burns in a nook in the rocks, providing some warmth and comforting light in the cold, dark, dry air. Standing here is a strange-looking old man, who stares at you balefully.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "north": {
+                "room_id": "the-great-pyramid-5319",
+                "description": "You see a massive crevasse that plunges into darkness."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "man",
+                    "old"
+                ],
+                "description": "The old man looks like he has been trapped down here far too long, and has begun to lose his mind. He moves about slowly, cackling to himself. He turns to you and shouts, 'nope measse! nope measse!', then turns back and stares into the fire. 'What a strange person,' you think to yourself."
+            }
+        ]
+    }
+}

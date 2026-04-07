@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3350",
+    "spec": {
+        "name": "The Farmer's Market",
+        "description": "One farmer's wife stands here, waiting for someone to buy the food her family has grown. She looks bored, but not unhappy... no competition!",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "east": {
+                "room_id": "the-three-of-swords-3349"
+            }
+        }
+    }
+}

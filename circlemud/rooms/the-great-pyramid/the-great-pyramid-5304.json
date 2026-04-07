@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5304",
+    "spec": {
+        "name": "Climbing The Great Pyramid",
+        "description": "Hot air rises off the sides of the pyramid, and the wind chokes you with a flurry of sand and dust. The walls of the pyramid are quite steep, and you are having trouble keeping from sliding down into the sands below.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "east": {
+                "room_id": "the-great-pyramid-5305",
+                "description": "If you are daring you could try to skirt around to the eastern side."
+            },
+            "west": {
+                "room_id": "the-great-pyramid-5302",
+                "description": "If you are daring you could try to skirt around to the western side."
+            },
+            "up": {
+                "room_id": "the-great-pyramid-5307",
+                "description": "It looks too dangerous to try to climb any higher."
+            },
+            "down": {
+                "room_id": "the-great-pyramid-5307",
+                "description": "This side of the pyramid has a dangerous drop before the sandy floor."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "pyramid"
+                ],
+                "description": "You wonder how anyone could have built such a massive thing out in this heat."
+            }
+        ]
+    }
+}

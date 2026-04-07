@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1506",
+    "spec": {
+        "name": "Halls of the Forgotten",
+        "description": "Even the darkest have a place on the road to the truth. It is in this place, so empty and forgotten, that God has chosen the worst, and brought them close to Him for one last time.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "east": {
+                "room_id": "the-straight-path-1513"
+            },
+            "west": {
+                "room_id": "the-straight-path-1508"
+            },
+            "up": {
+                "room_id": "the-straight-path-1505"
+            }
+        }
+    }
+}

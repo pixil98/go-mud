@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5014",
+    "spec": {
+        "name": "A Damp Hallway",
+        "description": "The walls here are extremely damp, as well as the floor.",
+        "zone_id": "the-great-eastern-desert",
+        "exits": {
+            "east": {
+                "room_id": "the-great-eastern-desert-5015",
+                "description": "You hear drops of water."
+            },
+            "west": {
+                "room_id": "the-great-eastern-desert-5013"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

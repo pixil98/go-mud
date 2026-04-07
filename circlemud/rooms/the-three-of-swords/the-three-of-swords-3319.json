@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3319",
+    "spec": {
+        "name": "A Cave Passageway",
+        "description": "The passage turns here, one end leading south, towards the cave's entrance, and east -- that much deeper into the mountain. The light sconces keep the area bright enough to see, but not nearly bright enough for you to be quite comfortable in this strange place. From far off you hear the echoes of what sound to be voices.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "east": {
+                "room_id": "the-three-of-swords-3320"
+            },
+            "south": {
+                "room_id": "the-three-of-swords-3318"
+            }
+        }
+    }
+}

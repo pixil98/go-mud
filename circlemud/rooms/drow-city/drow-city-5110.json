@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "drow-city-5110",
+    "spec": {
+        "name": "The Main Gate",
+        "description": "You are at the entrance to the 1st house of the city. A large gate, almost as big and elegant as the one at the entrance to the city, stands here.",
+        "zone_id": "drow-city",
+        "exits": {
+            "north": {
+                "room_id": "drow-city-5114"
+            },
+            "south": {
+                "room_id": "drow-city-5107"
+            },
+            "west": {
+                "room_id": "drow-city-5111",
+                "description": "A large gate lies to the west.",
+                "closure": {
+                    "name": "gate",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

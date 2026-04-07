@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1504",
+    "spec": {
+        "name": "A Long Road",
+        "description": "Looking ahead, you can see that the path you have been following will soon come to an end, but something in the cold and the breeze tells you that that will be only the beginning of the journey.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "north": {
+                "room_id": "the-straight-path-1505"
+            },
+            "south": {
+                "room_id": "the-straight-path-1503"
+            }
+        }
+    }
+}

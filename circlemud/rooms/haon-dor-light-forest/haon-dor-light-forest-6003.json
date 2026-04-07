@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6003",
+    "spec": {
+        "name": "A Trail Through The Dense Forest",
+        "description": "You are on a trail winding east and west through the dense forest. To the east, the forest gradually seems to become lighter.",
+        "zone_id": "haon-dor-light-forest",
+        "exits": {
+            "east": {
+                "room_id": "haon-dor-light-forest-6002",
+                "description": "The trail continues eastwards to the younger part of the forest."
+            },
+            "west": {
+                "room_id": "haon-dor-light-forest-6004",
+                "description": "You see the narrow trail winding westwards through the dense forest."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "trail"
+                ],
+                "description": "The forest trail seems almost fragile compared to the massive trunks."
+            },
+            {
+                "keywords": [
+                    "tree",
+                    "trees"
+                ],
+                "description": "The dense crowns of the mature trees leave only a fraction of the sky to be seen through the leaves."
+            }
+        ]
+    }
+}

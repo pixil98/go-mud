@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "rome-12056",
+    "spec": {
+        "name": "A Mountain Path",
+        "description": "You are standing on a small trail that leads through a grove of trees. Every thing is lush and green here and it appears to have been raining recently. 'This would be an ideal place for a picnic.' , you think to yourself.",
+        "zone_id": "rome",
+        "exits": {
+            "up": {
+                "room_id": "rome-12052",
+                "description": "You see a small trail leading further up the mountain."
+            },
+            "down": {
+                "room_id": "rome-12059",
+                "description": "You see a small trail, leading down."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "tree",
+                    "trees",
+                    "vegetation"
+                ],
+                "description": "All of the vegetation is lush, green and in full bloom. You wish that you could take the time to stop and enjoy it properly."
+            },
+            {
+                "keywords": [
+                    "trail",
+                    "path"
+                ],
+                "description": "The path is a little muddy, possibly due to a recent thundershower."
+            }
+        ]
+    }
+}

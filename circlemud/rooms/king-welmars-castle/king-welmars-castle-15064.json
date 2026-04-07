@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15064",
+    "spec": {
+        "name": "A Dirt Road",
+        "description": "As you leave the forest to the north, you find yourself at what appears to be the beginning of a dirt road and a small village. Upon first laying eyes on this place you realize that there is something funny about this settlement... there is no sound other that the whistling wind here. You would have expected to hear people going about their regular business, but the village is silent. You cannot see any movement around the village either. It is almost as still and silent as the woods to the north. There is a small sign lying by the side of the road here.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "north": {
+                "room_id": "king-welmars-castle-15063",
+                "description": "An trail leads into the heavy undergrowth to the north."
+            },
+            "south": {
+                "room_id": "king-welmars-castle-15065",
+                "description": "The dirt road continues through the village to the south."
+            },
+            "west": {
+                "room_id": "king-welmars-castle-15068",
+                "description": "A house stands a short distance off the west side of the road, its door hanging ajar."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "sign"
+                ],
+                "description": "/----------------------------------\\ | Welcome to the hamlet of | | Townsbridge | | | | | | Population: 276 | | | \\----------------------------------/ The number 276 has been scratched out and replaced with the number 0."
+            }
+        ]
+    }
+}

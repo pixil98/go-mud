@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3355",
+    "spec": {
+        "name": "Main Road",
+        "description": "The main road through Stanneg ends here at a large well that leads deep, deep into the earth. To the north of the well is a large building, with a large WELCOME mat outside its front door. Westwards you see the a road intersection in the center of the tiny village. Around you is a rocky terrain in the middle of this mountain range...not very many places else to go.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "north": {
+                "room_id": "the-three-of-swords-3356",
+                "description": "There is a large set of double doors, made of wood blocking the way.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3348"
+            }
+        }
+    }
+}

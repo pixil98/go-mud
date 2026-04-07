@@ -1,0 +1,71 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15057",
+    "spec": {
+        "name": "The Prison",
+        "description": "This small passage is about thirty feet long and is well lit by the torches on each wall. The torches have been locked inside small metal cages to ensure that they are not removed. The strangest thing about the torches however, is the manner in which they burn, they have what appears to be a constant flame in that it does not flicker whatsoever, and does not give off any smoke. Perhaps they have been magicked to burn forever... There are three cells along this passage way, one on each side of the corridor right near the north end and one isolated at the south end of the corridor with a small metal plaque located over the door in the keystone of the archway.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "north": {
+                "room_id": "king-welmars-castle-15056",
+                "description": "A small wooden door blocks the way out of the prison.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "king-welmars-castle-15017",
+                        "locked": true
+                    }
+                }
+            },
+            "east": {
+                "room_id": "king-welmars-castle-15060",
+                "description": "A cell door is set into the eastern wall.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "king-welmars-castle-15017",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            },
+            "south": {
+                "room_id": "king-welmars-castle-15059",
+                "description": "The cell door to the south has been double padlocked and there is a plaque placed in the keystone above the door.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "king-welmars-castle-15017",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            },
+            "west": {
+                "room_id": "king-welmars-castle-15058",
+                "description": "A cell door is set into the western wall.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "king-welmars-castle-15017",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "plaque",
+                    "keystone"
+                ],
+                "description": "The plaque in the keystone is engraved with four simple words: Ergan, Murderer of Townsbridge"
+            }
+        ]
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "rome-12015",
+    "spec": {
+        "name": "The Noblemans' Box",
+        "description": "These are the 'better' seats used primarily by the upper class of Rome. There is a large seating area to the east and a staircase leading up here. The view of the chariot track is pretty good.",
+        "zone_id": "rome",
+        "exits": {
+            "east": {
+                "room_id": "rome-12022",
+                "description": "Rows upon rows of bleachers lie to the east."
+            },
+            "up": {
+                "room_id": "rome-12008",
+                "description": "The stairs look safe enough."
+            }
+        }
+    }
+}

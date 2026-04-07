@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "rands-tower-6430",
+    "spec": {
+        "name": "A Mage's Office",
+        "description": "A small desk here is cluttered with magically preserved papers and documents. None seem of value, except perhaps to a historian. This place seems vaguely uninteresting...",
+        "zone_id": "rands-tower",
+        "exits": {
+            "east": {
+                "room_id": "rands-tower-6429"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "paper",
+                    "papers",
+                    "documents",
+                    "document"
+                ],
+                "description": "Well, one of the papers relate a story about how the mage of this tower, Rand, angered many kings, and relates how they set his armies on him. You wonder if the lava outside was a failed attempt to destroy the armies..."
+            },
+            {
+                "keywords": [
+                    "desk"
+                ],
+                "description": "It is cluttered with all sorts of papers. Some look half interesting, actually."
+            }
+        ]
+    }
+}

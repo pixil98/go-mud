@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6512",
+    "spec": {
+        "name": "The Door To The Castle",
+        "description": "Here there is a door to the castle to the east. The castle is elegantly designed, and looks much like a roll of toilet paper standing on its end. There is a sign which says: ****************************************** * WELCOME TO THE CASTLE OF STRANGELOVE * * Here, celibacy is uninvited * ******************************************",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "east": {
+                "room_id": "the-dwarven-kingdom-6525",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "the-dwarven-kingdom-6503",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            },
+            "south": {
+                "room_id": "the-dwarven-kingdom-6511"
+            }
+        }
+    }
+}

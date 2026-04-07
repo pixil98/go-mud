@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5331",
+    "spec": {
+        "name": "A Raised Dais",
+        "description": "You are at the southern end of the ancient hall, the dust and darkness absorbing your light so that you cannot see past the steps of the dais. A low pedestal rests here. You see something written into the face of it.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "north": {
+                "room_id": "the-great-pyramid-5330",
+                "description": "You cannot see past the steps of the dais."
+            },
+            "down": {
+                "room_id": "the-great-pyramid-5332",
+                "description": "You see a seam in the stone floor.",
+                "closure": {
+                    "name": "tomb",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "pedestal",
+                    "writings"
+                ],
+                "description": "The writings are covered in sand and worn nearly away by the passage of time: 'I am Ramses the Damned, once counselor and aide to the mightiest of pharoahs and queens of this land. Much time has passed since I last walked the earth. Disturb my rest at your peril.'"
+            }
+        ]
+    }
+}

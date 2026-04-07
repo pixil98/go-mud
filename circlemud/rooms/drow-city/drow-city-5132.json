@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "drow-city-5132",
+    "spec": {
+        "name": "A Long Hallway",
+        "description": "You are in a long hallway lined with adamantite. The walls are engraved with pictures of elves and spiders. The hallway continues east and west. As you look down the hallway you can make out one or two figures moving away from you. To the south is a door.",
+        "zone_id": "drow-city",
+        "exits": {
+            "east": {
+                "room_id": "drow-city-5131"
+            },
+            "south": {
+                "room_id": "drow-city-5133",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "drow-city-5134"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

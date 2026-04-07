@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2659",
+    "spec": {
+        "name": "A Dark Hallway",
+        "description": "You are in a long dark hallway leading east and west. Not much can be seen in the unnatural darkness here, but you get a deep sense of dread the further you go.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "east": {
+                "room_id": "the-high-tower-of-magic-2660"
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2658"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

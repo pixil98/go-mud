@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4030",
+    "spec": {
+        "name": "The Light Cave",
+        "description": "You are in a light cave, through a hole large above you, you see the sky. A small tunnel to the south is the only way out. You notice the source of the strange smell, all around you there are corpses of several monsters.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "south": {
+                "room_id": "mines-of-moria-4028"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "corpse",
+                    "corpses"
+                ],
+                "description": "Looking at the corpses lying around the cave, they all appear to have been torn to shreds by some large creature. As a further not too unexpected point to note, they all smell terrible."
+            }
+        ]
+    }
+}

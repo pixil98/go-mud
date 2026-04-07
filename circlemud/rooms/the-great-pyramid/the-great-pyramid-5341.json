@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5341",
+    "spec": {
+        "name": "A Dust-Covered Hallway",
+        "description": "This hallway is covered with a thick, choking dust that rises up to obscure your light source and sting your eyes. Small marks and footprints in the dust betray the recent passage of others.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "east": {
+                "room_id": "the-great-pyramid-5342",
+                "description": "The hallway turns to the north."
+            },
+            "west": {
+                "room_id": "the-great-pyramid-5340",
+                "description": "You smell something peculiar over there."
+            },
+            "up": {
+                "room_id": "the-great-pyramid-5338",
+                "description": "A tightly spiralling stone stairway leads up."
+            }
+        }
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "new-thalos-5539",
+    "spec": {
+        "name": "The Filthy Unicorn",
+        "description": "A draft chills your bones as you enter, though you see no open window or door. Hooded figures lurk around in the shadows and speak in low voices. A flash of steel lets you know that weapons are in great abundance in this crowd. As you quickly check your beltpouch you notice a small staircase leading down.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5532"
+            },
+            "down": {
+                "room_id": "new-thalos-5546"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "peaceful"
+            },
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ]
+    }
+}

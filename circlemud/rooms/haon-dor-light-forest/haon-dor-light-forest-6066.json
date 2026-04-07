@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6066",
+    "spec": {
+        "name": "A Fork On The Shaded Path Through The Forest",
+        "description": "You are at a fork in the small shaded path winding through the trees. The forest gradually becomes more dense to the west. The path branches to the north and south here, and also continues to the east.",
+        "zone_id": "haon-dor-light-forest",
+        "exits": {
+            "north": {
+                "room_id": "haon-dor-light-forest-6071",
+                "description": "The path winds its way between the trees."
+            },
+            "east": {
+                "room_id": "haon-dor-light-forest-6065",
+                "description": "The path winds its way between the trees."
+            },
+            "south": {
+                "room_id": "haon-dor-light-forest-6061",
+                "description": "The path winds its way between the trees."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "path",
+                    "paths",
+                    "shaded"
+                ],
+                "description": "The shaded path is probably used by the small animals living in the forest."
+            },
+            {
+                "keywords": [
+                    "tree",
+                    "trees"
+                ],
+                "description": "The trees are mostly old beeches and oaks."
+            }
+        ]
+    }
+}

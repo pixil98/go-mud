@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7339",
+    "spec": {
+        "name": "The North-Western Part Of The Basilisk's Cave",
+        "description": "You can see some hay spread on the floor. The smell is awful here, and it makes you feel sick. This place where the Basilisk sleeps. Watch out... maybe it is not far from here...",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "east": {
+                "room_id": "the-sewer-maze-7337"
+            },
+            "south": {
+                "room_id": "the-sewer-maze-7340"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "hay"
+                ],
+                "description": "The hay is very dirty. The smell of it makes you feel sick."
+            }
+        ]
+    }
+}

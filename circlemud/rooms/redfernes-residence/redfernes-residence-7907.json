@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7907",
+    "spec": {
+        "name": "The Larder",
+        "description": "You can see food all over. Among the heaps of food you notice HUGE rats scuttling around, nibbling pieces off the heaps here and there.",
+        "zone_id": "redfernes-residence",
+        "exits": {
+            "south": {
+                "room_id": "redfernes-residence-7906",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

@@ -1,0 +1,73 @@
+{
+    "version": 1,
+    "id": "rome-12036",
+    "spec": {
+        "name": "The Emperor's Private Office",
+        "description": "You are standing in the Emperor's private office. The room is richly furnished with the finest of the loot brought back from conquests of far away lands. There is a massive, intricately carved desk here, upon which are important documents, decrees and other paperwork involved in running the empire. On the far wall, there is a marble bookcase that is well stocked with the works of Homer, Plato, Socrates and other wise men. Further, it seems that the current Emperor likes flowers as there are many potted and cut specimens throughout the room. There is a french door leading to the waiting room and a wooden door to the south.",
+        "zone_id": "rome",
+        "exits": {
+            "east": {
+                "room_id": "rome-12043",
+                "description": "Through the door, you see a waiting room.",
+                "closure": {
+                    "name": "doors",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "rome-12035",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            },
+            "south": {
+                "room_id": "rome-12037",
+                "description": "The south door leads directly to the senate chambers.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "rome-12035",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "desk"
+                ],
+                "description": "The desk is made of solid walnut and gold inlay. It is exquisitely carved with superior craftsmanship, the likes of which has rarely been seen. It was probably brought to Rome from Gaul."
+            },
+            {
+                "keywords": [
+                    "documents",
+                    "decrees",
+                    "paperwork",
+                    "document",
+                    "decree",
+                    "papers",
+                    "paper"
+                ],
+                "description": "The documents are all written on reed scrolls made in Egypt and have been sealed with wax."
+            },
+            {
+                "keywords": [
+                    "bookcase",
+                    "books"
+                ],
+                "description": "The books are very old and contain the wisdom of wise men from throughout the entire Roman empire. They appear to be collecting dust."
+            },
+            {
+                "keywords": [
+                    "flowers",
+                    "plants",
+                    "flower",
+                    "plant"
+                ],
+                "description": "The plants contribute to a very relaxing atmosphere."
+            }
+        ]
+    }
+}

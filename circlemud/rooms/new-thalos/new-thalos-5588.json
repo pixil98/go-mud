@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "new-thalos-5588",
+    "spec": {
+        "name": "A Small room",
+        "description": "This is secret chamber allowing the Sultan direct access to his harem at any time he chooses.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5589",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "south": {
+                "room_id": "new-thalos-5587",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

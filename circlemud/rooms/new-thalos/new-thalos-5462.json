@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5462",
+    "spec": {
+        "name": "Guildsman's Row",
+        "description": "Only one guild offers its door to this stretch of the Row, the Tanners' Guild, to the west. To the east is a beautifully sculpted marble door allowing entrance to the Museum of the Greater Gods. The Row of Guilds leads north and south.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5461"
+            },
+            "east": {
+                "room_id": "new-thalos-5511"
+            },
+            "south": {
+                "room_id": "new-thalos-5463"
+            },
+            "west": {
+                "room_id": "new-thalos-5564"
+            }
+        }
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2541",
+    "spec": {
+        "name": "A Cul De Sac",
+        "description": "You are in a small cul de sac. A window to the east is letting in moonlight and a pleasant breeze. Through it, the surrounding country side can be seen. The only apparent exit leads back west to the hallway.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "west": {
+                "room_id": "the-high-tower-of-magic-2540"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "window"
+                ],
+                "description": "Stretching out as far as the eye can see is a canopy of dark tree tops which can only be the Haon-Dor-Dark Forest. A faint light in the distance to the northeast marks what is probably the city of Midgaard."
+            }
+        ]
+    }
+}

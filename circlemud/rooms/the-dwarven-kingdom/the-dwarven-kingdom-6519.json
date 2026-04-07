@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6519",
+    "spec": {
+        "name": "A Path By The Hospital",
+        "description": "Here the path passes by the Hospital to the north. It continues to the east to the barracks, and to the west.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "north": {
+                "room_id": "the-dwarven-kingdom-6534"
+            },
+            "east": {
+                "room_id": "the-dwarven-kingdom-6520"
+            },
+            "west": {
+                "room_id": "the-dwarven-kingdom-6518"
+            }
+        }
+    }
+}

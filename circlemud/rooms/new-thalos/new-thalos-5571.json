@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "new-thalos-5571",
+    "spec": {
+        "name": "The Grand Dining Hall",
+        "description": "A long oaken table, coverd with silverware, plates, and a table cloth with gold trim, dominates the room. Although no diners occupy the room as of yet, servants sprint about setting the table and placing condiments. The kitchen entrance is to the east, and two huge double doors open into the hallway north.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5572",
+                "closure": {
+                    "name": "doors",
+                    "closed": true
+                }
+            },
+            "east": {
+                "room_id": "new-thalos-5561"
+            }
+        }
+    }
+}

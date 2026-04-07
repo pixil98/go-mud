@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5068",
+    "spec": {
+        "name": "A Narrow Crack",
+        "description": "This part of the tunnel is the hardest to move through as the walls move in to meet you.",
+        "zone_id": "the-great-eastern-desert",
+        "exits": {
+            "north": {
+                "room_id": "the-great-eastern-desert-5067"
+            },
+            "west": {
+                "room_id": "the-great-eastern-desert-5069"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "single_occupant"
+        ]
+    }
+}

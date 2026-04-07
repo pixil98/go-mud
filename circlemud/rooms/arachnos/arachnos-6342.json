@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "arachnos-6342",
+    "spec": {
+        "name": "The Bird Spider's Lair",
+        "description": "This is a big game hunter among most spiders. Crushed jewels and weapons suggest the inhabitant must have powerful jaws. Beware!",
+        "zone_id": "arachnos",
+        "exits": {
+            "down": {
+                "room_id": "arachnos-6331"
+            }
+        }
+    }
+}

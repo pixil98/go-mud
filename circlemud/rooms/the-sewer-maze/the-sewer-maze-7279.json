@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7279",
+    "spec": {
+        "name": "The Wall Of The Abyss",
+        "description": "You hang onto some steps leading down into utter darkness. There is an exit leading up as well, though you'll have to open the tiny rock again to do so.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "up": {
+                "room_id": "the-second-sewer-7111",
+                "zone_id": "the-second-sewer",
+                "closure": {
+                    "name": "rock",
+                    "closed": true
+                }
+            },
+            "down": {
+                "room_id": "the-sewer-maze-7299"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

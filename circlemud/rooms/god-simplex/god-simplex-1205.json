@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "god-simplex-1205",
+    "spec": {
+        "name": "The Post Office Of The Gods",
+        "description": "The Post Office Of The Gods is the same as most Post Offices except that it is not as slow. Even the Postal service knows not to anger the Gods. Piles of junk mail line the walls. I guess even Gods get on mailing lists. The Immortal Board Room is to the east.",
+        "zone_id": "god-simplex",
+        "exits": {
+            "east": {
+                "room_id": "god-simplex-1204",
+                "description": "The Immortal Board Room is just to the east."
+            }
+        }
+    }
+}

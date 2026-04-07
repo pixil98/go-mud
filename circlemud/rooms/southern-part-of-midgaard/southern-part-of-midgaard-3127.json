@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3127",
+    "spec": {
+        "name": "On The Concourse",
+        "description": "You are at the southwest corner of the city wall. The Concourse leads both north and east.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "north": {
+                "room_id": "southern-part-of-midgaard-3100"
+            },
+            "east": {
+                "room_id": "southern-part-of-midgaard-3128"
+            },
+            "west": {
+                "room_id": "midennir-3504",
+                "zone_id": "midennir",
+                "description": "Through the South Gate you can see a small path leading southwards."
+            }
+        }
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3330",
+    "spec": {
+        "name": "A Cavern",
+        "description": "This natural cavern has been turned into a combination office/storeroom. A small brook rushes through the south wall, and flows back into the west wall through a tiny hole. Boxes and crates are stacked against the walls, and a beat up oaken desk stands near the door stacked with papers written upon by an unsteady hand. Some large lanterns keep the place very well lighted.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "south": {
+                "room_id": "the-three-of-swords-3329",
+                "description": "It is a sturdy wooden door.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

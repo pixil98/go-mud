@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6203",
+    "spec": {
+        "name": "In The Forest",
+        "description": "The northern pathway stops abruptly here, halted by some sort of glowing energy barrier running through the woods. A game trail, seemingly well traveled, runs east- west along the magical barrier's length. Very strange.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "east": {
+                "room_id": "the-orc-enclave-6204"
+            },
+            "south": {
+                "room_id": "haon-dor-dark-forest-6139",
+                "zone_id": "haon-dor-dark-forest"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6202"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "barrier",
+                    "energy"
+                ],
+                "description": "You can faintly see the woods continue beyond it, but it seems there's no way through. The field rises high up into the air, and seems to form a ceiling above the woods, preventing a flying entrance. You'd also bet it extends deep into the ground."
+            }
+        ]
+    }
+}

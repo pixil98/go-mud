@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "rome",
+    "spec": {
+        "name": "Rome",
+        "reset_mode": "lifespan",
+        "lifespan": "45m"
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2529",
+    "spec": {
+        "name": "Below The Stagnant Pool",
+        "description": "As you dive beneath the putrid waters, you feel a strong tug and a whirlpool drags you under. You are sucked into blackness. You feel your lungs burst from lack of oxygen. Just as you feel your life fading, you notice a change in direction... and are sucked under by a rip tide.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {},
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "death"
+        ]
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7209",
+    "spec": {
+        "name": "The Crawlway",
+        "description": "You are in a narrow crawlway. It is rather boring here.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "east": {
+                "room_id": "the-sewer-maze-7210",
+                "description": "You see a four-way junction."
+            },
+            "west": {
+                "room_id": "the-sewer-maze-7208",
+                "description": "You see the entrance to a lair."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

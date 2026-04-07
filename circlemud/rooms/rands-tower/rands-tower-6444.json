@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "rands-tower-6444",
+    "spec": {
+        "name": "The Summoning Room",
+        "description": "This room is darkly lit by a giant glowing pentagram in the center of the room. Bands of force encircle some sort of being trapped inside. You think that going inside would be an EXTREMELY BAD idea...",
+        "zone_id": "rands-tower",
+        "exits": {
+            "north": {
+                "room_id": "rands-tower-6445"
+            },
+            "west": {
+                "room_id": "rands-tower-6443"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "pentagram"
+                ],
+                "description": "It is centuries old. You don't think standing close by would be a good idea."
+            },
+            {
+                "keywords": [
+                    "being"
+                ],
+                "description": "You can't see it clearly through the energy field of the pentagram, but you sense that whatever it is, it is very, very, very, very angry."
+            }
+        ]
+    }
+}

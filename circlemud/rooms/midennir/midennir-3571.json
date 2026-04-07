@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "midennir-3571",
+    "spec": {
+        "name": "North Of The Inn",
+        "description": "You are standing north of the Inn. Things don't look much different from this angle. The air here is filled with smells of smoke and cooking. South, the front porch is waiting for you... or you can see if there is a back door.",
+        "zone_id": "midennir",
+        "exits": {
+            "south": {
+                "room_id": "midennir-3570",
+                "description": "You see the front of the Inn."
+            }
+        }
+    }
+}

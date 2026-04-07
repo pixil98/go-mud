@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6525",
+    "spec": {
+        "name": "Inside Of Castle Strangelove",
+        "description": "You are just inside the castle. It is very tubular in shape, and it is very featureless. There is a set of stairs that lead up, and the door leads out of the castle to the west.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "west": {
+                "room_id": "the-dwarven-kingdom-6512",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "the-dwarven-kingdom-6514",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            },
+            "up": {
+                "room_id": "the-dwarven-kingdom-6528"
+            }
+        }
+    }
+}

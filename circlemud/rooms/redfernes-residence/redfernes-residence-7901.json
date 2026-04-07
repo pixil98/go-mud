@@ -1,0 +1,65 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7901",
+    "spec": {
+        "name": "The Southern End Of The Hall",
+        "description": "You are standing in a vast hall that is dimly lit, but wherever the light comes from, is a mystery. The walls seem to radiate warmth and give the pleasent feeling of being welcome here. A large portrait is hanging on one of the walls. A large wooden staircase leads up into the tower. To the east there is a high passage away from the hall. This ends shortly after by a tall oak door. The enormous hall extends further north from here. To the south you can see a huge, and VERY heavy-looking iron-wrought door. It looks like this is the only exit from this magnificent old house.",
+        "zone_id": "redfernes-residence",
+        "exits": {
+            "north": {
+                "room_id": "redfernes-residence-7904",
+                "description": "The hallway continues that way. You can see more doorways under the wooden staircase in that direction."
+            },
+            "east": {
+                "room_id": "redfernes-residence-7910",
+                "description": "You see a tall oak door there. It looks quite tightly closed to you. On it little runes are chiselled into the wood.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "south": {
+                "room_id": "redfernes-residence-7900",
+                "description": "Here you see a REAL door. It would be more proper to call this a 'GATE', rather than a 'door'. It is really HUGE! On it hangs a large sign with very large letters spelling: EMERGENCY EXIT",
+                "closure": {
+                    "name": "gate",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "redfernes-residence-7901",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            },
+            "west": {
+                "room_id": "redfernes-residence-7902",
+                "description": "This looks like a 'door' in the meaning of the word. The ashen wood is painted in a peculiar yellow color. Small letters are written with black on it.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "up": {
+                "room_id": "redfernes-residence-7909",
+                "description": "You see the staircase extending upwards into the very high tower. It ends in what seems like a large bedroom up there."
+            }
+        },
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "runes"
+                ],
+                "description": "These runes are utterly strange to you, but you are in luck today: Under the runes you can just make out a sentence in Common. It reads: Stay out, if you treasure your life. That is if you are mortal."
+            },
+            {
+                "keywords": [
+                    "letters"
+                ],
+                "description": "They read: LIBRARY"
+            }
+        ]
+    }
+}

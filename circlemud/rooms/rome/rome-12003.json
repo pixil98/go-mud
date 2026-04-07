@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "rome-12003",
+    "spec": {
+        "name": "The West Side Of The Commoner's Seating Area",
+        "description": "This is the western side commoner's seating area. There are row upon row of rough wooden benches bolted to the floor. There is stadium garbage everywhere and the smell makes you want to puke. Stairs lead up to Caesar's private box, a small ramp leads down to the playing field and a hallway leads south.",
+        "zone_id": "rome",
+        "exits": {
+            "south": {
+                "room_id": "rome-12004",
+                "description": "You see a small hallway that leads to a larger area."
+            },
+            "up": {
+                "room_id": "rome-12002",
+                "description": "Watch your step!"
+            },
+            "down": {
+                "room_id": "rome-12010",
+                "description": "Watch your step!"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "seats",
+                    "benches"
+                ],
+                "description": "The benches are made of rough cut lumber that has dried and split over time. You would probably get splinters if sat on them. The words 'BURT WAS HERE' have been carved into one of the benches with exquisite care."
+            }
+        ]
+    }
+}

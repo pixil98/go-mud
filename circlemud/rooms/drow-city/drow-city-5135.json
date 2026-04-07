@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "drow-city-5135",
+    "spec": {
+        "name": "The Grand Stairway",
+        "description": "You are standing at the bottom of a giant obsidian and adamantite stairway. The edges are trimmed with gold.",
+        "zone_id": "drow-city",
+        "exits": {
+            "south": {
+                "room_id": "drow-city-5127"
+            },
+            "up": {
+                "room_id": "drow-city-5136"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

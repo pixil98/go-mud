@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4011",
+    "spec": {
+        "name": "The Tunnel",
+        "description": "You force your way into a narrow tunnel, aided by the wet walls which help you slide through the passageway. The smell of mouldy moss is growing greater the farther north you head, but you can smell fresh air off to the south as a light breeze wafts past you.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4014"
+            },
+            "south": {
+                "room_id": "mines-of-moria-4010"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

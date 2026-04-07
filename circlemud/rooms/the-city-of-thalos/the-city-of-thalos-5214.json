@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5214",
+    "spec": {
+        "name": "A Side Street",
+        "description": "You are at the end of a long street leading to the center of the city. A long dark alley runs east and west.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "north": {
+                "room_id": "the-city-of-thalos-5213"
+            },
+            "east": {
+                "room_id": "the-city-of-thalos-5229"
+            },
+            "west": {
+                "room_id": "the-city-of-thalos-5218"
+            }
+        }
+    }
+}

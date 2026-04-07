@@ -1,0 +1,43 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3111",
+    "spec": {
+        "name": "Park Road",
+        "description": "The road continues north and south. A building is just west of here, you notice a sign on the door. The park entrance is to the east.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "north": {
+                "room_id": "southern-part-of-midgaard-3131"
+            },
+            "east": {
+                "room_id": "southern-part-of-midgaard-3112",
+                "description": "You see the park entrance."
+            },
+            "south": {
+                "room_id": "southern-part-of-midgaard-3118"
+            },
+            "west": {
+                "room_id": "southern-part-of-midgaard-3110",
+                "description": "You see the Cityguard HeadQuarters.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "southern-part-of-midgaard-3105",
+                        "locked": true
+                    }
+                }
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "building",
+                    "door",
+                    "sign"
+                ],
+                "description": "The sign on the door says: Cityguard HeadQuarters WARNING: Authorized Personnel Only!"
+            }
+        ]
+    }
+}

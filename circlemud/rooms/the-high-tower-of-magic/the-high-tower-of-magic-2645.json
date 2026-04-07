@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2645",
+    "spec": {
+        "name": "The Reading Room",
+        "description": "You are in a small room completely devoid of furnishings. The only thing here is an enormous tome, lying face open on the floor. The great book looks both heavy and ancient. Its jewel encrusted bindings are well worn as the bark of a tree. Spidery writings seem to crawls across the pages, totally incomprehensible to your mortal eye. Something seems to be wedged between the pages.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "south": {
+                "room_id": "the-high-tower-of-magic-2644"
+            }
+        }
+    }
+}

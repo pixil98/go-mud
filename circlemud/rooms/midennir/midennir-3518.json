@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "midennir-3518",
+    "spec": {
+        "name": "The Fading Trail",
+        "description": "The trail becomes nearly unpassable here. You can go north as the forest is relatively light. To the south, you can see a path.",
+        "zone_id": "midennir",
+        "exits": {
+            "north": {
+                "room_id": "midennir-3515",
+                "description": "You can see a trail this way."
+            },
+            "south": {
+                "room_id": "midennir-3522",
+                "description": "Dark forests."
+            }
+        }
+    }
+}

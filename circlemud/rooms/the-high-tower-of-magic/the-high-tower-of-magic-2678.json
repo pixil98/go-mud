@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2678",
+    "spec": {
+        "name": "A Dressing Room",
+        "description": "You are in a plush dressing room. Fine garments of many styles and some outlandish colours hang from a rack suspended in mid air at eye level. The only other interesting feature in the room is a large silver mirror on a finely crafted gold stand.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "west": {
+                "room_id": "the-high-tower-of-magic-2677"
+            }
+        }
+    }
+}

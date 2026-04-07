@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5627",
+    "spec": {
+        "name": "The Edge Of The Ravine",
+        "description": "You stand at the edge of a really long drop down. A small rope bridge has conviently been placed here to allow you access to the other side of the bridge. Unfortunately the wind seems to be kicking up making the bridge sway slightly. The path leads off through the mountains to the east.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5628"
+            },
+            "west": {
+                "room_id": "new-thalos-5609"
+            }
+        }
+    }
+}

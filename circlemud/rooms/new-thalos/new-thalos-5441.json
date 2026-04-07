@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "new-thalos-5441",
+    "spec": {
+        "name": "East Ishtar Drive",
+        "description": "Your highly acute sense of smell reports you have reached the entrance to the fish market. Although renowned for it fresh catches and wide selection of aquarian delicacies you wonder how much longer you can endure the smell! The River Ishtar flows alongside to the south with the drive running along side it east to west.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5432"
+            },
+            "east": {
+                "room_id": "new-thalos-5442"
+            },
+            "west": {
+                "room_id": "new-thalos-5440"
+            }
+        }
+    }
+}

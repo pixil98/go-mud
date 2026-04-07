@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "newbie-zone-18645",
+    "spec": {
+        "name": "The Balcony",
+        "description": "Here you can look out and observe the world around. Constructed in a semi-circle around the dome of the room, the balcony allows you to look out in almost any direction. Wandering to the south end, you can see the great city of Midgaard off to the south-west.",
+        "zone_id": "newbie-zone",
+        "exits": {
+            "north": {
+                "room_id": "newbie-zone-18643",
+                "description": "The north end of the balcony."
+            },
+            "down": {
+                "room_id": "newbie-zone-18647",
+                "description": "Back down the south staircase."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "staircase",
+                    "stair",
+                    "stairs"
+                ],
+                "description": "They are constructed of smooth, beautiful marble."
+            }
+        ]
+    }
+}

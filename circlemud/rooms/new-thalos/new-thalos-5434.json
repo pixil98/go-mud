@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "new-thalos-5434",
+    "spec": {
+        "name": "West Ishtar Drive",
+        "description": "A few men walk by almost pushing you out of the way as they go about their business of loading and unloading the boats. An entrance to one of the huge warehouses of New Thalos is to the north and the River Ishtar quietly flows by to the south. Ishtar Drive continues east and west.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5541"
+            },
+            "east": {
+                "room_id": "new-thalos-5435"
+            },
+            "west": {
+                "room_id": "new-thalos-5433"
+            }
+        }
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6242",
+    "spec": {
+        "name": "A Cave Entrance",
+        "description": "You are half blinded by the differences of the outdoors illumination and the pure darkness of the cave. A deep, cloying stench flows out from the cave mouth; the smells of decay, unwashed bodies, and sickness in one roiling odor. Your stomach turns involuntarily, and you wonder about going back down the hill to the east, instead of going even further down the western tunnel.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "east": {
+                "room_id": "the-orc-enclave-6234"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6243"
+            }
+        }
+    }
+}

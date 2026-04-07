@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3102",
+    "spec": {
+        "name": "The Promenade",
+        "description": "The river gently flows westwards just north of here. The promenade continues both east and west. South of here you see the entrance to the park, and a small building seems to be just west of the entrance.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "east": {
+                "room_id": "southern-part-of-midgaard-3103",
+                "description": "You see the promenade."
+            },
+            "south": {
+                "room_id": "southern-part-of-midgaard-3105",
+                "description": "You see the park entrance."
+            },
+            "west": {
+                "room_id": "southern-part-of-midgaard-3101",
+                "description": "You see the promenade."
+            }
+        }
+    }
+}

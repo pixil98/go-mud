@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "midennir-3515",
+    "spec": {
+        "name": "The Light Forest",
+        "description": "The forest is light here and you can easily pick your way through the trail. To the east, the forest becomes thick and darker. South, the trail continues.",
+        "zone_id": "midennir",
+        "exits": {
+            "north": {
+                "room_id": "midennir-3511",
+                "description": "A trail leading north-south."
+            },
+            "east": {
+                "room_id": "midennir-3516",
+                "description": "The trees get thicker as you go east."
+            },
+            "south": {
+                "room_id": "midennir-3518",
+                "description": "More trees and some small hills."
+            }
+        }
+    }
+}

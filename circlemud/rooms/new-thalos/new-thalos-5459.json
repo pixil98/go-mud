@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "new-thalos-5459",
+    "spec": {
+        "name": "Alley",
+        "description": "The alley ends here.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5458"
+            },
+            "down": {
+                "room_id": "new-thalos-5475",
+                "description": "You see a manhole covering an opening in the road.",
+                "closure": {
+                    "name": "manhole",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

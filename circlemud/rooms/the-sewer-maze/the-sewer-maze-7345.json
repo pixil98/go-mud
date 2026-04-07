@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7345",
+    "spec": {
+        "name": "The Pool",
+        "description": "You are swimming in DARKNESS. You feel something touching your right leg.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "east": {
+                "room_id": "the-sewer-maze-7313",
+                "description": "You can feel a warm breeze."
+            },
+            "west": {
+                "room_id": "the-sewer-maze-7344"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15019",
+    "spec": {
+        "name": "The Small Passage",
+        "description": "You are standing in a small passage, that leads north and south. To the west, there is an exit into the Great Hall.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "north": {
+                "room_id": "king-welmars-castle-15024",
+                "description": "The passage continues to the north."
+            },
+            "south": {
+                "room_id": "king-welmars-castle-15014",
+                "description": "The passage continues to the south."
+            },
+            "west": {
+                "room_id": "king-welmars-castle-15018",
+                "description": "To the west you see the Great Hall."
+            }
+        }
+    }
+}

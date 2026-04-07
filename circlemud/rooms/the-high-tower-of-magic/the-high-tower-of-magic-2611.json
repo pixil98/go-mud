@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2611",
+    "spec": {
+        "name": "The Golem Chamber",
+        "description": "You are in the golem chamber. Golems made of every imaginable material are here, ranging in size from a hand-span to nearly the ceiling. They all seem to be sleeping.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2609"
+            }
+        }
+    }
+}

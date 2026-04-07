@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3058",
+    "spec": {
+        "name": "Ye Olde Water Shoppe",
+        "description": "You are standing in the center of a small wooden shop whose walls are covered with racks upon racks of water jugs. Several large barrels with spigots are stacked in the corner.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "north": {
+                "room_id": "northern-midgaard-main-city-3041",
+                "description": "You see the East Gate."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ]
+    }
+}

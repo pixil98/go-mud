@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3358",
+    "spec": {
+        "name": "The Reception",
+        "description": "A hall leads away to the west lined with small brown doors. A small table has a ledger on it, seemingly almost unused. The hall is plain and without any decoration, except for a nice painting of (what else) a mountain hanging above the stairs that lead back down to the inn proper.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "down": {
+                "room_id": "the-three-of-swords-3356"
+            }
+        }
+    }
+}

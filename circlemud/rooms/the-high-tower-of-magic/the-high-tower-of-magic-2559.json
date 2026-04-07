@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2559",
+    "spec": {
+        "name": "The Training Room",
+        "description": "You are in a large training room. It is filled with battle scared manikins, and many other devices used in the practice of fighting.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2556",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

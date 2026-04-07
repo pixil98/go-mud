@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "new-thalos-5562",
+    "spec": {
+        "name": "The Northeast Tower",
+        "description": "You stand on one of the four towers guarding the city. To the north you see the wide plains and then the forset. South of here you see the city and the Great Eastern Desert beyond.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "down": {
+                "room_id": "new-thalos-5454"
+            }
+        }
+    }
+}

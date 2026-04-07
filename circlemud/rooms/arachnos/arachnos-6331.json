@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "arachnos-6331",
+    "spec": {
+        "name": "The Base Of The Web",
+        "description": "Large strands connect at this point. The node shimmers and flickers within the ether. You see many flying creatures -- insects, pegasi, and dragon wormkins -- navigate the dangerous passages of the web. Exits go in many directions.",
+        "zone_id": "arachnos",
+        "exits": {
+            "north": {
+                "room_id": "arachnos-6330"
+            },
+            "east": {
+                "room_id": "arachnos-6332"
+            },
+            "south": {
+                "room_id": "arachnos-6333"
+            },
+            "west": {
+                "room_id": "arachnos-6334"
+            }
+        }
+    }
+}

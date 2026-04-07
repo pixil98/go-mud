@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5339",
+    "spec": {
+        "name": "A Dust-Covered Hallway",
+        "description": "This hallway is covered with dust that has accumulated over the centuries that the pyramid has stood. Small markings and footprints in the dust betray the recent passage of others -- perhaps thieves?",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "east": {
+                "room_id": "the-great-pyramid-5340",
+                "description": "The hallway proceeds to the east towards a strange smell."
+            },
+            "west": {
+                "room_id": "the-great-pyramid-5309",
+                "description": "The hallway proceeds towards the west towards a musty smell."
+            }
+        }
+    }
+}

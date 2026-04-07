@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5069",
+    "spec": {
+        "name": "A Small Cavern",
+        "description": "It is dark and damp and bats hang from the ceiling. A narrow crack is in the east wall. The floor now slopes upwards.",
+        "zone_id": "the-great-eastern-desert",
+        "exits": {
+            "east": {
+                "room_id": "the-great-eastern-desert-5068"
+            },
+            "west": {
+                "room_id": "the-great-eastern-desert-5070"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

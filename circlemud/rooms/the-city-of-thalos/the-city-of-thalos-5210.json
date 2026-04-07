@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5210",
+    "spec": {
+        "name": "A Side Street",
+        "description": "You are in the common section of the city. Ruined buildings made of clay and stone is all the view has to offer. Most of these homes are nothing but piles of rubble, but some look almost safe enough to venture into. The street continues north and south and buildings line the street.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "north": {
+                "room_id": "the-city-of-thalos-5209"
+            },
+            "east": {
+                "room_id": "the-city-of-thalos-5244",
+                "description": "A small doorway leads into a partially collapsed house.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "south": {
+                "room_id": "the-city-of-thalos-5211"
+            },
+            "west": {
+                "room_id": "the-city-of-thalos-5226",
+                "description": "A small clay dwelling sits here."
+            }
+        }
+    }
+}

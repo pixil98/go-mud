@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5620",
+    "spec": {
+        "name": "River Ishtar",
+        "description": "The river calms a bit after being thrashed in the interior of the mountain. Although still deep within the rocks you can see faint traces of green to the east.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5621"
+            },
+            "west": {
+                "room_id": "new-thalos-5639"
+            }
+        }
+    }
+}

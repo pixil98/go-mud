@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "midennir-3508",
+    "spec": {
+        "name": "On a Small Path",
+        "description": "A path is here, leading east and south through the dark woods of Miden'nir. Mountains slash the scenery to the west of here.",
+        "zone_id": "midennir",
+        "exits": {
+            "east": {
+                "room_id": "midennir-3507",
+                "description": "Wind-swept forest."
+            },
+            "south": {
+                "room_id": "midennir-3511",
+                "description": "To the south, the trail continues."
+            }
+        }
+    }
+}

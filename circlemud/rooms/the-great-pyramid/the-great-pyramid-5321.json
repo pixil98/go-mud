@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5321",
+    "spec": {
+        "name": "Down The Crevasse",
+        "description": "The crevasse proceeds downward into the dark depths of the earth. The air about you is now cold and quite dry, and your light source gutters in a cool breeze that wafts up from below.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "up": {
+                "room_id": "the-great-pyramid-5319",
+                "description": "It is too dark for you to see any further along the crevasse."
+            },
+            "down": {
+                "room_id": "the-great-pyramid-5322",
+                "description": "It is too dark for you to see any further along the crevasse."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "god-simplex",
+    "spec": {
+        "name": "God Simplex",
+        "reset_mode": "lifespan",
+        "lifespan": "10m"
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4122",
+    "spec": {
+        "name": "The Secret Chamber",
+        "description": "You stand in a small chamber that you never would have thought could exist. This small, almost perfectly round cave does not appear to be a natural formation at all, since the walls are far too smooth and the doorways to the north and east are both almost exactly five feet wide and eleven feet tall.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4117"
+            },
+            "east": {
+                "room_id": "mines-of-moria-4121"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

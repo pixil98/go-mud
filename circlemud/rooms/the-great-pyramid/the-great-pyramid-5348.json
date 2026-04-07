@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5348",
+    "spec": {
+        "name": "An Arched Hall",
+        "description": "This hallway has a beautiful arch to it, formed painstakingly and exquisitely out of the sandy stones of the pyramid. The dust that covers most of the rest of the pyramid interior is not present here, scoured away by the blowing of the desert winds that howl about your ears.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "east": {
+                "room_id": "the-great-pyramid-5349",
+                "description": "The arched hall proceeds to the east, making a sharp southward turn."
+            },
+            "west": {
+                "room_id": "the-great-pyramid-5347",
+                "description": "The arched hall proceeds into a sandstone crypt."
+            }
+        }
+    }
+}

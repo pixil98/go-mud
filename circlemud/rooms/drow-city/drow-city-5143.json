@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "drow-city-5143",
+    "spec": {
+        "name": "The Sacrificial Pit",
+        "description": "As you climb down into the pit, thousands of spiders cover you, tearing your fragile body to shreds. Lloth thanks you for your sacrifice.",
+        "zone_id": "drow-city",
+        "exits": {},
+        "flags": [
+            "death"
+        ]
+    }
+}

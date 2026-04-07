@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "new-thalos-5483",
+    "spec": {
+        "name": "River Ishtar",
+        "description": "High above you on the top of the city wall guards look down to see if you wish to exit the city via water. To do so they must open the iron grating in front of you from above. The horrid smell of the dump wafts down from the shore.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5624"
+            },
+            "west": {
+                "room_id": "new-thalos-5484",
+                "closure": {
+                    "name": "grating",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5067",
+    "spec": {
+        "name": "A Narrower Tunnel",
+        "description": "The tunnel becomes very narrow and you fight to squeeze your way through. The floor seems to level off a little.",
+        "zone_id": "the-great-eastern-desert",
+        "exits": {
+            "east": {
+                "room_id": "the-great-eastern-desert-5066"
+            },
+            "south": {
+                "room_id": "the-great-eastern-desert-5068"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

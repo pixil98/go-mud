@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2633",
+    "spec": {
+        "name": "An Intersection",
+        "description": "You are at an intersection in the corridor. The obsidian walled halls lead off in every direction from here, pulsing with the power of their ancient runes.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2632"
+            },
+            "east": {
+                "room_id": "the-high-tower-of-magic-2634"
+            },
+            "south": {
+                "room_id": "the-high-tower-of-magic-2646"
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2636"
+            }
+        }
+    }
+}

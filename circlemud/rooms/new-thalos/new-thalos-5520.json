@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5520",
+    "spec": {
+        "name": "Temple Square",
+        "description": "You are standing on the meeting grounds of those with holy intentions. Monks, bards, paladins and clerics mill around either preaching or listening to their fellows preach. Huge marble steps lead up to the gates of the temple and Main Street lies to the south.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5513"
+            },
+            "south": {
+                "room_id": "new-thalos-5424"
+            },
+            "up": {
+                "room_id": "new-thalos-5513"
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

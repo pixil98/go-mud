@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2565",
+    "spec": {
+        "name": "A Bedroom",
+        "description": "You are in a large, plush bedroom. The owner is obviously someone of high standing in the magical community here. An ice mirror is on one wall, and a scrying globe sit on a stand in the middle of the room. An enormous bed can be seen floating about a meter above the floor. The only exit leads back west to the hallway.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "west": {
+                "room_id": "the-high-tower-of-magic-2563",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

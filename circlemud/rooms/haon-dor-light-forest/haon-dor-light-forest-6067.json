@@ -1,0 +1,52 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6067",
+    "spec": {
+        "name": "At The Fallen Tree",
+        "description": "You are standing in a small clearing, beside a large fallen tree. A large amount of the tree has already decomposed, but some pieces remain, scattered about the clearing. Paths border the clearing to the north and south.",
+        "zone_id": "haon-dor-light-forest",
+        "exits": {
+            "north": {
+                "room_id": "haon-dor-light-forest-6072",
+                "description": "A shaded path winds its way northeast between the trees."
+            },
+            "south": {
+                "room_id": "haon-dor-light-forest-6062",
+                "description": "A shaded path winds its way east between the trees."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "path",
+                    "paths"
+                ],
+                "description": "The shaded paths are probably used by the animals living in the forest."
+            },
+            {
+                "keywords": [
+                    "fallen",
+                    "rotten",
+                    "decomposed",
+                    "tree"
+                ],
+                "description": "The tree has mostly rotted away, providing nourishment to many small plants growing here in the clearing. The few pieces that remain are not all that large, but one log in particular catches your eye and seems to remind you of something. Under one of these logs would be a great place for an animal to make its den..."
+            },
+            {
+                "keywords": [
+                    "clearing",
+                    "clear"
+                ],
+                "description": "When the large tree fell it must have brought a few of the smaller trees down with it in order to make a clearing like this."
+            },
+            {
+                "keywords": [
+                    "under",
+                    "animal",
+                    "den"
+                ],
+                "description": "Under a log you think you see some sort of hole, or animal's den. Looking closer, you can make out the form of what you believe to be a Badger resting inside of the den."
+            }
+        ]
+    }
+}

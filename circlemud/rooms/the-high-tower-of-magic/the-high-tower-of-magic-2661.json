@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2661",
+    "spec": {
+        "name": "The Chamber Of Darkness",
+        "description": "You are in a vast chamber. The walls fade into darkness, leaving you with a very vague idea of the actual size of the room. Swirling here and there in the dark, are patches of pure black which seem to suck in your light and leave it that much darker here.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2662"
+            },
+            "east": {
+                "room_id": "the-high-tower-of-magic-2664"
+            },
+            "south": {
+                "room_id": "the-high-tower-of-magic-2663"
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2660",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "rands-tower-6402",
+    "spec": {
+        "name": "A Mountain Trail",
+        "description": "Wispy clouds are beginning to surround you now, and your ears pop due to the altitude. To the east, you see the summit of the mountain, and from the way the nearby mountains are arranged behind it, you believe you're on your way to a big valley. You can also go down to the west.",
+        "zone_id": "rands-tower",
+        "exits": {
+            "east": {
+                "room_id": "rands-tower-6403"
+            },
+            "west": {
+                "room_id": "rands-tower-6401"
+            }
+        }
+    }
+}

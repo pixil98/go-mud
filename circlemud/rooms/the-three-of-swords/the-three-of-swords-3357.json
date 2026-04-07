@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3357",
+    "spec": {
+        "name": "The Common Room",
+        "description": "A large fireplace warms this room in great waves of heat, to combat the chill drafts eminating from the windows on the west and north sides of this room. A few benches and tables are clustered in the center of the room, for the use of the locals. Fairly plain, for a frequented gathering place.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "east": {
+                "room_id": "the-three-of-swords-3356"
+            }
+        }
+    }
+}

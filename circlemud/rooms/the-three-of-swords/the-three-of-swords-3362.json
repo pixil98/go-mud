@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3362",
+    "spec": {
+        "name": "The Torched Cottage",
+        "description": "This whole place is smouldering still from whatever decided to try to burn it to the ground. On the floor near the center of the ruined structure is the burnt and dessicated corpse of a man, outstretched and blackened. There's not much to see here; whatever decided to destroy this place did it very well.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "east": {
+                "room_id": "the-three-of-swords-3361"
+            }
+        }
+    }
+}

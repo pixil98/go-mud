@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "new-thalos-5569",
+    "spec": {
+        "name": "Outside The West Gate Of New Thalos",
+        "description": "You stand outside the city walls, the iron gate to the east. The city lies in that direction and the road to Midgaard lies west.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5423",
+                "closure": {
+                    "name": "gate",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "new-thalos-5401",
+                        "locked": true
+                    }
+                }
+            },
+            "west": {
+                "room_id": "new-thalos-5618"
+            }
+        }
+    }
+}

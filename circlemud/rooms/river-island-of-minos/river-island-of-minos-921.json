@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-921",
+    "spec": {
+        "name": "The Final Trial Of Minos",
+        "description": "This is Minos' room. What else did you expect? The room is lavishly decorated for this bovine king. Everything is so opulent that it makes your eyes bulge. Survive and reap his fortune! The only exit is a large oak door in the east wall.",
+        "zone_id": "river-island-of-minos",
+        "exits": {
+            "east": {
+                "room_id": "river-island-of-minos-922",
+                "description": "You see a rather large oak door bound with iron and securely locked.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "river-island-of-minos-900",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

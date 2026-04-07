@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3360",
+    "spec": {
+        "name": "A Ledge",
+        "description": "This ledge overlooks a small path that leads up and down from here. Below, you see the path head down to a large flat area where a small cottage lies nestled in the mountains, smoke rising from it in a curling line. Above, the path seems to head towards that dark peak piercing the sky. You notice a few boot-tracks in the earth, seemingly to lead down towards the cottage.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "east": {
+                "room_id": "the-three-of-swords-3359"
+            },
+            "up": {
+                "room_id": "the-three-of-swords-3363"
+            },
+            "down": {
+                "room_id": "the-three-of-swords-3361"
+            }
+        }
+    }
+}

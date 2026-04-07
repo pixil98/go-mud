@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5540",
+    "spec": {
+        "name": "The Warehouse",
+        "description": "You are standing in a large room used to store merchandise made in the city before it is shipped off. All the items here are made in New Thalos and shipped to other parts of the land.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5541"
+            },
+            "south": {
+                "room_id": "new-thalos-5433"
+            }
+        }
+    }
+}

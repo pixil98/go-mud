@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5448",
+    "spec": {
+        "name": "The Casbah",
+        "description": "The cobblestone pavement runs along the north wall here. South of you stand the great walls of the Palace and the Avenue goes east and west.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5422"
+            },
+            "west": {
+                "room_id": "new-thalos-5447"
+            }
+        }
+    }
+}

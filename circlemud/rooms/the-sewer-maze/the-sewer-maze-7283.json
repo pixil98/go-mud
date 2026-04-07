@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7283",
+    "spec": {
+        "name": "The T-Crossing",
+        "description": "You are in a small hallway. There are doors to the east and to the west. To the south there are a black hole. There is writing in the wall. Wails can be heard from the south.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "east": {
+                "room_id": "the-sewer-maze-7286",
+                "description": "It is too dark to tell."
+            },
+            "south": {
+                "room_id": "the-sewer-maze-7282",
+                "description": "A black hole in the wall."
+            },
+            "west": {
+                "room_id": "the-sewer-maze-7284",
+                "description": "You can see a big fire to the west. It looks like a unhealthy place to enter!"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "writing"
+                ],
+                "description": "The writing says 'The one to the east, belongs to the beast. To the west you will surely END your quest!'."
+            }
+        ]
+    }
+}

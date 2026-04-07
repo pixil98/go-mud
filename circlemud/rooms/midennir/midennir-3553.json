@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "midennir-3553",
+    "spec": {
+        "name": "A Tunnel In The Mountains",
+        "description": "The tunnel gets lighter to the north, presumably leading out, while to the south the passage gets smaller and smaller. A small alcove has been carved into the east wall.",
+        "zone_id": "midennir",
+        "exits": {
+            "north": {
+                "room_id": "midennir-3552",
+                "description": "The tunnel gets wider in this direction."
+            },
+            "east": {
+                "room_id": "midennir-3554",
+                "description": "You see a small alcove."
+            },
+            "south": {
+                "room_id": "midennir-3555",
+                "description": "The tunnel gets smaller in this direction."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

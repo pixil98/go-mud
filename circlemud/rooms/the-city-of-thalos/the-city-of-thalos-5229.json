@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5229",
+    "spec": {
+        "name": "An Abandoned Shop",
+        "description": "From the outside this place looks like an ordinary pile of rubble, but inside these cramped quarters you discover what used to be a shop filled with armor, weapons, and various other goods. A small sign flutters in the wind.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "west": {
+                "room_id": "the-city-of-thalos-5214",
+                "description": "A small side street runs past the shop."
+            }
+        }
+    }
+}

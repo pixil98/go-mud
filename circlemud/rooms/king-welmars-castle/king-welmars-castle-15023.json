@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15023",
+    "spec": {
+        "name": "The Training Room",
+        "description": "This is the Training Room of the men of the Castle guard. It is very large, with weapons standing in racks by all the walls. Most of the weapons seem to be intended for training only, with blunt edges and the like, but there are some that might be useful for real fighting. There is a door to the north.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "north": {
+                "room_id": "king-welmars-castle-15028",
+                "description": "The door is large and heavy.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "east": {
+                "room_id": "king-welmars-castle-15024",
+                "description": "You see a small passage."
+            }
+        }
+    }
+}

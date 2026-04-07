@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7908",
+    "spec": {
+        "name": "The Fridge",
+        "description": "This place is LOADED with drink, water and booze.",
+        "zone_id": "redfernes-residence",
+        "exits": {
+            "west": {
+                "room_id": "redfernes-residence-7906",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

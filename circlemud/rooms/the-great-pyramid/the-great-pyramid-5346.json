@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5346",
+    "spec": {
+        "name": "A Rubble-Strewn Hallway",
+        "description": "This hallway formerly had a beautiful arch to the ceiling, now collapsed under the weight of the slowly settling stones of the pyramid. Now, a massive pile of rubble leads up into a hole high in the northern portion of the hallway. To the south, through the rubble and fallen stones you see a sandstone crypt.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "south": {
+                "room_id": "the-great-pyramid-5347",
+                "description": "You see a sandstone crypt."
+            },
+            "up": {
+                "room_id": "the-great-pyramid-5335",
+                "description": "From here you see only darkness."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ]
+    }
+}

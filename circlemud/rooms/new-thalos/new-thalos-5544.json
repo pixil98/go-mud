@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "new-thalos-5544",
+    "spec": {
+        "name": "The Forge",
+        "description": "Very much like the weaponsmith this man deals in the molding of metal. It seems that most of his creations deal with horses. On the walls you see several horseshoes made of iron. The room is hot, hotter than the desert just south of here, and one wonders how the smithy can stand it.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "south": {
+                "room_id": "new-thalos-5437"
+            }
+        }
+    }
+}

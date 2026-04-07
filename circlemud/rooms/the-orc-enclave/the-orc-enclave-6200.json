@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6200",
+    "spec": {
+        "name": "In The Forest",
+        "description": "The trail ends here where the mountains begin abruptly. Looking up, you note that the climb would be rough, hazardous, and probably not worth the effort; the energy barrier continues up the mountain side out of sight. The only exit is back to the east.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "east": {
+                "room_id": "the-orc-enclave-6201"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "barrier",
+                    "energy"
+                ],
+                "description": "You can faintly see the woods continue beyond it, but it seems there's no way through. The field rises high up into the air, and seems to form a ceiling above the woods, preventing a flying entrance. You'd also bet it extends deep into the ground."
+            }
+        ]
+    }
+}

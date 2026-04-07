@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5236",
+    "spec": {
+        "name": "A Collapsed Home",
+        "description": "All that's left of this house is a few scattered piles of rubble and a very large blast crater. Obviously someone or something important was once housed here. A shrieking howl chills your blood.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "south": {
+                "room_id": "the-city-of-thalos-5202",
+                "description": "Main street runs past this ruined home."
+            }
+        }
+    }
+}

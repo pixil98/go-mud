@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2656",
+    "spec": {
+        "name": "A Closet",
+        "description": "You are in a small closet. It is filled with many cloaks, and some other apparel.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "west": {
+                "room_id": "the-high-tower-of-magic-2654"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

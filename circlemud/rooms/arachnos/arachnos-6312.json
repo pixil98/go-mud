@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "arachnos-6312",
+    "spec": {
+        "name": "The Tree Lair Entrance",
+        "description": "It seems the inhabitant of this place does not web her victims, as evidenced by the remains before you. The area is cluttered with desiccated corpses, apparently bitten but unwebbed, and drained of their life juices.",
+        "zone_id": "arachnos",
+        "exits": {
+            "north": {
+                "room_id": "arachnos-6311"
+            },
+            "west": {
+                "room_id": "arachnos-6313"
+            }
+        }
+    }
+}

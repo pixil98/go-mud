@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2681",
+    "spec": {
+        "name": "The Treasury",
+        "description": "You are in a small chamber, the stale air here is testament to the fact that it has gone undisturbed for many years.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "west": {
+                "room_id": "the-high-tower-of-magic-2680",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

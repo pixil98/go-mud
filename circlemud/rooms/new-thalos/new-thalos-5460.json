@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5460",
+    "spec": {
+        "name": "Guildsman's Row",
+        "description": "This Row is a hive of activity second only to the actual Market Square itself. Along this row stands all the guilds of the working class citizens of New Thalos, here all the items sold in the Square are made. Along this particular stretch of the row lie the Boyer/ Fletcher to the west and the Masons' to the east. The Row leads off to the south and East Casbah is to the north.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5451"
+            },
+            "east": {
+                "room_id": "new-thalos-5556"
+            },
+            "south": {
+                "room_id": "new-thalos-5461"
+            },
+            "west": {
+                "room_id": "new-thalos-5555"
+            }
+        }
+    }
+}

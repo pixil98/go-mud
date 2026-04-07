@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6245",
+    "spec": {
+        "name": "A Tunnel",
+        "description": "The tunnel takes a deep dip here, and opens up into a largish cave to the west. There seems to be a few faint lights from inside, and you hear some heavy breathing and low grunts from that direction. The cave entrance to the east seems far too far away for your comfort...",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "east": {
+                "room_id": "the-orc-enclave-6244"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6251"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

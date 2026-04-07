@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "new-thalos-5567",
+    "spec": {
+        "name": "Outside The Northern Gate Of New Thalos",
+        "description": "You stand outside the gate of New Thalos. The city lies to the south, and wilderness to the north.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5681"
+            },
+            "south": {
+                "room_id": "new-thalos-5422",
+                "closure": {
+                    "name": "gate",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "new-thalos-5401",
+                        "locked": true
+                    }
+                }
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

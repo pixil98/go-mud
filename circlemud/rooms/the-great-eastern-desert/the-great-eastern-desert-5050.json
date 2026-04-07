@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5050",
+    "spec": {
+        "name": "The Great Eastern Desert",
+        "description": "A vast desert stretches for miles, the sands constantly shifting around you. A pyramid lies to the north.",
+        "zone_id": "the-great-eastern-desert",
+        "exits": {
+            "north": {
+                "room_id": "the-great-pyramid-5300",
+                "zone_id": "the-great-pyramid",
+                "description": "Sand as far as the eye can see... and a pyramid in the distance."
+            },
+            "east": {
+                "room_id": "the-great-eastern-desert-5054",
+                "description": "Sand as far as the eye can see."
+            },
+            "south": {
+                "room_id": "the-great-eastern-desert-5044",
+                "description": "Sand as far as the eye can see."
+            },
+            "west": {
+                "room_id": "the-great-eastern-desert-5042",
+                "description": "Sand as far as the eye can see."
+            }
+        }
+    }
+}

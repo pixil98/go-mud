@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6222",
+    "spec": {
+        "name": "A Forest Trail",
+        "description": "A smaller northern path leads away from the main east- west trail here towards a clearing. The main path leads windingly around the trees to the east and west, the woods blocking out whatever may be ahead. Again you get that strange feeling of being watched.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "north": {
+                "room_id": "the-orc-enclave-6221"
+            },
+            "east": {
+                "room_id": "the-orc-enclave-6223"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6225"
+            }
+        }
+    }
+}

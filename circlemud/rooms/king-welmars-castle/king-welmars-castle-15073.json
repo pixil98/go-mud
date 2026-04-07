@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15073",
+    "spec": {
+        "name": "A Dark Path",
+        "description": "This narrow path leads through the overhanging trees in the unnatural darkness. It seems almost as if the trees are crowding in on you here, as if they didn't want to feel your presence. The wood is almost totally silent and you wonder silently to yourself why this could be. The path appears to continue east and west.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "east": {
+                "room_id": "king-welmars-castle-15072",
+                "description": "The path continues through the darkness."
+            },
+            "west": {
+                "room_id": "king-welmars-castle-15074",
+                "description": "The glow from the west appears to be quite strong, but it does not give enough light to see by here, nor can you see the source of the glow."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

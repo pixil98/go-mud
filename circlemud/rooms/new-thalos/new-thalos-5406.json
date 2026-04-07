@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "new-thalos-5406",
+    "spec": {
+        "name": "The Center Of Market Square",
+        "description": "You are standing in the center of Market Square, the famous square of New Thalos. A large, peculiar looking statue is standing in the middle of the square. The square extends in every direction.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5415"
+            },
+            "east": {
+                "room_id": "new-thalos-5417"
+            },
+            "south": {
+                "room_id": "new-thalos-5405"
+            },
+            "west": {
+                "room_id": "new-thalos-5409"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "statue"
+                ],
+                "description": "Before you is a statue of the mighty beholder! A great beast with multiple eyes and wicked... wicked... um.... eyes... The mighty beholder is in Excellent condition."
+            }
+        ]
+    }
+}

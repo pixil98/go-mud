@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7233",
+    "spec": {
+        "name": "The Sewer Drain",
+        "description": "You stand in a sewer drain, you are able to see some kind of cave-like room. You see some odd scratches on the drain wall, as if from a gigantic rat. The sewer leads south.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "east": {
+                "room_id": "the-sewer-maze-7234",
+                "description": "You see a cave-like room."
+            },
+            "south": {
+                "room_id": "the-sewer-maze-7232",
+                "description": "You see a sewer."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

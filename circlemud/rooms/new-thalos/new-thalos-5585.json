@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "new-thalos-5585",
+    "spec": {
+        "name": "The Guard Room",
+        "description": "You stand in a barren chamber lined with nothing but cots and footlockers. The guards come here when off duty to sleep, for they may only leave the Palace grounds with special permission. The only exit is to the south.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "south": {
+                "room_id": "new-thalos-5584",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

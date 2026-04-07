@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5614",
+    "spec": {
+        "name": "In The Foothills",
+        "description": "The path curves down the face of the mountain allowing you to move up or down as you please.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "south": {
+                "room_id": "new-thalos-5615"
+            },
+            "west": {
+                "room_id": "new-thalos-5613"
+            }
+        }
+    }
+}

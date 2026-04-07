@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5218",
+    "spec": {
+        "name": "A Back Alley",
+        "description": "A narrow alley leads east to a wider street and west to one of the city watchtowers.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "east": {
+                "room_id": "the-city-of-thalos-5214",
+                "description": "A small side street greets you."
+            },
+            "west": {
+                "room_id": "the-city-of-thalos-5215",
+                "description": "A tall watchtower stands a silent vigil over the city."
+            }
+        }
+    }
+}

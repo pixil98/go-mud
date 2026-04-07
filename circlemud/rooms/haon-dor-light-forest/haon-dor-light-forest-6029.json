@@ -1,0 +1,66 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6029",
+    "spec": {
+        "name": "Near A Large Tree In The Dense Forest",
+        "description": "You are at the end of a small path leading through the dense forest. The crowns of the old trees leave the forest in an unreal twilight illumination. This rough clearing is dominated by a very large oak tree, probably the largest in this part of the forest. The path leads back to the north.",
+        "zone_id": "haon-dor-light-forest",
+        "exits": {
+            "north": {
+                "room_id": "haon-dor-light-forest-6028"
+            },
+            "up": {
+                "room_id": "haon-dor-light-forest-6030",
+                "description": "You see the lower branches of the towering oak."
+            }
+        },
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "path",
+                    "paths"
+                ],
+                "description": "The narrow path is probably used by the animals living in the forest."
+            },
+            {
+                "keywords": [
+                    "trees"
+                ],
+                "description": "The trees are mostly old beeches and oaks, with one large oak off to your right."
+            },
+            {
+                "keywords": [
+                    "large",
+                    "oak",
+                    "tree"
+                ],
+                "description": "It has some lower branches that you think you could reach if you stretched. You might even be able to climb all the top, though from here it looks like something else had that idea before you. There is a faint animal shape pacing on one of the highest branches."
+            },
+            {
+                "keywords": [
+                    "animal",
+                    "shape"
+                ],
+                "description": "From here it looks vaguely feline, though you could get a much better view from in the tree. You are not sure if it has seen you yet."
+            },
+            {
+                "keywords": [
+                    "limb",
+                    "limbs"
+                ],
+                "description": "They look quite sturdy, certainly capable of holding your weight should you decide to climb up the tree using them."
+            },
+            {
+                "keywords": [
+                    "top",
+                    "highest",
+                    "high"
+                ],
+                "description": "You could probably see most of the forest, and perhaps even the city from the top of the tree... of course, you'd have to deal with whatever that shape is pacing on one of the upper limbs."
+            }
+        ]
+    }
+}

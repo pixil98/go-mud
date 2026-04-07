@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7000",
+    "spec": {
+        "name": "The Fissure Under The Ledge",
+        "description": "This is a small fissure in the solid rock. Under you lies the deep dark pool. The water trickles quietly down from the ledge above you. The water smells like the water in a sewer.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "up": {
+                "room_id": "the-sewer-first-level-7070"
+            },
+            "down": {
+                "room_id": "the-second-sewer-7100",
+                "zone_id": "the-second-sewer",
+                "description": "The water's edge."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ]
+    }
+}

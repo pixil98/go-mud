@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7909",
+    "spec": {
+        "name": "On The Stairs",
+        "description": "You can see up and down the stairway. It seems to take forever, either going up OR down. It is just a seemingly insurmountable climb, either way. Up is the bedroom of Redferne, and down leads to the southern end of the hall.",
+        "zone_id": "redfernes-residence",
+        "exits": {
+            "up": {
+                "room_id": "redfernes-residence-7911"
+            },
+            "down": {
+                "room_id": "redfernes-residence-7901"
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

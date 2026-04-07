@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15067",
+    "spec": {
+        "name": "A Large Pit",
+        "description": "The dirt road ends at the edge of a large pit here and you now realize where the awful smell was coming from. This pit appears to be a mass grave for the citizens of the village. There are bones and corpses lying all over the place. A lot of the corpses look too recent to be from the Townsbridge murders of almost a decade ago, but the village seems to have been empty for almost that long. The dirt road leads away from the carnage to the north.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "north": {
+                "room_id": "king-welmars-castle-15066",
+                "description": "Just near the north edge of the pit a small and narrow trail leads away."
+            }
+        }
+    }
+}

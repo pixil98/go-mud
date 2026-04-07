@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2671",
+    "spec": {
+        "name": "A Study",
+        "description": "You are in a spacious study. It is extremely tidy here, to an almost antiseptic nature. One would wonder how anyone could study without a mess all around them, the master of this chamber obviously can.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2669"
+            }
+        }
+    }
+}

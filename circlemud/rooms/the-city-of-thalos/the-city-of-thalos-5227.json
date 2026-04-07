@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5227",
+    "spec": {
+        "name": "A Collapsed Stone Dwelling",
+        "description": "This small house has completely collapsed upon itself leaving piles of debris here and there. A few rafters still stand with thatched straw hanging down and a hot wind gusts through the hollow dwelling.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "east": {
+                "room_id": "the-city-of-thalos-5211",
+                "description": "A small side street runs past the house."
+            }
+        }
+    }
+}

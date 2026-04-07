@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6521",
+    "spec": {
+        "name": "The Entrance To The Barracks",
+        "description": "Here there is an entrance to the barracks to the south, and the path continues to the west.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "south": {
+                "room_id": "the-dwarven-kingdom-6523",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "the-dwarven-kingdom-6520"
+            }
+        }
+    }
+}

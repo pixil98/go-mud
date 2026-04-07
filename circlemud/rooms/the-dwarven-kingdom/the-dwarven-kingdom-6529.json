@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6529",
+    "spec": {
+        "name": "On The Stairs",
+        "description": "You are still circling around on the stairs. You are starting to get dizzy from going around and around and around and around and around. The stairs continue up and down.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "up": {
+                "room_id": "the-dwarven-kingdom-6530"
+            },
+            "down": {
+                "room_id": "the-dwarven-kingdom-6528"
+            }
+        }
+    }
+}

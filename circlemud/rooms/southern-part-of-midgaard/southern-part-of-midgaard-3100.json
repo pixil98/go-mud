@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3100",
+    "spec": {
+        "name": "The Northwest End Of The Concourse",
+        "description": "You are at the concourse, the city wall is just west. A small promenade goes east, and the bridge is just north of here. The concourse continues south along the city wall.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "north": {
+                "room_id": "northern-midgaard-main-city-3051",
+                "zone_id": "northern-midgaard-main-city",
+                "description": "You see the Bridge."
+            },
+            "east": {
+                "room_id": "southern-part-of-midgaard-3101",
+                "description": "You see the promenade."
+            },
+            "south": {
+                "room_id": "southern-part-of-midgaard-3127",
+                "description": "The promenade continues far south."
+            }
+        }
+    }
+}

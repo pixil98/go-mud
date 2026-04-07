@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3308",
+    "spec": {
+        "name": "The Diverging Paths",
+        "description": "You are standing on a small plateau in the mountains, just south of a ridge that leads northwards through the rocky area. To the east, south, and west are gentle slopes leading down into different areas of the mountains. A giant, dark peak looks down over you to the west, looking quite spooky indeed!",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "north": {
+                "room_id": "the-three-of-swords-3307"
+            },
+            "east": {
+                "room_id": "the-three-of-swords-3341"
+            },
+            "south": {
+                "room_id": "the-three-of-swords-3309"
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3359"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "tracks",
+                    "track"
+                ],
+                "description": "The three sets of tracks split up here, one west, one east, one south."
+            }
+        ]
+    }
+}

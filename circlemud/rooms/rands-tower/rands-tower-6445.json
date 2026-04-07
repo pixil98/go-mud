@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "rands-tower-6445",
+    "spec": {
+        "name": "Inside A Pentagram",
+        "description": "The small god entrapped by the wizard looks at you with an insane expression. Four hundred years of imprisonment doesn't do much for one's... OOPS! He killed you! You are dead, R.I.P.",
+        "zone_id": "rands-tower",
+        "exits": {
+            "south": {
+                "room_id": "rands-tower-6444"
+            }
+        },
+        "flags": [
+            "death"
+        ]
+    }
+}

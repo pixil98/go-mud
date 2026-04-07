@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-chessboard-of-midgaard-3658",
+    "spec": {
+        "name": "A White Square",
+        "description": "You are standing on a white marble square. This is usually the home of the White Queen's Knight.",
+        "zone_id": "the-chessboard-of-midgaard",
+        "exits": {
+            "north": {
+                "room_id": "the-chessboard-of-midgaard-3650",
+                "description": "A black square lies to the north."
+            },
+            "east": {
+                "room_id": "the-chessboard-of-midgaard-3659",
+                "description": "A black square lies to the east."
+            },
+            "west": {
+                "room_id": "the-chessboard-of-midgaard-3657",
+                "description": "A black square lies to the west."
+            }
+        }
+    }
+}

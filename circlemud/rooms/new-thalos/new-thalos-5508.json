@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "new-thalos-5508",
+    "spec": {
+        "name": "Inside The Temple",
+        "description": "The temple continues here, but not on such a grand scale. The place still looks immaculate. To the north you see the chamber of the High Priest and a sign on the door in BIG letters thats reads 'DO NOT DISTURB' To the south is the entrance to the Clerics' Guild.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5504"
+            },
+            "east": {
+                "room_id": "new-thalos-5509"
+            },
+            "south": {
+                "room_id": "new-thalos-5512"
+            }
+        }
+    }
+}

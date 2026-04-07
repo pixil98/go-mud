@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "drow-city-5138",
+    "spec": {
+        "name": "The Grand Hallway",
+        "description": "You are walking down a grand hallway, heavily decorated with adamantite and gold. To the north the hall goes down a flight of stairs while a door is to the west.",
+        "zone_id": "drow-city",
+        "exits": {
+            "south": {
+                "room_id": "drow-city-5136"
+            },
+            "west": {
+                "room_id": "drow-city-5139",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "down": {
+                "room_id": "drow-city-5140"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

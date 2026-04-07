@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3333",
+    "spec": {
+        "name": "A Cave Passageway",
+        "description": "The passageway makes a U-turn here, heading north and westwards to the other side of the 'U'. The air seems humid and hard to breathe. Some algae grows near the floor in the slick spots, giving a definite subtle smell of rot to the air.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "north": {
+                "room_id": "the-three-of-swords-3334"
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3332"
+            }
+        }
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-chessboard-of-midgaard-3633",
+    "spec": {
+        "name": "A White Square",
+        "description": "You are standing on a white marble square.",
+        "zone_id": "the-chessboard-of-midgaard",
+        "exits": {
+            "north": {
+                "room_id": "the-chessboard-of-midgaard-3625",
+                "description": "A black square lies to the north."
+            },
+            "east": {
+                "room_id": "the-chessboard-of-midgaard-3634",
+                "description": "A black square lies to the east."
+            },
+            "south": {
+                "room_id": "the-chessboard-of-midgaard-3641",
+                "description": "A black square lies to the south."
+            }
+        }
+    }
+}

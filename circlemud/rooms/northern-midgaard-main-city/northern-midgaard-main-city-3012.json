@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3012",
+    "spec": {
+        "name": "Main Street",
+        "description": "You are at the end of the main street of Midgaard. South of here is the entrance to the Guild of Magic Users. The street continues east towards the market square. The magic shop is to the north and to the west is the city gate.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "north": {
+                "room_id": "northern-midgaard-main-city-3033",
+                "description": "You see the magic shop."
+            },
+            "east": {
+                "room_id": "northern-midgaard-main-city-3013",
+                "description": "You see the main street."
+            },
+            "south": {
+                "room_id": "northern-midgaard-main-city-3017",
+                "description": "You see the entrance to the Guild of Magic Users."
+            },
+            "west": {
+                "room_id": "northern-midgaard-main-city-3040",
+                "description": "You see the city gate."
+            }
+        }
+    }
+}

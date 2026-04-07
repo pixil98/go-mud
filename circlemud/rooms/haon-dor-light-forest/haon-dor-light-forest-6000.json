@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6000",
+    "spec": {
+        "name": "The Edge Of The Forest",
+        "description": "You are standing at the end of a dusty road, near the eastern edge of the large forest of Haon-Dor. To the east you see the road heading back to the walled city, Midgaard, and to the west is a narrow trail leading through the forest.",
+        "zone_id": "haon-dor-light-forest",
+        "exits": {
+            "east": {
+                "room_id": "haon-dor-light-forest-6090",
+                "description": "To the east a dusty road takes you back to the walls of Midgaard, and its large west gate."
+            },
+            "west": {
+                "room_id": "haon-dor-light-forest-6001",
+                "description": "You see a narrow forest trail winding westward in between the trees."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "trail"
+                ],
+                "description": "The forest trail winds westwards through the trees."
+            },
+            {
+                "keywords": [
+                    "tree",
+                    "trees"
+                ],
+                "description": "The trees are quite tall considering most of them appear to be quite young. On one of the trees, crude letters forming the word 'Haon-Dor' have been carved into the bark."
+            }
+        ]
+    }
+}

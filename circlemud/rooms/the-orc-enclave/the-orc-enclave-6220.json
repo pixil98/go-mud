@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6220",
+    "spec": {
+        "name": "A Forest Trail",
+        "description": "This is a winding east-west path through the thickening forest. The grass along the path is matted down from frequent traffic. The path continues to the east, and there seems to be a small clearing to the west. A faint noise makes you stand stock still. You could have sworn you heard a voice nearby. Whatever it was, it wasn't speaking common.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "east": {
+                "room_id": "the-orc-enclave-6219"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6221"
+            }
+        }
+    }
+}

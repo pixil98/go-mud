@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4107",
+    "spec": {
+        "name": "The Passage",
+        "description": "You are standing at the elbow turn of a small passageway. It turns quite sharply to the south and west. To the south, it appears that the passage continues, but to the west you can see what almost appears to be a golden light.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "south": {
+                "room_id": "mines-of-moria-4113"
+            },
+            "west": {
+                "room_id": "mines-of-moria-4108"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5249",
+    "spec": {
+        "name": "Under A Watchtower",
+        "description": "As you descend the ladder, the rotted rungs break, sending you quickly to your demise far below on the city street. Splat.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {},
+        "flags": [
+            "death"
+        ]
+    }
+}

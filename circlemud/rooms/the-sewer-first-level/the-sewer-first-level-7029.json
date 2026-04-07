@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7029",
+    "spec": {
+        "name": "The Triple Junction",
+        "description": "You stand in the middle of a huge junction of concrete sewer pipes. The pipes lead into three different directions: east, south and west.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "east": {
+                "room_id": "the-sewer-first-level-7035",
+                "description": "East. You can see a bend in the sewer pipe leading north."
+            },
+            "south": {
+                "room_id": "the-sewer-first-level-7030",
+                "description": "To the south there is an ENORMOUS quadruple sewer junction, all lit up by an odd light."
+            },
+            "west": {
+                "room_id": "the-sewer-first-level-7021",
+                "description": "To the west you can just make out another junction similar to the one you are standing in."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

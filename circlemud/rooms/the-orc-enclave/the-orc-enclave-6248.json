@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6248",
+    "spec": {
+        "name": "A Cave",
+        "description": "There are bodies here... corpses. Orcs, the lot of them, every single one of them horribly disfigured in some senseless way; one whose arms were removed, another who lacks anything that could sensibly be called a face. A few twitch feebly with the last remains of life, the rest just decompose. The dim sense of horror budding in your head blossoms as you realize the pile in the corner consists of dead orc children awaiting burial.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "south": {
+                "room_id": "the-orc-enclave-6251"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6247"
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

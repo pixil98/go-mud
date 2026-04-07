@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3370",
+    "spec": {
+        "name": "A Sloping Tunnel",
+        "description": "The tunnels slopes up to the north deeper into the mountain. A rather gusty breeze riffles your clothing from ahead somewhere. The claw marks in the stone floor continue up the passage, through the darkness.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "north": {
+                "room_id": "the-three-of-swords-3371"
+            },
+            "down": {
+                "room_id": "the-three-of-swords-3369"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3315",
+    "spec": {
+        "name": "The Depression Floor",
+        "description": "A small path leads south here, away from the rocky slope leading up to the east. A small spring burbles here, evidently the cause of much of the traffic. Looking up, you see sheer rock walls surrounding much of the depression, making an effective fortress of this place.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "east": {
+                "room_id": "the-three-of-swords-3314"
+            },
+            "south": {
+                "room_id": "the-three-of-swords-3316"
+            }
+        }
+    }
+}

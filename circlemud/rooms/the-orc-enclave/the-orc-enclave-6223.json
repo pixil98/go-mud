@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6223",
+    "spec": {
+        "name": "A Forest Trail",
+        "description": "The trail leads east and west here through the forest. To the west you spot an area where a smaller path breaks off from the main track. Eastwards seems to be another small clearing that seems to be well used; there are many tracks leading in that direction.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "east": {
+                "room_id": "the-orc-enclave-6224"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6222"
+            }
+        }
+    }
+}

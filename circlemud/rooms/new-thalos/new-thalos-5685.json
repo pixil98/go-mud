@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5685",
+    "spec": {
+        "name": "The River Delta",
+        "description": "This is where the river empties out into the Dragon Sea. The backrush of water has kicked up a lot of sand and the blue sea is stained where the river empties. Looking west all you can see is water... all the way to the horizon. North of here is a small dock you think you should be able to reach with out too much trouble. The river stretches off to the west back towards New Thalos.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5686"
+            },
+            "west": {
+                "room_id": "new-thalos-5684"
+            }
+        }
+    }
+}

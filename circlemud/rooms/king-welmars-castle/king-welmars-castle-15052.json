@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15052",
+    "spec": {
+        "name": "Up In The Tower",
+        "description": "After a long climb, you finally reach the top of the tower. This room is small, and the only light source is a flickering candle, on a cluttered table, in the middle of the room. The only obvious exit is back down the stairs.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "down": {
+                "room_id": "king-welmars-castle-15034",
+                "description": "The stairs go down the tower."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "table"
+                ],
+                "description": "On the table are various objects, all very strange-looking."
+            },
+            {
+                "keywords": [
+                    "candle"
+                ],
+                "description": "Small, uninteresting... A candle that is as normal as can be."
+            }
+        ]
+    }
+}

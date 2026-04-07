@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2612",
+    "spec": {
+        "name": "It Is Very Dark Here...",
+        "description": "It is very dark here...",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "up": {
+                "room_id": "the-high-tower-of-magic-2609",
+                "closure": {
+                    "name": "trapdoor",
+                    "closed": true
+                }
+            },
+            "down": {
+                "room_id": "the-high-tower-of-magic-2581",
+                "closure": {
+                    "name": "vent",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

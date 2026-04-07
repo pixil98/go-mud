@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze",
+    "spec": {
+        "name": "The Sewer Maze",
+        "reset_mode": "lifespan",
+        "lifespan": "25m"
+    }
+}

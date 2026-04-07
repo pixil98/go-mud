@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "new-thalos-5522",
+    "spec": {
+        "name": "The Butchery",
+        "description": "This shop has the aroma of freshly slaughterd beasts. You feel right at home. You see a fairly simple set up. The corpses... er... selections hang on hooks, still bleeding into catch pans that drain into a single underground vat. You wonder where that leads...",
+        "zone_id": "new-thalos",
+        "exits": {
+            "west": {
+                "room_id": "new-thalos-5416"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "vat"
+                ],
+                "description": "You think you hear noises from the vat... naaah."
+            }
+        ]
+    }
+}

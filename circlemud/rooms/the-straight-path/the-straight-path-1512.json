@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1512",
+    "spec": {
+        "name": "Hate",
+        "description": "There is little in life much easier, and truthfully, little that is a quicker ticket to damnation. You give brief thanks that you have come to the end of these trials, but your words are drowned out by something much louder, a mechanical preaching that drowns your ears in anger. You hear a steady, repetitive litany of the same phrase, over and over again: \"I go the way history dictates with the blind assurance of a sleep-walker.\"",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "south": {
+                "room_id": "the-straight-path-1511"
+            },
+            "north": {
+                "room_id": "the-straight-path-1528"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

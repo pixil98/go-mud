@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4013",
+    "spec": {
+        "name": "The Tunnel",
+        "description": "Standing in the middle of the dusty floor of this tunnel, you can see that it is not a highly travelled passageway. It looks to lead in an east-west direction.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "east": {
+                "room_id": "mines-of-moria-4014"
+            },
+            "west": {
+                "room_id": "mines-of-moria-4012"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

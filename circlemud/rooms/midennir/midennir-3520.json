@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "midennir-3520",
+    "spec": {
+        "name": "The Dark Forest",
+        "description": "You stomp your way through the underbrush. The dark forest of Miden'nir get pretty thick here, and the branches high above your head are so thick that they block out all direct sunlight. While it is much too thick to go further east, you might be able to make your way though the forest to the south and west.",
+        "zone_id": "midennir",
+        "exits": {
+            "south": {
+                "room_id": "midennir-3523",
+                "description": "The thick forest continues."
+            },
+            "west": {
+                "room_id": "midennir-3519",
+                "description": "The thick forest continues."
+            }
+        }
+    }
+}

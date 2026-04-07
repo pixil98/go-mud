@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2679",
+    "spec": {
+        "name": "The Library",
+        "description": "You are in a small cosy looking library. A few well made books sit atop shelves which span every wall. A large oaken writing table is in the center of the room with odd papers and parchments on it. The illumination here, to your surprise is a quite un-magical oil lamp.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "east": {
+                "room_id": "the-high-tower-of-magic-2677"
+            }
+        }
+    }
+}

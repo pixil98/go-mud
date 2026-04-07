@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1538",
+    "spec": {
+        "name": "Progression",
+        "description": "Were We worn out by the First Creation? Yet they are in doubt about a new creation. WE created man. We know the promptings of his soul, and are closer to him than his jugular vein.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "north": {
+                "room_id": "the-straight-path-1539"
+            },
+            "south": {
+                "room_id": "the-straight-path-1537"
+            }
+        }
+    }
+}

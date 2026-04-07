@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2606",
+    "spec": {
+        "name": "A Bend In The Hallway",
+        "description": "You are at a bend in the long hallway. The walls emit a faint magical glow which provides enough light to see by. The hallway continues east and south.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "east": {
+                "room_id": "the-high-tower-of-magic-2605"
+            },
+            "south": {
+                "room_id": "the-high-tower-of-magic-2607"
+            }
+        }
+    }
+}

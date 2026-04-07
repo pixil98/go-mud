@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6231",
+    "spec": {
+        "name": "A Clearing",
+        "description": "The trees have been cut down around here, and many of the trunks hollowed out with sharp stones and lined with treated leather to make almost-waterproof tubs. A foul smelling brown fluid, tannin evidently, fills many of these, soaking into various bits and pieces of animal hides. Crude, but workable.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "west": {
+                "room_id": "the-orc-enclave-6230"
+            }
+        }
+    }
+}

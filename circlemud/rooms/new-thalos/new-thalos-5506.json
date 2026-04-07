@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "new-thalos-5506",
+    "spec": {
+        "name": "The Weavers' Guild",
+        "description": "Rows and rows of uncut cloth lie about waiting to be hemed up into tailored clothes. Cotten is brought in from the country side and spun up into cloth and dyed different colors. A young boy walks in, grabs a pile of clothing and leaves.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5461"
+            }
+        }
+    }
+}

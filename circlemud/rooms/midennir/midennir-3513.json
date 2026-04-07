@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "midennir-3513",
+    "spec": {
+        "name": "The Miden'nir",
+        "description": "The forest is dark, and becomes even darker west. You sense that there is something evil hidden in these woods. The forest gets lighter to the north. The wind kicks up as you ponder your options.",
+        "zone_id": "midennir",
+        "exits": {
+            "north": {
+                "room_id": "midennir-3512",
+                "description": "There is a small clearing to the north."
+            },
+            "west": {
+                "room_id": "midennir-3514",
+                "description": "It gets darker and thicker this way."
+            }
+        }
+    }
+}

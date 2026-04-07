@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2527",
+    "spec": {
+        "name": "A Dark Cell",
+        "description": "You are in a dark cell. Straw and dirt cover the floors here, it is very dark. Someone, or something seems to be chained to the far wall. The only exit is back south.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "south": {
+                "room_id": "the-high-tower-of-magic-2523",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "the-high-tower-of-magic-2522",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

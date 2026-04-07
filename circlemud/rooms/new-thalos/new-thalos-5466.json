@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "new-thalos-5466",
+    "spec": {
+        "name": "Alley",
+        "description": "Even with your light you cannot seem to penetrate the magical cloak of darkness covering this alley.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5465"
+            },
+            "east": {
+                "room_id": "new-thalos-5467"
+            },
+            "west": {
+                "room_id": "new-thalos-5537"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

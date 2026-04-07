@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3328",
+    "spec": {
+        "name": "A Cave Passageway",
+        "description": "The main passageway leads south from here, and a smaller cave tunnel leads away to the west. Two large boulders sit against the wall, wiped clean of dirt and grime. A paper food wrapper has been trodden under several pairs of feet here; at best guess, you'd say this would probably be a guard post.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "south": {
+                "room_id": "the-three-of-swords-3327"
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3329"
+            }
+        }
+    }
+}

@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "id": "rands-tower-6407",
+    "spec": {
+        "name": "A Stairwell",
+        "description": "This small room is the top of a stairwell leading down deep into the tower. A small trapdoor overhead leaks the light of day around its edges. To the south is a wooden door, preserved through the ages by means unknown. To the west is a short hall.",
+        "zone_id": "rands-tower",
+        "exits": {
+            "south": {
+                "room_id": "rands-tower-6408",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "rands-tower-6409"
+            },
+            "up": {
+                "room_id": "rands-tower-6406",
+                "description": "An ancient trapdoor, grimed with earth and age.",
+                "closure": {
+                    "name": "trapdoor",
+                    "closed": true
+                }
+            },
+            "down": {
+                "room_id": "rands-tower-6413"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

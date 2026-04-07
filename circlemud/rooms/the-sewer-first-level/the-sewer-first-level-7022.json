@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7022",
+    "spec": {
+        "name": "The Odd Room With Smooth Walls",
+        "description": "As you enter you hear a loud click from one of the walls... and you fall and fall and fall... . . . . ... And come to an abrupt end. THIS is strange indeed. There is an arched entryway leading down.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "down": {
+                "room_id": "the-second-sewer-7112",
+                "zone_id": "the-second-sewer",
+                "description": "Down. It is utterly dark that way, though you can make out an intersection of sewer pipes leading west, north and east."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

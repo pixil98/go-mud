@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1526",
+    "spec": {
+        "name": "Conversion",
+        "description": "Unbelievers, I do not worship what you worship, nor do you worship what I worship. I shall never worship what you worship, nor will you ever worship what I worship. You have your own religion, and I have mine.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "north": {
+                "room_id": "the-straight-path-1527"
+            },
+            "south": {
+                "room_id": "the-straight-path-1525"
+            }
+        }
+    }
+}

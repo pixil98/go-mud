@@ -26,6 +26,7 @@ type FollowTarget interface {
 	Id() string
 	Name() string
 	Notify(msg string)
+	HasGrant(key, arg string) bool
 	IsInCombat() bool
 	Location() (string, string)
 	Move(from, to *RoomInstance)

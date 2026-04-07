@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1507",
+    "spec": {
+        "name": "Shahadah",
+        "description": "It was written once, on an ancient parchment in a curious and flowing script, that there is in fact no god but Allah, and that Muhammad was the last of His Prophets. With this recognition, all else became empty and meaningless.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "east": {
+                "room_id": "the-straight-path-1523"
+            },
+            "west": {
+                "room_id": "the-straight-path-1518"
+            },
+            "down": {
+                "room_id": "the-straight-path-1505"
+            }
+        }
+    }
+}

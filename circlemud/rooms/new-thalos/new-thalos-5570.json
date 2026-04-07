@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "new-thalos-5570",
+    "spec": {
+        "name": "Outside The Wall",
+        "description": "You are in a small clearing outside the east wall of the city. The ground seems well trodden but you can see no apparent exit save that to the north.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5568"
+            }
+        }
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "rome-12068",
+    "spec": {
+        "name": "A Small Dirt Trail",
+        "description": "This small dirt path seems to be a joint between a large clay road located a short distance to the west and the expanse of sand which opens up before you to the east. The clay road appears to lead through the foothills towards the snowcapped mountain chain to the west. Perhaps there is a city or settlement in that direction. You cannot see any breaks in the horizon of the sand which fills your vision as you look to the east, it seems to stretch forever.",
+        "zone_id": "rome",
+        "exits": {
+            "east": {
+                "room_id": "the-great-eastern-desert-5028",
+                "zone_id": "the-great-eastern-desert",
+                "description": "The expanse of the Great Eastern Desert opens up before you."
+            },
+            "west": {
+                "room_id": "rome-12067",
+                "description": "A large clay road begins a short distance to the west."
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

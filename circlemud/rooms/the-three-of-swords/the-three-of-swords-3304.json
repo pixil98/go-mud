@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3304",
+    "spec": {
+        "name": "The Smithery",
+        "description": "Devastation greets your eyes. The forge has been blasted apart, along with most of the back door. Hammers, tongs, and anvils lie about in one gigantic mess, and the smith's bed smoulders yet. This place has been utterly wrecked and blasted apart, by more than one man you would think from all the tracks in the dust...",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "east": {
+                "room_id": "the-three-of-swords-3305",
+                "description": "It is a normal hole torn in the wall leading outside into a garden."
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3303",
+                "description": "It is a normal front door.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "bed"
+                ],
+                "description": "Ha! Lucky, you were always lucky! Under the pillow is a half-written letter, unaddressed. The bits of text that aren't smudged, burnt, and smeared tell tale of the smith/mage Gabadiel's masterwork: a sword of unequalled power, and two swords that came before, discarded as 'Not quite what I was working towards'. Looking around, you notice a distinct lack of any swords. You think you may have a motive now..."
+            },
+            {
+                "keywords": [
+                    "tracks",
+                    "dust"
+                ],
+                "description": "Three sets of prints lead out where the back door used to stand."
+            }
+        ]
+    }
+}

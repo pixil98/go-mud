@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15043",
+    "spec": {
+        "name": "A Guest Room",
+        "description": "You are standing in a large room. Although it is comfortable enough, you can tell it is not meant for any of the most illustrious guests, since it lacks that extreme luxury found elsewhere in the Castle.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "south": {
+                "room_id": "king-welmars-castle-15038",
+                "description": "Behind the door, you see the entrance to the Guest Wing.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

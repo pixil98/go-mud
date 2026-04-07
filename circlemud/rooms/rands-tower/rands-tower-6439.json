@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "rands-tower-6439",
+    "spec": {
+        "name": "The Stairs",
+        "description": "Stairs lead up here to the main level, or you can go east to the basement of the tower.",
+        "zone_id": "rands-tower",
+        "exits": {
+            "east": {
+                "room_id": "rands-tower-6440"
+            },
+            "up": {
+                "room_id": "rands-tower-6438"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

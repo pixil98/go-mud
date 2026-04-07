@@ -1,0 +1,56 @@
+{
+    "listeners": [
+        {
+            "protocol": "telnet",
+            "port": 4000
+        },
+        {
+            "protocol": "ssh",
+            "port": 4022
+        }
+    ],
+    "tick_interval": "2s",
+    "storage": {
+        "characters": {
+            "path": "./circlemud/characters"
+        },
+        "commands": {
+            "path": "./assets/commands"
+        },
+        "pronouns": {
+            "path": "./assets/pronouns"
+        },
+        "races": {
+            "path": "./assets/races"
+        },
+        "zones": {
+            "path": "./circlemud/zones"
+        },
+        "rooms": {
+            "path": "./circlemud/rooms"
+        },
+        "mobiles": {
+            "path": "./circlemud/mobiles"
+        },
+        "objects": {
+            "path": "./circlemud/objects"
+        },
+        "trees": {
+            "path": "./assets/trees"
+        },
+        "abilities": {
+            "path": "./circlemud/abilities"
+        }
+    },
+    "nats": {
+        "host": "127.0.0.1",
+        "port": 4223,
+        "start_timeout": "5s"
+    },
+    "player_manager": {
+        "default_zone": "northern-midgaard-main-city",
+        "default_room": "northern-midgaard-main-city-3001",
+        "linkless_timeout": "5m",
+        "idle_timeout": "15m"
+    }
+}

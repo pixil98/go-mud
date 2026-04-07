@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3006",
+    "spec": {
+        "name": "The Entrance Hall Of The Grunting Boar Inn",
+        "description": "You are standing in the entrance hall of the Grunting Boar Inn. The hall has been wisely decorated with simple, functional furniture. The heavy smell of dust and aging paper drifts in from the Post Office to the north. A small staircase leads up to the reception and the bar is to the east.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "north": {
+                "room_id": "northern-midgaard-main-city-3062",
+                "description": "You see the Midgaard Post Office."
+            },
+            "east": {
+                "room_id": "northern-midgaard-main-city-3007",
+                "description": "Surprise! You see the bar."
+            },
+            "west": {
+                "room_id": "northern-midgaard-main-city-3005",
+                "description": "You see the temple square."
+            },
+            "up": {
+                "room_id": "northern-midgaard-main-city-3008",
+                "description": "You see the reception."
+            }
+        }
+    }
+}

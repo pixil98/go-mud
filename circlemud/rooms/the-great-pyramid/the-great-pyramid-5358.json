@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5358",
+    "spec": {
+        "name": "A Massive Sand Dune",
+        "description": "Somehow you managed to make your way through the howling winds of the sandstorm, and clamber up on this sand dune. You can see the storm to the north of you, and presumably the pyramid is somewhere beyond it. Nothing but flat, featureless, open dunes of sand lie in every other direction.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "north": {
+                "room_id": "the-great-pyramid-5357",
+                "description": "You see only a wall of whirling, blowing, dry sand."
+            },
+            "south": {
+                "room_id": "the-great-pyramid-5359",
+                "description": "On the southern side of the sand dune is a small hole in the sand. For some reason you seem unable to get to it.",
+                "closure": {
+                    "name": "riddle",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "the-great-pyramid-5317",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "sand",
+                    "dune"
+                ],
+                "description": "The sand is very white, and very sandy. There sure is a lot of it."
+            },
+            {
+                "keywords": [
+                    "riddle"
+                ],
+                "description": "A vision forms before your eyes, in glowing hieroglyphic symbols."
+            },
+            {
+                "keywords": [
+                    "hieroglyphics",
+                    "symbols"
+                ],
+                "description": "Like most of the ancient hieroglyphics of this land, the symbols are totally incomprehensible to you. Perhaps the Sphinx has the answer to this ancient riddle."
+            }
+        ]
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-chessboard-of-midgaard-3624",
+    "spec": {
+        "name": "A Black Square",
+        "description": "You are standing on a black marble square. You can see a rusty gate to the south.",
+        "zone_id": "the-chessboard-of-midgaard",
+        "exits": {
+            "north": {
+                "room_id": "the-chessboard-of-midgaard-3616",
+                "description": "A white square lies to the north."
+            },
+            "south": {
+                "room_id": "the-chessboard-of-midgaard-3632",
+                "description": "A white square lies to the south."
+            },
+            "west": {
+                "room_id": "the-chessboard-of-midgaard-3623",
+                "description": "A white square lies to the west."
+            }
+        }
+    }
+}

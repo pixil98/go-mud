@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6240",
+    "spec": {
+        "name": "A River's Edge",
+        "description": "The river pours down the side of the mountains to the west, originating from a large hole in the face of one of the sheer rock protuberances. The energy barrier climbs right up the mountain, and seals off any means of escape by that means. The trail you are on runs by the side of the river to the east, and a path leads by the forest side to the south.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "east": {
+                "room_id": "the-orc-enclave-6239"
+            },
+            "south": {
+                "room_id": "the-orc-enclave-6241"
+            }
+        }
+    }
+}

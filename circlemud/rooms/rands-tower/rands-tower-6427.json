@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "rands-tower-6427",
+    "spec": {
+        "name": "A Hall",
+        "description": "This is the northern end of the hall. There are cells to your right and left, empty and awaiting occupants.",
+        "zone_id": "rands-tower",
+        "exits": {
+            "south": {
+                "room_id": "rands-tower-6426"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "cell",
+                    "cells"
+                ],
+                "description": "It is open, empty, and uninteresting."
+            }
+        ]
+    }
+}

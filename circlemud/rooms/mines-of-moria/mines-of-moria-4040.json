@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4040",
+    "spec": {
+        "name": "The Mountain Top",
+        "description": "You find yourself at what is essentially the summit of this mountain. It certainly seemed taller from the ground didn't it? The plateau you stand on is close to thirty metres across and a small gouge in the north side of it looks to lead to a small cavern. A small trail leads down towards a valley that was hidden away on the east side of the mountain.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4041"
+            },
+            "east": {
+                "room_id": "mines-of-moria-4076"
+            },
+            "down": {
+                "room_id": "mines-of-moria-4039"
+            }
+        }
+    }
+}

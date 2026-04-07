@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4037",
+    "spec": {
+        "name": "The Path Through The Foothills",
+        "description": "You stand on a path that leads through the foothills in an east-west direction. Some distance off to the west you can see a small intersection of paths and off to the east you see that the path seems to come to an end as part of the mountain chain juts out of the ground, blocking your view of the sky.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "east": {
+                "room_id": "mines-of-moria-4038"
+            },
+            "west": {
+                "room_id": "mines-of-moria-4033"
+            }
+        }
+    }
+}

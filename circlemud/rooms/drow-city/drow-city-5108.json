@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "drow-city-5108",
+    "spec": {
+        "name": "The 2nd House",
+        "description": "You stand inside the 2nd house of the city. The room is highly decorated with statues of spiders and murals everywhere.",
+        "zone_id": "drow-city",
+        "exits": {
+            "north": {
+                "room_id": "drow-city-5107"
+            },
+            "west": {
+                "room_id": "drow-city-5109",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

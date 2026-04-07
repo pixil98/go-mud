@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5241",
+    "spec": {
+        "name": "Under A Watchtower",
+        "description": "You stand under a tall watchtower. Narrow back alleys lead west and south and a very weak looking ladder leads up into the tower. Above you, you hear the screams of tens of starving lamias! Beware!",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "south": {
+                "room_id": "the-city-of-thalos-5240"
+            },
+            "west": {
+                "room_id": "the-city-of-thalos-5243"
+            },
+            "up": {
+                "room_id": "the-city-of-thalos-5248",
+                "description": "Winds howl high above your head in the tower above. You hear the screams of tens of howling lamias above you!"
+            }
+        }
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7918",
+    "spec": {
+        "name": "The Mighty Chain Of Naris",
+        "description": "This place truly a splendid view of the WHOLE COUNTRY SIDE! A magnificent light shines upon you and the way up through the clouds is opened. Up there you can now see the Mansion of Naris, Residence of the Greater God Redferne. The chain beneath you seems to evaporate in the mustering clouds that surround you by now.",
+        "zone_id": "redfernes-residence",
+        "exits": {
+            "up": {
+                "room_id": "redfernes-residence-7900",
+                "description": "You see the sunny top of the clouds. Beyond these, the Mansion towers before your eyes. Beautiful!!"
+            },
+            "down": {
+                "room_id": "redfernes-residence-7917",
+                "description": "You see nothing but the thick clouds. They've closed completely around the Chain."
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

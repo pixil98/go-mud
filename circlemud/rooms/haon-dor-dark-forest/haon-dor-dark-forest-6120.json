@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6120",
+    "spec": {
+        "name": "On The River Bank In The Deep, Dark Forest",
+        "description": "You are on a narrow path leading through the deep, dark forest. To the south a fast river is flowing westward through the forest. Ancient grey trees loom on both banks. The path continues north and west.",
+        "zone_id": "haon-dor-dark-forest",
+        "exits": {
+            "north": {
+                "room_id": "haon-dor-dark-forest-6119",
+                "description": "The narrow path winds its way through the trees to the north."
+            },
+            "south": {
+                "room_id": "river-island-of-minos-901",
+                "zone_id": "river-island-of-minos",
+                "description": "It looks as if you can enter the fast flowing river just to the south."
+            },
+            "west": {
+                "room_id": "haon-dor-dark-forest-6121",
+                "description": "The narrow path winds its way through the trees to the west."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "river"
+                ],
+                "description": "The river flows fast and strong. It is black or looks so in the gloom."
+            },
+            {
+                "keywords": [
+                    "bank",
+                    "banks",
+                    "tree",
+                    "trees",
+                    "trunk",
+                    "trunks"
+                ],
+                "description": "The ancient crowns of trees on both banks reach together forming a dense roof above the dark river."
+            },
+            {
+                "keywords": [
+                    "path"
+                ],
+                "description": "The path seems all too frail. One of the giant roots could probably crush it in a single blow."
+            }
+        ]
+    }
+}

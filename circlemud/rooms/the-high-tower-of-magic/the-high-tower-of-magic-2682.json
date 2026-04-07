@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2682",
+    "spec": {
+        "name": "A Passage",
+        "description": "You are in a small dark passage, which would be unremarkable if not for the fact that it ends in a blinding blue light to the west. On hooks set into the wall here there hang several travel worthy cloaks, and a small leather backpack. It looks as if someone has prepared this room to be used in the event speedy of a evacuation.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "east": {
+                "room_id": "the-high-tower-of-magic-2680",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2683"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

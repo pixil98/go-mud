@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "rome-12029",
+    "spec": {
+        "name": "The Great North Gate",
+        "description": "This is the northern gateway to the city of Rome. The huge gate appears to be closed and locked against intrusion. A large road muddy road runs through the gate and into the countryside. Nero Drive runs south from here.",
+        "zone_id": "rome",
+        "exits": {
+            "south": {
+                "room_id": "rome-12030",
+                "description": "Nero Drive continues in that direction."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "gate"
+                ],
+                "description": "The gate is made of solid iron and is well maintained."
+            },
+            {
+                "keywords": [
+                    "road"
+                ],
+                "description": "The road is wide and very muddy."
+            }
+        ]
+    }
+}

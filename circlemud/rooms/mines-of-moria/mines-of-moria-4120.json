@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4120",
+    "spec": {
+        "name": "The Passage",
+        "description": "You stand in a fairly normal passage, slightly wider than is necessary for one person, but not quite wide enough for two. The ceiling dips here rather surprisingly, or wait, is that because the floor climbs upwards toward it? The tunnel seems to narrow slightly more as you look to the south, and widens up somewhat as you look northward. The light to the south continues to flicker.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4116"
+            },
+            "south": {
+                "room_id": "mines-of-moria-4125"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "light"
+                ],
+                "description": "It nearly is enough to light the passage."
+            }
+        ]
+    }
+}

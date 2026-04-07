@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6548",
+    "spec": {
+        "name": "The Maze",
+        "description": "You are in a maze.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "north": {
+                "room_id": "the-dwarven-kingdom-6549"
+            },
+            "south": {
+                "room_id": "the-dwarven-kingdom-6547"
+            },
+            "west": {
+                "room_id": "the-dwarven-kingdom-6548"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

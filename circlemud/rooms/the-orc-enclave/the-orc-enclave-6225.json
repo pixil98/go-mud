@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6225",
+    "spec": {
+        "name": "A Forest Trail",
+        "description": "This trail leads east-west through the forest foilage, around the trees and up and down the slight rises. The area is quiet and serene, except for the energy barrier keeping you in to the south. For just a moment, you wonder if you're still being watched...",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "east": {
+                "room_id": "the-orc-enclave-6222"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6226"
+            }
+        }
+    }
+}

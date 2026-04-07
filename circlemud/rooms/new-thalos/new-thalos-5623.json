@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "new-thalos-5623",
+    "spec": {
+        "name": "River Ishtar",
+        "description": "The river flows under the wall of the city to the east and stretches off towards high snow capped mountains far far to the west.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5487",
+                "closure": {
+                    "name": "grating",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "new-thalos-5649"
+            }
+        }
+    }
+}

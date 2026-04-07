@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "rands-tower-6401",
+    "spec": {
+        "name": "A Mountain Trail",
+        "description": "You're really high up now. You can keep going even farther up into the mountains to the east, or go back down to the west.",
+        "zone_id": "rands-tower",
+        "exits": {
+            "east": {
+                "room_id": "rands-tower-6402"
+            },
+            "west": {
+                "room_id": "rands-tower-6400"
+            }
+        }
+    }
+}

@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4121",
+    "spec": {
+        "name": "The Secret Tunnel",
+        "description": "You stand in a very unnatural hallway, about ten feet across and about ten or twelve feet up. The passageway funnels down towards the west where it leads to a doorway that looks to be about five feet across. The east end of the tunnel comes to a sudden end at a very smooth rock wall.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "east": {
+                "room_id": "mines-of-moria-4119",
+                "description": "The rock wall to the east looks like it might be able to be moved.",
+                "closure": {
+                    "name": "wall",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "mines-of-moria-4122"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "wall",
+                    "rock"
+                ],
+                "description": "The rock wall to the east looks like it might be able to be moved."
+            }
+        ]
+    }
+}

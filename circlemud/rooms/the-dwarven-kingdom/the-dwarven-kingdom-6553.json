@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6553",
+    "spec": {
+        "name": "The Mazekeeper's Room",
+        "description": "You have entered the Mazekeeper's room. There are pictures of the Queen with darts thrown at it. Spraypainted on the wall are things like 'the queen shall suffer' and 'Catholics Rule'.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "north": {
+                "room_id": "the-dwarven-kingdom-6552"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

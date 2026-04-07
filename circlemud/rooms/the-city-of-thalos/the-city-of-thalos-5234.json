@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5234",
+    "spec": {
+        "name": "The Private Gardens And Courtyard Of Thalos",
+        "description": "What a shame that this mass destruction also touched this once beautiful place. The temple's garden path has nothing on this garden. Flowers and trees have been smashed into the ground and lawn benches thrown through walls. A large marble fountain in the center of the courtyard still stands, though, defying any attempts to destroy its beauty. Above stands the remnants of one of the watchtowers. Archways north and west lead back into the city hall.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "north": {
+                "room_id": "the-city-of-thalos-5233"
+            },
+            "west": {
+                "room_id": "the-city-of-thalos-5231"
+            }
+        }
+    }
+}

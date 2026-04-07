@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3123",
+    "spec": {
+        "name": "Elm Street",
+        "description": "You are on Elm street. Park Road is to the west and Elm Street continues in eastward direction.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "east": {
+                "room_id": "southern-part-of-midgaard-3124"
+            },
+            "west": {
+                "room_id": "southern-part-of-midgaard-3122"
+            }
+        }
+    }
+}

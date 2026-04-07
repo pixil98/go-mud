@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "arachnos-6392",
+    "spec": {
+        "name": "The Great Door",
+        "description": "Before you you see a large, web-like door. Various designs of ancient runes and names of Midgaard heroes are etched into the webwork. Perhaps lists of victims? You can't tell.",
+        "zone_id": "arachnos",
+        "exits": {
+            "north": {
+                "room_id": "arachnos-6399",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "arachnos-6300",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            },
+            "west": {
+                "room_id": "arachnos-6391"
+            }
+        }
+    }
+}

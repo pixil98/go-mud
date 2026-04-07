@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5222",
+    "spec": {
+        "name": "The Tapestry Stand",
+        "description": "Tattered and torn tapestries and rugs lie heaped in piles. Fancy robes and various articles of clothing are now just rags. You stare at the strange piles for a long time until a piercing howl makes you think these might be beds.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "north": {
+                "room_id": "the-city-of-thalos-5223"
+            },
+            "east": {
+                "room_id": "the-city-of-thalos-5225",
+                "description": "A fine jewellery stand lies in ruin next to you."
+            },
+            "south": {
+                "room_id": "the-city-of-thalos-5208",
+                "description": "The market place is deserted."
+            }
+        }
+    }
+}

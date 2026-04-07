@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3346",
+    "spec": {
+        "name": "Main Road",
+        "description": "Nothing is going on in this section of village either. To the east is an actual road intersection, and to the west you see one of the ends of this road. A large grassy area to the south is fenced off for a horse corral.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "east": {
+                "room_id": "the-three-of-swords-3348"
+            },
+            "south": {
+                "room_id": "the-three-of-swords-3347"
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3343"
+            }
+        }
+    }
+}

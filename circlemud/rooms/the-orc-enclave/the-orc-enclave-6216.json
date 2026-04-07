@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6216",
+    "spec": {
+        "name": "The River's Edge",
+        "description": "A large out-cropping of rock blocks this path along the river to the west, and you don't spot any way around it; the woods are too thick to the south, the river too swift to the north, the magical barrier above you. This is a nice area, however, as evidenced by the amount of traffic this path gets. From the marks in the grass, you guess that this is a favored resting spot.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "east": {
+                "room_id": "the-orc-enclave-6215"
+            }
+        }
+    }
+}

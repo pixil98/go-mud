@@ -3,6 +3,7 @@ package commands
 import (
 	"context"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
 )
@@ -13,6 +14,7 @@ type LookActor interface {
 	Name() string
 	Location() (string, string)
 	Notify(msg string)
+	HasGrant(key, arg string) bool
 }
 
 var _ LookActor = (*game.CharacterInstance)(nil)
@@ -49,26 +51,48 @@ func (f *LookHandlerFactory) Create() (CommandFunc, error) {
 	return Adapt[LookActor](f.handle), nil
 }
 
-func (f *LookHandlerFactory) handle(ctx context.Context, char LookActor, in *CommandInput) error {
-	if target := in.Targets["target"]; target != nil {
-		return f.showTarget(char, target)
-	}
+const darkRoomDesc = "It is pitch black..."
 
-	// Target didn't resolve — check for extra desc fallback.
-	if input := in.Config["target_input"]; input != "" {
-		return f.showExtraDesc(char, input)
+// CanSeeInRoom returns true if the actor can see in the given room.
+func CanSeeInRoom(actor interface{ HasGrant(string, string) bool }, room *game.RoomInstance) bool {
+	if !actor.HasGrant(assets.PerkGrantDark, "") {
+		return true
 	}
-
-	return f.showRoom(char)
+	if actor.HasGrant(assets.PerkGrantInfravision, "") {
+		return true
+	}
+	return room.HasLight()
 }
 
-// showRoom displays the current room description.
-func (f *LookHandlerFactory) showRoom(actor LookActor) error {
-	zoneId, roomId := actor.Location()
+// DescribeRoom returns a visibility-aware room description for the actor.
+func DescribeRoom(actor interface {
+	Name() string
+	HasGrant(string, string) bool
+}, room *game.RoomInstance) string {
+	if !CanSeeInRoom(actor, room) {
+		return darkRoomDesc
+	}
+	return room.Describe(actor.Name())
+}
 
+func (f *LookHandlerFactory) handle(ctx context.Context, actor LookActor, in *CommandInput) error {
+	zoneId, roomId := actor.Location()
 	ri := f.zones.GetZone(zoneId).GetRoom(roomId)
 	if ri == nil {
 		return NewUserError("You are in an invalid location.")
+	}
+
+	if !CanSeeInRoom(actor, ri) {
+		actor.Notify(darkRoomDesc)
+		return nil
+	}
+
+	if target := in.Targets["target"]; target != nil {
+		return f.showTarget(actor, target)
+	}
+
+	if input := in.Config["target_input"]; input != "" {
+		return f.showExtraDesc(actor, ri, input)
 	}
 
 	actor.Notify(ri.Describe(actor.Name()))
@@ -96,15 +120,9 @@ func (f *LookHandlerFactory) showTarget(actor LookActor, target *TargetRef) erro
 	return nil
 }
 
-// showExtraDesc searches the current room for an extra description matching
+// showExtraDesc searches the room for an extra description matching
 // the keyword on the room itself or on objects in the room.
-func (f *LookHandlerFactory) showExtraDesc(actor LookActor, keyword string) error {
-	zoneId, roomId := actor.Location()
-	ri := f.zones.GetZone(zoneId).GetRoom(roomId)
-	if ri == nil {
-		return NewUserError("You are in an invalid location.")
-	}
-
+func (f *LookHandlerFactory) showExtraDesc(actor LookActor, ri *game.RoomInstance, keyword string) error {
 	ed := ri.FindExtraDesc(keyword)
 	if ed == nil {
 		return NewUserError("You don't see '" + display.Capitalize(keyword) + "' here.")

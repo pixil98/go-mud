@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4027",
+    "spec": {
+        "name": "The Tunnel",
+        "description": "You find yourself at an elbow turn in the tunnel as it turns to the west and north. You spot a small alcove hidden in the shadows just to the south of you, and you can feel a breeze coming from somewhere to the north you believe.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4029"
+            },
+            "south": {
+                "room_id": "mines-of-moria-4020"
+            },
+            "west": {
+                "room_id": "mines-of-moria-4026"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

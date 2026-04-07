@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "new-thalos-5530",
+    "spec": {
+        "name": "The Mercenaries' Guild",
+        "description": "This guild is frowned upon by most of the population of New Thalos, but the laws of supply and demand are irresistable. People come here when they feel unable or are unwilling to fight their own battles. For a small fee you may hire a henchman.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5429"
+            },
+            "east": {
+                "room_id": "new-thalos-5532",
+                "description": "You notice some small scratches in the floor next to the eastern wall.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

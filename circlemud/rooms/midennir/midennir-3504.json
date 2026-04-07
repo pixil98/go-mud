@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "midennir-3504",
+    "spec": {
+        "name": "The South Gate",
+        "description": "You are standing on a small, dusty path leading away from the south gate of Midgaard, to the forest of Miden'Nir (Goblinic for 'Green Blood'). You can still see the city to the east, but if you go south, there is fresh air and greenery.",
+        "zone_id": "midennir",
+        "exits": {
+            "east": {
+                "room_id": "southern-part-of-midgaard-3127",
+                "zone_id": "southern-part-of-midgaard",
+                "description": "You can see the walls of the South Gate."
+            },
+            "south": {
+                "room_id": "midennir-3505",
+                "description": "If you go south, you will enter the Miden'Nir."
+            }
+        }
+    }
+}

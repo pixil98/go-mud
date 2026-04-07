@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3044",
+    "spec": {
+        "name": "Poor Alley",
+        "description": "You are on Poor Alley, which continues further east. You see the city wall to the west.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "east": {
+                "room_id": "northern-midgaard-main-city-3024",
+                "description": "The alley leads east."
+            },
+            "west": {
+                "room_id": "northern-midgaard-main-city-3043",
+                "description": "The alley leads west."
+            }
+        }
+    }
+}

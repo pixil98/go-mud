@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2618",
+    "spec": {
+        "name": "A Bedroom",
+        "description": "You are in the bedroom of the Master of Illusions. Strange looking items and artifacts float here and there in the air. The ripples of strong magic can be felt everywhere. The room seems much larger than it looks...",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2618",
+                "description": "The room stretches off to the north."
+            },
+            "east": {
+                "room_id": "the-high-tower-of-magic-2617"
+            },
+            "south": {
+                "room_id": "the-high-tower-of-magic-2618",
+                "description": "The room stretches off to the south."
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2618",
+                "description": "The room stretches off to the west."
+            }
+        }
+    }
+}

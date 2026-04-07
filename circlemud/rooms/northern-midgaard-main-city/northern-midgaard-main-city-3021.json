@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3021",
+    "spec": {
+        "name": "The Entrance Hall To The Guild Of Swordsmen",
+        "description": "The entrance hall to the Guild of Swordsmen. A place where one has to be careful not to say something wrong (or right). To the east is the bar and to the north is the main street.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "north": {
+                "room_id": "northern-midgaard-main-city-3016",
+                "description": "You see the main street."
+            },
+            "east": {
+                "room_id": "northern-midgaard-main-city-3022",
+                "description": "You see the swordsmen's bar, many noises comes from there."
+            }
+        }
+    }
+}

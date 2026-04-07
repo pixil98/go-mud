@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7330",
+    "spec": {
+        "name": "The Windy Tunnel",
+        "description": "You are standing in a tunnel. Above you, you can feel a breeze.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "east": {
+                "room_id": "the-sewer-maze-7329",
+                "description": "It is too dark to tell."
+            },
+            "west": {
+                "room_id": "the-sewer-maze-7326"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "breeze"
+                ],
+                "description": "The breeze comes from a hole above you. NO way to get up there."
+            }
+        ]
+    }
+}

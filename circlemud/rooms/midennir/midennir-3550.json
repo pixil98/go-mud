@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "midennir-3550",
+    "spec": {
+        "name": "At The Foot Of The Mountains",
+        "description": "You find yourself at the foot of the mountains, where it is much to steep to continue north or east. You see the lush, green forest of Miden'nir to the south and west.",
+        "zone_id": "midennir",
+        "exits": {
+            "south": {
+                "room_id": "midennir-3512",
+                "description": "The forest of Miden'nir spreads out before you."
+            },
+            "west": {
+                "room_id": "midennir-3506",
+                "description": "The forest of Miden'nir spreads out before you."
+            }
+        }
+    }
+}

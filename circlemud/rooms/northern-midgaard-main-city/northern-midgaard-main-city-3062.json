@@ -1,0 +1,64 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3062",
+    "spec": {
+        "name": "The Post Office",
+        "description": "You are in the central post office for Midgaard. Piles of assorted mail lay untouched in the corners, collecting cobwebs. Several large crates have been pried open by curious customs agents, and are now stacked along the west wall, hiding plenty of 'WANTED' posters. There is a sign posted on the wall here.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "south": {
+                "room_id": "northern-midgaard-main-city-3006",
+                "description": "You see the entrance to the Grunting Boar Inn and Tavern."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "peaceful"
+            },
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "sign"
+                ],
+                "description": "********************************************************** * * * Mail Instructions: * * * * To send a note to someone: * * MAIL <playername> * * * * To see if you have any mail: * * CHECK * * * * To get the Postmaster to give you your mail: * * RECEIVE * * * * Stamps cost 150 coins per letter * * Type 'HELP MAIL' for more info * **********************************************************"
+            },
+            {
+                "keywords": [
+                    "letters",
+                    "envelopes",
+                    "assorted"
+                ],
+                "description": "Envelopes of all sizes are heaped into hugh piles around the room. As you look closer, you see a letter that you had posted a full week ago, laying unnoticed and slightly rat-chewed towards the bottom of the pile."
+            },
+            {
+                "keywords": [
+                    "cobwebs"
+                ],
+                "description": "They seem to cover everything here, even the Postmaster himself."
+            },
+            {
+                "keywords": [
+                    "crates",
+                    "opened",
+                    "large"
+                ],
+                "description": "As you know, it is illegal to send contraband items through the Midgaard Mail. The customs agents use this as a great excuse to seize liquor, rare spices, and just about anything they might find useful or profitable."
+            },
+            {
+                "keywords": [
+                    "WANTED",
+                    "posters",
+                    "poster",
+                    "wall"
+                ],
+                "description": "Faces of various known Killers and Thieves can barely be seen behind the crates on the west wall. Some of them look quite familar, sorta like that guy who you saw in the Reception a minute ago... but then again, they are rather hard to see past the crates."
+            }
+        ]
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "midennir-3579",
+    "spec": {
+        "name": "A Quieter Section Of The Inn",
+        "description": "There seems to be no one in this end of the Woodsman, probably a safe place to rest and lick your wounds...",
+        "zone_id": "midennir",
+        "exits": {
+            "north": {
+                "room_id": "midennir-3574",
+                "description": "You see the common room."
+            }
+        }
+    }
+}

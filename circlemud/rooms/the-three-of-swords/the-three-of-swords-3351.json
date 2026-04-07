@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3351",
+    "spec": {
+        "name": "A Small Road",
+        "description": "The small, north-south road running through Stanneg by the Mountains ends here, curving to become the front walk of a private home to the east. The road runs south from this house, towards the center of the village.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "east": {
+                "room_id": "the-three-of-swords-3352",
+                "description": "A normal, wooden front door to a normal looking home. It is nothing to write home about.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "south": {
+                "room_id": "the-three-of-swords-3349"
+            }
+        }
+    }
+}

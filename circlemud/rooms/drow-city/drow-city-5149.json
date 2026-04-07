@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "drow-city-5149",
+    "spec": {
+        "name": "The Treasury",
+        "description": "This is obviously only a temporary storage place for the collected treasure being rather bare.",
+        "zone_id": "drow-city",
+        "exits": {
+            "east": {
+                "room_id": "drow-city-5148",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "drow-city-5115",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "arachnos-6323",
+    "spec": {
+        "name": "The Web Forest",
+        "description": "The trees here take on a different appearance -- they are not trees anymore, but disjointed make-shift silken made shafts, sticky to the touch, and webby in texture. This is another world it would appear.",
+        "zone_id": "arachnos",
+        "exits": {
+            "north": {
+                "room_id": "arachnos-6321"
+            },
+            "down": {
+                "room_id": "arachnos-6324"
+            }
+        }
+    }
+}

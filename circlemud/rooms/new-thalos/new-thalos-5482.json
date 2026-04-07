@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5482",
+    "spec": {
+        "name": "Underground",
+        "description": "The tunnel continues you west and east. Hopefully you have a good sense of direction.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5492"
+            },
+            "west": {
+                "room_id": "new-thalos-5481"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

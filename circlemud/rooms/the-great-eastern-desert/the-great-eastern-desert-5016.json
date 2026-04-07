@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5016",
+    "spec": {
+        "name": "A Damp Hallway",
+        "description": "The walls of the tunnel are extremely damp here. The tunnel leads sharply upwards to the south as it starts to get narrow.",
+        "zone_id": "the-great-eastern-desert",
+        "exits": {
+            "south": {
+                "room_id": "the-great-eastern-desert-5006"
+            },
+            "west": {
+                "room_id": "the-great-eastern-desert-5015",
+                "description": "You hear drops of water."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

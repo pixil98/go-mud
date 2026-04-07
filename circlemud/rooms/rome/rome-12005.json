@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "rome-12005",
+    "spec": {
+        "name": "The Abandoned Gate",
+        "description": "This used to be a gateway to and from western Rome. There is an iron gate blocking your way and judging by the amount of rust and foliage growing on the bars, it hasn't been open for years. Looking through the gate at the barren landscape that lies beyond, you can see why. A dirt road leads off to the east, and a store is directly south.",
+        "zone_id": "rome",
+        "exits": {
+            "east": {
+                "room_id": "rome-12012",
+                "description": "Through the clouds of dust, you can make out a passable road."
+            },
+            "south": {
+                "room_id": "rome-12006",
+                "description": "You can barely make out a storefront through the foliage."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "gate"
+                ],
+                "description": "The gate has been permanently rusted shut and is further secured by a large chain and padlock. Don't even bother THINKING about trying to open it."
+            }
+        ]
+    }
+}

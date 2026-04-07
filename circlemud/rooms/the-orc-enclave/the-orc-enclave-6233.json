@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6233",
+    "spec": {
+        "name": "A Forest Trail",
+        "description": "The ground is growing more rocky here. The trees and other foilage in the forest grow sparse here, finding it hard to find purchase in the soil. The forest ends just to the west, with the trail you are on leading right on up to the side of the mountains. A side trail leads south here, and the trail also leads back into the thick of the forest to the east.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "east": {
+                "room_id": "the-orc-enclave-6232"
+            },
+            "south": {
+                "room_id": "the-orc-enclave-6218"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6234"
+            }
+        }
+    }
+}

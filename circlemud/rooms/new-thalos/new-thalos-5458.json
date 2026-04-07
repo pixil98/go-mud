@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5458",
+    "spec": {
+        "name": "Alley",
+        "description": "This is a dark alley running between the Palace and City Hall. Not a lot here, unless you're partial to spiders and rats.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5446"
+            },
+            "south": {
+                "room_id": "new-thalos-5459"
+            }
+        }
+    }
+}

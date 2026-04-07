@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4041",
+    "spec": {
+        "name": "The Lion's Den",
+        "description": "Following the gouge down to the cave entrance, you clamber through the small entranceway only to find yourself in what appears to be the living den of a large carnivorous animal!",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "south": {
+                "room_id": "mines-of-moria-4040"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

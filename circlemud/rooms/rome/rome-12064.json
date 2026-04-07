@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "rome-12064",
+    "spec": {
+        "name": "Before Rome",
+        "description": "You travel upon an East-West road wide enough for 30 men to march abreast. It is packed hard through heavy use. To the west stands the Gates of Rome inviting you to enter and partake of all the glory and splendor that is Rome.",
+        "zone_id": "rome",
+        "exits": {
+            "east": {
+                "room_id": "rome-12065"
+            },
+            "west": {
+                "room_id": "rome-12051",
+                "closure": {
+                    "name": "gate",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

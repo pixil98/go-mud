@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4038",
+    "spec": {
+        "name": "The Base Of The Mountain",
+        "description": "You find yourself standing at the bottom of a large mountain in the mountain chain which begins at Mount Moria and stretches north towards the top of the world. A small path leads off through the foothills towards the west, where you can see plains quite a ways away. To the east you spot a small worn trail leading up the side of the mountain.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "east": {
+                "room_id": "mines-of-moria-4039"
+            },
+            "west": {
+                "room_id": "mines-of-moria-4037"
+            }
+        }
+    }
+}

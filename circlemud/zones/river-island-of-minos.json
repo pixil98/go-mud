@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos",
+    "spec": {
+        "name": "River Island Of Minos",
+        "reset_mode": "empty",
+        "lifespan": "39m"
+    }
+}

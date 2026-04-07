@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5063",
+    "spec": {
+        "name": "The Wind-Swept Ledge",
+        "description": "Being very careful not to lose your balance, you look around and find that this canyon is about a half a kilometer deep. To the west is a dark cave leading under the desert sands and above you a rope bridge spans the gap.",
+        "zone_id": "the-great-eastern-desert",
+        "exits": {
+            "west": {
+                "room_id": "the-great-eastern-desert-5064"
+            },
+            "up": {
+                "room_id": "the-great-eastern-desert-5052",
+                "description": "The desert sands blow down in your face."
+            }
+        }
+    }
+}

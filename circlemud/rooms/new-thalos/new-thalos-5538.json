@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "new-thalos-5538",
+    "spec": {
+        "name": "Smuggler's Inn",
+        "description": "You are inside a filthy inn, that seemingly has been cleaned in decades. Poker tables line the walls and everyone stares at you as you walk in, you don't feel very welcome. The bar has numerous knife holes in it and the bartender leans over waiting for your order.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "west": {
+                "room_id": "new-thalos-5467"
+            }
+        }
+    }
+}

@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "rome-12018",
+    "spec": {
+        "name": "The South Entrance To The Coliseum",
+        "description": "You are standing at the south entrance to the Coliseum. There are citizens of Rome everywhere, apparently in a mad rush to get in. A statue of Caligula the Mad Emperor overlooks the area. There are long lines standing to the east, and an acrid smell is coming from the west. A busy road lies to the south.",
+        "zone_id": "rome",
+        "exits": {
+            "east": {
+                "room_id": "rome-12025",
+                "description": "The lines are very long and people look impatient."
+            },
+            "south": {
+                "room_id": "rome-12019",
+                "description": "A road lies in that direction."
+            },
+            "west": {
+                "room_id": "rome-12011",
+                "description": "An acrid, almost medicinal smell is coming from that direction."
+            }
+        },
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "statue",
+                    "caligula"
+                ],
+                "description": "A larger than life stone statue of Caligula, the Mad Emperor, looks at you. It looks like it is holding a phallus. He has got a grin on his face that seems to say 'My horse would like you, I bet...'"
+            }
+        ]
+    }
+}

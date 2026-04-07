@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6247",
+    "spec": {
+        "name": "A Cave",
+        "description": "A single corpse lies here, well away from a pile of similars to the east. There are several sharpened stakes and rocks sitting about conveniently. The way the corpse is lying, the stone next to its hand... this is a suicide area! You look down upon the orc and comprehend its suffering in its twisted form. How sad.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "east": {
+                "room_id": "the-orc-enclave-6248"
+            },
+            "south": {
+                "room_id": "the-orc-enclave-6250"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6246"
+            }
+        }
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "new-thalos-5431",
+    "spec": {
+        "name": "Inside the Eastern Gate of New Thalos",
+        "description": "Two large stone towers imbedded in the wall loom over you. The massive iron gate, emblazened with the crest of New Thalos, swings easily on four ornately crafted hinges. It is obvious the makers of this city spared no expense in protecting their home. Main street heads towards the market westward and the wilderness beckons from the east. To the north lies the entrance to the Mages' Guild.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5525"
+            },
+            "east": {
+                "room_id": "new-thalos-5568",
+                "closure": {
+                    "name": "gate",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "new-thalos-5401",
+                        "locked": true
+                    }
+                }
+            },
+            "west": {
+                "room_id": "new-thalos-5430"
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

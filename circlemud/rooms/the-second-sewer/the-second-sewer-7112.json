@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "the-second-sewer-7112",
+    "spec": {
+        "name": "An Odd Intersection",
+        "description": "You stand in a rather odd intersection of pipes. The pipes actually don't resemble pipes anymore. They look more like a real stone tunnel, or a passageway hewn directly into the rock. The ways from here lead north, east and west.",
+        "zone_id": "the-second-sewer",
+        "exits": {
+            "north": {
+                "room_id": "the-second-sewer-7111",
+                "description": "North. You see a ledge to something that looks like an abyss."
+            },
+            "east": {
+                "room_id": "the-second-sewer-7122"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

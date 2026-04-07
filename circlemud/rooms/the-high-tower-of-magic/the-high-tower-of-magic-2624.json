@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2624",
+    "spec": {
+        "name": "A Dark Room",
+        "description": "You are in a large dark room. The stench here makes you gag and retch. There are body parts and half rotted corpses strewn about with complete abandon. Several operating tables with still forms that resemble nothing you have ever seen alive are here. Tortured screams can be heard from the north.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2625",
+                "description": "Gazing northwards, you are filled with deep dread."
+            },
+            "south": {
+                "room_id": "the-high-tower-of-magic-2623"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

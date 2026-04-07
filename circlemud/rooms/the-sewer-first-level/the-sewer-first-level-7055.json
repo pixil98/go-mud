@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7055",
+    "spec": {
+        "name": "The Edge Of The Water Sewer",
+        "description": "You stand in a room where half of the floor is covered in water. The water leads east and a doorway leads west.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "east": {
+                "room_id": "the-sewer-first-level-7061",
+                "description": "You can hardly make out much more than that the next place is in a pipe with more water."
+            },
+            "west": {
+                "room_id": "the-sewer-first-level-7050"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "water"
+                ],
+                "description": "It looks dark and murky, and emanates a foul stench."
+            }
+        ]
+    }
+}

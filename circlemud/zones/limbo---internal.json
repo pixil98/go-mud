@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "limbo---internal",
+    "spec": {
+        "name": "Limbo - Internal",
+        "reset_mode": "lifespan",
+        "lifespan": "10m"
+    }
+}

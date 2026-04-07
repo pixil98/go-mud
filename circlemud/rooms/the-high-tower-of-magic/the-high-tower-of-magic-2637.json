@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2637",
+    "spec": {
+        "name": "The Entrance To The Library",
+        "description": "You are in the entrance to the great library of magic. A giant desk is here, covered with books parchments and scrolls. Long shelves loaded with row upon row of books stretch out in every direction as far as the eye can see.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2639",
+                "description": "All you can see are books."
+            },
+            "east": {
+                "room_id": "the-high-tower-of-magic-2636",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "south": {
+                "room_id": "the-high-tower-of-magic-2640",
+                "description": "All you can see are books."
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2638",
+                "description": "All you can see are books."
+            }
+        }
+    }
+}

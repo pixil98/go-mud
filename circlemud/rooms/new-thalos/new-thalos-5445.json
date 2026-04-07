@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "new-thalos-5445",
+    "spec": {
+        "name": "West Casbah",
+        "description": "You have almost reached the end of the Avenue in this direction, the number of guards in this part of town is nearly doubled. To the north the familiar city wall protects you from the wilderness. Looking south marble stairs rise towards the entrance of city hall surrounded by massive white pillars. The Avenue continues east and west from here.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5446"
+            },
+            "south": {
+                "room_id": "new-thalos-5554"
+            },
+            "west": {
+                "room_id": "new-thalos-5444"
+            }
+        }
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5220",
+    "spec": {
+        "name": "The Produce Stand",
+        "description": "A large cart sits here carrying rotted fruit and vegetables. Flies swarm all about what seems to be the last remaining bits of food left in the city.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "north": {
+                "room_id": "the-city-of-thalos-5207",
+                "description": "The market place is deserted."
+            },
+            "west": {
+                "room_id": "the-city-of-thalos-5217",
+                "description": "A strong stench emanates from the meat stand next to you."
+            }
+        }
+    }
+}

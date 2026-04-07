@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4022",
+    "spec": {
+        "name": "The Damp Tunnel",
+        "description": "You are standing in the middle of a damp tunnel. The moisture in the air is so thick that you can almost seem it seeping into your clothes. The tunnel continues to the north and west. A large cave opens up to the east.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4024"
+            },
+            "east": {
+                "room_id": "mines-of-moria-4023"
+            },
+            "west": {
+                "room_id": "mines-of-moria-4021"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

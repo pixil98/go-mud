@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5638",
+    "spec": {
+        "name": "The River Of Lost Souls",
+        "description": "The river seems to calm a bit as the crevase widens lessens its stranglehold on the waters. The river continues to the north through a crack and flows to the south.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5637"
+            },
+            "south": {
+                "room_id": "new-thalos-5639"
+            }
+        }
+    }
+}

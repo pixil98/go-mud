@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4024",
+    "spec": {
+        "name": "The Damp Tunnel",
+        "description": "The tunnel you are in now is very humid, and the air seems to almost hang with moisture. The walls drip with an almost constant water flow, and the ground is covered with small pools of stagnent water. The tunnel leads away to the south, and to the west you can feel that the air is even damper than here.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "south": {
+                "room_id": "mines-of-moria-4022"
+            },
+            "west": {
+                "room_id": "mines-of-moria-4059"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3320",
+    "spec": {
+        "name": "A Cave Passageway",
+        "description": "This twisty passage leads east and west from here. Eastwards you hear the unmistakable sounds of low voices. The echoes seem to be playing funny effects on you, however, and you are not sure from how far off these voices might be coming.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "east": {
+                "room_id": "the-three-of-swords-3321"
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3319"
+            }
+        }
+    }
+}

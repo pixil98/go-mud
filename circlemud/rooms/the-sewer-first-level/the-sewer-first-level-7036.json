@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7036",
+    "spec": {
+        "name": "The Pit",
+        "description": "You stand in a section of a pipe that leads to a dead end. In the floor there is a pit leading down. There are bars set in the side of the pit wall functioning as a ladder.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "west": {
+                "room_id": "the-sewer-first-level-7030",
+                "description": "West. You can see a dimly lit quadruple junction with an exit up."
+            },
+            "down": {
+                "room_id": "the-second-sewer-7122",
+                "zone_id": "the-second-sewer",
+                "description": "Down the pit it is so utterly dark that you can't see a thing."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

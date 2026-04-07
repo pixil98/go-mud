@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2649",
+    "spec": {
+        "name": "The Landing",
+        "description": "You are on a small landing in the middle of a long stairway leading up. Your senses seem dulled here, no sound or smell can be detected at all, and the only thing you can see in any direction is endless stairway.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "up": {
+                "room_id": "the-high-tower-of-magic-2650"
+            },
+            "down": {
+                "room_id": "the-high-tower-of-magic-2648"
+            }
+        }
+    }
+}

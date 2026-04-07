@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "midennir-3501",
+    "spec": {
+        "name": "The Lane",
+        "description": "You are strolling along a pleasant, shady lane. The road is lined on both sides by tall, stately trees which lend the scene with a sense of quiet serenity. You can follow the road north or south.",
+        "zone_id": "midennir",
+        "exits": {
+            "north": {
+                "room_id": "midennir-3500"
+            },
+            "south": {
+                "room_id": "midennir-3502"
+            }
+        }
+    }
+}

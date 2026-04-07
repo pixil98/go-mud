@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6154",
+    "spec": {
+        "name": "The Underground Hallway",
+        "description": "This hallway is apparently one of the roots of the tree hollowed out. The hall leads south to a room where you hear strange noises or you can go up the steps.",
+        "zone_id": "haon-dor-dark-forest",
+        "exits": {
+            "south": {
+                "room_id": "haon-dor-dark-forest-6155",
+                "description": "The hallway looks quite grand."
+            },
+            "up": {
+                "room_id": "haon-dor-dark-forest-6153",
+                "description": "The steps appear like they will hold your weight."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

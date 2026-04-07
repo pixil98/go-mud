@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2536",
+    "spec": {
+        "name": "A Guest Bedroom",
+        "description": "You are in a small guest bedroom. A small cot is in one corner, and a dusty mirror on one wall, other than that the room looks quite bare, and unused. The only apparent exit leads back west to the hallway.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "west": {
+                "room_id": "the-high-tower-of-magic-2531",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "mirror"
+                ],
+                "description": "Why, someone seems to be looking back at you from the other side!"
+            }
+        ]
+    }
+}

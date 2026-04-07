@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15003",
+    "spec": {
+        "name": "On The King's Road Outside A Castle",
+        "description": "You are standing on the King's Road. Before you is a large Castle, evidently built not so much for strength as for beauty. It is not totally without defences, though, for it is surrounded by a deep moat, and its windows are just narrow slits for archers to shoot through. To the north there is a drawbridge across the moat.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "north": {
+                "room_id": "king-welmars-castle-15004",
+                "description": "You see the drawbridge."
+            },
+            "west": {
+                "room_id": "king-welmars-castle-15002",
+                "description": "The King's Road continues in a straight line to the west."
+            }
+        }
+    }
+}

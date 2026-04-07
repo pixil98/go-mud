@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "midennir-3552",
+    "spec": {
+        "name": "A Tunnel In The Mountains",
+        "description": "The walls of this tunnel were carved out many years ago by the goblins of this forest. The floor is well worn, and continues south, into the mountain, or back north out into the forest.",
+        "zone_id": "midennir",
+        "exits": {
+            "north": {
+                "room_id": "midennir-3551",
+                "description": "Outside, you see the forest of Miden'nir."
+            },
+            "south": {
+                "room_id": "midennir-3553",
+                "description": "The tunnel continues to the south."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "new-thalos-5446",
+    "spec": {
+        "name": "The Casbah",
+        "description": "The wall of the Palace curves south from here, a darkened alley runs along it in that direction. West of here you see the steps of the City Hall and notice the increase in the number of guards. To the east the Avenue continues.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5447"
+            },
+            "south": {
+                "room_id": "new-thalos-5458"
+            },
+            "west": {
+                "room_id": "new-thalos-5445"
+            }
+        }
+    }
+}

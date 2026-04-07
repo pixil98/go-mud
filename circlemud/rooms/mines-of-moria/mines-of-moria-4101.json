@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4101",
+    "spec": {
+        "name": "The Long Tunnel",
+        "description": "The tunnel seems to be slightly sloped here as it continues in its east-west direction. The tunnel walls are far apart, almost allowing for four people to travel abreast with ease. The walls do not seem to be very damp, but there is a small rivulet running along the northern wall of the tunnel.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "east": {
+                "room_id": "mines-of-moria-4102"
+            },
+            "west": {
+                "room_id": "mines-of-moria-4100"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

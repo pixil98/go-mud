@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "rome-12060",
+    "spec": {
+        "name": "The Holding Cells",
+        "description": "You are standing in the holding cell area, just off of the cortroom. Those who are recently convicted of serious crimes are brought here, pending torture and execution. The courtroom lies to the north and another exit goes east.",
+        "zone_id": "rome",
+        "exits": {
+            "north": {
+                "room_id": "rome-12050",
+                "description": "The courtroom lies to the north."
+            },
+            "east": {
+                "room_id": "rome-12061"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "cells",
+                    "cell"
+                ],
+                "description": "You can see small and very cramped cells which are filthy. You shiver and vow to never do anything that would cause you to become a resident."
+            }
+        ]
+    }
+}

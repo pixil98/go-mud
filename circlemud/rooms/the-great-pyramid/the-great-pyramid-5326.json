@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5326",
+    "spec": {
+        "name": "A Demolished Tomb",
+        "description": "This tomb has been utterly destroyed by thieves and looters in search of the treasures of the pharoahs. Nothing of interest remains in this room, except a large stone coffin that leans against the western wall.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "east": {
+                "room_id": "the-great-pyramid-5325",
+                "description": "To the east is another tomb."
+            },
+            "west": {
+                "room_id": "the-great-pyramid-5327",
+                "description": "You see a large stone coffin.",
+                "closure": {
+                    "name": "coffin",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "the-great-pyramid-5312",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "coffin",
+                    "lid"
+                ],
+                "description": "The coffin is sculpted into the form of a man, standing several heads above you, and clad in the garments of pharoahs. It has apparently been untouched by the ravages of time and the activities of looters. Several markings on the side indicate spots where unsuccessful attempts were made to open the coffin. You can't see any way to open it."
+            },
+            {
+                "keywords": [
+                    "man",
+                    "garments",
+                    "pharoah"
+                ],
+                "description": "As you look closer at the figure sculpted into the stone coffin you notice a small marking carved into its chest. It looks like a scarab or small beetle would fit into the small space, if properly sized. Hmmm."
+            }
+        ]
+    }
+}

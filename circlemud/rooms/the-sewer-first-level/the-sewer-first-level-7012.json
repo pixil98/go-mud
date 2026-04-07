@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7012",
+    "spec": {
+        "name": "The Bend In The Muddy Sewer",
+        "description": "This is not your idea of a holiday. You stand in mud up to your knees. It is absolutely inconceivable how all this mud could have been placed here. The pipe leads to the west and south.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "south": {
+                "room_id": "the-sewer-first-level-7013",
+                "description": "South. There is even more mud that way, incredible! Although it looks like an intersection in the sewer system that leads east and south."
+            },
+            "west": {
+                "room_id": "the-sewer-first-level-7006",
+                "description": "West. All you can see, is that the pipe leads into a bend that goes north. But there is less mud in that direction, however odd that sounds."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "mud"
+                ],
+                "description": "It is as dark as tar and looks like something out of a toilet, on top of that, the smell is absolutely overwhelming."
+            }
+        ]
+    }
+}

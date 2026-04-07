@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5590",
+    "spec": {
+        "name": "The Treasure Room",
+        "description": "You have somhow managed to gain access to the treaure vault of the Sultan. The alarm sounding in the background tells you that you must have tripped off some kind of alarm system. It might be adviseable to grab as much stuff as you possibly can and run for the door.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "south": {
+                "room_id": "new-thalos-5589",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "new-thalos-5400",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        }
+    }
+}

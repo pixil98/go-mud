@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "midennir-3503",
+    "spec": {
+        "name": "The City Entrance",
+        "description": "You stand on the outskirts of a large city - Midgaard; the capital of this land. The road leads east into the peace and quiet - and dangers - of the forest; and to the west it becomes the main street of the town; surrounded by a confusion of shops, bars, and market places.",
+        "zone_id": "midennir",
+        "exits": {
+            "east": {
+                "room_id": "midennir-3502"
+            },
+            "west": {
+                "room_id": "northern-midgaard-main-city-3053",
+                "zone_id": "northern-midgaard-main-city"
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

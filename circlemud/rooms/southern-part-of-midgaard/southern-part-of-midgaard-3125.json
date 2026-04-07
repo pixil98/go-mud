@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3125",
+    "spec": {
+        "name": "Emerald Avenue",
+        "description": "You are on Emerald Avenue which continues north. The Concourse is south of here.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "north": {
+                "room_id": "southern-part-of-midgaard-3121"
+            },
+            "south": {
+                "room_id": "southern-part-of-midgaard-3128"
+            }
+        }
+    }
+}

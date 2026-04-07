@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15008",
+    "spec": {
+        "name": "The Guard Room",
+        "description": "You are in a small room, evidently meant for guards currently not on duty. There is only one exit, back to the entrance hall.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "west": {
+                "room_id": "king-welmars-castle-15007",
+                "description": "You see the Castle Entrance."
+            }
+        }
+    }
+}

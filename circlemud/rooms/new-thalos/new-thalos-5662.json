@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5662",
+    "spec": {
+        "name": "On The Dark River",
+        "description": "The walls of this canyon tower overhead as the river continues east and west from here.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5661"
+            },
+            "west": {
+                "room_id": "new-thalos-5663"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3323",
+    "spec": {
+        "name": "A Cave",
+        "description": "Many sconces line the walls here, casting light on some weapon racks and chests of armor. Everything is neat, orderly, and actually well-dusted. Someone cares for these items...frequently it seems.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "east": {
+                "room_id": "the-three-of-swords-3322"
+            }
+        }
+    }
+}

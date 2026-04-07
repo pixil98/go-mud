@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5058",
+    "spec": {
+        "name": "Beside The Camels",
+        "description": "Here stand about ten camels, all hitched to some stakes plugged into the ground. To the east you see a small tent while to the north you see a larger, fancier tent.",
+        "zone_id": "the-great-eastern-desert",
+        "exits": {
+            "north": {
+                "room_id": "the-great-eastern-desert-5060",
+                "description": "This tent seems to be the temporary abode of the nomad leader. You make a mental note to visit it before you leave."
+            },
+            "east": {
+                "room_id": "the-great-eastern-desert-5059",
+                "description": "In this tent there are very large men, all carrying weapons."
+            },
+            "south": {
+                "room_id": "the-great-eastern-desert-5056",
+                "description": "You see the center of the nomad camp."
+            },
+            "west": {
+                "room_id": "the-great-eastern-desert-5024",
+                "description": "Sand as far as the eye can see."
+            }
+        }
+    }
+}

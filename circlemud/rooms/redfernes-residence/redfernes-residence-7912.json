@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7912",
+    "spec": {
+        "name": "Redferne's Balcony",
+        "description": "You see a splendid of the most of this world. The valleys stretch as far as the eye reaches to the south from here. Down below you can see the entrance of this magnificent building. To the north are the doors to Redferne's bedroom.",
+        "zone_id": "redfernes-residence",
+        "exits": {
+            "north": {
+                "room_id": "redfernes-residence-7911",
+                "description": "You see the comfortable bedroom of Naris.",
+                "closure": {
+                    "name": "doors",
+                    "closed": true
+                }
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

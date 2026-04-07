@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3201",
+    "spec": {
+        "name": "On The River",
+        "description": "North of here you see the miserable buildings of Poor Alley. The river flows west towards the bridge. The riverbanks are too steep to climb.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "east": {
+                "room_id": "southern-part-of-midgaard-3202"
+            },
+            "west": {
+                "room_id": "southern-part-of-midgaard-3200"
+            }
+        }
+    }
+}

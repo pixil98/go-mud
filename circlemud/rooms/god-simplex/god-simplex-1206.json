@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "god-simplex-1206",
+    "spec": {
+        "name": "The Social Gathering Room",
+        "description": "This elegantly decorated room has one simple purpose. To socialize with everyone else around in one central location.",
+        "zone_id": "god-simplex",
+        "exits": {
+            "down": {
+                "room_id": "god-simplex-1204",
+                "description": "The Immortal Board Room is just down through the floor. Funny how you didn't notice that exit before isn't it?"
+            }
+        }
+    }
+}

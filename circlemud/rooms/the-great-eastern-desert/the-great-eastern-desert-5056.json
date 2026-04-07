@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5056",
+    "spec": {
+        "name": "A Nomad Camp",
+        "description": "This small group of desert nomads has stopped for the day to rest and refresh themselves beside this beautiful oasis. Three tents and some camels make up the party. From within two of the tents you hear muffled voices, obviously surprised at your visit.",
+        "zone_id": "the-great-eastern-desert",
+        "exits": {
+            "north": {
+                "room_id": "the-great-eastern-desert-5058",
+                "description": "Some camels are tied up to a mass of stakes plugged into the ground."
+            },
+            "east": {
+                "room_id": "the-great-eastern-desert-5057",
+                "description": "You see inside one of the tents a huddled mass of people, probably slaves."
+            },
+            "south": {
+                "room_id": "the-great-eastern-desert-5030",
+                "description": "Sand as far as the eye can see."
+            },
+            "west": {
+                "room_id": "the-great-eastern-desert-5025",
+                "description": "Sand as far as the eye can see."
+            }
+        }
+    }
+}

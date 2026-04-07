@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3115",
+    "spec": {
+        "name": "A Path In The Park",
+        "description": "You are in the park. The paths lead north and east. Eastward is the park entrance and to the west you see a small pond.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "north": {
+                "room_id": "southern-part-of-midgaard-3109"
+            },
+            "east": {
+                "room_id": "southern-part-of-midgaard-3116"
+            },
+            "west": {
+                "room_id": "southern-part-of-midgaard-3114"
+            }
+        }
+    }
+}

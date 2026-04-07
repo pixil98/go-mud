@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "arachnos-6372",
+    "spec": {
+        "name": "The Single Spider Line",
+        "description": "A single spider line supports you once more. The shack comes closer into view and you are even more inclined to go back now.",
+        "zone_id": "arachnos",
+        "exits": {
+            "north": {
+                "room_id": "arachnos-6371"
+            },
+            "south": {
+                "room_id": "arachnos-6373"
+            }
+        }
+    }
+}

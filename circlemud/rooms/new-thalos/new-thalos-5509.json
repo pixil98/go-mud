@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "new-thalos-5509",
+    "spec": {
+        "name": "Inside The Temple",
+        "description": "Huge marble pillars rise on either side of you and grab hold of the ceiling. Between each of these, fine softstone frescoes have been carved depicting scenes from the religous history of New Thalos. Rows of pews face forward giving their full attention to the pulpit rising high above the ground. The deep red carpeting underfoot shows not a speck of wear or dirt. It is obvious that New Thalonians take religion seriously.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5505"
+            },
+            "east": {
+                "room_id": "new-thalos-5510"
+            },
+            "south": {
+                "room_id": "new-thalos-5513"
+            },
+            "west": {
+                "room_id": "new-thalos-5508"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ]
+    }
+}

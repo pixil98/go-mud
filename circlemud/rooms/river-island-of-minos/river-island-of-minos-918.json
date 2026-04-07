@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-918",
+    "spec": {
+        "name": "The Fourth Trial Of Minos",
+        "description": "Minos must be a monster hacking machine. You see a blue light flicker on and off. A voice crackles, 'WHY ARE YOU HERE!'",
+        "zone_id": "river-island-of-minos",
+        "exits": {
+            "south": {
+                "room_id": "river-island-of-minos-919"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

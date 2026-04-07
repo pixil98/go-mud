@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2662",
+    "spec": {
+        "name": "It Is Very Dark Here...",
+        "description": "It is very dark here...",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "south": {
+                "room_id": "the-high-tower-of-magic-2661"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

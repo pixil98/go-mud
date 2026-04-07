@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "new-thalos-5551",
+    "spec": {
+        "name": "The Library",
+        "description": "This building holds the vast collection of books and documents that have been brought here by the commitee apointed to recover the lost knowledge of Thalos. Rows of shelves filled with book in every condition line the walls. The air has the aroma of old parchment and glue.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5455"
+            }
+        }
+    }
+}

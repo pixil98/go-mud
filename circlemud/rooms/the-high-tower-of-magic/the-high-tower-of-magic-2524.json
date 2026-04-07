@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2524",
+    "spec": {
+        "name": "A Dark Passage",
+        "description": "You are at the end of a dark passage. A half opened door is to the east, shedding soft light around the edges. Faint snoring sounds can be heard behind the door. Exits lead east through the door, or back west.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "east": {
+                "room_id": "the-high-tower-of-magic-2528",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2522"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6143",
+    "spec": {
+        "name": "The Cave Of The Green Dragon",
+        "description": "You are in a big natural cave. The floor is littered with bones of all sorts and the stench is so massive that you could cut it with a knife. The only exit is to the south.",
+        "zone_id": "haon-dor-dark-forest",
+        "exits": {
+            "south": {
+                "room_id": "haon-dor-dark-forest-6142",
+                "description": "The exit leads out into the forest."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "bone",
+                    "bones",
+                    "floor"
+                ],
+                "description": "Most of the bones on the floor appear to be of human origin."
+            }
+        ]
+    }
+}

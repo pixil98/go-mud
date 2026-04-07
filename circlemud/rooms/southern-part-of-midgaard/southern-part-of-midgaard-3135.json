@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3135",
+    "spec": {
+        "name": "Park Road",
+        "description": "You are at a bend on Park Road. To the north the road goes on and to the east is the Road Crossing.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "north": {
+                "room_id": "southern-part-of-midgaard-3118"
+            },
+            "east": {
+                "room_id": "southern-part-of-midgaard-3120"
+            }
+        }
+    }
+}

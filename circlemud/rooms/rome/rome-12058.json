@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "rome-12058",
+    "spec": {
+        "name": "The Valley Of The Gods",
+        "description": "You stand in a tranquil valley at the base of a large mountain. A quiet stream, with fruit trees growing along its banks, winds its way peacefully through the valley and enters a large stone structure that lies to the west. There are birds singing and every now and then a ripple breaks the surface of the stream. You can see a path leading through the trees to the up.",
+        "zone_id": "rome",
+        "exits": {
+            "north": {
+                "room_id": "rome-12057",
+                "description": "A small path winds its way through the trees."
+            },
+            "up": {
+                "room_id": "rome-12059",
+                "description": "You see a path leading up the mountain."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "stream",
+                    "brook"
+                ],
+                "description": "A stream of the clearest, cleanest water that you have ever seen winds its way through the valley."
+            },
+            {
+                "keywords": [
+                    "fish"
+                ],
+                "description": "A variety of species swims peacefully in the cool, clear water."
+            },
+            {
+                "keywords": [
+                    "trees",
+                    "fruit"
+                ],
+                "description": "The fruit trees, nourished by the fertile ground at the edge of the stream and sustained by the brilliant sunshine, line the banks of the stream and are laden with fruit."
+            }
+        ]
+    }
+}

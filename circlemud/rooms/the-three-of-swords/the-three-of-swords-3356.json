@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3356",
+    "spec": {
+        "name": "Stanneg Inn",
+        "description": "This is a plainly decorated room, the main room of the Stanneg Inn. A large arch to the west leads to a common room where food and drink can be ordered, and a set of rickety wooden stairs lead up to the rooms are. A thread- bare rug lies in the middle of the floor, evidently well- loved by a cat or two from the quantity of hair on it.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "south": {
+                "room_id": "the-three-of-swords-3355",
+                "description": "There is a large set of double doors, made of wood set into the wall.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3357"
+            },
+            "up": {
+                "room_id": "the-three-of-swords-3358"
+            }
+        }
+    }
+}

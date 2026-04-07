@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5307",
+    "spec": {
+        "name": "On The Dangerous Stones",
+        "description": "Here the elements have carved away at the sides of the pyramid quite a bit. You aren't so sure of your footing anymore... Suddenly the wind picks up, and you lose your balance! You tumble down the side of the pyramid, and fall to your death! SPLAT. Ouch.",
+        "zone_id": "the-great-pyramid",
+        "exits": {},
+        "flags": [
+            "death"
+        ]
+    }
+}

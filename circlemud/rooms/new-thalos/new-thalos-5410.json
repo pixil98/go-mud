@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "new-thalos-5410",
+    "spec": {
+        "name": "The Common Square",
+        "description": "People pass by talking to each other, or rest their weary bones on this grassy field. You can hear faint sounds of the river to the south of you as it passes through the city. Ishtar drive heads east and west from here and the Medina is to the north. South lies the River Ishtar Bridge and the southern gate.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5403",
+                "description": "You see the medina."
+            },
+            "east": {
+                "room_id": "new-thalos-5437"
+            },
+            "south": {
+                "room_id": "new-thalos-5412",
+                "description": "You see the bridge over the river."
+            },
+            "west": {
+                "room_id": "new-thalos-5436"
+            }
+        }
+    }
+}

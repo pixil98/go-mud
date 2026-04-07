@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "midennir-3514",
+    "spec": {
+        "name": "The Deep Forest",
+        "description": "It is quite dark here, forest surrounds you. With each step, the forest seems to close around you, and get darker and more foreboding. It might just be time to head back to somewhere safe.",
+        "zone_id": "midennir",
+        "exits": {
+            "north": {
+                "room_id": "midennir-3509",
+                "description": "More forest."
+            },
+            "east": {
+                "room_id": "midennir-3513",
+                "description": "Lighter forest and mountains in the distance."
+            },
+            "south": {
+                "room_id": "midennir-3517",
+                "description": "More trees."
+            },
+            "west": {
+                "room_id": "midennir-3510",
+                "description": "The forest continues."
+            }
+        }
+    }
+}

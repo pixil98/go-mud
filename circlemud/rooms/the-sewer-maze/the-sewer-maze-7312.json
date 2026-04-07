@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7312",
+    "spec": {
+        "name": "The Stalagmite Tunnel",
+        "description": "You has entered a small tunnel. Here it is quite dry. Maybe it would be a good idea to rest here.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "north": {
+                "room_id": "the-sewer-maze-7311",
+                "description": "You can see a small cave to the north."
+            },
+            "west": {
+                "room_id": "the-sewer-maze-7313"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

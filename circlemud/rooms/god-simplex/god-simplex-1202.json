@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "god-simplex-1202",
+    "spec": {
+        "name": "The Ice Box Of The Gods",
+        "description": "The Ice Box is for little boys and girls that cannot play nice. Be good and maybe someone will come and get you.",
+        "zone_id": "god-simplex",
+        "exits": {},
+        "perks": [
+            {
+                "type": "grant",
+                "key": "peaceful"
+            },
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ]
+    }
+}

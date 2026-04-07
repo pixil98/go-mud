@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7903",
+    "spec": {
+        "name": "The Artifact Room Of Naris",
+        "description": "This is gloomy and dark room with only a faint light radiating from the walls. A bunch of funny-looking items fill the center of the room. There is no furniture here what-so-ever. The only way out seems to be west, through the low steel door.",
+        "zone_id": "redfernes-residence",
+        "exits": {
+            "west": {
+                "room_id": "redfernes-residence-7910",
+                "description": "You see only the back of a safe's steel door.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "redfernes-residence-7900",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

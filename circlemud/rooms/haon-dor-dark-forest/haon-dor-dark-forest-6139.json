@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6139",
+    "spec": {
+        "name": "On The Narrow Trail",
+        "description": "The trail continues to the north and south as it leads through the heavy underbrush of this part of the Haon-Dor Forest. The trail looks surprisingly well trodden along this part. The brush seems to be bending closely over the path in a somewhat ominous manner, but you easily shrug it off.",
+        "zone_id": "haon-dor-dark-forest",
+        "exits": {
+            "north": {
+                "room_id": "the-orc-enclave-6203",
+                "zone_id": "the-orc-enclave",
+                "description": "A short distance to the north, you can see something shimmering."
+            },
+            "south": {
+                "room_id": "haon-dor-dark-forest-6138",
+                "description": "The path leads southwards through the underbrush."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

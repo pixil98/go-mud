@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "midennir-3574",
+    "spec": {
+        "name": "The Woodsman Inn",
+        "description": "You are in the common room of the Woodsman Inn. A thin haze of smoke sits in the air here. The Inn is often empty, as the forest has become overrun by goblins as of late, and it is no longer safe in these parts. The bar is just north of here. If you'd rather have your own table, one is empty to the south.",
+        "zone_id": "midennir",
+        "exits": {
+            "north": {
+                "room_id": "midennir-3576",
+                "description": "The bar is here, manned by the Innkeeper."
+            },
+            "east": {
+                "room_id": "midennir-3570",
+                "description": "You can leave now and return to fresher air."
+            },
+            "south": {
+                "room_id": "midennir-3579",
+                "description": "An empty table is a rare commodity."
+            },
+            "west": {
+                "room_id": "midennir-3577",
+                "description": "There is a table to the south occupied by a heavy drinker."
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4012",
+    "spec": {
+        "name": "The Tunnel",
+        "description": "You find yourself at a turn in this narrow tunnel. The tunnel appears to open up to the north into a cave of some sort while to the east it leads onwards through the mountain.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4016"
+            },
+            "east": {
+                "room_id": "mines-of-moria-4013"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

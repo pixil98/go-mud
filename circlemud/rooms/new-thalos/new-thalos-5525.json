@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "new-thalos-5525",
+    "spec": {
+        "name": "The Entrance To The Mages' Tower",
+        "description": "The entrance hall is a small poor lighted room. It would seem its only purpose is to house the powerful sorcerer standing here guarding the entrance.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5518"
+            },
+            "south": {
+                "room_id": "new-thalos-5431"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "peaceful"
+            },
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ]
+    }
+}

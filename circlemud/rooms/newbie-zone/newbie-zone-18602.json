@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "newbie-zone-18602",
+    "spec": {
+        "name": "The Dirty Hallway",
+        "description": "You continue wandering down the hallway. Nothing much different here, but you are positive you here noises behind the door to the south, and coming from the east. The walls are a bit slimy and moldy here... yeech, couldn't they hire someone to clean this place? What will the newbies think? Oh well, you can continue along the hallway to the east or west.",
+        "zone_id": "newbie-zone",
+        "exits": {
+            "east": {
+                "room_id": "newbie-zone-18603",
+                "description": "More of the hallway there... how exciting!"
+            },
+            "south": {
+                "room_id": "newbie-zone-18606",
+                "description": "A small room lies to the south... you hear something moving about inside.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "newbie-zone-18601",
+                "description": "More of the hallway there... how exciting!"
+            }
+        }
+    }
+}

@@ -1,0 +1,52 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6126",
+    "spec": {
+        "name": "A Narrow Trail Through The Deep, Dark Forest",
+        "description": "You are on a dusty trail winding its way between huge, ancient trees standing close on all sides. The trail leads north and west, and to the south a frail path leads away from the trail.",
+        "zone_id": "haon-dor-dark-forest",
+        "exits": {
+            "north": {
+                "room_id": "haon-dor-dark-forest-6127",
+                "description": "The narrow, dusty trail leads north through the forest."
+            },
+            "south": {
+                "room_id": "haon-dor-dark-forest-6125",
+                "description": "The path leads south - away from the trail."
+            },
+            "west": {
+                "room_id": "haon-dor-dark-forest-6128",
+                "description": "The narrow, dusty trail leads west through the forest."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "trail"
+                ],
+                "description": "The dark and dusty trail seems fragile compared to the massive trunks, and in some places, giant grey roots have broken up through its surface."
+            },
+            {
+                "keywords": [
+                    "path"
+                ],
+                "description": "The path seems fragile and unsafe compared to the enormous trunks that loom around it."
+            },
+            {
+                "keywords": [
+                    "tree",
+                    "trees",
+                    "trunk",
+                    "trunks"
+                ],
+                "description": "These ancient trees must have been here for many, many years. It is impossible to catch even a glimpse of anything above the lowest branches."
+            }
+        ]
+    }
+}

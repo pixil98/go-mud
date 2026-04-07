@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3375",
+    "spec": {
+        "name": "The Lair",
+        "description": "This place is huge!!! It should be considering the dragon's great bulk. However, instead of seeing the customary carnage and mound of gold that one is accustomed to seeing in a dragon lair, this one is decorated subtly with tapestries and drapes, and other comforts of human life. There is even a huge-dragon sized bed -- undoubtedly conjured to life by its elder dragon owner.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "south": {
+                "room_id": "the-three-of-swords-3374"
+            }
+        }
+    }
+}

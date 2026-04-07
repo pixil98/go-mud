@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "new-thalos-5404",
+    "spec": {
+        "name": "The Medina",
+        "description": "You are walking along a wide open expanse of road connecting Market Square to the Common Square. Panhandlers, beggars, and other such riff-raff wander about hoping to catch those few who with open hearts. The Medina continues to the south and the Market Square spreads out to the north.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5405",
+                "description": "You see Market Square."
+            },
+            "south": {
+                "room_id": "new-thalos-5403",
+                "description": "You see the Medina."
+            }
+        }
+    }
+}

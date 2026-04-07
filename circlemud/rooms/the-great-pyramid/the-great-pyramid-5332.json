@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5332",
+    "spec": {
+        "name": "The Tomb Of Ramses",
+        "description": "You stand in an empty tomb, a cubicle no more then ten feet to a side.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "up": {
+                "room_id": "the-great-pyramid-5331",
+                "description": "That leads back the way you came.",
+                "closure": {
+                    "name": "tomb",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

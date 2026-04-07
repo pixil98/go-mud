@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "new-thalos-5505",
+    "spec": {
+        "name": "By The Altar",
+        "description": "You are by the temple altar in the northern end of Temple of New Thalos. A huge altar made of highly polished black onyx is standing in front of you. Behind this altar sits a twelve foot tall statue of Akbal, the highest god in all the lands.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "south": {
+                "room_id": "new-thalos-5509"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "peaceful"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "statue"
+                ],
+                "description": "Looking up the huge statue you see Akbal calmly gazing out across his lands, he seems pleased."
+            }
+        ]
+    }
+}

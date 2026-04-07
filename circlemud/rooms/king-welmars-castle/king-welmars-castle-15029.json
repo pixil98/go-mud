@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15029",
+    "spec": {
+        "name": "The Stairs",
+        "description": "You are standing by a staircase leading down. As you look down, you notice that for the first time since you entered the castle, things are not aesthetically made. Instead it looks more functional and prison-like.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "south": {
+                "room_id": "king-welmars-castle-15024",
+                "description": "You see the small passage."
+            },
+            "down": {
+                "room_id": "king-welmars-castle-15055",
+                "description": "The stairs down lead into darkness."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "stairs",
+                    "stair",
+                    "staircase"
+                ],
+                "description": "They seem to be made of granite, and stretch down into a more dimly lit area than where you come from."
+            }
+        ]
+    }
+}

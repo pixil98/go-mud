@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1527",
+    "spec": {
+        "name": "Deliverance",
+        "description": "The balance had been made, the soul placed in readiness, and the final measurement taken. For those that have come this far, surely this is the day of immortality!",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "north": {
+                "room_id": "the-straight-path-1533"
+            },
+            "south": {
+                "room_id": "the-straight-path-1526"
+            }
+        }
+    }
+}

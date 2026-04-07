@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6217",
+    "spec": {
+        "name": "A Forest Trail",
+        "description": "This well-used forest trail leads south. Among the foot-tracks in the dirt, you spot a few animal tracks as well, leading you to believe that these trails are used by hunters. Why would they be enclosed in this manner, however? There is a clearing to the north, and the path continues to the south.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "north": {
+                "room_id": "the-orc-enclave-6212"
+            },
+            "south": {
+                "room_id": "the-orc-enclave-6219"
+            }
+        }
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-910",
+    "spec": {
+        "name": "The Beach Head",
+        "description": "This is a secluded looking beach on the southern tip of the island. There isn't much to see here and there is no way to cross the steep rocky cliffs that wall in this place.",
+        "zone_id": "river-island-of-minos",
+        "exits": {
+            "south": {
+                "room_id": "river-island-of-minos-909"
+            }
+        }
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5461",
+    "spec": {
+        "name": "Guildsman's Row",
+        "description": "The guilds continue here, to the west is the Weavers' Guild, and to the east stands the Craftsmans' Guild. The row of guilds continues north and south from here.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5460"
+            },
+            "east": {
+                "room_id": "new-thalos-5507"
+            },
+            "south": {
+                "room_id": "new-thalos-5462"
+            },
+            "west": {
+                "room_id": "new-thalos-5506"
+            }
+        }
+    }
+}

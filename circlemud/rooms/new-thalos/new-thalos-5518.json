@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5518",
+    "spec": {
+        "name": "The Mages' Courtyard",
+        "description": "You enter a small tiled courtyard with a small fountain in the middle. Around the sides are four wrought iron benches with cushions where the mages of the land sit and exchange ideas. To the west stands a two-story tower where the leader of the mages' guild performs his experiments.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "south": {
+                "room_id": "new-thalos-5525"
+            },
+            "west": {
+                "room_id": "new-thalos-5517"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "peaceful"
+            }
+        ]
+    }
+}

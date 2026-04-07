@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "drow-city-5122",
+    "spec": {
+        "name": "The Slave Chamber",
+        "description": "The room is in shambles. Straw is strewn all about the room as beds for the unfortunate creatures who have fallen prey to drow imperialism.",
+        "zone_id": "drow-city",
+        "exits": {
+            "east": {
+                "room_id": "drow-city-5101"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

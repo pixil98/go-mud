@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5337",
+    "spec": {
+        "name": "A Dank Chamber",
+        "description": "This chamber has a dank, dusty, musty smell to it. Small footprints in the dust betray the recent passage of some sort of creatures. A hole in the floor lies to the west and a stairway is to the east.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "east": {
+                "room_id": "the-great-pyramid-5338",
+                "description": "You see a spiral stone stairway."
+            },
+            "west": {
+                "room_id": "the-great-pyramid-5312",
+                "description": "You see only blackness through the hole in the floor."
+            }
+        }
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "new-thalos-5528",
+    "spec": {
+        "name": "The General Store",
+        "description": "The new found wealth of this beautiful city is apearant in the exotic items for sale here. You wonder what would happen if you typed... LIST...",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5408"
+            }
+        }
+    }
+}

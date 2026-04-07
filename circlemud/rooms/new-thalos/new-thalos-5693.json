@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5693",
+    "spec": {
+        "name": "On A Road",
+        "description": "This is the man land route through the land. Merchants can bring their goods to the coastline and have them ferried onto ships for export. Travel by foot west will take you through New Thalos up and over the Eastern Mountains and down into Midgaard.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5694"
+            },
+            "west": {
+                "room_id": "new-thalos-5692"
+            }
+        }
+    }
+}

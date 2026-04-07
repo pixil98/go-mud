@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "new-thalos-5403",
+    "spec": {
+        "name": "The Medina",
+        "description": "You stand on the Medina, on the larger open areas in New Thalos. People walk to and fro carrying on their day to day business. The Common Square of the people opens up to the south and the Medina continues north.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5404",
+                "description": "You see Medina."
+            },
+            "south": {
+                "room_id": "new-thalos-5410",
+                "description": "You see the Common Square."
+            }
+        }
+    }
+}

@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7008",
+    "spec": {
+        "name": "A Muddy Intersection",
+        "description": "You have both your feet safely stuck in mud. It isn't the mud that is wrong it is the smell, the sounds, the total darkness that surrounds you. Everything here is so depressing. The pipe leads on with a trail of thick mud to the north, east and south.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "north": {
+                "room_id": "the-sewer-first-level-7007",
+                "description": "North. The pipe goes into a bend with a load of mud all the way up the walls. The bend leads west."
+            },
+            "east": {
+                "room_id": "the-sewer-first-level-7014",
+                "description": "East. This way looks like a place for the annual mud festival, although the stench wouldn't allow any happiness at all. The pipe leads into a bend that leads north."
+            },
+            "south": {
+                "room_id": "the-sewer-first-level-7009",
+                "description": "South. There is much less mud in that direction. Your light doesn't uncover enough space for you to see much more than that it leads into some sort of junction."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "mud"
+                ],
+                "description": "It is as dark as tar and looks like something out of a toilet, on top of that, the smell is absolutely overwhelming."
+            }
+        ]
+    }
+}

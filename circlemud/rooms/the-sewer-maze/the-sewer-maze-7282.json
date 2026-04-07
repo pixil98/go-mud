@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7282",
+    "spec": {
+        "name": "The Realm Of Lost Souls",
+        "description": "You are standing in nothing. All around you there are stars. Sometimes a shadow flies closely by you, wailing very loudly. To the north there is a small bright hole. To the west there is a small red hole.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "north": {
+                "room_id": "the-sewer-maze-7283",
+                "description": "You look into a very bright hole."
+            },
+            "west": {
+                "room_id": "the-sewer-maze-7281",
+                "description": "You look into a red hole."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "shadow"
+                ],
+                "description": "The shadow looks like a man in great pain."
+            }
+        ]
+    }
+}

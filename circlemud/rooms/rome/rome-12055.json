@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "id": "rome-12055",
+    "spec": {
+        "name": "The Judge's Chambers",
+        "description": "You are in a small room that is filled with legal tombs. There is a small desk here, literally buried under legal documents. There is also a small window overlooking the northern part of the city.",
+        "zone_id": "rome",
+        "exits": {
+            "west": {
+                "room_id": "rome-12050",
+                "description": "The courtroom lies in that direction.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "rome-12039",
+                        "locked": true
+                    }
+                }
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "tombs",
+                    "books"
+                ],
+                "description": "The books are very large and filled with Roman legal precedent."
+            },
+            {
+                "keywords": [
+                    "papers",
+                    "documents"
+                ],
+                "description": "There are hundreds of pages of petitions, lawsuits and court orders sitting on the desk. One particularly interesting case involves a nobleman, a slave and a roll of toilet paper."
+            }
+        ]
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3020",
+    "spec": {
+        "name": "The Armory",
+        "description": "The armory with all kinds of armors on the walls and in the window. You see helmets, shields and chain mails. To the north is the main street. On the wall is a small note.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "north": {
+                "room_id": "northern-midgaard-main-city-3013",
+                "description": "You see the main street."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "note"
+                ],
+                "description": "You can use these commands for trading: value <item> To get the price of an item in your possession. sell <item> To sell something. buy <item> To buy something (provided that the shop has it in store). list Gives you a listing of the shop's inventory. WE DON'T GIVE CREDIT; WE DON'T EXPECT TO RECEIVE CREDIT! NO HAGGLING"
+            }
+        ]
+    }
+}

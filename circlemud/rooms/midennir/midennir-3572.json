@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "midennir-3572",
+    "spec": {
+        "name": "South Of The Inn",
+        "description": "You are standing south of the Inn. You could easily go north and enter through the front door, or west and to the rear of the establishment. You here some muffled cries from a tiny trail leading south of here.",
+        "zone_id": "midennir",
+        "exits": {
+            "north": {
+                "room_id": "midennir-3570",
+                "description": "This way leads to the front of the Inn."
+            },
+            "south": {
+                "room_id": "midennir-3575",
+                "description": "The trail heads south."
+            },
+            "west": {
+                "room_id": "midennir-3573",
+                "description": "This way leads to the back of the Inn."
+            }
+        }
+    }
+}

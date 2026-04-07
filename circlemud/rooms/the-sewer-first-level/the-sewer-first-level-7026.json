@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7026",
+    "spec": {
+        "name": "A Junction",
+        "description": "This one seems interesting, a big difference from all the other junctions. It seems cleaner than the rest of them. Weird. Something that looks like an air shaft leads upwards, but it looks far too slippery to climb. The pipes lead to the south, west and north.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "north": {
+                "room_id": "the-sewer-first-level-7025",
+                "description": "North. You see an intersection there, leading north and east."
+            },
+            "south": {
+                "room_id": "the-sewer-first-level-7028",
+                "description": "To the south there is ANOTHER junction leading west and east."
+            },
+            "west": {
+                "room_id": "the-sewer-first-level-7013",
+                "description": "To the west you see a load of mud and sediment in the sewer. That should be an intersection there but you're not quite sure."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "mud"
+                ],
+                "description": "It is as dark as tar and looks like something out of a toilet, on top of that, the smell is absolutely overwhelming."
+            }
+        ]
+    }
+}

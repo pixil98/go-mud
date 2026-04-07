@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7037",
+    "spec": {
+        "name": "The Round Room",
+        "description": "As you enter the room it starts rotating - at first slowly, then faster and faster - You get totally confused as to where up and down is, but you are certain that the doorway is in the opposite direction of what it was when you entered. It now leads east. There is only this one exit.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "east": {
+                "room_id": "the-sewer-first-level-7050",
+                "description": "You can just make out a smaller room with a chair."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

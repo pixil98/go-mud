@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2663",
+    "spec": {
+        "name": "A Torture Chamber",
+        "description": "You are in an ill lit chamber. Instruments of torture hang from a rack on the wall, they seem to quiver with anticipation of a victim as if they had a mind of their own. An operating table is here, though it is bare. An extreme feeling of evil permeates the entire area.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2661"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

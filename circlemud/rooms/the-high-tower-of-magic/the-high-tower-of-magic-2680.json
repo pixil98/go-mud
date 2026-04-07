@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2680",
+    "spec": {
+        "name": "The Altar",
+        "description": "You are in a small chapel designed around a beautifully crafted golden altar. Many icons to lesser deities line the room, but it is obvious by one glance at the symbols on the altar, that this room was designed for the worship of Mystra, the goddess of magic.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "east": {
+                "room_id": "the-high-tower-of-magic-2681",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "south": {
+                "room_id": "the-high-tower-of-magic-2677"
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2682",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

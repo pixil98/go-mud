@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5542",
+    "spec": {
+        "name": "The Shipwright",
+        "description": "The wood under you feet creaks from years of being soaked in saltwater. An old man with a curly, grey beard stand behind a small counter waiting to take your order. Behind him are mounted various model sailboats and large fish.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5543"
+            },
+            "south": {
+                "room_id": "new-thalos-5435"
+            }
+        }
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "drow-city-5105",
+    "spec": {
+        "name": "The Throne Room",
+        "description": "The throne room of the 3rd house is about as decorated as the inner courtyard except with a blood covered altar in the center of the room.",
+        "zone_id": "drow-city",
+        "exits": {
+            "north": {
+                "room_id": "drow-city-5104",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3305",
+    "spec": {
+        "name": "A Small Garden",
+        "description": "This garden was probably once kept orderly and weedless. Unfortunately, it seems someone has been careless with a fireball. There is nothing here now but blast-marks and ashes, and the remains of a trail leading to the east edge of this tiny valley.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "east": {
+                "room_id": "the-three-of-swords-3306"
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3304"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "tracks",
+                    "track"
+                ],
+                "description": "They lead east."
+            }
+        ]
+    }
+}

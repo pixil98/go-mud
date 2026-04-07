@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5690",
+    "spec": {
+        "name": "On A Road",
+        "description": "The people of New Thalos take great pride in the services their city may provide. One of these services is the construction crews the go to great lengths to keep all the roads in order. Although the taxes in New Thalos are higher then other cities in the realm most of the money is used for the good of the people.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5691"
+            },
+            "west": {
+                "room_id": "new-thalos-5568"
+            }
+        }
+    }
+}

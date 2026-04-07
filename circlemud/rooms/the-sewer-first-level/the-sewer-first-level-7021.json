@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7021",
+    "spec": {
+        "name": "A Quiet Pipe Junction",
+        "description": "This is the kind of place to rest, though the smell could be a LOT better than this. The sewer goes east, north and west from here.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "north": {
+                "room_id": "the-sewer-first-level-7011",
+                "description": "In that direction, you can't see anything. It is just too dark."
+            },
+            "east": {
+                "room_id": "the-sewer-first-level-7029",
+                "description": "There is an ordinary junction in the pipe system to the east."
+            },
+            "west": {
+                "room_id": "the-sewer-first-level-7016",
+                "description": "West. There is an ordinary bend leading south into the sewer system in that direction."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ]
+    }
+}

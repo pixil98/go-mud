@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "new-thalos-5514",
+    "spec": {
+        "name": "Ahkeem's Stuff",
+        "description": "You step into a shop swirling with smoke. Ahkeem seems to have a liking for things not of this world... very strange stuff indeed.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "south": {
+                "room_id": "new-thalos-5414"
+            }
+        }
+    }
+}

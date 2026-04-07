@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5213",
+    "spec": {
+        "name": "A Side Street",
+        "description": "This small side street is lined with the remains of once great buildings. To the west is a dark, foreboding structure while to the east lies the entrance to a small tavern. The street continues north and south.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "north": {
+                "room_id": "the-city-of-thalos-5212"
+            },
+            "east": {
+                "room_id": "the-city-of-thalos-5230",
+                "description": "From the looks of it, this was once a two story abode. The entire second floor has collapsed leaving a very little part of the bar still free from debris."
+            },
+            "south": {
+                "room_id": "the-city-of-thalos-5214"
+            },
+            "west": {
+                "room_id": "the-city-of-thalos-5219",
+                "description": "This seems to be the only guild house in the entire city. Its dark nature makes you wonder about its origins."
+            }
+        }
+    }
+}

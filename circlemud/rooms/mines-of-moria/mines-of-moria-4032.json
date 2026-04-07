@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4032",
+    "spec": {
+        "name": "The Foothills",
+        "description": "You are on a winding path that leads through the foothills on the north side of Mount Moria. The path continues north.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4033"
+            },
+            "south": {
+                "room_id": "mines-of-moria-4031"
+            }
+        }
+    }
+}

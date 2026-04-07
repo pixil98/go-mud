@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6252",
+    "spec": {
+        "name": "A Cave",
+        "description": "This must be the orc chief's area. There's an old prize -- a stolen timeworn human armchair sitting near the south wall as a throne. A mammoth sleeping pallet made of piled furs is nearby. Next to that is the pile of orc treasure; a pile of well-polished coppers. You look at the pile of worthless coins and wonder at the image of orcish raiders. These orcs aren't raiders, they are victims.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "north": {
+                "room_id": "the-orc-enclave-6249"
+            },
+            "east": {
+                "room_id": "the-orc-enclave-6253"
+            }
+        }
+    }
+}

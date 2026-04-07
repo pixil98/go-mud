@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1537",
+    "spec": {
+        "name": "A Straight Path",
+        "description": "The Compassionate, the Merciful, Sovereign of the Day of Judgment! You alone we worship, and to You alone we turn for help. Guide us to the Straight Path, the path of those whom You have favored, not of those who have gone astray.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "south": {
+                "room_id": "the-straight-path-1535"
+            },
+            "north": {
+                "room_id": "the-straight-path-1538"
+            }
+        }
+    }
+}

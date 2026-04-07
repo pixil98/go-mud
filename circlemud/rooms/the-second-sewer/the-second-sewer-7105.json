@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "the-second-sewer-7105",
+    "spec": {
+        "name": "Down The Old Well",
+        "description": "You are dangling on the slippery sides of the old well leading down and up. The only secure point here is the metal bars that are cemented into the sides, the ones that you cling frantically to so that you don't fall. Who knows how deep this well is? The bars lead down and up and nowhere else.",
+        "zone_id": "the-second-sewer",
+        "exits": {
+            "up": {
+                "room_id": "the-sewer-first-level-7015",
+                "zone_id": "the-sewer-first-level",
+                "description": "There is a slight, dim light from above, or maybe it is just your imagination. Anyway it SEEMS darker down here than up there, if that is possible."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "bars"
+                ],
+                "description": "These look like they're pretty slippery, and not very safe, but perhaps safe enough for you to climb down, WITH both hands on them."
+            }
+        ]
+    }
+}

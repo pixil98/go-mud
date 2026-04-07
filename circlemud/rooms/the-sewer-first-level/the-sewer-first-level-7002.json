@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7002",
+    "spec": {
+        "name": "The Muddy Sewer Junction",
+        "description": "The muddy sewer stretches into the dark to the south. It looks as if no person has ever put his foot here before. It is too muddy for that anyway. The sewer leads north, south and east from here.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "north": {
+                "room_id": "the-sewer-first-level-7001",
+                "description": "The muddy sewer stretches into the dark to the north."
+            },
+            "south": {
+                "room_id": "the-sewer-first-level-7003",
+                "description": "South. The muddy sewer ends in a mudhole that way."
+            },
+            "east": {
+                "room_id": "the-sewer-first-level-7007",
+                "description": "East. The muddy sewer leads into a bend that goes south."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "mud"
+                ],
+                "description": "It is as dark as tar and looks like something out of a toilet, on top of that, the smell is absolutely overwhelming."
+            }
+        ]
+    }
+}

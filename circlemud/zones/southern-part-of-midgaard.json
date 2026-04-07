@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard",
+    "spec": {
+        "name": "Southern part of Midgaard",
+        "reset_mode": "lifespan",
+        "lifespan": "40m"
+    }
+}

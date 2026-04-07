@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6522",
+    "spec": {
+        "name": "A Guard House",
+        "description": "You are in the guard house to the west of the entrance to the castle. There are nudie posters covering the walls.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "east": {
+                "room_id": "the-dwarven-kingdom-6509"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "poster"
+                ],
+                "description": "There is a wall poster of a nude Minne Pearl."
+            }
+        ]
+    }
+}

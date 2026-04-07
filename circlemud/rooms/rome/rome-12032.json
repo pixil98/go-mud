@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "id": "rome-12032",
+    "spec": {
+        "name": "The Town Square",
+        "description": "You are standing in the middle of a large open area which is the common area of Rome. During the day, this place is alive with the hustle and bustle of all of the citizens of Rome and everyone in the city is sure to stop by at some time or another. There are several street vendors peddling their wares and the overall atmosphere is carnival-like in nature. To the southeast, off in the distance, you can see the aqueduct and the buildings of the Roman government lie to the northwest. Nero Drive leads north and south from here and Clay Avenue runs east.",
+        "zone_id": "rome",
+        "exits": {
+            "north": {
+                "room_id": "rome-12031",
+                "description": "Nero Drive heads in the direction of the northern gate."
+            },
+            "south": {
+                "room_id": "rome-12033",
+                "description": "A street made of hard packed clay runs in that direction towards the aqueduct and buildings of the Roman government."
+            },
+            "east": {
+                "room_id": "rome-12039",
+                "description": "Nero Drive heads in the direction of the south gate."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "vendor",
+                    "vendors"
+                ],
+                "description": "There are several sidewalk vendors here, selling fresh fruits and vegetables, home baked goods, fine jewelry and other items. Most of the items for sale are of very high quality."
+            },
+            {
+                "keywords": [
+                    "aqueduct"
+                ],
+                "description": "To the southeast, off in the distance, stands a large stone structure that is used to channel water into the city."
+            }
+        ]
+    }
+}

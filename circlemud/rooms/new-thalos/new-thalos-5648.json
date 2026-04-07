@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5648",
+    "spec": {
+        "name": "River Ishtar",
+        "description": "The river flows east and west from here.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5649"
+            },
+            "west": {
+                "room_id": "new-thalos-5647"
+            }
+        }
+    }
+}

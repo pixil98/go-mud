@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "rome-12045",
+    "spec": {
+        "name": "Outside The Capitol Building",
+        "description": "You stand on white marble steps that lead up and into the Capitol Building. There are several statues, none of any real significance, at the entrance to the building. The main entrance to the building is at the top of the steps.",
+        "zone_id": "rome",
+        "exits": {
+            "up": {
+                "room_id": "rome-12044",
+                "description": "The steps lead into the Capitol Building."
+            },
+            "down": {
+                "room_id": "rome-12046",
+                "description": "The steps terminate onto Clay Avenue."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "stairs",
+                    "stairway",
+                    "steps"
+                ],
+                "description": "The stairs are immaculately polished and made of white marble."
+            },
+            {
+                "keywords": [
+                    "statue",
+                    "statues"
+                ],
+                "description": "There is really nothing noteworthy about them."
+            }
+        ]
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "drow-city-5119",
+    "spec": {
+        "name": "The Entrance To The Temple Of Lloth",
+        "description": "The temple is the largest building in the city. Even its doors are beyond imagination. Inside of the temple entrance, the walls are made of gold and adamantite.",
+        "zone_id": "drow-city",
+        "exits": {
+            "south": {
+                "room_id": "drow-city-5117",
+                "closure": {
+                    "name": "gates",
+                    "closed": true
+                }
+            },
+            "down": {
+                "room_id": "drow-city-5126"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

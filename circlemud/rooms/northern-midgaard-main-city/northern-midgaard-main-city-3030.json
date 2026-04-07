@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3030",
+    "spec": {
+        "name": "The Dump",
+        "description": "The dump, where the people from the city drop their garbage. Through the garbage you can see a large junction of pipes, looks like the entrance to the sewer system. North of here you see the common square.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "north": {
+                "room_id": "northern-midgaard-main-city-3025",
+                "description": "You see the common square."
+            },
+            "down": {
+                "room_id": "the-sewer-first-level-7030",
+                "zone_id": "the-sewer-first-level",
+                "description": "You see the sewers.",
+                "closure": {
+                    "name": "grate",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "northern-midgaard-main-city-3005",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

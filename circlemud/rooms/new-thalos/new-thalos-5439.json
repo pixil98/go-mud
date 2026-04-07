@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "new-thalos-5439",
+    "spec": {
+        "name": "East Ishtar Drive",
+        "description": "Small clumps of hay strewn about the ground alerts you to the fact that you have reached the stables. Arabian stallions as well as many other fine breeds of horses can be purchased for a price. Ishtar Drive continues east and west.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5545"
+            },
+            "east": {
+                "room_id": "new-thalos-5438"
+            },
+            "west": {
+                "room_id": "new-thalos-5437"
+            }
+        }
+    }
+}

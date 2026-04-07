@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "new-thalos-5552",
+    "spec": {
+        "name": "The Dance Hall",
+        "description": "You seem to have missed a huge party. The janitors are here cleaning up the confetti and pieces of food. Hundreds of empty beer mugs on the tables surrounding the dance floor suggest that the citizens love their drink. There is still a banner on the wall.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5456"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "banner"
+                ],
+                "description": "======================================================================== H A P P Y B I R T H D A Y T O U S ========================================================================"
+            }
+        ]
+    }
+}

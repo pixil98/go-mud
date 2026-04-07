@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6506",
+    "spec": {
+        "name": "A Bend In The Narrow Path",
+        "description": "This is a narrow path that bends to the east here. The trees hang over the path, and it is very overgrown. The narrow path continues to the south and to the east.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "east": {
+                "room_id": "the-dwarven-kingdom-6507"
+            },
+            "south": {
+                "room_id": "the-dwarven-kingdom-6504"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "tree",
+                    "trees"
+                ],
+                "description": "They hang over the road in the most ominous of ways."
+            }
+        ]
+    }
+}

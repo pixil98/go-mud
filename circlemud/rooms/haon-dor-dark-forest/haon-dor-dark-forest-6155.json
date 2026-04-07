@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6155",
+    "spec": {
+        "name": "The Cultist Temple",
+        "description": "This temple, built to a god you don't worship, is a nice place to visit but you feel very uncomfortable about spending any amount of time here. The wooden altar seems to almost glow as you enter the room. The only exit is the way you came in.",
+        "zone_id": "haon-dor-dark-forest",
+        "exits": {
+            "north": {
+                "room_id": "haon-dor-dark-forest-6154",
+                "description": "The hallway to the north looks quite grand."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

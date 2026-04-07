@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "rands-tower-6404",
+    "spec": {
+        "name": "The Trail To The Valley",
+        "description": "The trail leads down into the valley, where, by judging by the height of the trees, the lava had cooled tens of decades ago. Down below you see the path lead into the small forest in the valley, and disappear out of sight. East leads into the valley, West back to civilization.",
+        "zone_id": "rands-tower",
+        "exits": {
+            "east": {
+                "room_id": "rands-tower-6405"
+            },
+            "west": {
+                "room_id": "rands-tower-6403"
+            }
+        }
+    }
+}

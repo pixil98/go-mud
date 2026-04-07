@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5415",
+    "spec": {
+        "name": "Northern Market Square",
+        "description": "You stand in one of the most heavily used parts of town. To the north lies the Palace of New Thalos and the Casbah, east west and south of here the busy market thrives with life.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5418"
+            },
+            "east": {
+                "room_id": "new-thalos-5416"
+            },
+            "south": {
+                "room_id": "new-thalos-5406"
+            },
+            "west": {
+                "room_id": "new-thalos-5414"
+            }
+        }
+    }
+}

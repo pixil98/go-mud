@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5608",
+    "spec": {
+        "name": "The Edge Of The Ravine",
+        "description": "The ground drops off below down to a rushing river. A small rope bridge sways to and fro in the wind giving you access to the other side.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5609"
+            },
+            "west": {
+                "room_id": "new-thalos-5607"
+            }
+        }
+    }
+}

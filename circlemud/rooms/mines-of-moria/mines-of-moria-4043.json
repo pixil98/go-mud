@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4043",
+    "spec": {
+        "name": "The Cave Entrance",
+        "description": "You stand in a large tunnel, much larger than it seemed from the outside. The ceiling is at least twenty feet above, and the width of the tunnel runs at least fifteen feet. You can feel the fresh air coming from the east, and off to the west, it looks to lead into darkness.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "east": {
+                "room_id": "mines-of-moria-4042"
+            },
+            "west": {
+                "room_id": "mines-of-moria-4044"
+            }
+        }
+    }
+}

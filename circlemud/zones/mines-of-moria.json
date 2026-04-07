@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "mines-of-moria",
+    "spec": {
+        "name": "Mines of Moria",
+        "reset_mode": "lifespan",
+        "lifespan": "20m"
+    }
+}

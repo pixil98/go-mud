@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2660",
+    "spec": {
+        "name": "The End Of The Hallway",
+        "description": "You are at the end of a long dark hallway. The darkness here is almost tangible in its thickness. A deep sense of fear and loathing comes over you. A pair of obsidian doors can be seen to the east.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "east": {
+                "room_id": "the-high-tower-of-magic-2661",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2659"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5248",
+    "spec": {
+        "name": "The North-East Watchtower",
+        "description": "You stand atop one of the city watchtowers. The view is magnificent from here and you the desert sand stretches to the horizon. No wonder this place stood for so long. The ladder leading down seems rotted in some places!",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "down": {
+                "room_id": "the-city-of-thalos-5249",
+                "description": "The city lies below... far, far below."
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

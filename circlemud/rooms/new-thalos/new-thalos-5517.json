@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "new-thalos-5517",
+    "spec": {
+        "name": "The Base Of The Tower",
+        "description": "You walk into a cold room whose only feature is an old wooden staircase spirling up along the wall to a higher level. Up these stairs you are told awaits the old mage who may be able to help you advance in your studies.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5518"
+            },
+            "south": {
+                "room_id": "new-thalos-5524",
+                "description": "You see some small scratches on the floor near the base of the wall.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "up": {
+                "room_id": "new-thalos-5548"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "peaceful"
+            }
+        ]
+    }
+}

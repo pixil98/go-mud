@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid",
+    "spec": {
+        "name": "The Great Pyramid",
+        "reset_mode": "lifespan",
+        "lifespan": "20m"
+    }
+}

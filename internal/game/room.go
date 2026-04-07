@@ -420,6 +420,24 @@ func (ri *RoomInstance) PlayerCount() int {
 	return len(ri.players)
 }
 
+// HasLight returns true if any actor in the room has the light grant.
+func (ri *RoomInstance) HasLight() bool {
+	ri.mu.RLock()
+	defer ri.mu.RUnlock()
+
+	for _, ps := range ri.players {
+		if ps.HasGrant(assets.PerkGrantLight, "") {
+			return true
+		}
+	}
+	for _, mi := range ri.mobiles {
+		if mi.HasGrant(assets.PerkGrantLight, "") {
+			return true
+		}
+	}
+	return false
+}
+
 func formatFlags(flags []string) string {
 	var s strings.Builder
 	for _, f := range flags {

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1509",
+    "spec": {
+        "name": "Misguidance",
+        "description": "Some have been brought here not for what they did, but what they failed to do. It is these, the poor souls that were presented the fair evidence and rejected it with an honest mind, that deserve our pity the most of all.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "south": {
+                "room_id": "the-straight-path-1508"
+            },
+            "north": {
+                "room_id": "the-straight-path-1510"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

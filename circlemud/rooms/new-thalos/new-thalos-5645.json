@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "new-thalos-5645",
+    "spec": {
+        "name": "River Ishtar",
+        "description": "The river continues here east to east. There is a landing area to the north where you can gain access to the shore.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5615"
+            },
+            "east": {
+                "room_id": "new-thalos-5646"
+            },
+            "west": {
+                "room_id": "new-thalos-5644"
+            }
+        }
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "newbie-zone-18628",
+    "spec": {
+        "name": "A Corner Room",
+        "description": "This room is hardly more than a crossing of passages. You do sense a slight breeze wafting down the passage to the north though, but it smells altogether bad...",
+        "zone_id": "newbie-zone",
+        "exits": {
+            "north": {
+                "room_id": "newbie-zone-18622"
+            },
+            "west": {
+                "room_id": "newbie-zone-18627"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

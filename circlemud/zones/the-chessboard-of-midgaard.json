@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "the-chessboard-of-midgaard",
+    "spec": {
+        "name": "The Chessboard of Midgaard",
+        "reset_mode": "empty",
+        "lifespan": "10m"
+    }
+}

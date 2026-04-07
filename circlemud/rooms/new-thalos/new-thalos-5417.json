@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5417",
+    "spec": {
+        "name": "Eastern Market Square",
+        "description": "You stand in the market of New Thalos, the gem of the desert. The market is the hub of the city, all trade and commerce of any significance is carried on here. The market spreads out in all directions save east, here Main Street heads for the easter gate.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5416"
+            },
+            "east": {
+                "room_id": "new-thalos-5427"
+            },
+            "south": {
+                "room_id": "new-thalos-5407"
+            },
+            "west": {
+                "room_id": "new-thalos-5406"
+            }
+        }
+    }
+}

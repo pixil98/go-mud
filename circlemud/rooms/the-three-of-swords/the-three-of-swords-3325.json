@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3325",
+    "spec": {
+        "name": "A Cave Passageway",
+        "description": "The cave twists around like a coiled snake, leading east and north from here. You begin to wonder if your orientations are still correct. That worries you for some reason.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "north": {
+                "room_id": "the-three-of-swords-3324"
+            },
+            "east": {
+                "room_id": "the-three-of-swords-3326"
+            }
+        }
+    }
+}

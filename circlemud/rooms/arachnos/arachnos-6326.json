@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "arachnos-6326",
+    "spec": {
+        "name": "A Road Crossing",
+        "description": "Another shifty little strand of webs, almost ethereal in nature.",
+        "zone_id": "arachnos",
+        "exits": {
+            "west": {
+                "room_id": "arachnos-6325"
+            },
+            "up": {
+                "room_id": "arachnos-6327"
+            }
+        }
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6258",
+    "spec": {
+        "name": "A Tunnel",
+        "description": "This tunnel opens up into a large room to the north, and to the south, leads towards a set of doors. The light is crisp and bright, clearly showing the lack of tool marks on the hewn walls... magic? The room just ahead is large, and also well-lighted, giving it an almost clinical atmosphere. Somewhere in the recesses of that room something cries out in a horrible crackling voice. Not good.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "north": {
+                "room_id": "the-orc-enclave-6266"
+            },
+            "south": {
+                "room_id": "the-orc-enclave-6256"
+            }
+        }
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "drow-city-5145",
+    "spec": {
+        "name": "The Altar",
+        "description": "You are standing in front of a highly and freshly bloodstained altar. Engraved on the top of the altar is a giant spider with a human head. Looking down from the altar you see a large sacrificial pit with thousands of swarming spiders looking for their next meal!",
+        "zone_id": "drow-city",
+        "exits": {
+            "north": {
+                "room_id": "drow-city-5148"
+            },
+            "east": {
+                "room_id": "drow-city-5142"
+            },
+            "west": {
+                "room_id": "drow-city-5144"
+            },
+            "down": {
+                "room_id": "drow-city-5143",
+                "description": "Thousands of spiders eye you with undisguised hunger."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

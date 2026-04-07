@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "new-thalos-5485",
+    "spec": {
+        "name": "River Ishtar",
+        "description": "You hear your voice echo as you float under the bridge above. The city construction crews have just recently finished the small ladder giving common-folk easy access to the river. To the west and east you see the river flowing by the city.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5484"
+            },
+            "west": {
+                "room_id": "new-thalos-5486"
+            },
+            "up": {
+                "room_id": "new-thalos-5412"
+            }
+        }
+    }
+}

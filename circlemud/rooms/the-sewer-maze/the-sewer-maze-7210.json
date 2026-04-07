@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7210",
+    "spec": {
+        "name": "The Four-Way Junction",
+        "description": "You are in a sewer junction. To the north is a small hole, to the west is a narrow crawlway and to the east and south the sewer continues.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "south": {
+                "room_id": "the-sewer-maze-7215",
+                "description": "You can see a sewer drain."
+            },
+            "west": {
+                "room_id": "the-sewer-maze-7209",
+                "description": "You can see a narrow crawlway."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

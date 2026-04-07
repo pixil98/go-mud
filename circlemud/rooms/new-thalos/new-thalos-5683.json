@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "new-thalos-5683",
+    "spec": {
+        "name": "The Edge Of The Forest",
+        "description": "You stand at the edge of a huge forest. The line of trees continues as far as the eye can see to the east and west. A large expanse of grass spreads out to the south.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5683"
+            },
+            "south": {
+                "room_id": "new-thalos-5682"
+            },
+            "west": {
+                "room_id": "new-thalos-5683"
+            }
+        }
+    }
+}

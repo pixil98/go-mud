@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4017",
+    "spec": {
+        "name": "The Large Cave",
+        "description": "You move along the cave to the west end of it and find that there appears to be no other exit from here. The walls are fairly smooth and look to have been naturally carved out of the rock by the passage of water.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "west": {
+                "room_id": "mines-of-moria-4016"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

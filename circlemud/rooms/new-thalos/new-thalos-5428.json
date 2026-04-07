@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "new-thalos-5428",
+    "spec": {
+        "name": "East Main Street",
+        "description": "You are on East Main Street. To the North is the beginning of Guildsman Row. To the South is a dark alley. The road also continues to the East. There is a small sign on a wire hanging across the junction.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5464"
+            },
+            "east": {
+                "room_id": "new-thalos-5429"
+            },
+            "south": {
+                "room_id": "new-thalos-5465"
+            },
+            "west": {
+                "room_id": "new-thalos-5427"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "sign"
+                ],
+                "description": "The sign reads: NO LOITERING! (by order of the Sultan of New Thalos)"
+            }
+        ]
+    }
+}

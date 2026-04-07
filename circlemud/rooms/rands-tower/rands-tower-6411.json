@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "id": "rands-tower-6411",
+    "spec": {
+        "name": "The Master Bedroom",
+        "description": "This is an opulent room, decorated in silks and gold. There is an ebony desk against one wall, cooled lava rock spilling over its surface from the window it once looked out at. A nice, spacious closet is filled with clothes just cleaned and pressed.",
+        "zone_id": "rands-tower",
+        "exits": {
+            "south": {
+                "room_id": "rands-tower-6409",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "desk"
+                ],
+                "description": "The desk is basically uninteresting, as are the papers on top of it..."
+            },
+            {
+                "keywords": [
+                    "closet"
+                ],
+                "description": "Nice clothes, but not your size at all."
+            }
+        ]
+    }
+}

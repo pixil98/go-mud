@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7057",
+    "spec": {
+        "name": "The Dark Passageway",
+        "description": "You can't see anything but the ground where you put your feet. The passageway seems to continue south and north.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "north": {
+                "room_id": "the-sewer-first-level-7056",
+                "description": "You can't see anything in that direction and your light isn't enough to light that far."
+            },
+            "south": {
+                "room_id": "the-sewer-first-level-7058",
+                "description": "You can't see anything in that direction and your light isn't enough to light that far."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

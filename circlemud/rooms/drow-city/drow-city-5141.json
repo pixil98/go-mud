@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "drow-city-5141",
+    "spec": {
+        "name": "The Main Chamber",
+        "description": "This is the south side of a large auditorium used for services by the drow priestesses. In the center is a large sacrificial pit and beyond that is an altar.",
+        "zone_id": "drow-city",
+        "exits": {
+            "east": {
+                "room_id": "drow-city-5142"
+            },
+            "south": {
+                "room_id": "drow-city-5140",
+                "closure": {
+                    "name": "doors",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "drow-city-5144"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

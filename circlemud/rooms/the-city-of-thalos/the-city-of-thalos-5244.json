@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5244",
+    "spec": {
+        "name": "An Upright House",
+        "description": "This home is practically the only one around that is still standing. Except for the massive hole in the east wall, everything else looks intact, including the windows. Great amounts of steam issue forth from the hole in the east wall.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "east": {
+                "room_id": "the-city-of-thalos-5242"
+            },
+            "west": {
+                "room_id": "the-city-of-thalos-5210",
+                "description": "A small side street runs past the house."
+            }
+        }
+    }
+}

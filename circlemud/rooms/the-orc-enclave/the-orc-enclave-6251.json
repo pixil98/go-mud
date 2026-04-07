@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6251",
+    "spec": {
+        "name": "A Cave",
+        "description": "You are standing just inside a largish cave, about a hundred feet in diameter. A few dim make-shift lanterns burning animal fat illuminate the area, just enough so you can see the rotted food on the floor, and a few bodies sprawled throughout the whole area. Your disgust quickly turns to horror as you see a horrible creature, half... well, half something and half orc dash between two stalagmites.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "north": {
+                "room_id": "the-orc-enclave-6248"
+            },
+            "east": {
+                "room_id": "the-orc-enclave-6245"
+            },
+            "south": {
+                "room_id": "the-orc-enclave-6254"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6250"
+            }
+        }
+    }
+}

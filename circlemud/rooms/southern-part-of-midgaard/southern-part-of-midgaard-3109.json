@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3109",
+    "spec": {
+        "name": "A Small Path In The Park",
+        "description": "You are on a small path running through the park. It continues west and south and just north of here you see the southern wall of Park Cafe.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "south": {
+                "room_id": "southern-part-of-midgaard-3115"
+            },
+            "west": {
+                "room_id": "southern-part-of-midgaard-3108"
+            }
+        }
+    }
+}

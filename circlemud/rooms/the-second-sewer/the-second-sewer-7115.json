@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "the-second-sewer-7115",
+    "spec": {
+        "name": "The Broad Ledge",
+        "description": "You are standing on a ledge that seems quite a lot larger than the rest of the ledges. This one leads to the west and the east, plus it has an exit going to the south. Though you could jump into mid-air, but it probably wouldn't be such a good idea. The way south is in utter darkness.",
+        "zone_id": "the-second-sewer",
+        "exits": {
+            "east": {
+                "room_id": "the-second-sewer-7121"
+            },
+            "south": {
+                "room_id": "the-second-sewer-7129"
+            },
+            "west": {
+                "room_id": "the-second-sewer-7111"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ]
+    }
+}

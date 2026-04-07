@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3005",
+    "spec": {
+        "name": "The Temple Square",
+        "description": "You are standing on the temple square. Huge marble steps lead up to the temple gate. The entrance to the Clerics' Guild is to the west, and the old Grunting Boar Inn, is to the east. Just south of here you see the market square, the center of Midgaard.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "north": {
+                "room_id": "northern-midgaard-main-city-3001",
+                "description": "You see the temple."
+            },
+            "east": {
+                "room_id": "northern-midgaard-main-city-3006",
+                "description": "You see the good old Grunting Boar Inn."
+            },
+            "south": {
+                "room_id": "northern-midgaard-main-city-3014",
+                "description": "You see the Market Square."
+            },
+            "west": {
+                "room_id": "northern-midgaard-main-city-3004",
+                "description": "You see the entrance to the Clerics' Guild."
+            }
+        }
+    }
+}

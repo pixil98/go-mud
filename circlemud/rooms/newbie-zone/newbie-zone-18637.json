@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "newbie-zone-18637",
+    "spec": {
+        "name": "Yet Another Corner",
+        "description": "The passage turns here and heads north. You sense something up ahead that way, but you aren't sure what. You aren't sure if you want to know what either at this point.",
+        "zone_id": "newbie-zone",
+        "exits": {
+            "north": {
+                "room_id": "newbie-zone-18634"
+            },
+            "west": {
+                "room_id": "newbie-zone-18636"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

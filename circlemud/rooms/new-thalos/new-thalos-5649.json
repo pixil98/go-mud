@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "new-thalos-5649",
+    "spec": {
+        "name": "River Ishtar",
+        "description": "The river slows as it widens and meanders through the lowlands. A small dock give access to the north shore.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5633"
+            },
+            "east": {
+                "room_id": "new-thalos-5623"
+            },
+            "west": {
+                "room_id": "new-thalos-5648"
+            }
+        }
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-second-sewer-7123",
+    "spec": {
+        "name": "Under The Shaft",
+        "description": "A ladder leads up from here to the Shaft. A small opening leads west from here.",
+        "zone_id": "the-second-sewer",
+        "exits": {
+            "west": {
+                "room_id": "the-second-sewer-7120",
+                "description": "You can see a narrow ledge going north and south."
+            },
+            "up": {
+                "room_id": "the-sewer-first-level-7041",
+                "zone_id": "the-sewer-first-level",
+                "description": "It is too dark up there."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

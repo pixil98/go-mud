@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "rome-12038",
+    "spec": {
+        "name": "The House Of Commons",
+        "description": "This is the lower house of the advising body to the Emperor. Common men from all parts of Rome work here to further assist the senators in advising the Emperor on critical matters of state. The seal of the Emperor is painted on the far wall. The only exit is to the north.",
+        "zone_id": "rome",
+        "exits": {
+            "north": {
+                "room_id": "rome-12037",
+                "description": "You see that the doublehung door leads to the senate chambers.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "rome-12104",
+                        "locked": true
+                    }
+                }
+            }
+        }
+    }
+}

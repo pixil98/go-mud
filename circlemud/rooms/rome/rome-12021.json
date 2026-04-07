@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "rome-12021",
+    "spec": {
+        "name": "The Slave Quarters",
+        "description": "This is where the slaves sleep. There are hard boards set out for use as beds and not much else. The only exit is to the east.",
+        "zone_id": "rome",
+        "exits": {
+            "east": {
+                "room_id": "rome-12027",
+                "description": "To the east, a well manicured path winds through the nobleman's estate."
+            }
+        }
+    }
+}

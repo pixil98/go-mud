@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6212",
+    "spec": {
+        "name": "A Clearing In The Forest",
+        "description": "Several trails in the forest intersect here in a small clearing. The dirt seems matted down, and you see many footprints in the soil. Nearby you hear a bird's chirp abruptly cut off in a loud squawk, and then silence. The paths seem well-traveled, the undergrowth matted down and the foilage hacked away to leave plenty of room or a traveller to pass in every cardinal direction, excepting the west path seems fairly overgrown... You feel watched.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "north": {
+                "room_id": "the-orc-enclave-6213"
+            },
+            "east": {
+                "room_id": "the-orc-enclave-6211"
+            },
+            "south": {
+                "room_id": "the-orc-enclave-6217"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6228"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "foot",
+                    "footprint",
+                    "footprints",
+                    "print",
+                    "prints"
+                ],
+                "description": "Cloven hoofs, two feet... they walk erect whatever they are."
+            }
+        ]
+    }
+}

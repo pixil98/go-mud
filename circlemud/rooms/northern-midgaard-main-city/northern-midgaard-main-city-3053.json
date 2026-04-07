@@ -1,0 +1,56 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3053",
+    "spec": {
+        "name": "Outside The East Gate Of Midgaard",
+        "description": "You are by two small towers that have been built into the city wall and connected with a footbridge across the heavy wooden gate. To the east the plains stretch out in the distance.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "east": {
+                "room_id": "midennir-3503",
+                "zone_id": "midennir",
+                "description": "You see the plains."
+            },
+            "west": {
+                "room_id": "northern-midgaard-main-city-3041",
+                "description": "You see the city gate.",
+                "closure": {
+                    "name": "gate",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "southern-part-of-midgaard-3112",
+                        "locked": true
+                    }
+                }
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "bridge",
+                    "footbridge"
+                ],
+                "description": "It is too high up to reach but it looks as if one easily could walk across it from one tower to the other."
+            },
+            {
+                "keywords": [
+                    "gate"
+                ],
+                "description": "It is a set of very big double doors made from hard wood. They have been reinforced with large iron bands to make them even more sturdy. One of the doors is equipped with a very big lock."
+            },
+            {
+                "keywords": [
+                    "tower",
+                    "towers"
+                ],
+                "description": "Both of the towers are built from large grey rocks that have been fastened to each other with some kind of mortar, just like the city wall."
+            },
+            {
+                "keywords": [
+                    "wall"
+                ],
+                "description": "It is built from large grey rocks that have been fastened to each other with some kind of mortar. It is far too high to climb."
+            }
+        ]
+    }
+}

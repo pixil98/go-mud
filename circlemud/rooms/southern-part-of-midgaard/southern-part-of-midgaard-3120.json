@@ -1,0 +1,42 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3120",
+    "spec": {
+        "name": "The Road Crossing",
+        "description": "You are in the middle of the road cross. Roads lead in all directions. A huge black iron chain as thick as a tree trunk is fastened into the ground at the center of the road cross. Its other end leads directly upwards towards the sky. A road sign is here.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "north": {
+                "room_id": "southern-part-of-midgaard-3133"
+            },
+            "east": {
+                "room_id": "southern-part-of-midgaard-3136"
+            },
+            "south": {
+                "room_id": "southern-part-of-midgaard-3134"
+            },
+            "west": {
+                "room_id": "southern-part-of-midgaard-3135"
+            },
+            "up": {
+                "room_id": "redfernes-residence-7914",
+                "zone_id": "redfernes-residence",
+                "description": "The chain disappears in the clouds."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "sign"
+                ],
+                "description": "The sign points in all directions: North - Emerald Avenue. East - Park Road. South - Emerald Avenue. West - Park Road. Someone has added the following with red paint: Up - Redferne's Flying Citadel."
+            },
+            {
+                "keywords": [
+                    "chain"
+                ],
+                "description": "The chain reaches the clouds high above you. It must take some really powerful magic to hold such a chain in place."
+            }
+        ]
+    }
+}

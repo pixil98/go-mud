@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5607",
+    "spec": {
+        "name": "A Path Through The Mountains",
+        "description": "Travel is hard and slow as you almost have to climb around large boulders strewn about the path.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5606"
+            },
+            "east": {
+                "room_id": "new-thalos-5608"
+            }
+        }
+    }
+}

@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2513",
+    "spec": {
+        "name": "Inside The High Tower Of Sorcery",
+        "description": "You are inside the High Tower of Sorcery. The sight is truly amazing. From here, it is obvious that somehow, the tower is much larger on the inside than it is on the outside. Young mages walk about, completely oblivious to your presence. Exits lead north to the common room, west to the dinning room, east to a plain hallway and back south through the gate.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2514",
+                "description": "The common room looks quite busy and noisy."
+            },
+            "east": {
+                "room_id": "the-high-tower-of-magic-2515"
+            },
+            "south": {
+                "room_id": "the-high-tower-of-magic-2512",
+                "closure": {
+                    "name": "gate",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "the-high-tower-of-magic-2500",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2516"
+            }
+        }
+    }
+}

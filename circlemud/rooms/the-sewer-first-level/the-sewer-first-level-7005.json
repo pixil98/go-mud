@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7005",
+    "spec": {
+        "name": "The Muddy Sewer",
+        "description": "You are standing in the middle of a bend of the sewer pipe. It is very dark around here and the mud is sticking to your legs, not very pleasant. The pipe leads east and south from here.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "east": {
+                "room_id": "the-sewer-first-level-7011",
+                "description": "East. The mud stretches on into the darkness."
+            },
+            "south": {
+                "room_id": "the-sewer-first-level-7006",
+                "description": "South. There is even more mud in that direction than where you are now. Incredible."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "mud"
+                ],
+                "description": "It is as dark as tar and looks like something out of a toilet, on top of that, the smell is absolutely overwhelming."
+            }
+        ]
+    }
+}

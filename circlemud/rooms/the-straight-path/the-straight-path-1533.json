@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1533",
+    "spec": {
+        "name": "The Upper Reaches",
+        "description": "You have traveled the righteous path, and your own journey has imitated the evolution of the most perfect soul. Only one final path awaits you; die as the one in the room before, and your death will mean nothing.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "south": {
+                "room_id": "the-straight-path-1527"
+            },
+            "west": {
+                "room_id": "the-straight-path-1532"
+            },
+            "down": {
+                "room_id": "the-straight-path-1536"
+            }
+        }
+    }
+}

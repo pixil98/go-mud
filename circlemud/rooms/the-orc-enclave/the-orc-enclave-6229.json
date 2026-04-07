@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6229",
+    "spec": {
+        "name": "A Forest Trail",
+        "description": "A north-south trail leads through the woods here, with a small side trail leading off to the east. The trees provide adequate cover from the sky, but through a few holes in the foilage you spot the magical barrier above you, keeping you from escaping by flight. You feel slightly captured.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "east": {
+                "room_id": "the-orc-enclave-6228"
+            },
+            "south": {
+                "room_id": "the-orc-enclave-6230"
+            }
+        }
+    }
+}

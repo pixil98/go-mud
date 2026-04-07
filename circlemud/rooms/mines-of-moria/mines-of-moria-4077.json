@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4077",
+    "spec": {
+        "name": "In The Hidden Valley",
+        "description": "This valley seems to be a complete waste of a climb down the mountainside. Of course, there is always the carefully hidden trail that you just noticed on the eastern side of the valley, leading up the eastern mountain that is blocking most of the sky from you.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "east": {
+                "room_id": "rands-tower-6400",
+                "zone_id": "rands-tower"
+            },
+            "up": {
+                "room_id": "mines-of-moria-4076"
+            }
+        }
+    }
+}

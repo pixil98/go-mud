@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "new-thalos-5504",
+    "spec": {
+        "name": "The Chamber Of The High Priest",
+        "description": "You have entered the chamber of the most holy man in New Thalos. The High Priest advises the Sultan on all matters in the world of the sacred. From what you have heard however, this holy man has a bit of a temper, and he doesn't look very happy that you've disturbed his prayers. The only obvious exit is south.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "south": {
+                "room_id": "new-thalos-5508"
+            }
+        }
+    }
+}

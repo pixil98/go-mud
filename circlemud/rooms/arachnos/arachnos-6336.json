@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "arachnos-6336",
+    "spec": {
+        "name": "The Tenuous Strand",
+        "description": "Very windy here since it goes up into the sky somewhat. Still, it is safe enough to move around.",
+        "zone_id": "arachnos",
+        "exits": {
+            "south": {
+                "room_id": "arachnos-6340"
+            },
+            "west": {
+                "room_id": "arachnos-6341"
+            },
+            "down": {
+                "room_id": "arachnos-6331"
+            }
+        }
+    }
+}

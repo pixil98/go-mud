@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level",
+    "spec": {
+        "name": "The Sewer, First Level",
+        "reset_mode": "lifespan",
+        "lifespan": "15m"
+    }
+}

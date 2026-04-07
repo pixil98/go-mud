@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "rands-tower-6422",
+    "spec": {
+        "name": "The Stairwell",
+        "description": "This stairwell leads up and down, and there is a big open room to your west.",
+        "zone_id": "rands-tower",
+        "exits": {
+            "west": {
+                "room_id": "rands-tower-6423"
+            },
+            "up": {
+                "room_id": "rands-tower-6415"
+            },
+            "down": {
+                "room_id": "rands-tower-6425"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

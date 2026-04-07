@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15026",
+    "spec": {
+        "name": "The Servants' Quarters",
+        "description": "You are standing in a large room, that seems to house many of the servants. The room is full of comfortable-looking beds. There is also a large chest, probably containing some of the servants' belongings.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "south": {
+                "room_id": "king-welmars-castle-15021",
+                "description": "The door is made out of wood.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "bed"
+                ],
+                "description": "The beds all look comfortable, despite the fact that this is just the servants' place."
+            }
+        ]
+    }
+}

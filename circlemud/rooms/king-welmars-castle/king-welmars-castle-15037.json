@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15037",
+    "spec": {
+        "name": "The Great Treasury",
+        "description": "As you enter this room, you are astonished by the riches that are stowed away here; not so much in gold, but paintings, tapestries, skillful carvings and sculptures all over the vast room. You realise, however, that most of these things are too well known to be sold anywhere, without branding yourself as a thief, and condemning yourself to instant death at the hands of the Royal Guard.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "west": {
+                "room_id": "king-welmars-castle-15036",
+                "description": "You see a large steel door.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "king-welmars-castle-15007",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "painting",
+                    "paintings",
+                    "carving",
+                    "carvings",
+                    "sculptures",
+                    "tapestries"
+                ],
+                "description": "It seems they are stored here temporarily to enable changing of the decoration in the Castle on a regular basis."
+            }
+        ]
+    }
+}

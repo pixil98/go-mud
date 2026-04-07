@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6092",
+    "spec": {
+        "name": "A Road Through The Plains",
+        "description": "You are on a dust covered east-west road crossing the grassy plains between Midgaard the forest of Haon-Dor. An occasional hunter or adventurer can be seen, heading to or from the forest. To the east is the walled city, Midgaard, and to the west the road continues towards a large forest.",
+        "zone_id": "haon-dor-light-forest",
+        "exits": {
+            "east": {
+                "room_id": "northern-midgaard-main-city-3052",
+                "zone_id": "northern-midgaard-main-city",
+                "description": "To the east you see the walls and West Gate of Midgaard."
+            },
+            "west": {
+                "room_id": "haon-dor-light-forest-6091",
+                "description": "To the west the road continues towards the forest."
+            }
+        },
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "forest"
+                ],
+                "description": "The large forest of Haon-dor spreads out to the west. Small and large game is plentiful there...as is adventure, and of course, danger!"
+            },
+            {
+                "keywords": [
+                    "road",
+                    "dust",
+                    "dusty"
+                ],
+                "description": "The road is well used, and quite dusty."
+            }
+        ]
+    }
+}

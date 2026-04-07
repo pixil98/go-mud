@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city",
+    "spec": {
+        "name": "Northern Midgaard Main City",
+        "reset_mode": "lifespan",
+        "lifespan": "15m"
+    }
+}

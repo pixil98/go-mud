@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "the-chessboard-of-midgaard-3610",
+    "spec": {
+        "name": "A White Square",
+        "description": "You are standing on a white marble square. This is usually the home of one of the Black Queen's Pawns.",
+        "zone_id": "the-chessboard-of-midgaard",
+        "exits": {
+            "north": {
+                "room_id": "the-chessboard-of-midgaard-3602",
+                "description": "A black square lies to the north."
+            },
+            "east": {
+                "room_id": "the-chessboard-of-midgaard-3611",
+                "description": "A black square lies to the east."
+            },
+            "south": {
+                "room_id": "the-chessboard-of-midgaard-3618",
+                "description": "A black square lies to the south."
+            },
+            "west": {
+                "room_id": "the-chessboard-of-midgaard-3609",
+                "description": "A black square lies to the west."
+            }
+        }
+    }
+}

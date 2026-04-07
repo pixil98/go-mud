@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5647",
+    "spec": {
+        "name": "River Ishtar",
+        "description": "The river continues its journey eastward flowing through the plains. To the west you see the peaks of large snow capped mountains and to the east you see the outline of a large city.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5648"
+            },
+            "west": {
+                "room_id": "new-thalos-5646"
+            }
+        }
+    }
+}

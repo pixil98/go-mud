@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15000",
+    "spec": {
+        "name": "The King's Road",
+        "description": "You stand at the beginning of the actual King's Road. The road is wide enough for several horses to ride along side by side with room to spare. The stones which make up the road have been put into place with such skill that the road seems to be perfectly smooth and perfectly straight. You spot a small trail leading to the south through the undergrowth which surrounds the road at this point. A traveller passes by and waves cheerfully at you.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "east": {
+                "room_id": "king-welmars-castle-15001",
+                "description": "The King's Road continues in a straight line to the east towards a grand castle."
+            },
+            "south": {
+                "room_id": "king-welmars-castle-15061",
+                "description": "A small overgrown trail leads through the undergrowth to the south."
+            },
+            "west": {
+                "room_id": "midennir-3502",
+                "zone_id": "midennir",
+                "description": "The King's Road thins out a bit into a lane just to the west."
+            }
+        },
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "traveller"
+                ],
+                "description": "The traveller smiles cheerfully and calls 'hello' when you greet him, but continues on his way. The traveller is in excellent condition."
+            }
+        ]
+    }
+}

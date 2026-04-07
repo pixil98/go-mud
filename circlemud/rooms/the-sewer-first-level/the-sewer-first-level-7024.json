@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7024",
+    "spec": {
+        "name": "The Sewer",
+        "description": "You are standing in mud up to your ankles. This is an intersection with sewer pipes leading east, south and west.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "east": {
+                "room_id": "the-sewer-first-level-7037",
+                "description": "To the east there is a peculiar looking round room."
+            },
+            "south": {
+                "room_id": "the-sewer-first-level-7025",
+                "description": "To the south there is another intersection with pipes going south and east."
+            },
+            "west": {
+                "room_id": "the-sewer-first-level-7011",
+                "description": "To the west there is another intersection like this one, with sewer pipes leading south and west."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ]
+    }
+}

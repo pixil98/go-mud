@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5250",
+    "spec": {
+        "name": "The Temple Of Thalos",
+        "description": "You stand within one of the most holy places in the realm. This stunning domed temple once housed the city's worshipers en masse. Unfortunately, it succumbed to the destruction brought on this city. Long benches lie toppled and the altar desecrated. Large chunks of stone have fallen from the walls and roof, sending sunlight streaming in on you. A few books lie about, conveying to you a holy message in a strange tongue. Wind gusts through the four archways and howls and screams can be heard from all parts of the city.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "north": {
+                "room_id": "the-city-of-thalos-5204",
+                "description": "A side street leads to the northern half of the city."
+            },
+            "east": {
+                "room_id": "the-city-of-thalos-5203",
+                "description": "Main street leads out to the main gate of the city."
+            },
+            "south": {
+                "room_id": "the-city-of-thalos-5206",
+                "description": "A side street leads to the southern part of the city."
+            },
+            "west": {
+                "room_id": "the-city-of-thalos-5205",
+                "description": "The market place lies this way."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ]
+    }
+}

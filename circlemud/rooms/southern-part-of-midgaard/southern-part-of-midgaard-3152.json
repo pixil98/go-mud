@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3152",
+    "spec": {
+        "name": "A Gravel Road In The Graveyard",
+        "description": "You are on a well-kept gravel road that leads north-south through the graveyard. On both sides of the road grow dark evergreen trees.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "north": {
+                "room_id": "southern-part-of-midgaard-3151",
+                "description": "The gravel road continues northwards."
+            },
+            "south": {
+                "room_id": "southern-part-of-midgaard-3153",
+                "description": "The gravel road continues southward."
+            }
+        }
+    }
+}

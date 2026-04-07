@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "god-simplex-1200",
+    "spec": {
+        "name": "The Meeting Room Of The Gods",
+        "description": "The meeting room is plain and very simple. A circular table sits in the middle of the room, lit by some unseen light source. There are many chairs around the table, all empty. The Immortal Board Room is to the north.",
+        "zone_id": "god-simplex",
+        "exits": {
+            "north": {
+                "room_id": "god-simplex-1204",
+                "description": "The Immortal Board Room can be seen to the north."
+            }
+        }
+    }
+}

@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7006",
+    "spec": {
+        "name": "The Muddy Sewer",
+        "description": "You are standing in something that reminds you very much of porridge, this has the advantage that it is not hot, it is rather cold actually. The pipe bends to the north and east.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "east": {
+                "room_id": "the-sewer-first-level-7012",
+                "description": "The pipe leads into a bend that goes south. Interesting, there is mud on the ground there as well."
+            },
+            "north": {
+                "room_id": "the-sewer-first-level-7005",
+                "description": "The muddy sewer pipe leads into a bend that goes east."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "mud"
+                ],
+                "description": "It is as dark as tar and looks like something out of a toilet, on top of that, the smell is absolutely overwhelming."
+            }
+        ]
+    }
+}

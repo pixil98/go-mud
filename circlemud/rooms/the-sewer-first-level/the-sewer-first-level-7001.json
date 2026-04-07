@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7001",
+    "spec": {
+        "name": "The Muddy Sewer",
+        "description": "You are standing in mud to your knees. This is not the kind of place for a picnic. The muddy sewer stretches further into the south.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "south": {
+                "room_id": "the-sewer-first-level-7002",
+                "description": "You see the muddy sewer continuing into the darkness to the south."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "mud"
+                ],
+                "description": "It is as dark as tar and looks like something out of a toilet, on top of that, the smell is absolutely overwhelming."
+            }
+        ]
+    }
+}

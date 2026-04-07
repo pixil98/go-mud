@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "arachnos-6332",
+    "spec": {
+        "name": "Through The Trees",
+        "description": "This part of the web intersects through the branches of some trees. Various leaves and other debris that the many drones have not picked up yet lie here.",
+        "zone_id": "arachnos",
+        "exits": {
+            "east": {
+                "room_id": "arachnos-6331"
+            },
+            "south": {
+                "room_id": "arachnos-6335"
+            },
+            "west": {
+                "room_id": "arachnos-6333"
+            }
+        }
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "new-thalos-5566",
+    "spec": {
+        "name": "The Shrine Of Allah",
+        "description": "As you step into this room you seem to leave the material plane. The walls here are decorated with beautiful, multi-colored tiles. There is a strange stillness about the air. You sense the presence of an all-mighty being.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "south": {
+                "room_id": "new-thalos-5565",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

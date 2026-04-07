@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "arachnos-6399",
+    "spec": {
+        "name": "The Lair Of Arachnos",
+        "description": "This is the lair of the Empress Spider, Arachnos. You can see a lavishly adorned rainbow web, her lair allows her to move to any universe she wishes by using her magical strands to the Prime Material Plane. Coffers upon coffers of gold, magical jewels and gems await. Unfortunately Arachnos is a baggy spider too, and webs all her treasures to her beautiful silken body.",
+        "zone_id": "arachnos",
+        "exits": {
+            "south": {
+                "room_id": "arachnos-6392",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "arachnos-6300",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        }
+    }
+}

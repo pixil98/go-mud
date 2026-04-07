@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3045",
+    "spec": {
+        "name": "The Dark Alley At The Levee",
+        "description": "You are standing in the alley which continues east and west. South of here you see the levee.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "east": {
+                "room_id": "northern-midgaard-main-city-3046",
+                "description": "The alley leads east."
+            },
+            "south": {
+                "room_id": "northern-midgaard-main-city-3049",
+                "description": "You see the levee."
+            },
+            "west": {
+                "room_id": "northern-midgaard-main-city-3026",
+                "description": "The alley leads west."
+            }
+        }
+    }
+}

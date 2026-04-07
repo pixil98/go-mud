@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3016",
+    "spec": {
+        "name": "Main Street",
+        "description": "The main street, to the north is the weapon shop and to the south is the Guild of Swordsmen. To the east you leave town and to the west the street leads to the market square.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "north": {
+                "room_id": "northern-midgaard-main-city-3011",
+                "description": "You see the weapon shop."
+            },
+            "east": {
+                "room_id": "northern-midgaard-main-city-3041",
+                "description": "You see the city gate."
+            },
+            "south": {
+                "room_id": "northern-midgaard-main-city-3021",
+                "description": "You see the swordsmen's guild."
+            },
+            "west": {
+                "room_id": "northern-midgaard-main-city-3015",
+                "description": "You see the main street leading to the market square."
+            }
+        }
+    }
+}

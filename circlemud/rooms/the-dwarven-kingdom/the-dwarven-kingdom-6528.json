@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6528",
+    "spec": {
+        "name": "On The Stairs In Castle Strangelove",
+        "description": "The stairs continue to circle up and down here.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "up": {
+                "room_id": "the-dwarven-kingdom-6529"
+            },
+            "down": {
+                "room_id": "the-dwarven-kingdom-6525"
+            }
+        }
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "drow-city-5116",
+    "spec": {
+        "name": "The Clerics' Academy",
+        "description": "This is the most lavish of the academies being that it is for the clerics.",
+        "zone_id": "drow-city",
+        "exits": {
+            "east": {
+                "room_id": "drow-city-5115"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

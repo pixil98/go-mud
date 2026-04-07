@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "rome-12019",
+    "spec": {
+        "name": "The Main Highway",
+        "description": "This is a well built and heavily traveled road running from east to west and there is a large structure built entirely of stone to the north.",
+        "zone_id": "rome",
+        "exits": {
+            "north": {
+                "room_id": "rome-12018",
+                "description": "You can hear the roar of a large crowd of people coming from that direction."
+            },
+            "east": {
+                "room_id": "rome-12026",
+                "description": "The highway continues to the east."
+            },
+            "west": {
+                "room_id": "rome-12012",
+                "description": "The highway continues to the west."
+            }
+        }
+    }
+}

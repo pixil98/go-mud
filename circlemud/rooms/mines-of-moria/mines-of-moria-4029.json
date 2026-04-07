@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4029",
+    "spec": {
+        "name": "The Cave",
+        "description": "You are in a cave that is filled with fresh air, you sense the wind blowing from the north. To the south you see a small tunnel continue into the mountain.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4031"
+            },
+            "south": {
+                "room_id": "mines-of-moria-4027"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

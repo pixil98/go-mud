@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "new-thalos-5583",
+    "spec": {
+        "name": "The Garden Gazebo",
+        "description": "Walking through the gardens you come across a small white wooden structure. The sounds of birds, the smell of flowers, ahhh, paradise. You believe that you have never been in a more peaceful setting.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5578"
+            }
+        }
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave",
+    "spec": {
+        "name": "The Orc Enclave",
+        "reset_mode": "lifespan",
+        "lifespan": "20m"
+    }
+}

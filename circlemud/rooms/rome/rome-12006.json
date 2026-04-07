@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "rome-12006",
+    "spec": {
+        "name": "Swords 'R  Us",
+        "description": "Welcome to the weaponshop of Titus Andronicus!! Rare halberds, whips, swords and other instruments of death are proudly displayed on the walls and in gleaming glass cases. More common weapons are stacked like wood on the floor. To the north you can barely make out a gate. There is a very secure looking door to the south.",
+        "zone_id": "rome",
+        "exits": {
+            "north": {
+                "room_id": "rome-12005",
+                "description": "You can see a city gate to the north."
+            },
+            "south": {
+                "room_id": "rome-12007",
+                "description": "There is a very secure looking door blocking your progress.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "rome-12034",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "swords",
+                    "weapons",
+                    "armor",
+                    "halberds",
+                    "whips"
+                ],
+                "description": "Titus has enough hardware in here to outfit a large army. Maybe that's why he has a lucrative contract to sell weapons to the Emperor's armies for outrageous prices."
+            }
+        ]
+    }
+}

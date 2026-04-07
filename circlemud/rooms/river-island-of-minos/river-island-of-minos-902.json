@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-902",
+    "spec": {
+        "name": "The Twisty Part Of The River",
+        "description": "The river twists and turns and nearly tosses you out of your boat. The water is dark, cold, almost reptilian in sheen. It seems almost alive. The river runs east and south.",
+        "zone_id": "river-island-of-minos",
+        "exits": {
+            "east": {
+                "room_id": "river-island-of-minos-901"
+            },
+            "south": {
+                "room_id": "river-island-of-minos-903"
+            }
+        }
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "newbie-zone-18604",
+    "spec": {
+        "name": "A Narrow Passage",
+        "description": "The thin passage is plain and undecorated, but still clean. It ends abruptly to the south at a small oak door, behind which you here movement...",
+        "zone_id": "newbie-zone",
+        "exits": {
+            "north": {
+                "room_id": "newbie-zone-18647",
+                "description": "A large domed room."
+            },
+            "south": {
+                "room_id": "newbie-zone-18612",
+                "description": "A small cluttered room.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

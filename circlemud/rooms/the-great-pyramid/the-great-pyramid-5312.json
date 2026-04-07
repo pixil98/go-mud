@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5312",
+    "spec": {
+        "name": "A Tiny Crawlway",
+        "description": "You have to go down onto your hands and knees to fit inside this tiny space. The crawlway is thick with sand and dust, and markings of the passage of other creatures.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "north": {
+                "room_id": "the-great-pyramid-5313",
+                "description": "The crawlway continues to the north."
+            },
+            "south": {
+                "room_id": "the-great-pyramid-5309",
+                "description": "The crawlway ends to the south in a musty chamber."
+            },
+            "up": {
+                "room_id": "the-great-pyramid-5337",
+                "description": "A small hole above your head leads into a dank chamber."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,43 @@
+{
+    "version": 1,
+    "id": "rands-tower-6435",
+    "spec": {
+        "name": "The Entranceway",
+        "description": "This is a grand chamber with giant double-doors to the west. To the east is the main floor of the tower. This room is arranged highly attractively and very impressively, with sculptures and tapistries everywhere. The doors seem impenetrable... you don't think you'd be able to get through them if you really had to...",
+        "zone_id": "rands-tower",
+        "exits": {
+            "east": {
+                "room_id": "rands-tower-6434"
+            },
+            "west": {
+                "room_id": "rands-tower-6436",
+                "description": "These doors seem incredible. Unfortunately, they're locked.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "limbo---internal-0",
+                        "locked": true
+                    }
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "sculpture",
+                    "tapestry",
+                    "sculptures",
+                    "tapestries"
+                ],
+                "description": "They look nice, but aren't very valuable."
+            }
+        ]
+    }
+}

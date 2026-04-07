@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7056",
+    "spec": {
+        "name": "The Dark Hallway",
+        "description": "You can't see much of this, even with a light. The hallway goes into a passageway to the south. A doorway leads west.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "south": {
+                "room_id": "the-sewer-first-level-7057",
+                "description": "You can see nothing at all because it is completely dark in that direction."
+            },
+            "west": {
+                "room_id": "the-sewer-first-level-7052",
+                "description": "You see a lot of light, bright as daylight, but nothing of interest."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

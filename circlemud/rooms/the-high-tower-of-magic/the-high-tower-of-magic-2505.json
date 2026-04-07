@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2505",
+    "spec": {
+        "name": "The Shadow Grove",
+        "description": "You are inside the shadow grove. Giant trees seem to glare at you from all sides. The shadowy mist obscures most of your vision. Strange sounds of moaning and growling come from all directions. All exits lead into shadows, you are very confused.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2502",
+                "description": "The shadows obscure your vision."
+            },
+            "east": {
+                "room_id": "the-high-tower-of-magic-2506",
+                "description": "The shadows obscure your vision."
+            },
+            "south": {
+                "room_id": "the-high-tower-of-magic-2508",
+                "description": "The shadows obscure your vision."
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2504",
+                "description": "The shadows obscure your vision."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ]
+    }
+}

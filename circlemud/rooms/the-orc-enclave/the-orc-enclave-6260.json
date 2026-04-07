@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6260",
+    "spec": {
+        "name": "The Laboratory",
+        "description": "Another table is set up will all sorts of alchemical apparatus here, vials and beakers, distillation equipment and et cetera. The stuff looks expensive, but bulky and fragile; not good treasure to cart away with you at all.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "east": {
+                "room_id": "the-orc-enclave-6261",
+                "description": "A steel cell door.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "the-orc-enclave-6200",
+                        "locked": true
+                    }
+                }
+            },
+            "south": {
+                "room_id": "the-orc-enclave-6263"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6259"
+            }
+        }
+    }
+}

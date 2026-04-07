@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "new-thalos-5548",
+    "spec": {
+        "name": "The Mage's Laboratory",
+        "description": "You stand in the top of an old stone tower. Along the walls hundreds of potions, scroll, and wands lie in disaray. The man you see before you sits hunched over a small wooden table with two beakers of bubbling liquid in front of him. He looks up as you enter and smiles broadly.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "down": {
+                "room_id": "new-thalos-5517"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "peaceful"
+            },
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ]
+    }
+}

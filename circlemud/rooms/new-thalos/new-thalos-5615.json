@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "new-thalos-5615",
+    "spec": {
+        "name": "A Rocky Trail",
+        "description": "The faint sound of a flowing river reaches your ears from the south and through the trees you can see water. The path you are on continues north and east from here.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5614"
+            },
+            "east": {
+                "room_id": "new-thalos-5630"
+            },
+            "south": {
+                "room_id": "new-thalos-5645"
+            }
+        }
+    }
+}

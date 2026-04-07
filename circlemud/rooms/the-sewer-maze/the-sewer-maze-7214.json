@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7214",
+    "spec": {
+        "name": "The End Of The Drain",
+        "description": "You are at the end of the drain around you the sewer has collapsed, the only exit is west.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "west": {
+                "room_id": "the-sewer-maze-7213",
+                "description": "You see the sewer drain."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

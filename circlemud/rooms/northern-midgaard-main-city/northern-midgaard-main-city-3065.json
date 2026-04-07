@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3065",
+    "spec": {
+        "name": "The Great Field Of Midgaard",
+        "description": "You are walking on a wide dirt path through the lush, green, fresh Midgaard countryside. You can see to the horizon to the north, east, and west; the busy city of Midgaard lies to the south. All around you is healthy green grass and an occasional large oak tree. The sun feels wonderful on your face and a pleasant wind blows through your hair. Birds chirp quietly to themselves and you can smell the faint scent of flowers and freshly cut grass. You feel like you could lie down in the grass and stay here forever, surrounded by powerful beauty in all directions. The way north appears to be blocked by a large plot device and you cannot see any way around it.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "south": {
+                "room_id": "northern-midgaard-main-city-3061",
+                "description": "The path continues through the field to the south past an odd structure on the eastern side of the path."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "plot",
+                    "device"
+                ],
+                "description": "What more is a plot device than something to block a certain direction for reasons beyond your comprehension."
+            }
+        ]
+    }
+}

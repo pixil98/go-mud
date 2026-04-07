@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "rands-tower-6431",
+    "spec": {
+        "name": "The Stairwell",
+        "description": "The stairs go up and down here, and there is a room to the west...",
+        "zone_id": "rands-tower",
+        "exits": {
+            "west": {
+                "room_id": "rands-tower-6432"
+            },
+            "up": {
+                "room_id": "rands-tower-6429"
+            },
+            "down": {
+                "room_id": "rands-tower-6433"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

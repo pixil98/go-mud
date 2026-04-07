@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6134",
+    "spec": {
+        "name": "The Den Of The Queen Spider",
+        "description": "You are inside a cave-like structure that seems to be made entirely from countless layers of spider web. Temperature and humidity is very high making it hard to breathe the foul air that lingers here. The walls are covered with open cocoons.",
+        "zone_id": "haon-dor-dark-forest",
+        "exits": {
+            "east": {
+                "room_id": "haon-dor-dark-forest-6133",
+                "description": "Compared to this place the east exit looks inviting."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "web",
+                    "wall",
+                    "walls"
+                ],
+                "description": "The sticky walls are covered with open cocoons."
+            },
+            {
+                "keywords": [
+                    "cocoon",
+                    "cocoons"
+                ],
+                "description": "The cocoons are burst open as if something inside really wanted to get out. They are at the size of a human head."
+            }
+        ]
+    }
+}

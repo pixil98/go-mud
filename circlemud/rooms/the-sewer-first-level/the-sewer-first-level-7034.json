@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7034",
+    "spec": {
+        "name": "A Bend In The Sewer Pipe",
+        "description": "You can look in two directions where the pipe leads: south and west.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "west": {
+                "room_id": "the-sewer-first-level-7028",
+                "description": "West. You can just make out a triple junction leading north and west."
+            },
+            "south": {
+                "room_id": "the-sewer-first-level-7035",
+                "description": "To the south you can see another bend leading west."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

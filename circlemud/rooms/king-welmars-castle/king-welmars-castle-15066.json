@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15066",
+    "spec": {
+        "name": "A Dirt Road",
+        "description": "This section of the dirt road is quiet, but there is an awful stench in the air. It brings to mind rotting corpses and raw sewage. The woods contiue to press closely about you, and almost totally surround the small building to the west with a thatched roof. There is a blackened shell of a building to the east with a small sign hanging out front from a black and charred chain. The dirt road continues north and south.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "north": {
+                "room_id": "king-welmars-castle-15065",
+                "description": "The small dirt road continues towards the north."
+            },
+            "east": {
+                "room_id": "king-welmars-castle-15071",
+                "description": "The building to the east is merely a shell of what it once probably was. The walls are blackened as if they had been exposed to fire at some point in the past..."
+            },
+            "south": {
+                "room_id": "king-welmars-castle-15067",
+                "description": "The stench from the south is almost overpowering now... it seems that the source wouldn't be too far from here."
+            },
+            "west": {
+                "room_id": "king-welmars-castle-15070",
+                "description": "A small quiet cottage stands on the west side of the road, apparently untouched by the desecration and destruction that appears to have hit this small village."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "sign"
+                ],
+                "description": "The sign is covered with soot and the wood is quite charred, but you can still make out the following letters: T TO SB DGE NER L RE"
+            }
+        ]
+    }
+}

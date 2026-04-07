@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3061",
+    "spec": {
+        "name": "The Great Field Of Midgaard",
+        "description": "You are walking on a wide dirt path through the lush, green, fresh Midgaard countryside. You can see to the horizon to the north, east, and west; the busy city of Midgaard lies to the south. All around you is healthy green grass and an occasional large oak tree. The sun feels wonderful on your face and a pleasant wind blows through your hair. Birds chirp quietly to themselves and you can smell the faint scent of flowers and freshly cut grass. You feel like you could lie down in the grass and stay here forever, surrounded by powerful beauty in all directions. There is a strange structure on the eastern side of the path. A small dirt path splits off of the main path and leads off to the west.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "north": {
+                "room_id": "northern-midgaard-main-city-3065",
+                "description": "The path continues northwards bringing you ever closer to the Dragonhelm Mountains."
+            },
+            "east": {
+                "room_id": "newbie-zone-18600",
+                "zone_id": "newbie-zone",
+                "description": "There is a strange structure to the east on the edge of the trail."
+            },
+            "south": {
+                "room_id": "northern-midgaard-main-city-3060",
+                "description": "You see more of the Field."
+            },
+            "west": {
+                "room_id": "northern-midgaard-main-city-3066",
+                "description": "There is a strange path leading towards a rusty gate to the west."
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

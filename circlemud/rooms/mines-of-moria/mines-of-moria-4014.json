@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4014",
+    "spec": {
+        "name": "The Tunnel",
+        "description": "You find yourself at a small intersection of sorts in this tunnel. The main tunnel appears to curve from south to west but there is an entrance into a cave to the north. The entrance itself looks to be unnatural and much more recent than the tunnel or even the cave.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4018"
+            },
+            "south": {
+                "room_id": "mines-of-moria-4011"
+            },
+            "west": {
+                "room_id": "mines-of-moria-4013"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

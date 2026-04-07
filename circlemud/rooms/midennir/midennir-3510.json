@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "midennir-3510",
+    "spec": {
+        "name": "A Crossroads",
+        "description": "Here footworn paths meet leading north, south and east. The trees seem to be closing in on you at this point, and you can barely see the sky through the thick branches above your head.",
+        "zone_id": "midennir",
+        "exits": {
+            "north": {
+                "room_id": "midennir-3507",
+                "description": "Trees as far as the eye can see."
+            },
+            "east": {
+                "room_id": "midennir-3514",
+                "description": "There is an especially dark part of the forest this way."
+            },
+            "south": {
+                "room_id": "midennir-3516",
+                "description": "There is an especially dark section of forest this way."
+            }
+        }
+    }
+}

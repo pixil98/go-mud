@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "new-thalos-5426",
+    "spec": {
+        "name": "West Main Street",
+        "description": "You are strolling on the street between the bank and general store. To the west you hear a roadcrew at work and to the east, the sounds of commerce taking place. The air is filled with the smell of gold and riches. On the wall of the store is a poster.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5409"
+            },
+            "west": {
+                "room_id": "new-thalos-5425"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "poster"
+                ],
+                "description": "The poster is of a wealthy looking man in red robes smiling at you. The caption reads: THE SULTAN REMINDS YOU TO PAY YOUR TAXES!"
+            }
+        ]
+    }
+}

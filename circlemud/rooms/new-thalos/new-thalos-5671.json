@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "new-thalos-5671",
+    "spec": {
+        "name": "On The Dark River",
+        "description": "The river flows south through a narrowing part of the passage as it progresses deeper into the mountain.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5670"
+            },
+            "south": {
+                "room_id": "the-great-eastern-desert-5005",
+                "zone_id": "the-great-eastern-desert"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

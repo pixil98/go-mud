@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "arachnos-6335",
+    "spec": {
+        "name": "A Link In The Ethereal Web",
+        "description": "This is another link in the ethereal web. Various creatures seem to get caught (or hypnotized) by its sticky strands.",
+        "zone_id": "arachnos",
+        "exits": {
+            "east": {
+                "room_id": "arachnos-6336"
+            },
+            "west": {
+                "room_id": "arachnos-6331"
+            }
+        }
+    }
+}

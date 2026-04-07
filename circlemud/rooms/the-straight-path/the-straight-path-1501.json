@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1501",
+    "spec": {
+        "name": "A Long Road",
+        "description": "You stand here in spiritual emptiness, beginning a long and dangerous path. Your honest submission has already been made, but the truth of your heart has yet to be told. Leave here now, and do not come back until you have grown.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "north": {
+                "room_id": "the-straight-path-1502"
+            },
+            "south": {
+                "room_id": "the-straight-path-1500"
+            }
+        }
+    }
+}

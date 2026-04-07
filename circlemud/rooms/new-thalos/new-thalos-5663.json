@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5663",
+    "spec": {
+        "name": "On The Dark River",
+        "description": "The walls of rock around you slowly shrink to ground level as the river flows out of the mountains and onto the plains.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5662"
+            },
+            "west": {
+                "room_id": "new-thalos-5664"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

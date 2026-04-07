@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3373",
+    "spec": {
+        "name": "A Sloping Tunnel",
+        "description": "This tunnel slopes deep, down into the mountain's heart. The air feels still and uncomfortably warm, despite the closeness of the cave's entrance above you. There's a deep, musky odor in the air, and the giant claw marks continue downwards.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "up": {
+                "room_id": "the-three-of-swords-3369"
+            },
+            "down": {
+                "room_id": "the-three-of-swords-3374"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

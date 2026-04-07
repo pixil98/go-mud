@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2599",
+    "spec": {
+        "name": "Atop The Stairway",
+        "description": "You are atop the stairway to the upper levels of the high tower. The walls emit a faint magical glow which provides enough light to see by. A hallway leads west from here, and the stairs lead down.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "west": {
+                "room_id": "the-high-tower-of-magic-2600"
+            },
+            "down": {
+                "room_id": "the-high-tower-of-magic-2598"
+            }
+        }
+    }
+}

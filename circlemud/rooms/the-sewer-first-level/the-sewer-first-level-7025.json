@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7025",
+    "spec": {
+        "name": "Another Intersection",
+        "description": "You have never seen anything so BORING... This is an intersection with pipes leading north, south and east.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "north": {
+                "room_id": "the-sewer-first-level-7024",
+                "description": "To the north there is an intersection, where the pipes are leading west and east. You notice that the floor to the west is covered in mud."
+            },
+            "east": {
+                "room_id": "the-sewer-first-level-7038",
+                "description": "East. You see nothing of interest in that direction, just another intersection. This one leads east and south."
+            },
+            "south": {
+                "room_id": "the-sewer-first-level-7026",
+                "description": "Another intersection lies to the south. It leads west and south."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

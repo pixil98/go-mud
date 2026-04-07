@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15007",
+    "spec": {
+        "name": "The Entrance Hall",
+        "description": "You are standing in the impressive Entrance Hall of the Castle. To the north is an exit into the Great Hall. There is also an exit east, and a small door to the west.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "north": {
+                "room_id": "king-welmars-castle-15012",
+                "description": "You see the King's Great Hall."
+            },
+            "east": {
+                "room_id": "king-welmars-castle-15008",
+                "description": "There seems to be a small guard room to the east."
+            },
+            "south": {
+                "room_id": "king-welmars-castle-15004",
+                "description": "To the south, there is a gate, that leads to the Drawbridge.",
+                "closure": {
+                    "name": "gate",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "king-welmars-castle-15006",
+                "description": "The door is small and uninteresting.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

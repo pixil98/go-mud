@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2557",
+    "spec": {
+        "name": "The Amphitheater",
+        "description": "You are in a small amphitheater. Rows of comfortable looking chairs circle a large podium. The echos of your footsteps seem very loud here. The only apparent exit leads north to the hallway.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2555",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "new-thalos-5699",
+    "spec": {
+        "name": "The Lair Of The Ixitxachitl",
+        "description": "Blood swirls around in the water as the Ixitxachitl devours the last of its meal. Swirling around quickly as you intrude upon his meal the large sting ray attacks!",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5698",
+                "closure": {
+                    "name": "grate",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

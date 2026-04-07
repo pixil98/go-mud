@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "new-thalos-5411",
+    "spec": {
+        "name": "Outside The Southern Gate Of New Thalos",
+        "description": "You see before you the expanse of the Great Eastern Desert. You have heard many tales of the Great Pyramid, the lost city of Old Thalos and the friendly brass dragon that lies under the desert. To the south lies the desert and the city of New Thalos is to the north.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5413",
+                "closure": {
+                    "name": "gate",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "new-thalos-5401",
+                        "locked": true
+                    }
+                }
+            },
+            "south": {
+                "room_id": "the-great-eastern-desert-5039",
+                "zone_id": "the-great-eastern-desert"
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "newbie-zone",
+    "spec": {
+        "name": "Newbie Zone",
+        "reset_mode": "lifespan",
+        "lifespan": "10m"
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7916",
+    "spec": {
+        "name": "On The Great Chain Of Naris",
+        "description": "You are approximately on the middle of the treacherous Chain. One false step and death will come and collect you quickly. The chain leads upwards and down. No way are you going to descend now... You've only just begun your climb. Besides it could cost you your life. Look down and you'll see why.",
+        "zone_id": "redfernes-residence",
+        "exits": {
+            "up": {
+                "room_id": "redfernes-residence-7918",
+                "description": "There seems to be only one way from here and that's up."
+            },
+            "down": {
+                "room_id": "redfernes-residence-7915",
+                "description": "The chain down there is swinging wildly back and forth. Going down there will be pretty risky!"
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

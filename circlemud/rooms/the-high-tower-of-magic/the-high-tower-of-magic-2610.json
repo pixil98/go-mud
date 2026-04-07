@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2610",
+    "spec": {
+        "name": "A Store Room",
+        "description": "You are in a small store room. Large chunks of clay, stone, wood and many other raw materials are here.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "south": {
+                "room_id": "the-high-tower-of-magic-2609"
+            }
+        }
+    }
+}

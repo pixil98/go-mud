@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4078",
+    "spec": {
+        "name": "In The Hidden Valley",
+        "description": "This small valley is hidden away in the shadow of the large mountain to the east. The trail leading up it to the east seems to vanish before your eyes, but you are quickly able to find it once again. A trail leads up the mountain to the west as well.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "east": {
+                "room_id": "rands-tower-6400",
+                "zone_id": "rands-tower"
+            },
+            "up": {
+                "room_id": "mines-of-moria-4076"
+            }
+        }
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "midennir-3517",
+    "spec": {
+        "name": "Near The Mountains",
+        "description": "The most prominent feature here is the mountains that lie to the east. You can only go north and west from here as the rocks stop all other movement.",
+        "zone_id": "midennir",
+        "exits": {
+            "north": {
+                "room_id": "midennir-3514",
+                "description": "Many trees to the north."
+            },
+            "west": {
+                "room_id": "midennir-3516",
+                "description": "There is a bit of a slope downward to the west."
+            }
+        }
+    }
+}

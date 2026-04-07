@@ -1,0 +1,43 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7205",
+    "spec": {
+        "name": "The Lair",
+        "description": "On the floor you see a lot of human decay, like bones and skulls. You also see a lot of slime. On the wall is a torch sitting in its sconce.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "south": {
+                "room_id": "the-sewer-maze-7206",
+                "description": "You see another part of the lair."
+            },
+            "west": {
+                "room_id": "the-sewer-maze-7202",
+                "description": "You see another part of the lair."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "skull",
+                    "skulls",
+                    "bones",
+                    "decay"
+                ],
+                "description": "On all the skulls you notice that there is a three inch hole in the forehead. All the bones are broken and old."
+            },
+            {
+                "keywords": [
+                    "slime"
+                ],
+                "description": "The slime is slimy and uninteresting."
+            },
+            {
+                "keywords": [
+                    "torch",
+                    "sconce"
+                ],
+                "description": "The torch is bolted to the sconce and the sconce to the wall."
+            }
+        ]
+    }
+}

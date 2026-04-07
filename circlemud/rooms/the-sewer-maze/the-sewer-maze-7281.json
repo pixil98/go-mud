@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7281",
+    "spec": {
+        "name": "The Corridor",
+        "description": "The corridor is glowing oppressively in a red hue. You can hear wailing through an open black hole to the east. To the south there is a round door.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "east": {
+                "room_id": "the-sewer-maze-7282",
+                "description": "The hole seems more black than the night. It is appears to be \"eating\" the red light around it."
+            },
+            "south": {
+                "room_id": "the-sewer-maze-7280",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "small",
+                    "round",
+                    "door"
+                ],
+                "description": "The door is completely round without a keyhole."
+            },
+            {
+                "keywords": [
+                    "red",
+                    "light"
+                ],
+                "description": "The red light glows from the walls."
+            },
+            {
+                "keywords": [
+                    "walls"
+                ],
+                "description": "The walls look alive."
+            }
+        ]
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5605",
+    "spec": {
+        "name": "A Hall",
+        "description": "You stand in a large cedar wood hall leading east and west. On the floor lies a thin and narrow purple rug. The hall leads west inside the Palace and east to the Grand Entrance.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5550"
+            },
+            "west": {
+                "room_id": "new-thalos-5573"
+            }
+        }
+    }
+}

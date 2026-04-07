@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3063",
+    "spec": {
+        "name": "The Midgaard Donation Room",
+        "description": "You are in a small, undecorated room just off of the main temple. There are a couple of small wooden benches here where people occasionally sit while they wait for items to appear. The temple is to the west.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "west": {
+                "room_id": "northern-midgaard-main-city-3001",
+                "description": "The busy temple is back west."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "peaceful"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ]
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5317",
+    "spec": {
+        "name": "A Slippery Hole",
+        "description": "The sides of this hole are slippery-smooth. You lower yourself in, and proceed to move downward... when suddenly you lose your purchase! You fall for what seems like an eternity, and smash into the stones below... Under The Hole You are in a small chamber underneath the slippery hole, far below the pyramid now. The floor is strewn with bones. To the south is a small rocky crevasse.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "south": {
+                "room_id": "the-great-pyramid-5319",
+                "description": "You see a rocky crevasse that proceeds deep under the pyramid."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "bones"
+                ],
+                "description": "The bones have whitened and cracked in the dry air, apparently the remains of adventurers, thieves, and creatures that did not survive the fall."
+            }
+        ]
+    }
+}

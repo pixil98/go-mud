@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5060",
+    "spec": {
+        "name": "The Main Tent",
+        "description": "This tent is as lavishly decorated on the inside as it is on the outside. A fancy carpet lies on the sand and numerous baskets line the walls.",
+        "zone_id": "the-great-eastern-desert",
+        "exits": {
+            "east": {
+                "room_id": "the-great-eastern-desert-5061"
+            },
+            "south": {
+                "room_id": "the-great-eastern-desert-5058",
+                "description": "You see some peaceful camels."
+            }
+        }
+    }
+}

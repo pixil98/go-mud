@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "id": "new-thalos-5587",
+    "spec": {
+        "name": "The Harem",
+        "description": "This is the room where the Sultan keeps the beautiful women of his Palace. There are ten girls here lying about the room dressed in silks you can almost see through. In the western end of the room stands a large mound of pillows and a beautiful young maiden sits perched atop. It is unfortunate for you that only the Sultan is allowed in here.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5588",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "east": {
+                "room_id": "new-thalos-5582",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "new-thalos-5401",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            },
+            "south": {
+                "room_id": "new-thalos-5586"
+            }
+        }
+    }
+}

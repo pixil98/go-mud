@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6002",
+    "spec": {
+        "name": "A Trail Through The Light Forest",
+        "description": "You are on a narrow trail winding east and west through the forest. To the west, the forest gradually becomes more dense. A small forest path leads off to the south.",
+        "zone_id": "haon-dor-light-forest",
+        "exits": {
+            "east": {
+                "room_id": "haon-dor-light-forest-6001",
+                "description": "The trail continues eastwards through the young trees."
+            },
+            "south": {
+                "room_id": "haon-dor-light-forest-6011",
+                "description": "The small path leads south through the young trees."
+            },
+            "west": {
+                "room_id": "haon-dor-light-forest-6003",
+                "description": "You see the narrow forest trail winding westwards into the dense forest."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "path",
+                    "paths"
+                ],
+                "description": "The narrow path is probably used by the animals living in the forest."
+            },
+            {
+                "keywords": [
+                    "trail"
+                ],
+                "description": "The forest trail winds east-west through the trees."
+            },
+            {
+                "keywords": [
+                    "tree",
+                    "trees"
+                ],
+                "description": "The young, slender trees look beautiful, their fresh, green leaves moving lightly in the wind."
+            }
+        ]
+    }
+}

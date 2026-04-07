@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2602",
+    "spec": {
+        "name": "The Master Spellbinder's Chamber",
+        "description": "You are in the chambers of the Master Spellbinder. Unlike other work shops of similar nature, this one is without furnishings or tools. The spell binder obviously needs none for the working of his art. A silver door can be seen to the west.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "east": {
+                "room_id": "the-high-tower-of-magic-2601",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2603",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "the-high-tower-of-magic-2524",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        }
+    }
+}

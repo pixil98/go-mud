@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5242",
+    "spec": {
+        "name": "A Bath House",
+        "description": "This was once the bath house for the commoners of the city. Hot steamy water still wells up from a hole in the floor. Obviously there is a hot spring located under the city (making the decision to put a city here seem much more reasonable). Closer inspection of the water yields a dead body floating around in it, skin melted away from months of floating in there. The west wall has collapsed revealing another collapsed house.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "north": {
+                "room_id": "the-city-of-thalos-5243"
+            },
+            "west": {
+                "room_id": "the-city-of-thalos-5244",
+                "description": "The wall has collapsed on the adjoining house, creating a new opening in it."
+            }
+        }
+    }
+}

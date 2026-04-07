@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5349",
+    "spec": {
+        "name": "An Arched Hall",
+        "description": "This hallway has a beautiful arch to it, formed painstakingly and exquisitely out of the sandy stones of the pyramid. To the east is a small, golden-coloured crypt, and the hall proceeds to the south and north.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "north": {
+                "room_id": "the-great-pyramid-5348",
+                "description": "The arched hall proceeds to the north, making a sharp westward turn."
+            },
+            "east": {
+                "room_id": "the-great-pyramid-5350",
+                "description": "A small golden crypt lies to the east."
+            },
+            "south": {
+                "room_id": "the-great-pyramid-5351",
+                "description": "The arched hall proceeds to the south."
+            }
+        }
+    }
+}

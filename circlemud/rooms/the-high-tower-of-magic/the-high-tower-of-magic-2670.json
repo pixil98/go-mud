@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2670",
+    "spec": {
+        "name": "The Meditation Chamber",
+        "description": "You are in a small meditation chamber. White silk cushions are everywhere, looking very comfortable. You get an easy peaceful feeling of relaxation here, almost making you want to lie down and fall asleep.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "south": {
+                "room_id": "the-high-tower-of-magic-2669"
+            }
+        }
+    }
+}

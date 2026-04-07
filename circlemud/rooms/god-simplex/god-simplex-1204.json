@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "god-simplex-1204",
+    "spec": {
+        "name": "The Immortal Board Room",
+        "description": "The main hang out of the Gods, the Immortal Board Room is the place to be. Gods exchange messages here most every day. The mortal board room is to the east and the meeting room for the gods is to the south. To the north is the Gods' Inn and to the west is a post office for Gods. There is a large staircase leading down to the main temple in the city of Midgaard. In the northeast corner you spot a small staircase leading upwards.",
+        "zone_id": "god-simplex",
+        "exits": {
+            "north": {
+                "room_id": "god-simplex-1201",
+                "description": "The Gods' Inn can be seen just to the north."
+            },
+            "east": {
+                "room_id": "god-simplex-1203",
+                "description": "The Mortal Board Room can be seen just to the east."
+            },
+            "south": {
+                "room_id": "god-simplex-1200",
+                "description": "The Gods' Meeting Room is located to the south."
+            },
+            "west": {
+                "room_id": "god-simplex-1205",
+                "description": "The Gods' Post Office is just to the west."
+            },
+            "up": {
+                "room_id": "god-simplex-1206",
+                "description": "There is a small stair in the corner leading up to the social room of the Gods."
+            },
+            "down": {
+                "room_id": "northern-midgaard-main-city-3001",
+                "zone_id": "northern-midgaard-main-city",
+                "description": "You see the hustle and bustle of the Temple of Midgaard at the bottom of the stairs."
+            }
+        }
+    }
+}

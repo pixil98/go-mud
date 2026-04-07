@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2518",
+    "spec": {
+        "name": "The Mages' Tavern",
+        "description": "You are in the mages' tavern. The air is smokey and filled with the smells of foreign food and drink. The other patrons pay you little heed, as they obviously have more interesting things to contemplate. The only exit leads back west.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "west": {
+                "room_id": "the-high-tower-of-magic-2514"
+            }
+        }
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6513",
+    "spec": {
+        "name": "Inside The Entrance",
+        "description": "Everything here is covered in soot and very grimy. The path continues to the east and north, and there is a door to the west.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "north": {
+                "room_id": "the-dwarven-kingdom-6514",
+                "description": "The little underground path continues to the north."
+            },
+            "east": {
+                "room_id": "the-dwarven-kingdom-6505",
+                "description": "The path leads outside the entrance.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "the-dwarven-kingdom-6515",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            },
+            "west": {
+                "room_id": "the-dwarven-kingdom-6526",
+                "description": "This looks like an entrance to some type of store room."
+            }
+        }
+    }
+}

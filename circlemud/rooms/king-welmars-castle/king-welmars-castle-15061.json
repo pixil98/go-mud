@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15061",
+    "spec": {
+        "name": "An Overgrown Trail",
+        "description": "Moving off of the King's Road, you find yourself on a small fading trail which appears to have been so little used that it has almost completely grown over with vegitation from the woods here. Sounds of the forest can be heard all round and you feel a peaceful feeling come over you as you realize that mankind has not passed this way for some time. The faded trail appears to lead north and south.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "north": {
+                "room_id": "king-welmars-castle-15000",
+                "description": "The travel upon the King's Road can be heard off to the north."
+            },
+            "south": {
+                "room_id": "king-welmars-castle-15062",
+                "description": "The trail continues southwards."
+            }
+        }
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3369",
+    "spec": {
+        "name": "The Cave Entrance",
+        "description": "You are standing in the entrance of a simply huge cave! The size is stunning! All around the entrance are burnt bones and various types of wooden and metal debris. Giant claw marks are all along the ground, leading back deeper into the cave. Two tunnels lead off from here, one up, one down. There are claw marks leading in either direction.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "south": {
+                "room_id": "the-three-of-swords-3368"
+            },
+            "up": {
+                "room_id": "the-three-of-swords-3370"
+            },
+            "down": {
+                "room_id": "the-three-of-swords-3373"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

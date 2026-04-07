@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "newbie-zone-18611",
+    "spec": {
+        "name": "Another Corner",
+        "description": "Another corner of the passage, and just as untidy as the rest of this place (maybe more so?). There is a door to the east though... wonder where that leads? Oh, and the hallway continues west and north.",
+        "zone_id": "newbie-zone",
+        "exits": {
+            "north": {
+                "room_id": "newbie-zone-18607",
+                "description": "More of the hallway there... how exciting!"
+            },
+            "east": {
+                "room_id": "newbie-zone-18612",
+                "description": "You peer into a cluttered little room to the east.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "newbie-zone-18610",
+                "description": "More of the hallway there... how exciting!"
+            }
+        }
+    }
+}

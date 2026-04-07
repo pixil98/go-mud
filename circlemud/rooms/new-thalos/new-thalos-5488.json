@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "new-thalos-5488",
+    "spec": {
+        "name": "A Dark Passage",
+        "description": "You seem to have stumbled into a small hand made passage. The wall to the west doesn't look quite right but searching it reveals no secret doors. The only exit it seems is east.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5489"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

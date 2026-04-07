@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1536",
+    "spec": {
+        "name": "The Final Facing",
+        "description": "The last of the darkness lies behind you; only the straight path remains. Go forth with a clean heart. Only the penitent shall find what they seek.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "west": {
+                "room_id": "the-straight-path-1535"
+            },
+            "up": {
+                "room_id": "the-straight-path-1533"
+            },
+            "down": {
+                "room_id": "the-straight-path-1530"
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

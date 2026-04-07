@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "rands-tower-6438",
+    "spec": {
+        "name": "The Stairs",
+        "description": "Stairs lead down here into the tower's basement, or you can head east into the main floor of the tower.",
+        "zone_id": "rands-tower",
+        "exits": {
+            "east": {
+                "room_id": "rands-tower-6437",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "down": {
+                "room_id": "rands-tower-6439"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

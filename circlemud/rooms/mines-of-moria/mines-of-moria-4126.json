@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4126",
+    "spec": {
+        "name": "The Crawlway",
+        "description": "You are in a very narrow crawlway. To back out of it, you would have to move carefully in order to not catch anything on the jutting rocks of the ceiling and walls. The diameter of the crawlway is about two feet, and is a rather tight squeeze. You'd better hope that there aren't any worms or similar creatures down this way since it might be difficult to defend yourself in here.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4111",
+                "description": "You can see a small hole marking the north exit of the crawlway."
+            },
+            "south": {
+                "room_id": "mines-of-moria-4118",
+                "description": "You can see the light emanating from the southern exit of the crawlway."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "nomob",
+            "single_occupant"
+        ]
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5684",
+    "spec": {
+        "name": "River Ishtar",
+        "description": "The river broadens even more here and the waters become murky. The smell of saltwater has reached you from the east. The Dragon Sea cannot be far away. To the east you can see the faint outline of a city and to the north you see a large expanse of grass.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5685"
+            },
+            "west": {
+                "room_id": "new-thalos-5626"
+            }
+        }
+    }
+}

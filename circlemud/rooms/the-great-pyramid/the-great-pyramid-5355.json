@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5355",
+    "spec": {
+        "name": "A Swirling Sandstorm",
+        "description": "You are caught in the midst of a massive sandstorm. Howling winds buffet you from all sides, and the sand tears at your skin, blinding you and choking you. You have lost all sense of direction.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "north": {
+                "room_id": "the-great-pyramid-5354",
+                "description": "You see only a wall of whirling, blowing, dry sand."
+            },
+            "east": {
+                "room_id": "the-great-pyramid-5355",
+                "description": "You see only a wall of whirling, blowing, dry sand."
+            },
+            "south": {
+                "room_id": "the-great-pyramid-5356",
+                "description": "You see only a wall of whirling, blowing, dry sand."
+            },
+            "west": {
+                "room_id": "the-great-pyramid-5355",
+                "description": "You see only a wall of whirling, blowing, dry sand."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "sand"
+                ],
+                "description": "Sand is about all you CAN see right now. Unfortunately, it isn't very interesting sand, only white, dry, and blowing all over the place."
+            }
+        ]
+    }
+}

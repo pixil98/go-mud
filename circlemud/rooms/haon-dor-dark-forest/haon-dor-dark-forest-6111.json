@@ -1,0 +1,42 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6111",
+    "spec": {
+        "name": "A Narrow Trail Through The Deep, Dark Forest",
+        "description": "You are on a dusty trail winding its way north-south between huge, ancient trees that loom ominously above you.",
+        "zone_id": "haon-dor-dark-forest",
+        "exits": {
+            "north": {
+                "room_id": "haon-dor-dark-forest-6110",
+                "description": "The narrow, dusty trail leads north through the forest."
+            },
+            "south": {
+                "room_id": "haon-dor-dark-forest-6112",
+                "description": "The narrow, dusty trail leads south through the forest."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "trail"
+                ],
+                "description": "The dark and dusty trail seems fragile compared to the massive trunks, and in some places, giant grey roots have broken up through its surface."
+            },
+            {
+                "keywords": [
+                    "tree",
+                    "trees",
+                    "trunk",
+                    "trunks"
+                ],
+                "description": "These ancient trees must have been here for many, many years. It is impossible to catch even a glimpse of anything above the lowest branches."
+            }
+        ]
+    }
+}

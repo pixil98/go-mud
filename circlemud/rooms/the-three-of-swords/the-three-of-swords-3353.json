@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3353",
+    "spec": {
+        "name": "A Small Road",
+        "description": "The road ends here, leading up to a stone house to the south. Smoke rises from the chimney in a dark stream, and the windows are frosted over with humidity. North, you see the main intersection of Stanneg.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "north": {
+                "room_id": "the-three-of-swords-3348"
+            },
+            "south": {
+                "room_id": "the-three-of-swords-3354",
+                "description": "A normal looking front door made of wood serves as the entrance.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

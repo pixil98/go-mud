@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "drow-city-5144",
+    "spec": {
+        "name": "The Western Side Of The Main Chamber",
+        "description": "You are on the western side of the main chamber overlooking a sacrificial pit. To the north is an altar.",
+        "zone_id": "drow-city",
+        "exits": {
+            "north": {
+                "room_id": "drow-city-5145"
+            },
+            "south": {
+                "room_id": "drow-city-5141"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

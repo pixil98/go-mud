@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "new-thalos-5451",
+    "spec": {
+        "name": "The Casbah",
+        "description": "The din of the guilds assaults your senses as you reach this intersection, the sound of hammering, the smell of tanned leather, and the smoke rising from the smithy all rush up to greet you. The Avenue continues east and west from here and the Row leads south.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5452"
+            },
+            "south": {
+                "room_id": "new-thalos-5460"
+            },
+            "west": {
+                "room_id": "new-thalos-5450"
+            }
+        }
+    }
+}

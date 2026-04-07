@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1525",
+    "spec": {
+        "name": "Revelation",
+        "description": "The Angel Gabriel came to him and said: \"Read!\" He replied: \"But I cannot!\" The order was repeated three times, until the Angel himself said: \"Read, in the name of your Lord who created man from clots of blood. Praise be to God, Lord of the Universe.\"",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "south": {
+                "room_id": "the-straight-path-1524"
+            },
+            "north": {
+                "room_id": "the-straight-path-1526"
+            }
+        }
+    }
+}

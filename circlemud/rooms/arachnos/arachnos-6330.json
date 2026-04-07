@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "arachnos-6330",
+    "spec": {
+        "name": "The Young Wormkin's Crib",
+        "description": "A playpen of sorts, with maggots of wasps and other baby vermin lying about. You feel that humans have been played with here too, and eaten later. You sense that the maker of this place has an appetite for dragon meat, and uses this room as a breeding area.",
+        "zone_id": "arachnos",
+        "exits": {
+            "up": {
+                "room_id": "arachnos-6331"
+            }
+        }
+    }
+}

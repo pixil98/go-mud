@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-922",
+    "spec": {
+        "name": "The Royal Chamber",
+        "description": "The treasure room of Minos is dark save for your lantern. Hopefully it has not been looted yet by the many legendary thieves of Midgaard. A clever looking secret passage leads upward from here.",
+        "zone_id": "river-island-of-minos",
+        "exits": {
+            "up": {
+                "room_id": "river-island-of-minos-910"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

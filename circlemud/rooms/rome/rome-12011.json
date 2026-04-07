@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "rome-12011",
+    "spec": {
+        "name": "The First-Aid Station",
+        "description": "This is the place to come to if one is overcome by the heat and gore. (Or if a lion gets loose) You see a jar of live leeches and other barbaric medical apparati lying about here. From the west comes the roar of the crowd, and a hall leads east. The healer will be with you shortly.",
+        "zone_id": "rome",
+        "exits": {
+            "east": {
+                "room_id": "rome-12018",
+                "description": "You see hundreds, perhaps thousands of people."
+            },
+            "west": {
+                "room_id": "rome-12004",
+                "description": "Rows of stone bleachers lie to the west."
+            }
+        },
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "leech",
+                    "leeches"
+                ],
+                "description": "DISGUSTING! Each is about the size of matchbox and very slimy. You are VERY glad that you have access to a cleric!"
+            }
+        ]
+    }
+}

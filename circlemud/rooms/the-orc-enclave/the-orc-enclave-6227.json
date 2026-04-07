@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6227",
+    "spec": {
+        "name": "A Forest Trail",
+        "description": "A bend in the forest trail allows you to go east and north here. To the east you spot a small clearing, while northwards this trail seems to join a much larger one leading through the woods. On the ground is half of a broken knife handle, made of bone and dried leather, useless now. You wonder if the owner is watching you now -- something certainly is.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "north": {
+                "room_id": "the-orc-enclave-6232"
+            },
+            "east": {
+                "room_id": "the-orc-enclave-6221"
+            }
+        }
+    }
+}

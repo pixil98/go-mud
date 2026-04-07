@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "rands-tower-6419",
+    "spec": {
+        "name": "A Servant's Room",
+        "description": "This seems to be a small servant's bedroom, sparsely decorated and outfitted with a bed, nightstand, chair and table, etc. Nothing real important here.",
+        "zone_id": "rands-tower",
+        "exits": {
+            "south": {
+                "room_id": "rands-tower-6417",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

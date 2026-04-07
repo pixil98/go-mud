@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "new-thalos-5558",
+    "spec": {
+        "name": "The Palace Gate",
+        "description": "You stand before a magnificantly crafted gate wrought in solid gold. You gape in awe at the splendor of the spirilng towers beyond the portal. The ruler of all the eastern lands resides in this fine palace, and he is not a poor man. The grand entrance lies byond the gate, and Sultan's Walk is to the east.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5420"
+            },
+            "west": {
+                "room_id": "new-thalos-5550",
+                "closure": {
+                    "name": "gate",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "new-thalos-5400",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        }
+    }
+}

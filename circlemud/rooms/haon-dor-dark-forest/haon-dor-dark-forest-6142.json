@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6142",
+    "spec": {
+        "name": "Outside A Cave In The Deep, Dark Forest",
+        "description": "You are at the end of a broad, irregular path. To the north is a very large ominous-looking cave opening. The trees here have many marks as if something with huge claws has been tearing at them in rage.",
+        "zone_id": "haon-dor-dark-forest",
+        "exits": {
+            "north": {
+                "room_id": "haon-dor-dark-forest-6143",
+                "description": "The disgusting smell of a large reptile emanates from the cave opening."
+            },
+            "west": {
+                "room_id": "haon-dor-dark-forest-6136",
+                "description": "The path winds its way westward."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "tree",
+                    "trees"
+                ],
+                "description": "The ancient grey giants have many marks as if something with huge claws has been tearing at them in rage."
+            },
+            {
+                "keywords": [
+                    "cave",
+                    "opening"
+                ],
+                "description": "The disgusting smell of a large reptile emanates from the cave opening."
+            }
+        ]
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "rands-tower-6400",
+    "spec": {
+        "name": "A Mountain Trail",
+        "description": "This trail leads up, up, up into the mountains. You hope you don't fall down, because that would hurt, hurt, hurt! The trail continues to the east, and you can go back down to the small hidden valley to the west.",
+        "zone_id": "rands-tower",
+        "exits": {
+            "east": {
+                "room_id": "rands-tower-6401"
+            },
+            "west": {
+                "room_id": "mines-of-moria-4078",
+                "zone_id": "mines-of-moria"
+            }
+        }
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "new-thalos-5580",
+    "spec": {
+        "name": "The Art Exhibit",
+        "description": "You are standing in the Sultan's tribute to the finer virtues. Large paintings hang from the walls displaying nature scenes, nudes, and glorious victories in battle. Strange scupltures rest on pedestals at each corner of the room and mirrors are placed in strategic locations so the viewer may see an entire sculpture at a glance. Your eyes, however, are pulled towards a painting that dominates the far wall.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "south": {
+                "room_id": "new-thalos-5579",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "painting"
+                ],
+                "description": "The large painting on the west wall appears to be of the temple of New Thalos, and occupies the entire western wall of this room."
+            }
+        ]
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6131",
+    "spec": {
+        "name": "The Deadly Spider Web",
+        "description": "You are walking along the narrow path, ducking under the sticky ropes as you advance... > A huge, poisonous spider drops from above! A huge, poisonous spider drops from above! A huge, poisonous spider drops from above! > The huge, poisonous spider stings you! You resist the poison! The huge, poisonous spider stings you! You are poisoned! The huge, poisonous spider stings you! You are poisoned! You are dead.",
+        "zone_id": "haon-dor-dark-forest",
+        "exits": {
+            "east": {
+                "room_id": "haon-dor-dark-forest-6130"
+            },
+            "west": {
+                "room_id": "haon-dor-dark-forest-6134"
+            },
+            "up": {
+                "room_id": "haon-dor-dark-forest-6133"
+            }
+        },
+        "flags": [
+            "death"
+        ]
+    }
+}

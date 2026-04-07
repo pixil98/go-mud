@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "new-thalos-5507",
+    "spec": {
+        "name": "The Craftsmans' Guild",
+        "description": "You have entered a busy workshop filled with people running amok with various tools and materials. The air is tense with the rush to complete various projects and creations.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "west": {
+                "room_id": "new-thalos-5461"
+            }
+        }
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7299",
+    "spec": {
+        "name": "On The Walls Of The Abyss",
+        "description": "You are clutching the steps on the wall so that you don't fall to the ground down below. You cannot see anymore handholds below you and thus this stops your journey down, as the only exit is up.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "up": {
+                "room_id": "the-sewer-maze-7279"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

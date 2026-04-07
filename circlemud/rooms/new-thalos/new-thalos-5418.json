@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5418",
+    "spec": {
+        "name": "Sultan's Walk",
+        "description": "This cobblestone road aides your journey through town. Traveling north will take you by the Palace and the Dancing Daemon Inn, and south will put you on Market Square.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5419"
+            },
+            "south": {
+                "room_id": "new-thalos-5415"
+            }
+        }
+    }
+}

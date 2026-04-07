@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "arachnos-6322",
+    "spec": {
+        "name": "The Rainbow Web",
+        "description": "This is the rainbow web -- each strand, each link, a hue of violently sharp colors and contrasts. The resident here seems to have a command of light as well.",
+        "zone_id": "arachnos",
+        "exits": {
+            "up": {
+                "room_id": "arachnos-6321"
+            }
+        }
+    }
+}

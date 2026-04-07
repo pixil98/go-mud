@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle",
+    "spec": {
+        "name": "King Welmar's Castle",
+        "reset_mode": "lifespan",
+        "lifespan": "120m"
+    }
+}

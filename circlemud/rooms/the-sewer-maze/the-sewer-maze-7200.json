@@ -1,0 +1,42 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7200",
+    "spec": {
+        "name": "The Treasury",
+        "description": "You are in a small but well equipped treasury. You can see some writing on the wall. The ceiling has a funny glow, which enables you to see. You can get back into the inner lair through the stone door which is east.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "east": {
+                "room_id": "the-sewer-maze-7201",
+                "description": "You look back through the opening into the inner lair.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "the-sewer-maze-7205",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        },
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "door",
+                    "stone"
+                ],
+                "description": "This is a heavy black stone door it looks very solid."
+            },
+            {
+                "keywords": [
+                    "writing"
+                ],
+                "description": "You read the number '666'."
+            }
+        ]
+    }
+}

@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3033",
+    "spec": {
+        "name": "The Magic Shop",
+        "description": "Behind the counter you see various items, neatly placed in racks, presumably most of them are magic.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "south": {
+                "room_id": "northern-midgaard-main-city-3012",
+                "description": "You see the main street."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ]
+    }
+}

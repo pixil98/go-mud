@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5004",
+    "spec": {
+        "name": "A Tunnel Intersection",
+        "description": "The tunnel branches off to the north and south.",
+        "zone_id": "the-great-eastern-desert",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5643",
+                "zone_id": "new-thalos"
+            },
+            "east": {
+                "room_id": "the-great-eastern-desert-5005"
+            },
+            "south": {
+                "room_id": "the-great-eastern-desert-5018"
+            },
+            "west": {
+                "room_id": "the-great-eastern-desert-5003"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

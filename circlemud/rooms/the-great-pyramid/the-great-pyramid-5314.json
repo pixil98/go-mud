@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5314",
+    "spec": {
+        "name": "A Tiny Crawlway",
+        "description": "You are on your hands and knees, inside a small crawlway that winds through the inside of the pyramid. The crawlway is thick with sand, dust, and markings of the passage of other creatures.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "east": {
+                "room_id": "the-great-pyramid-5313",
+                "description": "The crawlway continues to the east."
+            },
+            "west": {
+                "room_id": "the-great-pyramid-5315",
+                "description": "The crawlway gets a little tighter to the west."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

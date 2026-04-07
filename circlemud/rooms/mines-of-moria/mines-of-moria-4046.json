@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4046",
+    "spec": {
+        "name": "Between The Mountains",
+        "description": "The trail between the mountains seems almost endless as you continue to trek along it. It continues to both the east and west.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "east": {
+                "room_id": "mines-of-moria-4047",
+                "description": "The trail continues eastwards."
+            },
+            "west": {
+                "room_id": "mines-of-moria-4045",
+                "description": "The trail continues westwards."
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

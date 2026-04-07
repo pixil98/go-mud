@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4020",
+    "spec": {
+        "name": "The Hole",
+        "description": "You are standing in a small alcove off the main tunnel. There is a fairly wide hole broken through the floor of the alcove. The only other exit is to the north.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4027"
+            },
+            "down": {
+                "room_id": "mines-of-moria-4064"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ]
+    }
+}

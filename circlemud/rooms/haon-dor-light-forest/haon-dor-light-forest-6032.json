@@ -1,0 +1,61 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6032",
+    "spec": {
+        "name": "Midway To The Top Of The Large Oak",
+        "description": "You are in a huge oak, about midway to the top. The branches above you block out much of the light, but enough filters through for you to see. A few birds have remained to watch you from the fringe branches, well out of your reach. Scratches mar the tree here, and torn bark is scattered near you on the branch. It would seem some large forest cat lives nearby, so you had better be careful! You can continue a bit farther up the tree, or descend to limbs that don't sway so much.",
+        "zone_id": "haon-dor-light-forest",
+        "exits": {
+            "up": {
+                "room_id": "haon-dor-light-forest-6033",
+                "description": "Above you the tree narrows farther, but it still looks like you could climb up there. A feline shape is pacing about above you, trying to get to a large wounded bird. Perhaps you should try to see what sort of cat this is before you interrupt its hunt... it might eat you instead of the bird."
+            },
+            "down": {
+                "room_id": "haon-dor-light-forest-6030"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "nest",
+                    "nests"
+                ],
+                "description": "A medium sized bird's nest is close to you here, and it looks like it has some nice looking eggs in it too!"
+            },
+            {
+                "keywords": [
+                    "animal",
+                    "animals",
+                    "bird",
+                    "birds"
+                ],
+                "description": "A variety of squirrels, chipmunks, and birds make their homes in this and the surrounding trees. If you look closely you may be able to see some of their rapidly emptying nests."
+            },
+            {
+                "keywords": [
+                    "feline",
+                    "cat",
+                    "pacing",
+                    "pace",
+                    "shape"
+                ],
+                "description": "It looks like a Bobcat, and it seems quite intent on getting to a large bird that it has wounded. It has not seen you yet, or perhaps just thinks you are too easy a meal."
+            },
+            {
+                "keywords": [
+                    "limb",
+                    "limbs"
+                ],
+                "description": "They look quite sturdy, certainly capable of holding your weight should you decide to climb around in the tree using them."
+            },
+            {
+                "keywords": [
+                    "top",
+                    "highest",
+                    "high"
+                ],
+                "description": "You could probably see most of the forest, and perhaps even the city from the top of the tree... of course, you would have to deal with whatever that shape is that you see pacing on one of the upper limbs."
+            }
+        ]
+    }
+}

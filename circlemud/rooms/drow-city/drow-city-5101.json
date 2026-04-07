@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "id": "drow-city-5101",
+    "spec": {
+        "name": "A City Street",
+        "description": "You walk along a highly ornate street going north-south. A large gate lies to the east while a building lies to the west.",
+        "zone_id": "drow-city",
+        "exits": {
+            "north": {
+                "room_id": "drow-city-5123"
+            },
+            "east": {
+                "room_id": "drow-city-5100",
+                "closure": {
+                    "name": "gate",
+                    "closed": true
+                }
+            },
+            "south": {
+                "room_id": "drow-city-5102"
+            },
+            "west": {
+                "room_id": "drow-city-5122"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

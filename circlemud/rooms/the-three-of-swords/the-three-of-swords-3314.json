@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3314",
+    "spec": {
+        "name": "A Rocky Slope",
+        "description": "You slip and slide your way across the steep ground, trying desperately to keep your balance. You can climb up to a small plateau to the north from here, or carefully head down to the floor of the depression to the west. You're not sure which is safer...",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "north": {
+                "room_id": "the-three-of-swords-3310"
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3315"
+            }
+        }
+    }
+}

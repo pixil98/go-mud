@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "midennir-3582",
+    "spec": {
+        "name": "On The Trail Of The Horsemen",
+        "description": "The path continues east and south. You notice fresh tracks in the soft ground that show the horsemen turned, and fled south.",
+        "zone_id": "midennir",
+        "exits": {
+            "east": {
+                "room_id": "midennir-3581",
+                "description": "The trail continues."
+            },
+            "south": {
+                "room_id": "midennir-3583",
+                "description": "The tracks lead south."
+            }
+        }
+    }
+}

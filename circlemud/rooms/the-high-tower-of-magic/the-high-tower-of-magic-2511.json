@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2511",
+    "spec": {
+        "name": "A Small Clearing",
+        "description": "You are in a small clearing in the shadow grove. There is charred grass underfoot, and the signs of fire here and there. It is almost as if the plant life shuns this spot. The shadowy mist hovers all around, obscuring your view into the grove. A small path leads north to some shadowy structure. All other exits are shrouded in shadowy mist.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2512",
+                "description": "You can barely make out some sort of building to the north."
+            },
+            "east": {
+                "room_id": "the-high-tower-of-magic-2506",
+                "description": "The shadows obscure your vision."
+            },
+            "south": {
+                "room_id": "the-high-tower-of-magic-2502",
+                "description": "The shadows obscure your vision."
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2510",
+                "description": "The shadows obscure your vision."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

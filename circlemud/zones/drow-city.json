@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "drow-city",
+    "spec": {
+        "name": "Drow City",
+        "reset_mode": "empty",
+        "lifespan": "30m"
+    }
+}

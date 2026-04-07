@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5201",
+    "spec": {
+        "name": "Main Street",
+        "description": "This was once a magnificent street, but now is in total ruin. The streets are barren and windswept and the silence is unending. To the south you see a ruined cottage while north leads into a dark back alley. Howls and screams echo through the deserted city.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "north": {
+                "room_id": "the-city-of-thalos-5239",
+                "description": "It seems to be a dark alley."
+            },
+            "east": {
+                "room_id": "the-city-of-thalos-5200",
+                "description": "The entrance to the city lies this way."
+            },
+            "south": {
+                "room_id": "the-city-of-thalos-5235",
+                "description": "A ruined shack lies to the south."
+            },
+            "west": {
+                "room_id": "the-city-of-thalos-5202",
+                "description": "Main Street lies this way."
+            }
+        }
+    }
+}

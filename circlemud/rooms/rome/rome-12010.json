@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "rome-12010",
+    "spec": {
+        "name": "The Jousting Arena",
+        "description": "This is a wide open grassy plane... LOOK OUT!!!! You are almost skewered by a gladiator's lance as he makes his charge. A practicing area is due north.",
+        "zone_id": "rome",
+        "exits": {
+            "north": {
+                "room_id": "rome-12009",
+                "description": "Through a small tunnel you can see athletes stretching and warming up for the games."
+            },
+            "up": {
+                "room_id": "rome-12003",
+                "description": "You see a set of steps leading up into the spectator stands."
+            }
+        },
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "gladiator"
+                ],
+                "description": "He is in the final stages of a charge against his opponent... THUD! CLANG! CRASH!!!!... judging from the blood and the amount of distance that now separates the gladiators head from the rest of his body, you can safely assume that this was the final combat of his life."
+            }
+        ]
+    }
+}

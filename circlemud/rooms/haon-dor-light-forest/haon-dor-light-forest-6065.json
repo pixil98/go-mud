@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6065",
+    "spec": {
+        "name": "A Shaded Path Through The Forest",
+        "description": "You are at a turn on a small shaded path winding through the trees. The forest gradually becomes more dense to the west. The path continues west and south from here.",
+        "zone_id": "haon-dor-light-forest",
+        "exits": {
+            "south": {
+                "room_id": "haon-dor-light-forest-6060",
+                "description": "Through the trees to the south you can almost see the main trail leading back to Midgaard."
+            },
+            "west": {
+                "room_id": "haon-dor-light-forest-6066",
+                "description": "The path winds its way between the trees."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "path",
+                    "paths",
+                    "shaded"
+                ],
+                "description": "The shadowed path is probably used by the small animals living in the forest."
+            },
+            {
+                "keywords": [
+                    "tree",
+                    "trees"
+                ],
+                "description": "The trees are mostly young oaks and tall beeches."
+            }
+        ]
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "rome-12059",
+    "spec": {
+        "name": "A Mountain Path",
+        "description": "You are standing on a path that leads up through a stand of large trees. Everything is green and it seems like eternal spring - this is Mother Nature at her finest. It is possible to descend into a tranquil valley from here.",
+        "zone_id": "rome",
+        "exits": {
+            "up": {
+                "room_id": "rome-12056",
+                "description": "The path leads further up the mountain."
+            },
+            "down": {
+                "room_id": "rome-12058",
+                "description": "The path widens out into a tranquil valley."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "trees"
+                ],
+                "description": "The trees are old and tower hundreds of feet above the ground. If you stand still and listen carefully, you can hear the birds singing."
+            }
+        ]
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3300",
+    "spec": {
+        "name": "A Scraggly Trail",
+        "description": "This trail slopes up and away from the main road to the west. At points the trail seems to fade into obscurity against the grey stone and near-grey mountain grass prevalent here. The trail leads generally eastward and up higher into the rocky ground. There is a sign here, seemingly out-of-place in this rough country.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "east": {
+                "room_id": "the-three-of-swords-3301"
+            },
+            "west": {
+                "room_id": "midennir-3500",
+                "zone_id": "midennir"
+            }
+        },
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "sign"
+                ],
+                "description": ",_____________________________. | | | Gabadiel's | | Smithery | | --------------> | | | | -- BUAG SIGNS INC.| `-----------------------------' | | | | | | | |"
+            }
+        ]
+    }
+}

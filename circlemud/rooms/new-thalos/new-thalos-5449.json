@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5449",
+    "spec": {
+        "name": "The Casbah",
+        "description": "The activity here is only slightly less than chaotic. Young boys run to and fro with stern intent, and older gentleman swagger down the street towards the Library. To the west you can see the tall towers of the northern gate, and the Avenue continues east.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5450"
+            },
+            "west": {
+                "room_id": "new-thalos-5422"
+            }
+        }
+    }
+}

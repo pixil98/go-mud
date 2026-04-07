@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1500",
+    "spec": {
+        "name": "A Road Leading From The Bank",
+        "description": "You find yourself on a small road leading away from the edge of the River of Lost Souls. The dark waters of the River can be seen and heard just south of here. Looking to the east and west, you see only the walls of the rocky cliffs. Off to the north a strange path seems to lead straight into the depths of the mountain.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "north": {
+                "room_id": "the-straight-path-1501",
+                "description": "A strange path leads northwards."
+            },
+            "south": {
+                "room_id": "new-thalos-5619",
+                "zone_id": "new-thalos",
+                "description": "The River of Lost Souls flows just to the south of here."
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

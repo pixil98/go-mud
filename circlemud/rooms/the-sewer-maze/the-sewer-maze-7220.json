@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7220",
+    "spec": {
+        "name": "A Boring Drain",
+        "description": "You are in yet another sewer drain.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "north": {
+                "room_id": "the-sewer-maze-7219",
+                "description": "You see a sewer drain continuing to the north."
+            },
+            "east": {
+                "room_id": "the-sewer-maze-7221",
+                "description": "You can see another drain to the east."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

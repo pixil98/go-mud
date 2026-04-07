@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7031",
+    "spec": {
+        "name": "A Triple Junction",
+        "description": "You stand in a junction with pipes leading west, north and east.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "north": {
+                "room_id": "the-sewer-first-level-7030",
+                "description": "To the north there is an ENORMOUS quadruple sewer junction, all lit up by an odd light."
+            },
+            "east": {
+                "room_id": "the-sewer-first-level-7044",
+                "description": "East. You can just make out a triple junction leading north and east."
+            },
+            "west": {
+                "room_id": "the-sewer-first-level-7018",
+                "description": "West. You can just make out a triple junction leading north and west."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

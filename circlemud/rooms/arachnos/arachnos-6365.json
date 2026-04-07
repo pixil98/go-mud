@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "arachnos-6365",
+    "spec": {
+        "name": "A Link In The Ethereal Web",
+        "description": "This is another link in the ethereal web. Various creatures seem to get caught (or hypnotized) by its sticky strands. A single spider line lies to the north, while ghastly seemings are due southward. The grim entrance of Arachnos' Lair is downward.",
+        "zone_id": "arachnos",
+        "exits": {
+            "north": {
+                "room_id": "arachnos-6371"
+            },
+            "east": {
+                "room_id": "arachnos-6331"
+            },
+            "south": {
+                "room_id": "arachnos-6366"
+            },
+            "down": {
+                "room_id": "arachnos-6390"
+            }
+        }
+    }
+}

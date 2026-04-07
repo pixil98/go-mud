@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5409",
+    "spec": {
+        "name": "Western Market Square",
+        "description": "This area of the square seems a bit more subdued than the rest. You notice that most of the outland adventurers mill around the southern end of the market, while the townfolk seem to keep their business in the northern end. West Main street begins here and heads for the gate, the market's expanse fills the other directions.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5414"
+            },
+            "east": {
+                "room_id": "new-thalos-5406"
+            },
+            "south": {
+                "room_id": "new-thalos-5408"
+            },
+            "west": {
+                "room_id": "new-thalos-5426"
+            }
+        }
+    }
+}

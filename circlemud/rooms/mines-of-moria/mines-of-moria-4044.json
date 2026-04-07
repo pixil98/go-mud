@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4044",
+    "spec": {
+        "name": "The Hill Giant Cave",
+        "description": "You find yourself inside a rather large cavern. The ceiling stands at least twenty five feet above you, if not more. The walls are so far away, that the shadows of the room obscure them almost completely. Out of all of the grandeur in this cave however, nothing seems to catch your eye quite as much as the enormous table standing in the middle of the sandy floor. It stands tall enough for you to walk under it without the need to hunch over. A large tunnel leads out of the eastern wall of the cavern.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "east": {
+                "room_id": "mines-of-moria-4043"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

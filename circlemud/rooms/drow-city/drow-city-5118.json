@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "drow-city-5118",
+    "spec": {
+        "name": "The Warriors' Academy",
+        "description": "This looks more like a barracks than a school.",
+        "zone_id": "drow-city",
+        "exits": {
+            "south": {
+                "room_id": "drow-city-5106"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

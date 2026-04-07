@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1502",
+    "spec": {
+        "name": "A Long Road",
+        "description": "You stop for a moment, screaming in frustration. Surely it was that one sin that was avoidable, of all that you regret. The hitting and the hurting flash briefly before you. Moments later the pain passes, and the straight path reveals itself before you.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "south": {
+                "room_id": "the-straight-path-1501"
+            },
+            "north": {
+                "room_id": "the-straight-path-1503"
+            }
+        }
+    }
+}

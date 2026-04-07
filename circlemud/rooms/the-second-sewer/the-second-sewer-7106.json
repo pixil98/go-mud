@@ -1,0 +1,52 @@
+{
+    "version": 1,
+    "id": "the-second-sewer-7106",
+    "spec": {
+        "name": "The Northwestern Corner Of The Ledge",
+        "description": "You stand, swaying out from the ledge, with only a couple of inches of safe, solid ledge under your feet. The ledge continues to the east but not back south. It seems that the ledge is too narrow to turn on so you'll have to continue forward.",
+        "zone_id": "the-second-sewer",
+        "exits": {
+            "east": {
+                "room_id": "the-second-sewer-7113",
+                "description": "The ledge continues east."
+            },
+            "south": {
+                "room_id": "the-second-sewer-7107",
+                "description": "The ledge continues south."
+            },
+            "down": {
+                "room_id": "the-sewer-maze-7279",
+                "zone_id": "the-sewer-maze",
+                "description": "The Abyss lies down there. Who knows what might lurk down there?",
+                "closure": {
+                    "name": "rock",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "edge",
+                    "odd-looking"
+                ],
+                "description": "This is truly a weird piece of craftsmanship in your eyes. The edge seems to form a step leading down, but WHAT a STEP DOWN. The Abyss opens down there leading to seemingly total destruction."
+            },
+            {
+                "keywords": [
+                    "rock"
+                ],
+                "description": "It looks as if it can be opened in a door-like fashion. Maybe this will lead the way down."
+            }
+        ]
+    }
+}

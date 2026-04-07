@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "new-thalos-5633",
+    "spec": {
+        "name": "On A Road",
+        "description": "The road bends here toward the riverbank giving access to the River Ishtar. The road continues north and west from the river bank.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5616"
+            },
+            "south": {
+                "room_id": "new-thalos-5649"
+            },
+            "west": {
+                "room_id": "new-thalos-5632"
+            }
+        }
+    }
+}

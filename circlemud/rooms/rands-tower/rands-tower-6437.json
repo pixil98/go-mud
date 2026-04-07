@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "rands-tower-6437",
+    "spec": {
+        "name": "The Hallway",
+        "description": "This is the southern part of the hallway. There is a door to the west, barred with gleaming bands of lights. To the north is more hallway.",
+        "zone_id": "rands-tower",
+        "exits": {
+            "north": {
+                "room_id": "rands-tower-6434"
+            },
+            "west": {
+                "room_id": "rands-tower-6438",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

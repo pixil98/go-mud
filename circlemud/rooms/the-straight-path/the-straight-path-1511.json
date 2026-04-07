@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1511",
+    "spec": {
+        "name": "Hypocrisy",
+        "description": "He called the populace to strict religious purity, rigidly enforcing the times of prayer and the most correct forms of the words of the Muezzin. All of this he strengthened by his most impeccable example, shunning all riches and riding in tattered rags through his capital on the back of a donkey. Despite all this, remember. Behind closed doors, all men are hypocrites.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "north": {
+                "room_id": "the-straight-path-1512"
+            },
+            "south": {
+                "room_id": "the-straight-path-1510"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

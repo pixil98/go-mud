@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3105",
+    "spec": {
+        "name": "The Park Entrance",
+        "description": "You are standing just inside the small park of Midgaard. To the north is the promenade and a small path leads south into the park. To your east is the famous Park Cafe.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "north": {
+                "room_id": "southern-part-of-midgaard-3102",
+                "description": "You see the promenade."
+            },
+            "east": {
+                "room_id": "southern-part-of-midgaard-3106",
+                "description": "You see Park Cafe."
+            },
+            "south": {
+                "room_id": "southern-part-of-midgaard-3108",
+                "description": "You see the park."
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

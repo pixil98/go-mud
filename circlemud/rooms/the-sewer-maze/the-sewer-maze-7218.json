@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7218",
+    "spec": {
+        "name": "The Very Small Room",
+        "description": "You are in a very small room, it is pretty uninteresting.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "west": {
+                "room_id": "the-sewer-maze-7217",
+                "description": "Through the little hole you can see a half-dry drain."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

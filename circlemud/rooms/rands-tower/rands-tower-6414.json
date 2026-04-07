@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "rands-tower-6414",
+    "spec": {
+        "name": "A Hidden Hall",
+        "description": "This is a small hidden hall with a secret entrance to the library on the north end of the west wall, and a trapdoor on the south end.",
+        "zone_id": "rands-tower",
+        "exits": {
+            "east": {
+                "room_id": "rands-tower-6412",
+                "description": "The backside of a movable bookcase.",
+                "closure": {
+                    "name": "book",
+                    "closed": true
+                }
+            },
+            "down": {
+                "room_id": "rands-tower-6416",
+                "closure": {
+                    "name": "trapdoor",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

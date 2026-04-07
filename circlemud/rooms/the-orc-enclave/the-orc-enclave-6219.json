@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6219",
+    "spec": {
+        "name": "A Forest Trail",
+        "description": "The trail changes direction here, turning to the north and west. A large tree to your south bears an interesting artifact; a rusty arrowhead embedded in the wood. It looks as if the arrow had been broken off at the head, the wood scratched at, and the arrowhead left behind. Otherwise, there doesn't seem to be much of interest in this particular section of the woods.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "north": {
+                "room_id": "the-orc-enclave-6217"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6220"
+            }
+        }
+    }
+}

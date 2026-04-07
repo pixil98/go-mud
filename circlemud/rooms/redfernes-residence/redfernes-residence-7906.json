@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7906",
+    "spec": {
+        "name": "The Kitchen Of Naris",
+        "description": "This must be the place of food and drink. You can hear the faint noise of rats feasting on meat and bread from somewhere undeterminable. The sound makes you feel the agony of HUNGER. The only visible exit is south to the Northern end of the hall.",
+        "zone_id": "redfernes-residence",
+        "exits": {
+            "north": {
+                "room_id": "redfernes-residence-7907",
+                "description": "It is dark in there. But the sounds from there are unmistakable. The rats are here for your information.",
+                "closure": {
+                    "name": "larder",
+                    "closed": true
+                }
+            },
+            "east": {
+                "room_id": "redfernes-residence-7908",
+                "description": "You can see the fridge from here. There are drinks all over the place.",
+                "closure": {
+                    "name": "fridge",
+                    "closed": true
+                }
+            },
+            "south": {
+                "room_id": "redfernes-residence-7904",
+                "description": "You can see the northern end of the hall."
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

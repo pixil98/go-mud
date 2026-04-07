@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "new-thalos-5484",
+    "spec": {
+        "name": "River Ishtar",
+        "description": "The gentle flow of the river carries you eastward, looking up you see couples strolling along the road. To the west you see the southern bridge and to the east you see the iron grating protecting the city from unwanted guests.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5483",
+                "closure": {
+                    "name": "grating",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "new-thalos-5485"
+            }
+        }
+    }
+}

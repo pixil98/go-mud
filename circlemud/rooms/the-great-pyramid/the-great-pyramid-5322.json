@@ -1,0 +1,52 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5322",
+    "spec": {
+        "name": "At The Crevasse's End",
+        "description": "Here the crevasse comes to an abrupt end. A chilling wind howls at your face from a black shape to the south, but the light from your source is too dim to see exactly what it is.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "south": {
+                "room_id": "the-great-pyramid-5323",
+                "description": "You see a strange-looking black shape.",
+                "closure": {
+                    "name": "sesame",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "the-great-pyramid-5323",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            },
+            "up": {
+                "room_id": "the-great-pyramid-5321",
+                "description": "It is too dark for you to see anything along the crevasse."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "black",
+                    "shape"
+                ],
+                "description": "Wind howls about your ears like the roar of a tiger. As your eyes adjust to the light the shape to the south almost seems to take the form of a massive animal head."
+            },
+            {
+                "keywords": [
+                    "tiger",
+                    "head",
+                    "animal",
+                    "sesame"
+                ],
+                "description": "You are now certain that the wind is the cold breath of some unearthly giant animal, whose voice rumbles lowly on the breeze, and whose massive jaws could easily swallow you whole. You move closer for a better look, when suddenly a pair of eyes flashes. A cold voice echoes: 'SEEK YE THE DIAMOND... IN THE ROUGH...' ... Then all is silent."
+            }
+        ]
+    }
+}

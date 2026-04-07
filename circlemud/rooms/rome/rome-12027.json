@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "id": "rome-12027",
+    "spec": {
+        "name": "A Noble Estate",
+        "description": "You are on the grounds of a nobleman's estate which is hundreds of times the size and splendor of anything that a common citizen of Rome would ever hope to own. Everything is lush and green. The grass is perfectly manicured and the trees are all bearing fruit. Ornamental plants are in perfectly situated to enhance and adorn the three statues of dedicated to gods Jupiter, Venus and Neptune. A tranquil path leads east and west, there is a paved road to the north and an extravagant house lies to the south.",
+        "zone_id": "rome",
+        "exits": {
+            "north": {
+                "room_id": "rome-12026",
+                "description": "You see a paved road in the distance."
+            },
+            "east": {
+                "room_id": "rome-12034",
+                "description": "The path leads east through the estate."
+            },
+            "south": {
+                "room_id": "rome-12028",
+                "description": "You see an incredible house off in the distance."
+            },
+            "west": {
+                "room_id": "rome-12021",
+                "description": "Off through the trees, you see a small, plain hut."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "Venus"
+                ],
+                "description": "Venus, the Roman goddess of beauty and knowledge is displayed in a all of her splendor."
+            },
+            {
+                "keywords": [
+                    "Jupiter"
+                ],
+                "description": "A statue made of pure gold depicts Jupiter sitting on his throne. The throne looks like it is made of silver."
+            },
+            {
+                "keywords": [
+                    "Neptune"
+                ],
+                "description": "The statue of Neptune is made of pure jade and is holding a crystal trident. It is sitting in the center of a small pond which has hundreds of beautiful fish swimming in it."
+            },
+            {
+                "keywords": [
+                    "trees",
+                    "tree",
+                    "shrubs",
+                    "shrub",
+                    "plants",
+                    "plant"
+                ],
+                "description": "All of the plants, trees and shrubs are perfectly trimmed, without so much as a dead leaf anywhere to be seen. You welcome the shade that they give from the harsh sun above."
+            }
+        ]
+    }
+}

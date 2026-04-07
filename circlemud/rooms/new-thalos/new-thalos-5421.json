@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5421",
+    "spec": {
+        "name": "Sultan's Walk",
+        "description": "The main road north from the square continues here, surrounded by the walls of the Palace and the Daemon. To the north you see the heavily guarded gate and can make out faint sounds of trade to the south.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5422"
+            },
+            "south": {
+                "room_id": "new-thalos-5420"
+            }
+        }
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "arachnos",
+    "spec": {
+        "name": "Arachnos",
+        "reset_mode": "lifespan",
+        "lifespan": "34m"
+    }
+}

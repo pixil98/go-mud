@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "newbie-zone-18632",
+    "spec": {
+        "name": "The Entrance",
+        "description": "It is dark, dank, disgusting and cold up here. Plus you here the sounds of creatures all around you... and somehow they don't sound friendly. It is probably wise to exercise some degree of caution here... no telling what you may run into here.",
+        "zone_id": "newbie-zone",
+        "exits": {
+            "north": {
+                "room_id": "newbie-zone-18627"
+            },
+            "south": {
+                "room_id": "newbie-zone-18635"
+            },
+            "west": {
+                "room_id": "newbie-zone-18631"
+            },
+            "up": {
+                "room_id": "newbie-zone-18612"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

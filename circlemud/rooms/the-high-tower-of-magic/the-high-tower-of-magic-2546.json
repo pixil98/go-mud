@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2546",
+    "spec": {
+        "name": "The Apprentices' Workshop",
+        "description": "You are in a small workshop. Writing implements and parchment are strewn about on a few worktables. In the far corner several young mages have a small kitten cornered and seem to be testing spells upon it. The only apparent exit leads back south to the hallway.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "south": {
+                "room_id": "the-high-tower-of-magic-2545",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

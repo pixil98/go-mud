@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "midennir-3507",
+    "spec": {
+        "name": "The Miden'nir",
+        "description": "The forest is deep here and the wind blows through the trees and through your hair. To the north, the forest gets lighter. However, the southern and western paths place you even deeper in the wood.",
+        "zone_id": "midennir",
+        "exits": {
+            "north": {
+                "room_id": "midennir-3505",
+                "description": "The forest is lighter in this direction."
+            },
+            "south": {
+                "room_id": "midennir-3510",
+                "description": "More and darker woods."
+            },
+            "west": {
+                "room_id": "midennir-3508",
+                "description": "There is a small path leading west."
+            }
+        }
+    }
+}

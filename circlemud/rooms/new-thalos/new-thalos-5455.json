@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "new-thalos-5455",
+    "spec": {
+        "name": "Kali Row",
+        "description": "This is a small, newly added section of the town. The city's Library can be entered through the door to the west and the Casbah begins its journey a little ways north of here. The Row and the entrance to the dancehall is to the south.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5454"
+            },
+            "south": {
+                "room_id": "new-thalos-5456"
+            },
+            "west": {
+                "room_id": "new-thalos-5551"
+            }
+        }
+    }
+}

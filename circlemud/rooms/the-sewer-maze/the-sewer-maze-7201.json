@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7201",
+    "spec": {
+        "name": "The Inner Lair",
+        "description": "You are in a octagonal room with smooth purple stone walls. The floor is made from black stone. In the western wall you see a large black stone door.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "south": {
+                "room_id": "the-sewer-maze-7202",
+                "description": "You look back through the door into the lair.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "the-sewer-maze-7200",
+                "description": "You see the treasury.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "the-sewer-maze-7205",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

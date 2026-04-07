@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3112",
+    "spec": {
+        "name": "The Western Park Entrance",
+        "description": "You are standing at the western end of the park. A small path leads east into the park and going west through the entrance you will reach Park Road.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "east": {
+                "room_id": "southern-part-of-midgaard-3113"
+            },
+            "west": {
+                "room_id": "southern-part-of-midgaard-3111"
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

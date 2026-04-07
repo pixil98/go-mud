@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5651",
+    "spec": {
+        "name": "In The Mountains",
+        "description": "You are walking over rocks and stones through the mountains between the Ishtar and Dark rivers. It is funny how all the rocks look alike.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5652"
+            },
+            "east": {
+                "room_id": "new-thalos-5656"
+            },
+            "south": {
+                "room_id": "new-thalos-5654"
+            },
+            "west": {
+                "room_id": "new-thalos-5657"
+            }
+        }
+    }
+}

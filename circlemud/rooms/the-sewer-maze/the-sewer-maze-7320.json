@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7320",
+    "spec": {
+        "name": "The Lair End",
+        "description": "You can see a table in front of you. It is very dusty. Five skeletons are sitting around the table. Exits are north and east.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "north": {
+                "room_id": "the-sewer-maze-7319",
+                "description": "The northern part of the lair."
+            },
+            "east": {
+                "room_id": "the-sewer-maze-7317",
+                "description": "The eastern part of the lair."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "table"
+                ],
+                "description": "On the table there is dust, in the center there is a small statue of a Dragon sleeping."
+            },
+            {
+                "keywords": [
+                    "skeleton",
+                    "skeletons"
+                ],
+                "description": "They've obviously been killed somehow, but it doesn't look like it was by sword or club."
+            },
+            {
+                "keywords": [
+                    "dragon",
+                    "statue"
+                ],
+                "description": "It looks like a silver dragon. It is nailed onto the table. The dragon sits on a red dragon that looks dead. But the eyes of the red dragon are glowing, pulsating red. You feel drained."
+            }
+        ]
+    }
+}

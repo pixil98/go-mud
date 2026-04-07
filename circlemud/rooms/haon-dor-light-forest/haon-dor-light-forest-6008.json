@@ -1,0 +1,60 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6008",
+    "spec": {
+        "name": "The Forest Clearing",
+        "description": "You are in a clearing in the forest. Lots of fresh stumps of varying sizes protrude from the ground and heavy logs are stacked neatly in a big pile supported by stakes set into the ground. Paths lead north, east and west.",
+        "zone_id": "haon-dor-light-forest",
+        "exits": {
+            "north": {
+                "room_id": "haon-dor-light-forest-6011",
+                "description": "The small path leads north through the trees."
+            },
+            "east": {
+                "room_id": "haon-dor-light-forest-6009",
+                "description": "The small path leads east through the trees."
+            },
+            "west": {
+                "room_id": "haon-dor-light-forest-6007",
+                "description": "The small path leads west through the trees."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "log",
+                    "logs"
+                ],
+                "description": "Even though the logs have been chopped to shorter pieces, they are quite heavy as they are fresh and still filled with sap."
+            },
+            {
+                "keywords": [
+                    "path",
+                    "paths"
+                ],
+                "description": "The narrow path is probably used by the animals living in the forest."
+            },
+            {
+                "keywords": [
+                    "stake",
+                    "stakes"
+                ],
+                "description": "The stakes keep the logs from rolling down."
+            },
+            {
+                "keywords": [
+                    "stump",
+                    "stumps"
+                ],
+                "description": "There are more stumps than logs and some of the stumps are partly covered in moss."
+            },
+            {
+                "keywords": [
+                    "tree",
+                    "trees"
+                ],
+                "description": "The trees are mostly old beeches and oaks."
+            }
+        ]
+    }
+}

@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3003",
+    "spec": {
+        "name": "The Bar Of Divination",
+        "description": "The bar is one of the finest in the land, lucky it is members only. Fine furniture is set all around the room. A small sign is hanging on the wall.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "south": {
+                "room_id": "northern-midgaard-main-city-3004",
+                "description": "You see the entrance."
+            },
+            "west": {
+                "room_id": "northern-midgaard-main-city-3002",
+                "description": "You see the inner sanctum."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "sign"
+                ],
+                "description": "The sign reads: Free instructions provided by the waiter: Buy - Buy something (drinkable) from the waiter. List - The waiter will show you all the different drinks and specialties, and tell the price of each."
+            }
+        ]
+    }
+}

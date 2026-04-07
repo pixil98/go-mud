@@ -1,0 +1,10 @@
+{
+    "version": 1,
+    "id": "limbo---internal-0",
+    "spec": {
+        "aliases": [
+            "key"
+        ],
+        "short_desc": "a small key"
+    }
+}

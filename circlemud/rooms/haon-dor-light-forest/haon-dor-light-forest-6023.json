@@ -1,0 +1,53 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6023",
+    "spec": {
+        "name": "A Grassy Field",
+        "description": "You are in a grass covered field somewhere in the forest. The tall grass nearly reaches your waist, and the surrounding oaks and beeches form an almost wall-like thicket on the east side of the field. To the northeast you can see a small lake. A small path leads south through the trees, and the field opens up to the north and west.",
+        "zone_id": "haon-dor-light-forest",
+        "exits": {
+            "north": {
+                "room_id": "haon-dor-light-forest-6026",
+                "description": "Wind blowing in from the north carries with it the smell of a newly killed animal, as well as the noise of many birds, which you can see circling there."
+            },
+            "east": {
+                "room_id": "haon-dor-light-forest-6024",
+                "description": "The ground slopes gently downward to the eastern tree line."
+            },
+            "south": {
+                "room_id": "haon-dor-light-forest-6018",
+                "description": "The small path leads south in between the trees."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "grass"
+                ],
+                "description": "The tall grass makes a nice hiding place for animals."
+            },
+            {
+                "keywords": [
+                    "path"
+                ],
+                "description": "The narrow path is probably used by the animals living in the forest."
+            },
+            {
+                "keywords": [
+                    "tree",
+                    "trees",
+                    "thicket"
+                ],
+                "description": "The trees form a close thicket, blocking any exit to the west."
+            },
+            {
+                "keywords": [
+                    "birds",
+                    "bird",
+                    "circling"
+                ],
+                "description": "Many carrion birds are circling to the north, you presume they are waiting for their turn to feast on a corpse."
+            }
+        ]
+    }
+}

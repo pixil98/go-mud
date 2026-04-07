@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15039",
+    "spec": {
+        "name": "The Guest Suite",
+        "description": "This must be where only the most highly regarded guests stay, since it is luxurious beyond your wildest imagination. This is only the living room of the suite, but it is huge and tastefully decorated. All the furniture is not only beautiful, but also made for comfort. To the north, there is an exit to the bedroom, and there is a door to the west.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "north": {
+                "room_id": "king-welmars-castle-15044",
+                "description": "You see the bedroom."
+            },
+            "west": {
+                "room_id": "king-welmars-castle-15038",
+                "description": "Behind the door you see the entrance to the Guest Wing.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

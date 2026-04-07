@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "drow-city-5125",
+    "spec": {
+        "name": "The Throne Room",
+        "description": "The throne room is basically similar to the inner courtyard in regards to decor. there is a small throne behind the altar but that is about it.",
+        "zone_id": "drow-city",
+        "exits": {
+            "west": {
+                "room_id": "drow-city-5124"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

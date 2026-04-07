@@ -1,0 +1,42 @@
+{
+    "version": 1,
+    "id": "midennir-3521",
+    "spec": {
+        "name": "The Carnage",
+        "description": "Here, you see a gruesome sight. Blood is everywhere... on the trees and soaked into the ground. Two carcasses lie in front of you, seeming to look up at you. The forest is impassible to the south, but the other directions look ok.",
+        "zone_id": "midennir",
+        "exits": {
+            "north": {
+                "room_id": "midennir-3519",
+                "description": "Darkness..."
+            },
+            "east": {
+                "room_id": "midennir-3523",
+                "description": "Your light does not extend that far."
+            },
+            "west": {
+                "room_id": "midennir-3522",
+                "description": "More dark forest."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "carcass",
+                    "body",
+                    "corpse",
+                    "carcasses",
+                    "bodies",
+                    "corpses"
+                ],
+                "description": "The corpses looked as if they have been pierced by a large, jagged spear. The damage these people sustained is simply amazing. Worse, the lips on the bodies are a light shade of blue, hinting at poison in their systems."
+            }
+        ]
+    }
+}

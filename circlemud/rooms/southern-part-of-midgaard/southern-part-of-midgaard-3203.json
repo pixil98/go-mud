@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3203",
+    "spec": {
+        "name": "On The River",
+        "description": "The levee is directly north of here. The river flows in an east west direction.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "north": {
+                "room_id": "northern-midgaard-main-city-3049",
+                "zone_id": "northern-midgaard-main-city"
+            },
+            "east": {
+                "room_id": "southern-part-of-midgaard-3204"
+            },
+            "west": {
+                "room_id": "southern-part-of-midgaard-3202"
+            }
+        }
+    }
+}

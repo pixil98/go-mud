@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7310",
+    "spec": {
+        "name": "The Small Room",
+        "description": "As you look around you notice a small statue. There are exits to the west and to the east.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "east": {
+                "room_id": "the-sewer-maze-7309",
+                "description": "It is pitch dark out there."
+            },
+            "west": {
+                "room_id": "the-sewer-maze-7311",
+                "description": "You see a VERY long hallway."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "small",
+                    "statue"
+                ],
+                "description": "This is a statue of a imp, pointing to the west. The imp looks like a man with horns and a tail."
+            }
+        ]
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1522",
+    "spec": {
+        "name": "The Light of the Rashidun",
+        "description": "The end of the Rashidun was the beginning of Schism. The memories of the Prophet and the living example of the Caliphs proved to be insufficient example to the faithful. Ali died, and some say that with him the Caliphate died too, a martyr, his blood still flowing in the nameless river.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "north": {
+                "room_id": "the-straight-path-1531"
+            },
+            "south": {
+                "room_id": "the-straight-path-1521"
+            }
+        }
+    }
+}

@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2617",
+    "spec": {
+        "name": "The Illusion Master's Chamber",
+        "description": "You are in the chamber of the Master of Illusions. The walls here are ever changing in colour and texture, as if they were reforming before your very eyes. Many splendorous treasures lie all around in heaps and piles, or at least they seem to be treasures...",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2616",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2618"
+            }
+        }
+    }
+}

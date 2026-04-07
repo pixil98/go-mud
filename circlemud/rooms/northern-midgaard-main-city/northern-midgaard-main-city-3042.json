@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3042",
+    "spec": {
+        "name": "Wall Road",
+        "description": "You are walking next to the western city wall. The road continues further south and the city gate is just north of here.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "north": {
+                "room_id": "northern-midgaard-main-city-3040",
+                "description": "You see the city gate."
+            },
+            "south": {
+                "room_id": "northern-midgaard-main-city-3043",
+                "description": "The road continues further south."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "wall"
+                ],
+                "description": "It is built from large grey rocks that have been fastened to each other with some kind of mortar. It is far too high to climb."
+            }
+        ]
+    }
+}

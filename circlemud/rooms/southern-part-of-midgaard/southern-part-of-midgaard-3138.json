@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3138",
+    "spec": {
+        "name": "The Mayor's Office",
+        "description": "You are in the not very big office of the Mayor of Midgaard. A large and polished but completely empty desk is standing in front of an armchair that looks so comfortable that it most of all resembles a bed with the head end raised slightly.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "west": {
+                "room_id": "southern-part-of-midgaard-3137",
+                "description": "The waiting room is to the west."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "desk"
+                ],
+                "description": "This desk is obviously very old. Nevertheless it looks as if has never been used."
+            },
+            {
+                "keywords": [
+                    "chair",
+                    "armchair"
+                ],
+                "description": "This chair is really a masterpiece. A chair where one can sit as comfortably as in a bed. All auditoriums should be equipped with these things. A shame that there wouldn't be room for the students too, though."
+            }
+        ]
+    }
+}

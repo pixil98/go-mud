@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5646",
+    "spec": {
+        "name": "River Ishtar",
+        "description": "The river meanders through the foothills of the eastern mountains. The air is dryer on this side of the continental divide and it seems a bit warmer.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5647"
+            },
+            "west": {
+                "room_id": "new-thalos-5645"
+            }
+        }
+    }
+}

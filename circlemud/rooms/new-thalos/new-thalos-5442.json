@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "new-thalos-5442",
+    "spec": {
+        "name": "East Ishtar Drive",
+        "description": "The sound of squawking gulls and the smell of rotting fish gives you a hint of your location. The River Ishtar flows south of you, but looks crystal clear, so it cannot be the source of this putrid smell. Looking north you notice a small sign hanging over the dump.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5547"
+            },
+            "west": {
+                "room_id": "new-thalos-5441"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "sign"
+                ],
+                "description": "#====================================================# | | | THE DUMP OF NEW THALOS | | | | | | ----- | | | | Enter at your own risk. | | -the management | | | #====================================================#"
+            }
+        ]
+    }
+}

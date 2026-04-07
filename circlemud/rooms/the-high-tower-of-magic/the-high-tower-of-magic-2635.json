@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2635",
+    "spec": {
+        "name": "The Scrying Chamber",
+        "description": "You are in the scrying chamber of the high tower of sorcerery. It is here that arcane rituals are performed to enable those of the art to look in upon denizens throughout the world and spy out their darkest secrets. A huge black cauldron is in the center of the room, bubbling and gurgling, it pours forth a constant stream of smokey fog into the air about you. Here and there on stands of different sizes are crystal balls and oddly shaped mirrors.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "west": {
+                "room_id": "the-high-tower-of-magic-2634",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1514",
+    "spec": {
+        "name": "The Fall",
+        "description": "In the beginning, he was the best, the most beautiful of all the angels, and God's most loved creation. Look at your own beauty, human, and do what he could not. Look at your beauty, and learn to kneel!",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "south": {
+                "room_id": "the-straight-path-1513"
+            },
+            "north": {
+                "room_id": "the-straight-path-1515"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

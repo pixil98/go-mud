@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6237",
+    "spec": {
+        "name": "A Large Clearing",
+        "description": "The earth has been upturned many times here, and several white rocks stick up from the ground in odd positions. Graveyard. This must be where they bury their dead -- just dig a hole and throw the corpse inside, ignoring any previous occupants in the ground. How uncivilized... you hope you aren't taken care of in this matter when your time comes...",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "north": {
+                "room_id": "the-orc-enclave-6236"
+            }
+        }
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5238",
+    "spec": {
+        "name": "A Small Shack",
+        "description": "This cramped dwelling could not have housed more than one person. Now with the back wall missing, it could hold many more. Looking around you find broken shelves and workbenches with various vials and pouches spilling contents all across the floor. This was possibly the magic shop of the city. The doorway to the east is blocked, making the only exit back west.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "west": {
+                "room_id": "the-city-of-thalos-5237"
+            }
+        }
+    }
+}

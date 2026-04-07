@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6001",
+    "spec": {
+        "name": "A Trail Through The Light Forest",
+        "description": "You are on a trail leading through the forest. There seems to be a small path leading north into the shadows. To the east is the forest edge and to the west the trail leads further into the forest.",
+        "zone_id": "haon-dor-light-forest",
+        "exits": {
+            "north": {
+                "room_id": "haon-dor-light-forest-6060",
+                "description": "You see evidence of a small path leading through a break in the trees to the north."
+            },
+            "east": {
+                "room_id": "haon-dor-light-forest-6000",
+                "description": "The trail continues eastwards out of the forest."
+            },
+            "west": {
+                "room_id": "haon-dor-light-forest-6002",
+                "description": "You see the narrow forest trail winding westwards in between the trees."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "trail"
+                ],
+                "description": "The forest trail winds east-west through the trees."
+            },
+            {
+                "keywords": [
+                    "tree",
+                    "trees"
+                ],
+                "description": "The trees here are quite young and fresh. They seem to accommodate many kinds of birds, insects and other small animals."
+            },
+            {
+                "keywords": [
+                    "birds",
+                    "insects",
+                    "animals"
+                ],
+                "description": "Very cute little creatures, they seem to enjoy life."
+            }
+        ]
+    }
+}

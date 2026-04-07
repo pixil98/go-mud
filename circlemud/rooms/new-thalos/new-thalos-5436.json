@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5436",
+    "spec": {
+        "name": "West Ishtar Drive",
+        "description": "A cool breeze blows up off the river chilling the sweat otherwise present on your skin. Orders and sometimes curses can be heard from the west in the direction of the warehouses. The common square opens up to the east and Ishtar Drive continues west.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5410"
+            },
+            "west": {
+                "room_id": "new-thalos-5435"
+            }
+        }
+    }
+}

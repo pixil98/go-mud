@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6125",
+    "spec": {
+        "name": "A Small Path On The River Bank In The Deep, Dark Forest",
+        "description": "You are on a narrow path leading through the deep, dark forest. Ancient grey trees loom everywhere. To the south a dark river flows westward through the forest. The path continues north and east.",
+        "zone_id": "haon-dor-dark-forest",
+        "exits": {
+            "north": {
+                "room_id": "haon-dor-dark-forest-6126",
+                "description": "The narrow path winds its way through the trees to the north."
+            },
+            "east": {
+                "room_id": "haon-dor-dark-forest-6123",
+                "description": "The narrow path winds its way through the trees to the east."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "river"
+                ],
+                "description": "The river flows fast and strong. It is black or looks so in the gloom."
+            },
+            {
+                "keywords": [
+                    "bank",
+                    "banks",
+                    "tree",
+                    "trees",
+                    "trunk",
+                    "trunks"
+                ],
+                "description": "The ancient crowns of trees on both banks reach together forming a dense roof above the dark river."
+            },
+            {
+                "keywords": [
+                    "path"
+                ],
+                "description": "The path seems all too frail. One of the giant roots could probably crush it in a single blow."
+            }
+        ]
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "midennir-3584",
+    "spec": {
+        "name": "A Dead End Trail",
+        "description": "The path comes to an abrupt end here, as the trees close around you and make any further exploration impossible. Fresh tracks cover the ground, and end right here. The horsemen must be nearby.",
+        "zone_id": "midennir",
+        "exits": {
+            "east": {
+                "room_id": "midennir-3583",
+                "description": "Back to along the trail."
+            }
+        }
+    }
+}

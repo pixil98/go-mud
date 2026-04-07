@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7904",
+    "spec": {
+        "name": "The Northern End Of The Hall",
+        "description": "You are standing in the northern end of the huge hall. This part is under the grand wooden staircase so the light seems to be a little less bright here, but this doesn't affect your sight at all. To the north lies the kitchen. To the south lies the southern end of the hall. To the east there is a huge metal door. To the west there is a large aspenwood door.",
+        "zone_id": "redfernes-residence",
+        "exits": {
+            "north": {
+                "room_id": "redfernes-residence-7906"
+            },
+            "east": {
+                "room_id": "redfernes-residence-7913",
+                "description": "You see a huge metal door. From it a foul stench emanates. The smell is the most awful experience in your entire life. A thought seeps through this terrible stench and into your mind: 'Monsters', you feel BAD about opening that door.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "south": {
+                "room_id": "redfernes-residence-7901",
+                "description": "The rest of the hall lies in that direction, and so does the exit."
+            },
+            "west": {
+                "room_id": "redfernes-residence-7905",
+                "description": "The door has 'SITTING ROOM' written on it. It is made from Aspenwood and is beautifully carved with small elves as main issue of sculpture.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

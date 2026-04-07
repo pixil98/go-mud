@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5622",
+    "spec": {
+        "name": "River Ishtar",
+        "description": "The river begins its decent out of the mountains now and continues its flow to the east.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5644"
+            },
+            "west": {
+                "room_id": "new-thalos-5621"
+            }
+        }
+    }
+}

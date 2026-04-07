@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15058",
+    "spec": {
+        "name": "A Cell",
+        "description": "This cell is in a shambles. There is a small hole in the western wall where something has broken through the stones into the cell. There is a cell door in the eastern wall.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "east": {
+                "room_id": "king-welmars-castle-15057",
+                "description": "The cell door to the east leads back to the prison hallway.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "king-welmars-castle-15017",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "hole"
+                ],
+                "description": "The hole is much too small for you to clamber through."
+            }
+        ]
+    }
+}

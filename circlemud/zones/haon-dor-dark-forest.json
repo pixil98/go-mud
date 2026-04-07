@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest",
+    "spec": {
+        "name": "Haon-Dor, Dark Forest",
+        "reset_mode": "lifespan",
+        "lifespan": "30m"
+    }
+}

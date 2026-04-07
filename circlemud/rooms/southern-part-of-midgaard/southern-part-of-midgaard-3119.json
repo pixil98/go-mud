@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3119",
+    "spec": {
+        "name": "Emerald Avenue",
+        "description": "You are standing at a bend on Emerald Avenue. The road leads north and west.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "north": {
+                "room_id": "southern-part-of-midgaard-3117"
+            },
+            "west": {
+                "room_id": "southern-part-of-midgaard-3133"
+            }
+        }
+    }
+}

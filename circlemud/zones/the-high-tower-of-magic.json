@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic",
+    "spec": {
+        "name": "The High Tower Of Magic",
+        "reset_mode": "lifespan",
+        "lifespan": "20m"
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4049",
+    "spec": {
+        "name": "The Foothills",
+        "description": "You are at a point on the trail where it turns slowly from an almost straight westwards trail into a trail meandering towards the northwest.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5628",
+                "zone_id": "new-thalos",
+                "description": "A small trail leads away to the northwest."
+            },
+            "west": {
+                "room_id": "mines-of-moria-4048",
+                "description": "A trail heads towards the mountains to the west."
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

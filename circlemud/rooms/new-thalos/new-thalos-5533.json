@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "new-thalos-5533",
+    "spec": {
+        "name": "The Whet Stone",
+        "description": "Very large men with very large swords drink beer from very large mugs. Everything in this room is BIG. The large round tables are scuffed and nicked from the numerous bar brawls that have sprung up. It might be a good idea to hold your tounge for a while as you soak up the atmosphere. There is an exit to the east where the master swordsman awaits pupils to train with.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5526"
+            },
+            "east": {
+                "room_id": "new-thalos-5534"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "peaceful"
+            },
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ]
+    }
+}

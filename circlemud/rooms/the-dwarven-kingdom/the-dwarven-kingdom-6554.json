@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6554",
+    "spec": {
+        "name": "The Treasury",
+        "description": "This room appears to be the Queen's Treasury. There is one exit, back to the east.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "east": {
+                "room_id": "the-dwarven-kingdom-6532",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "the-dwarven-kingdom-6500",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        }
+    }
+}

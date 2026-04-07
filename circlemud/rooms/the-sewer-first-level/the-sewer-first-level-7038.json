@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7038",
+    "spec": {
+        "name": "The Three Way Junction",
+        "description": "You are standing in a junction of pipes that lead west, east and south.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "east": {
+                "room_id": "the-sewer-first-level-7045",
+                "description": "East. You can make out a dimly lit Guard Room."
+            },
+            "south": {
+                "room_id": "the-sewer-first-level-7039",
+                "description": "To the south you can see what looks like a store room."
+            },
+            "west": {
+                "room_id": "the-sewer-first-level-7025",
+                "description": "West. You see another junction similar to this one leading north and south."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6106",
+    "spec": {
+        "name": "A Junction In The Deep, Dark Forest",
+        "description": "You are by a junction where three paths meet. Ancient grey trees tower above you on all sides. Paths lead east, south and west.",
+        "zone_id": "haon-dor-dark-forest",
+        "exits": {
+            "east": {
+                "room_id": "haon-dor-dark-forest-6105",
+                "description": "The narrow path winds its way through the trees to the east."
+            },
+            "south": {
+                "room_id": "haon-dor-dark-forest-6117",
+                "description": "The narrow path winds its way through the trees to the south."
+            },
+            "west": {
+                "room_id": "haon-dor-dark-forest-6107",
+                "description": "The narrow path winds its way through the trees to the west."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "tree",
+                    "trees",
+                    "trunk",
+                    "trunks"
+                ],
+                "description": "The ancient grey giants seem to observe you silently."
+            },
+            {
+                "keywords": [
+                    "path",
+                    "paths"
+                ],
+                "description": "The path seems all too frail. One of the giant roots could probably crush it in a single blow."
+            }
+        ]
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5668",
+    "spec": {
+        "name": "On The Dark River",
+        "description": "You can barely make out what is ahead of you as the river flows quietly through the passageway.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5667"
+            },
+            "south": {
+                "room_id": "new-thalos-5669"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "rome-12012",
+    "spec": {
+        "name": "A Dirt Road",
+        "description": "You are on a parched and dusty rural road which runs east and west. There is a structure lying to the south.",
+        "zone_id": "rome",
+        "exits": {
+            "east": {
+                "room_id": "rome-12019",
+                "description": "Through the dust, you see a paved road."
+            },
+            "south": {
+                "room_id": "rome-12013",
+                "description": "It is difficult to see through the haze and dust."
+            },
+            "west": {
+                "room_id": "rome-12005",
+                "description": "It is difficult to see through the haze and dust."
+            }
+        }
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3306",
+    "spec": {
+        "name": "Mountain Ridge",
+        "description": "You are standing on a ridge in the mountains, just east of a very small valley. You spot a tiny cottage sitting in the center of the valley, and the ridge continues south. Looking at the sheer drops to the north and west, you consider not taking those directions.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "south": {
+                "room_id": "the-three-of-swords-3307"
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3305"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "tracks",
+                    "track"
+                ],
+                "description": "The tracks lead south."
+            }
+        ]
+    }
+}

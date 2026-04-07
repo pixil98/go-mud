@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2636",
+    "spec": {
+        "name": "A Corridor",
+        "description": "You have reached an end in the long corridor. Obsidian walls engraved with ancient runes of power stretch out before you. The sound of snoring can barely be heard through the door to the west.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "east": {
+                "room_id": "the-high-tower-of-magic-2633"
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2637",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

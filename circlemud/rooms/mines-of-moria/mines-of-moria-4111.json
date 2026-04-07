@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4111",
+    "spec": {
+        "name": "The Tunnel",
+        "description": "The walls of this small tunnel are almost completely covered in a strange orange moss that flakes off to the touch. The tunnel leads in an east-west direction and the air within is very damp and very stagnant. There is no detectable breeze at all but a strange smell emanates from the east. There is a small, almost unnoticed hole in the southern wall.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "east": {
+                "room_id": "mines-of-moria-4110"
+            },
+            "south": {
+                "room_id": "mines-of-moria-4126",
+                "description": "The hole looks very small. You will probably have to crawl through it."
+            },
+            "west": {
+                "room_id": "mines-of-moria-4112"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "moss",
+                    "walls",
+                    "wall"
+                ],
+                "description": "The moss on the walls is orange. When you touch it, it feels very scrubby and flakes off to the touch leaving a slight orange tinge on your fingertips."
+            }
+        ]
+    }
+}

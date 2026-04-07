@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5217",
+    "spec": {
+        "name": "The Meat Stand",
+        "description": "A large stand has been set up here with metal hooks and wooden racks in the background. Hanging on the hooks are very small scraps of meat and other game. This stand is relatively empty, and a sudden burst of howling and screaming makes you realize why this is so.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "north": {
+                "room_id": "the-city-of-thalos-5208",
+                "description": "The market place lies this way."
+            },
+            "east": {
+                "room_id": "the-city-of-thalos-5220",
+                "description": "This is a cart full of rotted vegetables and fruits."
+            },
+            "south": {
+                "room_id": "the-city-of-thalos-5216"
+            }
+        }
+    }
+}

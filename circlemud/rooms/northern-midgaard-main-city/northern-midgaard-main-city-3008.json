@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3008",
+    "spec": {
+        "name": "The Reception",
+        "description": "You are standing in the reception. The staircase leads down to the entrance hall. An exit to the north leads to the Cryogenic Center. There is a small sign on the counter.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "north": {
+                "room_id": "northern-midgaard-main-city-3064",
+                "description": "You see the Cryogenic Center."
+            },
+            "down": {
+                "room_id": "northern-midgaard-main-city-3006",
+                "description": "You see the entrance hall."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "sign"
+                ],
+                "description": "Rooms are expensive but good! You may: Offer - get an offer on a room - Time is in real life days. Rent - Rent a room (saves your stuff, and quits the game), minimum charge is one day. MY WAY OR THE HIGHWAY PAY YOUR RENT! WE WON'T THINK TWICE BEFORE KICKING YOU OUT."
+            }
+        ]
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3372",
+    "spec": {
+        "name": "The Pit",
+        "description": "You fall through the illusionary floor. You hit the poisoned spikes below. You die very slowly of bloodloss, your head impaled at an awkward angle.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "south": {
+                "room_id": "the-three-of-swords-3371"
+            }
+        },
+        "flags": [
+            "death"
+        ]
+    }
+}

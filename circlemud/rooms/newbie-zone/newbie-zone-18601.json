@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "newbie-zone-18601",
+    "spec": {
+        "name": "The Beginning Of The Passage",
+        "description": "You find yourself entering a long corridor. You can hear the sound of creatures roaming about, but you can't tell where the sound emanates from exactly. Exits lead to the east along the hallway, and south back to the entrance.",
+        "zone_id": "newbie-zone",
+        "exits": {
+            "east": {
+                "room_id": "newbie-zone-18602",
+                "description": "More of the hallway there... how exciting!"
+            },
+            "south": {
+                "room_id": "newbie-zone-18600",
+                "description": "The entrance to the newbie zone... how dull"
+            }
+        }
+    }
+}

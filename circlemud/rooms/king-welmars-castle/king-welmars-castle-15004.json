@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15004",
+    "spec": {
+        "name": "On The Drawbridge",
+        "description": "You have arrived at the drawbridge leading into the Castle. Before you is a huge, double-doored gate. It seems very strong. You see some whirls in the moat.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "north": {
+                "room_id": "king-welmars-castle-15007",
+                "description": "The gate has huge, but intricately carved hinges. As the Castle itself, it seems designed not only for strength, but also for beauty.",
+                "closure": {
+                    "name": "gate",
+                    "closed": true
+                }
+            },
+            "south": {
+                "room_id": "king-welmars-castle-15003",
+                "description": "You see the King's Road."
+            }
+        },
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "whirls",
+                    "whirl",
+                    "moat"
+                ],
+                "description": "You can't see much, but it seems that something beneath the surface is creating them."
+            }
+        ]
+    }
+}

@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "new-thalos-5589",
+    "spec": {
+        "name": "The Throne Room",
+        "description": "You stand in the throne room of the mighty Sultan of New Thalos. Guards stand at attention near his side ready to make the ultimate sacrifice for their beloved leader. The gold inlaid throne studded with jewels stands upon a mable dias. The Sultan is not a man to be trifled with.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5590",
+                "closure": {
+                    "name": "throne",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "new-thalos-5400",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            },
+            "east": {
+                "room_id": "new-thalos-5584",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "south": {
+                "room_id": "new-thalos-5588",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

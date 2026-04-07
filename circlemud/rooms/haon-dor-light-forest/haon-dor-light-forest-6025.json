@@ -1,0 +1,61 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6025",
+    "spec": {
+        "name": "Beside The Lake In A Grassy Field",
+        "description": "The grass stops shortly before the lake, replaced by mud covered in tracks from the local animals. When you come close many animals scatter into the tall grass and some even into the forest. To the west you see birds circling in the high in the air, and to the north you see a small lake, surrounded by tall reeds. The field continues to the south, and the forest blocks passage to the east.",
+        "zone_id": "haon-dor-light-forest",
+        "exits": {
+            "north": {
+                "room_id": "haon-dor-light-forest-6027",
+                "description": "The lake looks inviting, and you can see some sort of water fowl floating around among the reeds."
+            },
+            "south": {
+                "room_id": "haon-dor-light-forest-6024",
+                "description": "To the south an animal trail leads of towards a the other side of the lower field."
+            },
+            "west": {
+                "room_id": "haon-dor-light-forest-6026",
+                "description": "The smell of carrion drifts down to you from higher on the field to the west."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "grass"
+                ],
+                "description": "The tall grass makes a nice hiding place for animals."
+            },
+            {
+                "keywords": [
+                    "lake"
+                ],
+                "description": "Animals from all around come here to drink. The lake itself is not very big, but it stretches off to the north from here."
+            },
+            {
+                "keywords": [
+                    "tree",
+                    "trees",
+                    "thicket"
+                ],
+                "description": "The trees form a close thicket, blocking any exit to the north or east."
+            },
+            {
+                "keywords": [
+                    "birds",
+                    "bird",
+                    "circling"
+                ],
+                "description": "Many carrion birds are circling to the west, you presume they are waiting for their turn to feast on a corpse."
+            },
+            {
+                "keywords": [
+                    "track",
+                    "tracks",
+                    "mud"
+                ],
+                "description": "You see tracks of both hooved and other sorts of animals. Evidence of all sizes of animals is here in the mud, showing just how lively the forest is."
+            }
+        ]
+    }
+}

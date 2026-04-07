@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15051",
+    "spec": {
+        "name": "King Welmar's Bedroom",
+        "description": "This is a large room, with a wonderful view. To one side of the room, stands a large four-poster bed. All around the room there are massive bookshelves, filled with all kinds of books. The titles include works such as: 'A Treatise on the History of Midgaard and surrounding areas', 'Magic - A Beginner's Introduction' and many others. There is an exit to the west.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "west": {
+                "room_id": "king-welmars-castle-15050",
+                "description": "There is a large and cosy room to the west."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "books",
+                    "book",
+                    "shelf",
+                    "shelves",
+                    "bookshelf",
+                    "bookshelves"
+                ],
+                "description": "Most of the books seem worn, as if thoroughly studied. The King evidently is interested in keeping himself educated."
+            },
+            {
+                "keywords": [
+                    "bed"
+                ],
+                "description": "Seems nice enough to sleep in, though you would never dare to, since it is a Royal Bed!"
+            },
+            {
+                "keywords": [
+                    "history",
+                    "midgaard"
+                ],
+                "description": "A dry tome, filled with boring knowledge."
+            },
+            {
+                "keywords": [
+                    "magic"
+                ],
+                "description": "Beginner? This book goes beyond most of what YOU know about magic anyway. But then, there are levels of magical knowledge, it seems."
+            }
+        ]
+    }
+}

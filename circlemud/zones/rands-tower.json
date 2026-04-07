@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "rands-tower",
+    "spec": {
+        "name": "Rand's Tower",
+        "reset_mode": "empty",
+        "lifespan": "20m"
+    }
+}

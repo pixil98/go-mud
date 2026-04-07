@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "new-thalos-5521",
+    "spec": {
+        "name": "The Bank",
+        "description": "You stand in a large building decorated with black marble and red satin. Huge pillars support an arched ceiling far above your head. You wonder at the skill the dwarves have for detail as you examine the trim. Fine silver seperates the polished blocks that make up the floor.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5414"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "peaceful"
+            }
+        ]
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1531",
+    "spec": {
+        "name": "The Upper Reaches",
+        "description": "You have traveled the righteous path, and you have faced the examples of the true models of the Prophet. Only the final journey awaits you; live like this and you shall live forever.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "south": {
+                "room_id": "the-straight-path-1522"
+            },
+            "east": {
+                "room_id": "the-straight-path-1532"
+            },
+            "down": {
+                "room_id": "the-straight-path-1534"
+            }
+        }
+    }
+}

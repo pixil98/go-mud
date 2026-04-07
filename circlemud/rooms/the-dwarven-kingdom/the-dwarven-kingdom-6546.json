@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6546",
+    "spec": {
+        "name": "The Mine Maze",
+        "description": "You have entered the maze of the mines. To the east you can see some inscriptions, and you can exit to the south.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "east": {
+                "room_id": "the-dwarven-kingdom-6547"
+            },
+            "south": {
+                "room_id": "the-dwarven-kingdom-6544",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "the-dwarven-kingdom-6516",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3137",
+    "spec": {
+        "name": "The Waiting Room",
+        "description": "You are standing in the waiting room at the town hall. Wooden chairs stand along the walls and a long desk with a typewriter is placed in the middle of the room.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "east": {
+                "room_id": "southern-part-of-midgaard-3138",
+                "description": "It looks like some kind of office."
+            },
+            "west": {
+                "room_id": "southern-part-of-midgaard-3117",
+                "description": "The exit west leads to Emerald Avenue."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "chair",
+                    "chairs"
+                ],
+                "description": "Not the very least comfortable."
+            },
+            {
+                "keywords": [
+                    "desk"
+                ],
+                "description": "An extremely heavy desk. It is so large that it doesn't even need drawers. Everything can be stored on its top."
+            },
+            {
+                "keywords": [
+                    "typewriter"
+                ],
+                "description": "It is an ancient Quifatronic T-1000 mk I. These machines are known for their incredible durability, and for their even more incredible weight. They make a Cray II look like a laptop."
+            }
+        ]
+    }
+}

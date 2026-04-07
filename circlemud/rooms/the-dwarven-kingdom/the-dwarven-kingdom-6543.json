@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6543",
+    "spec": {
+        "name": "On The Path Inside The Mine",
+        "description": "You are deep inside the mine, and you feel very uncomfortable. The path continues to the east, and leads to the mineshaft to the west.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "east": {
+                "room_id": "the-dwarven-kingdom-6544"
+            },
+            "west": {
+                "room_id": "the-dwarven-kingdom-6542"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

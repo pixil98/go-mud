@@ -1,0 +1,69 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6031",
+    "spec": {
+        "name": "Out On A Limb In A Large Oak",
+        "description": "This sturdy branch hangs far out over a path to the west, which you might be able to jump down to. Several squirrels scamper into hiding as you approach, leaving you alone and swaying slightly with the wind. To your north you can see a small log cabin through the trees, and to the southeast there seems to be some sort of clearing, with many birds circling above it.",
+        "zone_id": "haon-dor-light-forest",
+        "exits": {
+            "east": {
+                "room_id": "haon-dor-light-forest-6030",
+                "description": "Back to the east you see the tree trunk. It is much less precarious there compared to here... perhaps you should go back."
+            },
+            "down": {
+                "room_id": "haon-dor-light-forest-6016",
+                "description": "Below you is a small path, probably used by the forest animals. You think that you could jump down with a little effort."
+            }
+        },
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "nest",
+                    "nests"
+                ],
+                "description": "You notice that several of the squirrels sought refuge in a large nest that is well within your reach. Looking into the nest, you see two pairs of eyes staring back at you."
+            },
+            {
+                "keywords": [
+                    "animals",
+                    "bird",
+                    "birds"
+                ],
+                "description": "A variety of squirrels, chipmunks, and birds make their homes in this and the surrounding trees. If you look closely you may be able to see some of their rapidly emptying nests."
+            },
+            {
+                "keywords": [
+                    "feline"
+                ],
+                "description": "The shape above you moves with definite grace and confidence. You think that it must be a Bobcat, stalking smaller tree-dwelling animals."
+            },
+            {
+                "keywords": [
+                    "pacing",
+                    "pace",
+                    "animal",
+                    "shape"
+                ],
+                "description": "From here it looks feline. You still don't think it has noticed you, despite the noise you made while climbing up here."
+            },
+            {
+                "keywords": [
+                    "limb",
+                    "limbs"
+                ],
+                "description": "The limbs look quite sturdy, certainly capable of holding your weight should you decide to climb around in the tree using them."
+            },
+            {
+                "keywords": [
+                    "top",
+                    "highest",
+                    "high"
+                ],
+                "description": "You could probably see most of the forest, and perhaps even the city from the top of the tree... of course, you would have to deal with whatever that shape is that you see pacing on one of the upper limbs."
+            }
+        ]
+    }
+}

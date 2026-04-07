@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5011",
+    "spec": {
+        "name": "A Giant Cave",
+        "description": "This cavern overwhelms you. The walls and ceiling seem miles away. Bones of previous adventurers lie strewn on the cavern floor. There is a passage that spirals downwards in the northeast corner of the cavern.",
+        "zone_id": "the-great-eastern-desert",
+        "exits": {
+            "up": {
+                "room_id": "the-great-eastern-desert-5010"
+            },
+            "down": {
+                "room_id": "drow-city-5100",
+                "zone_id": "drow-city",
+                "description": "The passageway spirals down into the gloom."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

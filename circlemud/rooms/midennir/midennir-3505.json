@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "midennir-3505",
+    "spec": {
+        "name": "The Trail To Miden'Nir",
+        "description": "You are in a light forest. A path leads south, but the passage to the east is easy enough. To the west, smoke can be seen rising above the treetops. The sprawl of Midgaard lies north of here.",
+        "zone_id": "midennir",
+        "exits": {
+            "north": {
+                "room_id": "midennir-3504",
+                "description": "To the north, you see the South Gate of Midgaard."
+            },
+            "east": {
+                "room_id": "midennir-3506",
+                "description": "More light forest."
+            },
+            "south": {
+                "room_id": "midennir-3507",
+                "description": "This path cuts through the darkness of the Miden'Nir."
+            },
+            "west": {
+                "room_id": "midennir-3570",
+                "description": "The Woodsman's Inn can be seen a short distance to the west, it appears to be the source of the smoke."
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

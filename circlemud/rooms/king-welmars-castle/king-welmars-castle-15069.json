@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15069",
+    "spec": {
+        "name": "A House",
+        "description": "This darkened room is barely lit by the outdoor light, but what you can see of it gives you the creeps. There are cobwebs dangling from everything, a thick layer of dust begins to rise up at your passage, and a strange howl comes from somewhere around you. The furniture in this house is old and of a type that hasn't been seen around these lands for some time. If it was in better shape, you might be able to sell it as antique. The meager light of the road shines through the doorway to the west.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "west": {
+                "room_id": "king-welmars-castle-15065",
+                "description": "You can see the dirt road through the doorway to the west."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

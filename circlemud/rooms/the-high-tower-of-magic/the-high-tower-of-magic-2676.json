@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2676",
+    "spec": {
+        "name": "The Entranceway",
+        "description": "You are at the entrance to the audience chamber of the Grand Master of Magic. Beautiful tapestries displaying the ancient masters of lore are on the walls, and the floor is covered with a plush multicoloured carpet, which seems to rustle and move at the touch of your boots.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2677"
+            },
+            "south": {
+                "room_id": "the-high-tower-of-magic-2675",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "the-high-tower-of-magic-2595",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        }
+    }
+}

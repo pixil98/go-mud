@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "arachnos-6350",
+    "spec": {
+        "name": "The Ki-Rin Chamber",
+        "description": "A wise ki-rin was entrapped here many years ago. It is from her that the ruler of this realm draws magical strength.",
+        "zone_id": "arachnos",
+        "exits": {
+            "north": {
+                "room_id": "arachnos-6347"
+            }
+        }
+    }
+}

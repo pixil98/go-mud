@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "id": "new-thalos-5471",
+    "spec": {
+        "name": "Alley",
+        "description": "You are in a tiny ally between the temple and the bank. You hear some shouting and general roadwork to the south. The ground is rough and in need of repair. In the road is a small pothole.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5469"
+            },
+            "south": {
+                "room_id": "new-thalos-5425"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "pothole"
+                ],
+                "description": "Why are you looking in a pothole? Are you poor or something?"
+            }
+        ]
+    }
+}

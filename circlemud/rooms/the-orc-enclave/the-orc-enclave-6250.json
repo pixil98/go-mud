@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6250",
+    "spec": {
+        "name": "A Cave",
+        "description": "Several grass sleeping pallets are here, clustered around the remains of an old fire. The sloping of the cave's ceiling allow for smoke ventilation towards the surface in here you note, lucky for the orcs. A few strings of burnt meat still hang over the fire, untended and uneaten. On the floor near your feet you spy a small, twisted piece of wire... one orc's idea of a treasured ring, no doubt. Kicking the trinket away, you try to push the pity out of your heart for these wretches.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "north": {
+                "room_id": "the-orc-enclave-6247"
+            },
+            "east": {
+                "room_id": "the-orc-enclave-6251"
+            },
+            "south": {
+                "room_id": "the-orc-enclave-6253"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6249"
+            }
+        }
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5407",
+    "spec": {
+        "name": "Southeastern Market Square",
+        "description": "In this corner of the market some of the largest warriors in the land tower over you. It is easy to understand why they hang out here once you notice the weapon shop and the armoury close by. Perhaps you might stop in and take a look at the wares these shops have to offer.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5417"
+            },
+            "east": {
+                "room_id": "new-thalos-5529"
+            },
+            "south": {
+                "room_id": "new-thalos-5536"
+            },
+            "west": {
+                "room_id": "new-thalos-5405"
+            }
+        }
+    }
+}

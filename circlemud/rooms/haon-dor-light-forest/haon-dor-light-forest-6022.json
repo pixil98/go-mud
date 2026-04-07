@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6022",
+    "spec": {
+        "name": "Inside The Cave",
+        "description": "You are in a natural cave. Various sorts of debris cover the stone floor, emitting a rather unpleasant smell that makes the air thick and hard to breathe. The only obvious exit is east.",
+        "zone_id": "haon-dor-light-forest",
+        "exits": {
+            "east": {
+                "room_id": "haon-dor-light-forest-6021",
+                "description": "The cave opening is to the east."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "debris"
+                ],
+                "description": "It consists mostly of gnawed bones mixed with small pieces of torn fur."
+            },
+            {
+                "keywords": [
+                    "cave",
+                    "walls",
+                    "floor",
+                    "stone"
+                ],
+                "description": "Quite uninteresting."
+            },
+            {
+                "keywords": [
+                    "air",
+                    "smell"
+                ],
+                "description": "Kind of transparent, but quite noticeable nevertheless."
+            }
+        ]
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5221",
+    "spec": {
+        "name": "The Smithy",
+        "description": "In here you find tools and anvils used to make various weapons and items. The walls have been stripped clean and only a few incomplete pieces of armor and weaponry are left.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "east": {
+                "room_id": "the-city-of-thalos-5212",
+                "description": "A small side street runs past the building."
+            }
+        }
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2601",
+    "spec": {
+        "name": "A Store Room",
+        "description": "You are in a large store room. Raw materials are neatly bundled and piled here and here. Many freshly cut staves rods and wands of different sizes are here. You can see a silver door to the west.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "south": {
+                "room_id": "the-high-tower-of-magic-2600",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2602",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4025",
+    "spec": {
+        "name": "The Cave",
+        "description": "You find yourself standing in the northern end of a reasonably large cave. The cave wall to the east has an opening that appears to lead to a junction of several tunnels.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "east": {
+                "room_id": "mines-of-moria-4026"
+            },
+            "south": {
+                "room_id": "mines-of-moria-4018"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

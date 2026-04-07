@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3349",
+    "spec": {
+        "name": "A Small Road",
+        "description": "This road runs north through Stanneg by the Mountains, if through would be the operative word for such a motley collection of buildings. Westwards is a small, open-roofed building that appears to be a farmer's market. The road you are on continues north, and comes to an intersection just south of here.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "north": {
+                "room_id": "the-three-of-swords-3351"
+            },
+            "south": {
+                "room_id": "the-three-of-swords-3348"
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3350"
+            }
+        }
+    }
+}

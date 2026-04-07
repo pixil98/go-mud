@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3009",
+    "spec": {
+        "name": "The Bakery",
+        "description": "You are standing inside the small bakery. A sweet scent of Danish and fine bread fills the room. The bread and Danish are arranged in fine order on the shelves, and seem to be of the finest quality. A small sign is on the counter.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "south": {
+                "room_id": "northern-midgaard-main-city-3013",
+                "description": "You see the main street."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "danish",
+                    "pastry"
+                ],
+                "description": "You see that this is truly delicious pastry. Must be made by a Dane from Denmark (which surely is not the capital of Sweden!). Former ruler of Scandinavia, England, Northern Germany, Northern France, Russia, Greenland, Iceland, Estonia etc. etc. The sight of those large, wholesome chokoladeboller makes your mouth water and your soul sing."
+            },
+            {
+                "keywords": [
+                    "sign"
+                ],
+                "description": "Free instructions provided by the store: Buy - Will buy you some bread or pastry. List - The baker will kindly tell you the price and sort of the bread in his bakery."
+            }
+        ]
+    }
+}

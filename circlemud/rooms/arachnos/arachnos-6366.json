@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "arachnos-6366",
+    "spec": {
+        "name": "The Entrance To The Donjonkeep",
+        "description": "A dark path at the end of the web strand, you see ahead a torch lit chamber where the souls of unavenged adventurers come and gnash their teeth. The howls and screams of many echo through the hall ways. You see one definite path ahead.",
+        "zone_id": "arachnos",
+        "exits": {
+            "north": {
+                "room_id": "arachnos-6367"
+            }
+        }
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5510",
+    "spec": {
+        "name": "The Donation Room",
+        "description": "This room is new to the temple, it was created during the hard times that had struck the city in recent decades. Luckily for them the Sultan had been hoarding some of the basic neccesities for just such an occasion. These days the donation room depends on the generosity of wealthy adventurers, and a curse on any that walk in to take everything.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "west": {
+                "room_id": "new-thalos-5509"
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

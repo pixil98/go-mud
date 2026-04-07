@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3313",
+    "spec": {
+        "name": "The Overlook",
+        "description": "You are standing on a point outcropping with a beautiful view of the mountains to the north. Far below, you see what appears to be a foot-path climb up to the central mountain, a peak that looks dark and disturbing. You get very bad vibes from that mountain for some reason, and it doesn't seem like a very good idea to try to find a way to get there. The only safe way to leave this overlook is to the south.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "south": {
+                "room_id": "the-three-of-swords-3312"
+            }
+        }
+    }
+}

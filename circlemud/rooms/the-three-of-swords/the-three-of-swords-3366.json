@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3366",
+    "spec": {
+        "name": "Near The Peak",
+        "description": "This is as close to the peak as you're going to get, unless you use that tiny, tiny path leading up to your north. Up the side of the mountain you see a great cave hollowed out, the inside pitch black. The path leads down the mountains to your east, which seems to be the best place to go.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "north": {
+                "room_id": "the-three-of-swords-3367"
+            },
+            "east": {
+                "room_id": "the-three-of-swords-3365"
+            }
+        }
+    }
+}

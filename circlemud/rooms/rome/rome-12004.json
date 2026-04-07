@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "rome-12004",
+    "spec": {
+        "name": "The Southern Commoner's Seats",
+        "description": "This is the southeastern part of the common seating areas. The benches here are made of stone and are probably centuries old. A few scratches on one of the benches catch your eye. An acrid smell is coming from the east and a tunnel leads off to the north.",
+        "zone_id": "rome",
+        "exits": {
+            "north": {
+                "room_id": "rome-12003",
+                "description": "The tunnel looks like it leads to another seating area."
+            },
+            "east": {
+                "room_id": "rome-12011",
+                "description": "There is an acrid smell coming from that direction."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "marks",
+                    "scratches"
+                ],
+                "description": "They look like they form the words \"Onivel Cinemod Semaj\" But you could be mistaken."
+            }
+        ]
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "the-second-sewer-7109",
+    "spec": {
+        "name": "The Narrow Ledge",
+        "description": "You are in the process of walking all the way around the ledge since there is no way of turning around on this all too narrow path. There IS another exit from here but that leads right into mid-air and with high probability of a free fall session afterwards.",
+        "zone_id": "the-second-sewer",
+        "exits": {
+            "north": {
+                "room_id": "the-second-sewer-7108",
+                "description": "North. The ledge leads further north."
+            },
+            "east": {
+                "room_id": "the-second-sewer-7190",
+                "description": "You stare into mid-air, and right under there is absolutely nothing but darkness. You shiver by the thought of falling that distance."
+            },
+            "south": {
+                "room_id": "the-second-sewer-7110",
+                "description": "The ledge continues south into darkness."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ]
+    }
+}

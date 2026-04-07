@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "rands-tower-6424",
+    "spec": {
+        "name": "The Kitchen Area",
+        "description": "This is a well-stocked kitchen, the larders still fresh and full as if by magic. Perhaps this would be a good place to take a break.",
+        "zone_id": "rands-tower",
+        "exits": {
+            "south": {
+                "room_id": "rands-tower-6423",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

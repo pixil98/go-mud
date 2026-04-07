@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15063",
+    "spec": {
+        "name": "An Overgrown Trail",
+        "description": "Continuing through the heavy undergrowth, you find yourself in the middle of the forest. The sounds of the forest can be heard all round and you feel a peaceful feeling come over you as you realize that mankind has not passed this way for some time. The fading trail you are on appears to have been so little used that it has almost completely grown over with vegitation from the woods here. The faded trail appears to lead west and south. To the south a strange eerie silence seems to hang in the air, almost blocking out all the sounds that you can hear from the north and east.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "south": {
+                "room_id": "king-welmars-castle-15064",
+                "description": "The undergrowth begins to open up to the south and you can see what appears to be a small village to the south. It is very quiet, almost too quiet."
+            },
+            "west": {
+                "room_id": "king-welmars-castle-15062",
+                "description": "The overgrown trail continues to the northwest."
+            }
+        }
+    }
+}

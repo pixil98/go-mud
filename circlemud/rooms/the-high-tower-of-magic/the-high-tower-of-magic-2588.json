@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2588",
+    "spec": {
+        "name": "The Mad Alchemist's Workroom",
+        "description": "You are in the workroom of The Mad Alchemist. Bubbling braziers, long glass tubes and scores of oddly shaped vials and bottles are everywhere. It is incredibly messy here, crushed glass and other trash litter the floor. The only apparent exit is the one you entered by.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "west": {
+                "room_id": "the-high-tower-of-magic-2586"
+            }
+        }
+    }
+}

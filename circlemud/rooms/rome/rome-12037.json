@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "id": "rome-12037",
+    "spec": {
+        "name": "The Senate Chambers",
+        "description": "This is the working room where elected senators from all over the empire gather to advise the Emperor. An official seal of the Emperor is hanging on the far wall. There is a wooden door to the north and a bronze door to the east and doublehung door to the south.",
+        "zone_id": "rome",
+        "exits": {
+            "north": {
+                "room_id": "rome-12036",
+                "description": "The door is made of thick walnut.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "rome-12035",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            },
+            "east": {
+                "room_id": "rome-12044",
+                "description": "The door leads to the foyer.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "rome-12036",
+                        "locked": true
+                    }
+                }
+            },
+            "south": {
+                "room_id": "rome-12038",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "rome-12037",
+                        "locked": true
+                    }
+                }
+            }
+        }
+    }
+}

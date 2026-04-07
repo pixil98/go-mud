@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5424",
+    "spec": {
+        "name": "West Main Street",
+        "description": "This is the main road traveling though the city. To the south you hear the hammering of the repair shop and to the north is the grassy field known as Temple Square. Main street continues east and west.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5520"
+            },
+            "east": {
+                "room_id": "new-thalos-5425"
+            },
+            "south": {
+                "room_id": "new-thalos-5527"
+            },
+            "west": {
+                "room_id": "new-thalos-5423"
+            }
+        }
+    }
+}

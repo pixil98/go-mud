@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3352",
+    "spec": {
+        "name": "A Private Home",
+        "description": "The interior of this home is simple and rustic. A ladder leads up to the loft, where the sleeping pallets are tucked away. A wood-burning stove keeps the place well heated and cozy. A homemade rocking chair stands crooked in the corner, draped with a old looking afghan. This home is a nice place, very comfortable.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "west": {
+                "room_id": "the-three-of-swords-3351",
+                "description": "There is a normal appearing door set in the western wall.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

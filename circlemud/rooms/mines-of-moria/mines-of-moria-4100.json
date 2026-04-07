@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4100",
+    "spec": {
+        "name": "The Tunnel",
+        "description": "As you continue along this tunnel which heads deeper and deeper into the earth, you notice that the tunnel must be a lot steeper than you previously expected as there is a small rivulet of water gushing down the one side of the tunnel. The tunnel appears to extend straight to the east for quite some distance.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "east": {
+                "room_id": "mines-of-moria-4101"
+            },
+            "west": {
+                "room_id": "mines-of-moria-4052"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ]
+    }
+}

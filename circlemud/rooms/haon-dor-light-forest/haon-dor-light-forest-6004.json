@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6004",
+    "spec": {
+        "name": "A Trail Through The Dense Forest",
+        "description": "You are on a trail winding east and west through the dense forest. To the west, the trees are so huge and their crowns so dense that forest remains in total darkness. A small path leads south through the trees.",
+        "zone_id": "haon-dor-light-forest",
+        "exits": {
+            "east": {
+                "room_id": "haon-dor-light-forest-6003",
+                "description": "The trail continues eastwards through the dense forest."
+            },
+            "south": {
+                "room_id": "haon-dor-light-forest-6005",
+                "description": "The small path leads south through the trees."
+            },
+            "west": {
+                "room_id": "haon-dor-dark-forest-6100",
+                "zone_id": "haon-dor-dark-forest",
+                "description": "The narrow trail almost seems to disappear between the enormous trunks."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "path",
+                    "paths"
+                ],
+                "description": "The narrow path is probably used by the animals living in the forest."
+            },
+            {
+                "keywords": [
+                    "trail"
+                ],
+                "description": "The forest trail seems almost fragile compared to the massive trunks."
+            },
+            {
+                "keywords": [
+                    "tree",
+                    "trees"
+                ],
+                "description": "The crowns of the old trees almost cut out all light."
+            }
+        ]
+    }
+}

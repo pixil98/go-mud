@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "midennir-3576",
+    "spec": {
+        "name": "The Bar",
+        "description": "This is where people use to come and enjoy the food, drink and hospitality of the Innkeeper, but as of late, he only serves the few adventurers that manage to survive a trip through the forest. You can leave south and return to the common room.",
+        "zone_id": "midennir",
+        "exits": {
+            "south": {
+                "room_id": "midennir-3574",
+                "description": "You may retreat south back to the common room."
+            }
+        }
+    }
+}

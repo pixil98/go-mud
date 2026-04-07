@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6524",
+    "spec": {
+        "name": "The Back Of The Barracks",
+        "description": "Here is the back of the dwarven barracks. There are rows of beds here, and there is a stench that is unbearable.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "north": {
+                "room_id": "the-dwarven-kingdom-6523"
+            }
+        }
+    }
+}

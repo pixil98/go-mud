@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3332",
+    "spec": {
+        "name": "A Cave Passageway",
+        "description": "You are standing at the southern bend of this passage, able to head east and north from here. The rock around you echoes the sound of far-off pounding to you, making the place seem somehow alive, with a heartbeat. This place is fairly eerie, now that you come to think of it.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "north": {
+                "room_id": "the-three-of-swords-3331"
+            },
+            "east": {
+                "room_id": "the-three-of-swords-3333"
+            }
+        }
+    }
+}

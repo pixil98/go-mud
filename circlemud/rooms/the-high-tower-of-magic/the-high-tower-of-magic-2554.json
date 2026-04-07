@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2554",
+    "spec": {
+        "name": "An Empty Classroom",
+        "description": "You are in an apparently empty classroom. A strange feeling of being watched comes over you, and you hear the faint rustle of robes. The only apparent exit is back east to the hallway.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "east": {
+                "room_id": "the-high-tower-of-magic-2551",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

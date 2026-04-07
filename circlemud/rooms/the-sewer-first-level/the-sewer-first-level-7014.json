@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7014",
+    "spec": {
+        "name": "The Muddy Sewer",
+        "description": "You stand in a bend of the pipe system of the sewer with mud up to your thighs. Contemplating a higher level of existence here would be utterly inappropriate, as the smell would keep any intelligent creature from even thinking of anything but getting away from this foul end of the WORLD. The bend goes from north to west.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "north": {
+                "room_id": "the-sewer-first-level-7013",
+                "description": "North. Filled with mud, that place looks like an impassable intersection with pipes leading north and east."
+            },
+            "west": {
+                "room_id": "the-sewer-first-level-7008",
+                "description": "West. There is less mud that way, maybe you're on your way out of this foul place."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "mud"
+                ],
+                "description": "It is as dark as tar and looks like something out of a toilet, on top of that, the smell is absolutely overwhelming."
+            }
+        ]
+    }
+}

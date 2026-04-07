@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "new-thalos-5422",
+    "spec": {
+        "name": "Inside The Northern Gate Of New Thalos",
+        "description": "Two large stone towers rise up to greet you with a massive iron gate swinging between on ornately crafted hinges and emblazend with the crest of New Thalos. The makers of this city spared no costs in rebuilding the defenses of their home. Sultan's Walk runs to the south and the Casbah stretches out east and west. To the north is wilderness.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5567",
+                "closure": {
+                    "name": "gate",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "new-thalos-5401",
+                        "locked": true
+                    }
+                }
+            },
+            "east": {
+                "room_id": "new-thalos-5449"
+            },
+            "south": {
+                "room_id": "new-thalos-5421"
+            },
+            "west": {
+                "room_id": "new-thalos-5448"
+            }
+        }
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-903",
+    "spec": {
+        "name": "The Scenic Route",
+        "description": "The dark forest of Haon-Dor recedes behind you to the northeast. The river continues in a westerly direction toward the river delta, where you can just make out a large island.",
+        "zone_id": "river-island-of-minos",
+        "exits": {
+            "east": {
+                "room_id": "river-island-of-minos-902"
+            },
+            "west": {
+                "room_id": "river-island-of-minos-904"
+            }
+        }
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-904",
+    "spec": {
+        "name": "The Swift River Delta",
+        "description": "You are at the edge of the river delta, where the river empties out on its way to the sea. The water here is Black. Deep. Dark. Deadly. The tidal waves sweep you around and around up and down.",
+        "zone_id": "river-island-of-minos",
+        "exits": {
+            "north": {
+                "room_id": "river-island-of-minos-911"
+            },
+            "east": {
+                "room_id": "river-island-of-minos-903"
+            },
+            "south": {
+                "room_id": "river-island-of-minos-906"
+            },
+            "west": {
+                "room_id": "river-island-of-minos-905"
+            }
+        }
+    }
+}

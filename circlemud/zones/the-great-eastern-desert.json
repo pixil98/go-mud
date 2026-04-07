@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert",
+    "spec": {
+        "name": "The Great Eastern Desert",
+        "reset_mode": "lifespan",
+        "lifespan": "30m"
+    }
+}

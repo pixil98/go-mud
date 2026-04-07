@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15012",
+    "spec": {
+        "name": "The Great Hall",
+        "description": "You are standing in the southern end of the Great Hall. It is truly vast; the roof is so high above your head, that it seems no closer than the clouds outside. The roof is beautifully painted, by someone who must have been a true master. The hall is very large, and could easily seat several hundred people at a banquet. To your north, you see King Welmar's great throne, and to the south is the Castle Entrance.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "north": {
+                "room_id": "king-welmars-castle-15017",
+                "description": "You see the part of the Great Hall where the throne is."
+            },
+            "east": {
+                "room_id": "king-welmars-castle-15013",
+                "description": "You see the King's Great Hall."
+            },
+            "south": {
+                "room_id": "king-welmars-castle-15007",
+                "description": "You see the Castle Entrance."
+            },
+            "west": {
+                "room_id": "king-welmars-castle-15011",
+                "description": "You see the King's Great Hall."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "roof",
+                    "paintings",
+                    "paint"
+                ],
+                "description": "The paintings on the roof depict the great heroes and gods. One of the gods is fairly heavy-bellied and incredibly hairy, with a massive beard. Also among them are the great enemies and wrongdoers, such as the evil Goddess Yochlol and the powerful evil Wizard Tharoecon."
+            }
+        ]
+    }
+}

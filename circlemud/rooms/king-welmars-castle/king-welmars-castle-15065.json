@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15065",
+    "spec": {
+        "name": "A Small Intersection",
+        "description": "Continuing along the dirt road, you find yourself at a place where a small path splits away from the main road and leads off to the west. The woods around the village seem to be pressing inwards towards you as if the village hides a secret which they do not want to be spread about. There is another house standing on the east side of the road.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "north": {
+                "room_id": "king-welmars-castle-15064",
+                "description": "The dirt road continues to the north."
+            },
+            "east": {
+                "room_id": "king-welmars-castle-15069",
+                "description": "You can hear a wailing sound coming from the house to the east."
+            },
+            "south": {
+                "room_id": "king-welmars-castle-15066",
+                "description": "The dirt road continues towards the south where a horrible smell permeates the air."
+            },
+            "west": {
+                "room_id": "king-welmars-castle-15072",
+                "description": "A small, dark trail leads off into the woods to the west."
+            }
+        }
+    }
+}

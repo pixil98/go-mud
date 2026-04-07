@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "new-thalos-5534",
+    "spec": {
+        "name": "The Tournament And Practice Yard",
+        "description": "This is a wide expanse of grass filled with dummies, punching bags and swordpupils. To the north you see a man dressed in black robes, unlike his iron clad comrades, who you assume to be your master.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5473",
+                "description": "You see the grass near the base of the wall here is slightly torn.",
+                "closure": {
+                    "name": "secret",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "new-thalos-5533"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "peaceful"
+            },
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ]
+    }
+}

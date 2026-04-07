@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15027",
+    "spec": {
+        "name": "The Butler's Quarters",
+        "description": "You see at once that this must be the butler's room, for it lies in the servants' wing, and still it is large and comfortable; almost luxurious, in fact. There is a large bed and a drawer in the room. The only exit is via the door to the south.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "south": {
+                "room_id": "king-welmars-castle-15022",
+                "description": "You see the corridor.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "king-welmars-castle-15009",
+                        "locked": true
+                    }
+                }
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "bed"
+                ],
+                "description": "Looks very comfortable indeed."
+            }
+        ]
+    }
+}

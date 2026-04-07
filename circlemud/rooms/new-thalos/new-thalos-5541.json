@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5541",
+    "spec": {
+        "name": "The Warehouse",
+        "description": "Men walk to and fro counting crates and writing down their findings. This area of the warehouse is used for storing the raw materials brought in from areas outside the city. These goods are then delivered to the various guilds. The export area of the warehouses is to the south.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "south": {
+                "room_id": "new-thalos-5434"
+            },
+            "west": {
+                "room_id": "new-thalos-5540"
+            }
+        }
+    }
+}

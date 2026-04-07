@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5420",
+    "spec": {
+        "name": "Sultan's Walk",
+        "description": "The road here between the Palace and the Dancing Daemon Inn seems well worn by the travel of horses, carts, and leather boots. From the west you hear the faint sound of trumpets announcing the arrival of some duke or duchess to the Palace. Safe haven awaits you to the east in the halls of the Daemon, and Sultan's Walk continues north and south.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5421"
+            },
+            "east": {
+                "room_id": "new-thalos-5400"
+            },
+            "south": {
+                "room_id": "new-thalos-5419"
+            },
+            "west": {
+                "room_id": "new-thalos-5558"
+            }
+        }
+    }
+}

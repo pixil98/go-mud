@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "rands-tower-6442",
+    "spec": {
+        "name": "The Stairs",
+        "description": "Stairs lead down here to the second level of the basement, or back west to the alcove.",
+        "zone_id": "rands-tower",
+        "exits": {
+            "west": {
+                "room_id": "rands-tower-6440"
+            },
+            "down": {
+                "room_id": "rands-tower-6443"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

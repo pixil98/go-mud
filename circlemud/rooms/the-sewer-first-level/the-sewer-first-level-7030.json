@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7030",
+    "spec": {
+        "name": "The Quadruple Junction Under The Dump",
+        "description": "You are standing in something that reminds you of an entry to an ant hive. There are enormous concrete pipes leading north, south, east and west. There is also a metal ladder built into the concrete wall leading up through a layer of garbage.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "north": {
+                "room_id": "the-sewer-first-level-7029",
+                "description": "To the north you can see a huge triple junction with sewer pipes leading west and east."
+            },
+            "east": {
+                "room_id": "the-sewer-first-level-7036",
+                "description": "East. You can see a pit in the floor."
+            },
+            "south": {
+                "room_id": "the-sewer-first-level-7031",
+                "description": "To the south there is a huge junction with pipes leading east and west."
+            },
+            "west": {
+                "room_id": "the-sewer-first-level-7022",
+                "description": "To the west there is an odd looking room with totally smooth walls."
+            },
+            "up": {
+                "room_id": "northern-midgaard-main-city-3030",
+                "zone_id": "northern-midgaard-main-city",
+                "description": "Up through the garbage you can just make out what looks like the dump in Midgaard.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "northern-midgaard-main-city-3005",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "ladder"
+                ],
+                "description": "It looks as if it is made of stainless steel, and it would function as a club of considerable power, but alas... You can't take at all since it is firmly set into the concrete wall."
+            }
+        ]
+    }
+}

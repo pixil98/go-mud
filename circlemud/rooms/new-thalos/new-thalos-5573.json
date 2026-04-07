@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5573",
+    "spec": {
+        "name": "A Hall",
+        "description": "You stand at an intersection of the hallways. Wooden corridors lead off in all directions except west, the garden of the palace can be entered there.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5574"
+            },
+            "east": {
+                "room_id": "new-thalos-5605"
+            },
+            "south": {
+                "room_id": "new-thalos-5572"
+            },
+            "west": {
+                "room_id": "new-thalos-5578"
+            }
+        }
+    }
+}

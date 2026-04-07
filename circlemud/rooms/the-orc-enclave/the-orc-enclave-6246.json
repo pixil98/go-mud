@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6246",
+    "spec": {
+        "name": "A Cave",
+        "description": "Heaps of rotting meat and cups of near-drinkable water sit here; the orc food stores. You stand here and wonder in near-disbelief at how the orcs could find this stuff palatable. They're orcs; its their nature and their stomachs you guess. Oddly enough, you don't even care to catalog what they have available -- there's no chance you're going to take any of this...",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "east": {
+                "room_id": "the-orc-enclave-6247"
+            },
+            "south": {
+                "room_id": "the-orc-enclave-6249"
+            }
+        }
+    }
+}

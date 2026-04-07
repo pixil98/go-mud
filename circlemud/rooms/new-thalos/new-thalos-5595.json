@@ -1,0 +1,56 @@
+{
+    "version": 1,
+    "id": "new-thalos-5595",
+    "spec": {
+        "name": "A Tunnel In The Dungeon",
+        "description": "You stand in a roughly hewn stone tunnel with cells to the north and south. The tunnel continues west and you notice a small crack in the stone to the east.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5600",
+                "closure": {
+                    "name": "cell",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "new-thalos-5493",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            },
+            "east": {
+                "room_id": "new-thalos-5596",
+                "closure": {
+                    "name": "crack",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "new-thalos-5400",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            },
+            "south": {
+                "room_id": "new-thalos-5604",
+                "closure": {
+                    "name": "cell",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "new-thalos-5493",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            },
+            "west": {
+                "room_id": "new-thalos-5594"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

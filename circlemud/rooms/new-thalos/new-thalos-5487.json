@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "new-thalos-5487",
+    "spec": {
+        "name": "River Ishtar",
+        "description": "The river flows through a huge iron grating from the wilderness through the city. Strong guards above await word to open the portal should any citizen require exit or entry.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5486"
+            },
+            "west": {
+                "room_id": "new-thalos-5623",
+                "closure": {
+                    "name": "grating",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

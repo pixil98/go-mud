@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2523",
+    "spec": {
+        "name": "A Dark Passage",
+        "description": "You are at the end of a dark passage which ends in a stout wooden door. Other then through the door, the only apparent exit is back the way you came.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2527",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "the-high-tower-of-magic-2522",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            },
+            "south": {
+                "room_id": "the-high-tower-of-magic-2522"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

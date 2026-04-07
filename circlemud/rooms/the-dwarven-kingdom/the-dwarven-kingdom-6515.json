@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6515",
+    "spec": {
+        "name": "A Turn In The Road",
+        "description": "You are on a path that leads to the Hide & Tooth shop to the west, and the path continues to the south.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "south": {
+                "room_id": "the-dwarven-kingdom-6514"
+            },
+            "west": {
+                "room_id": "the-dwarven-kingdom-6516",
+                "description": "The Hide & Tooth shop can be seen to the west."
+            }
+        }
+    }
+}

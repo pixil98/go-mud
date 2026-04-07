@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15071",
+    "spec": {
+        "name": "The Burned Shop",
+        "description": "As you enter this small building, you notice that that blackened walls are due to a fire that seemed to burn here unattended for quite some time. There is almost nothing left of the roof that would have once covered this building, and the north and east walls have been burnt to almost half the height of the other two walls. There are some burnt goods around on the ground and the remains of a counter near what is left of the north wall seems to indicate that this was once a shop. The road lies to the west through the blackened wall.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "west": {
+                "room_id": "king-welmars-castle-15066",
+                "description": "You can see the dirt road to the west."
+            }
+        }
+    }
+}

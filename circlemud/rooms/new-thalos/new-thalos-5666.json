@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5666",
+    "spec": {
+        "name": "On The Dark River",
+        "description": "The river makes a wide sweeping turn here into the mountain.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5665"
+            },
+            "west": {
+                "room_id": "new-thalos-5667"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

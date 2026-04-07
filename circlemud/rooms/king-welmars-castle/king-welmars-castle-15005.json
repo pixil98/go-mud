@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15005",
+    "spec": {
+        "name": "The Kitchen",
+        "description": "You are in the Kitchen. Lots of helpers hurry to do the Chief Cook's bidding, and there is a wonderful smell that makes you feel very hungry. All around the room, there are shelves with different kinds of cooking gear stacked on them. There is an exit to the north, and one to the east; both leading to small passages.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "north": {
+                "room_id": "king-welmars-castle-15010",
+                "description": "You see a small, dimly lit passage."
+            },
+            "east": {
+                "room_id": "king-welmars-castle-15006",
+                "description": "You see a small, dimly lit passage."
+            }
+        }
+    }
+}

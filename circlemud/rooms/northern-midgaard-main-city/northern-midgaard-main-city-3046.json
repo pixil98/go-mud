@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3046",
+    "spec": {
+        "name": "The Eastern End Of The Alley",
+        "description": "You are standing at the eastern end of the alley, the city wall is just east, blocking any further movement. A small warehouse is directly south of here.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "south": {
+                "room_id": "northern-midgaard-main-city-3050",
+                "description": "You see the warehouse."
+            },
+            "west": {
+                "room_id": "northern-midgaard-main-city-3045",
+                "description": "You see the alley."
+            }
+        }
+    }
+}

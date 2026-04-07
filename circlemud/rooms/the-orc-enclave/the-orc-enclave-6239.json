@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6239",
+    "spec": {
+        "name": "A River's Edge",
+        "description": "The river flows swiftly on its course to the north. The trail you are on leads on by the water's edge to the west, and back into the forest to the south. A large boulder is just to the west, blocking all travel in that direction. Out in the center of the river, the 'roof' of the energy field meets the northern 'wall'. The water passes right on through the magical barrier, however... the barrier is obviously porous to some materials.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "south": {
+                "room_id": "the-orc-enclave-6238"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6240"
+            }
+        }
+    }
+}

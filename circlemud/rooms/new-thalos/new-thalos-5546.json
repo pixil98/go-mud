@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "new-thalos-5546",
+    "spec": {
+        "name": "The Secret Yard",
+        "description": "This is a hidden yard known to only a few people in New Thalos. Here you may train in the arts of stealing, picking locks, and becoming almost invisible. A small staircase leads back up to the Unicorn.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "south": {
+                "room_id": "new-thalos-5489",
+                "description": "You see some small scratches in the wall to the south.",
+                "closure": {
+                    "name": "secret",
+                    "closed": true
+                }
+            },
+            "up": {
+                "room_id": "new-thalos-5539"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "peaceful"
+            },
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ]
+    }
+}

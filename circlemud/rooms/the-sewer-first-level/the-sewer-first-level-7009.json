@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7009",
+    "spec": {
+        "name": "The Sewer Junction",
+        "description": "You stand in the middle of a huge junction of sewer pipes right under what you'd think was an air shaft. The sewer pipes lead to the north, south, east and west. It look quite impossible to force your way up.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "north": {
+                "room_id": "the-sewer-first-level-7008",
+                "description": "North. Mud is the floor basis in that direction. Yummy."
+            },
+            "east": {
+                "room_id": "the-sewer-first-level-7017",
+                "description": "YYEEUUCH! BOOH! THAT looks like a nice place for creepy crawlies."
+            },
+            "south": {
+                "room_id": "the-sewer-first-level-7010",
+                "description": "South. This direction looks quite nice actually. The pipe leads into a bend that goes east."
+            },
+            "west": {
+                "room_id": "the-sewer-first-level-7004",
+                "description": "A few yards ahead - away from this junction - there is a pit leading down, but the smell from there...>PHEWW<."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "mud"
+                ],
+                "description": "It is as dark as tar and looks like something out of a toilet, on top of that, the smell is absolutely overwhelming."
+            }
+        ]
+    }
+}

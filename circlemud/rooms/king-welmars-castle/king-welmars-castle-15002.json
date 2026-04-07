@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15002",
+    "spec": {
+        "name": "The King's Road",
+        "description": "You stand on the King's Road, which leads east and west. The skill of the builders is apparent, since it is impossible to notice any turn or irregularity in the road.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "east": {
+                "room_id": "king-welmars-castle-15003",
+                "description": "You see a castle in the far east."
+            },
+            "west": {
+                "room_id": "king-welmars-castle-15001",
+                "description": "The King's Road continues in a straight line to the west."
+            }
+        }
+    }
+}

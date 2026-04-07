@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5340",
+    "spec": {
+        "name": "A Smelly Chamber",
+        "description": "This small chamber has a sickly putrescent smell to it, the smell of formaldehyde and other ointments used to preserve the corpses of those who died ages ago.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "east": {
+                "room_id": "the-great-pyramid-5341",
+                "description": "You see a dusty hallway."
+            },
+            "west": {
+                "room_id": "the-great-pyramid-5339",
+                "description": "You a dusty hallway."
+            }
+        }
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2643",
+    "spec": {
+        "name": "In The Library",
+        "description": "You are in the great library of magic. A strong musty smell permeates the entire area. Upon shelves which float just out of reach are hundreds of books, tomes and scrolls of every possible shape size and colour. The elusive books seem to wink in and out of existence before your untrained eyes. It is very quiet here.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "east": {
+                "room_id": "the-high-tower-of-magic-2638",
+                "description": "All you can see are books."
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2644",
+                "description": "You see a small gap between some shelves."
+            }
+        }
+    }
+}

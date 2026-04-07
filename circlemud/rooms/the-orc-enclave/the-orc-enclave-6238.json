@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6238",
+    "spec": {
+        "name": "A Forest Trail",
+        "description": "The trail splits here, one fork heading north towards the rushing sounds of a river, and west where the forest seems to be thinning out a lot. A sudden motion out of the corner of your eye catches your eyes, and you turn your head. Nothing, there's nothing there at all. You wonder if you're being stalked.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "north": {
+                "room_id": "the-orc-enclave-6239"
+            },
+            "east": {
+                "room_id": "the-orc-enclave-6236"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6241"
+            }
+        }
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7911",
+    "spec": {
+        "name": "Redferne's Bedroom",
+        "description": "This is a snugly set bedroom with all the necessities for a romantic evening. A large fireplace adorns the east wall, and sizzling away is the wood that is ablaze within. The bed is enormous, covering at least HALF of this great room. The room stretches at least 140 feet, so can you imagine the BED? A large staircase leads down to the hall. A couple of doors open up to a broad balcony to the south.",
+        "zone_id": "redfernes-residence",
+        "exits": {
+            "south": {
+                "room_id": "redfernes-residence-7912",
+                "description": "The sun seems to shine out there, warmly and comforting.",
+                "closure": {
+                    "name": "doors",
+                    "closed": true
+                }
+            },
+            "down": {
+                "room_id": "redfernes-residence-7909"
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

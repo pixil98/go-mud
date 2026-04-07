@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "drow-city-5104",
+    "spec": {
+        "name": "The 3rd House",
+        "description": "You stand inside the 3rd house of the city; it is fairly well decorated by drow standards having a few statues, murals and such. A door leads to the south.",
+        "zone_id": "drow-city",
+        "exits": {
+            "north": {
+                "room_id": "drow-city-5103"
+            },
+            "south": {
+                "room_id": "drow-city-5105",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

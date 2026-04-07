@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "drow-city-5139",
+    "spec": {
+        "name": "The Clerics' Barracks",
+        "description": "The bed chamber is brightly decorated with spider shaped statues, murals and the like. Large beds line the floor making this a comfortable room to live in.",
+        "zone_id": "drow-city",
+        "exits": {
+            "east": {
+                "room_id": "drow-city-5138",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "new-thalos-5513",
+    "spec": {
+        "name": "The Temple Gates",
+        "description": "You stand before the entrance way to the Temple of New Thalos. Two large wrought iron gates lie open before you. Although they might not ever be used the priests in the temple are ready to defend themselves, should their city ever come under seige again.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5509"
+            },
+            "south": {
+                "room_id": "new-thalos-5520"
+            },
+            "down": {
+                "room_id": "new-thalos-5520"
+            }
+        }
+    }
+}

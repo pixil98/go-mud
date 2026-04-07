@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5001",
+    "spec": {
+        "name": "A Long Tunnel",
+        "description": "You encounter some rapids as you enter this tunnel cut out of the mountains by the river.",
+        "zone_id": "the-great-eastern-desert",
+        "exits": {
+            "east": {
+                "room_id": "the-great-eastern-desert-5002"
+            },
+            "west": {
+                "room_id": "southern-part-of-midgaard-3205",
+                "zone_id": "southern-part-of-midgaard",
+                "description": "There appear to be some bars here, making passage to the west difficult."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

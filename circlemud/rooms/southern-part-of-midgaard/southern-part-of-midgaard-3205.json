@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3205",
+    "spec": {
+        "name": "On The River",
+        "description": "The river enters from a hole in the eastern city wall. The hole has been blocked by several vertically positioned iron bars set into the wall.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "east": {
+                "room_id": "the-great-eastern-desert-5001",
+                "zone_id": "the-great-eastern-desert",
+                "description": "The iron bars make it difficult to pass through the hole in the wall. Beyond the bars you see that the river leads into a cavern below the mountain range to the east."
+            },
+            "west": {
+                "room_id": "southern-part-of-midgaard-3204"
+            }
+        }
+    }
+}

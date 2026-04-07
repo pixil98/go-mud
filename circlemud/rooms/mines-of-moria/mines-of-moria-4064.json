@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4064",
+    "spec": {
+        "name": "The Tunnel",
+        "description": "You stand in a small chamber beneath the earth. The chamber closes down to tunnel size to the west as the only obvious exit leads away in that direction. Before heading off that way, you decide to look around the cave. The walls are slightly damp to the touch, and the ceiling is very smooth. Almost right in the centre of the ceiling, a well rounded hole has been made.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "west": {
+                "room_id": "mines-of-moria-4063"
+            },
+            "up": {
+                "room_id": "mines-of-moria-4020"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

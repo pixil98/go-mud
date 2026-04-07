@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "the-chessboard-of-midgaard-3601",
+    "spec": {
+        "name": "A White Square",
+        "description": "You are standing on a white marble square. This is usually the home of the Black Queen's Rook.",
+        "zone_id": "the-chessboard-of-midgaard",
+        "exits": {
+            "east": {
+                "room_id": "the-chessboard-of-midgaard-3602",
+                "description": "A black square lies to the east."
+            },
+            "south": {
+                "room_id": "the-chessboard-of-midgaard-3609",
+                "description": "A black square lies to the south."
+            }
+        }
+    }
+}

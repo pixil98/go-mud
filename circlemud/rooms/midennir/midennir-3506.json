@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "midennir-3506",
+    "spec": {
+        "name": "The Miden'nir",
+        "description": "You are in a dark forest. To the east, mountains block passage. From here, only the lighter forest to the west or south offer a way to travel.",
+        "zone_id": "midennir",
+        "exits": {
+            "east": {
+                "room_id": "midennir-3550",
+                "description": "The mountains can be seen jutting up to the east."
+            },
+            "south": {
+                "room_id": "midennir-3509",
+                "description": "The forest is darker to the south."
+            },
+            "west": {
+                "room_id": "midennir-3505",
+                "description": "The forest gets lighter as you go west."
+            }
+        }
+    }
+}

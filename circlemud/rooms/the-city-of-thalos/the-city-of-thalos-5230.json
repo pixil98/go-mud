@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5230",
+    "spec": {
+        "name": "The Tavern Of The Sun",
+        "description": "A glorious place in its prime, this tavern now lies in ruin; tables and chairs are broken scattered, bottles and glasses shattered, and a small performance stage crushed. Musical instruments and personal belongings lie under the rubble, but the people they once belonged to are not with them. Looking up you see that the entire second floor and roof has fallen in, leaving a gaping hole above.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "west": {
+                "room_id": "the-city-of-thalos-5213",
+                "description": "A small side street runs past the tavern."
+            }
+        }
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5232",
+    "spec": {
+        "name": "The City Hall",
+        "description": "This is the main reception area of Thalos' city hall. The walls have been charred and scored massively and debris is spread from wall to wall. A large gaping hole in the west wall allows you to see out to one of the city's side streets. Obviously no one will be seeing you through today. Hallways lead south and east.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "north": {
+                "room_id": "the-city-of-thalos-5202",
+                "description": "Main street runs past the city hall."
+            },
+            "east": {
+                "room_id": "the-city-of-thalos-5233",
+                "description": "A hallway leads to the east wing of the city hall."
+            },
+            "south": {
+                "room_id": "the-city-of-thalos-5231",
+                "description": "A hallway leads to the south wing of the city hall."
+            },
+            "west": {
+                "room_id": "the-city-of-thalos-5212"
+            }
+        }
+    }
+}

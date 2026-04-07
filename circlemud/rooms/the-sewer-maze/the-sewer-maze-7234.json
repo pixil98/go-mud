@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7234",
+    "spec": {
+        "name": "The Rat's Lair",
+        "description": "You are in a little cave. You are able to see quite a lot of debris on the floor. There is a sewer drain west of here.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "west": {
+                "room_id": "the-sewer-maze-7233",
+                "description": "You see the sewer system that way."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

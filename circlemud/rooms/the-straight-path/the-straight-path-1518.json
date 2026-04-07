@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1518",
+    "spec": {
+        "name": "Earthly Light",
+        "description": "To slip into evil is easy, but walking this path is the hardest of all. Even the four you will find here today have strayed from the line at least once in their lives, and there are still some living who curse the very sound of their names. Despite all this, confront them now, and let their actions serve as your example.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "north": {
+                "room_id": "the-straight-path-1519"
+            },
+            "east": {
+                "room_id": "the-straight-path-1507"
+            }
+        }
+    }
+}

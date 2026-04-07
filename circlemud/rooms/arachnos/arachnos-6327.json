@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "arachnos-6327",
+    "spec": {
+        "name": "A Leader Strand",
+        "description": "This strand is weightier, more sturdy. It shimmers as you step on it. You are definitely not in the Midgaardian realms anymore. Just where you are you can't tell. It feels like you're moving through ether. You can still get back down to more surer lands.",
+        "zone_id": "arachnos",
+        "exits": {
+            "north": {
+                "room_id": "arachnos-6328"
+            },
+            "down": {
+                "room_id": "arachnos-6326"
+            }
+        }
+    }
+}

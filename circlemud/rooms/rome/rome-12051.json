@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "id": "rome-12051",
+    "spec": {
+        "name": "The East Gate Of Rome",
+        "description": "You are standing inside of the eastern gate of Rome. There are two tall spires built into the city wall, from which the guards can see the whole eastern side of the city. The gate is currently open and to the east, there is a heavily used road, made of packed clay, that leads out of Rome. Another road leads westward into the city.",
+        "zone_id": "rome",
+        "exits": {
+            "east": {
+                "room_id": "rome-12064",
+                "description": "The clay road heads eastwards.",
+                "closure": {
+                    "name": "gate",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "rome-12046",
+                "description": "The clay street leads into the city."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "spires",
+                    "towers"
+                ],
+                "description": "There are two tall spires on either side of the gate and are constantly manned by the city guards. They are made of stone and stand about 40 feet tall."
+            },
+            {
+                "keywords": [
+                    "gate"
+                ],
+                "description": "The gate is fabricated from iron and has been designed to keep intruders out of the city."
+            }
+        ]
+    }
+}

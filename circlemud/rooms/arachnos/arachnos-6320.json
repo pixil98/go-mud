@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "arachnos-6320",
+    "spec": {
+        "name": "The Webless Path",
+        "description": "Strange. No webbing here. In fact, no sounds whatsoever. The path continues northward, where you find that you may have to tightrope your way across a ravine.",
+        "zone_id": "arachnos",
+        "exits": {
+            "north": {
+                "room_id": "arachnos-6309"
+            },
+            "west": {
+                "room_id": "arachnos-6321"
+            }
+        }
+    }
+}

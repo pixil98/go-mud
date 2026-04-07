@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2655",
+    "spec": {
+        "name": "The Study",
+        "description": "You are in a large study. Shelves filled with many books or arcane knowledge are on every wall. A large oaken desk is in the center, with many parchments and scrolls on it. The most notable thing in the room is a small set of scales, which floats about eye level. In perfect balance, the scales are no doubt a sign of the Master's neutrality.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "east": {
+                "room_id": "the-high-tower-of-magic-2654"
+            }
+        }
+    }
+}

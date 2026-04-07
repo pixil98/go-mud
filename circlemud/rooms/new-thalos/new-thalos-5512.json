@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "new-thalos-5512",
+    "spec": {
+        "name": "The Entrance To The Guild of Clerics",
+        "description": "This hall pales in comparison to that of the main hall, but is beautiful in its own right. Shaven heads and brown robes can be seen milling about quitely talking to each other. North is back inside the temple proper, and south is the entrance to the clerics' bar.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5508"
+            },
+            "south": {
+                "room_id": "new-thalos-5519"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "peaceful"
+            },
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ]
+    }
+}

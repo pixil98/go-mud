@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7018",
+    "spec": {
+        "name": "The Ordinary Junction",
+        "description": "This looks like an ordinary junction, actually it seems very quiet here. The pipelines lead west, east and north.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "north": {
+                "room_id": "the-sewer-first-level-7017",
+                "description": "To the north you can see a junction like this one, leading north and west."
+            },
+            "east": {
+                "room_id": "the-sewer-first-level-7031",
+                "description": "To the east there is nothing of particular interest, though there is a junction with pipelines leading north and east."
+            },
+            "west": {
+                "room_id": "the-sewer-first-level-7010",
+                "description": "There is a bend to the west leading north."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ]
+    }
+}

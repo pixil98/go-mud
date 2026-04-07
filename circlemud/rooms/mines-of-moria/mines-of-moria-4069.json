@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4069",
+    "spec": {
+        "name": "The Large Cave",
+        "description": "You find yourself in what is perhaps the largest cave you have ever been in. It stretches through the darkness to the west and south. The cave is nigh filled with echoes created by the sound of your breathing. Stalactites and stalagmites hang down from the ceiling and climb upwards from the ground of the cavern respectively. A narrow tunnel leads away from the cave to the north.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4066"
+            },
+            "south": {
+                "room_id": "mines-of-moria-4071"
+            },
+            "west": {
+                "room_id": "mines-of-moria-4068"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "redfernes-residence",
+    "spec": {
+        "name": "Redferne's Residence",
+        "reset_mode": "lifespan",
+        "lifespan": "50m"
+    }
+}

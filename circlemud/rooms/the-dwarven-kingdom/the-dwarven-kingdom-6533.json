@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6533",
+    "spec": {
+        "name": "The North Side Of Castle Strangelove",
+        "description": "You are standing on the north side of Castle Strangelove. You notice that you are no longer inside the mountain anymore either. Along the southern horizon you see towering mountains. The only exit, however, is back up the ladder into the Queen's Bedroom.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "up": {
+                "room_id": "the-dwarven-kingdom-6532"
+            }
+        }
+    }
+}

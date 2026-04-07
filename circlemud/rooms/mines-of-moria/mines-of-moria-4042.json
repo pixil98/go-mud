@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4042",
+    "spec": {
+        "name": "The Level Foothills",
+        "description": "You continue to move through the foothills and notice that off in the distance to the west, you can see a rather large cave entrance in the side of a large hill. The hill seems to jut up from the rest of the foothills quite unnaturally. A path leads off towards the east as it seems to begin from nothing here.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "east": {
+                "room_id": "mines-of-moria-4034"
+            },
+            "west": {
+                "room_id": "mines-of-moria-4043"
+            }
+        }
+    }
+}

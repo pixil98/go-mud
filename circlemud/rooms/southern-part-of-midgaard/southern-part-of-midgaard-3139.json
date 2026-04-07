@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3139",
+    "spec": {
+        "name": "Penny Lane",
+        "description": "You are on Penny Lane. Emerald Avenue is to the west and Penny Lane continues in eastward direction.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "east": {
+                "room_id": "southern-part-of-midgaard-3140"
+            },
+            "west": {
+                "room_id": "southern-part-of-midgaard-3132"
+            }
+        }
+    }
+}

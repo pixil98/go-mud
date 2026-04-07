@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15056",
+    "spec": {
+        "name": "The Guard Room",
+        "description": "You are at a loss to explain why someone would want to spend all day down here. The only explanation that seems even remotely logical to you is that there must be an important prisoner kept in one of the cells through the south door. The decorations of the room are sparse, merely a table, a chair, and a deck of cards. A stairwell has been built into the western wall and it leads upwards.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "south": {
+                "room_id": "king-welmars-castle-15057",
+                "description": "Through the peep hole at the top of the small wooden door you can see that there is a small corridor leading past several cells.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "king-welmars-castle-15017",
+                        "locked": true
+                    }
+                }
+            },
+            "west": {
+                "room_id": "king-welmars-castle-15055",
+                "description": "A small stairwell built into the western wall of the room leads upwards."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "table",
+                    "cards",
+                    "deck"
+                ],
+                "description": "There is a deck of cards on the table in a small pile. There is one card lying on the floor however."
+            },
+            {
+                "keywords": [
+                    "card",
+                    "floor"
+                ],
+                "description": "The card on the floor seems to be the Ace of Spades... a bad card to find indeed. What could be the bad luck brought about by this discovery?"
+            }
+        ]
+    }
+}

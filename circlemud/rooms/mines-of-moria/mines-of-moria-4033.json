@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4033",
+    "spec": {
+        "name": "The Intersection In The Foothills",
+        "description": "You stand at a point by a small path that splits off here. The path continues north and south while a rough trail leads east into the mountains.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4034"
+            },
+            "east": {
+                "room_id": "mines-of-moria-4037"
+            },
+            "south": {
+                "room_id": "mines-of-moria-4032"
+            }
+        }
+    }
+}

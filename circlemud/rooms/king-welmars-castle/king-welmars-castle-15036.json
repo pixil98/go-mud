@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15036",
+    "spec": {
+        "name": "By The Treasure Room",
+        "description": "You are standing by a great iron door. The door is very large, and seems very solid indeed. There is a sign posted by it.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "east": {
+                "room_id": "king-welmars-castle-15037",
+                "description": "You see a large steel door.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "king-welmars-castle-15007",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            },
+            "west": {
+                "room_id": "king-welmars-castle-15035",
+                "description": "You see the corridor."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "sign"
+                ],
+                "description": "TREASURE ROOM Authorized personnel only - all others keep out. ANY trespassing will be SEVERELY punished!!"
+            }
+        ]
+    }
+}

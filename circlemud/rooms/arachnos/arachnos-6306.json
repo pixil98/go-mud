@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "arachnos-6306",
+    "spec": {
+        "name": "On The Busy Path",
+        "description": "Spiders, spiders, everywhere! It is almost ant-like in efficiency with one big difference. The spiders here are carrying ant-corpses, as well as rats, wolves, and humans.",
+        "zone_id": "arachnos",
+        "exits": {
+            "south": {
+                "room_id": "arachnos-6307"
+            },
+            "down": {
+                "room_id": "arachnos-6305"
+            }
+        }
+    }
+}

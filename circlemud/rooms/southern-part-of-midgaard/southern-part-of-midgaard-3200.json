@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3200",
+    "spec": {
+        "name": "Under The Bridge",
+        "description": "The arch under the bridge is covered by seaweed about a foot above the surface of the river. The water gently flows through an opening in the lower part of the city wall.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "east": {
+                "room_id": "southern-part-of-midgaard-3201"
+            },
+            "west": {
+                "room_id": "river-island-of-minos-900",
+                "zone_id": "river-island-of-minos"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "wall"
+                ],
+                "description": "It is built from large grey rocks that have been fastened to each other with some kind of mortar. Looks pretty solid."
+            }
+        ]
+    }
+}

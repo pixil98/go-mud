@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "new-thalos-5568",
+    "spec": {
+        "name": "Outside The Eastern Gate Of New Thalos",
+        "description": "You stand outside the protective walls of the city. The massive iron gate sits to the west and the unknown awaits you eastward.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5690"
+            },
+            "south": {
+                "room_id": "new-thalos-5570"
+            },
+            "west": {
+                "room_id": "new-thalos-5431",
+                "closure": {
+                    "name": "gate",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "new-thalos-5401",
+                        "locked": true
+                    }
+                }
+            }
+        }
+    }
+}

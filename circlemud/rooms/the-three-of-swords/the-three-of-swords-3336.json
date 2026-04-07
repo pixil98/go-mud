@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3336",
+    "spec": {
+        "name": "A Cave Passageway",
+        "description": "You are standing in a north-south tunnel carved naturally through the stone of the mountain. To the north the tunnel is lighted by sconces along the wall, banishing the deep, deep darkness you now stand in. To the south you can see nothing. A deep thumping noise seems to be getting louder and louder as you stand here, coming from somewhere deep inside.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "north": {
+                "room_id": "the-three-of-swords-3335"
+            },
+            "south": {
+                "room_id": "the-three-of-swords-3337"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

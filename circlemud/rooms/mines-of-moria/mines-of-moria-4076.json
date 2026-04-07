@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4076",
+    "spec": {
+        "name": "On A Mountain Trail",
+        "description": "You find yourself on a mountain trail twisting down towards a small hidden valley located in the shadow of another mountain a short distance to the east. The trail is fairly rough going and looks to dip down into the small valley before climbing up the side of the other mountain. As you look at the valley from a closer vantage point, you realize that it is much smaller than you had expected, being maybe thirty feet long. It is quite surprising how deceptive distances can be this high up in the mountains, isn't it?",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "west": {
+                "room_id": "mines-of-moria-4040"
+            },
+            "down": {
+                "room_id": "mines-of-moria-4077"
+            }
+        }
+    }
+}

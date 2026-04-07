@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "drow-city-5117",
+    "spec": {
+        "name": "A City Street",
+        "description": "You walk along a highly ornate city street going east-west. To the north is a giant temple.",
+        "zone_id": "drow-city",
+        "exits": {
+            "north": {
+                "room_id": "drow-city-5119",
+                "description": "The entrance to the temple of Lloth is blocked by large ornamental gates.",
+                "closure": {
+                    "name": "gates",
+                    "closed": true
+                }
+            },
+            "east": {
+                "room_id": "drow-city-5121"
+            },
+            "west": {
+                "room_id": "drow-city-5114"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

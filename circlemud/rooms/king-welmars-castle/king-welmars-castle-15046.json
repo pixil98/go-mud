@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15046",
+    "spec": {
+        "name": "The Ball Room",
+        "description": "You are standing in the great Ball Room. It is a truly large room, with a stage for an orchestra in the south-east end.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "east": {
+                "room_id": "king-welmars-castle-15047",
+                "description": "You see the Ball Room."
+            },
+            "south": {
+                "room_id": "king-welmars-castle-15041",
+                "description": "You see the Ball Room."
+            },
+            "west": {
+                "room_id": "king-welmars-castle-15045",
+                "description": "You see the corridor."
+            }
+        }
+    }
+}

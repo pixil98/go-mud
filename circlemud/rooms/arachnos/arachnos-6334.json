@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "arachnos-6334",
+    "spec": {
+        "name": "On A Cloud",
+        "description": "This cloud is rather thick in consistency. You suddenly realize this is not a typical cloud, but it might be the nest of an aerial creature.",
+        "zone_id": "arachnos",
+        "exits": {
+            "down": {
+                "room_id": "arachnos-6331"
+            }
+        }
+    }
+}

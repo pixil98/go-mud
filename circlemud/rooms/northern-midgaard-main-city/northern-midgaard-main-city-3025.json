@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3025",
+    "spec": {
+        "name": "The Common Square",
+        "description": "The common square, people pass you, talking to each other. To the west is the poor alley and to the east is the dark alley. To the north, this square is connected to the market square. From the south you notice a nasty smell.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "north": {
+                "room_id": "northern-midgaard-main-city-3014",
+                "description": "You see the market square."
+            },
+            "east": {
+                "room_id": "northern-midgaard-main-city-3026",
+                "description": "You see the dark alley."
+            },
+            "south": {
+                "room_id": "northern-midgaard-main-city-3030",
+                "description": "You see the city dump."
+            },
+            "west": {
+                "room_id": "northern-midgaard-main-city-3024",
+                "description": "You see Poor Alley."
+            }
+        }
+    }
+}

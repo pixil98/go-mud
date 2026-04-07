@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3347",
+    "spec": {
+        "name": "The Corral",
+        "description": "Many horses look up at you when you enter this corral. The horses are kept in by a big wooden fence, which they seem quite happy to been kept in by. You don't see anyone around taking care of these horses, but someone is probably close by.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "north": {
+                "room_id": "the-three-of-swords-3346"
+            }
+        }
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "new-thalos-5549",
+    "spec": {
+        "name": "The Hay Loft",
+        "description": "Not as big as the ones you see on farms in the country, this hay loft serves as a storage area for the horses in the stables. The young boy you saw with the shovel seems to have takes up residence on the second story.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "west": {
+                "room_id": "new-thalos-5545"
+            }
+        }
+    }
+}

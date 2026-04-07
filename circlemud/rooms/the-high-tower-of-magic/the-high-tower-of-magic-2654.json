@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2654",
+    "spec": {
+        "name": "The Main Chamber",
+        "description": "A feeling of tranquility comes over you as you enter the main chamber of Neutrality. Some artifacts are hung on the walls here, or set on stands. The room in general looks both comfortable and official. Probably where the Master of Neutrality holds audience.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2653"
+            },
+            "east": {
+                "room_id": "the-high-tower-of-magic-2656"
+            },
+            "south": {
+                "room_id": "the-high-tower-of-magic-2657"
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2655"
+            }
+        }
+    }
+}

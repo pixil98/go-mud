@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6262",
+    "spec": {
+        "name": "The Laboratory",
+        "description": "Some small cages sit here, containing many different types of rodents. Leaning down to look better, you are very surprised as a tiny, common garden mouse growls at you and tries to rip your face off through the bars. There are some bulges on its back, and it doesn't seem to be in a very good mood. It quivers some, not fully in control of its motor functions. Poor thing.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "north": {
+                "room_id": "the-orc-enclave-6259"
+            },
+            "east": {
+                "room_id": "the-orc-enclave-6263"
+            },
+            "south": {
+                "room_id": "the-orc-enclave-6265"
+            }
+        }
+    }
+}

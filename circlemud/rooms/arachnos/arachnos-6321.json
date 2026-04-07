@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "arachnos-6321",
+    "spec": {
+        "name": "Above The Ravine",
+        "description": "Stranger still. Your feet get a real firm grip on the spiderline. You are above a deep ravine. This line connects you between two trees. Below you can see a prismatic web with lots of animal bones caught in it: some bear and small deer bones in fact. No human skeletons are visible (yet).",
+        "zone_id": "arachnos",
+        "exits": {
+            "east": {
+                "room_id": "arachnos-6320"
+            },
+            "south": {
+                "room_id": "arachnos-6323"
+            },
+            "down": {
+                "room_id": "arachnos-6322"
+            }
+        }
+    }
+}

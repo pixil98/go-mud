@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "arachnos-6325",
+    "spec": {
+        "name": "The Tether Path",
+        "description": "Another tether path just like the rest of them. Surprisingly well-lit by the golden orbs that hang from the sides, you can see the paths become finer and finer in quality.",
+        "zone_id": "arachnos",
+        "exits": {
+            "east": {
+                "room_id": "arachnos-6326"
+            },
+            "west": {
+                "room_id": "arachnos-6324"
+            }
+        }
+    }
+}

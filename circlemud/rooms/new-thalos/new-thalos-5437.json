@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "new-thalos-5437",
+    "spec": {
+        "name": "East Ishtar Drive",
+        "description": "Loud hammering and the sound of red hot iron cooling in water reaches your ears as you stand in front of the blacksmith. A small boy runs up to you with big eyes and, as you return his gaze, runs off down the road. The common square can be seen to the west and Ishtar Drive continues to the east.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5544"
+            },
+            "east": {
+                "room_id": "new-thalos-5439"
+            },
+            "west": {
+                "room_id": "new-thalos-5410"
+            }
+        }
+    }
+}

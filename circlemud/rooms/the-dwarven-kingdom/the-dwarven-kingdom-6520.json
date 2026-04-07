@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6520",
+    "spec": {
+        "name": "A Path Next To The Barracks",
+        "description": "Here the path continues west, and east to the barracks.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "east": {
+                "room_id": "the-dwarven-kingdom-6521"
+            },
+            "west": {
+                "room_id": "the-dwarven-kingdom-6519"
+            }
+        }
+    }
+}

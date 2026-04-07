@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7003",
+    "spec": {
+        "name": "The Mudhole",
+        "description": "You stand in mud all the way up to your thighs and it is not too comfortable since you are used to a somewhat different environment. The sewer leads to the north of here. In the middle you can just make out an enormous drainpipe leading down.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "north": {
+                "room_id": "the-sewer-first-level-7002",
+                "description": "North. The muddy junction lies in that direction."
+            },
+            "down": {
+                "room_id": "the-second-sewer-7101",
+                "zone_id": "the-second-sewer",
+                "description": "The muddy drainpipe leads down through the mud, otherwise it is utterly dark."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "mud"
+                ],
+                "description": "It is as dark as tar and looks like something out of a toilet, on top of that, the smell is absolutely overwhelming."
+            }
+        ]
+    }
+}

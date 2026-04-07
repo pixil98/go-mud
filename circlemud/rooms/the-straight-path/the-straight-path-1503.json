@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1503",
+    "spec": {
+        "name": "A Long Road",
+        "description": "The road clears, the fog and pain of the first few steps left behind you. Despite the sudden clarity, your mind is still haunted, images of an old woman kneeling in prayer, eyes closing, smiling and crying.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "north": {
+                "room_id": "the-straight-path-1504"
+            },
+            "south": {
+                "room_id": "the-straight-path-1502"
+            }
+        }
+    }
+}

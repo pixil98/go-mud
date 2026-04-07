@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "rands-tower-6434",
+    "spec": {
+        "name": "A Hallway",
+        "description": "This small hallway on the former 'ground floor' ran north- south. To the east is the stairwell that leads up into the shadowy recesses of the tower. To the west is the entrance way to the tower. The north is completely blocked off by lava, and the way south is still clear.",
+        "zone_id": "rands-tower",
+        "exits": {
+            "east": {
+                "room_id": "rands-tower-6433"
+            },
+            "south": {
+                "room_id": "rands-tower-6437"
+            },
+            "west": {
+                "room_id": "rands-tower-6435"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

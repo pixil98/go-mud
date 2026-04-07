@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6204",
+    "spec": {
+        "name": "In The Forest",
+        "description": "The energy barrier runs through the woods on its east- west course here, just north of the trail you are walking on. A faint humming seems to eminate from the glowing field, pushing the normal sounds of the forest into the background. For a short moment, you wonder if the field is keeping something in, or you out. It makes you wonder...",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "east": {
+                "room_id": "the-orc-enclave-6205"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6203"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "barrier",
+                    "energy"
+                ],
+                "description": "You can faintly see the woods continue beyond it, but it seems there's no way through. The field rises high up into the air, and seems to form a ceiling above the woods, preventing a flying entrance. You'd also bet it extends deep into the ground."
+            }
+        ]
+    }
+}

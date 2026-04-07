@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5629",
+    "spec": {
+        "name": "A Path Through The Mountains",
+        "description": "A large boulder suddenly decides it wants to occupy the same space you are currently standing in.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5612"
+            },
+            "west": {
+                "room_id": "new-thalos-5628"
+            }
+        }
+    }
+}

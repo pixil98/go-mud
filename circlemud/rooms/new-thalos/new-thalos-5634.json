@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5634",
+    "spec": {
+        "name": "The River Of Lost Souls",
+        "description": "The river flows south through a valley in the mountains. You can see a small village to the west.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5619"
+            },
+            "south": {
+                "room_id": "new-thalos-5635"
+            }
+        }
+    }
+}

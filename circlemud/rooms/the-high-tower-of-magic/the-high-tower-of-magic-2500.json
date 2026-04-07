@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2500",
+    "spec": {
+        "name": "The Entrance To The Shadow Grove",
+        "description": "Before you, the grove of shadows lies. Giant grey trees are all that can be seen through the thick shadows. A great sense of both power and menace permeates the surrounding area. You have a strange urge to turn back and go back the way you've come. A small path leads north into the shadows and back south to the plains.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2508",
+                "description": "The shadows obscure your vision."
+            },
+            "south": {
+                "room_id": "mines-of-moria-4075",
+                "zone_id": "mines-of-moria",
+                "description": "The copse of trees and plains are back to the south."
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

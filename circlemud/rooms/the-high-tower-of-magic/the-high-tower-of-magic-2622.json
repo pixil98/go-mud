@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2622",
+    "spec": {
+        "name": "A Hallway",
+        "description": "You are in a long hallway leading north and south. The walls emit a faint magical glow which provides enough light to see by. A blackened door can be seen to the east.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2626"
+            },
+            "east": {
+                "room_id": "the-high-tower-of-magic-2623",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "south": {
+                "room_id": "the-high-tower-of-magic-2621"
+            }
+        }
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "arachnos-6304",
+    "spec": {
+        "name": "The Webby Passage",
+        "description": "Another webby passage, all sticky and wet. Tiny ballooning spiders fill the air. It seems that these young ones are newborns.",
+        "zone_id": "arachnos",
+        "exits": {
+            "east": {
+                "room_id": "arachnos-6305"
+            },
+            "south": {
+                "room_id": "arachnos-6302"
+            }
+        }
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-second-sewer-7129",
+    "spec": {
+        "name": "The Sewer Line",
+        "description": "You are in a narrow part of the sewer. Down the sewer continues and to the north is the ledge.",
+        "zone_id": "the-second-sewer",
+        "exits": {
+            "north": {
+                "room_id": "the-second-sewer-7115",
+                "description": "You can see the southern part of the ledge."
+            },
+            "down": {
+                "room_id": "the-sewer-maze-7221",
+                "zone_id": "the-sewer-maze",
+                "description": "You look deeper down into the drain."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

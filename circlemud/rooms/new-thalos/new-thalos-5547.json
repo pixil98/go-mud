@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "new-thalos-5547",
+    "spec": {
+        "name": "The Dump",
+        "description": "This is the place where the people of the city dump their trash. Due to the constant winds blowing down the moutains the smell is usually blown outside the walls and over the desert.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "south": {
+                "room_id": "new-thalos-5442"
+            }
+        }
+    }
+}

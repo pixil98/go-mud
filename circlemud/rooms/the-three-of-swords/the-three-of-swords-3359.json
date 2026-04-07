@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3359",
+    "spec": {
+        "name": "A Rocky Slope",
+        "description": "This slope is fairly shallow and easy to walk on, despite the loose shale and gravel. To the east is a high ridge you could stand on, and to the west is a flat area near two trails leading up and down into the mountains. High above you, to your west, is that ominous, dark peak, which seems to radiating a sense of hopelessness...",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "east": {
+                "room_id": "the-three-of-swords-3308"
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3360"
+            }
+        }
+    }
+}

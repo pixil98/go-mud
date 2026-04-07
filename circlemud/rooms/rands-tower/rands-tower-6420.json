@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "rands-tower-6420",
+    "spec": {
+        "name": "A Hallway",
+        "description": "This hallway continues to the east, and has a door to the north. You could swear that the way this level is arranged... nah, couldn't be.",
+        "zone_id": "rands-tower",
+        "exits": {
+            "north": {
+                "room_id": "rands-tower-6421",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "east": {
+                "room_id": "rands-tower-6417"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-second-sewer-7104",
+    "spec": {
+        "name": "A Junction In The Sewer Pipes",
+        "description": "You stand in the middle of what looks like a triple junction of pipes going east, west and north.",
+        "zone_id": "the-second-sewer",
+        "exits": {
+            "north": {
+                "room_id": "the-second-sewer-7103",
+                "description": "You can see a mud area starting in that direction."
+            },
+            "west": {
+                "room_id": "the-second-sewer-7102",
+                "description": "West. There is a room with a ladder leading up."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

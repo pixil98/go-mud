@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7219",
+    "spec": {
+        "name": "A Dry Sewer Drain",
+        "description": "You are in a dry but dirty sewer drain. The drain continues east and south.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "east": {
+                "room_id": "the-sewer-maze-7217",
+                "description": "You see a half-dry drain."
+            },
+            "south": {
+                "room_id": "the-sewer-maze-7220",
+                "description": "You see another boring sewer drain."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

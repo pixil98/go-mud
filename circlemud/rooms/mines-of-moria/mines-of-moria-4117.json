@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4117",
+    "spec": {
+        "name": "The Secret Tunnel",
+        "description": "You are currently standing in a narrow passageway that does not seem to have been heavily visited at any time. It leads northwards towards a lit room and south towards what appears to be a chamber.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4114"
+            },
+            "south": {
+                "room_id": "mines-of-moria-4122"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2597",
+    "spec": {
+        "name": "The Animal Pens",
+        "description": "You are in the animal pens. Many caged animals are here looking unhappy. Obviously they are destined to be enslaved, or used in some cruel magical experimentation.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "south": {
+                "room_id": "the-high-tower-of-magic-2595",
+                "closure": {
+                    "name": "cage",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

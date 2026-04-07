@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "new-thalos-5529",
+    "spec": {
+        "name": "Abdul's Armour",
+        "description": "The sound of hammering metal grows louder as you enter the armoury. Young boys run to and fro carrying buckets of water and coal. A few dwarves work on sections of armour in the back of the shop, their hammers working too fast to follow. The walls are adorned in all of Abdul's prize creations. Here you can purchase suits of armour meant to keep monsters from hacking you into little pieces. A note on the wall beckons your attention.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "west": {
+                "room_id": "new-thalos-5407"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "note"
+                ],
+                "description": "The note reads: LIST : gives you a list of items for sale. VALUE : tells you how much an item is worth to Abdul SELL : sells an item to Abdul for a generous sum BUY : Abdul's FAVORITE command lets you have an item for his low, low price."
+            }
+        ]
+    }
+}

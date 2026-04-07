@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "new-thalos-5543",
+    "spec": {
+        "name": "The Drafting Room",
+        "description": "The walls are covered with paper sketchings of hull designs. This room is used by the shipwright to build his creations on paper before making a single cut in wood.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "west": {
+                "room_id": "new-thalos-5542"
+            }
+        }
+    }
+}

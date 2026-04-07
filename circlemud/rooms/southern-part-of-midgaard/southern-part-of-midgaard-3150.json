@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3150",
+    "spec": {
+        "name": "A Gravel Road In The Graveyard",
+        "description": "You are on a well-kept gravel road that leads north-south through the graveyard. On both sides of the road grow dark evergreen trees. An iron grate is to the north.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "north": {
+                "room_id": "southern-part-of-midgaard-3129",
+                "description": "Through the solid iron bars you see the Concourse.",
+                "closure": {
+                    "name": "grate",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "southern-part-of-midgaard-3106",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            },
+            "south": {
+                "room_id": "southern-part-of-midgaard-3151",
+                "description": "The gravel road continues southward."
+            }
+        }
+    }
+}

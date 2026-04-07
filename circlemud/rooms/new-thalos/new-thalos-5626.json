@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5626",
+    "spec": {
+        "name": "River Ishtar",
+        "description": "Small animals and herd animals can be heard in the distance, though you don't actually see any near the river. Perhaps the steep slopes pervent them from using the river.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5684"
+            },
+            "west": {
+                "room_id": "new-thalos-5625"
+            }
+        }
+    }
+}

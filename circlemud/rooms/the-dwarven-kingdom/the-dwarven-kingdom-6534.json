@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6534",
+    "spec": {
+        "name": "The Hospital",
+        "description": "You are inside the Dwarven Hospital. It smells like rubbing alcohol, and there is blood all over the walls.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "south": {
+                "room_id": "the-dwarven-kingdom-6519"
+            }
+        }
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5212",
+    "spec": {
+        "name": "A Side Street",
+        "description": "This small side street leads south away from the temple into the business section of town. The destruction that leveled this city was not biased; these important looking buildings have been almost totally destroyed. There is a hole in the wall of a very large structure to the east.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "north": {
+                "room_id": "the-city-of-thalos-5206",
+                "description": "A small garden path encircles the temple."
+            },
+            "east": {
+                "room_id": "the-city-of-thalos-5232",
+                "description": "This possibly could be the city hall."
+            },
+            "south": {
+                "room_id": "the-city-of-thalos-5213"
+            },
+            "west": {
+                "room_id": "the-city-of-thalos-5221",
+                "description": "Inside the building you see long pieces of metal, an oven, and some anvils."
+            }
+        }
+    }
+}

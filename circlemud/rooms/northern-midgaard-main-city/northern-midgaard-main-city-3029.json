@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3029",
+    "spec": {
+        "name": "The Secret Yard",
+        "description": "The secret practice yard of thieves and assassins. To the north is the bar. A well leads down into darkness.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "north": {
+                "room_id": "northern-midgaard-main-city-3028",
+                "description": "You see the bar."
+            },
+            "down": {
+                "room_id": "the-sewer-first-level-7043",
+                "zone_id": "the-sewer-first-level",
+                "description": "You can't see what is down there, it is too dark. Looks like it would be impossible to climb back up."
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "newbie-zone-18626",
+    "spec": {
+        "name": "A Long East-West Passage",
+        "description": "This is a long, narrow passage leading east and west. The walls are damp and covered with mildew and fungus. There is a very unhealthy air about this place and you're beginning to want out of here... soon.",
+        "zone_id": "newbie-zone",
+        "exits": {
+            "east": {
+                "room_id": "newbie-zone-18627"
+            },
+            "west": {
+                "room_id": "newbie-zone-18625"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

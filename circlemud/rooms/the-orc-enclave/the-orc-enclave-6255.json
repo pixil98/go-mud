@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6255",
+    "spec": {
+        "name": "A Tunnel",
+        "description": "This forking off from the mail tunnel seems odd; the walls are strangely smooth, as if they were carved out by forces unknown. The end is abrupt and short, but there is a steel door inset in the wall of the west side of the tunnel. The smell from the lower tunnel doesn't seem nearly as bad here... this might be a good place to rest and catch your breath.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "south": {
+                "room_id": "the-orc-enclave-6243"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6256",
+                "description": "A large steel door. There seems to be no hinges or knob, but there is a small keyhole in the exact center of it.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "the-orc-enclave-6200",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ]
+    }
+}

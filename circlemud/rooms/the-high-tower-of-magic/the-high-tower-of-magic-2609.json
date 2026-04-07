@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2609",
+    "spec": {
+        "name": "The Golem Master's Workshop",
+        "description": "You are in the golem master's workshop. A few unfinished looking humanoid forms of different make are here, some moving, some not. The animated forms lunge to attack you.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2610"
+            },
+            "east": {
+                "room_id": "the-high-tower-of-magic-2608",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "south": {
+                "room_id": "the-high-tower-of-magic-2611"
+            },
+            "down": {
+                "room_id": "the-high-tower-of-magic-2612",
+                "closure": {
+                    "name": "trapdoor",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

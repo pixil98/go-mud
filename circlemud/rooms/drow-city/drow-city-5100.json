@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "drow-city-5100",
+    "spec": {
+        "name": "The City Entrance",
+        "description": "You are at the entrance to a small underground city. A great adamantite gate lies open to the west allowing entrance into the city.",
+        "zone_id": "drow-city",
+        "exits": {
+            "west": {
+                "room_id": "drow-city-5101",
+                "description": "A huge gate opens to the west allowing entrance into the city.",
+                "closure": {
+                    "name": "gate",
+                    "closed": true
+                }
+            },
+            "up": {
+                "room_id": "the-great-eastern-desert-5011",
+                "zone_id": "the-great-eastern-desert",
+                "description": "A passageway opens up into a fairly large cave above."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "gate"
+                ],
+                "description": "A large adamantite gate with giant spider shaped emblems stands here."
+            }
+        ]
+    }
+}

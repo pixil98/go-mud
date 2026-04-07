@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6542",
+    "spec": {
+        "name": "At The Bottom Of The Mineshaft",
+        "description": "You are at the bottom of the mineshaft. The air here is very sooty, and it is very hard to breath. The mineshaft leads up and east.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "east": {
+                "room_id": "the-dwarven-kingdom-6543"
+            },
+            "up": {
+                "room_id": "the-dwarven-kingdom-6541"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

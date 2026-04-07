@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5203",
+    "spec": {
+        "name": "A Garden Path",
+        "description": "A circular path surrounds a magnificent domed temple in the center of the city. Flowers have withered away and the once lush trees are bare. Vines and ivy snake up the sides of the temple and entangle themselves around your feet. A sudden volley of howls pierces the air.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "north": {
+                "room_id": "the-city-of-thalos-5204",
+                "description": "The garden path continues around the building."
+            },
+            "east": {
+                "room_id": "the-city-of-thalos-5202",
+                "description": "This is the main street leading to the city's entrance."
+            },
+            "south": {
+                "room_id": "the-city-of-thalos-5206",
+                "description": "The garden path continues around the building."
+            },
+            "west": {
+                "room_id": "the-city-of-thalos-5250",
+                "description": "Inside the temple, small patches of light shoot through each doorway as well as a few holes in the ceiling."
+            }
+        }
+    }
+}

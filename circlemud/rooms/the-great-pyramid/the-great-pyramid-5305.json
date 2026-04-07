@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5305",
+    "spec": {
+        "name": "Climbing The Great Pyramid",
+        "description": "Here on the eastern side of the pyramid there is a little more shelter from the heat and wind. The stone side is not nearly so slippery smooth from the ravages of time, and you think you may be able to even reach the top from here.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "north": {
+                "room_id": "the-great-pyramid-5303",
+                "description": "If you are daring you could try to skirt around to the northern side."
+            },
+            "south": {
+                "room_id": "the-great-pyramid-5304",
+                "description": "If you are daring you could try to skirt around to the southern side."
+            },
+            "up": {
+                "room_id": "the-great-pyramid-5306",
+                "description": "You see the apex of the pyramid many yards above you."
+            },
+            "down": {
+                "room_id": "the-great-pyramid-5307",
+                "description": "This side of the pyramid has a dangerous drop before the sandy floor."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "pyramid"
+                ],
+                "description": "You wonder how anyone could have built such a massive thing out in this heat."
+            }
+        ]
+    }
+}

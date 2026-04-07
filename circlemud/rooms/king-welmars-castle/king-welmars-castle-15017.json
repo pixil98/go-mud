@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15017",
+    "spec": {
+        "name": "By The Throne In The Great Hall",
+        "description": "You are standing by the King's huge ivory throne. The throne is, to an even greater degree than the Hall itself, a masterpiece. It is intricately and beautifully carved, and it seems to be made out of a single block of ivory, though you shiver at the thought of meeting the animal that died to yield a piece of that size. The Hall continues to the east, west and south.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "east": {
+                "room_id": "king-welmars-castle-15018",
+                "description": "You see the King's Great Hall."
+            },
+            "south": {
+                "room_id": "king-welmars-castle-15012",
+                "description": "You see the King's Great Hall."
+            },
+            "west": {
+                "room_id": "king-welmars-castle-15016",
+                "description": "You see the King's Great Hall."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "roof",
+                    "paintings",
+                    "paint"
+                ],
+                "description": "The paintings on the roof depict the great heroes and gods. One of the gods is fairly heavy-bellied and incredibly hairy, with a massive beard. Also among them are the great enemies and wrongdoers, such as the evil Goddess Yochlol and the powerful evil Wizard Tharoecon."
+            },
+            {
+                "keywords": [
+                    "throne",
+                    "ivory"
+                ],
+                "description": "It is large and very beautiful. The carvings are mainly of animals and magic beasts."
+            }
+        ]
+    }
+}

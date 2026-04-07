@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7917",
+    "spec": {
+        "name": "The Chain",
+        "description": "As you descend, the chain seems to absorb all weather around it, making it swing less and less in the very powerful wind tearing at it. The Chain seems to chuckle quietly, and as you descend further you hear a soft whisper originating from within the Chain *ITSELF*. It says 'Welcome back some other time, stranger. Your company is always... hmmm... interesting. God Speed.' The chain extends further down through the now spreading clouds.",
+        "zone_id": "redfernes-residence",
+        "exits": {
+            "down": {
+                "room_id": "redfernes-residence-7914",
+                "description": "That way seems safe enough... now."
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

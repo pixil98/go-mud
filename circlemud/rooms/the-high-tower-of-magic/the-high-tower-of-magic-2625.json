@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2625",
+    "spec": {
+        "name": "The Necromancer's Lair",
+        "description": "You are in the lair of the evil Necromancer. Undead minions of all types, human and otherwise stand here waiting to do their master's bidding. Some glowing arcane sigils have been etched into walls and floor, no doubt to protect the evil master from his own ungodly creations.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "south": {
+                "room_id": "the-high-tower-of-magic-2624"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

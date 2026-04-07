@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "new-thalos-5511",
+    "spec": {
+        "name": "The Museum Of The Greater Gods",
+        "description": "Four large stone statues reside in the museum. They were constructed by the people of New Thalos to pay homage to the saints they believe to have saved all their lives. The museum continues to the south.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "south": {
+                "room_id": "new-thalos-5516"
+            },
+            "west": {
+                "room_id": "new-thalos-5462"
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

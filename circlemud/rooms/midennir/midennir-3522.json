@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "midennir-3522",
+    "spec": {
+        "name": "Deep In The Forest Of Miden'nir",
+        "description": "There is a sickening stench here. It smells of blood and death. To the north, you catch glimpses of daylight. To the east, you simply cannot see. The trees are close and stifling.",
+        "zone_id": "midennir",
+        "exits": {
+            "north": {
+                "room_id": "midennir-3518",
+                "description": "You see daylight and a trail to follow."
+            },
+            "east": {
+                "room_id": "midennir-3521",
+                "description": "The stench seems to becoming from this direction."
+            }
+        }
+    }
+}

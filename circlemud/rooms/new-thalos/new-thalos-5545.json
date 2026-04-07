@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5545",
+    "spec": {
+        "name": "The Royal Stables",
+        "description": "Nothing you wouldn't expect is here. Several stalls hold the Sultan's choice Arabian Stallions, and each has their own trough for drinking. A small boy wanders in sometimes with a shovel to remove the offensive by-product of such beasts.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5549"
+            },
+            "south": {
+                "room_id": "new-thalos-5439"
+            }
+        }
+    }
+}

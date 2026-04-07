@@ -1,0 +1,54 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6075",
+    "spec": {
+        "name": "A Shaded Path Through The Forest",
+        "description": "You are on a small shaded path leading between the trees. The forest gradually becomes more dense to the west, and to the northwest the terrain is quite hilly. The path continues north and south. To the east you see a trail winding through the younger section of the forest.",
+        "zone_id": "haon-dor-light-forest",
+        "exits": {
+            "north": {
+                "room_id": "haon-dor-light-forest-6078",
+                "description": "The path winds its way between the trees."
+            },
+            "east": {
+                "room_id": "haon-dor-light-forest-6074",
+                "description": "You think you see the beginnings of a small trail through the younger part of the forest."
+            },
+            "south": {
+                "room_id": "haon-dor-light-forest-6072",
+                "description": "The path winds its way between the trees."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "path",
+                    "paths",
+                    "shaded"
+                ],
+                "description": "The shaded path is probably used by the animals living in the forest."
+            },
+            {
+                "keywords": [
+                    "tree",
+                    "trees"
+                ],
+                "description": "The trees are mostly old beeches and oaks."
+            },
+            {
+                "keywords": [
+                    "hills",
+                    "hill",
+                    "terrain"
+                ],
+                "description": "To the northwest the ground becomes more hilly. You have heard that a halfling village is somewhere in the hills."
+            },
+            {
+                "keywords": [
+                    "trail"
+                ],
+                "description": "You think you see the beginnings of a small trail to the east, winding through the younger part of the forest."
+            }
+        ]
+    }
+}

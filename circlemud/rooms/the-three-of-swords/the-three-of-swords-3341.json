@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3341",
+    "spec": {
+        "name": "A Rocky Slope",
+        "description": "This treacherous slope leads ever-downward quite a ways, down to a valley where there seems to be a small village! What a village is doing this far from civilization, and how they survive you've no idea. From the smoke wafting from some of the chimneys, it looks like this place is still inhabited as well. Now if you can only get down this slope without breaking an ankle...",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "east": {
+                "room_id": "the-three-of-swords-3342"
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3308"
+            }
+        }
+    }
+}

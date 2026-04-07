@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3019",
+    "spec": {
+        "name": "The Mages' Laboratory",
+        "description": "This is the Magical Experiments Laboratory. Dark smoke-stained stones arch over numerous huge oaken tables, most of these cluttered with strange- looking pipes and flasks. The floor is covered with half-erased pentagrams and even weirder symbols, and a blackboard in a dark corner has only been partially cleaned, some painful-looking letters faintly visible. A well in the middle of the floor leads down into darkness. Vile smells waft from the depths.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "west": {
+                "room_id": "northern-midgaard-main-city-3018",
+                "description": "You see the bar."
+            },
+            "down": {
+                "room_id": "the-sewer-first-level-7017",
+                "zone_id": "the-sewer-first-level",
+                "description": "You can't see what is down there, it is too dark. Looks like it would be impossible to climb back up."
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2569",
+    "spec": {
+        "name": "Atop The Stairway",
+        "description": "You are atop a stairway. The halls here look quite a bit less used than those below. Obviously access to these magic filled corridors is limited to those of the upper echelon of mages. The walls here emit a faint blue magical aura which provides some light. The hallway leads west from here and the stairs go down.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "west": {
+                "room_id": "the-high-tower-of-magic-2570"
+            },
+            "down": {
+                "room_id": "the-high-tower-of-magic-2568"
+            }
+        }
+    }
+}

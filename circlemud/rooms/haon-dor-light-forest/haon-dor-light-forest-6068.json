@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6068",
+    "spec": {
+        "name": "An Intersection On The Shaded Path",
+        "description": "You are on a small shaded path leading through the dense forest. The crowns of the old trees leave the forest in an unreal twilight illumination. The path continues north, south, and west.",
+        "zone_id": "haon-dor-light-forest",
+        "exits": {
+            "north": {
+                "room_id": "haon-dor-light-forest-6073",
+                "description": "The path winds its way between the trees."
+            },
+            "south": {
+                "room_id": "haon-dor-light-forest-6063",
+                "description": "The path winds its way between the trees."
+            },
+            "west": {
+                "room_id": "haon-dor-light-forest-6069",
+                "description": "The path winds its way between the trees."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "path",
+                    "paths",
+                    "shaded"
+                ],
+                "description": "The shaded path is probably used by the animals living in the forest."
+            },
+            {
+                "keywords": [
+                    "tree",
+                    "trees"
+                ],
+                "description": "The trees are mostly old beeches and oaks."
+            }
+        ]
+    }
+}

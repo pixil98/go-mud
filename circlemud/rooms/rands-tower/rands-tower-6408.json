@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "id": "rands-tower-6408",
+    "spec": {
+        "name": "A Linen Closet",
+        "description": "This small room holds many types of linen on shelves along the walls. They are undoubtedly preserved by magic against the toil of the ages, since they seem freshly washed and folded. You wonder what sort of mage could wield so much power to waste on such little things.",
+        "zone_id": "rands-tower",
+        "exits": {
+            "north": {
+                "room_id": "rands-tower-6407",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "linen",
+                    "shelf",
+                    "shelves"
+                ],
+                "description": "White sheets, pillow-cases, etc. Not really anything that you need, but interesting."
+            }
+        ]
+    }
+}

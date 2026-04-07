@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "new-thalos-5481",
+    "spec": {
+        "name": "Underground",
+        "description": "The small passage heads north and east from here. You here the sounds of the city above you.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5480"
+            },
+            "east": {
+                "room_id": "new-thalos-5482"
+            },
+            "up": {
+                "room_id": "new-thalos-5474",
+                "closure": {
+                    "name": "manhole",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "id": "the-second-sewer-7103",
+    "spec": {
+        "name": "A Muddy Bend In The Sewer System",
+        "description": "You are standing in what looks like a bend in the pipe system of the sewer. The 'floor' is covered completely by mud! This includes covering your legs up to your knees as well. The pipe leads west and south.",
+        "zone_id": "the-second-sewer",
+        "exits": {
+            "south": {
+                "room_id": "the-second-sewer-7104",
+                "description": "To the south there is less mud than here! It actually seems to end there! You have a felling it would be nice to have your feet free from mud again."
+            },
+            "west": {
+                "room_id": "the-second-sewer-7101",
+                "description": "You can see a room in which mud drips from the roof onto the floor in great cakes of sludge. There doesn't seem to be any exits from that room apart from in you direction."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "mud"
+                ],
+                "description": "You never saw such disgusting matter before, it nearly makes you puke."
+            }
+        ]
+    }
+}

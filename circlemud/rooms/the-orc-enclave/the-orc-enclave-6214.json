@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6214",
+    "spec": {
+        "name": "The River's Edge",
+        "description": "A beautiful river flows swiftly by, the current looking quite dangerous in fact. Out in the center of the river you spot the energy barrier enclosure... no way out here. Looking up, you see a bird fly right through the barrier overhead and wonder as to the force field's nature. This path leads south into the forest, and westwards along the river's edge.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "south": {
+                "room_id": "the-orc-enclave-6213"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6215"
+            }
+        }
+    }
+}

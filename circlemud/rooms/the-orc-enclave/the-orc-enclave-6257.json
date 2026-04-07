@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6257",
+    "spec": {
+        "name": "A Bedroom",
+        "description": "This is a bedroom, catered to someone with a definite sense of taste. There's a chest of drawers made of a solid section of oak tree. In fact, most of the furniture here has that 'natural look' about it. The bed is filled with soft down with an ornate table lamp close by. Nice place.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "east": {
+                "room_id": "the-orc-enclave-6256",
+                "description": "A normal, wooden door.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

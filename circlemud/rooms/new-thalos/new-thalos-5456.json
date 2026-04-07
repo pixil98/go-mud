@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5456",
+    "spec": {
+        "name": "Kali Row",
+        "description": "The short Row ends abruptly here at the entrance to the dance hall of New Thalos. The entrance to the hall is to the west and the Row continues northward.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5455"
+            },
+            "west": {
+                "room_id": "new-thalos-5552"
+            }
+        }
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "rands-tower-6406",
+    "spec": {
+        "name": "In A Clearing",
+        "description": "You come to a small clearing now, after walking for several minutes through the silent woods. An odd block sticks up here and there in the ground... wait a minute. These stones seem a little too regular, and from the circle formation and size you could almost swear that they were... crenellations? Could some sort of building been buried by the lava here? A rusty ring sticks out of the earth in the center... a trapdoor? This is almost too good to be true!",
+        "zone_id": "rands-tower",
+        "exits": {
+            "west": {
+                "room_id": "rands-tower-6405"
+            },
+            "down": {
+                "room_id": "rands-tower-6407",
+                "description": "An ancient trapdoor, grimed with earth and age.",
+                "closure": {
+                    "name": "trapdoor",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

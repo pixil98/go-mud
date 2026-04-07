@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "new-thalos-5532",
+    "spec": {
+        "name": "Entrance To The Thieves' Guild",
+        "description": "This small, dark room has a single torch mounted in the wall for light. There is a small wooden bench and a book lying on it. The assassin guarding the entrance from 'outsiders' stands as you walk in.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "south": {
+                "room_id": "new-thalos-5539"
+            },
+            "west": {
+                "room_id": "new-thalos-5530",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            },
+            {
+                "type": "grant",
+                "key": "peaceful"
+            },
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ]
+    }
+}

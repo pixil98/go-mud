@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2514",
+    "spec": {
+        "name": "Common Room",
+        "description": "You are in the common room. There are many apprentice warlocks here talking and resting, playing games, comparing notes. Obviously they are taking a break from their rigorous studies. There are benches, tables and a small water fountain here, otherwise the room is quite unremarkable. Exits lead off in all directions.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2517"
+            },
+            "east": {
+                "room_id": "the-high-tower-of-magic-2518",
+                "description": "The mages' bar can be seen to the east."
+            },
+            "south": {
+                "room_id": "the-high-tower-of-magic-2513"
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2519"
+            }
+        }
+    }
+}

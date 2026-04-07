@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-920",
+    "spec": {
+        "name": "The Sixth Trial Of Minos",
+        "description": "Dare we surmise how many more rooms Minos has? The paths appear to be endless. You shudder the sounds of death cries from the east. A loud voice bellows another warning: 'Leave now or face my wrath!' There is a crawlway leading upwards at the far end of the room and there is a fresh breeze comming from there.",
+        "zone_id": "river-island-of-minos",
+        "exits": {
+            "south": {
+                "room_id": "river-island-of-minos-921"
+            },
+            "up": {
+                "room_id": "river-island-of-minos-923"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

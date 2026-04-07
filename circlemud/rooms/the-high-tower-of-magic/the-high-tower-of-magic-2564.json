@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2564",
+    "spec": {
+        "name": "The Spellmasters' Lounge",
+        "description": "You are in a large comfortable looking lounge. Off duty spell teachers are here relaxing in their idle time. A large coffee machine is against the far wall. The only apparent exit leads back west to the hallway.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "west": {
+                "room_id": "the-high-tower-of-magic-2562",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

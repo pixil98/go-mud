@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2577",
+    "spec": {
+        "name": "A Hallway",
+        "description": "You are in a long hallway leading north and south. The walls emit a faint magical glow which provides enough light to see by. An iron bound door can be seen to the west.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2576"
+            },
+            "south": {
+                "room_id": "the-high-tower-of-magic-2578"
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2579",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "the-high-tower-of-magic-2515",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        }
+    }
+}

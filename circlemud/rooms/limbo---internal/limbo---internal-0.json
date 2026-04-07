@@ -1,0 +1,16 @@
+{
+    "version": 1,
+    "id": "limbo---internal-0",
+    "spec": {
+        "name": "The Void",
+        "description": "You don't think that you are not floating in nothing. You can see a strange portal located above you.",
+        "zone_id": "limbo---internal",
+        "exits": {
+            "up": {
+                "room_id": "northern-midgaard-main-city-3001",
+                "zone_id": "northern-midgaard-main-city",
+                "description": "The Temple of Midgaard floats above you."
+            }
+        }
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "new-thalos-5536",
+    "spec": {
+        "name": "Igor's Implements Of Destruction",
+        "description": "You can't help but shiver as you look at the selection of vicious weapons. Huge swords and wicked looking axes hang on pegs around the room. A dwarf sits at a bench in the back hammering away on his latest creation. It is here you can buy rare and exotic items not found in other parts of the world. A note catches your eye.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5407"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "note"
+                ],
+                "description": "The note simply reads: READ THE NOTE IN THE ARMOURY Igor."
+            }
+        ]
+    }
+}

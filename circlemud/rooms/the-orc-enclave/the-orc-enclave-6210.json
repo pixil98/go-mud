@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6210",
+    "spec": {
+        "name": "Just Passing Through...",
+        "description": "The energy barrier seems to push against you ineffectively as you shove your way through it. All your hairs stick up on your body from the static electricity, and electric shocks sting your body from every metallic piece of equipment you are carrying. You think with a final shove, you can break through to the other side...",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "east": {
+                "room_id": "the-orc-enclave-6208"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6211"
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

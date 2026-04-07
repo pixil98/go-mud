@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3004",
+    "spec": {
+        "name": "The Entrance To The Clerics' Guild",
+        "description": "The entrance hall is a small modest room, reflecting the true nature of the Clerics. The exit leads east to the temple square. A small entrance to the bar is in the northern wall.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "north": {
+                "room_id": "northern-midgaard-main-city-3003",
+                "description": "You see the bar, richly decorated with really stylish furniture."
+            },
+            "east": {
+                "room_id": "northern-midgaard-main-city-3005",
+                "description": "You see the Temple Square."
+            }
+        }
+    }
+}

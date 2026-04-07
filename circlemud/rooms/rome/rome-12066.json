@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "rome-12066",
+    "spec": {
+        "name": "Clay Road",
+        "description": "You travel upon an East-West road wide enough for 30 men to march abreast.",
+        "zone_id": "rome",
+        "exits": {
+            "east": {
+                "room_id": "rome-12067"
+            },
+            "west": {
+                "room_id": "rome-12065"
+            }
+        }
+    }
+}

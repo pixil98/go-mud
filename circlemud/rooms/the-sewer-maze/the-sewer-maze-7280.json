@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7280",
+    "spec": {
+        "name": "The Entrance",
+        "description": "You are in a very dark room. You notice that some faces are staring at you from inside the walls. In the middle of the room there is a small altar. To the north there is a small round door.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "north": {
+                "room_id": "the-sewer-maze-7281",
+                "description": "A beam of red light seeps through a hole in the door.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "up": {
+                "room_id": "the-second-sewer-7116",
+                "zone_id": "the-second-sewer",
+                "closure": {
+                    "name": "altar",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "altar"
+                ],
+                "description": "This altar is very special. Faces appear to be smiling from it. There is a triangle engraved in the top of it."
+            },
+            {
+                "keywords": [
+                    "triangle"
+                ],
+                "description": "The triangle is filled with small symbols. They seem to be a language you have never seen before."
+            }
+        ]
+    }
+}

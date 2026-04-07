@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7229",
+    "spec": {
+        "name": "The Strange Sewer",
+        "description": "You are in a very strange sewer indeed, there are some odd scratches on the pipe wall, as from a gigantic rat. And you can see a lot of organic decay like bones from animals AND humans. West the drain runs slightly upwards.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "east": {
+                "room_id": "the-sewer-maze-7224",
+                "description": "You see a sewer junction."
+            },
+            "west": {
+                "room_id": "the-sewer-maze-7230",
+                "description": "You see a slimy sewer drain."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

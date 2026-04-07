@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5013",
+    "spec": {
+        "name": "A Large Cave",
+        "description": "You are standing in a large cave. Many furs are spread out on the floor.",
+        "zone_id": "the-great-eastern-desert",
+        "exits": {
+            "north": {
+                "room_id": "the-great-eastern-desert-5012"
+            },
+            "east": {
+                "room_id": "the-great-eastern-desert-5014"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

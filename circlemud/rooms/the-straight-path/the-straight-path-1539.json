@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1539",
+    "spec": {
+        "name": "Judgment",
+        "description": "Undoubtedly the shortest path is the straightest one. Only one more step awaits before a final decision is made and a home given to you for all eternity.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "north": {
+                "room_id": "the-straight-path-1540"
+            },
+            "south": {
+                "room_id": "the-straight-path-1538"
+            }
+        }
+    }
+}

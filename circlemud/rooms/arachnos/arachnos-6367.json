@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "arachnos-6367",
+    "spec": {
+        "name": "The Guardian's Room",
+        "description": "A chair sits here for a tireless guardian who ensures that no soul escapes. Other than that, the room is undecorated.",
+        "zone_id": "arachnos",
+        "exits": {
+            "north": {
+                "room_id": "arachnos-6368"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "chair"
+                ],
+                "description": "An ordinary chair, well used, glued to the ground by spiderweb."
+            }
+        ]
+    }
+}

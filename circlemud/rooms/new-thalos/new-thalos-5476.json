@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5476",
+    "spec": {
+        "name": "Underground",
+        "description": "The passage continues north and south.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5475"
+            },
+            "south": {
+                "room_id": "new-thalos-5477"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

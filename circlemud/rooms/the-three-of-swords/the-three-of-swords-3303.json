@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3303",
+    "spec": {
+        "name": "Outside A House",
+        "description": "The path you are on leads from the front door of the cottage to your east, to the edge of the small valley to the west. The building seems quiet...almost too quiet. A small voice in the back of your head, the same voice that has saved your life on countless occasions, seems to be telling you that something is very, very wrong here.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "east": {
+                "room_id": "the-three-of-swords-3304",
+                "description": "It is a normal front door to a house.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3302"
+            }
+        }
+    }
+}

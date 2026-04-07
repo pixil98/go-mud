@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "id": "newbie-zone-18639",
+    "spec": {
+        "name": "A Large Room",
+        "description": "As you enter, you light glints of the wall to the east. There appears to be words scrawled on the wall, and a crude picture. To the west the room extends beyond the reach of your light, and the dark shadows make you paranoid... anything could be hiding there. You are painfully aware of how exposed you are without walls around you.",
+        "zone_id": "newbie-zone",
+        "exits": {
+            "north": {
+                "room_id": "newbie-zone-18636"
+            },
+            "west": {
+                "room_id": "newbie-zone-18638",
+                "description": "The room extends as far as (and farther than) you can see..."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "writing",
+                    "words"
+                ],
+                "description": "The writing appears to says 'beware the Minotaur...'"
+            },
+            {
+                "keywords": [
+                    "wall"
+                ],
+                "description": "There is a crude picture of a man with the head of a bull with some writing next to it."
+            }
+        ]
+    }
+}

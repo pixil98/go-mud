@@ -1,0 +1,53 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6076",
+    "spec": {
+        "name": "In The Dense Forest Between The Hills",
+        "description": "You are standing among tightly packed trees between several hills. You lost track of the path long ago, and now must rely on your instincts to guide you. The ground is very rough and rocky here, and only the most hardy plants survive. The crowns of the old trees leave the hills in an unreal twilight illumination.",
+        "zone_id": "haon-dor-light-forest",
+        "exits": {
+            "north": {
+                "room_id": "haon-dor-light-forest-6081",
+                "description": "All you see are trees and hillsides."
+            },
+            "east": {
+                "room_id": "haon-dor-light-forest-6077",
+                "description": "All you see are trees and hillsides."
+            },
+            "south": {
+                "room_id": "haon-dor-light-forest-6076",
+                "description": "All you see are trees and hillsides."
+            },
+            "west": {
+                "room_id": "haon-dor-light-forest-6073",
+                "description": "All you see are trees and a shadowy path."
+            }
+        },
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "path",
+                    "paths"
+                ],
+                "description": "The path is probably around here somewhere... if only you had paid more attention."
+            },
+            {
+                "keywords": [
+                    "tree",
+                    "trees"
+                ],
+                "description": "The trees are mostly old beeches and oaks."
+            },
+            {
+                "keywords": [
+                    "hills",
+                    "hill"
+                ],
+                "description": "Hills rise up all around you, blocking your view of the terrain."
+            }
+        ]
+    }
+}

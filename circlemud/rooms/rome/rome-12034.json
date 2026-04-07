@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "rome-12034",
+    "spec": {
+        "name": "Nero Drive",
+        "description": "This is a busy paved road that runs north through the city. The people of Rome are very friendly and say hello as you pass. A gate leading out of the city lies to the south and a small path goes west towards a nobleman's estate. To the east, off in the distance, lies the great mountain. It is rumored that the Gods watch over and protect the empire from there.",
+        "zone_id": "rome",
+        "exits": {
+            "north": {
+                "room_id": "rome-12033",
+                "description": "Nero Drive leads in that direction."
+            },
+            "south": {
+                "room_id": "rome-12035",
+                "description": "You see many people entering and leaving the city through a large gate in the walls protecting the city."
+            },
+            "west": {
+                "room_id": "rome-12027",
+                "description": "It looks like a nobleman's estate. We are talking RICH nobleman's estate."
+            }
+        }
+    }
+}

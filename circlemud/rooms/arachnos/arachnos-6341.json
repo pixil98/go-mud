@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "arachnos-6341",
+    "spec": {
+        "name": "Another Tree Limb",
+        "description": "Once again the web crosses another tree limb. To the side you see the possible entrance to another creature's lair.",
+        "zone_id": "arachnos",
+        "exits": {
+            "east": {
+                "room_id": "arachnos-6342"
+            },
+            "south": {
+                "room_id": "arachnos-6334"
+            },
+            "west": {
+                "room_id": "arachnos-6345"
+            }
+        }
+    }
+}

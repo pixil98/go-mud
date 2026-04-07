@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1530",
+    "spec": {
+        "name": "Intercession",
+        "description": "It is written that no one may intercede with God on behalf of another. No prayers from another may save the soul of a doomed man; his only hope is prayers of his own.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "up": {
+                "room_id": "the-straight-path-1536"
+            },
+            "south": {
+                "room_id": "the-straight-path-1517"
+            },
+            "west": {
+                "room_id": "the-straight-path-1529"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

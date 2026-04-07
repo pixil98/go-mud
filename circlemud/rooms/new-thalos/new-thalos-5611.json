@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5611",
+    "spec": {
+        "name": "A Path Through The Mountains",
+        "description": "You are walking through a rock strewn path deep within the mountains east of Midgaard. The going is rough and you constantly twist your ankle on the small stones lying about.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5606"
+            },
+            "west": {
+                "room_id": "new-thalos-5610"
+            }
+        }
+    }
+}

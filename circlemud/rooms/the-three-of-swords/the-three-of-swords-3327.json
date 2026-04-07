@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3327",
+    "spec": {
+        "name": "A Cave Passageway",
+        "description": "The echoes are growing louder, and seem to be coming from the northern end of this corridor. Southwards you see the tunnel continue right before yet another bend in the passagway. You spot a small piece of red cloth torn against a sharp rock jutting out from the passage's side. It looks like silk, very nice in fact.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "north": {
+                "room_id": "the-three-of-swords-3328"
+            },
+            "south": {
+                "room_id": "the-three-of-swords-3326"
+            }
+        }
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "god-simplex-1203",
+    "spec": {
+        "name": "The Gods' Mortal Board Room",
+        "description": "Here the Gods have magically created an exact copy of the mortal board room. Any God can easily post and read messages from the mortal board room without being seen by any mortals. The Immortal Board Room is to the west.",
+        "zone_id": "god-simplex",
+        "exits": {
+            "west": {
+                "room_id": "god-simplex-1204",
+                "description": "The Immortal Board Room can be seen to the west."
+            }
+        }
+    }
+}

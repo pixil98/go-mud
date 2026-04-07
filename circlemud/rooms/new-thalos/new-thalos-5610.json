@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "new-thalos-5610",
+    "spec": {
+        "name": "The Ledge Around The Valley",
+        "description": "You are walking around a small ledge overlooking a large valley deep within the eastern mountains. The ledge turns north following the shape of the valley and a steep trail continues to the east.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5611"
+            }
+        }
+    }
+}

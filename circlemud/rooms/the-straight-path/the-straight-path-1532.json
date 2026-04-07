@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1532",
+    "spec": {
+        "name": "The Upper Reaches",
+        "description": "When the records of men's deeds are laid open, and heaven is stripped bare; when Hell burns fiercely and Paradise is brought near: then each soul shall know what it has done.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "east": {
+                "room_id": "the-straight-path-1533"
+            },
+            "west": {
+                "room_id": "the-straight-path-1531"
+            },
+            "down": {
+                "room_id": "the-straight-path-1535"
+            }
+        }
+    }
+}

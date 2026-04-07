@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3018",
+    "spec": {
+        "name": "The Mages' Bar",
+        "description": "The bar is one of the weirdest in the land. Mystical images float around the air. Illusions of fine furniture appear all around the room.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "north": {
+                "room_id": "northern-midgaard-main-city-3017",
+                "description": "You see the lobby."
+            },
+            "east": {
+                "room_id": "northern-midgaard-main-city-3019",
+                "description": "You see the laboratory."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ]
+    }
+}

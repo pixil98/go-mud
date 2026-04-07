@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3108",
+    "spec": {
+        "name": "A Small Path In The Park",
+        "description": "You are standing on a small path inside the park. The park entrance is just north of here, and Park Cafe is just east of the entrance. The path leads further east and west.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "north": {
+                "room_id": "southern-part-of-midgaard-3105",
+                "description": "You see the northern park entrance."
+            },
+            "east": {
+                "room_id": "southern-part-of-midgaard-3109"
+            },
+            "west": {
+                "room_id": "southern-part-of-midgaard-3107"
+            }
+        }
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2672",
+    "spec": {
+        "name": "A Closet",
+        "description": "You are in a small closet. Cloaks and vests hang from hooks in the wall, and a few old boots are all that can be seen here. Rather featureless all in all.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "east": {
+                "room_id": "the-high-tower-of-magic-2669"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4016",
+    "spec": {
+        "name": "The Large Cave",
+        "description": "You find yourself in a fairly large cave. Large enough that the eastern and western ends are almots completely shrouded in darkness. A small tunnel breaks through the southern wall, and it too is full of shadows.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "east": {
+                "room_id": "mines-of-moria-4017"
+            },
+            "south": {
+                "room_id": "mines-of-moria-4012"
+            },
+            "west": {
+                "room_id": "mines-of-moria-4023"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

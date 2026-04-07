@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "newbie-zone-18630",
+    "spec": {
+        "name": "A Branching Passage",
+        "description": "The north-south passage branches to the east here. There is a queer red glow coming from that way as well, along with a faint breeze.",
+        "zone_id": "newbie-zone",
+        "exits": {
+            "north": {
+                "room_id": "newbie-zone-18624"
+            },
+            "south": {
+                "room_id": "newbie-zone-18634"
+            },
+            "west": {
+                "room_id": "newbie-zone-18629",
+                "description": "A very odd red glow emanates from that direction."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

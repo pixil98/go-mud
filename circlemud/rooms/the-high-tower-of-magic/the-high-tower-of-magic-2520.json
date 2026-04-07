@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2520",
+    "spec": {
+        "name": "The Kitchen",
+        "description": "You are in a small kitchen. All the usual kitchen type utensils and equipment is here, including some not so usual ones. Among the later, a huge black oven against one wall, it must be at least 12 feet high. Opposite the oven is an equally enormous meat locker, large enough to comfortably store several hapless adventurers no doubt. In the middle of the room, hanging in mid-air is a spice rack.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "east": {
+                "room_id": "the-high-tower-of-magic-2516",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15024",
+    "spec": {
+        "name": "The Small Passage",
+        "description": "You are standing in a small passage leading north and south. There is also an exit to the west, from which grunts, cheers and heavy blows can be heard.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "north": {
+                "room_id": "king-welmars-castle-15029",
+                "description": "The passage leads north to some stairs."
+            },
+            "south": {
+                "room_id": "king-welmars-castle-15019",
+                "description": "You see the passage continuing."
+            },
+            "west": {
+                "room_id": "king-welmars-castle-15023",
+                "description": "You see the Training Room."
+            }
+        }
+    }
+}

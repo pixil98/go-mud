@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6518",
+    "spec": {
+        "name": "North Of The Shops",
+        "description": "Here the path bends to the east towards the barracks. To the south you can see the shops.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "east": {
+                "room_id": "the-dwarven-kingdom-6519"
+            },
+            "south": {
+                "room_id": "the-dwarven-kingdom-6517"
+            }
+        }
+    }
+}

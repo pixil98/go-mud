@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7211",
+    "spec": {
+        "name": "The Small Cave",
+        "description": "You are in a collapsed sewer drain, which now is more like a small cave.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "south": {
+                "room_id": "the-sewer-maze-7210",
+                "description": "You look back into the four-way junction."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

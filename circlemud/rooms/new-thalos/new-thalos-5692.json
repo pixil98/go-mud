@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5692",
+    "spec": {
+        "name": "On A Road",
+        "description": "The Dragon Sea can be seen to the east now spreading out to unknown lands. The road continues east and west. To the south you hear the sounds of boats traveling the River Ishtar delivering goods.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5693"
+            },
+            "west": {
+                "room_id": "new-thalos-5691"
+            }
+        }
+    }
+}

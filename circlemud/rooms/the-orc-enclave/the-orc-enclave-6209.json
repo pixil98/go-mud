@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6209",
+    "spec": {
+        "name": "The River's Edge",
+        "description": "A river flows through the forest here, its water clean and clear. The energy barrier runs right out into the middle of the river, and then makes another ninety-degree turn to the west. The water seems to have no problem penetrating the magical field, however. The river seems too wide and too swift to cross here. It appears the only way to go is back to the south.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "south": {
+                "room_id": "the-orc-enclave-6208"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "barrier",
+                    "energy"
+                ],
+                "description": "You can faintly see the woods continue beyond it, but it seems there's no way through. The field rises high up into the air, and seems to form a ceiling above the woods, preventing a flying entrance. You'd also bet it extends deep into the ground."
+            }
+        ]
+    }
+}

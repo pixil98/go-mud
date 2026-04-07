@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5300",
+    "spec": {
+        "name": "The Great Eastern Desert",
+        "description": "A vast desert stretches for miles, the sands constantly shifting around you. Rising out of the sand to the north you see a mighty pyramid.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "north": {
+                "room_id": "the-great-pyramid-5301",
+                "description": "The sands of the desert continue onward towards the pyramid."
+            },
+            "east": {
+                "room_id": "the-great-eastern-desert-5040",
+                "zone_id": "the-great-eastern-desert",
+                "description": "Sand as far as the eye can see."
+            },
+            "south": {
+                "room_id": "the-great-eastern-desert-5050",
+                "zone_id": "the-great-eastern-desert",
+                "description": "Sand as far as the eye can see."
+            },
+            "west": {
+                "room_id": "the-great-eastern-desert-5035",
+                "zone_id": "the-great-eastern-desert",
+                "description": "Sand as far as the eye can see."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "pyramid"
+                ],
+                "description": "The massive pyramid rises out of the sand, a monument to long-dead pharoahs."
+            }
+        ]
+    }
+}

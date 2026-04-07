@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6259",
+    "spec": {
+        "name": "The Laboratory",
+        "description": "A full fledge operating table is set up here, outfitted with a full set of restraints. A ledge nearby has a whole array of sterile medical equipment on it, covered over by a clear lid. There's a drain in the floor with gradients leading to it to carry away the blood. For some reason, you don't imagine this as a voluntary operating theatre...",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "east": {
+                "room_id": "the-orc-enclave-6260"
+            },
+            "south": {
+                "room_id": "the-orc-enclave-6262"
+            }
+        }
+    }
+}

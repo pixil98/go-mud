@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4052",
+    "spec": {
+        "name": "The Tunnel",
+        "description": "Continuing along the tunnel, you find that the floor has begun to smooth itself out once more. Looking about, you notice a small spring of water bubbling up near the southern wall.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "east": {
+                "room_id": "mines-of-moria-4100"
+            },
+            "west": {
+                "room_id": "mines-of-moria-4051"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

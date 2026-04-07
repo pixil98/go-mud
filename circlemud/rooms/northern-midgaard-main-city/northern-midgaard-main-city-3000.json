@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3000",
+    "spec": {
+        "name": "The Reading Room",
+        "description": "You are in a small, simple room which is mostly empty, save a few wooden desks and benches. To the east you hear the bustle of the Temple of Midgaard, a sharp contrast to the relative quiet of this peaceful room.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "east": {
+                "room_id": "northern-midgaard-main-city-3001",
+                "description": "You see the Temple of Midgaard."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "peaceful"
+            },
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ]
+    }
+}

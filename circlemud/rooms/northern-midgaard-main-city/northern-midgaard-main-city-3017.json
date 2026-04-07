@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3017",
+    "spec": {
+        "name": "The Entrance To The Mages' Guild",
+        "description": "The entrance hall to this guild is a small, poor lighted room.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "north": {
+                "room_id": "northern-midgaard-main-city-3012",
+                "description": "You see the main street."
+            },
+            "south": {
+                "room_id": "northern-midgaard-main-city-3018",
+                "description": "You see your favorite place, the Mages' Bar."
+            }
+        }
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3002",
+    "spec": {
+        "name": "The Clerics' Inner Sanctum",
+        "description": "This is the inner sanctum. A picture of the mighty Thor, is hanging on the wall, just above the altar which is set against the western wall. A well in the middle of the floor leads down into darkness. Vile smells waft from the depths.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "east": {
+                "room_id": "northern-midgaard-main-city-3003",
+                "description": "You see your favorite place, the bar of divination."
+            },
+            "down": {
+                "room_id": "the-sewer-first-level-7026",
+                "zone_id": "the-sewer-first-level",
+                "description": "You can't see what is down there, it is too dark. Looks like it would be impossible to climb back up."
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

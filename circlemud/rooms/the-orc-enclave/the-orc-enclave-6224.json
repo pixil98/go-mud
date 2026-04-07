@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6224",
+    "spec": {
+        "name": "The Dead End",
+        "description": "The ground has been cleared of vegetation in this small clearing, and several large, man-made salt licks lie on the ground and stand on poles here. There are many animal tracks in the earth -- the salt licks must attract wildlife for miles around. You think this would be a good place to hide and wait for dinner if you were a hunter...",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "west": {
+                "room_id": "the-orc-enclave-6223"
+            }
+        }
+    }
+}

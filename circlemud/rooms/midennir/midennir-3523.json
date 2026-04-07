@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "midennir-3523",
+    "spec": {
+        "name": "The Dark Forest",
+        "description": "The branches above you block out all direct sunlight, making the forest in this area rather dark. The forest continues east, where it meets the mountains. The air is still and stuffy - a stench comes from the west and an ugly feeling causes the hair to rise on the back of your neck!",
+        "zone_id": "midennir",
+        "exits": {
+            "north": {
+                "room_id": "midennir-3520",
+                "description": "It appears to get much darker that direction."
+            },
+            "east": {
+                "room_id": "midennir-3551",
+                "description": "The forest appears to get much darker in this direction."
+            },
+            "west": {
+                "room_id": "midennir-3521",
+                "description": "The sky becomes lighter in this direction."
+            }
+        }
+    }
+}

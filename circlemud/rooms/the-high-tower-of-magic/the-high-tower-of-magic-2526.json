@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2526",
+    "spec": {
+        "name": "A Dark Passage",
+        "description": "You are in a dark passage, which comes to an abrupt stop at what appears to be a cave-in to the west. It is certainly unpassable, and perhaps quite dangerous just being this close. The only exit leads back east.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "east": {
+                "room_id": "the-high-tower-of-magic-2522"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

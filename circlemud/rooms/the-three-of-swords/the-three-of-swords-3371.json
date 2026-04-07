@@ -1,0 +1,49 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3371",
+    "spec": {
+        "name": "A Sloping Tunnel",
+        "description": "The tunnel continues its slope upwards, and the wind blows at you even stronger yet. The claw tracks in the stone stop abruptly here, where there seems to be a lot of unearthed dirt and stone around, heaped upon the floor. You feel uneasy about this place.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "north": {
+                "room_id": "the-three-of-swords-3372"
+            },
+            "south": {
+                "room_id": "the-three-of-swords-3370"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "dirt",
+                    "stone"
+                ],
+                "description": "It has been dug from somewhere, but where?"
+            },
+            {
+                "keywords": [
+                    "claw",
+                    "claws",
+                    "track",
+                    "tracks",
+                    "mark",
+                    "marks"
+                ],
+                "description": "They stop very abruptly here, right where the piles of earth begin, it seems."
+            },
+            {
+                "keywords": [
+                    "floor"
+                ],
+                "description": "The floor up ahead looks... strange. You don't think going ahead would be a good idea."
+            }
+        ]
+    }
+}

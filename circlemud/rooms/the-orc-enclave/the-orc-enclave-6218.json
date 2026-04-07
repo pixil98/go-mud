@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6218",
+    "spec": {
+        "name": "A Forest Trail",
+        "description": "This trail leads north-south... obviously a gaming trail. The woods, mostly deciduous trees with the accompanying ground foilage, crowd in to either side. A shrub to your left shows a fresh cutting wound... looks like a sharp object like a knife or machete did the damage. A crackle in the leaves spins you around, to see nothing. Something is watching you, you feel it. Where?",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "north": {
+                "room_id": "the-orc-enclave-6233"
+            },
+            "south": {
+                "room_id": "the-orc-enclave-6226"
+            }
+        }
+    }
+}

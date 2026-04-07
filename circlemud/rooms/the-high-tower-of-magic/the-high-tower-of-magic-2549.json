@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2549",
+    "spec": {
+        "name": "A Classroom",
+        "description": "You are in a large classroom filled with bored looking students of the art. The instructor stops in his lecture on the fine uses of magic missile at your entry and lunges to attack you. The only apparent exit is back east to the hallway.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "east": {
+                "room_id": "the-high-tower-of-magic-2548",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

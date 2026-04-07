@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7301",
+    "spec": {
+        "name": "Cave Tunnel",
+        "description": "You are walking in a tunnel. It is very cold. You can feel the presence of a living thing... SOMEWHERE.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "north": {
+                "room_id": "the-sewer-maze-7302",
+                "description": "To the north you can see the tunnel continuing."
+            },
+            "south": {
+                "room_id": "the-sewer-maze-7300",
+                "description": "To the south tunnel continuing."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

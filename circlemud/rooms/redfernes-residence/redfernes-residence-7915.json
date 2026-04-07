@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7915",
+    "spec": {
+        "name": "The Chain Where It Is Too Windy",
+        "description": "Hanging on to the chain you figure out that there is no way of leaving down from here. The wind pulls you from left to right and back. This seems like a totally impossible task. The ascend is the only way ahead for you. Otherwise you would risk death by falling to the hard ground below. DO NOT DESCEND NOW OR YOU WILL SURELY DIE!!!!",
+        "zone_id": "redfernes-residence",
+        "exits": {
+            "up": {
+                "room_id": "redfernes-residence-7916",
+                "description": "That way seems to be the only way away from here."
+            },
+            "down": {
+                "room_id": "redfernes-residence-7920",
+                "description": "THAT WAY IS CERTAIN DEATH!!!! You can see the wind tearing at the chain down below you. It swings like a furious serpent from side to side! The descent is ABSOLUTELY out of the QUESTION."
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

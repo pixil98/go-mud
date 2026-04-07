@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2673",
+    "spec": {
+        "name": "A Wide Hallway",
+        "description": "You are in a large hallway, wide enough to accommodate several people standing abreast. The floor here is a swirl of multicoloured patterns, in constant motion. A huge, grey metal door blocks the way north, it looks quite sturdy.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2674",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "the-high-tower-of-magic-2593",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            },
+            "south": {
+                "room_id": "the-high-tower-of-magic-2650"
+            }
+        }
+    }
+}

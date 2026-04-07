@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "new-thalos-5575",
+    "spec": {
+        "name": "The Entrance To The Dungeon",
+        "description": "You enter a cold damp room with bare roughly hewn stone walls. This room seems very out of place compared to the splendor of the rest of the Palace. A large steel grating leads down into darkness, and an iron door returns you to the hallway.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "south": {
+                "room_id": "new-thalos-5574",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "down": {
+                "room_id": "new-thalos-5591",
+                "closure": {
+                    "name": "grating",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

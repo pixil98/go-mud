@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "midennir-3511",
+    "spec": {
+        "name": "The Trail",
+        "description": "You are on a north-south trail through the woods. To the west, impassable mountains glare at you, and the thick woods and undergrowth prevent any movement westward.",
+        "zone_id": "midennir",
+        "exits": {
+            "north": {
+                "room_id": "midennir-3508",
+                "description": "The trail bends to the north."
+            },
+            "south": {
+                "room_id": "midennir-3515",
+                "description": "To the south, the path re-enters the forest."
+            }
+        }
+    }
+}

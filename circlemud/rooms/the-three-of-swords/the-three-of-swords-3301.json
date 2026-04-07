@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3301",
+    "spec": {
+        "name": "A Scraggly Trail",
+        "description": "What could barely be called a trail leads west back down the mountainside, and down into a very small valley where a small house sits in the middle of a well-groomed yard. The door to the house is open and inviting, welcoming you for a visit.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "west": {
+                "room_id": "the-three-of-swords-3300"
+            },
+            "down": {
+                "room_id": "the-three-of-swords-3302"
+            }
+        }
+    }
+}

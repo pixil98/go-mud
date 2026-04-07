@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5359",
+    "spec": {
+        "name": "Through The Hole In The Sand",
+        "description": "You squeeze through the small hole in the sand and land in a small white chamber. Above you is a small hole, reachable by climbing up the small sandy slope down which you slid.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "up": {
+                "room_id": "the-great-pyramid-5358",
+                "description": "You see a sand dune."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ]
+    }
+}

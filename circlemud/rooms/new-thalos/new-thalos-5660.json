@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5660",
+    "spec": {
+        "name": "The Headwaters Of The Dark River",
+        "description": "A large natural spring issues forth from the heart of the mountain and flows west down the mountain. It looks like there was a terrible earthquake here not too long ago, and a path that leads eastwards through the mountains is covered with rocks, making passage difficult.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5654"
+            },
+            "west": {
+                "room_id": "new-thalos-5661"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4034",
+    "spec": {
+        "name": "The Grassy Area In The Foothills",
+        "description": "The grass here is unusually high. You notice several areas where someone or something large has crushed spots of it down. Several very large rocks litter this area. You can go north towards the end of the foothills, west to go deeper into the foothills, or south to a small path intersection.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4035"
+            },
+            "south": {
+                "room_id": "mines-of-moria-4033"
+            },
+            "west": {
+                "room_id": "mines-of-moria-4042"
+            }
+        }
+    }
+}

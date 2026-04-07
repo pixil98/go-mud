@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "arachnos-6301",
+    "spec": {
+        "name": "The Webbed Entrance",
+        "description": "Sticky, sticky, sticky! The ground is cluttered with leaves, decayed remains of webbed crickets, beetle, rats, dogs, and even humans. You begin to wonder about what lies ahead. The air is damp here, and even the little light that shines through the canopy seems to be absorbed into the webbing.",
+        "zone_id": "arachnos",
+        "exits": {
+            "north": {
+                "room_id": "arachnos-6302"
+            },
+            "south": {
+                "room_id": "haon-dor-dark-forest-6132",
+                "zone_id": "haon-dor-dark-forest"
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

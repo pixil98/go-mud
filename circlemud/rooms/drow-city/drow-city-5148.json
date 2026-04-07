@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "drow-city-5148",
+    "spec": {
+        "name": "The Dias",
+        "description": "You stand upon a dias behind the altar. Above you is a enormous illusion of a female drow turning into a giant spider and back again. There is a door to the west.",
+        "zone_id": "drow-city",
+        "exits": {
+            "south": {
+                "room_id": "drow-city-5145"
+            },
+            "west": {
+                "room_id": "drow-city-5149",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "drow-city-5115",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3348",
+    "spec": {
+        "name": "The Intersection",
+        "description": "You are standing in an intersection deep in the heart of Stanneg by the Mountains. In fact, this is the ONLY intersection anywhere in Stanneg by the Mountain it appears. There are some buildings to the north, and south, and east, and west. None particularly stand out from the others.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "north": {
+                "room_id": "the-three-of-swords-3349"
+            },
+            "east": {
+                "room_id": "the-three-of-swords-3355"
+            },
+            "south": {
+                "room_id": "the-three-of-swords-3353"
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3346"
+            }
+        }
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6540",
+    "spec": {
+        "name": "The Dark Path",
+        "description": "This path is very well worn, and there is an entrance to the mines to the east, while the path continues to the north and west.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "north": {
+                "room_id": "the-dwarven-kingdom-6504"
+            },
+            "east": {
+                "room_id": "the-dwarven-kingdom-6541",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "the-dwarven-kingdom-6502",
+                        "locked": true
+                    }
+                }
+            },
+            "west": {
+                "room_id": "the-dwarven-kingdom-6503"
+            }
+        }
+    }
+}

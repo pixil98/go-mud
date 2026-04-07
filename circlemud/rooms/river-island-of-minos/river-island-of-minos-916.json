@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-916",
+    "spec": {
+        "name": "The Second Trial Of Minos",
+        "description": "Minos' voice reveberates from the four walls of this room: 'Get some rest and make sure you're healed. You'll need it for the next monster in my playground. Or are you strong enough?' To the south is the entrance to the next challenge of Minos' stronghold.",
+        "zone_id": "river-island-of-minos",
+        "exits": {
+            "south": {
+                "room_id": "river-island-of-minos-917"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

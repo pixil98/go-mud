@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5447",
+    "spec": {
+        "name": "The Casbah",
+        "description": "As you travel down the road towards towards the City Hall you look up at the guards walking along the wall keeping watch. South of you stands the great walls of the Palace and the Avenue goes east and west.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5448"
+            },
+            "west": {
+                "room_id": "new-thalos-5446"
+            }
+        }
+    }
+}

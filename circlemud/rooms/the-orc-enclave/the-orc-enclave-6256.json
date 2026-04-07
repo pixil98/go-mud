@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6256",
+    "spec": {
+        "name": "A Tunnel",
+        "description": "This section of man-made tunnel heads north from here, doors on either side. A few glowing spots on the ceiling illuminate the area to almost a daylight level. From the north you hear some horrible cries of pain and anguish that make you cringe inside and think twice about heading in that direction.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "north": {
+                "room_id": "the-orc-enclave-6258"
+            },
+            "east": {
+                "room_id": "the-orc-enclave-6255",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "the-orc-enclave-6200",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6257",
+                "description": "This is a normal, wooden door.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

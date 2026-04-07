@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6228",
+    "spec": {
+        "name": "A Forest Trail",
+        "description": "This path leads from the main clearing to the west to intersect with a north-south path just to the east. A small sapling on the north side of the trail has a rope tied around one of its top branches; an unused snare evidently. You still feel as if you're being watched in the back of your mind, and adrenaline pumps into your brain like a lightning fuzz.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "east": {
+                "room_id": "the-orc-enclave-6212"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6229"
+            }
+        }
+    }
+}

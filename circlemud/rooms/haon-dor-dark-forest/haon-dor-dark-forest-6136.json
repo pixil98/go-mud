@@ -1,0 +1,52 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6136",
+    "spec": {
+        "name": "A Dusty Trail In The Deep, Dark Forest",
+        "description": "You are on a dusty trail leading through the deep, dark forest. Ancient, grey trees loom everywhere. The trail continues south and west. A broad irregular path leads eastward away from the trail.",
+        "zone_id": "haon-dor-dark-forest",
+        "exits": {
+            "east": {
+                "room_id": "haon-dor-dark-forest-6142",
+                "description": "The trees standing on the sides of the path have scratch marks on them."
+            },
+            "south": {
+                "room_id": "haon-dor-dark-forest-6135",
+                "description": "The dusty trail leads south through the trees."
+            },
+            "west": {
+                "room_id": "haon-dor-dark-forest-6137",
+                "description": "The dusty trail leads west through the trees."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "tree",
+                    "trees",
+                    "trunk",
+                    "trunks"
+                ],
+                "description": "To the east the ancient grey giants have many marks as if something with huge claws has been tearing at them in rage."
+            },
+            {
+                "keywords": [
+                    "path"
+                ],
+                "description": "The trees standing on the sides of the path have scratch marks on them."
+            },
+            {
+                "keywords": [
+                    "trail"
+                ],
+                "description": "The dark and dusty trail seems fragile compared to the massive trunks, and in some places, giant grey roots have broken up through its surface."
+            }
+        ]
+    }
+}

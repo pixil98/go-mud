@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2522",
+    "spec": {
+        "name": "A Damp Intersection",
+        "description": "You are in a damp intersection of what seems to be the basement of the tower. The sound of running water can be heard coming from the south, other than that, an almost tangible stillness fills the air. Passages lead off in all directions, and a ladder leads up.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2523"
+            },
+            "east": {
+                "room_id": "the-high-tower-of-magic-2524",
+                "description": "A faint light can be seen in the distance up the east passage."
+            },
+            "south": {
+                "room_id": "the-high-tower-of-magic-2525"
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2526"
+            },
+            "up": {
+                "room_id": "the-high-tower-of-magic-2521"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

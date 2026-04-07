@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7913",
+    "spec": {
+        "name": "The Monster Pen",
+        "description": "This looks like the cage in which a large carnivore is being kept. Judging by the state the walls are in, this could very well be a large AGGRESSIVE animal. This makes you pretty insecure, this stating your feeling about the place quite mildly.",
+        "zone_id": "redfernes-residence",
+        "exits": {
+            "west": {
+                "room_id": "redfernes-residence-7904",
+                "description": "This looks like the only exit from here.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

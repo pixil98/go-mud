@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4106",
+    "spec": {
+        "name": "The Golden Cave",
+        "description": "You are standing in what appears to be the north-west corner of this large cavern. The cave is lit by the eerie, soft, golden light which looks to be emanating from the walls themselves. The cave itself is enormous, extending quite a distance to the east and south. There is a hole in the northern wall, about two feet in diameter. All that can be seen through the hole is darkness.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4103"
+            },
+            "east": {
+                "room_id": "mines-of-moria-4105"
+            },
+            "south": {
+                "room_id": "mines-of-moria-4109"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "light",
+                    "gold",
+                    "golden"
+                ],
+                "description": "It looks good, but as you look closely you notice that it has no value."
+            }
+        ]
+    }
+}

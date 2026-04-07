@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "id": "new-thalos-5579",
+    "spec": {
+        "name": "A Hall",
+        "description": "The long stretch of hallway continues east and west from here. The small red carpet covering the centerline is always underfoot and an occasional bench or potted plant lines the wall. There is a door here to the north with a plaque mounted over it.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5580",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "east": {
+                "room_id": "new-thalos-5574"
+            },
+            "west": {
+                "room_id": "new-thalos-5584"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "plaque",
+                    "door"
+                ],
+                "description": "The plaque on the door reads: THE ART EXHIBIT of NEW THALOS - the management is not responsible for lost items."
+            }
+        ]
+    }
+}

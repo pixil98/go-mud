@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4056",
+    "spec": {
+        "name": "The Light Cave",
+        "description": "The cave you stand in now is lit by an eerie flickering light, which comes from the enormous fire which is burning right in front of you in the middle of this large cave. The fire gives off more than enough light to see both the north and south ends of the cave.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4054"
+            },
+            "south": {
+                "room_id": "mines-of-moria-4061"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "fire"
+                ],
+                "description": "The fire seems to have been burning for quite a long time. The ceiling is covered with soot from the smoke, and ashes are littered all over the floor of the cave."
+            }
+        ]
+    }
+}

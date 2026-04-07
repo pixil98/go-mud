@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5311",
+    "spec": {
+        "name": "The Chamber Of The Efreet",
+        "description": "You make your way across the fire pool, and into a small stone chamber. Here the flames are nearly as high as your head, singeing your face and evaporating your sweat instantaneously.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "east": {
+                "room_id": "the-great-pyramid-5310",
+                "description": "The pool of fire ends to the east."
+            }
+        }
+    }
+}

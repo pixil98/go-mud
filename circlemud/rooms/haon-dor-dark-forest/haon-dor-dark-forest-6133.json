@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6133",
+    "spec": {
+        "name": "On The spider web",
+        "description": "You are balancing carefully on the giant sticky threads that holds the giant web in place. To the east is a giant tree trunk and to the west is an entrance to a cave-like structure made from many layers of spider web.",
+        "zone_id": "haon-dor-dark-forest",
+        "exits": {
+            "east": {
+                "room_id": "haon-dor-dark-forest-6132",
+                "description": "To the east is the giant tree trunk."
+            },
+            "west": {
+                "room_id": "haon-dor-dark-forest-6134",
+                "description": "To the west is the entrance to the cave-like structure."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "web"
+                ],
+                "description": "The immense spider web moves softly."
+            },
+            {
+                "keywords": [
+                    "cave",
+                    "structure"
+                ],
+                "description": "It covers a ground area corresponding to an irregular circle with a diameter of about 20 feet and is nearly 10 feet tall. It looks very old."
+            }
+        ]
+    }
+}

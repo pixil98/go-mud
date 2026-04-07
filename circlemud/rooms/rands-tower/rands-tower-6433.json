@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "rands-tower-6433",
+    "spec": {
+        "name": "The Stairwell",
+        "description": "This is where the stairwell finally ends. There is a hall to your west.",
+        "zone_id": "rands-tower",
+        "exits": {
+            "west": {
+                "room_id": "rands-tower-6434"
+            },
+            "up": {
+                "room_id": "rands-tower-6431"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "new-thalos-5669",
+    "spec": {
+        "name": "On The Dark River",
+        "description": "The river slowly flows west towards the heart of the mountain. There are small cracks in the passage wall to the north where you might be able to get up out of the water.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5672"
+            },
+            "east": {
+                "room_id": "new-thalos-5668"
+            },
+            "west": {
+                "room_id": "new-thalos-5670"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

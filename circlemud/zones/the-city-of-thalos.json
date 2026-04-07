@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos",
+    "spec": {
+        "name": "The City Of Thalos",
+        "reset_mode": "lifespan",
+        "lifespan": "15m"
+    }
+}

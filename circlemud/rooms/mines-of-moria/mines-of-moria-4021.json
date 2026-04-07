@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4021",
+    "spec": {
+        "name": "The Hole",
+        "description": "As you stand at the end of this tunnel, you notice a large hole sitting in the floor by the northwestern corner of the walls. The tunnel itself leads off towards the east. The air here feels very damp and you feel like your clothes are becoming sticky with sweat.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "east": {
+                "room_id": "mines-of-moria-4022"
+            },
+            "down": {
+                "room_id": "mines-of-moria-4115"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ]
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6221",
+    "spec": {
+        "name": "A Small Clearing",
+        "description": "In the middle of this small clearing in the forest is a fairly large rock sticking up out of the ground. Paths lead away to the east, west, and south from here. The trees above block out the sky fairly effectively, also blotting out the glowing energy barrier above your head.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "east": {
+                "room_id": "the-orc-enclave-6220"
+            },
+            "south": {
+                "room_id": "the-orc-enclave-6222"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6227"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "rock",
+                    "boulder"
+                ],
+                "description": "There is dried blood on it."
+            }
+        ]
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "new-thalos-5479",
+    "spec": {
+        "name": "Underground",
+        "description": "The passage ends here and you hear some low chanting from the west. You also notice the clearing of dust on the ground but can't seem to find any door in that direction.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5477"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

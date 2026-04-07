@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2652",
+    "spec": {
+        "name": "A Grey Tiled Hallway",
+        "description": "You are in a grey tiled hallway leading north and south. Dim balls of energy float here and there shedding a warm light, and showing the way. A feeling of peace and balance comes over you. Large, grey metal double doors can be seen to the south.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2651"
+            },
+            "south": {
+                "room_id": "the-high-tower-of-magic-2653",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

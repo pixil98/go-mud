@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2552",
+    "spec": {
+        "name": "An Empty Classroom",
+        "description": "You are in an empty classroom. Some strange sigils are written on a blackboard which is floating in the air here. Other than a few desks, it is bare of furnishings. The only apparent exit leads back east to the hallway.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "east": {
+                "room_id": "the-high-tower-of-magic-2550",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

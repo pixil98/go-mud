@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6213",
+    "spec": {
+        "name": "A Forest Trail",
+        "description": "The northern trail winds through the trees, heading from a forest clearings to the south to where there appears to be a river's edge to the north. This trail appears to be well-used and you spot many tracks in the earth. Again the hairs on the back of your neck stand up, and you wonder if you're being spied upon.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "north": {
+                "room_id": "the-orc-enclave-6214"
+            },
+            "south": {
+                "room_id": "the-orc-enclave-6212"
+            }
+        }
+    }
+}

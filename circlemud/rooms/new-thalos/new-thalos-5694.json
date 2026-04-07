@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5694",
+    "spec": {
+        "name": "Near The Shore",
+        "description": "The road ends here turning into a small dirt path leading down the beach and onto a dock. To the north and south you see the coastline stretching out before you. West of here the lowlands roll up into huge snow capped mountains.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5695"
+            },
+            "west": {
+                "room_id": "new-thalos-5693"
+            }
+        }
+    }
+}

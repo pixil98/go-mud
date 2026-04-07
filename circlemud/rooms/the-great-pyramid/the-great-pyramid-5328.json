@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5328",
+    "spec": {
+        "name": "A Stairway",
+        "description": "You are on a stairway that disappears into darkness in both directions. The smooth, uneven steps of the stairway have not been travelled in what appears to be centuries.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "up": {
+                "room_id": "the-great-pyramid-5327",
+                "description": "It is too dark to see up the stairway."
+            },
+            "down": {
+                "room_id": "the-great-pyramid-5329",
+                "description": "It is too dark to see down the stairway."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

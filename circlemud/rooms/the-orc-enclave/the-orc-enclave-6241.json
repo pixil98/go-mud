@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6241",
+    "spec": {
+        "name": "A Rocky Trail",
+        "description": "The forest is just to your west, with a side trail leading deep inside from here. The main trail you are on, however, heads north towards the river, and south near where a trail leads up to a cave in the mountain side. There doesn't seem to be a whole lot to capture your attention here...",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "north": {
+                "room_id": "the-orc-enclave-6240"
+            },
+            "east": {
+                "room_id": "the-orc-enclave-6238"
+            },
+            "south": {
+                "room_id": "the-orc-enclave-6234"
+            }
+        }
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "rands-tower-6405",
+    "spec": {
+        "name": "In The Valley",
+        "description": "The ground has taken on the texture of dirt on the top, but this valley is far too flat and too rocky to disguise the catastrophe that happened here so long ago. Looking up to the mountains ringing this area, you notice several mountains look as if they had 'exploded', which is strange, considering that they are not volcanos. The path leads into the woods to the east, and back up the mountain to the west.",
+        "zone_id": "rands-tower",
+        "exits": {
+            "east": {
+                "room_id": "rands-tower-6406"
+            },
+            "west": {
+                "room_id": "rands-tower-6404"
+            }
+        }
+    }
+}

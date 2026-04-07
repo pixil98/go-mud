@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7213",
+    "spec": {
+        "name": "The Sewer Drain",
+        "description": "You are in a dry sewer drain which bends to the east.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "east": {
+                "room_id": "the-sewer-maze-7214",
+                "description": "You can see the drain continuing east."
+            },
+            "south": {
+                "room_id": "the-sewer-maze-7212",
+                "description": "You can see the drain continuing south."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

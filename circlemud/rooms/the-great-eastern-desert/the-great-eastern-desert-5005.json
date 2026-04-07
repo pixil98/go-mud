@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5005",
+    "spec": {
+        "name": "An Underground Lake",
+        "description": "You are floating on a jet-black underground lake fed by dripping water and lime from above. The tunnel continues to the east and the river leads back west. Leading upwards to the northwest is a roughly hewn hallway.",
+        "zone_id": "the-great-eastern-desert",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5671",
+                "zone_id": "new-thalos"
+            },
+            "east": {
+                "room_id": "the-great-eastern-desert-5006"
+            },
+            "south": {
+                "room_id": "the-great-eastern-desert-5023"
+            },
+            "west": {
+                "room_id": "the-great-eastern-desert-5004"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5030",
+    "spec": {
+        "name": "A Small Oasis",
+        "description": "You stand beside a small pool of crystal-blue water bathed in the shade of a few scarce palm trees. To the north you see a small encampment stopped for the day.",
+        "zone_id": "the-great-eastern-desert",
+        "exits": {
+            "north": {
+                "room_id": "the-great-eastern-desert-5056",
+                "description": "You see three tents and some camels hitched to a stake. Shadows moving across the tents suggest activity."
+            },
+            "east": {
+                "room_id": "the-great-eastern-desert-5036",
+                "description": "Sand as far as the eye can see."
+            },
+            "south": {
+                "room_id": "the-great-eastern-desert-5032",
+                "description": "Sand as far as the eye can see."
+            },
+            "west": {
+                "room_id": "the-great-eastern-desert-5025",
+                "description": "Sand as far as the eye can see."
+            }
+        }
+    }
+}

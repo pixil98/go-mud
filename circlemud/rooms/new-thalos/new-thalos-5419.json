@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5419",
+    "spec": {
+        "name": "Sultan's Walk",
+        "description": "This part of the road travels between one of the sturdy walls of the Palace and the Dancing Daemon. To the east you peer through a small window into the Daemon, seeing many people dancing and drinking. After you tend to your other chores you plan on visiting the Daemon. The walk continues north and south from here.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5420"
+            },
+            "south": {
+                "room_id": "new-thalos-5418"
+            }
+        }
+    }
+}

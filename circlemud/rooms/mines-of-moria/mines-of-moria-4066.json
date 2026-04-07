@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4066",
+    "spec": {
+        "name": "The Maze",
+        "description": "You stand in yet another small and damp tunnel. The ceiling hangs quite low overhead and the passage twists off into darkness. The only exits from here look to be off to the east, south, and north. To the south, the tunnel looks to open up into a cavern.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4062"
+            },
+            "east": {
+                "room_id": "mines-of-moria-4067"
+            },
+            "south": {
+                "room_id": "mines-of-moria-4069"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

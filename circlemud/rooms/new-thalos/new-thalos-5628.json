@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "new-thalos-5628",
+    "spec": {
+        "name": "A Path Through The Mountains",
+        "description": "The narrow path makes its way through the mountains east and west. You hear the squawking of a large bird over head most likely a buzzard waiting for you to drop.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5629"
+            },
+            "south": {
+                "room_id": "mines-of-moria-4049",
+                "zone_id": "mines-of-moria"
+            },
+            "west": {
+                "room_id": "new-thalos-5627"
+            }
+        }
+    }
+}

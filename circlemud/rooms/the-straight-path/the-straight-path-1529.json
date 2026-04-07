@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1529",
+    "spec": {
+        "name": "Pilgrimage",
+        "description": "It is incumbent upon all Muslims to make the pilgrimage to Mecca once in their lifetime, if they are able, and for those unfortunate enough to follow the lives of the lower evils, such a pilgrimage with an open and contrite heart shall absolve them of all.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "up": {
+                "room_id": "the-straight-path-1535"
+            },
+            "east": {
+                "room_id": "the-straight-path-1530"
+            },
+            "west": {
+                "room_id": "the-straight-path-1528"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

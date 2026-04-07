@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "new-thalos-5491",
+    "spec": {
+        "name": "A Dark Passage",
+        "description": "The small passage ends here for no apparent reason. Looking around you find a small ladder half buried in the dirt. setting it up you find a trap door in the ceiling. The passage continues west from here.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "west": {
+                "room_id": "new-thalos-5490"
+            },
+            "up": {
+                "room_id": "new-thalos-5570",
+                "closure": {
+                    "name": "secret",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "fire"
+                ],
+                "description": "Moving closer you see this fire is actually FROZEN in place. The flames still radiate heat, but are not actually burning. Looking around you notice a small hole about the size of a piece of charcoal at the base of the flames."
+            }
+        ]
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "rome-12031",
+    "spec": {
+        "name": "Nero Drive",
+        "description": "You are walking on a great paved road that runs north and south through the city. People are hurrying from one place to another, but always stop to say hello. Most of the people are either coming from or going to the town square. Nero Drive continues to the north, and you can see a large open area to the south.",
+        "zone_id": "rome",
+        "exits": {
+            "north": {
+                "room_id": "rome-12030",
+                "description": "Nero drive continues in that direction."
+            },
+            "south": {
+                "room_id": "rome-12032",
+                "description": "It looks like the town square."
+            },
+            "west": {
+                "room_id": "rome-12024",
+                "description": "You see the an opulent estate."
+            }
+        }
+    }
+}

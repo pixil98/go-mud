@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "arachnos-6347",
+    "spec": {
+        "name": "On The Web",
+        "description": "RRRRRRRRRRROOOOOOOOOOOOOAAAAAAAAAAAAAARR! You hear the roar of a powerful beast. Dragon, you think. You shiver in your boots as you tiptoe along this section of the web.",
+        "zone_id": "arachnos",
+        "exits": {
+            "east": {
+                "room_id": "arachnos-6346"
+            },
+            "south": {
+                "room_id": "arachnos-6355"
+            },
+            "down": {
+                "room_id": "arachnos-6331"
+            }
+        }
+    }
+}

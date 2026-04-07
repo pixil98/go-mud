@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3343",
+    "spec": {
+        "name": "Main Road",
+        "description": "This place leaves you very unimpressed. And bored. You are definitely bored by this place. The people are listless, going about their daily chores with a slowness that pains your eyes. A slope to the west climbs up the mountainside, and two open shops made of wood and stone are to your north and south. East-wards this road continues. There is a small sign here.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "north": {
+                "room_id": "the-three-of-swords-3344"
+            },
+            "east": {
+                "room_id": "the-three-of-swords-3346"
+            },
+            "south": {
+                "room_id": "the-three-of-swords-3345"
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3342"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "sign"
+                ],
+                "description": ",_____________________________. | | | Stanneg by the Mountains | | | | Population: 27 | | | | -- BUAG SIGNS INC.| `-----------------------------' | | | | | | | |"
+            }
+        ]
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "new-thalos-5584",
+    "spec": {
+        "name": "A Hall",
+        "description": "This is the western end of the northern hallway. Two doors are set in the walls here, one to the north, another to the west.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5585",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "east": {
+                "room_id": "new-thalos-5579"
+            },
+            "west": {
+                "room_id": "new-thalos-5589",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

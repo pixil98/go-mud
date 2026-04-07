@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2515",
+    "spec": {
+        "name": "The Hallway",
+        "description": "You are in a long hallway, it seems rather unremarkable. The hallway continues east and back west.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "east": {
+                "room_id": "the-high-tower-of-magic-2530"
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2513"
+            }
+        }
+    }
+}

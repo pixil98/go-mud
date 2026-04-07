@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "new-thalos-5430",
+    "spec": {
+        "name": "East Main Street",
+        "description": "The Main street through eastern New Thalos begins here and heads westward towards the marketplace. One of the main gates can be seen to the east and Braheem's Magic Shop awaits your business to the north.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5524"
+            },
+            "east": {
+                "room_id": "new-thalos-5431"
+            },
+            "west": {
+                "room_id": "new-thalos-5429"
+            }
+        }
+    }
+}

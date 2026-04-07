@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "new-thalos-5577",
+    "spec": {
+        "name": "A Hall",
+        "description": "The long hall continues here with a wooden door in the south wall. On the north wall hangs the picture of some forgotten nobleman who once ruled the land.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5572"
+            },
+            "south": {
+                "room_id": "new-thalos-5576",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "new-thalos-5582"
+            }
+        }
+    }
+}

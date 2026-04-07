@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5315",
+    "spec": {
+        "name": "A Tightening In The Crawlway",
+        "description": "Here you are forced to slide on your belly through a particularly tight section of the crawlway, as the stones of the pyramid close together about you. Below you is a small, slippery-looking hole that plummets into blackness.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "east": {
+                "room_id": "the-great-pyramid-5314",
+                "description": "The crawlway gets a little larger to the east."
+            },
+            "south": {
+                "room_id": "the-great-pyramid-5316",
+                "description": "The crawlway continues to diminish in size to the south."
+            },
+            "down": {
+                "room_id": "the-great-pyramid-5317",
+                "description": "The hole looks very slippery and very dark."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

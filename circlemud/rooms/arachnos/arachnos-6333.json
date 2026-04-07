@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "arachnos-6333",
+    "spec": {
+        "name": "Above The Clouds",
+        "description": "You can see all of Midgaard in this ethereal web. Many of the larger dragons that do wish to fly seem to fly away from the sticky strands of the web.",
+        "zone_id": "arachnos",
+        "exits": {
+            "east": {
+                "room_id": "arachnos-6331"
+            },
+            "south": {
+                "room_id": "arachnos-6334"
+            },
+            "west": {
+                "room_id": "arachnos-6335"
+            }
+        }
+    }
+}

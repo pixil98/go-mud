@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "id": "newbie-zone-18646",
+    "spec": {
+        "name": "A Bright Hallway",
+        "description": "Wow! What a change from the dismal passage to the west. Whoever keeps this room up must really like newbies. The walls and floor are clean, and tastefully decorated. You also notice an interesting design on the floor.",
+        "zone_id": "newbie-zone",
+        "exits": {
+            "east": {
+                "room_id": "newbie-zone-18647",
+                "description": "The passage opens into a domed room with a grand marble staircase."
+            },
+            "west": {
+                "room_id": "newbie-zone-18603",
+                "description": "A dark intersection of passages.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "floor",
+                    "design"
+                ],
+                "description": "It appears to be the crest of the Harlequin Guild."
+            }
+        ]
+    }
+}

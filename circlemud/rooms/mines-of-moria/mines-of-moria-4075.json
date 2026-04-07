@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4075",
+    "spec": {
+        "name": "The Copse Of Trees",
+        "description": "Standing in this copse of trees gives you an eerie feeling. Off to the east you can see the plains, and just to the north a strange shadow seems to be changing shape constantly and almost seems to beckon you to enter it.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2500",
+                "zone_id": "the-high-tower-of-magic",
+                "description": "There is a strange shadow forming before you."
+            },
+            "east": {
+                "room_id": "mines-of-moria-4036"
+            }
+        }
+    }
+}

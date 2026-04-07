@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "arachnos-6328",
+    "spec": {
+        "name": "The Entrance Of The Ethereal Web",
+        "description": "You are at the entrance to ethereal web. Flickering in and out, in and out, each strand reveals a different hue from black to green to blue.",
+        "zone_id": "arachnos",
+        "exits": {
+            "south": {
+                "room_id": "arachnos-6331"
+            }
+        }
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2650",
+    "spec": {
+        "name": "An Intersection",
+        "description": "You are at an intersection of several hallways. You feel as if strange mystical forces are pushing and pulling at each other from all around you. The sensation of being trapped, in the middle is almost tangible in the air here. A grey tiled hallway leads south, black tiled east, white tiled west, and a multi-coloured hallway swirling with patterns that remain just barely unrecognizable is to the north.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2673"
+            },
+            "east": {
+                "room_id": "the-high-tower-of-magic-2658"
+            },
+            "south": {
+                "room_id": "the-high-tower-of-magic-2651"
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2665"
+            },
+            "down": {
+                "room_id": "the-high-tower-of-magic-2649"
+            }
+        }
+    }
+}

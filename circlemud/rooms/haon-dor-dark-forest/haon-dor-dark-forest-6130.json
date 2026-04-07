@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6130",
+    "spec": {
+        "name": "A Narrow Trail Through The Deep, Dark Forest",
+        "description": "You are on a dusty trail winding its way westward between huge, ancient trees that stand close on all sides. The tree trunks seem to be covered in some sticky substance which gets much stickier towards the west! Beware!",
+        "zone_id": "haon-dor-dark-forest",
+        "exits": {
+            "east": {
+                "room_id": "haon-dor-dark-forest-6110",
+                "description": "The narrow, dusty trail leads east through the forest."
+            },
+            "west": {
+                "room_id": "haon-dor-dark-forest-6131",
+                "description": "The sticky substance is hanging like ropes between the trees just above the path. To the west the path seems to be covered with these giant threads covered with glue. You can sense the forces of evil coming from the west and your bones tell you it may not be such a good idea to proceed."
+            },
+            "up": {
+                "room_id": "haon-dor-dark-forest-6132"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "substance",
+                    "rope",
+                    "ropes",
+                    "thread",
+                    "threads"
+                ],
+                "description": "The substance reminds you of giant threads covered with glue. If it hadn't been for the size you could have sworn it was part of a spider web."
+            },
+            {
+                "keywords": [
+                    "trail"
+                ],
+                "description": "The dark and dusty trail seems fragile compared to the massive trunks, and in some places, giant grey roots have broken up through its surface."
+            },
+            {
+                "keywords": [
+                    "tree",
+                    "trees",
+                    "trunk",
+                    "trunks"
+                ],
+                "description": "The sticky substance is hanging like ropes between the ancient trees, crossing the path just out of reach. It might be possible to climb one of the sticky trunks."
+            }
+        ]
+    }
+}

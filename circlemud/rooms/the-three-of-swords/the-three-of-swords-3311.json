@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3311",
+    "spec": {
+        "name": "A Small Plateau",
+        "description": "This plateau ends here, with a steep drop-off to the south, and a solid wall of rock to the north. Eastwards the plateau continues, and you think you can climb up the steep rocky slope just west of here. You are afforded a good view of the lower regions of this depression, and you think you spot what might be a cave south and down from here...",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "east": {
+                "room_id": "the-three-of-swords-3310"
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3312"
+            }
+        }
+    }
+}

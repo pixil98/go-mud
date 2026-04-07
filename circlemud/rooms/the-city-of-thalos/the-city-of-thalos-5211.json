@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5211",
+    "spec": {
+        "name": "A Side Street",
+        "description": "This small side street leads away from the garden path to the south. Around you stand large piles or rubble where the houses of commoners used to be. A lone howl makes you worry greatly about your safety here.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "north": {
+                "room_id": "the-city-of-thalos-5210"
+            },
+            "east": {
+                "room_id": "the-city-of-thalos-5237",
+                "description": "An unusually tall dwelling stands looming over you."
+            },
+            "south": {
+                "room_id": "the-city-of-thalos-5204",
+                "description": "A garden path circles around the temple."
+            },
+            "west": {
+                "room_id": "the-city-of-thalos-5227",
+                "description": "Here lies a small stone house with a thatched roof."
+            }
+        }
+    }
+}

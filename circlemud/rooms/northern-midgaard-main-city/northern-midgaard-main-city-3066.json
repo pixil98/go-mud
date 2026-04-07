@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3066",
+    "spec": {
+        "name": "The Dirt Path",
+        "description": "You are walking along a narrow dirt path through the lush, green, fresh Midgaard countryside. You can see to the horizon to the north and east; the busy city of Midgaard lies to the south. All around you is healthy green grass and an occasional large oak tree. The sun feels wonderful on your face and a pleasant wind blows through your hair. Birds chirp quietly to themselves and you can smell the faint scent of flowers and freshly cut grass. You feel like you could lie down in the grass and stay here forever, surrounded by powerful beauty in all directions. There is a large rusty gate sitting in a stone archway just to the west.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "east": {
+                "room_id": "northern-midgaard-main-city-3061",
+                "description": "The path meets up with a larger path just to the east."
+            },
+            "west": {
+                "room_id": "the-chessboard-of-midgaard-3600",
+                "zone_id": "the-chessboard-of-midgaard",
+                "description": "There is a large rusty gate just to the west."
+            }
+        }
+    }
+}

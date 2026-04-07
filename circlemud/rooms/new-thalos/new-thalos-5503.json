@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "new-thalos-5503",
+    "spec": {
+        "name": "Clerics' Sanctum",
+        "description": "You walk down the staircase into the silent inner sanctum. Here sits your guildmaster ready to assist you when the time is right. The room is completely silent. The only obvious exit is back up the staircase into the the Nectar.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5479",
+                "description": "You notice the floor at the base of the eastern wall has some faint scratches in it.",
+                "closure": {
+                    "name": "secret",
+                    "closed": true
+                }
+            },
+            "up": {
+                "room_id": "new-thalos-5519"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "peaceful"
+            },
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ]
+    }
+}

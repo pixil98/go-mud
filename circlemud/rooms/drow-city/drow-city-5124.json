@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "drow-city-5124",
+    "spec": {
+        "name": "The 4th House",
+        "description": "You stand inside the 4th house of the city. Its inner courtyard is rather dull by drow standards and rather small as well.",
+        "zone_id": "drow-city",
+        "exits": {
+            "east": {
+                "room_id": "drow-city-5125"
+            },
+            "south": {
+                "room_id": "drow-city-5123",
+                "closure": {
+                    "name": "gate",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

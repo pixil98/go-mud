@@ -1,0 +1,10 @@
+{
+    "version": 1,
+    "id": "rome-12034",
+    "spec": {
+        "aliases": [
+            "key"
+        ],
+        "short_desc": "a small key"
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3312",
+    "spec": {
+        "name": "A Rocky Slope",
+        "description": "This slope is fairly treacherous, but looks to be somewhat safer to the north. East the slope leads down to a small plateau that also looks considerably safer than your other choices. The shale under your feet slips badly, and you are almost thrown off balance; this is no place to be without mountaineering equipment.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "north": {
+                "room_id": "the-three-of-swords-3313"
+            },
+            "east": {
+                "room_id": "the-three-of-swords-3311"
+            }
+        }
+    }
+}

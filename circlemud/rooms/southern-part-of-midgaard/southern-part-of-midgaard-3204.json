@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3204",
+    "spec": {
+        "name": "On The River",
+        "description": "You see the warehouse on the northern riverbank. East of here you see the city wall. The river flows west towards the levee.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "east": {
+                "room_id": "southern-part-of-midgaard-3205"
+            },
+            "west": {
+                "room_id": "southern-part-of-midgaard-3203"
+            }
+        }
+    }
+}

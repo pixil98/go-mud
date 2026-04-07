@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5682",
+    "spec": {
+        "name": "On The Plains",
+        "description": "You stand on an open field of grass. The forest to the north is closer but still a good distance away. To the south a small dirt path has been trodden into the ground heading towards New Thalos.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5683"
+            },
+            "east": {
+                "room_id": "new-thalos-5682"
+            },
+            "south": {
+                "room_id": "new-thalos-5681"
+            },
+            "west": {
+                "room_id": "new-thalos-5682"
+            }
+        }
+    }
+}

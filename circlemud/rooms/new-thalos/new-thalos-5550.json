@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "new-thalos-5550",
+    "spec": {
+        "name": "The Grand Entrance",
+        "description": "Nowhere have you seen such an obscene display of wealth then in this corridor. The shaggy carpeting under your feet makes it seem as if you are walking on a cloud. Platinum candelabras hang delicately from the ceiling casting light on the ancient tapestries adorning the walls. The crick in your neck tells you that it is time to stop staring. To the west the numerous halls of the palace being and the gate lies to the east.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5560"
+            },
+            "east": {
+                "room_id": "new-thalos-5558",
+                "closure": {
+                    "name": "gate",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "new-thalos-5400",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            },
+            "south": {
+                "room_id": "new-thalos-5557"
+            },
+            "west": {
+                "room_id": "new-thalos-5605"
+            }
+        }
+    }
+}

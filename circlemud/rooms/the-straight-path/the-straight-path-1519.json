@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1519",
+    "spec": {
+        "name": "The Light of the Rashidun",
+        "description": "Many believed that the Prophet would never die, but when the stark evidence of his body confronted them, it soon became necessary to provide for the future. The four that came after are called the Rashidun, the rightly-guided Caliphs that would spread the word and the light, and with it forge one of history's greatest empires.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "north": {
+                "room_id": "the-straight-path-1520"
+            },
+            "south": {
+                "room_id": "the-straight-path-1518"
+            }
+        }
+    }
+}

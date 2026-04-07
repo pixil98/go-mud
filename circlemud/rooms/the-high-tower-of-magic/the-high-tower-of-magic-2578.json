@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2578",
+    "spec": {
+        "name": "A Hallway",
+        "description": "You are in a long hallway leading north and south. The walls emit a faint magical glow which provides enough light to see by. The sharp sound of metal on metal can be heard to the west.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2577"
+            },
+            "south": {
+                "room_id": "the-high-tower-of-magic-2580"
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2581",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

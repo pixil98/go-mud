@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2582",
+    "spec": {
+        "name": "The Master Enchanter's Chamber",
+        "description": "You have entered the Master Enchanter's chamber. Upon all the walls here are racks of finely crafted weapons. A huge chest with a glowing lock is set to one side. Several unfinished looking blades rest atop a small work table.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2581",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

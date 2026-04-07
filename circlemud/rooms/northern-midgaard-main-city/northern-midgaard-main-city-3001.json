@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3001",
+    "spec": {
+        "name": "The Temple Of Midgaard",
+        "description": "You are in the southern end of the temple hall in the Temple of Midgaard. The temple has been constructed from giant marble blocks, eternal in appearance, and most of the walls are covered by ancient wall paintings picturing Gods, Giants and peasants. Large steps lead down through the grand temple gate, descending the huge mound upon which the temple is built and ends on the temple square below. To the west, you see the Reading Room. The donation room is in a small alcove to your east.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "north": {
+                "room_id": "northern-midgaard-main-city-3054",
+                "description": "At the northern end of the temple hall is a statue and a huge altar."
+            },
+            "east": {
+                "room_id": "northern-midgaard-main-city-3063",
+                "description": "In the east, you see a small alcove with a rickety wooden sign which reads \"Midgaard Donation Room.\""
+            },
+            "south": {
+                "room_id": "northern-midgaard-main-city-3005",
+                "description": "You look down the huge stone steps at the temple square below."
+            },
+            "west": {
+                "room_id": "northern-midgaard-main-city-3000",
+                "description": "You see the Reading Room."
+            },
+            "down": {
+                "room_id": "northern-midgaard-main-city-3005",
+                "description": "You see the temple square."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "peaceful"
+            },
+            {
+                "type": "grant",
+                "key": "nomagic"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ]
+    }
+}

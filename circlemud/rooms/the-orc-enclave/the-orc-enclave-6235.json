@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6235",
+    "spec": {
+        "name": "A Forest Trail",
+        "description": "The trail you are on bends around a large double- trunked tree and leads away to the north and west. The green canopy of leaves overhead make this area fairly dark and ominous, and that creepy 'watched' feeling returns to hit you with full force.",
+        "zone_id": "the-orc-enclave",
+        "exits": {
+            "south": {
+                "room_id": "the-orc-enclave-6229"
+            },
+            "west": {
+                "room_id": "the-orc-enclave-6236"
+            }
+        }
+    }
+}

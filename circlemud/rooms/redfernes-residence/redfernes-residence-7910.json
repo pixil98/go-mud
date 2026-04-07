@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7910",
+    "spec": {
+        "name": "The Treasure Room",
+        "description": "This place is gloomy. A HUGE safe is cemented into the west wall. The only visible exit is west, through the oak door.",
+        "zone_id": "redfernes-residence",
+        "exits": {
+            "east": {
+                "room_id": "redfernes-residence-7903",
+                "closure": {
+                    "name": "safe",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "redfernes-residence-7900",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            },
+            "west": {
+                "room_id": "redfernes-residence-7901",
+                "description": "You see a tall oak door.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

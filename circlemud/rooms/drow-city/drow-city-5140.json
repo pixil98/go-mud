@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "drow-city-5140",
+    "spec": {
+        "name": "The Grand Stairway",
+        "description": "You are climbing a set of obsidian stairs surrounded by adamantite walls. To the north are a set of large golden doors.",
+        "zone_id": "drow-city",
+        "exits": {
+            "north": {
+                "room_id": "drow-city-5141",
+                "closure": {
+                    "name": "doors",
+                    "closed": true
+                }
+            },
+            "up": {
+                "room_id": "drow-city-5138"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

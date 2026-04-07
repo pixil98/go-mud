@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5200",
+    "spec": {
+        "name": "The Grand Gate Of Thalos",
+        "description": "You stand in the archway of a gigantic stone archway. The two steel gates have been forced open and have rusted in place. A hollow gust of wind blows by you into the deserted, and seemingly destroyed, city.",
+        "zone_id": "the-city-of-thalos",
+        "exits": {
+            "west": {
+                "room_id": "the-city-of-thalos-5201",
+                "description": "You see devastation everywhere. Houses lie in ruin and skeletons litter the streets. You see strange beasts stalking the shadows."
+            }
+        }
+    }
+}

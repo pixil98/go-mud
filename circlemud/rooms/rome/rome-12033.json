@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "rome-12033",
+    "spec": {
+        "name": "Nero Drive",
+        "description": "You are walking on a paved road that runs north and south through the city of Rome. There are many people here, as polite as always. Most of them are either coming from or going to the town square which lies to the north. Nero Drive continues to the south. There is an observation area overlooking the aqueduct to the east and a paved road leads west.",
+        "zone_id": "rome",
+        "exits": {
+            "north": {
+                "room_id": "rome-12032",
+                "description": "The town square lies in that direction."
+            },
+            "east": {
+                "room_id": "rome-12040",
+                "description": "The aqueduct and mountain of the gods are in that direction."
+            },
+            "south": {
+                "room_id": "rome-12034",
+                "description": "Nero Drive continues toward the South Gate."
+            },
+            "west": {
+                "room_id": "rome-12026",
+                "description": "A paved road runs west through the city."
+            }
+        }
+    }
+}

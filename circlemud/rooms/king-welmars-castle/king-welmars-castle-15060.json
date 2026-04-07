@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15060",
+    "spec": {
+        "name": "A Cell",
+        "description": "This small cell is damp and dark and looks like noone and nothing has lived in it for quite some time. A small cell door is located in the west wall.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "west": {
+                "room_id": "king-welmars-castle-15057",
+                "description": "The cell door to the west leads back to the prison hallway.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "king-welmars-castle-15017",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        }
+    }
+}

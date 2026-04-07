@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "new-thalos-5563",
+    "spec": {
+        "name": "A Hall",
+        "description": "You are at the eastern end of the southern hallway. A small servants' entrance gives access to the kitchen and the hall continues west.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "south": {
+                "room_id": "new-thalos-5561",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "new-thalos-5572"
+            }
+        }
+    }
+}

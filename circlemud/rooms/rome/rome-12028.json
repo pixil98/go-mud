@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "id": "rome-12028",
+    "spec": {
+        "name": "An Opulent House",
+        "description": "You stand in a house, the size and splendor of which almost defies the imagination. The floor is done with hand crafted marble tile with silver and jeweled inlays. The light coming through the exquisitely crafted stained glass windows bathes the room in splendor and the furniture looks as though it was made by master craftsmen from all over the empire. A path through the estate is north of here.",
+        "zone_id": "rome",
+        "exits": {
+            "north": {
+                "room_id": "rome-12027",
+                "description": "You see a well manicured path that winds through the estate."
+            }
+        },
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "floor",
+                    "tile"
+                ],
+                "description": "Very expensive! A lot of master craftsmen labored long and hard to produce such a work of art."
+            },
+            {
+                "keywords": [
+                    "windows"
+                ],
+                "description": "They are intricate and the scenes that they depict cast honor on several of the gods."
+            },
+            {
+                "keywords": [
+                    "furniture"
+                ],
+                "description": "You hope to eventually be able to own a piece of furniture just like these someday. These are only dreams, of course."
+            }
+        ]
+    }
+}

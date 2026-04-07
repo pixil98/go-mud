@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "rome-12047",
+    "spec": {
+        "name": "The Summit Of The Mountain Of The Gods",
+        "description": "You are at the summit of a very high mountain and are standing above the clouds. The sun is shining brilliantly here and the clouds below look like balls of cotton. The path that you have been walking on is damp and the scent of lilac is in the air.",
+        "zone_id": "rome",
+        "exits": {
+            "down": {
+                "room_id": "rome-12052",
+                "description": "You see a damp path leading back down the mountain."
+            }
+        }
+    }
+}

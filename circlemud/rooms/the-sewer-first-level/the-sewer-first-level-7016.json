@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7016",
+    "spec": {
+        "name": "The Ordinary Bend",
+        "description": "You are in the middle of a bend in the pipe system of the sewer system, WHAT a place!!! The pipe leads to the south and the east.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "south": {
+                "room_id": "the-sewer-first-level-7017",
+                "description": "South. You see nothing at all in that direction it is too dark anyway."
+            },
+            "east": {
+                "room_id": "the-sewer-first-level-7021",
+                "description": "East. What a quiet place you've found there. It is an intersection that has pipeways going north and east."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

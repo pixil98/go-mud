@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3334",
+    "spec": {
+        "name": "A Cave Passageway",
+        "description": "The tunnel twists to the south and east from here, its dark length seemingly dismal and lifeless. A faint thumping sound reverberates from the walls, making you perk your ears for the direction of the noise.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "east": {
+                "room_id": "the-three-of-swords-3335"
+            },
+            "south": {
+                "room_id": "the-three-of-swords-3333"
+            }
+        }
+    }
+}

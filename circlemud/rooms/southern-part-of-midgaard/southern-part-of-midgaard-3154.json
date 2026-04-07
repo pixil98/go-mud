@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3154",
+    "spec": {
+        "name": "In Front Of The Chapel",
+        "description": "You are on an open space before a small chapel. A gravel road leads north through the graveyard and the chapel entrance is to the south.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "north": {
+                "room_id": "southern-part-of-midgaard-3153",
+                "description": "The gravel road continues northwards."
+            },
+            "south": {
+                "room_id": "southern-part-of-midgaard-3155",
+                "description": "The chapel door is made of dark wood.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        }
+    }
+}

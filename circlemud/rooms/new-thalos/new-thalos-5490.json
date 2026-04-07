@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "new-thalos-5490",
+    "spec": {
+        "name": "A Dark Passage",
+        "description": "The small passage continues west and east from here.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5491"
+            },
+            "west": {
+                "room_id": "new-thalos-5489"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "boulder"
+                ],
+                "description": "A huge boulder stands here. In its center someone has carved out a perfect round hole."
+            }
+        ]
+    }
+}

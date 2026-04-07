@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "midennir-3500",
+    "spec": {
+        "name": "The Plains",
+        "description": "You are standing on the plains. This is a vast desolate place where the wind can howl undisturbed since nothing but you bars its way. However you are not the first to wander here. Before you somebody has left a small path. The path looks rather bewildered and is not the kind of path to lead to anywhere significant or important but it seems to have made up its mind to enter the hills far away north. A narrow trail scars its way off to the east as it leads up towards a hillside.",
+        "zone_id": "midennir",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4000",
+                "zone_id": "mines-of-moria"
+            },
+            "east": {
+                "room_id": "the-three-of-swords-3300",
+                "zone_id": "the-three-of-swords"
+            },
+            "south": {
+                "room_id": "midennir-3501"
+            }
+        }
+    }
+}

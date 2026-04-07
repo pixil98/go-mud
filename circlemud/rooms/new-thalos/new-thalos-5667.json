@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5667",
+    "spec": {
+        "name": "On The Dark River",
+        "description": "The river flows west from here into the heart of the mountain and east towards the foothills once more.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5666"
+            },
+            "west": {
+                "room_id": "new-thalos-5668"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7331",
+    "spec": {
+        "name": "The Glittering Room",
+        "description": "This room is very bright. On the walls you can see some silver. Exits are west, east and south.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "east": {
+                "room_id": "the-sewer-maze-7332"
+            },
+            "south": {
+                "room_id": "the-sewer-maze-7326"
+            },
+            "west": {
+                "room_id": "the-sewer-maze-7333"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "glitter",
+                    "walls",
+                    "silver"
+                ],
+                "description": "The glittering silver looks like it is INSIDE the walls."
+            }
+        ]
+    }
+}

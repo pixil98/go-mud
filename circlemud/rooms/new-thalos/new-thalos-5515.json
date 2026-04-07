@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "new-thalos-5515",
+    "spec": {
+        "name": "Vera's Veggies",
+        "description": "This is a busy place. Customers shuffle around, bartering for lower prices on the wide selection of vegetables. You can still hear your mother telling you 'Eat your Veggies'. That is probably why you are spending time in the city of New Thalos and not with her. But wait... Vera looks just like your mother!",
+        "zone_id": "new-thalos",
+        "exits": {
+            "south": {
+                "room_id": "new-thalos-5416"
+            }
+        }
+    }
+}

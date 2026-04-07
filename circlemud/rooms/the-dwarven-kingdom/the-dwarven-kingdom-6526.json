@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6526",
+    "spec": {
+        "name": "A Store Room",
+        "description": "There is a layer of dust on the floor at least 3 inches thick! It is probable that not many people have been in here for many months.",
+        "zone_id": "the-dwarven-kingdom",
+        "exits": {
+            "east": {
+                "room_id": "the-dwarven-kingdom-6513",
+                "description": "A lighted area that looks like a well worn path."
+            },
+            "down": {
+                "room_id": "the-dwarven-kingdom-6527",
+                "description": "After blowing all the dust off the floor, you notice a trapdoor!",
+                "closure": {
+                    "name": "trapdoor",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "floor",
+                    "dust"
+                ],
+                "description": "After blowing all the dust off the floor, you notice a trapdoor!"
+            }
+        ]
+    }
+}

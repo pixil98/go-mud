@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2521",
+    "spec": {
+        "name": "Below The Trapdoor",
+        "description": "You are below the trapdoor. It is very dark and dusty here, very little light filters through from above. A faint sound of dripping water can be heard in the distance below. A rope ladder leads down.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "up": {
+                "room_id": "the-high-tower-of-magic-2517",
+                "closure": {
+                    "name": "trapdoor",
+                    "closed": true
+                }
+            },
+            "down": {
+                "room_id": "the-high-tower-of-magic-2522"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

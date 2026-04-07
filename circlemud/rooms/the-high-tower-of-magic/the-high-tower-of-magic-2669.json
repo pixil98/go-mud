@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2669",
+    "spec": {
+        "name": "The Chamber Of The White Light",
+        "description": "You are in a vast chamber, its walls floor and ceiling are of an unknown metallic material, the brightest white, almost blindingly stark. A flickering flame is in the center of the room, seeming to feed off of darkness and cleansing the room of any evil. You feel a slight tug at your being as the flame flickers towards you.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2670"
+            },
+            "east": {
+                "room_id": "the-high-tower-of-magic-2667"
+            },
+            "south": {
+                "room_id": "the-high-tower-of-magic-2671"
+            },
+            "west": {
+                "room_id": "the-high-tower-of-magic-2672"
+            }
+        }
+    }
+}

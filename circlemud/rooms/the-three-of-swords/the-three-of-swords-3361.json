@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3361",
+    "spec": {
+        "name": "Outside Of A Cottage",
+        "description": "Now that you approach closer to the cottage, you notice that the smoke is not coming from the chimney, but rather the gutted ruins of the building. Something torched this place, badly. You see no signs of life among the wreckage. You can enter one of the particularly large holes in the wall to the west, with caution.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "west": {
+                "room_id": "the-three-of-swords-3362"
+            },
+            "up": {
+                "room_id": "the-three-of-swords-3360"
+            }
+        }
+    }
+}

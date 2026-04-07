@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3140",
+    "spec": {
+        "name": "Penny Lane",
+        "description": "You are on Penny Lane. The narrow road continues north and west.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "north": {
+                "room_id": "southern-part-of-midgaard-3141"
+            },
+            "west": {
+                "room_id": "southern-part-of-midgaard-3139"
+            }
+        }
+    }
+}

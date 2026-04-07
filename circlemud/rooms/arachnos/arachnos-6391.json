@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "arachnos-6391",
+    "spec": {
+        "name": "The Sticky Chamber",
+        "description": "You can still bail out since your knees are shaking from the anticipation (or is it fear?). The sky is clear on this strand of web, surprisingly unsticky. The strand does not vibrate like the others. A few ballooning spiders pass by, cackling 'You're gonna die, you're gonna fry. Good bye!'",
+        "zone_id": "arachnos",
+        "exits": {
+            "east": {
+                "room_id": "arachnos-6392"
+            },
+            "down": {
+                "room_id": "arachnos-6331"
+            }
+        }
+    }
+}

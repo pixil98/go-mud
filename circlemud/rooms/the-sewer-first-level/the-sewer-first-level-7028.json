@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7028",
+    "spec": {
+        "name": "The Sewer Junction",
+        "description": "You stand in a junction of sewer pipes leading north, east and west.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "north": {
+                "room_id": "the-sewer-first-level-7026"
+            },
+            "east": {
+                "room_id": "the-sewer-first-level-7034",
+                "description": "To the east you can see a bend in the pipe going south."
+            },
+            "west": {
+                "room_id": "the-sewer-first-level-7015",
+                "description": "To the west you can just make out an old well."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "version": 1,
+    "id": "new-thalos",
+    "spec": {
+        "name": "New Thalos",
+        "reset_mode": "lifespan",
+        "lifespan": "20m"
+    }
+}

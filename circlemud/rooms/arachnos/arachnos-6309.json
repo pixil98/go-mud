@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "arachnos-6309",
+    "spec": {
+        "name": "A Split In The Path",
+        "description": "As always, there is a split in the road. One road is strewn with cricket feelers. The other is well-kept and suitable for smooth travelling. The webbing that was prevalent in earlier rooms is almost non-existant now.",
+        "zone_id": "arachnos",
+        "exits": {
+            "north": {
+                "room_id": "arachnos-6310"
+            },
+            "east": {
+                "room_id": "arachnos-6308"
+            },
+            "south": {
+                "room_id": "arachnos-6320"
+            }
+        }
+    }
+}

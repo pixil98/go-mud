@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "drow-city-5126",
+    "spec": {
+        "name": "The Entrance Hall",
+        "description": "You stand in the entrance way to the temple which opens up to the north into a large hallway going east and west. Small statues os spiders line the entrance way's walls.",
+        "zone_id": "drow-city",
+        "exits": {
+            "north": {
+                "room_id": "drow-city-5127"
+            },
+            "up": {
+                "room_id": "drow-city-5119"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

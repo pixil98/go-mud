@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15015",
+    "spec": {
+        "name": "The Passage",
+        "description": "You are in a passage, that leads north and south. To the east there is an exit to the Great Hall.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "north": {
+                "room_id": "king-welmars-castle-15020",
+                "description": "You see the passage continue."
+            },
+            "east": {
+                "room_id": "king-welmars-castle-15016",
+                "description": "You see the King's Great Hall."
+            },
+            "south": {
+                "room_id": "king-welmars-castle-15010",
+                "description": "You see the passage continue."
+            }
+        }
+    }
+}

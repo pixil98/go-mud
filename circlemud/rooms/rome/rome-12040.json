@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "rome-12040",
+    "spec": {
+        "name": "The Observation Lookout",
+        "description": "You are on a platform overlooking a massive aqueduct. There is a telescope mounted to the railing that surrounds the area and you can hear the gurgle of water as it is channeled into the city. Off in the distance, you can see the Mountain of the Gods. There is a sign mounted to the railing and a ramp leads west.",
+        "zone_id": "rome",
+        "exits": {
+            "west": {
+                "room_id": "rome-12033",
+                "description": "You can see a busy street in that direction."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "telescope"
+                ],
+                "description": "If it were operational, it would offer a spectacular view of the Mountain of the Gods. Unfortunately, it appears to have been vandalized."
+            },
+            {
+                "keywords": [
+                    "aqueduct"
+                ],
+                "description": "The aqueduct is a massive stone structure that channels water into Rome from the Mountain of the Gods. During the rainy season, it is filled to the top. However, due to recent drought, the water level appears to be very low."
+            },
+            {
+                "keywords": [
+                    "sign"
+                ],
+                "description": "******************************************** * * * The Roman Aquarian and Mountain * * Observation Platform * * * * Designed and built by the Froboz * * Magic Platform Company * * * ********************************************"
+            }
+        ]
+    }
+}

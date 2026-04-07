@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "god-simplex-1201",
+    "spec": {
+        "name": "The Inn Of The Gods",
+        "description": "The Inn of the Gods is a small room, holding only a shelf with many small precious stones on it. When a God comes to rent his belongings, his essence is stored in the stones. The Immortal Board Room is to the south.",
+        "zone_id": "god-simplex",
+        "exits": {
+            "south": {
+                "room_id": "god-simplex-1204",
+                "description": "The Immortal Board Room can be seen to the south."
+            }
+        }
+    }
+}

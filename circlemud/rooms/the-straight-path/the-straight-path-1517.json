@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1517",
+    "spec": {
+        "name": "Flame",
+        "description": "Undescribable horror and pain, a blackness drowned out only by the burning anguish, the inextinguishable fire coming not from some burning wood or molten lava but from the brightness and pain of the horrible, tortured souls that surround, everywhere you turn.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "north": {
+                "room_id": "the-straight-path-1530"
+            },
+            "south": {
+                "room_id": "the-straight-path-1516"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5502",
+    "spec": {
+        "name": "Underground",
+        "description": "The small passage continues west and east.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5488"
+            },
+            "west": {
+                "room_id": "new-thalos-5501"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

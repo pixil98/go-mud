@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-906",
+    "spec": {
+        "name": "The South River Delta",
+        "description": "You are making your way along a channel in the river delta between the island to the west and the shore to the south and east. To the south an aging broken down looking pier juts out from land and toward the west the channel works it way close to the island as it moves around its southern tip.",
+        "zone_id": "river-island-of-minos",
+        "exits": {
+            "north": {
+                "room_id": "river-island-of-minos-905"
+            },
+            "east": {
+                "room_id": "river-island-of-minos-904"
+            },
+            "south": {
+                "room_id": "river-island-of-minos-907"
+            },
+            "west": {
+                "room_id": "river-island-of-minos-908"
+            }
+        }
+    }
+}

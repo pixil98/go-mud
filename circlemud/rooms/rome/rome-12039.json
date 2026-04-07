@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "rome-12039",
+    "spec": {
+        "name": "Clay Avenue",
+        "description": "You are on a wide well traveled road running east and west through the heart of Rome. There are large crowds of people to the west and the road continues to the east. The aqueduct is directly south of here.",
+        "zone_id": "rome",
+        "exits": {
+            "east": {
+                "room_id": "rome-12046",
+                "description": "Clay Avenue continues in that direction."
+            },
+            "south": {
+                "room_id": "rome-12041",
+                "description": "You see an entrance to the aqueduct."
+            },
+            "west": {
+                "room_id": "rome-12032",
+                "description": "There are large crowds of people in that direction."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "crowds",
+                    "people"
+                ],
+                "description": "It looks like some kind of bizarre or festival is occurring to the west. There are hundreds of people of all classes shopping, talking or eating."
+            }
+        ]
+    }
+}

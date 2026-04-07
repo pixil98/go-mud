@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6132",
+    "spec": {
+        "name": "Up In The Tree",
+        "description": "You are hanging on the outside of a huge tree trunk covered in a sticky substance. Directly to the west is an immense spider web suspended between numerous of the giant trees including the one you are hanging on. To the north is what looks like a large webbed entrance.",
+        "zone_id": "haon-dor-dark-forest",
+        "exits": {
+            "north": {
+                "room_id": "arachnos-6301",
+                "zone_id": "arachnos",
+                "description": "To the north is what looks like a large expanse of webbing which extends very far into the trees."
+            },
+            "west": {
+                "room_id": "haon-dor-dark-forest-6133",
+                "description": "To the west is the immense spider web. It seems to move softly."
+            },
+            "down": {
+                "room_id": "haon-dor-dark-forest-6130",
+                "description": "Downwards is the narrow forest path."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "flags": [
+            "nomob"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "web"
+                ],
+                "description": "The spider web stretches out to the west. It looks as if it is possible to walk on it."
+            }
+        ]
+    }
+}

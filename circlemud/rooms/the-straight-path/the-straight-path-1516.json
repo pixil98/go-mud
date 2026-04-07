@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1516",
+    "spec": {
+        "name": "The Last Day",
+        "description": "The din of a great battle shakes these halls, the moans of the earth erupting at the shakings of the End Time. Be ready for that day, be very ready, for if you are not, he will claim you for one of his own.",
+        "zone_id": "the-straight-path",
+        "exits": {
+            "south": {
+                "room_id": "the-straight-path-1515"
+            },
+            "north": {
+                "room_id": "the-straight-path-1517"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

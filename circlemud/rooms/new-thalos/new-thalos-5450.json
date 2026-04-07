@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5450",
+    "spec": {
+        "name": "The Casbah",
+        "description": "Walking along the cobblestone path you feel secure with the walls of the city towering over you. You hear the scraping sounds of metal on stone and look up to see a large, strong guard looking out to the north. To the east lies the intersection on Guildsman's Row and the northern gate is a short walk to the west.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5451"
+            },
+            "west": {
+                "room_id": "new-thalos-5449"
+            }
+        }
+    }
+}

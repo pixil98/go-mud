@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15025",
+    "spec": {
+        "name": "The Stair Room",
+        "description": "You are standing below a great staircase, that leads up to the second floor of the Castle. The stairs are made of marble, and there are pillars carved in the likenesses of trees with little animals running up and down the trunks.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "south": {
+                "room_id": "king-welmars-castle-15020",
+                "description": "You see the passage."
+            },
+            "up": {
+                "room_id": "king-welmars-castle-15049",
+                "description": "The stairs lead up to the second floor."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "stairs",
+                    "stair"
+                ],
+                "description": "Made out of marble, and as all the rest of the Castle made primarily for beauty and with great skill."
+            },
+            {
+                "keywords": [
+                    "pillar",
+                    "pillars",
+                    "tree",
+                    "trees"
+                ],
+                "description": "Very nice. Squirrels and little birds all over."
+            }
+        ]
+    }
+}

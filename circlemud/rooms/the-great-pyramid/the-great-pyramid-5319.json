@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5319",
+    "spec": {
+        "name": "A Rough Crevasse",
+        "description": "You are now exploring deep within a strange rocky crevasse that plunges down into the rock on which the pyramid was constructed. To the south you see the flickering light of a fire, and the crevasse proceeds downward.",
+        "zone_id": "the-great-pyramid",
+        "exits": {
+            "north": {
+                "room_id": "the-great-pyramid-5318",
+                "description": "You see a small stone chamber littered with bones."
+            },
+            "south": {
+                "room_id": "the-great-pyramid-5320",
+                "description": "You see the flickering light of a small fire."
+            },
+            "down": {
+                "room_id": "the-great-pyramid-5321",
+                "description": "The crevasse continues downward into total darkness."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "rough"
+                ],
+                "description": "As you look through the rough terrain, your eyes catch a small glint of light!"
+            }
+        ]
+    }
+}

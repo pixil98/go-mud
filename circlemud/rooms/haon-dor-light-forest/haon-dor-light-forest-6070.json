@@ -1,0 +1,43 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6070",
+    "spec": {
+        "name": "Off Of The Path In The Shaded Forest",
+        "description": "You are wandering amongst the trees in the light forest, without the aid of a path or trail. More sunlight trickles through the treetops here, making your travel a bit easier. Small animals scurry away as you approach. You are no longer on a path, so you may go whichever way you please.",
+        "zone_id": "haon-dor-light-forest",
+        "exits": {
+            "north": {
+                "room_id": "haon-dor-light-forest-6078",
+                "description": "The trees seem to part, exposing a trail into the shade."
+            },
+            "east": {
+                "room_id": "haon-dor-light-forest-6070",
+                "description": "The trees seem to part, exposing a trail into the shade."
+            },
+            "south": {
+                "room_id": "haon-dor-light-forest-6061",
+                "description": "The trees seem to part, exposing a trail into the shade."
+            },
+            "west": {
+                "room_id": "haon-dor-light-forest-6072",
+                "description": "The trees seem to part, exposing a trail into the shade."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "path",
+                    "paths"
+                ],
+                "description": "The path is long behind you now... you aren't sure which direction it lies in anymore."
+            },
+            {
+                "keywords": [
+                    "tree",
+                    "trees"
+                ],
+                "description": "The trees are younger here than to those to the west."
+            }
+        ]
+    }
+}

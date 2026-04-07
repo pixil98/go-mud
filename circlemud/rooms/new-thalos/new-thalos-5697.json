@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5697",
+    "spec": {
+        "name": "The Dragon Sea",
+        "description": "The ocean spreads out in all directions rolling gently. In the distance you can see an island on the horizon. To the west you see the mainland.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "north": {
+                "room_id": "new-thalos-5697"
+            },
+            "east": {
+                "room_id": "new-thalos-5697"
+            },
+            "south": {
+                "room_id": "new-thalos-5689"
+            },
+            "west": {
+                "room_id": "new-thalos-5688"
+            }
+        }
+    }
+}

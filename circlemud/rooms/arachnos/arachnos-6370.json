@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "arachnos-6370",
+    "spec": {
+        "name": "The Donjonkeep",
+        "description": "No souls have ever lived in this place. The wails of slaves and the howls of wolves are the only way you can describe the sounds you hear. The walls are thin and wispy. The only light you receive is the shimmering from the strand of the ethereal web you used to get here.",
+        "zone_id": "arachnos",
+        "exits": {
+            "east": {
+                "room_id": "arachnos-6371"
+            }
+        }
+    }
+}

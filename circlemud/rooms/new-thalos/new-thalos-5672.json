@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "new-thalos-5672",
+    "spec": {
+        "name": "On A Small Ledge",
+        "description": "You clamber out of the water up onto this narrow ledge to see if it leads deeper into the mountain. Unfortunately, the ledge is only wide enough to rest upon for a while and there does not appear to be any other exits other than rejoining the underground river.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "south": {
+                "room_id": "new-thalos-5669"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

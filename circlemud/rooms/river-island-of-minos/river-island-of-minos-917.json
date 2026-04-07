@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-917",
+    "spec": {
+        "name": "The Third Trial Of Minos",
+        "description": "You go inside a red room. Very red. As if the Minos King used them to disembowel his guests. The path continues eastward. You see blue lights in that direction.",
+        "zone_id": "river-island-of-minos",
+        "exits": {
+            "east": {
+                "room_id": "river-island-of-minos-918"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

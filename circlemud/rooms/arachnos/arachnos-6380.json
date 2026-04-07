@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "id": "arachnos-6380",
+    "spec": {
+        "name": "Mahatma's Inescapable Trap",
+        "description": "Mahatma, that silly thief, is here, and he steals everything you have. He says 'Here, have a quick trip to the Temple of Midgaard.' He plunges a black dagger into your back...",
+        "zone_id": "arachnos",
+        "exits": {},
+        "flags": [
+            "death"
+        ]
+    }
+}

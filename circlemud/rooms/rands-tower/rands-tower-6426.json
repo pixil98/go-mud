@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "rands-tower-6426",
+    "spec": {
+        "name": "A Hall",
+        "description": "This area of the tower seems dank and oppressive. The hall runs north-south, and there is an empty cell to your west. The stairwell is to your east.",
+        "zone_id": "rands-tower",
+        "exits": {
+            "north": {
+                "room_id": "rands-tower-6427"
+            },
+            "east": {
+                "room_id": "rands-tower-6425"
+            },
+            "south": {
+                "room_id": "rands-tower-6428"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "cell",
+                    "cells"
+                ],
+                "description": "It is open, empty, and uninteresting."
+            }
+        ]
+    }
+}

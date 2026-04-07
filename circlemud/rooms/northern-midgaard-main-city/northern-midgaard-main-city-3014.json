@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3014",
+    "spec": {
+        "name": "Market Square",
+        "description": "You are standing on the market square, the famous Square of Midgaard. A large, peculiar looking statue is standing in the middle of the square. Roads lead in every direction, north to the temple square, south to the common square, east and westbound is the main street.",
+        "zone_id": "northern-midgaard-main-city",
+        "exits": {
+            "north": {
+                "room_id": "northern-midgaard-main-city-3005",
+                "description": "You see the temple square."
+            },
+            "east": {
+                "room_id": "northern-midgaard-main-city-3015",
+                "description": "You see the main street."
+            },
+            "south": {
+                "room_id": "northern-midgaard-main-city-3025",
+                "description": "You see the common square."
+            },
+            "west": {
+                "room_id": "northern-midgaard-main-city-3013",
+                "description": "You see the main street."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "statue"
+                ],
+                "description": "What you see is the Midgaard Worm, stretching around the Palace of Midgaard."
+            }
+        ]
+    }
+}

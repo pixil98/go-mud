@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5618",
+    "spec": {
+        "name": "On A Road",
+        "description": "You stand on a well maintained road leading east towards New Thalos and west towards the Eastern Mountains. To the north you can see wide plains stretching out as far as the eye can see. South of you begins a dark green forest.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5569"
+            },
+            "west": {
+                "room_id": "new-thalos-5617"
+            }
+        }
+    }
+}

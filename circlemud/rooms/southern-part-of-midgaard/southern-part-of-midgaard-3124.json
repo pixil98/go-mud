@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3124",
+    "spec": {
+        "name": "The End Of Elm Street",
+        "description": "You are at the end of Elm Street.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "west": {
+                "room_id": "southern-part-of-midgaard-3123"
+            }
+        }
+    }
+}

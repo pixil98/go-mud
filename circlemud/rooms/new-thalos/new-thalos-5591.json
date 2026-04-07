@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "new-thalos-5591",
+    "spec": {
+        "name": "The Jailer's Room",
+        "description": "Climbing down the old wooden ladder you enter a small cave like room. There is a small bench with some old magazines and a low burning candle sitting off to one side. A door is set into the stone on the north wall, and the steel grating opens up above.",
+        "zone_id": "new-thalos",
+        "exits": {
+            "east": {
+                "room_id": "new-thalos-5592",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "up": {
+                "room_id": "new-thalos-5575",
+                "closure": {
+                    "name": "steel",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

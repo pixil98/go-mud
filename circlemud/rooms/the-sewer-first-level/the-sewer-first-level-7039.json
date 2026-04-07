@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7039",
+    "spec": {
+        "name": "The Sewer Store Room",
+        "description": "You stand in a small room lit by a single torch set in the wall. The only way out of here is to the north.",
+        "zone_id": "the-sewer-first-level",
+        "exits": {
+            "north": {
+                "room_id": "the-sewer-first-level-7038",
+                "description": "To the north you see a pipe junction."
+            }
+        }
+    }
+}

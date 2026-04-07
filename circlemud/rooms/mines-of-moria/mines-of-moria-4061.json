@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4061",
+    "spec": {
+        "name": "The Light Cave",
+        "description": "The cave you stand in now is lit by an eerie flickering light, which probably comes from the enormous fire which is burning a short distance to the north in what looks to be the middle of the cave. The flickering light creates some really strange and almost frightening shadows on the walls, almost hiding the two tunnels that lead away from here, one to the west and one to the south.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "north": {
+                "room_id": "mines-of-moria-4056"
+            },
+            "south": {
+                "room_id": "mines-of-moria-4065"
+            },
+            "west": {
+                "room_id": "mines-of-moria-4060"
+            }
+        }
+    }
+}

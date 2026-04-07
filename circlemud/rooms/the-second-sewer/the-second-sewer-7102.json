@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "the-second-sewer-7102",
+    "spec": {
+        "name": "Under The Dark Pit",
+        "description": "Nice place you found yourself in. You stand in the middle of a room with only two exits, up and east. A tall ladder has been left here so that you can climb up through the pit without the use of a rope.",
+        "zone_id": "the-second-sewer",
+        "exits": {
+            "east": {
+                "room_id": "the-second-sewer-7104"
+            },
+            "down": {
+                "room_id": "the-sewer-maze-7300",
+                "zone_id": "the-sewer-maze",
+                "closure": {
+                    "name": "trapdoor",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "ladder"
+                ],
+                "description": "This is funny enough a wooden ladder and, after closer inspection, you discover it is magically held to the wall! You can't, even with your greatest effort, move it at ALL!"
+            }
+        ]
+    }
+}

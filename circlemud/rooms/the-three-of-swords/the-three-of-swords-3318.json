@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3318",
+    "spec": {
+        "name": "A Cave Passageway",
+        "description": "You are near the entrance of the cave. The outside light streams in from the west, accompanied by a slight breeze, making the flames in the sconces flutter a bit and throw stange shadows upon the walls. This passageway heads north and south from here, each way seeming dark and stuffy compared to outdoors. From the tracks in the floor, you guess that the north is the more used.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "north": {
+                "room_id": "the-three-of-swords-3319"
+            },
+            "south": {
+                "room_id": "the-three-of-swords-3331"
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3317"
+            }
+        }
+    }
+}

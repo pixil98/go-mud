@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "drow-city-5137",
+    "spec": {
+        "name": "The Mages' Barracks",
+        "description": "The mage's living quarters is rather clean with the exception of a few used component containers. It is rather well decorated as well. Cots line the floor for the mages to sleep on. The only door is to the west.",
+        "zone_id": "drow-city",
+        "exits": {
+            "west": {
+                "room_id": "drow-city-5136",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

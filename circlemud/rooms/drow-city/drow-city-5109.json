@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "drow-city-5109",
+    "spec": {
+        "name": "The Throne Room",
+        "description": "The throne room of the 2nd house is just a little more decorative than the inner courtyard having an altar in the center of the room.",
+        "zone_id": "drow-city",
+        "exits": {
+            "east": {
+                "room_id": "drow-city-5108",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

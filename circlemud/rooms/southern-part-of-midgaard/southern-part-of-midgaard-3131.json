@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3131",
+    "spec": {
+        "name": "Park Road",
+        "description": "You are at Park Road which continues north and south.",
+        "zone_id": "southern-part-of-midgaard",
+        "exits": {
+            "north": {
+                "room_id": "southern-part-of-midgaard-3101"
+            },
+            "south": {
+                "room_id": "southern-part-of-midgaard-3111"
+            }
+        }
+    }
+}

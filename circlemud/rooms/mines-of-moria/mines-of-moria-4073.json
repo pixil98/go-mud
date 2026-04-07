@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4073",
+    "spec": {
+        "name": "The End Of The Tunnel",
+        "description": "The tunnel comes to a sudden halt here. How very bizarre. The only exit is back to the west, where the tunnel leads back through the mountain. There is absolutely nothing of any interest down at the end of this passageway either. How odd.",
+        "zone_id": "mines-of-moria",
+        "exits": {
+            "west": {
+                "room_id": "mines-of-moria-4072"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

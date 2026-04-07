@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2512",
+    "spec": {
+        "name": "The Entrance To The High Tower",
+        "description": "You have reached the entrance to the High Tower of Sorcery. The tower looms above you at an incredible height. It seems to disappear into the storm clouds above. A diamond gate is to the north, whilst the trail back south has disappeared behind you.",
+        "zone_id": "the-high-tower-of-magic",
+        "exits": {
+            "north": {
+                "room_id": "the-high-tower-of-magic-2513",
+                "description": "The diamond gate looks incredibly strong.",
+                "closure": {
+                    "name": "gate",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "the-high-tower-of-magic-2500",
+                        "locked": true,
+                        "pickproof": true
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "arachnos-6390",
+    "spec": {
+        "name": "The Entrance To The Arachnos' Lair",
+        "description": "All strands inevitably lead here, the center of the web, the entrance to Arachnos' Lair.",
+        "zone_id": "arachnos",
+        "exits": {
+            "east": {
+                "room_id": "arachnos-6391"
+            }
+        }
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "drow-city-5103",
+    "spec": {
+        "name": "A City Street",
+        "description": "You walk along a highly ornate city street going east-west. A large house stands to the south.",
+        "zone_id": "drow-city",
+        "exits": {
+            "east": {
+                "room_id": "drow-city-5102"
+            },
+            "south": {
+                "room_id": "drow-city-5104"
+            },
+            "west": {
+                "room_id": "drow-city-5106"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    }
+}

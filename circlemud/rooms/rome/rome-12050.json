@@ -1,0 +1,48 @@
+{
+    "version": 1,
+    "id": "rome-12050",
+    "spec": {
+        "name": "The Courtroom",
+        "description": "You stand inside of a large courtroom in which common civil disputes and criminal matters are decided. There is a judge's bench and a witness stand on the far side of the room and a jury's box along side. The Emperor's seal is prominently displayed on the wall behind the judge's stand, reminding all who enter that he is an extension of his highness. There is a door, possibly leading to the judge's chambers, to the east and the waiting room is to the west.",
+        "zone_id": "rome",
+        "exits": {
+            "east": {
+                "room_id": "rome-12055",
+                "description": "The door might lead into the judge's private chambers.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "rome-12039",
+                        "locked": true
+                    }
+                }
+            },
+            "south": {
+                "room_id": "rome-12060",
+                "description": "The holding cells lie in that direction."
+            },
+            "west": {
+                "room_id": "rome-12043",
+                "description": "The waiting room lies in that direction."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "bench",
+                    "stand",
+                    "box",
+                    "jury"
+                ],
+                "description": "You see large wooden structures that are designed to separate the judge, jury and witnesses from the rest of the courtroom. They are made of polished oak and are strictly functional."
+            },
+            {
+                "keywords": [
+                    "seal"
+                ],
+                "description": "The seal of the Emperor is mounted above the judge's stand."
+            }
+        ]
+    }
+}

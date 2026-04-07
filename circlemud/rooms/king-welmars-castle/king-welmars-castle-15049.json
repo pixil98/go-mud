@@ -1,0 +1,43 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15049",
+    "spec": {
+        "name": "The Grand Staircase",
+        "description": "You are standing on a great staircase, that leads up and down. To the east, there is a large oak door, and a corridor leads south.",
+        "zone_id": "king-welmars-castle",
+        "exits": {
+            "east": {
+                "room_id": "king-welmars-castle-15050",
+                "description": "The door is large and made out of oak.",
+                "closure": {
+                    "name": "door",
+                    "closed": true,
+                    "lock": {
+                        "key_id": "king-welmars-castle-15014",
+                        "locked": true
+                    }
+                }
+            },
+            "south": {
+                "room_id": "king-welmars-castle-15045",
+                "description": "You see the corridor."
+            },
+            "up": {
+                "room_id": "king-welmars-castle-15053",
+                "description": "The stairs continue up to the top of the tower."
+            },
+            "down": {
+                "room_id": "king-welmars-castle-15025",
+                "description": "The stairs lead down to the first floor of the Castle."
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "stairs"
+                ],
+                "description": "The stairs are made of marble, and there are pillars carved in the likenesses of trees with little animals running up and down the trunks."
+            }
+        ]
+    }
+}

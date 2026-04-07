@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3342",
+    "spec": {
+        "name": "A Rocky Slope",
+        "description": "You're slipping and sliding across this slope, trying to get to your destination without breaking your leg or falling and shattering your head. Below, you spot some movement in the village, giving proof the place is not a ghost-town. The main road of the village starts at the bottom of the slope just to the east, and the slope continues west and up far, far up the mountain.",
+        "zone_id": "the-three-of-swords",
+        "exits": {
+            "east": {
+                "room_id": "the-three-of-swords-3343"
+            },
+            "west": {
+                "room_id": "the-three-of-swords-3341"
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    }
+}

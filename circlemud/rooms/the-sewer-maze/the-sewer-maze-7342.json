@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7342",
+    "spec": {
+        "name": "The Northern End Of The Pool",
+        "description": "You have wet feet, you are standing in water. The water looks calm. You can see that it is a big lake. Light seeps from the water.",
+        "zone_id": "the-sewer-maze",
+        "exits": {
+            "north": {
+                "room_id": "the-sewer-maze-7341",
+                "description": "You can see a small cave."
+            },
+            "east": {
+                "room_id": "the-sewer-maze-7343",
+                "description": "You can see more water."
+            },
+            "south": {
+                "room_id": "the-sewer-maze-7344",
+                "description": "You can see water."
+            }
+        }
+    }
+}
