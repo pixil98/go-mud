@@ -28,6 +28,7 @@ type Actor interface {
 	OnDeath() []*game.ObjectInstance
 	IsCharacter() bool
 	Inventory() *game.Inventory
+	Equipment() *game.Equipment
 	Notify(msg string)
 	Following() game.FollowTarget
 	SetFollowing(game.FollowTarget)

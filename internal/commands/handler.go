@@ -426,7 +426,7 @@ func (h *Handler) resolve(input string) (*compiledCommand, error) {
 }
 
 // Exec executes a command with the given arguments.
-func (h *Handler) Exec(ctx context.Context, actor ScopeActor, world *game.WorldState, cmdName string, rawArgs ...string) error {
+func (h *Handler) Exec(ctx context.Context, actor shared.Actor, world *game.WorldState, cmdName string, rawArgs ...string) error {
 	compiled, err := h.resolve(cmdName)
 	if err != nil {
 		return err

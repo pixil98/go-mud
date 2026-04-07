@@ -74,6 +74,7 @@ func (c *mockCombatant) OnDeath() []*game.ObjectInstance       { c.deathCalled =
 func (c *mockCombatant) IsCharacter() bool                     { return false }
 func (c *mockCombatant) Notify(_ string)                       {}
 func (c *mockCombatant) Inventory() *game.Inventory            { return nil }
+func (c *mockCombatant) Equipment() *game.Equipment            { return nil }
 func (c *mockCombatant) Following() game.FollowTarget          { return nil }
 func (c *mockCombatant) SetFollowing(game.FollowTarget)        {}
 func (c *mockCombatant) Followers() []game.FollowTarget        { return nil }

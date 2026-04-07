@@ -5,6 +5,7 @@ import (
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // objectOnlyFinder wraps an ObjectFinder (like Inventory or Equipment)
@@ -55,7 +56,7 @@ func NewWorldScopes(world WorldView) *WorldScopes {
 
 // SpacesFor returns search spaces for the given scope flags, ordered from
 // narrowest (inventory) to broadest (world).
-func (ws *WorldScopes) SpacesFor(s scope, actor ScopeActor) ([]SearchSpace, error) {
+func (ws *WorldScopes) SpacesFor(s scope, actor shared.Actor) ([]SearchSpace, error) {
 	zoneId, roomId := actor.Location()
 
 	var spaces []SearchSpace

@@ -283,17 +283,11 @@ func FindTarget(name string, tt targetType, spaces []SearchSpace) (*TargetRef, e
 
 // --- TargetScopes ---
 
-// ScopeActor provides the character state needed for target scope resolution.
-type ScopeActor interface {
-	shared.Actor
-	Equipment() *game.Equipment
-}
-
 // TargetScopes maps scope flags to search spaces for a given actor.
 // Implementations decide where to look (room, zone, world, inventory, etc.)
 // without coupling the resolver to any particular game state type.
 type TargetScopes interface {
-	SpacesFor(s scope, actor ScopeActor) ([]SearchSpace, error)
+	SpacesFor(s scope, actor shared.Actor) ([]SearchSpace, error)
 }
 
 // --- TargetResolver ---
@@ -316,7 +310,7 @@ type notFoundContext struct {
 // ResolveSpecs resolves all targets from the command's targets section.
 // Specs are processed in order so that scope_target references to earlier
 // targets work correctly. Inputs are assumed to have been validated by parseInputs.
-func (r *TargetResolver) ResolveSpecs(specs []assets.TargetSpec, inputs map[string]any, actor ScopeActor) (map[string]*TargetRef, error) {
+func (r *TargetResolver) ResolveSpecs(specs []assets.TargetSpec, inputs map[string]any, actor shared.Actor) (map[string]*TargetRef, error) {
 	if len(specs) == 0 {
 		return make(map[string]*TargetRef), nil
 	}

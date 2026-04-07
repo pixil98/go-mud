@@ -92,7 +92,7 @@ type mockActor struct {
 
 var _ shared.Actor = (*mockActor)(nil)
 var _ game.FollowTarget = (*mockActor)(nil)
-var _ ScopeActor = (*mockActor)(nil)
+var _ shared.Actor = (*mockActor)(nil)
 
 func (m *mockActor) Id() string                               { return m.id }
 func (m *mockActor) Name() string                             { return m.name }
