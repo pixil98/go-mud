@@ -95,15 +95,13 @@ type ActorRef struct {
 	CharId      string // charId for players (used for message routing); empty for mobs
 	Name        string
 	Description string
-	equipment   *game.Equipment
-	inventory   *game.Inventory
 }
 
 // Actor returns the underlying shared.Actor.
 func (r *ActorRef) Actor() shared.Actor { return r.actor }
 
 // Inventory returns the actor's inventory.
-func (r *ActorRef) Inventory() *game.Inventory { return r.inventory }
+func (r *ActorRef) Inventory() *game.Inventory { return r.actor.Inventory() }
 
 func actorRefFromPlayer(ps *game.CharacterInstance) *ActorRef {
 	return &ActorRef{
@@ -111,8 +109,6 @@ func actorRefFromPlayer(ps *game.CharacterInstance) *ActorRef {
 		CharId:      ps.Id(),
 		Name:        ps.Name(),
 		Description: ps.Character.Get().DetailedDesc,
-		equipment:   ps.Equipment(),
-		inventory:   ps.Inventory(),
 	}
 }
 
@@ -124,8 +120,6 @@ func actorRefFromMob(mi *game.MobileInstance) *ActorRef {
 		actor:       mi,
 		Name:        mi.Name(),
 		Description: mi.Mobile.Get().DetailedDesc,
-		equipment:   mi.Equipment(),
-		inventory:   mi.Inventory(),
 	}
 }
 
@@ -143,7 +137,7 @@ func actorRefFromActor(a shared.Actor) *ActorRef {
 // Describe returns a detailed description of the actor, including equipped items.
 func (r *ActorRef) Describe() string {
 	currentHP, maxHP := r.actor.Resource(assets.ResourceHp)
-	return describeActor(r.Description, r.Name, currentHP, maxHP, r.equipment)
+	return describeActor(r.Description, r.Name, currentHP, maxHP, r.actor.Equipment())
 }
 
 // ObjectRef is the template-facing view of a resolved object.

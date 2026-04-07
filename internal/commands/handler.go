@@ -121,6 +121,7 @@ type Handler struct {
 	abilities map[string]*compiledAbility
 	effects   map[string]EffectHandler
 	combat    CombatManager
+	world     *game.WorldState
 }
 
 // NewHandler creates a Handler, registers all built-in command factories, and compiles every command from the store.
@@ -131,6 +132,7 @@ func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, pub
 		abilities: make(map[string]*compiledAbility),
 		effects:   make(map[string]EffectHandler),
 		combat:    combat,
+		world:     world,
 	}
 
 	// Register effect handlers
@@ -426,7 +428,7 @@ func (h *Handler) resolve(input string) (*compiledCommand, error) {
 }
 
 // Exec executes a command with the given arguments.
-func (h *Handler) Exec(ctx context.Context, actor shared.Actor, world *game.WorldState, cmdName string, rawArgs ...string) error {
+func (h *Handler) Exec(ctx context.Context, actor shared.Actor, cmdName string, rawArgs ...string) error {
 	compiled, err := h.resolve(cmdName)
 	if err != nil {
 		return err
@@ -439,7 +441,7 @@ func (h *Handler) Exec(ctx context.Context, actor shared.Actor, world *game.Worl
 	}
 
 	// Resolve targets from targets section
-	resolver := NewTargetResolver(NewWorldScopes(world))
+	resolver := NewTargetResolver(NewWorldScopes(h.world))
 	targets, err := resolver.ResolveSpecs(compiled.cmd.Targets, inputMap, actor)
 	if err != nil {
 		return err

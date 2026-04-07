@@ -47,7 +47,7 @@ func (p *Player) Play(ctx context.Context) error {
 	}()
 
 	// Show the player their current room on login
-	err := p.cmdHandler.Exec(ctx, p.world.GetPlayer(p.charId), p.world, "look")
+	err := p.cmdHandler.Exec(ctx, p.world.GetPlayer(p.charId), "look")
 	if err != nil {
 		var userErr *commands.UserError
 		if errors.As(err, &userErr) {
@@ -105,7 +105,7 @@ func (p *Player) Play(ctx context.Context) error {
 					return fmt.Errorf("player state not found for %s", p.charId)
 				}
 
-				err = p.cmdHandler.Exec(ctx, ps, p.world, parts[0], parts[1:]...)
+				err = p.cmdHandler.Exec(ctx, ps, parts[0], parts[1:]...)
 				if err != nil {
 					var userErr *commands.UserError
 					if errors.As(err, &userErr) {
