@@ -69,6 +69,9 @@ type Object struct {
 	// object decays and is removed. Zero (the default) means permanent.
 	// Decayable items (Lifetime > 0) are not persisted across logout.
 	Lifetime int `json:"lifetime,omitempty"`
+
+	// ExtraDescs are keyword-accessible descriptions on this object.
+	ExtraDescs []ExtraDesc `json:"extra_descs,omitempty"`
 }
 
 // MatchName returns true if name matches any of this object's aliases (case-insensitive).
@@ -122,6 +125,14 @@ func (o *Object) Validate() error {
 			el.Add(fmt.Errorf("closure requires the container flag"))
 		}
 		el.Add(o.Closure.Validate())
+	}
+	for i, ed := range o.ExtraDescs {
+		if len(ed.Keywords) == 0 {
+			el.Add(fmt.Errorf("extra_descs[%d]: at least one keyword is required", i))
+		}
+		if ed.Description == "" {
+			el.Add(fmt.Errorf("extra_descs[%d]: description is required", i))
+		}
 	}
 	return el.Err()
 }

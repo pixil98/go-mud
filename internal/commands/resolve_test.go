@@ -529,6 +529,22 @@ func TestResolveSpecs(t *testing.T) {
 			spaces: []SearchSpace{{Finder: &mockFinder{}}},
 			expErr: "You don't see 'nobody' here.",
 		},
+		"allow_unresolved with no match returns nil": {
+			specs: []assets.TargetSpec{
+				{Name: "target", Types: []string{"player"}, Scopes: []string{"world"}, Input: "who", Optional: true, AllowUnresolved: true},
+			},
+			inputs: map[string]any{"who": "nobody"},
+			spaces: []SearchSpace{{Finder: &mockFinder{}}},
+			expNil: []string{"target"},
+		},
+		"allow_unresolved with match still resolves": {
+			specs: []assets.TargetSpec{
+				{Name: "target", Types: []string{"player"}, Scopes: []string{"world"}, Input: "who", Optional: true, AllowUnresolved: true},
+			},
+			inputs:     map[string]any{"who": "bob"},
+			spaces:     []SearchSpace{{Finder: finder}},
+			expTargets: map[string]targetType{"target": targetTypeActor},
+		},
 	}
 
 	session := &mockActor{id: "actor", name: "Actor"}

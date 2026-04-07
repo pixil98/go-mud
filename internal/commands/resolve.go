@@ -346,27 +346,26 @@ func (r *TargetResolver) ResolveSpecs(specs []assets.TargetSpec, inputs map[stri
 			return nil, NewUserError(fmt.Sprintf("Input %q is required.", spec.Input))
 		}
 
-		// Handle container scope_target
-		if spaces, handled, err := containerSpaces(spec, targets); err != nil {
+		// Determine search spaces: container scope or normal scope.
+		var spaces []SearchSpace
+		if cs, handled, err := containerSpaces(spec, targets); err != nil {
 			return nil, err
 		} else if handled {
-			ref, err := findWithNotFound(name, spec, spaces, inputs)
+			spaces = cs
+		} else {
+			s := parseScope(spec.Scopes)
+			spaces, err = r.scopes.SpacesFor(s, actor)
 			if err != nil {
 				return nil, err
 			}
-			targets[spec.Name] = ref
-			continue
-		}
-
-		// Normal scope resolution
-		s := parseScope(spec.Scopes)
-		spaces, err := r.scopes.SpacesFor(s, actor)
-		if err != nil {
-			return nil, err
 		}
 
 		ref, err := findWithNotFound(name, spec, spaces, inputs)
 		if err != nil {
+			if spec.AllowUnresolved {
+				targets[spec.Name] = nil
+				continue
+			}
 			return nil, err
 		}
 		targets[spec.Name] = ref

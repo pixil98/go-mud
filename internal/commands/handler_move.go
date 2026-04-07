@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 )
 
@@ -91,6 +92,10 @@ func (f *MoveHandlerFactory) handle(ctx context.Context, in *CommandInput) error
 	toRoom := f.zones.GetZone(destZone).GetRoom(destRoomId)
 	if toRoom == nil {
 		return NewUserError("Alas, you cannot go that way...")
+	}
+
+	if toRoom.Room.Get().HasFlag(assets.RoomFlagSingleOccupant) && toRoom.PlayerCount() >= 1 {
+		return NewUserError("There isn't enough room for you to enter.")
 	}
 
 	// Move the player (updates location, subscriptions, and room player lists)

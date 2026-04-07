@@ -67,7 +67,8 @@ type TargetSpec struct {
 	Optional    bool     `json:"optional,omitempty"`     // If true, missing input -> nil (no error)
 	Default     string   `json:"default,omitempty"`      // Default value when input is empty; "combat_target" resolves to actor's combat target
 	ScopeTarget string   `json:"scope_target,omitempty"` // Resolve inside this target's contents when present; falls back to normal scopes
-	NotFound    string   `json:"not_found,omitempty"`    // Custom template for "not found" error; supports {{ .Input }}
+	NotFound        string   `json:"not_found,omitempty"`        // Custom template for "not found" error; supports {{ .Input }}
+	AllowUnresolved bool     `json:"allow_unresolved,omitempty"` // If true, unresolved optional target is nil (not an error); requires Optional
 }
 
 // Command defines a command loaded from JSON.
@@ -196,6 +197,10 @@ func (c *Command) ValidateInputsTargets() error {
 			if _, err := template.New("").Funcs(sprig.TxtFuncMap()).Parse(target.NotFound); err != nil {
 				return fmt.Errorf("target %q: invalid not_found template: %w", target.Name, err)
 			}
+		}
+
+		if target.AllowUnresolved && !target.Optional {
+			return fmt.Errorf("target %q: allow_unresolved requires optional", target.Name)
 		}
 	}
 

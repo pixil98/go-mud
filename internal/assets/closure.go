@@ -53,6 +53,9 @@ type Lock struct {
 
 	// Locked is whether the lock starts locked. Default: unlocked (false).
 	Locked bool `json:"locked,omitempty"`
+
+	// Pickproof means the lock can only be opened with the key, not picked.
+	Pickproof bool `json:"pickproof,omitempty"`
 }
 
 // Validate checks that the key reference is set.

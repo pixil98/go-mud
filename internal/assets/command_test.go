@@ -263,6 +263,21 @@ func TestCommand_Validate(t *testing.T) {
 			},
 			expErr: `target "test-target": invalid not_found template:`,
 		},
+		"allow_unresolved requires optional": {
+			cmd: Command{
+				Handler: "test-handler",
+				Targets: []TargetSpec{{Name: "test-target", Types: []string{TargetPlayer}, Scopes: []string{ScopeRoom}, Input: "test-who", AllowUnresolved: true}},
+				Inputs:  []InputSpec{{Name: "test-who", Type: InputTypeString}},
+			},
+			expErr: `target "test-target": allow_unresolved requires optional`,
+		},
+		"allow_unresolved with optional is valid": {
+			cmd: Command{
+				Handler: "test-handler",
+				Targets: []TargetSpec{{Name: "test-target", Types: []string{TargetPlayer}, Scopes: []string{ScopeRoom}, Input: "test-who", Optional: true, AllowUnresolved: true}},
+				Inputs:  []InputSpec{{Name: "test-who", Type: InputTypeString}},
+			},
+		},
 	}
 
 	for name, tt := range tests {

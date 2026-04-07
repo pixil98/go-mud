@@ -3,6 +3,7 @@ package commands
 import (
 	"context"
 
+	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
 )
 
@@ -30,7 +31,10 @@ func NewLookHandlerFactory(zones ZoneLocator) *LookHandlerFactory {
 func (f *LookHandlerFactory) Spec() *HandlerSpec {
 	return &HandlerSpec{
 		Targets: []TargetRequirement{
-			{Name: "target", Type: targetTypePlayer | targetTypeMobile | targetTypeObject, Required: false},
+			{Name: "target", Type: targetTypePlayer | targetTypeMobile | targetTypeObject | targetTypeExit, Required: false},
+		},
+		Config: []ConfigRequirement{
+			{Name: "target_input", Required: false},
 		},
 	}
 }
@@ -46,9 +50,13 @@ func (f *LookHandlerFactory) Create() (CommandFunc, error) {
 }
 
 func (f *LookHandlerFactory) handle(ctx context.Context, char LookActor, in *CommandInput) error {
-	// Check if target was resolved (from targets section)
 	if target := in.Targets["target"]; target != nil {
 		return f.showTarget(char, target)
+	}
+
+	// Target didn't resolve — check for extra desc fallback.
+	if input := in.Config["target_input"]; input != "" {
+		return f.showExtraDesc(char, input)
 	}
 
 	return f.showRoom(char)
@@ -75,10 +83,33 @@ func (f *LookHandlerFactory) showTarget(actor LookActor, target *TargetRef) erro
 		msg = target.Actor.Describe()
 	case targetTypeObject:
 		msg = target.Obj.Describe()
+	case targetTypeExit:
+		msg = target.Exit.exit.Description
+		if msg == "" {
+			msg = "You see nothing special."
+		}
 	default:
 		return NewUserError("You can't look at that.")
 	}
 
 	actor.Notify(msg)
+	return nil
+}
+
+// showExtraDesc searches the current room for an extra description matching
+// the keyword on the room itself or on objects in the room.
+func (f *LookHandlerFactory) showExtraDesc(actor LookActor, keyword string) error {
+	zoneId, roomId := actor.Location()
+	ri := f.zones.GetZone(zoneId).GetRoom(roomId)
+	if ri == nil {
+		return NewUserError("You are in an invalid location.")
+	}
+
+	ed := ri.FindExtraDesc(keyword)
+	if ed == nil {
+		return NewUserError("You don't see '" + display.Capitalize(keyword) + "' here.")
+	}
+
+	actor.Notify(display.Wrap(ed.Description))
 	return nil
 }

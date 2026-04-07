@@ -140,6 +140,12 @@ const (
 	// (e.g. "head", "finger"). Duplicate grants of the same type create
 	// multiple slots (e.g. two "finger" grants = two ring slots).
 	PerkGrantWearSlot = "wear_slot"
+	// PerkGrantDark makes the holder unable to see as if in a dark room.
+	// When granted by a room, all occupants are affected unless they have
+	// a countering effect (e.g. infravision, a light source).
+	PerkGrantDark = "dark"
+	// PerkGrantNoMagic prevents the holder from casting spells.
+	PerkGrantNoMagic = "nomagic"
 )
 
 // ---------------------------------------------------------------------------

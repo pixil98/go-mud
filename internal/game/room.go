@@ -269,6 +269,38 @@ func (ri *RoomInstance) FindObj(name string) *ObjectInstance {
 	return ri.objects.FindObj(name)
 }
 
+// FindExtraDesc searches the room's extra descriptions and then the extra
+// descriptions on objects in the room for a keyword match (case-insensitive).
+func (ri *RoomInstance) FindExtraDesc(keyword string) *assets.ExtraDesc {
+	lower := strings.ToLower(keyword)
+
+	for i := range ri.Room.Get().ExtraDescs {
+		ed := &ri.Room.Get().ExtraDescs[i]
+		for _, kw := range ed.Keywords {
+			if strings.ToLower(kw) == lower {
+				return ed
+			}
+		}
+	}
+
+	var found *assets.ExtraDesc
+	ri.objects.ForEachObj(func(_ string, oi *ObjectInstance) {
+		if found != nil {
+			return
+		}
+		for i := range oi.Object.Get().ExtraDescs {
+			ed := &oi.Object.Get().ExtraDescs[i]
+			for _, kw := range ed.Keywords {
+				if strings.ToLower(kw) == lower {
+					found = ed
+					return
+				}
+			}
+		}
+	})
+	return found
+}
+
 // AddObj places an object instance in this room.
 func (ri *RoomInstance) AddObj(obj *ObjectInstance) {
 	ri.objects.AddObj(obj)
