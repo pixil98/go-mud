@@ -1,0 +1,70 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5316",
+    "spec": {
+        "aliases": [
+            "great",
+            "sphinx"
+        ],
+        "short_desc": "the great sphinx",
+        "long_desc": "A mighty sphinx rests here in the sand, dormant now for centuries.",
+        "detailed_desc": "The great sphinx towers tens of feet above you, resting here in a state of dormancy. It has become almost indistinguishable from the sand that surrounds it, although you can still make out the features of the handsome face that once advised many rulers.",
+        "level": 41,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -20
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "5d10+25"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 2091
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 41
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "memory"
+        ],
+        "exp_reward": 1500000,
+        "equipment": [
+            {
+                "slot": "hold",
+                "object_id": "the-great-pyramid-5317"
+            }
+        ]
+    }
+}

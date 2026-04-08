@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "new-thalos-5460",
+    "spec": {
+        "aliases": [
+            "servant",
+            "boy"
+        ],
+        "short_desc": "the servant boy",
+        "long_desc": "A servant boy is here running errands.",
+        "detailed_desc": "You see a small boy running around the halls of the palace.",
+        "level": 2,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 90
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d4+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 11
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 1
+            }
+        ],
+        "flags": [
+            "stay_zone"
+        ],
+        "exp_reward": 10
+    }
+}

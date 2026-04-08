@@ -1,0 +1,61 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2536",
+    "spec": {
+        "aliases": [
+            "alchemist"
+        ],
+        "short_desc": "the Mad Alchemist",
+        "long_desc": "The Mad Alchemist babbles something incomprehensible and attacks.",
+        "detailed_desc": "He looks like he has been quaffing too many potions. His eyes dart around wildly, and he starts to drool. The Mad Alchemist throws back his head and cackles with insane glee!",
+        "level": 24,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d5+10"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 816
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 16
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 31500,
+        "equipment": [
+            {
+                "slot": "hold",
+                "object_id": "the-high-tower-of-magic-2555"
+            }
+        ]
+    }
+}

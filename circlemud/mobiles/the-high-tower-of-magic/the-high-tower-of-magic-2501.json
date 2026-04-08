@@ -1,0 +1,48 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2501",
+    "spec": {
+        "aliases": [
+            "adventurer"
+        ],
+        "short_desc": "the lost adventurer",
+        "long_desc": "An emaciated adventurer is here looking lost and hopeless.",
+        "detailed_desc": "He looks haggard and sickly; no doubt he's been lost here for quite some time.",
+        "level": 8,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 110
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 8
+            }
+        ],
+        "flags": [
+            "wimpy"
+        ],
+        "exp_reward": 1500
+    }
+}

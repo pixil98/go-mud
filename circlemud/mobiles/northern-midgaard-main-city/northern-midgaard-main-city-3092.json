@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3092",
+    "spec": {
+        "aliases": [
+            "beagle"
+        ],
+        "short_desc": "the beagle",
+        "long_desc": "A small, quick, loyal beagle is here.",
+        "detailed_desc": "The beagle looks like a fierce fighter.",
+        "level": 2,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 8
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 34
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 1
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger"
+        ],
+        "exp_reward": 200
+    }
+}

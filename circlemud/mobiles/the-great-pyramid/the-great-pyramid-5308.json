@@ -1,0 +1,61 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5308",
+    "spec": {
+        "aliases": [
+            "sand",
+            "man",
+            "sandman"
+        ],
+        "short_desc": "the sandman",
+        "long_desc": "A sandman rises up from the desert floor.",
+        "detailed_desc": "The sandman is exactly that -- some sort of strange being formed from the sands of the desert floor. It seems quite large and strong and at home in the heat and sandy winds.",
+        "level": 14,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d7+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 336
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 14
+            }
+        ],
+        "flags": [
+            "aware",
+            "aggressive",
+            "stay_zone",
+            "memory"
+        ],
+        "exp_reward": 18000
+    }
+}

@@ -1,0 +1,59 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15031",
+    "spec": {
+        "aliases": [
+            "skeleton",
+            "villager"
+        ],
+        "short_desc": "the skeleton",
+        "long_desc": "A skeleton is moving about with a loud clatter here, climbing over corpses.",
+        "detailed_desc": "It is entirely possible that this skeleton was once one of the villagers of Townsbridge who has been brought to an undead life by a fuelling desire for revenge.",
+        "level": 10,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d3+6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 96
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 12
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "aggressive"
+        ],
+        "exp_reward": 8000
+    }
+}

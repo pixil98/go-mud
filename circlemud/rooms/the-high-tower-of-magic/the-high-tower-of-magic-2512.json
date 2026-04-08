@@ -19,6 +19,9 @@
                     }
                 }
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-high-tower-of-magic-2503"
+        ]
     }
 }

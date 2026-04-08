@@ -1,0 +1,83 @@
+{
+    "version": 1,
+    "id": "arachnos-6314",
+    "spec": {
+        "aliases": [
+            "arachnos",
+            "spider",
+            "empress"
+        ],
+        "short_desc": "Arachnos",
+        "long_desc": "Arachnos the Empress of Spiders welcomes you with an evil smile.",
+        "detailed_desc": "She is a very attractive spider with an ornate gown. She tempts you into being one of her many slaves. She does not possess the venomous fangs of normal spiders, but then, as you realize, she does not need them.",
+        "level": 26,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+25"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 710
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "memory"
+        ],
+        "exp_reward": 155000,
+        "inventory": [
+            {
+                "object_id": "arachnos-6301"
+            },
+            {
+                "object_id": "arachnos-6302"
+            },
+            {
+                "object_id": "arachnos-6303"
+            },
+            {
+                "object_id": "arachnos-6304"
+            }
+        ]
+    }
+}

@@ -31,6 +31,9 @@
                 ],
                 "description": "It looks as if you could go down into it... but you can't be sure of where you will end up, or if you can get back."
             }
+        ],
+        "mobile_spawns": [
+            "newbie-zone-18609"
         ]
     }
 }

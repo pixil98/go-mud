@@ -1,0 +1,65 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5000",
+    "spec": {
+        "aliases": [
+            "dervish",
+            "raggity"
+        ],
+        "short_desc": "the dervish",
+        "long_desc": "A raggity dervish walks on aimlessly.",
+        "detailed_desc": "Dressed in loose fitting rags, this man looks like he could use some rest.",
+        "level": 5,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "sneak"
+            },
+            {
+                "type": "grant",
+                "key": "hide"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 70
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 5
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 1000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "the-sewer-maze-7211"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-sewer-maze-7211"
+            }
+        ]
+    }
+}

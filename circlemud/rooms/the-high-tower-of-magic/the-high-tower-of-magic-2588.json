@@ -9,6 +9,9 @@
             "west": {
                 "room_id": "the-high-tower-of-magic-2586"
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-high-tower-of-magic-2536"
+        ]
     }
 }

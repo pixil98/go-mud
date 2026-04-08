@@ -1,0 +1,66 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3000",
+    "spec": {
+        "aliases": [
+            "wizard"
+        ],
+        "short_desc": "the wizard",
+        "long_desc": "A wizard walks around behind the counter, talking to himself.",
+        "detailed_desc": "The wizard looks old and senile, and yet he looks like a very powerful wizard. He is equipped with fine clothing, and is wearing many fine rings and bracelets.",
+        "level": 33,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+18"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 18
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 160000,
+        "inventory": [
+            {
+                "object_id": "northern-midgaard-main-city-3050"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3051"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3052"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3053"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3054"
+            }
+        ]
+    }
+}

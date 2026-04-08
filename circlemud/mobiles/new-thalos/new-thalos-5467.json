@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "new-thalos-5467",
+    "spec": {
+        "aliases": [
+            "horse"
+        ],
+        "short_desc": "the horse",
+        "long_desc": "A horse stands here.",
+        "detailed_desc": "You see one of the fine Arabian beasts known about the land.",
+        "level": 4,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 11
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 10
+    }
+}

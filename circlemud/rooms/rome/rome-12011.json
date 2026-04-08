@@ -26,6 +26,10 @@
                 ],
                 "description": "DISGUSTING! Each is about the size of matchbox and very slimy. You are VERY glad that you have access to a cleric!"
             }
+        ],
+        "mobile_spawns": [
+            "rome-12009",
+            "rome-12010"
         ]
     }
 }

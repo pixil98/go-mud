@@ -27,6 +27,9 @@
                 ],
                 "description": "It looks like some kind of bizarre or festival is occurring to the west. There are hundreds of people of all classes shopping, talking or eating."
             }
+        ],
+        "mobile_spawns": [
+            "rome-12017"
         ]
     }
 }

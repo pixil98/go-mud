@@ -1,0 +1,60 @@
+{
+    "version": 1,
+    "id": "the-chessboard-of-midgaard-3606",
+    "spec": {
+        "aliases": [
+            "black",
+            "bishop",
+            "priest"
+        ],
+        "short_desc": "the Black Bishop",
+        "long_desc": "A dark priest stands here.",
+        "detailed_desc": "The Black Bishop seems willing to help you straight into your grave so he can bless you properly.",
+        "level": 24,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d6+13"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 360
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 9
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 43500,
+        "equipment": [
+            {
+                "slot": "hold",
+                "object_id": "the-chessboard-of-midgaard-3608"
+            },
+            {
+                "slot": "hold",
+                "object_id": "the-chessboard-of-midgaard-3608"
+            }
+        ]
+    }
+}

@@ -25,6 +25,9 @@
                 "type": "grant",
                 "key": "dark"
             }
+        ],
+        "mobile_spawns": [
+            "river-island-of-minos-907"
         ]
     }
 }

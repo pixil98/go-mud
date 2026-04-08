@@ -1,0 +1,72 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5004",
+    "spec": {
+        "aliases": [
+            "worm",
+            "giant",
+            "purple"
+        ],
+        "short_desc": "the sand worm",
+        "long_desc": "A giant, purple sand worm thrusts up out of the sand and attacks!",
+        "detailed_desc": "He's big, mean, and purple. Watch out!",
+        "level": 21,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d7+14"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 340
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "aggressive",
+            "memory"
+        ],
+        "exp_reward": 65000,
+        "inventory": [
+            {
+                "object_id": "the-great-eastern-desert-5019"
+            },
+            {
+                "object_id": "the-great-eastern-desert-5020"
+            },
+            {
+                "object_id": "the-great-eastern-desert-5021"
+            }
+        ]
+    }
+}

@@ -1,0 +1,42 @@
+{
+    "version": 1,
+    "id": "newbie-zone-18612",
+    "spec": {
+        "aliases": [
+            "newbie",
+            "clueless",
+            "moron"
+        ],
+        "short_desc": "the clueless newbie",
+        "long_desc": "A newbie is here looking terribly confused.",
+        "detailed_desc": "What a moron! Every question that is answered in the help files, he will ask and he will probably ask 2 or 3 times too. This guy just doesn't get it, best put him out of his misery.",
+        "level": 1,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d3+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "stay_zone"
+        ],
+        "exp_reward": 220
+    }
+}

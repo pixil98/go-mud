@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6508",
+    "spec": {
+        "aliases": [
+            "mineleader",
+            "dwarven",
+            "dwarf",
+            "mine",
+            "leader"
+        ],
+        "short_desc": "the mine leader",
+        "long_desc": "A dwarven mine leader is here, supervising the work.",
+        "detailed_desc": "The mine leader is very big and very strong, though he must be fairly bright also, to have gotten this job.",
+        "level": 19,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d4+6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 370
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 19
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 35000,
+        "equipment": [
+            {
+                "slot": "hands",
+                "object_id": "the-dwarven-kingdom-6512"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-dwarven-kingdom-6508"
+            }
+        ]
+    }
+}

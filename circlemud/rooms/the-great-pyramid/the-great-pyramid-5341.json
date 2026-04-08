@@ -18,6 +18,10 @@
                 "room_id": "the-great-pyramid-5338",
                 "description": "A tightly spiralling stone stairway leads up."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-great-pyramid-5301",
+            "the-great-pyramid-5307"
+        ]
     }
 }

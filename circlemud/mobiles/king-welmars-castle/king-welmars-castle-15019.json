@@ -1,0 +1,57 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15019",
+    "spec": {
+        "aliases": [
+            "astrologer"
+        ],
+        "short_desc": "the Astrologer",
+        "long_desc": "The Astrologer is sitting here, studying a book.",
+        "detailed_desc": "He is old and white-haired, with a long beard. As you see him, you can almost believe the rumours about stars deciding Fate, and that astrology is capable of seeing the future.",
+        "level": 23,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d8+30"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "memory"
+        ],
+        "exp_reward": 80000,
+        "inventory": [
+            {
+                "object_id": "northern-midgaard-main-city-3052"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3050"
+            },
+            {
+                "object_id": "king-welmars-castle-15012"
+            }
+        ]
+    }
+}

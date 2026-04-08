@@ -20,6 +20,9 @@
                 "type": "grant",
                 "key": "dark"
             }
+        ],
+        "mobile_spawns": [
+            "the-sewer-first-level-7002"
         ]
     }
 }

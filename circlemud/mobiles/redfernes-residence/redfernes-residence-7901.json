@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7901",
+    "spec": {
+        "aliases": [
+            "rat",
+            "large"
+        ],
+        "short_desc": "the large rat",
+        "long_desc": "There is a large rat here, poking through the foodstuffs lying around.",
+        "detailed_desc": "The large rat is about two feet long from head to tail and has claws the size of your fingers, looking very nasty. It seems to be quite occupied with all the chewed open foodstuffs lying about the room.",
+        "level": 12,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 160
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 11
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive"
+        ],
+        "exp_reward": 13000,
+        "inventory": [
+            {
+                "object_id": "redfernes-residence-7900"
+            }
+        ]
+    }
+}

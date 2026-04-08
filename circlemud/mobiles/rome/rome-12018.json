@@ -1,0 +1,70 @@
+{
+    "version": 1,
+    "id": "rome-12018",
+    "spec": {
+        "aliases": [
+            "gateguard",
+            "guard"
+        ],
+        "short_desc": "the gateguard",
+        "long_desc": "A gateguard stands here, tending the gate.",
+        "detailed_desc": "You see a strong, loyal public defender.",
+        "level": 11,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d6+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 148
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 10
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "aware",
+            "memory"
+        ],
+        "exp_reward": 11000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            }
+        ]
+    }
+}

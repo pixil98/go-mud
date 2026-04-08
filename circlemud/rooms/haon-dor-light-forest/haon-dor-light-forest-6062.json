@@ -36,6 +36,10 @@
                 ],
                 "description": "The trees are mostly old beeches and oaks."
             }
+        ],
+        "mobile_spawns": [
+            "haon-dor-light-forest-6008",
+            "haon-dor-light-forest-6001"
         ]
     }
 }

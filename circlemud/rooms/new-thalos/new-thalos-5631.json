@@ -12,6 +12,10 @@
             "west": {
                 "room_id": "new-thalos-5630"
             }
-        }
+        },
+        "mobile_spawns": [
+            "new-thalos-5442",
+            "new-thalos-5442"
+        ]
     }
 }

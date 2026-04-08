@@ -1,0 +1,59 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4100",
+    "spec": {
+        "aliases": [
+            "mage"
+        ],
+        "short_desc": "the mage",
+        "long_desc": "A small intelligent looking mage is standing here.",
+        "detailed_desc": "His IQ makes almost any normal person look stupid... It looks like he knows his way with magic.",
+        "level": 13,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 160
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 10
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "aggressive"
+        ],
+        "exp_reward": 21000,
+        "inventory": [
+            {
+                "object_id": "mines-of-moria-4102"
+            }
+        ]
+    }
+}

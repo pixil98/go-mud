@@ -1,0 +1,83 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5010",
+    "spec": {
+        "aliases": [
+            "dracolich",
+            "lich"
+        ],
+        "short_desc": "the dracolich",
+        "long_desc": "A pile of bones rises up to form a skeletal dracolich.",
+        "detailed_desc": "The dracolich is now only bone with pieces of flesh hanging from it. Obviously it no longer fears death.",
+        "level": 24,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "invisible"
+            },
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d5+35"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 532
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "aggressive",
+            "memory"
+        ],
+        "exp_reward": 125000,
+        "equipment": [
+            {
+                "slot": "body",
+                "object_id": "the-great-eastern-desert-5001"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-great-eastern-desert-5002"
+            }
+        ]
+    }
+}

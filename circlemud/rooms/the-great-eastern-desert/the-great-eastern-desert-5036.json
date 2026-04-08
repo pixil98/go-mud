@@ -22,6 +22,9 @@
                 "room_id": "the-great-eastern-desert-5030",
                 "description": "Sand as far as the eye can see."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-great-eastern-desert-5004"
+        ]
     }
 }

@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-909",
+    "spec": {
+        "aliases": [
+            "hag",
+            "sea"
+        ],
+        "short_desc": "the sea hag",
+        "long_desc": "You notice the face of an ugly hag in the sea weeds.",
+        "detailed_desc": "The sea hag is terribly fightful and has razor sharp teeth.",
+        "level": 4,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 51
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 4
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 750
+    }
+}

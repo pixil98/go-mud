@@ -22,6 +22,9 @@
                 "room_id": "the-city-of-thalos-5205",
                 "description": "The garden path continues around the building."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-city-of-thalos-5201"
+        ]
     }
 }

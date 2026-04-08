@@ -1,0 +1,61 @@
+{
+    "version": 1,
+    "id": "new-thalos-5483",
+    "spec": {
+        "aliases": [
+            "patch",
+            "bartender"
+        ],
+        "short_desc": "Patch the bartender",
+        "long_desc": "A large half-orc with a patch over one eye pours beer behind the counter.",
+        "detailed_desc": "You see a really big guy here who seems to have lost an eye in one manner or another.",
+        "level": 35,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d8+10"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 2000,
+        "inventory": [
+            {
+                "object_id": "new-thalos-5475"
+            },
+            {
+                "object_id": "new-thalos-5476"
+            },
+            {
+                "object_id": "new-thalos-5477"
+            }
+        ]
+    }
+}

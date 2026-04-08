@@ -30,6 +30,11 @@
                 ],
                 "description": "The metal box is covered with dust. You notice that it was once filled with coal, as you see some small pieces of it."
             }
+        ],
+        "mobile_spawns": [
+            "the-sewer-first-level-7002",
+            "the-sewer-first-level-7002",
+            "the-sewer-first-level-7002"
         ]
     }
 }

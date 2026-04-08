@@ -20,6 +20,9 @@
                 ],
                 "description": "The poster is of a wealthy looking man in red robes smiling at you. The caption reads: THE SULTAN REMINDS YOU TO PAY YOUR TAXES!"
             }
+        ],
+        "mobile_spawns": [
+            "new-thalos-5433"
         ]
     }
 }

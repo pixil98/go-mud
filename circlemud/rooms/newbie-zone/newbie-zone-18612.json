@@ -36,6 +36,9 @@
                 ],
                 "description": "The sign next to the stairs says: If you are below level 7 and alone, or below level 4 then bugger off! Or else don't blame me if you die..."
             }
+        ],
+        "mobile_spawns": [
+            "newbie-zone-18605"
         ]
     }
 }

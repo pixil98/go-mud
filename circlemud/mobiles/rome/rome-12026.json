@@ -1,0 +1,79 @@
+{
+    "version": 1,
+    "id": "rome-12026",
+    "spec": {
+        "aliases": [
+            "titus",
+            "andronicus"
+        ],
+        "short_desc": "Titus Andronicus",
+        "long_desc": "Titus Andronicus is standing here, polishing a few swords.",
+        "detailed_desc": "As you look at him, he suddenly swings a newly sharpened sword at you! Watch out!",
+        "level": 24,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+14"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 455
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "aggressive",
+            "memory"
+        ],
+        "exp_reward": 85000,
+        "equipment": [
+            {
+                "slot": "hold",
+                "object_id": "rome-12016"
+            },
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "shield",
+                "object_id": "northern-midgaard-main-city-3042"
+            },
+            {
+                "slot": "body",
+                "object_id": "northern-midgaard-main-city-3046"
+            },
+            {
+                "slot": "feet",
+                "object_id": "rome-12008"
+            }
+        ]
+    }
+}

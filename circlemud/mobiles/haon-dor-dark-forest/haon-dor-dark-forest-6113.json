@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6113",
+    "spec": {
+        "aliases": [
+            "spider",
+            "poisonous"
+        ],
+        "short_desc": "the huge, poisonous spider",
+        "long_desc": "A huge, poisonous spider is here.",
+        "detailed_desc": "This disgusting creature is at the size of a human crawling on all four. It has eight hairy legs that gives it a tremendous speed on almost any surface and sharp poisonous fangs to paralyze or kill its prey.",
+        "level": 8,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d5+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 110
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 7
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 4000
+    }
+}

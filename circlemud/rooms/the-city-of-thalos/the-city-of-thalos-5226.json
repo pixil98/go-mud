@@ -10,6 +10,10 @@
                 "room_id": "the-city-of-thalos-5210",
                 "description": "Outside is a small side street."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-city-of-thalos-5201",
+            "the-city-of-thalos-5203"
+        ]
     }
 }

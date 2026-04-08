@@ -13,6 +13,9 @@
                 "room_id": "the-great-eastern-desert-5058",
                 "description": "You see some peaceful camels."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-great-eastern-desert-5007"
+        ]
     }
 }

@@ -28,6 +28,10 @@
                 ],
                 "description": "The treasures are dusty and fragile, but still seem quite valuable. You decide not to take them out of respect for the ancient dead."
             }
+        ],
+        "mobile_spawns": [
+            "the-great-pyramid-5310",
+            "the-great-pyramid-5310"
         ]
     }
 }

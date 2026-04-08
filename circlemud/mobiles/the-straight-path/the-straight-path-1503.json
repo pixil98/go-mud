@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1503",
+    "spec": {
+        "aliases": [
+            "raphael",
+            "angel",
+            "archangel"
+        ],
+        "short_desc": "Raphael",
+        "long_desc": "The archangel Raphael looks up and frowns at you in disapproval.",
+        "detailed_desc": "It is impossible to get a solid glance at the archangel. He is nothing that is human, and with a mere whisper, he dispels every image that you attempt to create in your mind.",
+        "level": 29,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -7
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "6d7+7"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 2000
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 26
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 280000,
+        "equipment": [
+            {
+                "slot": "shield",
+                "object_id": "the-straight-path-1503"
+            }
+        ]
+    }
+}

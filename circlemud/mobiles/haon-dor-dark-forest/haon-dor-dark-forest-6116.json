@@ -1,0 +1,63 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6116",
+    "spec": {
+        "aliases": [
+            "elder",
+            "druid"
+        ],
+        "short_desc": "the Elder druid",
+        "long_desc": "The Elder druid is here.  He looks very upset about your presence in his home.",
+        "detailed_desc": "The druid looks quite old. You would think of him as venerable but yet you know he would be a tough foe.",
+        "level": 19,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d6+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 248
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 18
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 45000,
+        "inventory": [
+            {
+                "object_id": "northern-midgaard-main-city-3055"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "haon-dor-dark-forest-6115"
+            }
+        ]
+    }
+}

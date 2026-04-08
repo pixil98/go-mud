@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1502",
+    "spec": {
+        "aliases": [
+            "gabriel",
+            "angel",
+            "archangel"
+        ],
+        "short_desc": "Gabriel",
+        "long_desc": "The archangel Gabriel smiles, and begins to tell you something.",
+        "detailed_desc": "Known as the Messenger, it is this angel that has brought the Divine Word to the chosen prophets, and in turn brought the Seal of the Prophets on a miraculous journey to the holy city of Jerusalem.",
+        "level": 29,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -7
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "6d7+7"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 2000
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 26
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 280000,
+        "equipment": [
+            {
+                "slot": "hold",
+                "object_id": "the-straight-path-1501"
+            }
+        ]
+    }
+}

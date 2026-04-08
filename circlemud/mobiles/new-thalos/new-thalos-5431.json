@@ -1,0 +1,51 @@
+{
+    "version": 1,
+    "id": "new-thalos-5431",
+    "spec": {
+        "aliases": [
+            "fatima",
+            "elf",
+            "invoker"
+        ],
+        "short_desc": "Fatima",
+        "long_desc": "Fatima the Elven Invoker stands here.",
+        "detailed_desc": "This female elf has dusky skin and black hair. A combination you don't see very often on elves.",
+        "level": 9,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d3"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 37
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            }
+        ],
+        "flags": [
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 93
+    }
+}

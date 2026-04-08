@@ -18,6 +18,10 @@
                 "type": "grant",
                 "key": "dark"
             }
+        ],
+        "mobile_spawns": [
+            "the-dwarven-kingdom-6507",
+            "the-dwarven-kingdom-6507"
         ]
     }
 }

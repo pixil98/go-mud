@@ -40,6 +40,9 @@
                 ],
                 "description": "Kind of transparent, but quite noticeable nevertheless."
             }
+        ],
+        "mobile_spawns": [
+            "haon-dor-light-forest-6002"
         ]
     }
 }

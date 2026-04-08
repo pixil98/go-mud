@@ -1,0 +1,73 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6503",
+    "spec": {
+        "aliases": [
+            "storekeeper"
+        ],
+        "short_desc": "the Hide & Tooth storekeeper",
+        "long_desc": "The Hide & Tooth storekeeper is standing here, waiting patiently.",
+        "detailed_desc": "The storekeeper is very rotund, but looks in excellent condition.",
+        "level": 33,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+32"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 800000,
+        "inventory": [
+            {
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "object_id": "the-dwarven-kingdom-6504"
+            },
+            {
+                "object_id": "the-dwarven-kingdom-6505"
+            },
+            {
+                "object_id": "the-dwarven-kingdom-6510"
+            },
+            {
+                "object_id": "the-dwarven-kingdom-6512"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "the-dwarven-kingdom-6504"
+            }
+        ]
+    }
+}

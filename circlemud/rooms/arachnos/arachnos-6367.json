@@ -17,6 +17,9 @@
                 ],
                 "description": "An ordinary chair, well used, glued to the ground by spiderweb."
             }
+        ],
+        "mobile_spawns": [
+            "arachnos-6313"
         ]
     }
 }

@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-908",
+    "spec": {
+        "aliases": [
+            "turtle",
+            "dragon"
+        ],
+        "short_desc": "the dragon turtle",
+        "long_desc": "A large dragon turtle breaks the surface churning the water into huge waves.",
+        "detailed_desc": "The turtle's shell is the size of a small house and looks as hard as rock.",
+        "level": 22,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d20+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 422
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 16
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 80000
+    }
+}

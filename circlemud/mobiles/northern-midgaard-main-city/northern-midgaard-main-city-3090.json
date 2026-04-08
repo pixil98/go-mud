@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3090",
+    "spec": {
+        "aliases": [
+            "kitten"
+        ],
+        "short_desc": "the kitten",
+        "long_desc": "A small loyal kitten is here.",
+        "detailed_desc": "The kitten looks like a cute, little, fierce fighter.",
+        "level": 1,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 9
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 17
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger"
+        ],
+        "exp_reward": 100
+    }
+}

@@ -1,0 +1,54 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7000",
+    "spec": {
+        "aliases": [
+            "mudmonster",
+            "mud",
+            "monster"
+        ],
+        "short_desc": "the horrifying Mudmonster",
+        "long_desc": "A horrifying Mudmonster is slowly evolving from the mud...",
+        "detailed_desc": "It sure looks like something out of a horror movie. It strongly resembles a huge figure made up from mud alone, and it sure looks like it had human flesh for breakfast and is strongly intent on having the same for dinner - Perhaps you?",
+        "level": 12,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "sneak"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d5+3"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 164
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 11
+            }
+        ],
+        "flags": [
+            "stay_zone"
+        ],
+        "exp_reward": 13000
+    }
+}

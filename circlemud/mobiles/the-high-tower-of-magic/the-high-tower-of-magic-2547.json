@@ -1,0 +1,56 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2547",
+    "spec": {
+        "aliases": [
+            "golem",
+            "clay"
+        ],
+        "short_desc": "the clay golem",
+        "long_desc": "A clay golem stands guard here.",
+        "detailed_desc": "This large golem almost looks like it is made of dirt.",
+        "level": 15,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d5+3"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 375
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 15
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "stay_zone",
+            "helper"
+        ],
+        "exp_reward": 18320
+    }
+}

@@ -14,6 +14,11 @@
                 "room_id": "northern-midgaard-main-city-3005",
                 "description": "You see the Temple Square."
             }
-        }
+        },
+        "mobile_spawns": [
+            "northern-midgaard-main-city-3025",
+            "northern-midgaard-main-city-3059",
+            "northern-midgaard-main-city-3060"
+        ]
     }
 }

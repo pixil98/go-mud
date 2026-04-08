@@ -1,0 +1,64 @@
+{
+    "version": 1,
+    "id": "arachnos-6302",
+    "spec": {
+        "aliases": [
+            "yevaud",
+            "dragon",
+            "usurper"
+        ],
+        "short_desc": "Yevaud",
+        "long_desc": "Yevaud, the Usurper of Midgaard is here, grinning evilly at you.",
+        "detailed_desc": "Old, scaly, but still with a lot of bite in him left.",
+        "level": 24,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d7+7"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 470
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "memory"
+        ],
+        "exp_reward": 120000,
+        "inventory": [
+            {
+                "object_id": "arachnos-6304"
+            },
+            {
+                "object_id": "the-sewer-maze-7203"
+            }
+        ]
+    }
+}

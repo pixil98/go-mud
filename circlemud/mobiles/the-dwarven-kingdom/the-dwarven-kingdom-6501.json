@@ -1,0 +1,48 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6501",
+    "spec": {
+        "aliases": [
+            "worker",
+            "dwarf",
+            "dwarven"
+        ],
+        "short_desc": "the dwarf worker",
+        "long_desc": "A dwarven mining worker is here.",
+        "detailed_desc": "He is very dirty, and looks extremely over-worked.",
+        "level": 13,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4+6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 295
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 13
+            }
+        ],
+        "flags": [
+            "stay_zone",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 16000
+    }
+}

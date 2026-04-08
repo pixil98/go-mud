@@ -1,0 +1,56 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2553",
+    "spec": {
+        "aliases": [
+            "librarian",
+            "mage"
+        ],
+        "short_desc": "the Librarian",
+        "long_desc": "The Librarian has fallen asleep at his desk here.",
+        "detailed_desc": "He looks like a rather peaceful old man.",
+        "level": 23,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d6+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 759
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 17
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 29500
+    }
+}

@@ -1,0 +1,88 @@
+{
+    "version": 1,
+    "id": "new-thalos-5413",
+    "spec": {
+        "aliases": [
+            "ahkeem",
+            "tailor"
+        ],
+        "short_desc": "Ahkeem the tailor",
+        "long_desc": "Ahkeem the tailor welcomes you to his store.",
+        "detailed_desc": "This middle-aged man looks over you with disdain and quickly suggests a new wardrobe.",
+        "level": 35,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d5+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 10
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 200,
+        "inventory": [
+            {
+                "object_id": "new-thalos-5446"
+            },
+            {
+                "object_id": "new-thalos-5447"
+            },
+            {
+                "object_id": "new-thalos-5448"
+            },
+            {
+                "object_id": "new-thalos-5449"
+            },
+            {
+                "object_id": "new-thalos-5450"
+            },
+            {
+                "object_id": "new-thalos-5451"
+            },
+            {
+                "object_id": "new-thalos-5452"
+            },
+            {
+                "object_id": "new-thalos-5453"
+            },
+            {
+                "object_id": "new-thalos-5454"
+            },
+            {
+                "object_id": "new-thalos-5455"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "new-thalos-5483"
+            }
+        ]
+    }
+}

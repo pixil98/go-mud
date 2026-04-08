@@ -10,6 +10,9 @@
                 "room_id": "god-simplex-1204",
                 "description": "The Immortal Board Room is just to the east."
             }
-        }
+        },
+        "mobile_spawns": [
+            "god-simplex-1201"
+        ]
     }
 }

@@ -10,6 +10,9 @@
                 "room_id": "the-great-eastern-desert-5060",
                 "description": "You see the entrance to this tent."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-great-eastern-desert-5006"
+        ]
     }
 }

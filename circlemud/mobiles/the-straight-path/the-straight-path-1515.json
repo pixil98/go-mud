@@ -1,0 +1,62 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1515",
+    "spec": {
+        "aliases": [
+            "ali",
+            "fourth",
+            "last",
+            "caliph"
+        ],
+        "short_desc": "Ali",
+        "long_desc": "You have come before Ali, fourth and last of the Rashidun.",
+        "detailed_desc": "Some view him as the closest to God among all of the Caliphs, the one most deserving of our respect and reverence. Still others saw him as a schismatic, a heretic, one to be killed and forgotten. To look at him now is for you to decide for yourself.",
+        "level": 26,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d9+6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 880
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 24
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive"
+        ],
+        "exp_reward": 180000,
+        "equipment": [
+            {
+                "slot": "hands",
+                "object_id": "the-straight-path-1511"
+            }
+        ]
+    }
+}

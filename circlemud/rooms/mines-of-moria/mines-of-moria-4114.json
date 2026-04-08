@@ -22,6 +22,9 @@
                 ],
                 "description": "It looks good, but as you look closely you notice that it has no value."
             }
+        ],
+        "mobile_spawns": [
+            "mines-of-moria-4100"
         ]
     }
 }

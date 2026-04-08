@@ -14,6 +14,9 @@
                 "room_id": "midennir-3581",
                 "description": "A trail through the woods."
             }
-        }
+        },
+        "mobile_spawns": [
+            "midennir-3504"
+        ]
     }
 }

@@ -1,0 +1,60 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6514",
+    "spec": {
+        "aliases": [
+            "guard",
+            "barrack"
+        ],
+        "short_desc": "the barrack guard",
+        "long_desc": "A barrack guard is here, lounging around while off duty.",
+        "detailed_desc": "",
+        "level": 14,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d5+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 220
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 14
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "helper"
+        ],
+        "exp_reward": 20000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "the-dwarven-kingdom-6509"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-dwarven-kingdom-6509"
+            }
+        ]
+    }
+}

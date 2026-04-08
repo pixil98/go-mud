@@ -14,6 +14,11 @@
                 "room_id": "the-great-pyramid-5312",
                 "description": "You see only blackness through the hole in the floor."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-great-pyramid-5303",
+            "the-great-pyramid-5303",
+            "the-great-pyramid-5307"
+        ]
     }
 }

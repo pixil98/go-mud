@@ -23,6 +23,11 @@
                 ],
                 "description": "They look like they form the words \"Onivel Cinemod Semaj\" But you could be mistaken."
             }
+        ],
+        "mobile_spawns": [
+            "rome-12003",
+            "rome-12003",
+            "rome-12016"
         ]
     }
 }

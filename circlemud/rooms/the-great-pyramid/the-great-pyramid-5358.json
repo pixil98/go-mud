@@ -45,6 +45,9 @@
                 ],
                 "description": "Like most of the ancient hieroglyphics of this land, the symbols are totally incomprehensible to you. Perhaps the Sphinx has the answer to this ancient riddle."
             }
+        ],
+        "mobile_spawns": [
+            "the-great-pyramid-5316"
         ]
     }
 }

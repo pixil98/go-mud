@@ -1,0 +1,56 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2530",
+    "spec": {
+        "aliases": [
+            "scribe",
+            "mage"
+        ],
+        "short_desc": "the scribe",
+        "long_desc": "A scribe is here working on some manuscripts.",
+        "detailed_desc": "He appears to be copying out some spell ingredients or components right now.",
+        "level": 14,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d4+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 336
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 14
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 14850
+    }
+}

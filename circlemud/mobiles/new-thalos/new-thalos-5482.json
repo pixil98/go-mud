@@ -1,0 +1,62 @@
+{
+    "version": 1,
+    "id": "new-thalos-5482",
+    "spec": {
+        "aliases": [
+            "royal",
+            "guard",
+            "elite"
+        ],
+        "short_desc": "the Royal Guard",
+        "long_desc": "An Elite Royal Guard stands here smiling happily.",
+        "detailed_desc": "You see one of the Royal Guards of New Thalos who seems to have undergone some heavy training.",
+        "level": 15,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d10+6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 1000
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 25000
+    }
+}

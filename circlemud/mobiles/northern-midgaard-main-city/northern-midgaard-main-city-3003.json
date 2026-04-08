@@ -1,0 +1,75 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3003",
+    "spec": {
+        "aliases": [
+            "weaponsmith"
+        ],
+        "short_desc": "the weaponsmith",
+        "long_desc": "A weaponsmith is standing here.",
+        "detailed_desc": "He is a young weaponsmith, who still has lots to learn but he is still eager to sell you his latest implements of carnage and destruction.",
+        "level": 33,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+18"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 160000,
+        "inventory": [
+            {
+                "object_id": "northern-midgaard-main-city-3020"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3021"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3023"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3024"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3025"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            }
+        ]
+    }
+}

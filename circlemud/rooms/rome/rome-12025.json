@@ -22,6 +22,11 @@
                 ],
                 "description": "It is a shame that the exchange rate for Roman money is so low. What amounts to a fortune in Rome isn't even worth one gold coin. The contents of the box add up to about... well forget it. It isn't worth your time or trouble to carry it around."
             }
+        ],
+        "mobile_spawns": [
+            "rome-12015",
+            "rome-12015",
+            "rome-12015"
         ]
     }
 }

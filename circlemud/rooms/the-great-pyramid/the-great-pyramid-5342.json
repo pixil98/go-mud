@@ -18,6 +18,9 @@
                 "room_id": "the-great-pyramid-5341",
                 "description": "The dust-covered hallway continues to the west."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-great-pyramid-5304"
+        ]
     }
 }

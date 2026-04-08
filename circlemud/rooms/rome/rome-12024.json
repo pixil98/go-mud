@@ -30,6 +30,9 @@
                 ],
                 "description": "The statue of Tiberius, made of iron, stands here."
             }
+        ],
+        "mobile_spawns": [
+            "rome-12017"
         ]
     }
 }

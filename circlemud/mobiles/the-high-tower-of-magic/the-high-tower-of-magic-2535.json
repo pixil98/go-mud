@@ -1,0 +1,56 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2535",
+    "spec": {
+        "aliases": [
+            "sword",
+            "dancing"
+        ],
+        "short_desc": "the dancing sword",
+        "long_desc": "A well crafted sword lies on the work table here.",
+        "detailed_desc": "It looks quite sharp.",
+        "level": 10,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d5+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 200
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 19
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "wimpy",
+            "memory"
+        ],
+        "exp_reward": 4000
+    }
+}

@@ -154,6 +154,27 @@ const (
 )
 
 // ---------------------------------------------------------------------------
+// CircleMUD affection grants — effects from spells, items, or mob definitions
+// ---------------------------------------------------------------------------
+
+const (
+	PerkGrantInvisible   = "invisible"
+	PerkGrantDetectInvis = "detect_invis"
+	PerkGrantSenseLife   = "sense_life"
+	PerkGrantWaterwalk   = "waterwalk"
+	PerkGrantSneak       = "sneak"
+	PerkGrantHide        = "hide"
+	PerkGrantNoCharm     = "nocharm"
+	PerkGrantNoSummon    = "nosummon"
+	PerkGrantNoSleep     = "nosleep"
+	PerkGrantNoBash      = "nobash"
+	PerkGrantNoBlind     = "noblind"
+	PerkGrantProtectEvil = "protect_evil"
+	PerkGrantProtectGood = "protect_good"
+	PerkGrantNoTrack     = "notrack"
+)
+
+// ---------------------------------------------------------------------------
 // Perk struct
 // ---------------------------------------------------------------------------
 

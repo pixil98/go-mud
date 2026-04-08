@@ -1,0 +1,64 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5314",
+    "spec": {
+        "aliases": [
+            "criosphinx",
+            "sphinx"
+        ],
+        "short_desc": "the criosphinx",
+        "long_desc": "A criosphinx calmly watches you.",
+        "detailed_desc": "The criosphinx is a calm and friendly creature, having the head of a ram atop the body of a well-furred feline with eagle-like wings. He delights in riddles, and in poking occasional fun at his easily confused lesser cousins.",
+        "level": 23,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d10+15"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 759
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 23
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "memory"
+        ],
+        "exp_reward": 80000,
+        "inventory": [
+            {
+                "object_id": "the-great-pyramid-5315"
+            }
+        ]
+    }
+}

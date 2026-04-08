@@ -1,0 +1,93 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2564",
+    "spec": {
+        "aliases": [
+            "guildmaster",
+            "grand",
+            "mistress"
+        ],
+        "short_desc": "the Grand Mistress",
+        "long_desc": "The Grand Mistress of Magic is sitting here.",
+        "detailed_desc": "She looks quite comfortable on her emerald throne. Amazingly young and pretty for one of such stature in the guild, no doubt she has kept her youthful appearance through the use of strong magics. The Grand Mistress pets her familiar and smiles at you in confidence.",
+        "level": 50,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -30
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d4+20"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 3000
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 40
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "stay_zone",
+            "memory"
+        ],
+        "exp_reward": 500000,
+        "inventory": [
+            {
+                "object_id": "the-high-tower-of-magic-2538"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "neck",
+                "object_id": "the-high-tower-of-magic-2587"
+            },
+            {
+                "slot": "body",
+                "object_id": "the-high-tower-of-magic-2592"
+            },
+            {
+                "slot": "finger",
+                "object_id": "the-high-tower-of-magic-2588"
+            },
+            {
+                "slot": "wrist",
+                "object_id": "the-high-tower-of-magic-2589"
+            },
+            {
+                "slot": "hold",
+                "object_id": "the-high-tower-of-magic-2590"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-high-tower-of-magic-2591"
+            }
+        ]
+    }
+}

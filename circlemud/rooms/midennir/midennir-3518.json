@@ -14,6 +14,9 @@
                 "room_id": "midennir-3522",
                 "description": "Dark forests."
             }
-        }
+        },
+        "mobile_spawns": [
+            "midennir-3501"
+        ]
     }
 }

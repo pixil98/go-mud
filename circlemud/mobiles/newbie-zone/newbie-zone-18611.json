@@ -1,0 +1,53 @@
+{
+    "version": 1,
+    "id": "newbie-zone-18611",
+    "spec": {
+        "aliases": [
+            "newbie",
+            "annoying",
+            "jerk"
+        ],
+        "short_desc": "the annoying newbie",
+        "long_desc": "A newbie is here annoying the hell out of you.",
+        "detailed_desc": "What a jerk! He won't shut up, and he keeps making the most irritating comments about everything. Better silence him with cold, tempered steel MUHAHAHAHAHAHAHAHAHAHA!",
+        "level": 2,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d3+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 28
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "stay_zone"
+        ],
+        "exp_reward": 500,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "newbie-zone-18606"
+            }
+        ]
+    }
+}

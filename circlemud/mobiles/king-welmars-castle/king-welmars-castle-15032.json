@@ -1,0 +1,72 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15032",
+    "spec": {
+        "aliases": [
+            "pit",
+            "fiend",
+            "demon"
+        ],
+        "short_desc": "the pit fiend",
+        "long_desc": "A large demon surrounded by flames rises out of the dark pool.",
+        "detailed_desc": "It is a horrifying thing, this demonic creature from the depths of the Abyss. It glares down at you through blood-red eyes, and bares its huge white fangs and its razor-sharp talons.",
+        "level": 33,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d8+16"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 1660
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "aggressive",
+            "memory"
+        ],
+        "exp_reward": 1000000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "king-welmars-castle-15008"
+            }
+        ]
+    }
+}

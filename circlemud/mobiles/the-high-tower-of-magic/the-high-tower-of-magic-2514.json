@@ -1,0 +1,56 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2514",
+    "spec": {
+        "aliases": [
+            "mage",
+            "visitor"
+        ],
+        "short_desc": "the mage",
+        "long_desc": "A visiting mage is here snoring away in peaceful slumber.",
+        "detailed_desc": "He looks quite sleepy.",
+        "level": 12,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 264
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 12
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 6200
+    }
+}

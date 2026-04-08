@@ -1,0 +1,56 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2539",
+    "spec": {
+        "aliases": [
+            "golem",
+            "wooden"
+        ],
+        "short_desc": "the wooden golem",
+        "long_desc": "A wooden golem stands a silent vigil here, guarding the stairs.",
+        "detailed_desc": "He looks flammable.",
+        "level": 16,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d10+10"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 416
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 13
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "stay_zone",
+            "helper"
+        ],
+        "exp_reward": 17500
+    }
+}

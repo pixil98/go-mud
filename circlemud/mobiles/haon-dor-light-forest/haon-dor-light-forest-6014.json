@@ -1,0 +1,48 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6014",
+    "spec": {
+        "aliases": [
+            "crow",
+            "black",
+            "bird"
+        ],
+        "short_desc": "the large black crow",
+        "long_desc": "A large black bird flits about here, picking at bits of carrion.",
+        "detailed_desc": "The bird eyes you warily, but continues with its meal.",
+        "level": 2,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 8
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d5+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 34
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 1
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "wimpy"
+        ],
+        "exp_reward": 200
+    }
+}

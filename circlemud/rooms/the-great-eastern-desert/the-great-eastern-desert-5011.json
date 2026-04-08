@@ -20,6 +20,9 @@
                 "type": "grant",
                 "key": "dark"
             }
+        ],
+        "mobile_spawns": [
+            "the-great-eastern-desert-5010"
         ]
     }
 }

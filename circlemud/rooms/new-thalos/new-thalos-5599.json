@@ -24,6 +24,13 @@
                 "type": "grant",
                 "key": "dark"
             }
+        ],
+        "mobile_spawns": [
+            "new-thalos-5472",
+            "new-thalos-5472",
+            "new-thalos-5472",
+            "new-thalos-5472",
+            "new-thalos-5472"
         ]
     }
 }

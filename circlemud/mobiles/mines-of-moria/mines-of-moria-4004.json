@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4004",
+    "spec": {
+        "aliases": [
+            "orc"
+        ],
+        "short_desc": "the orc",
+        "long_desc": "The orc walks around, looking for someone to kill.",
+        "detailed_desc": "You notice an evil look in its eyes...",
+        "level": 5,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 80
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 5
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 900
+    }
+}

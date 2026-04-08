@@ -5,6 +5,9 @@
         "name": "The Roman Bakery",
         "description": "You are standing in the bakery of Rome and your mouth waters at the delicious aromas wafting from the kitchen. The only exit is to the east.",
         "zone_id": "rome",
-        "exits": {}
+        "exits": {},
+        "mobile_spawns": [
+            "rome-12036"
+        ]
     }
 }

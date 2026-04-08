@@ -1,0 +1,60 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1519",
+    "spec": {
+        "aliases": [
+            "demon",
+            "fire"
+        ],
+        "short_desc": "the demon",
+        "long_desc": "The hell-fire around you is dominated by a massive, burning demon.",
+        "detailed_desc": "You see nothing but the inexorably red and burning anger of the lord of the underworld that you fear to be your fate.",
+        "level": 27,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d8+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 975
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 24
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "aggressive"
+        ],
+        "exp_reward": 180000,
+        "inventory": [
+            {
+                "object_id": "the-straight-path-1506"
+            }
+        ]
+    }
+}

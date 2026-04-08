@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15017",
+    "spec": {
+        "aliases": [
+            "woman",
+            "cleaning"
+        ],
+        "short_desc": "the Cleaning Woman",
+        "long_desc": "There is a Cleaning Woman here, trying not be noticed.",
+        "detailed_desc": "Although she has a menial job, she seems to like it.",
+        "level": 1,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 9
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 25
+            }
+        ],
+        "flags": [
+            "stay_zone"
+        ],
+        "exp_reward": 100
+    }
+}

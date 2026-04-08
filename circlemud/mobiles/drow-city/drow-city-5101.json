@@ -1,0 +1,61 @@
+{
+    "version": 1,
+    "id": "drow-city-5101",
+    "spec": {
+        "aliases": [
+            "drow",
+            "commoner"
+        ],
+        "short_desc": "the Drow commoner",
+        "long_desc": "A drow commoner is here, walking around on guard duty.",
+        "detailed_desc": "I doubt he is the type to give directions.",
+        "level": 10,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "13d1+3"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 140
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 8
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "stay_zone",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 10750,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "drow-city-5100"
+            },
+            {
+                "slot": "wield",
+                "object_id": "drow-city-5100"
+            }
+        ]
+    }
+}

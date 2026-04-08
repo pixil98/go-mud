@@ -1,0 +1,57 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15012",
+    "spec": {
+        "aliases": [
+            "peter",
+            "captain",
+            "guard",
+            "royal"
+        ],
+        "short_desc": "Peter, the Captain of the Royal Guard",
+        "long_desc": "Peter, the Captain of the Royal Guard, walks around inspecting.",
+        "detailed_desc": "As all members of the Guard, Peter wears the chain mail required of them as uniform. Even though all the other guards seem well trained, you realise none of them would stand a chance against this man in a fight. He stands at least two metres tall, but still moves with an almost feline grace. He actually radiates strength and confidence, and you have to fight a sudden urge to come to attention as you see him.",
+        "level": 19,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+8"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 258
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 19
+            }
+        ],
+        "flags": [
+            "stay_zone"
+        ],
+        "exp_reward": 35000,
+        "equipment": [
+            {
+                "slot": "body",
+                "object_id": "king-welmars-castle-15015"
+            },
+            {
+                "slot": "wield",
+                "object_id": "king-welmars-castle-15016"
+            }
+        ]
+    }
+}

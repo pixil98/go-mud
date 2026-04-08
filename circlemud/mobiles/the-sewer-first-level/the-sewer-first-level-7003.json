@@ -1,0 +1,49 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7003",
+    "spec": {
+        "aliases": [
+            "spider",
+            "small",
+            "hairy"
+        ],
+        "short_desc": "the small Spider",
+        "long_desc": "The small hairy Spider is here, busy with its web.",
+        "detailed_desc": "This small spider seems to pay you no attention at all as it builds its intricately designed web.",
+        "level": 1,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "sneak"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "aggressive"
+        ],
+        "exp_reward": 100
+    }
+}

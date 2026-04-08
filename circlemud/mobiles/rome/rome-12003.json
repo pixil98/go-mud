@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "rome-12003",
+    "spec": {
+        "aliases": [
+            "spectator",
+            "fan"
+        ],
+        "short_desc": "the spectator",
+        "long_desc": "A spectator is here watching the games.",
+        "detailed_desc": "The spectator is filthy, half drunk and screaming his head off.",
+        "level": 5,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 77
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 4
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 900
+    }
+}

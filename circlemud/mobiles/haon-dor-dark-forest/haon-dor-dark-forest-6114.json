@@ -1,0 +1,74 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6114",
+    "spec": {
+        "aliases": [
+            "queen",
+            "spider"
+        ],
+        "short_desc": "the Queen spider",
+        "long_desc": "The huge, bulky Queen spider is here.",
+        "detailed_desc": "This disgusting creature is at the size of a small elephant. It has eight huge, hairy legs that would give it a tremendous speed on almost any surface if it wasn't so immensely fat. Its large, bulbous eyes stare back at you.",
+        "level": 15,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+3"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 197
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 14
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "stay_zone",
+            "memory"
+        ],
+        "exp_reward": 31000,
+        "inventory": [
+            {
+                "object_id": "haon-dor-dark-forest-6108"
+            },
+            {
+                "object_id": "haon-dor-dark-forest-6109"
+            },
+            {
+                "object_id": "haon-dor-dark-forest-6113"
+            }
+        ]
+    }
+}

@@ -1,0 +1,131 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6500",
+    "spec": {
+        "aliases": [
+            "guard",
+            "dwarf",
+            "dwarven"
+        ],
+        "short_desc": "the dwarf guard",
+        "long_desc": "A dwarven guard is here.",
+        "detailed_desc": "The guard looks very tough and mean. He wears his beard long, and he smells like he hasn't bathed in over a month.",
+        "level": 21,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+9"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 416
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 60000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "the-dwarven-kingdom-6504"
+            },
+            {
+                "slot": "body",
+                "object_id": "the-dwarven-kingdom-6505"
+            },
+            {
+                "slot": "hold",
+                "object_id": "the-dwarven-kingdom-6515"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-dwarven-kingdom-6504"
+            },
+            {
+                "slot": "body",
+                "object_id": "the-dwarven-kingdom-6505"
+            },
+            {
+                "slot": "hold",
+                "object_id": "the-dwarven-kingdom-6502"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-dwarven-kingdom-6504"
+            },
+            {
+                "slot": "body",
+                "object_id": "the-dwarven-kingdom-6505"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-dwarven-kingdom-6504"
+            },
+            {
+                "slot": "body",
+                "object_id": "the-dwarven-kingdom-6505"
+            },
+            {
+                "slot": "hands",
+                "object_id": "the-dwarven-kingdom-6512"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-dwarven-kingdom-6509"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-dwarven-kingdom-6508"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-dwarven-kingdom-6508"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-dwarven-kingdom-6509"
+            },
+            {
+                "slot": "head",
+                "object_id": "the-dwarven-kingdom-6510"
+            },
+            {
+                "slot": "finger",
+                "object_id": "the-dwarven-kingdom-6511"
+            }
+        ]
+    }
+}

@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3300",
+    "spec": {
+        "aliases": [
+            "farmer"
+        ],
+        "short_desc": "the farmer",
+        "long_desc": "A farmer walks around, looking for something to do.",
+        "detailed_desc": "This farmer is a resident of Stanneg by the Mountains, and as such, is one of the most boring people on earth.",
+        "level": 7,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 98
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 6
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 2250
+    }
+}

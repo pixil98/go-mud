@@ -20,6 +20,9 @@
                 "type": "grant",
                 "key": "dark"
             }
+        ],
+        "mobile_spawns": [
+            "midennir-3502"
         ]
     }
 }

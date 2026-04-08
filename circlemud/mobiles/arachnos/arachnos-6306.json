@@ -1,0 +1,54 @@
+{
+    "version": 1,
+    "id": "arachnos-6306",
+    "spec": {
+        "aliases": [
+            "spider",
+            "drone"
+        ],
+        "short_desc": "the drone spider",
+        "long_desc": "A drone spider walks around doing its master's bidding.",
+        "detailed_desc": "An ordinary drone spider.",
+        "level": 6,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 94
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 6
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "stay_zone"
+        ],
+        "exp_reward": 1600,
+        "inventory": [
+            {
+                "object_id": "arachnos-6305"
+            },
+            {
+                "object_id": "arachnos-6305"
+            }
+        ]
+    }
+}

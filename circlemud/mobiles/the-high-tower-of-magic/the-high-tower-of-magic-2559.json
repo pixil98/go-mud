@@ -1,0 +1,81 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2559",
+    "spec": {
+        "aliases": [
+            "master",
+            "guildmaster",
+            "black"
+        ],
+        "short_desc": "the Master of the Black Robes",
+        "long_desc": "The Master of the Black Robes is here plotting vile deeds.",
+        "detailed_desc": "The Master glares at you.",
+        "level": 30,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -20
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d5+20"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 1200
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 30
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "stay_zone",
+            "memory"
+        ],
+        "exp_reward": 150000,
+        "inventory": [
+            {
+                "object_id": "the-high-tower-of-magic-2594"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "neck",
+                "object_id": "the-high-tower-of-magic-2580"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-high-tower-of-magic-2581"
+            },
+            {
+                "slot": "hold",
+                "object_id": "the-high-tower-of-magic-2577"
+            }
+        ]
+    }
+}

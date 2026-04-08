@@ -31,6 +31,9 @@
                 ],
                 "description": "This is funny enough a wooden ladder and, after closer inspection, you discover it is magically held to the wall! You can't, even with your greatest effort, move it at ALL!"
             }
+        ],
+        "mobile_spawns": [
+            "the-sewer-first-level-7004"
         ]
     }
 }

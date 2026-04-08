@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "id": "new-thalos-5403",
+    "spec": {
+        "aliases": [
+            "thief",
+            "guildmaster"
+        ],
+        "short_desc": "the guildmaster",
+        "long_desc": "Your guildmaster stands here.",
+        "detailed_desc": "A small human dressed in black rests in the corner. As you enter he grabs a knife and throws it at you. It lands in the wall next to your left ear. 'We will now begin', is all he says.",
+        "level": 16,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "5d5+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 10001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 30
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ]
+    }
+}

@@ -10,6 +10,9 @@
                 "room_id": "rome-12060",
                 "description": "The holding cells lie in that direction."
             }
-        }
+        },
+        "mobile_spawns": [
+            "rome-12035"
+        ]
     }
 }

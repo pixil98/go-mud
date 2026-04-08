@@ -1,0 +1,51 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5202",
+    "spec": {
+        "aliases": [
+            "mimic",
+            "chest"
+        ],
+        "short_desc": "the mimic",
+        "long_desc": "A strong chest lies in one corner of the room.",
+        "detailed_desc": "A strong, wooden chest bound with iron straps and a heavy padlock on the front.",
+        "level": 11,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d7"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 150
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 10
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 13000,
+        "equipment": [
+            {
+                "slot": "hold",
+                "object_id": "the-city-of-thalos-5214"
+            }
+        ]
+    }
+}

@@ -1,0 +1,57 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15010",
+    "spec": {
+        "aliases": [
+            "bertram",
+            "bert",
+            "guard",
+            "royal"
+        ],
+        "short_desc": "Bertram",
+        "long_desc": "Bertram the Royal Guard is here on duty.",
+        "detailed_desc": "As all members of the Guard, Bertram wears the chain mail required of them as uniform. He seems very well trained, and carries his scars with pride. This guy seems tough...",
+        "level": 15,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+7"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 193
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 15
+            }
+        ],
+        "flags": [
+            "stay_zone"
+        ],
+        "exp_reward": 21000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "body",
+                "object_id": "king-welmars-castle-15015"
+            }
+        ]
+    }
+}

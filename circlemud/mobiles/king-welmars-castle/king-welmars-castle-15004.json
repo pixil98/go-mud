@@ -1,0 +1,57 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15004",
+    "spec": {
+        "aliases": [
+            "brian",
+            "guard",
+            "royal"
+        ],
+        "short_desc": "Brian",
+        "long_desc": "Brian the Royal Guard is here, training with the Master.",
+        "detailed_desc": "As all members of the Guard, Brian wears the chain mail required of them as uniform. He seems very well trained, and moves like an experienced fighter.",
+        "level": 11,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 148
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 11
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "stay_zone"
+        ],
+        "exp_reward": 11000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "king-welmars-castle-15006"
+            },
+            {
+                "slot": "body",
+                "object_id": "king-welmars-castle-15015"
+            }
+        ]
+    }
+}

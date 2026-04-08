@@ -1,0 +1,52 @@
+{
+    "version": 1,
+    "id": "rands-tower-6403",
+    "spec": {
+        "aliases": [
+            "bad",
+            "feeling"
+        ],
+        "short_desc": "a Bad Feeling",
+        "long_desc": "A bad feeling chokes your throat.",
+        "detailed_desc": "It resembles a lot of other bad feelings you've had, but a lot more tangible... magic?",
+        "level": 18,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d8"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 250
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 17
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "aggressive",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 40000
+    }
+}

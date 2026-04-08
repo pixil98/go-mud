@@ -32,6 +32,13 @@
                     "closed": true
                 }
             }
-        }
+        },
+        "mobile_spawns": [
+            "new-thalos-5434",
+            "new-thalos-5434",
+            "new-thalos-5434",
+            "new-thalos-5434",
+            "new-thalos-5450"
+        ]
     }
 }

@@ -1,0 +1,92 @@
+{
+    "version": 1,
+    "id": "drow-city-5107",
+    "spec": {
+        "aliases": [
+            "drow",
+            "matron",
+            "mother"
+        ],
+        "short_desc": "the Matron Mother",
+        "long_desc": "The Matron Mother of the house is standing here.",
+        "detailed_desc": "She looks really and truly annoyed that you have found your way here.",
+        "level": 24,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "15d2+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 500
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "memory"
+        ],
+        "exp_reward": 130000,
+        "inventory": [
+            {
+                "object_id": "drow-city-5114"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "drow-city-5106"
+            },
+            {
+                "slot": "wield",
+                "object_id": "drow-city-5106"
+            },
+            {
+                "slot": "head",
+                "object_id": "drow-city-5111"
+            },
+            {
+                "slot": "wield",
+                "object_id": "drow-city-5106"
+            },
+            {
+                "slot": "arms",
+                "object_id": "drow-city-5108"
+            }
+        ]
+    }
+}

@@ -10,6 +10,10 @@
                 "room_id": "midennir-3583",
                 "description": "Back to along the trail."
             }
-        }
+        },
+        "mobile_spawns": [
+            "midennir-3507",
+            "midennir-3507"
+        ]
     }
 }

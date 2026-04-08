@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1506",
+    "spec": {
+        "aliases": [
+            "jester"
+        ],
+        "short_desc": "the jester",
+        "long_desc": "A mad, drunken jester is sitting here, lost in his deepening stupor.",
+        "detailed_desc": "He is dimly aware of your gaze. Chuckling softly, you hear him mutter something obscure: dragons, the temple, the falling of great empires. He laughs at you and takes another drink.",
+        "level": 13,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 200
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 14
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 21000,
+        "equipment": [
+            {
+                "slot": "hold",
+                "object_id": "the-straight-path-1509"
+            }
+        ]
+    }
+}

@@ -26,6 +26,9 @@
                 "room_id": "king-welmars-castle-15033",
                 "description": "You see the corridor."
             }
-        }
+        },
+        "mobile_spawns": [
+            "king-welmars-castle-15017"
+        ]
     }
 }

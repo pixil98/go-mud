@@ -27,6 +27,10 @@
                 ],
                 "description": "The hole is much too small for you to clamber through."
             }
+        ],
+        "mobile_spawns": [
+            "king-welmars-castle-15018",
+            "king-welmars-castle-15018"
         ]
     }
 }

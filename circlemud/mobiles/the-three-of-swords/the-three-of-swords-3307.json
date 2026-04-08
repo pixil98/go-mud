@@ -1,0 +1,56 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3307",
+    "spec": {
+        "aliases": [
+            "salle",
+            "woman"
+        ],
+        "short_desc": "Salle",
+        "long_desc": "A woman ignores you completely, so intent is she upon her sword.",
+        "detailed_desc": "She is a stunning woman, all hair and eyes, it seems. Her clothing is of the same tawny brown of her skin and hair. Her blue eyes look at you appraisingly, seemingly to show great intelligence. Her mouth twitches into a sneer...",
+        "level": 15,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -30
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 215
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 14
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "helper"
+        ],
+        "exp_reward": 24000,
+        "equipment": [
+            {
+                "slot": "body",
+                "object_id": "the-three-of-swords-3318"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-three-of-swords-3312"
+            }
+        ]
+    }
+}

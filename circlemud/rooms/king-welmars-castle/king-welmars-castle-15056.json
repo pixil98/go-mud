@@ -39,6 +39,9 @@
                 ],
                 "description": "The card on the floor seems to be the Ace of Spades... a bad card to find indeed. What could be the bad luck brought about by this discovery?"
             }
+        ],
+        "mobile_spawns": [
+            "king-welmars-castle-15000"
         ]
     }
 }

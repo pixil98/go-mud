@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5301",
+    "spec": {
+        "aliases": [
+            "cobra",
+            "snake"
+        ],
+        "short_desc": "the hooded cobra snake",
+        "long_desc": "A cobra snake rears up and opens its fearsome hood.",
+        "detailed_desc": "The cobra snake waves back and forth before you, its hood displaying brilliant colors designed to serve notice to its prey that it is about to strike.",
+        "level": 7,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 7
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 119
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 7
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 2000
+    }
+}

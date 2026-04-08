@@ -1,0 +1,61 @@
+{
+    "version": 1,
+    "id": "rome-12008",
+    "spec": {
+        "aliases": [
+            "coach",
+            "trainer"
+        ],
+        "short_desc": "the coach",
+        "long_desc": "There is a coach standing here, going over last minute strategy.",
+        "detailed_desc": "As you try to look over his shoulder and listen in on his mumbling, he looks up at you and gives you a glare that chills you to the bone.",
+        "level": 11,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 150
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 10
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 11000,
+        "inventory": [
+            {
+                "object_id": "rome-12003"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3021"
+            },
+            {
+                "slot": "body",
+                "object_id": "northern-midgaard-main-city-3043"
+            }
+        ]
+    }
+}

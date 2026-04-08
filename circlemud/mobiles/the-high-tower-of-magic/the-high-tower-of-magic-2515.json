@@ -1,0 +1,56 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2515",
+    "spec": {
+        "aliases": [
+            "apprentice",
+            "young"
+        ],
+        "short_desc": "the young apprentice magic user",
+        "long_desc": "A young apprentice magic user is here doing magical studies.",
+        "detailed_desc": "She looks quite intent on her studies.",
+        "level": 7,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 67
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 13
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 2950
+    }
+}

@@ -1,0 +1,64 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2548",
+    "spec": {
+        "aliases": [
+            "master",
+            "illusionist",
+            "mage",
+            "dragon"
+        ],
+        "short_desc": "the Master of Illusions",
+        "long_desc": "An enormous multi-colored three-headed dragon growls at you.",
+        "detailed_desc": "The image of an ugly dragon flickers slightly, and where the dragon was now stands a small harmless looking old man.",
+        "level": 21,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d5+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 651
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 14
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 26450,
+        "equipment": [
+            {
+                "slot": "waist",
+                "object_id": "the-high-tower-of-magic-2568"
+            }
+        ]
+    }
+}

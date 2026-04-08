@@ -34,6 +34,9 @@
                 ],
                 "description": "There is a crude picture of a man with the head of a bull with some writing next to it."
             }
+        ],
+        "mobile_spawns": [
+            "newbie-zone-18610"
         ]
     }
 }

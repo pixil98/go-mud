@@ -15,6 +15,9 @@
         },
         "flags": [
             "nomob"
+        ],
+        "mobile_spawns": [
+            "the-three-of-swords-3316"
         ]
     }
 }

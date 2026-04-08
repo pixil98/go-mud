@@ -1,0 +1,56 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4050",
+    "spec": {
+        "aliases": [
+            "warrior"
+        ],
+        "short_desc": "the warrior",
+        "long_desc": "A tall warrior is here.  He has more scars than anyone you have ever seen.",
+        "detailed_desc": "He seems to be a strong, brainless fighter.",
+        "level": 12,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 150
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 12
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 12000,
+        "inventory": [
+            {
+                "object_id": "mines-of-moria-4051"
+            }
+        ]
+    }
+}

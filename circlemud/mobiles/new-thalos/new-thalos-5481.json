@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "id": "new-thalos-5481",
+    "spec": {
+        "aliases": [
+            "high",
+            "priest"
+        ],
+        "short_desc": "the high priest",
+        "long_desc": "The high priest rests here meditating, well he WAS meditating.",
+        "detailed_desc": "He does NOT look real happy that you have disturbed him.",
+        "level": 8,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 1250
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 18
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 35000
+    }
+}

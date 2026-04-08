@@ -1,0 +1,42 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15014",
+    "spec": {
+        "aliases": [
+            "herald",
+            "royal"
+        ],
+        "short_desc": "the Royal Herald",
+        "long_desc": "The Royal Herald is standing here.",
+        "detailed_desc": "This is a young, powerfully built man, whose primary function is to make Royal Announcements.",
+        "level": 18,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+9"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 238
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 19
+            }
+        ],
+        "exp_reward": 30000
+    }
+}

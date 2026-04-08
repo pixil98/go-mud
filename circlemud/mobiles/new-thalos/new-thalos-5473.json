@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "new-thalos-5473",
+    "spec": {
+        "aliases": [
+            "lion",
+            "spotted"
+        ],
+        "short_desc": "the spotted lion",
+        "long_desc": "The spotted lion stands here.",
+        "detailed_desc": "A large fierce dapple skinned lion glares at you.",
+        "level": 5,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 70
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 3
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 1500
+    }
+}

@@ -16,6 +16,9 @@
                 "type": "grant",
                 "key": "dark"
             }
+        ],
+        "mobile_spawns": [
+            "the-great-pyramid-5302"
         ]
     }
 }

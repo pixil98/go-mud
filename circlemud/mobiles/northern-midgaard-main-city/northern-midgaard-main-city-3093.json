@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3093",
+    "spec": {
+        "aliases": [
+            "rottweiler"
+        ],
+        "short_desc": "the rottweiler",
+        "long_desc": "A large, loyal rottweiler is here.",
+        "detailed_desc": "The rottweiler looks like a strong, fierce fighter.",
+        "level": 3,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 7
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d7"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 47
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger"
+        ],
+        "exp_reward": 800
+    }
+}

@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6202",
+    "spec": {
+        "aliases": [
+            "squirrel"
+        ],
+        "short_desc": "the squirrel",
+        "long_desc": "A squirrel spots you and runs around a tree!",
+        "detailed_desc": "It is a small, brown squirrel. Kind of like a fuzzy high-tension spring.",
+        "level": 0,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d1+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 3
+            }
+        ],
+        "flags": [
+            "wimpy"
+        ],
+        "exp_reward": 10
+    }
+}

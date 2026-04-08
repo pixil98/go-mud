@@ -1,0 +1,64 @@
+{
+    "version": 1,
+    "id": "new-thalos-5455",
+    "spec": {
+        "aliases": [
+            "allah"
+        ],
+        "short_desc": "Allah",
+        "long_desc": "Allah is here.",
+        "detailed_desc": "You see the all-knowing Allah.",
+        "level": 11,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "sneak"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d20+20"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 2306
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "memory"
+        ],
+        "exp_reward": 45000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "new-thalos-5496"
+            }
+        ]
+    }
+}

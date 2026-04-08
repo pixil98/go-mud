@@ -1,0 +1,42 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6208",
+    "spec": {
+        "aliases": [
+            "orc",
+            "mutant",
+            "mutated"
+        ],
+        "short_desc": "the mutant orc",
+        "long_desc": "A mutant orc lies here, barely alive.",
+        "detailed_desc": "Its body has been twisted beyond all hope. It is dying, and nothing will stop that.",
+        "level": 6,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 100
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 1
+            }
+        ],
+        "exp_reward": 1
+    }
+}

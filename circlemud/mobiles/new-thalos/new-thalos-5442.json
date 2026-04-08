@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "new-thalos-5442",
+    "spec": {
+        "aliases": [
+            "man",
+            "wandering",
+            "prophet"
+        ],
+        "short_desc": "the wandering prophet",
+        "long_desc": "A small grey-haired man walks around spouting gospel.",
+        "detailed_desc": "This sad case may have been an evangelist in another lifetime. He is known to stand on corners and accost passers-by with his doomsday preaching.",
+        "level": 7,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d5+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 4
+            }
+        ],
+        "flags": [
+            "wimpy"
+        ],
+        "exp_reward": 10
+    }
+}

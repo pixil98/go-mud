@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7009",
+    "spec": {
+        "aliases": [
+            "morkoth",
+            "shadowy"
+        ],
+        "short_desc": "the shadowy morkoth",
+        "long_desc": "The morkoth are standing here, waiting for someone to KILL!",
+        "detailed_desc": "It is a five foot tall, shadow monster. This has the shape between a human and a rat. It breaths very heavily while staring at you.",
+        "level": 10,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 140
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 8
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "wimpy"
+        ],
+        "exp_reward": 9000
+    }
+}

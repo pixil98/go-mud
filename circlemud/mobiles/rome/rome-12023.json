@@ -1,0 +1,63 @@
+{
+    "version": 1,
+    "id": "rome-12023",
+    "spec": {
+        "aliases": [
+            "master",
+            "scheduler"
+        ],
+        "short_desc": "the master scheduler",
+        "long_desc": "The master scheduler is here, writing in an appointment book.",
+        "detailed_desc": "As you look at him, he looks up at you and asks, 'Do you have an appointment?' He waits for a few seconds and then asks, 'Would you like one?'",
+        "level": 17,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d6+9"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 226
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 17
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 28000,
+        "inventory": [
+            {
+                "object_id": "rome-12035"
+            },
+            {
+                "object_id": "rome-12036"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "feet",
+                "object_id": "rome-12008"
+            },
+            {
+                "slot": "neck",
+                "object_id": "rome-12013"
+            }
+        ]
+    }
+}

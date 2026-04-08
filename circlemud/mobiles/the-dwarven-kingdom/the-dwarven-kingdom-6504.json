@@ -1,0 +1,78 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6504",
+    "spec": {
+        "aliases": [
+            "baker",
+            "granite",
+            "head"
+        ],
+        "short_desc": "Granite Head the baker",
+        "long_desc": "Granite Head, the baker, is waiting for a customer here.",
+        "detailed_desc": "Granite Head is covered with flour and grains.",
+        "level": 33,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+22"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 800000,
+        "inventory": [
+            {
+                "object_id": "northern-midgaard-main-city-3000"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3003"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3010"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3011"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3031"
+            },
+            {
+                "object_id": "haon-dor-light-forest-6013"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "the-dwarven-kingdom-6504"
+            }
+        ]
+    }
+}

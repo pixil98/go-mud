@@ -18,6 +18,9 @@
                 "room_id": "king-welmars-castle-15018",
                 "description": "To the west you see the Great Hall."
             }
-        }
+        },
+        "mobile_spawns": [
+            "king-welmars-castle-15011"
+        ]
     }
 }

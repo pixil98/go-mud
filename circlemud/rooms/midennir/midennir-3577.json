@@ -10,6 +10,9 @@
                 "room_id": "midennir-3574",
                 "description": "You see the main floor of the Inn to the east."
             }
-        }
+        },
+        "mobile_spawns": [
+            "midennir-3506"
+        ]
     }
 }

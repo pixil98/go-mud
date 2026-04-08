@@ -1,0 +1,62 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2537",
+    "spec": {
+        "aliases": [
+            "master",
+            "summoner"
+        ],
+        "short_desc": "the Master Summoner",
+        "long_desc": "The Master Summoner is here holding gateways open to other planes.",
+        "detailed_desc": "The Summoner looks to be hard at work, concentrating on keeping control over the gateway before he loses his soul to the creatures on the other side of it.",
+        "level": 22,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d5+6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 704
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 15
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 27050,
+        "equipment": [
+            {
+                "slot": "hold",
+                "object_id": "the-high-tower-of-magic-2562"
+            }
+        ]
+    }
+}

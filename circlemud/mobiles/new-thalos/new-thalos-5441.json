@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "new-thalos-5441",
+    "spec": {
+        "aliases": [
+            "curley",
+            "greenleaf"
+        ],
+        "short_desc": "Curley GreenLeaf",
+        "long_desc": "Curley GreenLeaf stands here.",
+        "detailed_desc": "",
+        "level": 15,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d4+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 135
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "wimpy"
+        ],
+        "exp_reward": 1000
+    }
+}

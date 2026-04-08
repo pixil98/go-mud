@@ -1,0 +1,96 @@
+{
+    "version": 1,
+    "id": "new-thalos-5461",
+    "spec": {
+        "aliases": [
+            "sultans",
+            "guard"
+        ],
+        "short_desc": "the Sultan's Guard",
+        "long_desc": "A guard stands here, protecting the innocent.",
+        "detailed_desc": "You see a trained fighter, ready to help those in need.",
+        "level": 10,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 9
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 128
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 10
+            }
+        ],
+        "flags": [
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 2500,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "new-thalos-5413"
+            },
+            {
+                "slot": "body",
+                "object_id": "new-thalos-5417"
+            },
+            {
+                "slot": "shield",
+                "object_id": "new-thalos-5421"
+            },
+            {
+                "slot": "wield",
+                "object_id": "new-thalos-5413"
+            },
+            {
+                "slot": "body",
+                "object_id": "new-thalos-5417"
+            },
+            {
+                "slot": "shield",
+                "object_id": "new-thalos-5421"
+            },
+            {
+                "slot": "wield",
+                "object_id": "new-thalos-5413"
+            },
+            {
+                "slot": "body",
+                "object_id": "new-thalos-5417"
+            },
+            {
+                "slot": "shield",
+                "object_id": "new-thalos-5421"
+            },
+            {
+                "slot": "wield",
+                "object_id": "new-thalos-5413"
+            },
+            {
+                "slot": "body",
+                "object_id": "new-thalos-5417"
+            },
+            {
+                "slot": "shield",
+                "object_id": "new-thalos-5421"
+            }
+        ]
+    }
+}

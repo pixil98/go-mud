@@ -39,6 +39,16 @@
                 ],
                 "description": "Reeds grow up around the edges of the lake, providing cover for the small water fowl that live here."
             }
+        ],
+        "mobile_spawns": [
+            "haon-dor-light-forest-6014",
+            "haon-dor-light-forest-6017",
+            "haon-dor-light-forest-6017",
+            "haon-dor-light-forest-6017",
+            "haon-dor-light-forest-6018",
+            "haon-dor-light-forest-6018",
+            "haon-dor-light-forest-6019",
+            "haon-dor-light-forest-6019"
         ]
     }
 }

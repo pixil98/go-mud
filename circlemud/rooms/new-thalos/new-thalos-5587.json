@@ -28,6 +28,21 @@
             "south": {
                 "room_id": "new-thalos-5586"
             }
-        }
+        },
+        "mobile_spawns": [
+            "new-thalos-5451",
+            "new-thalos-5451",
+            "new-thalos-5451",
+            "new-thalos-5451",
+            "new-thalos-5451",
+            "new-thalos-5451",
+            "new-thalos-5451",
+            "new-thalos-5451",
+            "new-thalos-5453",
+            "new-thalos-5453",
+            "new-thalos-5453",
+            "new-thalos-5453",
+            "new-thalos-5454"
+        ]
     }
 }

@@ -1,0 +1,81 @@
+{
+    "version": 1,
+    "id": "rome-12025",
+    "spec": {
+        "aliases": [
+            "froboz",
+            "wizard"
+        ],
+        "short_desc": "Froboz",
+        "long_desc": "Froboz the wizard is standing here, working on a new spell.",
+        "detailed_desc": "You see a middle-aged man whose knowledge of magic, both offensive and defensive, is legendary. He literally glows with a pink aura.",
+        "level": 23,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+14"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 475
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "memory"
+        ],
+        "exp_reward": 95000,
+        "inventory": [
+            {
+                "object_id": "rome-12025"
+            },
+            {
+                "object_id": "rome-12026"
+            },
+            {
+                "object_id": "rome-12029"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "shield",
+                "object_id": "northern-midgaard-main-city-3042"
+            },
+            {
+                "slot": "body",
+                "object_id": "rome-12014"
+            }
+        ]
+    }
+}

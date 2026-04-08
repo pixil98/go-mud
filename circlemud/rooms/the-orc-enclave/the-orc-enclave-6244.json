@@ -18,6 +18,9 @@
                 "type": "grant",
                 "key": "dark"
             }
+        ],
+        "mobile_spawns": [
+            "the-orc-enclave-6209"
         ]
     }
 }

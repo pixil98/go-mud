@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3122",
+    "spec": {
+        "aliases": [
+            "sparrow"
+        ],
+        "short_desc": "the sparrow",
+        "long_desc": "A sparrow is flapping around on the ground.",
+        "detailed_desc": "The sparrow looks like it is enjoying life.",
+        "level": 0,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d3"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 12
+            }
+        ],
+        "flags": [
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 25
+    }
+}

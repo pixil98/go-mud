@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7045",
+    "spec": {
+        "aliases": [
+            "jones",
+            "cruncher",
+            "ettin"
+        ],
+        "short_desc": "Jones 'cruncher' ettin",
+        "long_desc": "Jones is standing here glaring at you.",
+        "detailed_desc": "At the first sight you thought Jones was an Orc, but when he came closer you see his second head. He wears an animal skin dress, filthy and moth eaten. Jones really stinks...",
+        "level": 10,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 135
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 9
+            }
+        ],
+        "flags": [
+            "scavenger"
+        ],
+        "exp_reward": 11000
+    }
+}

@@ -1,0 +1,49 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6206",
+    "spec": {
+        "aliases": [
+            "orc",
+            "child"
+        ],
+        "short_desc": "the orc child",
+        "long_desc": "An orc child frantically searches for her mother.",
+        "detailed_desc": "She is raggedy, and seems to be covered with sores.",
+        "level": 3,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 90
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d7"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 45
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            }
+        ],
+        "flags": [
+            "wimpy"
+        ],
+        "exp_reward": 350
+    }
+}

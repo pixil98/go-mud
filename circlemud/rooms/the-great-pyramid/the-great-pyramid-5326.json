@@ -40,6 +40,10 @@
                 ],
                 "description": "As you look closer at the figure sculpted into the stone coffin you notice a small marking carved into its chest. It looks like a scarab or small beetle would fit into the small space, if properly sized. Hmmm."
             }
+        ],
+        "mobile_spawns": [
+            "the-great-pyramid-5302",
+            "the-great-pyramid-5304"
         ]
     }
 }

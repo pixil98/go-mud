@@ -1,0 +1,75 @@
+{
+    "version": 1,
+    "id": "rome-12020",
+    "spec": {
+        "aliases": [
+            "emperor",
+            "julius",
+            "caesar"
+        ],
+        "short_desc": "Julius Caesar",
+        "long_desc": "Julius Caesar, the Emperor of Rome, is sitting here.",
+        "detailed_desc": "You see a man who is dressed in the finest of clothes, has eaten the best of foods and lived in the most opulent palace that Rome has ever known.",
+        "level": 27,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -7
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d7+15"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 700
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 150000,
+        "inventory": [
+            {
+                "object_id": "rome-12024"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "arms",
+                "object_id": "rome-12017"
+            }
+        ]
+    }
+}

@@ -30,6 +30,9 @@
                 ],
                 "description": "******************************************** * * * The Roman Aquarian and Mountain * * Observation Platform * * * * Designed and built by the Froboz * * Magic Platform Company * * * ********************************************"
             }
+        ],
+        "mobile_spawns": [
+            "rome-12017"
         ]
     }
 }

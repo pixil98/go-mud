@@ -22,6 +22,9 @@
                 "room_id": "the-chessboard-of-midgaard-3652",
                 "description": "A black square lies to the west."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-chessboard-of-midgaard-3601"
+        ]
     }
 }

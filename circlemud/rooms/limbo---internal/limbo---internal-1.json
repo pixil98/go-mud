@@ -5,6 +5,9 @@
         "name": "Limbo",
         "description": "You are floating in a formless void, detached from all sensation of physical matter, surrounded by swirling glowing light, which fades into the relative darkness around you without any trace of edges or shadow. There is a \"No Tipping\" notice pinned to the darkness.",
         "zone_id": "limbo---internal",
-        "exits": {}
+        "exits": {},
+        "mobile_spawns": [
+            "limbo---internal-1"
+        ]
     }
 }

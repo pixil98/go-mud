@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1507",
+    "spec": {
+        "aliases": [
+            "jinn",
+            "sprite"
+        ],
+        "short_desc": "the jinn",
+        "long_desc": "One of the jinn dances in and out of the air before your eyes, taunting you.",
+        "detailed_desc": "You have heard legends of these creatures, the mischievous little demons said to be trapped in lamps and bottles, capable of granting all kinds of powerful wishes. To you, it looks like nothing more than an annoying little sprite.",
+        "level": 23,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "invisible"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d9+3"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 450
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "stay_zone"
+        ],
+        "exp_reward": 70000
+    }
+}

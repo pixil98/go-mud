@@ -1,0 +1,60 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3024",
+    "spec": {
+        "aliases": [
+            "sorcerer"
+        ],
+        "short_desc": "the sorcerer",
+        "long_desc": "A sorcerer is guarding the entrance.",
+        "detailed_desc": "He is an experienced mage who has specialized in the field of Combat Magic. He is here to guard the Mage's Guild and his superior knowledge of offensive as well as defensive spells make him a deadly opponent.",
+        "level": 33,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+22"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 1050
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 60000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            }
+        ]
+    }
+}

@@ -1,0 +1,61 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2541",
+    "spec": {
+        "aliases": [
+            "master",
+            "maker"
+        ],
+        "short_desc": "the Golem Maker",
+        "long_desc": "The Golem Maker is here chiseling some stone.",
+        "detailed_desc": "The Golem Master appears to be very meticulous about his work, to the point of fussing over it.",
+        "level": 21,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d5+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 651
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 14
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "wimpy"
+        ],
+        "exp_reward": 26850,
+        "equipment": [
+            {
+                "slot": "hold",
+                "object_id": "the-high-tower-of-magic-2567"
+            }
+        ]
+    }
+}

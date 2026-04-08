@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "new-thalos-5408",
+    "spec": {
+        "aliases": [
+            "panhandler"
+        ],
+        "short_desc": "the panhandler",
+        "long_desc": "A panhandler rests here.",
+        "detailed_desc": "A small skinny man rests here staring at your clothes.",
+        "level": 3,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d3+3"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 11
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 1
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 5
+    }
+}

@@ -1,0 +1,51 @@
+{
+    "version": 1,
+    "id": "new-thalos-5420",
+    "spec": {
+        "aliases": [
+            "construction",
+            "worker"
+        ],
+        "short_desc": "the construction worker",
+        "long_desc": "A construction worker steadily works here.",
+        "detailed_desc": "A large sweaty looking man doesn't even return your glance.",
+        "level": 10,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d5+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 59
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 8
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "stay_zone"
+        ],
+        "exp_reward": 50,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "new-thalos-5486"
+            },
+            {
+                "slot": "wield",
+                "object_id": "new-thalos-5486"
+            }
+        ]
+    }
+}

@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "midennir-3500",
+    "spec": {
+        "aliases": [
+            "wyvern"
+        ],
+        "short_desc": "the wyvern",
+        "long_desc": "A monstrous wyvern slowly circles just above your head.",
+        "detailed_desc": "This huge winged creature looks really menacing as it circles only inches above your head, flapping its wings and squawking very loudly.",
+        "level": 8,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 110
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 7
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "stay_zone"
+        ],
+        "exp_reward": 3575
+    }
+}

@@ -1,0 +1,66 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6516",
+    "spec": {
+        "aliases": [
+            "mazekeeper",
+            "keeper"
+        ],
+        "short_desc": "the mazekeeper",
+        "long_desc": "A mazekeeper is here.",
+        "detailed_desc": "He looks VERY tough.",
+        "level": 29,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -7
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d3+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 3000
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "memory"
+        ],
+        "exp_reward": 1700000,
+        "equipment": [
+            {
+                "slot": "hold",
+                "object_id": "the-dwarven-kingdom-6500"
+            }
+        ]
+    }
+}

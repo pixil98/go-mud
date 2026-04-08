@@ -1,0 +1,62 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3304",
+    "spec": {
+        "aliases": [
+            "farmer's",
+            "wife"
+        ],
+        "short_desc": "the farmer's wife",
+        "long_desc": "A farmer's wife offers you some vegetables.",
+        "detailed_desc": "This woman has many different types of fruits and vegetables for you to buy. She looks bored, though.",
+        "level": 20,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -40
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d6+6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 260
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 19
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 40000,
+        "inventory": [
+            {
+                "object_id": "the-three-of-swords-3300"
+            },
+            {
+                "object_id": "the-three-of-swords-3301"
+            },
+            {
+                "object_id": "the-three-of-swords-3308"
+            },
+            {
+                "object_id": "the-three-of-swords-3309"
+            },
+            {
+                "object_id": "the-three-of-swords-3310"
+            }
+        ]
+    }
+}

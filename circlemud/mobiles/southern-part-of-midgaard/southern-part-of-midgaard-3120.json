@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3120",
+    "spec": {
+        "aliases": [
+            "swan"
+        ],
+        "short_desc": "the swan",
+        "long_desc": "A swan is swimming around in the pond.",
+        "detailed_desc": "The white swan is very elegant.",
+        "level": 1,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 9
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 22
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 100
+    }
+}

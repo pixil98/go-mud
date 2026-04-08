@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "new-thalos-5443",
+    "spec": {
+        "aliases": [
+            "alley",
+            "cat"
+        ],
+        "short_desc": "the alley cat",
+        "long_desc": "A small harmless feline searches for food.",
+        "detailed_desc": "You see a small starved cat.",
+        "level": 2,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 70
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d2+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 7
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            }
+        ],
+        "flags": [
+            "wimpy"
+        ]
+    }
+}

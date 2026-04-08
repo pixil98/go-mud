@@ -1,0 +1,59 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2507",
+    "spec": {
+        "aliases": [
+            "ezmerelda",
+            "cook"
+        ],
+        "short_desc": "Ezmerelda",
+        "long_desc": "Ezmerelda the cook is here stirring a large pot of something.",
+        "detailed_desc": "She does not look like the typical cook you would find in a kitchen, but she certainly fits what you would expect in a tower fulls of mages.",
+        "level": 20,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d4+8"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 600
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 14
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 31300,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "the-high-tower-of-magic-2547"
+            }
+        ]
+    }
+}

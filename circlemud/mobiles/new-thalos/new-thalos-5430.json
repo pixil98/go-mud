@@ -1,0 +1,51 @@
+{
+    "version": 1,
+    "id": "new-thalos-5430",
+    "spec": {
+        "aliases": [
+            "mustafah",
+            "human",
+            "robber"
+        ],
+        "short_desc": "Mustafah",
+        "long_desc": "Mustafah the Human Robber stands here.",
+        "detailed_desc": "This man is lithe and has an evil smirk upon his face.",
+        "level": 7,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 30
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 65
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 3
+            }
+        ],
+        "flags": [
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 99
+    }
+}

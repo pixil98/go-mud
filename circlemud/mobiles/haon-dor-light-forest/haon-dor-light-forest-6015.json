@@ -1,0 +1,60 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6015",
+    "spec": {
+        "aliases": [
+            "grotesque",
+            "vulture"
+        ],
+        "short_desc": "the grotesque vulture",
+        "long_desc": "A grotesque vulture covered in blood and gore is here feeding madly.",
+        "detailed_desc": "It sickens you to even look at this foul bird. Bits of dried gore stick to its beak, and unidentifiable organs hang from its talons and feathers. It sees you and attacks, protecting its horrible feast!",
+        "level": 6,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d3+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 80
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 5
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "aggressive"
+        ],
+        "exp_reward": 1750
+    }
+}

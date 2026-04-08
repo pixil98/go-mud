@@ -1,0 +1,62 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2527",
+    "spec": {
+        "aliases": [
+            "mistress",
+            "battle"
+        ],
+        "short_desc": "the battle mistress",
+        "long_desc": "The battle mistress is here teaching the fine uses of a dagger.",
+        "detailed_desc": "She looks quite rugged. In fact, she more resembles a warrior than a magic user.",
+        "level": 17,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d5+8"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 459
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 18
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "wimpy",
+            "memory"
+        ],
+        "exp_reward": 23050,
+        "equipment": [
+            {
+                "slot": "hold",
+                "object_id": "the-high-tower-of-magic-2549"
+            }
+        ]
+    }
+}

@@ -18,6 +18,11 @@
                 "room_id": "the-great-pyramid-5326",
                 "description": "To the west is another tomb."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-great-pyramid-5304",
+            "the-great-pyramid-5307",
+            "the-great-pyramid-5307"
+        ]
     }
 }

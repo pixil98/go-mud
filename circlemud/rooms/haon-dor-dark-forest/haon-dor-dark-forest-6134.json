@@ -33,6 +33,10 @@
                 ],
                 "description": "The cocoons are burst open as if something inside really wanted to get out. They are at the size of a human head."
             }
+        ],
+        "mobile_spawns": [
+            "haon-dor-dark-forest-6114",
+            "haon-dor-dark-forest-6117"
         ]
     }
 }

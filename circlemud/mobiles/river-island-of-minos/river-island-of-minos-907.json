@@ -1,0 +1,80 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-907",
+    "spec": {
+        "aliases": [
+            "minos",
+            "king",
+            "minotaur"
+        ],
+        "short_desc": "King Minos the Minotaur",
+        "long_desc": "King Minos the Minotaur is ready and waiting to gore you to death.",
+        "detailed_desc": "He smells something awful.",
+        "level": 26,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d6+10"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 686
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 160000,
+        "equipment": [
+            {
+                "slot": "shield",
+                "object_id": "river-island-of-minos-901"
+            },
+            {
+                "slot": "hold",
+                "object_id": "river-island-of-minos-900"
+            }
+        ]
+    }
+}

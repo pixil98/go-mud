@@ -20,6 +20,9 @@
                     "closed": true
                 }
             }
-        }
+        },
+        "mobile_spawns": [
+            "mines-of-moria-4107"
+        ]
     }
 }

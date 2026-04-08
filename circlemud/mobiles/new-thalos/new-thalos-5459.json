@@ -1,0 +1,59 @@
+{
+    "version": 1,
+    "id": "new-thalos-5459",
+    "spec": {
+        "aliases": [
+            "thief",
+            "guildguard"
+        ],
+        "short_desc": "the guildguard",
+        "long_desc": "The Guard for the Guild of theives stands here.",
+        "detailed_desc": "You see a thief dressed all in black, he quickly stands as you enter and steps to bar your way. You notice his hands resting on two sheathes.",
+        "level": 8,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d8+10"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 510
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 21
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 500
+    }
+}

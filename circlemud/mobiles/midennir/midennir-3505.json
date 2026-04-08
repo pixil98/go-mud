@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "id": "midennir-3505",
+    "spec": {
+        "aliases": [
+            "innkeeper"
+        ],
+        "short_desc": "the Innkeeper",
+        "long_desc": "The Innkeeper stands here, cleaning glasses.",
+        "detailed_desc": "The Innkeeper now spends most of his days waiting for customers, while the nights are spent watching out for goblins. His inn is no longer the happy place that is used to be in days past.",
+        "level": 10,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 212
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 12
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "stay_zone",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 7000
+    }
+}

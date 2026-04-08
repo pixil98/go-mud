@@ -1,0 +1,64 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2506",
+    "spec": {
+        "aliases": [
+            "tatorious",
+            "wizard"
+        ],
+        "short_desc": "Tatorious",
+        "long_desc": "Tatorious the wizard is here counting his earnings.",
+        "detailed_desc": "Tatorious winks at you mischievously.",
+        "level": 25,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -8
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d7+21"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 24000,
+        "inventory": [
+            {
+                "object_id": "northern-midgaard-main-city-3050"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3051"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3053"
+            }
+        ]
+    }
+}

@@ -10,6 +10,9 @@
                 "room_id": "god-simplex-1204",
                 "description": "The Immortal Board Room can be seen to the north."
             }
-        }
+        },
+        "mobile_spawns": [
+            "god-simplex-1202"
+        ]
     }
 }

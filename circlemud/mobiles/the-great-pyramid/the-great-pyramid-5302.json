@@ -1,0 +1,49 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5302",
+    "spec": {
+        "aliases": [
+            "mongoose"
+        ],
+        "short_desc": "the wily little mongoose",
+        "long_desc": "A small mongoose slinks along the ground, hunting snakes.",
+        "detailed_desc": "The mongoose is a wily rodent, a quick hunter of nasty poisonous snakes. She sniffs you and appears to be looking for food in your hand.",
+        "level": 11,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d5+3"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 231
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 10
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 10000
+    }
+}

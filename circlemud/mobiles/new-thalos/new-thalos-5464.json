@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "new-thalos-5464",
+    "spec": {
+        "aliases": [
+            "mercenary"
+        ],
+        "short_desc": "the mercenary",
+        "long_desc": "A mercenary stands here waiting for a job.",
+        "detailed_desc": "You see an assassin down on his luck looking to be freelanced out.",
+        "level": 5,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 9
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d4+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 22
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 5
+            }
+        ],
+        "flags": [
+            "stay_zone"
+        ],
+        "exp_reward": 50
+    }
+}

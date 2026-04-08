@@ -1,0 +1,67 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6210",
+    "spec": {
+        "aliases": [
+            "wizard",
+            "elf",
+            "elven",
+            "Elstar"
+        ],
+        "short_desc": "Elstar",
+        "long_desc": "An elven wizard is here.  He looks angry.",
+        "detailed_desc": "He looks at you archly as he wonders why you have invaded his domain. No matter... it shouldn't be too hard for him to destroy you, no?",
+        "level": 15,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -75
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 198
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 14
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "memory"
+        ],
+        "exp_reward": 21000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "the-orc-enclave-6205"
+            },
+            {
+                "slot": "hold",
+                "object_id": "the-orc-enclave-6203"
+            }
+        ]
+    }
+}

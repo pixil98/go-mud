@@ -1,0 +1,60 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-903",
+    "spec": {
+        "aliases": [
+            "lizard",
+            "giant"
+        ],
+        "short_desc": "the giant lizard",
+        "long_desc": "A giant lizard is here.",
+        "detailed_desc": "This scaly creature looks like it is well adapted to its underground habitat. He looks very powerful.",
+        "level": 16,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d4+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 240
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 14
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 26000
+    }
+}

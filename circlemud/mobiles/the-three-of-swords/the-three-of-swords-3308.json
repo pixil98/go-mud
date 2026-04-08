@@ -1,0 +1,52 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3308",
+    "spec": {
+        "aliases": [
+            "duwick",
+            "man"
+        ],
+        "short_desc": "Duwick",
+        "long_desc": "A truly immense man laughs at you, and draws his knife!",
+        "detailed_desc": "This has to be one of the biggest men you've ever seen. He is a full seven feet toe to head, and weighs a good three hundred pounds -- mostly on his biceps and pectorals it appears. An ornate scabbard slaps by his side, with the pommel of a silvered dagger sticking out... a tiny weapon for such a large man!",
+        "level": 22,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -70
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d6+10"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 415
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "helper"
+        ],
+        "exp_reward": 70000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "the-three-of-swords-3311"
+            }
+        ]
+    }
+}

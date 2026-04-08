@@ -14,6 +14,9 @@
                 "room_id": "the-city-of-thalos-5215",
                 "description": "A tall watchtower stands a silent vigil over the city."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-city-of-thalos-5201"
+        ]
     }
 }

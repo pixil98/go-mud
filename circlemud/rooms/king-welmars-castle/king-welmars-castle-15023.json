@@ -18,6 +18,13 @@
                 "room_id": "king-welmars-castle-15024",
                 "description": "You see a small passage."
             }
-        }
+        },
+        "mobile_spawns": [
+            "king-welmars-castle-15004",
+            "king-welmars-castle-15005",
+            "king-welmars-castle-15008",
+            "king-welmars-castle-15012",
+            "king-welmars-castle-15013"
+        ]
     }
 }

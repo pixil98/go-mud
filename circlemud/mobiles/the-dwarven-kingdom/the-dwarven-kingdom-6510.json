@@ -1,0 +1,60 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6510",
+    "spec": {
+        "aliases": [
+            "peon",
+            "dwarven"
+        ],
+        "short_desc": "the dwarven peon",
+        "long_desc": "A dwarven peon is awaiting help here.",
+        "detailed_desc": "",
+        "level": 3,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 7
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d3+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 65
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "helper"
+        ],
+        "exp_reward": 350,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "the-sewer-maze-7211"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-sewer-maze-7211"
+            }
+        ]
+    }
+}

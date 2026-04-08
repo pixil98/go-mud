@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4056",
+    "spec": {
+        "aliases": [
+            "orc"
+        ],
+        "short_desc": "the orc",
+        "long_desc": "An orc is here, looking for something (or perhaps someone?) to eat.",
+        "detailed_desc": "Well, he doesn't seem to be friendly.",
+        "level": 8,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d5+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 130
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 7
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 4000
+    }
+}

@@ -68,6 +68,11 @@
                 ],
                 "description": "The plants contribute to a very relaxing atmosphere."
             }
+        ],
+        "mobile_spawns": [
+            "rome-12020",
+            "rome-12021",
+            "rome-12021"
         ]
     }
 }

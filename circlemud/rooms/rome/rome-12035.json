@@ -22,6 +22,9 @@
                 ],
                 "description": "The gate appears to be closed and locked against intruders."
             }
+        ],
+        "mobile_spawns": [
+            "rome-12018"
         ]
     }
 }

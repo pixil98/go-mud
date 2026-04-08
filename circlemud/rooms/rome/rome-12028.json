@@ -34,6 +34,9 @@
                 ],
                 "description": "You hope to eventually be able to own a piece of furniture just like these someday. These are only dreams, of course."
             }
+        ],
+        "mobile_spawns": [
+            "rome-12004"
         ]
     }
 }

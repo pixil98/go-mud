@@ -1,0 +1,10 @@
+{
+    "version": 1,
+    "id": "new-thalos-5432",
+    "spec": {
+        "aliases": [
+            "5432"
+        ],
+        "short_desc": "a 5432"
+    }
+}

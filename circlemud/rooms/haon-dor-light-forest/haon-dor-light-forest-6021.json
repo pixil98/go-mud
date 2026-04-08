@@ -41,6 +41,9 @@
                 ],
                 "description": "The irregular opening is eight feet wide and six feet tall. An acrid smell emanates from within."
             }
+        ],
+        "mobile_spawns": [
+            "haon-dor-light-forest-6013"
         ]
     }
 }

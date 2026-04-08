@@ -24,6 +24,10 @@
                 "type": "grant",
                 "key": "nomagic"
             }
+        ],
+        "mobile_spawns": [
+            "new-thalos-5433",
+            "new-thalos-5442"
         ]
     }
 }

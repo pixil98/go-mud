@@ -38,6 +38,9 @@
                 ],
                 "description": "The trees are younger here than to those to the west."
             }
+        ],
+        "mobile_spawns": [
+            "haon-dor-light-forest-6001"
         ]
     }
 }

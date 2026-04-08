@@ -18,6 +18,9 @@
                 "room_id": "rome-12024",
                 "description": "You see the an opulent estate."
             }
-        }
+        },
+        "mobile_spawns": [
+            "rome-12017"
+        ]
     }
 }

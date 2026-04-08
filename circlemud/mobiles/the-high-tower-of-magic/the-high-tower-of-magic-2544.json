@@ -1,0 +1,56 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2544",
+    "spec": {
+        "aliases": [
+            "golem",
+            "flesh"
+        ],
+        "short_desc": "the flesh golem",
+        "long_desc": "A flesh golem stands guard here",
+        "detailed_desc": "It looks to be made of a potpourri of different body parts; some don't even resemble anything human.",
+        "level": 12,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d4+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 264
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 11
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "stay_zone",
+            "helper"
+        ],
+        "exp_reward": 8520
+    }
+}

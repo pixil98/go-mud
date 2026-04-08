@@ -30,6 +30,9 @@
                 ],
                 "description": "Cloven hoofs, two feet... they walk erect whatever they are."
             }
+        ],
+        "mobile_spawns": [
+            "the-orc-enclave-6203"
         ]
     }
 }

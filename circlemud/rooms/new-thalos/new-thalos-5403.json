@@ -14,6 +14,9 @@
                 "room_id": "new-thalos-5410",
                 "description": "You see the Common Square."
             }
-        }
+        },
+        "mobile_spawns": [
+            "new-thalos-5407"
+        ]
     }
 }

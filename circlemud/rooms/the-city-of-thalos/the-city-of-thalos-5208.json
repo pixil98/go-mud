@@ -18,6 +18,9 @@
                 "room_id": "the-city-of-thalos-5217",
                 "description": "From the massive stench, this must have been a meat and poultry stand. It lies totally bare."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-city-of-thalos-5201"
+        ]
     }
 }

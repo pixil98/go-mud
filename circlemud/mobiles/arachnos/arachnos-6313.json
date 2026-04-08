@@ -1,0 +1,57 @@
+{
+    "version": 1,
+    "id": "arachnos-6313",
+    "spec": {
+        "aliases": [
+            "guardian"
+        ],
+        "short_desc": "the guardian",
+        "long_desc": "The guardian is obviously not doing his job.",
+        "detailed_desc": "He looks like a lazy bum who sleeps half the time.",
+        "level": 17,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "sneak"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+8"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 212
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 16
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 24000
+    }
+}

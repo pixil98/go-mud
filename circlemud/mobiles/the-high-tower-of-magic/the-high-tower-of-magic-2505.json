@@ -1,0 +1,73 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2505",
+    "spec": {
+        "aliases": [
+            "strick",
+            "bartender"
+        ],
+        "short_desc": "Strick the bartender",
+        "long_desc": "Strick is here levitating drinks to his customers.",
+        "detailed_desc": "He looks rather harmless, but then again so does a sleeping dragon.",
+        "level": 25,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d7+20"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 19
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 20000,
+        "inventory": [
+            {
+                "object_id": "the-high-tower-of-magic-2504"
+            },
+            {
+                "object_id": "the-high-tower-of-magic-2545"
+            },
+            {
+                "object_id": "the-high-tower-of-magic-2546"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3010"
+            },
+            {
+                "object_id": "southern-part-of-midgaard-3100"
+            },
+            {
+                "object_id": "southern-part-of-midgaard-3101"
+            }
+        ]
+    }
+}

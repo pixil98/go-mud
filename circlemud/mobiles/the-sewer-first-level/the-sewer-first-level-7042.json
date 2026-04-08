@@ -1,0 +1,49 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7042",
+    "spec": {
+        "aliases": [
+            "naga",
+            "guardian"
+        ],
+        "short_desc": "the guardian naga",
+        "long_desc": "The guardian naga looks kindly at you.",
+        "detailed_desc": "The naga are a snake-liked creature. She is covered in green-gold scales with silvery triangles along her back. Her eyes are golden. She notices that you are staring at her, and she says 'Watch out. This way leads to some evil creatures.'",
+        "level": 12,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d7+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 166
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 11
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 13500
+    }
+}

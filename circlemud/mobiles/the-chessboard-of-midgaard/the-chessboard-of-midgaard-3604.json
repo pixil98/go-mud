@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "id": "the-chessboard-of-midgaard-3604",
+    "spec": {
+        "aliases": [
+            "black",
+            "knight"
+        ],
+        "short_desc": "the Black Knight",
+        "long_desc": "Here stands a magnificent knight of the dark realm.",
+        "detailed_desc": "The Black Knight is here, riding his ebony black war horse. His eyes flash behind his visor in vengence.",
+        "level": 18,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 382
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 12
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive"
+        ],
+        "exp_reward": 22500,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "the-chessboard-of-midgaard-3606"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-chessboard-of-midgaard-3606"
+            }
+        ]
+    }
+}

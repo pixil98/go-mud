@@ -1,0 +1,65 @@
+{
+    "version": 1,
+    "id": "midennir-3507",
+    "spec": {
+        "aliases": [
+            "horseman",
+            "dark"
+        ],
+        "short_desc": "the dark horseman",
+        "long_desc": "A dark horseman is here, mounted on his black steed.",
+        "detailed_desc": "The man is obviously an outlaw, and has no qualms about slashing you into little bits.",
+        "level": 8,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "sneak"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d5+7"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 109
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 8
+            }
+        ],
+        "flags": [
+            "stay_zone",
+            "wimpy",
+            "helper"
+        ],
+        "exp_reward": 4000,
+        "equipment": [
+            {
+                "slot": "body",
+                "object_id": "midennir-3503"
+            },
+            {
+                "slot": "body",
+                "object_id": "midennir-3503"
+            }
+        ]
+    }
+}

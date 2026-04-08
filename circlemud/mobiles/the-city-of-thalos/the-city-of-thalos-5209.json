@@ -1,0 +1,51 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5209",
+    "spec": {
+        "aliases": [
+            "lamia",
+            "beast"
+        ],
+        "short_desc": "the lamia",
+        "long_desc": "A strange lamia stands here waiting for her next meal.",
+        "detailed_desc": "This is a creature with the upper torso of a beautiful woman, but the lower body of a four-legged beast. She licks her lips as she looks at you greedily.",
+        "level": 9,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d4+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 132
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 10
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 7000
+    }
+}

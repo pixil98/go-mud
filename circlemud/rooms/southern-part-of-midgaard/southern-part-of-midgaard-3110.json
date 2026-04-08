@@ -18,6 +18,13 @@
                     }
                 }
             }
-        }
+        },
+        "mobile_spawns": [
+            "southern-part-of-midgaard-3102",
+            "southern-part-of-midgaard-3103",
+            "southern-part-of-midgaard-3103",
+            "southern-part-of-midgaard-3103",
+            "southern-part-of-midgaard-3103"
+        ]
     }
 }

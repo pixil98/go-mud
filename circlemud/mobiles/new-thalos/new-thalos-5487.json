@@ -1,0 +1,59 @@
+{
+    "version": 1,
+    "id": "new-thalos-5487",
+    "spec": {
+        "aliases": [
+            "wolverine",
+            "wolf"
+        ],
+        "short_desc": "the wolverine",
+        "long_desc": "A large wolf like creature leaps out from the darkness.",
+        "detailed_desc": "You see a half wolf, half human beast wearing a glove with long thin blades on it.",
+        "level": 15,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "grant",
+                "key": "sneak"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d10+10"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 250
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive"
+        ],
+        "exp_reward": 5000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "new-thalos-5495"
+            }
+        ]
+    }
+}

@@ -22,6 +22,9 @@
                 ],
                 "description": "The trees are old and tower hundreds of feet above the ground. If you stand still and listen carefully, you can hear the birds singing."
             }
+        ],
+        "mobile_spawns": [
+            "rome-12033"
         ]
     }
 }

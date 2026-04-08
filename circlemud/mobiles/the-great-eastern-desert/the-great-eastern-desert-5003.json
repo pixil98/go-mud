@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5003",
+    "spec": {
+        "aliases": [
+            "scorpion",
+            "small"
+        ],
+        "short_desc": "the small scorpion",
+        "long_desc": "A small, red scorpion scuttles away at your approach.",
+        "detailed_desc": "The little tail is mighty dangerous for such a small creature.",
+        "level": 3,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 46
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 3
+            }
+        ],
+        "flags": [
+            "stay_zone"
+        ],
+        "exp_reward": 500
+    }
+}

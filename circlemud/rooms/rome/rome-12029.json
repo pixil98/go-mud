@@ -24,6 +24,9 @@
                 ],
                 "description": "The road is wide and very muddy."
             }
+        ],
+        "mobile_spawns": [
+            "rome-12018"
         ]
     }
 }

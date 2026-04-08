@@ -22,6 +22,9 @@
                 "room_id": "rome-12026",
                 "description": "A paved road runs west through the city."
             }
-        }
+        },
+        "mobile_spawns": [
+            "rome-12017"
+        ]
     }
 }

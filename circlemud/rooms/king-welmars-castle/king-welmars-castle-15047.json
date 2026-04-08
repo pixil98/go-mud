@@ -18,6 +18,9 @@
                 "room_id": "king-welmars-castle-15046",
                 "description": "You see the Ball Room."
             }
-        }
+        },
+        "mobile_spawns": [
+            "king-welmars-castle-15028"
+        ]
     }
 }

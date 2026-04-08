@@ -5,6 +5,13 @@
         "name": "Pet Shop Store",
         "description": "This is the small dark room in which the Pet shop keeps his pets. It is vital that this room's virtual number is exactly one larger than the Pet Shop number.",
         "zone_id": "northern-midgaard-main-city",
-        "exits": {}
+        "exits": {},
+        "mobile_spawns": [
+            "northern-midgaard-main-city-3090",
+            "northern-midgaard-main-city-3091",
+            "northern-midgaard-main-city-3092",
+            "northern-midgaard-main-city-3093",
+            "northern-midgaard-main-city-3094"
+        ]
     }
 }

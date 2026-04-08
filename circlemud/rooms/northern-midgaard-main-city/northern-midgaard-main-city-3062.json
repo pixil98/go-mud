@@ -59,6 +59,9 @@
                 ],
                 "description": "Faces of various known Killers and Thieves can barely be seen behind the crates on the west wall. Some of them look quite familar, sorta like that guy who you saw in the Reception a minute ago... but then again, they are rather hard to see past the crates."
             }
+        ],
+        "mobile_spawns": [
+            "northern-midgaard-main-city-3010"
         ]
     }
 }

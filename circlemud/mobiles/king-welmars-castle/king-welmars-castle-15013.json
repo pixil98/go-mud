@@ -1,0 +1,52 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15013",
+    "spec": {
+        "aliases": [
+            "master",
+            "trainingmaster"
+        ],
+        "short_desc": "the Training Master",
+        "long_desc": "The Training Master is here, supervising.",
+        "detailed_desc": "Aged, but experienced, the Training Master is skilled in the use of virtually every weapon type invented by Man.",
+        "level": 18,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+8"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 232
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 19
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "stay_zone"
+        ],
+        "exp_reward": 30000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            }
+        ]
+    }
+}

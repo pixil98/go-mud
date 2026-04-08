@@ -1,0 +1,63 @@
+{
+    "version": 1,
+    "id": "arachnos-6312",
+    "spec": {
+        "aliases": [
+            "donjonkeeper",
+            "keeper"
+        ],
+        "short_desc": "the Donjonkeeper",
+        "long_desc": "The Donjonkeeper eyes you and wonders how pure your soul is.",
+        "detailed_desc": "He delves deeper into you as you stare at him. Only those free of taint will be allowed to remain here safely.",
+        "level": 25,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+8"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 612
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "memory"
+        ],
+        "exp_reward": 125000,
+        "inventory": [
+            {
+                "object_id": "arachnos-6301"
+            },
+            {
+                "object_id": "haon-dor-dark-forest-6109"
+            }
+        ]
+    }
+}

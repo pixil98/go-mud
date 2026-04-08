@@ -26,6 +26,12 @@
                 ],
                 "description": "Before you is a statue of the mighty beholder! A great beast with multiple eyes and wicked... wicked... um.... eyes... The mighty beholder is in Excellent condition."
             }
+        ],
+        "mobile_spawns": [
+            "new-thalos-5433",
+            "new-thalos-5437",
+            "new-thalos-5440",
+            "new-thalos-5463"
         ]
     }
 }

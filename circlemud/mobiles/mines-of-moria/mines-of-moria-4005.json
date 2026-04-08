@@ -1,0 +1,56 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4005",
+    "spec": {
+        "aliases": [
+            "orc",
+            "large"
+        ],
+        "short_desc": "the orc",
+        "long_desc": "A large orc is here, looking really mean.",
+        "detailed_desc": "He looks dreadful.",
+        "level": 7,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 135
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 9
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "stay_zone"
+        ],
+        "exp_reward": 3000,
+        "equipment": [
+            {
+                "slot": "finger",
+                "object_id": "mines-of-moria-4000"
+            }
+        ]
+    }
+}

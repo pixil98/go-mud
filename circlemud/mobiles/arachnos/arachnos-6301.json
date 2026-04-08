@@ -1,0 +1,54 @@
+{
+    "version": 1,
+    "id": "arachnos-6301",
+    "spec": {
+        "aliases": [
+            "spider",
+            "young"
+        ],
+        "short_desc": "the young spider",
+        "long_desc": "The young spider is ballooning by you.",
+        "detailed_desc": "He looks freshly hatched and sprightly. His young fangs are just growing in as of late.",
+        "level": 3,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 7
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d7"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 52
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "stay_zone"
+        ],
+        "exp_reward": 350
+    }
+}

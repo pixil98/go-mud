@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "new-thalos-5468",
+    "spec": {
+        "aliases": [
+            "tourist"
+        ],
+        "short_desc": "the tourist",
+        "long_desc": "A tourist stands here looking lost.",
+        "detailed_desc": "You see a small, rotund man, with a strange object around his neck and a nose guard. He is looking at a small map that he seems to be holding upside down.",
+        "level": 5,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 80
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 35
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 650
+    }
+}

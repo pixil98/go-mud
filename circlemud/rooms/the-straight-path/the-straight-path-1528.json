@@ -21,6 +21,9 @@
                 "type": "grant",
                 "key": "dark"
             }
+        ],
+        "mobile_spawns": [
+            "the-straight-path-1504"
         ]
     }
 }

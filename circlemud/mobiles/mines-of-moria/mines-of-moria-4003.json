@@ -1,0 +1,49 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4003",
+    "spec": {
+        "aliases": [
+            "kobold"
+        ],
+        "short_desc": "the kobold",
+        "long_desc": "An ugly kobold is here, searching for dinner.",
+        "detailed_desc": "It looks ugly.",
+        "level": 4,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 60
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 4
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "stay_zone"
+        ],
+        "exp_reward": 800
+    }
+}

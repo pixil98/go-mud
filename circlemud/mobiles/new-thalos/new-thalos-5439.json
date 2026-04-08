@@ -1,0 +1,66 @@
+{
+    "version": 1,
+    "id": "new-thalos-5439",
+    "spec": {
+        "aliases": [
+            "chulainn",
+            "knight"
+        ],
+        "short_desc": "Chulainn",
+        "long_desc": "Chulainn the Knight stands here.",
+        "detailed_desc": "This large man does not seem to be surprised at your approach and looks at you quizically.",
+        "level": 15,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 235
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "wimpy",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 8700,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "new-thalos-5492"
+            },
+            {
+                "slot": "body",
+                "object_id": "new-thalos-5415"
+            }
+        ]
+    }
+}

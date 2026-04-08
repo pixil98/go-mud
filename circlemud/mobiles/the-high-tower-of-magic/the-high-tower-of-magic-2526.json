@@ -1,0 +1,70 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2526",
+    "spec": {
+        "aliases": [
+            "mage",
+            "young"
+        ],
+        "short_desc": "the young mage",
+        "long_desc": "A young mage is here learning hand to hand combat.",
+        "detailed_desc": "This young fellow looks quite confident in his abilities to defend himself.",
+        "level": 9,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4+8"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 171
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 9
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 3800,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "the-high-tower-of-magic-2549"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-high-tower-of-magic-2549"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-high-tower-of-magic-2549"
+            }
+        ]
+    }
+}

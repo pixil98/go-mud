@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3006",
+    "spec": {
+        "aliases": [
+            "captain",
+            "stolar"
+        ],
+        "short_desc": "Captain Stolar",
+        "long_desc": "A retired captain stands here, selling boats.",
+        "detailed_desc": "This captain has eaten more sharks than you have killed peas.",
+        "level": 33,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+12"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 18
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 160000,
+        "inventory": [
+            {
+                "object_id": "northern-midgaard-main-city-3060"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3061"
+            }
+        ]
+    }
+}

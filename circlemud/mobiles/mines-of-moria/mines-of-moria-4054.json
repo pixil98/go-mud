@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4054",
+    "spec": {
+        "aliases": [
+            "centipede"
+        ],
+        "short_desc": "the centipede",
+        "long_desc": "A white centipede is here.",
+        "detailed_desc": "The centipede doesn't really seem to notice you.",
+        "level": 5,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d7"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 60
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 3
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 1000
+    }
+}

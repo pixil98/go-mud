@@ -1,0 +1,54 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2528",
+    "spec": {
+        "aliases": [
+            "mage",
+            "teacher"
+        ],
+        "short_desc": "the spell teacher",
+        "long_desc": "A spell teacher is here relaxing.",
+        "detailed_desc": "The teacher looks to be worn out by a long day of magic working, difficult spells, and inattentive students.",
+        "level": 15,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d4+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 375
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 15
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "stay_zone"
+        ],
+        "exp_reward": 15800
+    }
+}

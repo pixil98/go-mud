@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6010",
+    "spec": {
+        "aliases": [
+            "squirrel"
+        ],
+        "short_desc": "the squirrel",
+        "long_desc": "A squirrel is here seeking refuge in its nest.",
+        "detailed_desc": "It peers out of its nest at you anxiously, seeming to plead silently with you to leave it alone.",
+        "level": 1,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "sneak"
+            },
+            {
+                "type": "grant",
+                "key": "hide"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 8
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 16
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 120
+    }
+}

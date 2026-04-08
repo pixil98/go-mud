@@ -1,0 +1,71 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5310",
+    "spec": {
+        "aliases": [
+            "caryatid",
+            "column"
+        ],
+        "short_desc": "the caryatid",
+        "long_desc": "A sandstone column stands here, carved into a feminine figure.",
+        "detailed_desc": "The column has been carved into a set of four shapely women, each facing outward into the room. The sandstone of the caryatid is smooth with age, but you can still make out a deadly stone sword in the hands of each figure.",
+        "level": 24,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d6+8"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 816
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 24
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 100000,
+        "inventory": [
+            {
+                "object_id": "the-great-pyramid-5309"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "the-great-pyramid-5308"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-great-pyramid-5308"
+            }
+        ]
+    }
+}

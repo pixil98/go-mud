@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "new-thalos-5429",
+    "spec": {
+        "aliases": [
+            "aziz",
+            "human",
+            "canon"
+        ],
+        "short_desc": "Aziz",
+        "long_desc": "Aziz the Human Canon stands here.",
+        "detailed_desc": "This big and burly man grins at you as he draws his sword.",
+        "level": 11,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d5+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 62
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 6
+            }
+        ],
+        "flags": [
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 384
+    }
+}

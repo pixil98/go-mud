@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "id": "new-thalos-5402",
+    "spec": {
+        "aliases": [
+            "warrior",
+            "guildmaster"
+        ],
+        "short_desc": "the guildmaster",
+        "long_desc": "Your guildmaster stands here.",
+        "detailed_desc": "A smaller man dressed in black robes stands here waiting to train you.",
+        "level": 16,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "5d5+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 10001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 30
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ]
+    }
+}

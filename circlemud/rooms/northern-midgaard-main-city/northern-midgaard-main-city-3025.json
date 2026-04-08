@@ -22,6 +22,9 @@
                 "room_id": "northern-midgaard-main-city-3024",
                 "description": "You see Poor Alley."
             }
-        }
+        },
+        "mobile_spawns": [
+            "northern-midgaard-main-city-3062"
+        ]
     }
 }

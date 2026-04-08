@@ -39,6 +39,9 @@
                 ],
                 "description": "There are literally thousands of each. Take your pick."
             }
+        ],
+        "mobile_spawns": [
+            "rome-12026"
         ]
     }
 }

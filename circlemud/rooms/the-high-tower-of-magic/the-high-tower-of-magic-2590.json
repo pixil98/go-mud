@@ -17,6 +17,9 @@
                 "room_id": "the-high-tower-of-magic-2592",
                 "description": "The energy field crackles and glows, nothing seems to be beyond."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-high-tower-of-magic-2537"
+        ]
     }
 }

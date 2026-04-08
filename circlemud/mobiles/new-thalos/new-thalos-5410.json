@@ -1,0 +1,64 @@
+{
+    "version": 1,
+    "id": "new-thalos-5410",
+    "spec": {
+        "aliases": [
+            "baker"
+        ],
+        "short_desc": "the baker",
+        "long_desc": "The baker stands here playing solitaire.",
+        "detailed_desc": "You see a large man in a white apron covered in flour from head to toe.",
+        "level": 35,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d10+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 2000,
+        "inventory": [
+            {
+                "object_id": "new-thalos-5440"
+            },
+            {
+                "object_id": "new-thalos-5441"
+            },
+            {
+                "object_id": "new-thalos-5442"
+            },
+            {
+                "object_id": "new-thalos-5443"
+            },
+            {
+                "object_id": "new-thalos-5445"
+            },
+            {
+                "object_id": "new-thalos-5491"
+            }
+        ]
+    }
+}

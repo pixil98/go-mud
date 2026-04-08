@@ -30,6 +30,11 @@
                 ],
                 "description": "What you see is the Midgaard Worm, stretching around the Palace of Midgaard."
             }
+        ],
+        "mobile_spawns": [
+            "northern-midgaard-main-city-3059",
+            "northern-midgaard-main-city-3060",
+            "northern-midgaard-main-city-3068"
         ]
     }
 }

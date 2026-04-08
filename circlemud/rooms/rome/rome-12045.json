@@ -31,6 +31,10 @@
                 ],
                 "description": "There is really nothing noteworthy about them."
             }
+        ],
+        "mobile_spawns": [
+            "rome-12017",
+            "rome-12019"
         ]
     }
 }

@@ -1,0 +1,59 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2512",
+    "spec": {
+        "aliases": [
+            "lesser",
+            "guardian",
+            "hands"
+        ],
+        "short_desc": "the pair of disembodied hands",
+        "long_desc": "A pair of disembodied hands floats in the air here.",
+        "detailed_desc": "The hands twitch with anticipation of strangling someone.",
+        "level": 9,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 171
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 13
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 3100
+    }
+}

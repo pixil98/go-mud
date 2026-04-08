@@ -12,6 +12,10 @@
             "east": {
                 "room_id": "river-island-of-minos-908"
             }
-        }
+        },
+        "mobile_spawns": [
+            "river-island-of-minos-910",
+            "river-island-of-minos-910"
+        ]
     }
 }

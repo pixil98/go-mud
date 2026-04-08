@@ -1,0 +1,51 @@
+{
+    "version": 1,
+    "id": "rands-tower-6405",
+    "spec": {
+        "aliases": [
+            "guardian"
+        ],
+        "short_desc": "the Guardian",
+        "long_desc": "A guardian guards the door.  It looks at you and attacks!",
+        "detailed_desc": "The guardian guards the door. That's about all its brain can handle: guarding.",
+        "level": 18,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d6+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 250
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 17
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "aggressive",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 35000
+    }
+}

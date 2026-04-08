@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7001",
+    "spec": {
+        "aliases": [
+            "bat",
+            "small",
+            "fierce"
+        ],
+        "short_desc": "the small bat",
+        "long_desc": "The small fierce-looking bat is hanging from the ceiling, obviously sleeping.",
+        "detailed_desc": "You have never in your entire life seen such a mean looking small creature, though it looks rather peaceful, hanging there, sleeping. The thought of arousing this cruel creature doesn't sit well in your bones.",
+        "level": 1,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "sneak"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 16
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 150
+    }
+}

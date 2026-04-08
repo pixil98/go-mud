@@ -1,0 +1,63 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15030",
+    "spec": {
+        "aliases": [
+            "zombie",
+            "villager"
+        ],
+        "short_desc": "the zombie",
+        "long_desc": "A zombie is shambling over some corpses here, moving quite silently.",
+        "detailed_desc": "It is entirely possible that this zombie was once one of the villagers of Townsbridge who has been brought to an undead life by a fuelling desire for revenge.",
+        "level": 11,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "sneak"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4+8"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 111
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 14
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "aggressive"
+        ],
+        "exp_reward": 10000
+    }
+}

@@ -1,0 +1,69 @@
+{
+    "version": 1,
+    "id": "the-chessboard-of-midgaard-3611",
+    "spec": {
+        "aliases": [
+            "white",
+            "king"
+        ],
+        "short_desc": "the White King",
+        "long_desc": "The White King stands here.",
+        "detailed_desc": "The White King is a stately figure. You can easily understand why he is the king and you are not.",
+        "level": 36,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "5d8+20"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 2100
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 6
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "aware",
+            "aggressive",
+            "memory"
+        ],
+        "exp_reward": 300000,
+        "inventory": [
+            {
+                "object_id": "the-chessboard-of-midgaard-3615"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "hold",
+                "object_id": "the-chessboard-of-midgaard-3613"
+            }
+        ]
+    }
+}

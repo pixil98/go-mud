@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3123",
+    "spec": {
+        "aliases": [
+            "duck"
+        ],
+        "short_desc": "the duck",
+        "long_desc": "A duck is here, quacking happily.",
+        "detailed_desc": "The duck is quite fat. It looks like it is enjoying life.",
+        "level": 1,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 17
+            }
+        ],
+        "flags": [
+            "stay_zone"
+        ],
+        "exp_reward": 75
+    }
+}

@@ -1,0 +1,53 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5007",
+    "spec": {
+        "aliases": [
+            "nomad",
+            "commander"
+        ],
+        "short_desc": "the nomad commander",
+        "long_desc": "The nomad commander stands here staring at you suspiciously.",
+        "detailed_desc": "This is the nomad leader's second in command. His clothes are richly woven of silk and gold thread. A nasty cutlass hangs at his side.",
+        "level": 12,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d5+3"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 147
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 12
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "wimpy",
+            "memory"
+        ],
+        "exp_reward": 14000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "the-great-eastern-desert-5017"
+            }
+        ]
+    }
+}

@@ -22,6 +22,9 @@
                 "room_id": "northern-midgaard-main-city-3015",
                 "description": "You see the main street leading to the market square."
             }
-        }
+        },
+        "mobile_spawns": [
+            "northern-midgaard-main-city-3062"
+        ]
     }
 }

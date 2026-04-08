@@ -31,6 +31,9 @@
         ],
         "flags": [
             "nomob"
+        ],
+        "mobile_spawns": [
+            "the-high-tower-of-magic-2500"
         ]
     }
 }

@@ -18,6 +18,10 @@
                 ],
                 "description": "The bar looks slightly out of place and you can only assume the powerful magic of the bartender allows it to revolve."
             }
+        ],
+        "mobile_spawns": [
+            "new-thalos-5405",
+            "new-thalos-5406"
         ]
     }
 }

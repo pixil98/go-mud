@@ -18,6 +18,9 @@
                 "room_id": "rome-12012",
                 "description": "The highway continues to the west."
             }
-        }
+        },
+        "mobile_spawns": [
+            "rome-12017"
+        ]
     }
 }

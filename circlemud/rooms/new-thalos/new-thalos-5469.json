@@ -26,6 +26,9 @@
                 ],
                 "description": "Kind of looks like a yeti has been here... Hmmmm."
             }
+        ],
+        "mobile_spawns": [
+            "new-thalos-5443"
         ]
     }
 }

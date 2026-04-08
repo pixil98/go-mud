@@ -1,0 +1,60 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6213",
+    "spec": {
+        "aliases": [
+            "mutant",
+            "thing"
+        ],
+        "short_desc": "the mutant thing",
+        "long_desc": "A mutant... thing tries to get you, but cannot move into range!",
+        "detailed_desc": "It might have been an orc, once. Now it is a living terror, pushing everything out of its way to get at you.",
+        "level": 12,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -20
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d7+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 185
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 11
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 15000,
+        "equipment": [
+            {
+                "slot": "hands",
+                "object_id": "the-orc-enclave-6201"
+            },
+            {
+                "slot": "feet",
+                "object_id": "the-orc-enclave-6202"
+            }
+        ]
+    }
+}

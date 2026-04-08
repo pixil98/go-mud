@@ -1,0 +1,72 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3026",
+    "spec": {
+        "aliases": [
+            "assassin"
+        ],
+        "short_desc": "the assassin",
+        "long_desc": "An assassin is guarding the entrance.",
+        "detailed_desc": "He is a thief who has specialized in killing others as effectively as possible, using all sorts of weapons. His superior knowledge of how and where to use them combined with his extraordinary stealth makes him a deadly opponent.",
+        "level": 33,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "sneak"
+            },
+            {
+                "type": "grant",
+                "key": "hide"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+25"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 1050
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 160000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            }
+        ]
+    }
+}

@@ -1,0 +1,88 @@
+{
+    "version": 1,
+    "id": "new-thalos-5417",
+    "spec": {
+        "aliases": [
+            "igor",
+            "weaponsmith"
+        ],
+        "short_desc": "Igor the weaponsmith",
+        "long_desc": "Igor stands here doing... something.",
+        "detailed_desc": "You see a small dwarf with a large hump on his left shoulder.",
+        "level": 35,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d5+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 10
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 2000,
+        "inventory": [
+            {
+                "object_id": "new-thalos-5403"
+            },
+            {
+                "object_id": "new-thalos-5404"
+            },
+            {
+                "object_id": "new-thalos-5405"
+            },
+            {
+                "object_id": "new-thalos-5406"
+            },
+            {
+                "object_id": "new-thalos-5407"
+            },
+            {
+                "object_id": "new-thalos-5408"
+            },
+            {
+                "object_id": "new-thalos-5409"
+            },
+            {
+                "object_id": "new-thalos-5410"
+            },
+            {
+                "object_id": "new-thalos-5411"
+            },
+            {
+                "object_id": "new-thalos-5412"
+            },
+            {
+                "object_id": "new-thalos-5413"
+            },
+            {
+                "object_id": "new-thalos-5414"
+            }
+        ]
+    }
+}

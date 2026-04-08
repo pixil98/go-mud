@@ -33,6 +33,9 @@
                 ],
                 "description": "Nice clothes, but not your size at all."
             }
+        ],
+        "mobile_spawns": [
+            "rands-tower-6403"
         ]
     }
 }

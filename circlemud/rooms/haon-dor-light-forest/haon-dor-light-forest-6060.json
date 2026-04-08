@@ -31,6 +31,10 @@
                 ],
                 "description": "They are mostly young oaks and tall beeches."
             }
+        ],
+        "mobile_spawns": [
+            "haon-dor-light-forest-6001",
+            "haon-dor-light-forest-6005"
         ]
     }
 }

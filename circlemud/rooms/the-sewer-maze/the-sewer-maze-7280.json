@@ -42,6 +42,9 @@
                 ],
                 "description": "The triangle is filled with small symbols. They seem to be a language you have never seen before."
             }
+        ],
+        "mobile_spawns": [
+            "the-sewer-first-level-7000"
         ]
     }
 }

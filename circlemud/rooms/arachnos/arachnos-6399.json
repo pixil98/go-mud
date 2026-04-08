@@ -18,6 +18,9 @@
                     }
                 }
             }
-        }
+        },
+        "mobile_spawns": [
+            "arachnos-6314"
+        ]
     }
 }

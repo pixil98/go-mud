@@ -10,6 +10,9 @@
                 "room_id": "rome-12052",
                 "description": "You see a damp path leading back down the mountain."
             }
-        }
+        },
+        "mobile_spawns": [
+            "rome-12030"
+        ]
     }
 }

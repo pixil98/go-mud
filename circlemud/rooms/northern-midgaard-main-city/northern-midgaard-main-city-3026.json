@@ -26,6 +26,10 @@
                 ],
                 "description": "It is the thieves' guild, don't enter if you care about your health or money."
             }
+        ],
+        "mobile_spawns": [
+            "northern-midgaard-main-city-3063",
+            "northern-midgaard-main-city-3066"
         ]
     }
 }

@@ -1,0 +1,72 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3002",
+    "spec": {
+        "aliases": [
+            "grocer"
+        ],
+        "short_desc": "the grocer",
+        "long_desc": "A grocer stands at the counter, with a slightly impatient look on his face.",
+        "detailed_desc": "A tall grocer, who moves two 200 pounds bag of flour around on his shoulders.",
+        "level": 33,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+18"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 160000,
+        "inventory": [
+            {
+                "object_id": "northern-midgaard-main-city-3030"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3031"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3032"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3033"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3036"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            }
+        ]
+    }
+}

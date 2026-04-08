@@ -1,0 +1,65 @@
+{
+    "version": 1,
+    "id": "rome-12006",
+    "spec": {
+        "aliases": [
+            "gladiator"
+        ],
+        "short_desc": "the gladiator",
+        "long_desc": "There is a gladiator standing here.",
+        "detailed_desc": "A well muscled man who is very heavily armored and armed to the teeth. He lives for combat.",
+        "level": 14,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 178
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 15
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 19500,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "head",
+                "object_id": "rome-12002"
+            }
+        ]
+    }
+}

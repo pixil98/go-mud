@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4001",
+    "spec": {
+        "aliases": [
+            "snake",
+            "green"
+        ],
+        "short_desc": "the green snake",
+        "long_desc": "A small green snake is here, and it doesn't look too friendly...",
+        "detailed_desc": "It looks harmless.",
+        "level": 7,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 60
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 8
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 2500
+    }
+}

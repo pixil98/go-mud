@@ -30,6 +30,9 @@
                 ],
                 "description": "Sand is about all you CAN see right now. Unfortunately, it isn't very interesting sand, only white, dry, and blowing all over the place."
             }
+        ],
+        "mobile_spawns": [
+            "the-great-pyramid-5308"
         ]
     }
 }

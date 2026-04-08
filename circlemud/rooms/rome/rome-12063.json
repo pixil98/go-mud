@@ -10,6 +10,9 @@
                 "room_id": "rome-12046",
                 "description": "Clay Avenue lies in that direction."
             }
-        }
+        },
+        "mobile_spawns": [
+            "rome-12037"
+        ]
     }
 }

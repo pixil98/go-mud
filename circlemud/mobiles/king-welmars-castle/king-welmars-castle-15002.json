@@ -1,0 +1,60 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15002",
+    "spec": {
+        "aliases": [
+            "ghost",
+            "horrible"
+        ],
+        "short_desc": "the horrible ghost",
+        "long_desc": "You hear a frightening wail, and see a horrible ghost approaching.",
+        "detailed_desc": "The ghost is almost translucent, and looks really SCARY!",
+        "level": 15,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "sneak"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 204
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 14
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "aware",
+            "aggressive"
+        ],
+        "exp_reward": 22000
+    }
+}

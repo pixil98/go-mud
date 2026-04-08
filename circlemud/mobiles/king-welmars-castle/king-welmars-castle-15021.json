@@ -1,0 +1,60 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15021",
+    "spec": {
+        "aliases": [
+            "tom",
+            "guard",
+            "lifeguard"
+        ],
+        "short_desc": "Tom, the King's Lifeguard",
+        "long_desc": "Tom, the King's Lifeguard, is standing here.",
+        "detailed_desc": "This guy looks just like his twin, Tim. There seems to be no doubt that he is completely prepared to give his life for the King, if necessary.",
+        "level": 17,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+8"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 223
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 16
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 28000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "body",
+                "object_id": "king-welmars-castle-15015"
+            }
+        ]
+    }
+}

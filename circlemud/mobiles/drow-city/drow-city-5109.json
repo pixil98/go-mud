@@ -1,0 +1,57 @@
+{
+    "version": 1,
+    "id": "drow-city-5109",
+    "spec": {
+        "aliases": [
+            "drider"
+        ],
+        "short_desc": "the drider",
+        "long_desc": "The drider looks at you viciously while it draws its sword.",
+        "detailed_desc": "This half-spider, half-drow creature is a formidable opponent.",
+        "level": 8,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 201
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 8
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 4000
+    }
+}

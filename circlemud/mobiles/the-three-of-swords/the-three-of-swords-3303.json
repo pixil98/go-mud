@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3303",
+    "spec": {
+        "aliases": [
+            "horse"
+        ],
+        "short_desc": "the horse",
+        "long_desc": "A horse does horsely things here.",
+        "detailed_desc": "This horse looks like a nice horse. It looks at you with soft brown eyes and you want to give it a carrot.",
+        "level": 5,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 70
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 4
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 1000
+    }
+}

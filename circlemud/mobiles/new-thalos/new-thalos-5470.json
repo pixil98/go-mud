@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "new-thalos-5470",
+    "spec": {
+        "aliases": [
+            "cryohydra"
+        ],
+        "short_desc": "the cryohydra",
+        "long_desc": "The cryohydra stands here.",
+        "detailed_desc": "A grey-brown reptillian creature with amber eyes stands before you.",
+        "level": 8,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d10"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 11
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 11
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "stay_zone",
+            "memory"
+        ],
+        "exp_reward": 100
+    }
+}

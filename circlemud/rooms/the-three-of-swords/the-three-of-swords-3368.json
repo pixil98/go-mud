@@ -12,6 +12,11 @@
             "down": {
                 "room_id": "the-three-of-swords-3367"
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-three-of-swords-3306",
+            "the-three-of-swords-3306",
+            "the-three-of-swords-3306"
+        ]
     }
 }

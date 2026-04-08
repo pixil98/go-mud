@@ -10,6 +10,11 @@
                 "room_id": "king-welmars-castle-15007",
                 "description": "You see the Castle Entrance."
             }
-        }
+        },
+        "mobile_spawns": [
+            "king-welmars-castle-15009",
+            "king-welmars-castle-15026",
+            "king-welmars-castle-15027"
+        ]
     }
 }

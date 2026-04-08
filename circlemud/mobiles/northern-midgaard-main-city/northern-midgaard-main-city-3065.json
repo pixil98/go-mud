@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3065",
+    "spec": {
+        "aliases": [
+            "beggar"
+        ],
+        "short_desc": "the beggar",
+        "long_desc": "A beggar is here, asking for a few coins.",
+        "detailed_desc": "The beggar looks like she is fed up with life.",
+        "level": 1,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 9
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 22
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 100,
+        "inventory": [
+            {
+                "object_id": "northern-midgaard-main-city-3005"
+            }
+        ]
+    }
+}

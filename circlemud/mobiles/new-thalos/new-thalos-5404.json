@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "new-thalos-5404",
+    "spec": {
+        "aliases": [
+            "receptionist",
+            "woman"
+        ],
+        "short_desc": "the receptionist",
+        "long_desc": "A dark skinned, veiled woman greets you from behind the desk.",
+        "detailed_desc": "This Arabian beauty is obviously the daughter of some high ranking official. As you attempt to sneak a peek under her veil you notice a small moon-shaped birthmark on her left cheek.",
+        "level": 10,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "10d20+10"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 1872
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 30
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 5000
+    }
+}

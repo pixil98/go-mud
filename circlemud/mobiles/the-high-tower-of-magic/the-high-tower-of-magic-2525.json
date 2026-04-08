@@ -1,0 +1,57 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2525",
+    "spec": {
+        "aliases": [
+            "wizard",
+            "speaker",
+            "mage"
+        ],
+        "short_desc": "the wizard",
+        "long_desc": "An old wizard is here making a speech here.",
+        "detailed_desc": "This wizzened old man looks like he could easily pass for the oldest living man. Of course, having heard stories about some of the magic available to the people living here, and what toll the magic draws... this man might be as young as you.",
+        "level": 18,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d4+8"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 504
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 16
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 31000
+    }
+}

@@ -18,6 +18,9 @@
                 ],
                 "description": "Looking at the corpses lying around the cave, they all appear to have been torn to shreds by some large creature. As a further not too unexpected point to note, they all smell terrible."
             }
+        ],
+        "mobile_spawns": [
+            "mines-of-moria-4000"
         ]
     }
 }

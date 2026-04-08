@@ -18,6 +18,9 @@
                 "room_id": "the-great-pyramid-5351",
                 "description": "The arched hall proceeds to the south."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-great-pyramid-5312"
+        ]
     }
 }

@@ -1,0 +1,60 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-902",
+    "spec": {
+        "aliases": [
+            "mummy",
+            "rabscuttle"
+        ],
+        "short_desc": "the Mummy of Rabscuttle",
+        "long_desc": "The Mummy of Rabscuttle wanders here, hands aloft, walking towards you.",
+        "detailed_desc": "All bandages, no personality.",
+        "level": 11,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 148
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 10
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 10500
+    }
+}

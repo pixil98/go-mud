@@ -1,0 +1,53 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5013",
+    "spec": {
+        "aliases": [
+            "myconoid"
+        ],
+        "short_desc": "the myconoid",
+        "long_desc": "A myconoid lumbers along peacefully.",
+        "detailed_desc": "The myconoid looks something like a giant mushroom (and probably has the same effect).",
+        "level": 6,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d7"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 80
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 5
+            }
+        ],
+        "flags": [
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 600
+    }
+}

@@ -38,6 +38,9 @@
                 ],
                 "description": "Through the hole you can just make out a very small room."
             }
+        ],
+        "mobile_spawns": [
+            "the-sewer-maze-7203"
         ]
     }
 }

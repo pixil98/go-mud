@@ -25,6 +25,9 @@
         },
         "flags": [
             "nomob"
+        ],
+        "mobile_spawns": [
+            "rome-12004"
         ]
     }
 }

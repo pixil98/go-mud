@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6002",
+    "spec": {
+        "aliases": [
+            "bear",
+            "brown"
+        ],
+        "short_desc": "the brown bear",
+        "long_desc": "A big, brown, angry-looking bear is here.",
+        "detailed_desc": "The bear is a big, brown, furry animal with very large claws and very sharp teeth. It doesn't resemble those cute little dolls from toy shops at all.",
+        "level": 8,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 110
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 7
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 4000
+    }
+}

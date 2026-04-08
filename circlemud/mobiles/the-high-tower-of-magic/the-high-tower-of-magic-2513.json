@@ -1,0 +1,59 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2513",
+    "spec": {
+        "aliases": [
+            "guardian",
+            "greater",
+            "eyes"
+        ],
+        "short_desc": "the pair of disembodied eyes",
+        "long_desc": "A pair of disembodied eyes floats here glaring at you.",
+        "detailed_desc": "The eyes smoulder with hatred.",
+        "level": 15,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -9
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d4+8"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 375
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 15
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 9100
+    }
+}

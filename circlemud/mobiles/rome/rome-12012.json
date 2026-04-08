@@ -1,0 +1,60 @@
+{
+    "version": 1,
+    "id": "rome-12012",
+    "spec": {
+        "aliases": [
+            "peddler"
+        ],
+        "short_desc": "the peddler",
+        "long_desc": "A poor peddler is standing here, trying to support his meager existence.",
+        "detailed_desc": "You see a small, dirty man who doesn't look very healthy.",
+        "level": 4,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 52
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 3
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 600,
+        "inventory": [
+            {
+                "object_id": "rome-12006"
+            },
+            {
+                "object_id": "rome-12007"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "feet",
+                "object_id": "rome-12008"
+            }
+        ]
+    }
+}

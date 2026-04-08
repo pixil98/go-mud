@@ -46,6 +46,9 @@
                 ],
                 "description": "The trees are fairly young, not much more than a hundred years or so."
             }
+        ],
+        "mobile_spawns": [
+            "haon-dor-light-forest-6000"
         ]
     }
 }

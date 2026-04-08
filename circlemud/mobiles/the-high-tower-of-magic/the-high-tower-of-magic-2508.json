@@ -1,0 +1,57 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2508",
+    "spec": {
+        "aliases": [
+            "assistant",
+            "mage",
+            "cook"
+        ],
+        "short_desc": "the cook's assistant",
+        "long_desc": "The cook's assistant is here assisting the cook.",
+        "detailed_desc": "This young man is busy adding strange ingredients to the large pot.",
+        "level": 11,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d4+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 231
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 12
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "stay_zone",
+            "wimpy",
+            "helper"
+        ],
+        "exp_reward": 4600
+    }
+}

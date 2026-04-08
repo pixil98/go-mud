@@ -33,6 +33,10 @@
                 ],
                 "description": "The gate is fabricated from iron and has been designed to keep intruders out of the city."
             }
+        ],
+        "mobile_spawns": [
+            "rome-12018",
+            "rome-12018"
         ]
     }
 }

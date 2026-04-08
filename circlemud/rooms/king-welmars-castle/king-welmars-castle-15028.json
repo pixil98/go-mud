@@ -23,6 +23,9 @@
                 ],
                 "description": "They look a bit hard, but you could sleep in them."
             }
+        ],
+        "mobile_spawns": [
+            "king-welmars-castle-15007"
         ]
     }
 }

@@ -17,6 +17,9 @@
                 ],
                 "description": "The note simply reads: READ THE NOTE IN THE ARMOURY Igor."
             }
+        ],
+        "mobile_spawns": [
+            "new-thalos-5417"
         ]
     }
 }

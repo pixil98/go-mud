@@ -1,0 +1,71 @@
+{
+    "version": 1,
+    "id": "rome-12027",
+    "spec": {
+        "aliases": [
+            "senator"
+        ],
+        "short_desc": "the senator",
+        "long_desc": "A senator is here, waiting for debate to begin.",
+        "detailed_desc": "He seems to be quite bored and is playing with the edge of his toga.",
+        "level": 10,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 135
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 9
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 9000,
+        "inventory": [
+            {
+                "object_id": "rome-12037"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3050"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3021"
+            },
+            {
+                "slot": "body",
+                "object_id": "northern-midgaard-main-city-3044"
+            },
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3021"
+            },
+            {
+                "slot": "body",
+                "object_id": "northern-midgaard-main-city-3044"
+            }
+        ]
+    }
+}

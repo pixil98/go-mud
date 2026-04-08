@@ -1,0 +1,65 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5311",
+    "spec": {
+        "aliases": [
+            "djinn",
+            "genie"
+        ],
+        "short_desc": "the djinn",
+        "long_desc": "The djinn issues forth from the confines of a small lamp.",
+        "detailed_desc": "The djinn is a mighty being formed from the air itself and frequently imprisoned in a small lamp, used to do the bidding of those who find him. He smiles down at you congenially, arms folded across his blue-tinged skin, and strokes his goatee.",
+        "level": 28,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "6d6+12"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 1064
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 28
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "memory"
+        ],
+        "exp_reward": 310000,
+        "equipment": [
+            {
+                "slot": "hold",
+                "object_id": "the-great-pyramid-5313"
+            }
+        ]
+    }
+}

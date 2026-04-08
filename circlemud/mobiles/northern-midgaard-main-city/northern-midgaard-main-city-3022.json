@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3022",
+    "spec": {
+        "aliases": [
+            "guildmaster",
+            "master",
+            "beggar",
+            "thief"
+        ],
+        "short_desc": "the thieves' guildmaster",
+        "long_desc": "A beggar is sitting here, could she be a guildmaster?",
+        "detailed_desc": "You realize that whenever your guildmaster moves, you fail to notice it - the way of the true thief. She is to be dressed in poor clothing, having the appearance of a beggar.",
+        "level": 34,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+34"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 700
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "memory"
+        ],
+        "exp_reward": 100000
+    }
+}

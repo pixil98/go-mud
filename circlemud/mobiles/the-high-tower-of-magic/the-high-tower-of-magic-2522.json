@@ -1,0 +1,59 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2522",
+    "spec": {
+        "aliases": [
+            "student"
+        ],
+        "short_desc": "the student of spells",
+        "long_desc": "A student of spells is here trying to master invisibility.",
+        "detailed_desc": "He blinks in and out of existence, trying to master the spell.",
+        "level": 8,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "invisible"
+            },
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4+6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 144
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 12
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 2200
+    }
+}

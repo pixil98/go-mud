@@ -14,6 +14,9 @@
                 "room_id": "midennir-3511",
                 "description": "To the south, the trail continues."
             }
-        }
+        },
+        "mobile_spawns": [
+            "midennir-3501"
+        ]
     }
 }

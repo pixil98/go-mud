@@ -148,7 +148,7 @@ func FindOtherSide(exit assets.Exit, sourceZone, sourceRoom string, instances ma
 // Reset clears all mobs and objects and respawns them from the room definition.
 // Players are preserved. Exit closure state is restored to definition defaults.
 // If instances is non-nil, cross-zone door state is also synchronized.
-func (ri *RoomInstance) Reset(instances map[string]*ZoneInstance) error {
+func (ri *RoomInstance) Reset(instances map[string]*ZoneInstance, mc MobCommander) error {
 	ri.mu.Lock()
 	ri.initExitClosures()
 
@@ -187,6 +187,7 @@ func (ri *RoomInstance) Reset(instances map[string]*ZoneInstance) error {
 			slog.Error("respawning mob", "mob", mob.Id(), "room", ri.Room.Id(), "error", err)
 			continue
 		}
+		mi.Commander = mc
 		ri.addMob(mi)
 	}
 	ri.mu.Unlock()

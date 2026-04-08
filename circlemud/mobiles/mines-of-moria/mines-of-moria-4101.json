@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4101",
+    "spec": {
+        "aliases": [
+            "troll"
+        ],
+        "short_desc": "the troll",
+        "long_desc": "A large mean-looking troll is here.",
+        "detailed_desc": "Well, it looks dangerous!",
+        "level": 12,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d7+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 120
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 12
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "aggressive"
+        ],
+        "exp_reward": 13000,
+        "inventory": [
+            {
+                "object_id": "mines-of-moria-4100"
+            }
+        ]
+    }
+}

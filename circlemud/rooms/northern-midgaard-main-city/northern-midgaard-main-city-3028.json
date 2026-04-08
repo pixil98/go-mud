@@ -31,6 +31,9 @@
                 ],
                 "description": "As you look at the furniture, the chair you sit on disappears."
             }
+        ],
+        "mobile_spawns": [
+            "northern-midgaard-main-city-3044"
         ]
     }
 }

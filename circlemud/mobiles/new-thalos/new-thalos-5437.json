@@ -1,0 +1,51 @@
+{
+    "version": 1,
+    "id": "new-thalos-5437",
+    "spec": {
+        "aliases": [
+            "man",
+            "taxcollector"
+        ],
+        "short_desc": "the taxcollector",
+        "long_desc": "A small man walks around scribbling in a notebook.",
+        "detailed_desc": "The city's taxcollextor walks from store to store collecting the Sultan's fee for living in his grand city.",
+        "level": 5,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d3+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 65
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 4
+            }
+        ],
+        "flags": [
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 431,
+        "inventory": [
+            {
+                "object_id": "new-thalos-5400"
+            }
+        ]
+    }
+}

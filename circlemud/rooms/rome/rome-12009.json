@@ -41,6 +41,12 @@
                 ],
                 "description": "The coach tell you \"Stop bothering my athletes and get lost!\""
             }
+        ],
+        "mobile_spawns": [
+            "rome-12006",
+            "rome-12006",
+            "rome-12007",
+            "rome-12008"
         ]
     }
 }

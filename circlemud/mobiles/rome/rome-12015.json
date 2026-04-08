@@ -1,0 +1,59 @@
+{
+    "version": 1,
+    "id": "rome-12015",
+    "spec": {
+        "aliases": [
+            "master"
+        ],
+        "short_desc": "the ticket master",
+        "long_desc": "A ticket master is here, looking at you expectantly.",
+        "detailed_desc": "He seems to be waiting for you to either buy a ticket or to get out of his way so that he can sell tickets to people that actually want them.",
+        "level": 17,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d6+11"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 242
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 16
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 28000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "wield",
+                "object_id": "rome-12015"
+            }
+        ]
+    }
+}

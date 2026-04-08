@@ -33,6 +33,12 @@
                 ],
                 "description": "An ordinary #2 lead pencil. Judging by the teeth marks on the shaft, the user should see a dentist very soon!"
             }
+        ],
+        "mobile_spawns": [
+            "rome-12000",
+            "rome-12000",
+            "rome-12000",
+            "rome-12001"
         ]
     }
 }

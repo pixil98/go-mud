@@ -1,0 +1,57 @@
+{
+    "version": 1,
+    "id": "new-thalos-5434",
+    "spec": {
+        "aliases": [
+            "bodyguard",
+            "guard"
+        ],
+        "short_desc": "the Sultan's Bodyguard",
+        "long_desc": "A bodyguard sizes you up.",
+        "detailed_desc": "The large half-orc quickly glances you over and returns to his duties.",
+        "level": 12,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d6+3"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 130
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 10
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "aggressive",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 400
+    }
+}

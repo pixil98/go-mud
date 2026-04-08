@@ -1,0 +1,70 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6110",
+    "spec": {
+        "aliases": [
+            "tree",
+            "ancient"
+        ],
+        "short_desc": "the ancient tree",
+        "long_desc": "A huge, ancient tree towers above you.",
+        "detailed_desc": "Its roots are extremely big and large parts of them are above ground. Something about it makes you think that this is not a normal oak tree. The enormous grey trunk shivers slightly, as if sighing deeply.",
+        "level": 30,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "sneak"
+            },
+            {
+                "type": "grant",
+                "key": "hide"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d4+22"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 1300
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "stay_zone",
+            "memory"
+        ],
+        "exp_reward": 500000
+    }
+}

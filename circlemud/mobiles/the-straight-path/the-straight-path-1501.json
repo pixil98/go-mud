@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1501",
+    "spec": {
+        "aliases": [
+            "michael",
+            "angel",
+            "archangel"
+        ],
+        "short_desc": "Michael",
+        "long_desc": "The archangel Michael turns and begins to look you over.",
+        "detailed_desc": "At first you see nothing but a bright and comforting glow; then the image sharpens suddenly, and you see a face, eyes, hands, but then that too fades, and you see nothing.",
+        "level": 29,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -7
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "6d7+7"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 2000
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 26
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 280000,
+        "equipment": [
+            {
+                "slot": "hold",
+                "object_id": "the-straight-path-1500"
+            }
+        ]
+    }
+}

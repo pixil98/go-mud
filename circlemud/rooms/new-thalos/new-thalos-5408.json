@@ -20,6 +20,9 @@
                 "room_id": "new-thalos-5528",
                 "description": "You see the general store."
             }
-        }
+        },
+        "mobile_spawns": [
+            "new-thalos-5482"
+        ]
     }
 }

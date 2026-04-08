@@ -12,6 +12,9 @@
             "south": {
                 "room_id": "the-straight-path-1521"
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-straight-path-1515"
+        ]
     }
 }

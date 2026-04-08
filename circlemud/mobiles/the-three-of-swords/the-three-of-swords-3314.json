@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3314",
+    "spec": {
+        "aliases": [
+            "bartender"
+        ],
+        "short_desc": "a bartender",
+        "long_desc": "A bartender washes a glass idly here.",
+        "detailed_desc": "He nods, smiles, and asks you what you would like to drink. As you decide, he slowly polishes a glass with an old bar rag. The glass is completely clean, but he polishes it anyway. Go figure.",
+        "level": 15,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 195
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 14
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 21000,
+        "inventory": [
+            {
+                "object_id": "the-three-of-swords-3319"
+            },
+            {
+                "object_id": "the-three-of-swords-3320"
+            },
+            {
+                "object_id": "the-three-of-swords-3321"
+            }
+        ]
+    }
+}

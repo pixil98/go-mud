@@ -10,6 +10,12 @@
                 "room_id": "rome-12027",
                 "description": "To the east, a well manicured path winds through the nobleman's estate."
             }
-        }
+        },
+        "mobile_spawns": [
+            "rome-12005",
+            "rome-12005",
+            "rome-12005",
+            "rome-12017"
+        ]
     }
 }

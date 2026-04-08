@@ -98,8 +98,14 @@ func (f *MoveHandlerFactory) handle(ctx context.Context, in *CommandInput) error
 		return NewUserError("There isn't enough room for you to enter.")
 	}
 
+	// Announce departure
+	announceDepart(char, fromRoom, direction)
+
 	// Move the player (updates location, subscriptions, and room player lists)
 	char.Move(fromRoom, toRoom)
+
+	// Announce arrival
+	announceArrive(char, toRoom)
 
 	// Send room description to player
 	char.Notify(DescribeRoom(char, toRoom))
@@ -108,6 +114,34 @@ func (f *MoveHandlerFactory) handle(ctx context.Context, in *CommandInput) error
 	moveFollowers(char, fromRoom, toRoom, direction)
 
 	return nil
+}
+
+// announceDepart notifies players in the room that an actor is leaving.
+func announceDepart(actor interface{ Name() string; HasGrant(string, string) bool }, room *game.RoomInstance, direction string) {
+	if actor.HasGrant(assets.PerkGrantSneak, "") {
+		return
+	}
+	msg := fmt.Sprintf("%s leaves %s.", actor.Name(), direction)
+	announceToRoom(room, actor, msg)
+}
+
+// announceArrive notifies players in the room that an actor has arrived.
+func announceArrive(actor interface{ Name() string; HasGrant(string, string) bool }, room *game.RoomInstance) {
+	if actor.HasGrant(assets.PerkGrantSneak, "") {
+		return
+	}
+	msg := fmt.Sprintf("%s has arrived.", actor.Name())
+	announceToRoom(room, actor, msg)
+}
+
+// announceToRoom sends a message to all players in the room except the actor.
+func announceToRoom(room *game.RoomInstance, actor interface{ Name() string }, msg string) {
+	actorName := actor.Name()
+	room.ForEachPlayer(func(_ string, ps *game.CharacterInstance) {
+		if ps.Name() != actorName {
+			ps.Notify(msg)
+		}
+	})
 }
 
 // moveFollowers walks the leader's follower tree and moves each follower from
@@ -125,7 +159,9 @@ func moveFollowers(leader game.FollowTarget, fromRoom, toRoom *game.RoomInstance
 			continue
 		}
 
+		announceDepart(fl, fromRoom, direction)
 		fl.Move(fromRoom, toRoom)
+		announceArrive(fl, toRoom)
 		fl.Notify(fmt.Sprintf("You follow %s.\n%s", leader.Name(), DescribeRoom(fl, toRoom)))
 		moveFollowers(fl, fromRoom, toRoom, direction)
 	}

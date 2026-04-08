@@ -1,0 +1,49 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7044",
+    "spec": {
+        "aliases": [
+            "lemure",
+            "blob"
+        ],
+        "short_desc": "the lemure",
+        "long_desc": "The lemure blob slithers towards you for an attack!",
+        "detailed_desc": "This looks like a vaguely human blob. Big black yellow eyes, and a mouth going a little bit out from the face. The lemure does not look interested in you at all, but it attacks anyway. It looks like its mind has been burned out.",
+        "level": 5,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 72
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 4
+            }
+        ],
+        "flags": [
+            "aggressive"
+        ],
+        "exp_reward": 1000
+    }
+}

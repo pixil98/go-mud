@@ -1,0 +1,59 @@
+{
+    "version": 1,
+    "id": "newbie-zone-18610",
+    "spec": {
+        "aliases": [
+            "spectre",
+            "ghost"
+        ],
+        "short_desc": "the dark spectre",
+        "long_desc": "The dark spectre is lurking in the shadows.",
+        "detailed_desc": "The soul of a long since passed on adventurer... it lurks here waiting for a chance to bring death to any who cross its path.",
+        "level": 6,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "invisible"
+            },
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "hide"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 77
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 4
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "stay_zone",
+            "memory"
+        ],
+        "exp_reward": 1600
+    }
+}

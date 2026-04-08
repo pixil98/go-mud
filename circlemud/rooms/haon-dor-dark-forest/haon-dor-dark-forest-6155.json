@@ -16,6 +16,9 @@
                 "type": "grant",
                 "key": "dark"
             }
+        ],
+        "mobile_spawns": [
+            "haon-dor-dark-forest-6116"
         ]
     }
 }

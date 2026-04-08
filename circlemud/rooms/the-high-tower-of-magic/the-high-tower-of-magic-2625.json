@@ -15,6 +15,12 @@
                 "type": "grant",
                 "key": "dark"
             }
+        ],
+        "mobile_spawns": [
+            "the-high-tower-of-magic-2549",
+            "the-high-tower-of-magic-2550",
+            "the-high-tower-of-magic-2550",
+            "the-high-tower-of-magic-2551"
         ]
     }
 }

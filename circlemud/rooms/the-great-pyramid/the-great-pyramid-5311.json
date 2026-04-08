@@ -10,6 +10,9 @@
                 "room_id": "the-great-pyramid-5310",
                 "description": "The pool of fire ends to the east."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-great-pyramid-5309"
+        ]
     }
 }

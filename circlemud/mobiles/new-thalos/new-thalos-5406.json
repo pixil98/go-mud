@@ -1,0 +1,43 @@
+{
+    "version": 1,
+    "id": "new-thalos-5406",
+    "spec": {
+        "aliases": [
+            "john",
+            "brother",
+            "singer",
+            "lead"
+        ],
+        "short_desc": "Brother John",
+        "long_desc": "Brother John, lead singer for the Lokettes stands on stage.",
+        "detailed_desc": "You see the lead singer of the Lokettes lip synching to an old Zochan tune.",
+        "level": 15,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d5+3"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 165
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 16
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "stay_zone"
+        ],
+        "exp_reward": 1350
+    }
+}

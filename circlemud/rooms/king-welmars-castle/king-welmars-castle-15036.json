@@ -31,6 +31,10 @@
                 ],
                 "description": "TREASURE ROOM Authorized personnel only - all others keep out. ANY trespassing will be SEVERELY punished!!"
             }
+        ],
+        "mobile_spawns": [
+            "king-welmars-castle-15024",
+            "king-welmars-castle-15025"
         ]
     }
 }

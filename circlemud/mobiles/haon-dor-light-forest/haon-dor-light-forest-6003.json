@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6003",
+    "spec": {
+        "aliases": [
+            "rabbit",
+            "ferocious"
+        ],
+        "short_desc": "the ferocious rabbit",
+        "long_desc": "A ferocious rabbit is here, glaring hungrily at you.",
+        "detailed_desc": "This small, furry creature with long ears and big feet has been attacked by the dreaded rabbit rabies, a horrible disease that turns helpless and innocent rabbits into ferocious and bloodthirsty monsters.",
+        "level": 3,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 3
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 350
+    }
+}

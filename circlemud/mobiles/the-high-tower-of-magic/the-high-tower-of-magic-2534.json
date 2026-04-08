@@ -1,0 +1,67 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2534",
+    "spec": {
+        "aliases": [
+            "master",
+            "enchanter",
+            "mage"
+        ],
+        "short_desc": "the Enchanter",
+        "long_desc": "The Enchanter is here placing a dweomer upon well made sword.",
+        "detailed_desc": "The Enchanter is hard at work, concentrating on a spell which could either destroy the weapon or make it many times more powerful than it already is.",
+        "level": 23,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d5+6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 759
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 16
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "wimpy"
+        ],
+        "exp_reward": 30500,
+        "inventory": [
+            {
+                "object_id": "the-high-tower-of-magic-2554"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "hold",
+                "object_id": "the-high-tower-of-magic-2515"
+            }
+        ]
+    }
+}

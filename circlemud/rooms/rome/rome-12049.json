@@ -40,6 +40,10 @@
                 ],
                 "description": "The ashes are a very fine grayish white powder that seems to be the only worldly remains of Froboz's \"test specimens\"."
             }
+        ],
+        "mobile_spawns": [
+            "rome-12005",
+            "rome-12025"
         ]
     }
 }

@@ -1,0 +1,51 @@
+{
+    "version": 1,
+    "id": "rands-tower-6404",
+    "spec": {
+        "aliases": [
+            "nightmare"
+        ],
+        "short_desc": "Your Worst Nightmare",
+        "long_desc": "Your worst nightmare coalesces in front of you and attacks!",
+        "detailed_desc": "It looks like you deepest, darkest fears personified. Wait a minute! It IS your deepest, darkest fears personified!",
+        "level": 19,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d8+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 300
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 18
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "aggressive",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 45000
+    }
+}

@@ -1,0 +1,53 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1521",
+    "spec": {
+        "aliases": [
+            "boy",
+            "teenage"
+        ],
+        "short_desc": "the teenage boy",
+        "long_desc": "You stop in surprise at the sight of a teenage boy staring off to the distance.",
+        "detailed_desc": "He is young, and has not yet seen the bloodiness of this world. You follow his gaze and notice that he is gazing in wonderment at the fullness of the moon.",
+        "level": 24,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d6+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 730
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 23
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 145000
+    }
+}

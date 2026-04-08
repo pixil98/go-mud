@@ -1,0 +1,49 @@
+{
+    "version": 1,
+    "id": "arachnos-6304",
+    "spec": {
+        "aliases": [
+            "orc"
+        ],
+        "short_desc": "the orc",
+        "long_desc": "The orc is stuck in the web and he can't get out.",
+        "detailed_desc": "You notice an evil look in his eyes, but he seems quite drained of life, and all he can do is glare at you while he's stuck in this web.",
+        "level": 2,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 8
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d3"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 1
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 300,
+        "inventory": [
+            {
+                "object_id": "arachnos-6300"
+            }
+        ]
+    }
+}

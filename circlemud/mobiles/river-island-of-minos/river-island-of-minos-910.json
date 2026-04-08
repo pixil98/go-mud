@@ -1,0 +1,77 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-910",
+    "spec": {
+        "aliases": [
+            "merman"
+        ],
+        "short_desc": "the merman",
+        "long_desc": "There is a merman swimming here brandishing his trident at you!",
+        "detailed_desc": "The merman has a powerful tail fin instead of legs.",
+        "level": 5,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "grant",
+                "key": "sneak"
+            },
+            {
+                "type": "grant",
+                "key": "hide"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 90
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 6
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 1000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "river-island-of-minos-908"
+            },
+            {
+                "slot": "wield",
+                "object_id": "river-island-of-minos-908"
+            }
+        ]
+    }
+}

@@ -1,0 +1,94 @@
+{
+    "version": 1,
+    "id": "midennir-3501",
+    "spec": {
+        "aliases": [
+            "goblin",
+            "mountain"
+        ],
+        "short_desc": "the goblin",
+        "long_desc": "A mountain goblin is wandering around mumbling to himself...",
+        "detailed_desc": "You see before you a small and twisted creature with knotted muscles and disgustingly green skin. Doesn't look like the type you'd invite to dinner.",
+        "level": 4,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 56
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 3
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "stay_zone",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 600,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "midennir-3502"
+            },
+            {
+                "slot": "wield",
+                "object_id": "midennir-3502"
+            },
+            {
+                "slot": "wield",
+                "object_id": "midennir-3502"
+            },
+            {
+                "slot": "wield",
+                "object_id": "midennir-3502"
+            },
+            {
+                "slot": "wield",
+                "object_id": "midennir-3502"
+            },
+            {
+                "slot": "wield",
+                "object_id": "midennir-3502"
+            },
+            {
+                "slot": "wield",
+                "object_id": "midennir-3502"
+            },
+            {
+                "slot": "wield",
+                "object_id": "midennir-3502"
+            },
+            {
+                "slot": "wield",
+                "object_id": "midennir-3502"
+            },
+            {
+                "slot": "wield",
+                "object_id": "midennir-3502"
+            }
+        ]
+    }
+}

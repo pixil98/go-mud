@@ -1,0 +1,67 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4103",
+    "spec": {
+        "aliases": [
+            "thief"
+        ],
+        "short_desc": "the thief",
+        "long_desc": "A thief is here, all dressed in black.",
+        "detailed_desc": "He seems to be counting a handful of coins. Maybe you ought to count YOUR gold too...",
+        "level": 8,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "sneak"
+            },
+            {
+                "type": "grant",
+                "key": "hide"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d5+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 110
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 7
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "stay_zone"
+        ],
+        "exp_reward": 4000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "mines-of-moria-4053"
+            }
+        ]
+    }
+}

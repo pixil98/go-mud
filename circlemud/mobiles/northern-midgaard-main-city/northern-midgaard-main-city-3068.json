@@ -1,0 +1,48 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3068",
+    "spec": {
+        "aliases": [
+            "green",
+            "gelatinous",
+            "blob"
+        ],
+        "short_desc": "the green gelatinous blob",
+        "long_desc": "An oozing green gelatinous blob is here, sucking in bits of debris.",
+        "detailed_desc": "A horrid looking thing; it is huge, greenish, and looks like the blob.",
+        "level": 20,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d6+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 336
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "aware",
+            "stay_zone",
+            "wimpy",
+            "memory"
+        ],
+        "exp_reward": 40000
+    }
+}

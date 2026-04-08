@@ -12,6 +12,9 @@
             "west": {
                 "room_id": "rands-tower-6403"
             }
-        }
+        },
+        "mobile_spawns": [
+            "rands-tower-6400"
+        ]
     }
 }

@@ -22,6 +22,9 @@
                 "room_id": "midennir-3515",
                 "description": "Some light trees and daylight."
             }
-        }
+        },
+        "mobile_spawns": [
+            "midennir-3501"
+        ]
     }
 }

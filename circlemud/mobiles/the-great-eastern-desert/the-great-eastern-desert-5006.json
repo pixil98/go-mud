@@ -1,0 +1,52 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5006",
+    "spec": {
+        "aliases": [
+            "nomad",
+            "leader"
+        ],
+        "short_desc": "the nomad leader",
+        "long_desc": "The nomad leader sits silently in prayer.",
+        "detailed_desc": "He is clad in silk robes lined with gold thread. At his side is a large, engraved cutlass. He has an especially haughty air about him.",
+        "level": 14,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 182
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 13
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "wimpy",
+            "memory"
+        ],
+        "exp_reward": 18000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "the-great-eastern-desert-5016"
+            }
+        ]
+    }
+}

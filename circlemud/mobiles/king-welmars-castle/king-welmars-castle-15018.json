@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15018",
+    "spec": {
+        "aliases": [
+            "cockroach",
+            "roach"
+        ],
+        "short_desc": "the cockroach",
+        "long_desc": "A large cockroach is crawling by the wall.",
+        "detailed_desc": "Very large indeed, and they say cockroaches are hard to kill...",
+        "level": 4,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d3"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 132
+            }
+        ],
+        "flags": [
+            "aware"
+        ],
+        "exp_reward": 750
+    }
+}

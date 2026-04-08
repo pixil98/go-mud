@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3313",
+    "spec": {
+        "aliases": [
+            "waitress"
+        ],
+        "short_desc": "a waitress",
+        "long_desc": "A waitress rushes by, intent on her business.",
+        "detailed_desc": "She looks harried from the way she hastily takes orders and rushes in the back to get food, and to the bar for drinks. She doesn't even spare you a glance as she passes by.",
+        "level": 5,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 70
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 75
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 4
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 850
+    }
+}

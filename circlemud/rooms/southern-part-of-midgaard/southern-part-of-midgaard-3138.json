@@ -25,6 +25,9 @@
                 ],
                 "description": "This chair is really a masterpiece. A chair where one can sit as comfortably as in a bed. All auditoriums should be equipped with these things. A shame that there wouldn't be room for the students too, though."
             }
+        ],
+        "mobile_spawns": [
+            "southern-part-of-midgaard-3105"
         ]
     }
 }

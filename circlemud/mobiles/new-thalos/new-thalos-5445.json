@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "id": "new-thalos-5445",
+    "spec": {
+        "aliases": [
+            "old",
+            "man"
+        ],
+        "short_desc": "the old man",
+        "long_desc": "An old man sits here playing chess.",
+        "detailed_desc": "He seems intent on winning.",
+        "level": 4,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 80
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d3+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 7
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 3
+            }
+        ],
+        "flags": [
+            "wimpy"
+        ],
+        "exp_reward": 20,
+        "equipment": [
+            {
+                "slot": "hold",
+                "object_id": "new-thalos-5490"
+            },
+            {
+                "slot": "hold",
+                "object_id": "new-thalos-5490"
+            }
+        ]
+    }
+}

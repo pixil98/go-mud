@@ -1,0 +1,49 @@
+{
+    "version": 1,
+    "id": "new-thalos-5465",
+    "spec": {
+        "aliases": [
+            "shipwright",
+            "captain"
+        ],
+        "short_desc": "the shipwright",
+        "long_desc": "An old captain rests here carving on a stick.",
+        "detailed_desc": "You see the shipwright of New Thalos, waiting to make someone a boat. He beams a smile at you through his beard as you walk in.",
+        "level": 35,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "5d5+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 2000,
+        "inventory": [
+            {
+                "object_id": "northern-midgaard-main-city-3060"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3061"
+            }
+        ]
+    }
+}

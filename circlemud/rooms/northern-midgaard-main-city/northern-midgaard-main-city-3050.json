@@ -10,6 +10,9 @@
                 "room_id": "northern-midgaard-main-city-3046",
                 "description": "You see the alley."
             }
-        }
+        },
+        "mobile_spawns": [
+            "northern-midgaard-main-city-3007"
+        ]
     }
 }

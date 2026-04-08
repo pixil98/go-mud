@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6008",
+    "spec": {
+        "aliases": [
+            "sparrow"
+        ],
+        "short_desc": "the sparrow",
+        "long_desc": "A sparrow is flapping around by the ground.",
+        "detailed_desc": "The sparrow looks like it is enjoying life.",
+        "level": 0,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 9
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 10
+            }
+        ],
+        "flags": [
+            "stay_zone"
+        ],
+        "exp_reward": 25
+    }
+}

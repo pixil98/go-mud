@@ -21,6 +21,9 @@
                 "type": "grant",
                 "key": "nomagic"
             }
+        ],
+        "mobile_spawns": [
+            "northern-midgaard-main-city-3006"
         ]
     }
 }

@@ -21,6 +21,10 @@
                     }
                 }
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-dwarven-kingdom-6500",
+            "the-dwarven-kingdom-6500"
+        ]
     }
 }

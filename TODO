@@ -17,10 +17,51 @@ Only affects the look handler today. Still needed:
 - Intrinsic-light objects (glowing crystal on the ground lights the room without being equipped) — would need an object flag or a room-level perk from the object
 - Utility "light" spell: non-combat spell that adds a timed `light` grant to the room's PerkCache (e.g. 2 ticks). Uses existing timed-perk infrastructure. Requires distinguishing combat vs utility abilities so utility spells can auto-cast outside of combat.
 
+## Mobile Flags — Runtime Wiring Needed
+Wired up: sentinel (wandering), stay_zone (wandering), scavenger (item pickup).
+Still need runtime behavior:
+- aggressive — mob attacks players on sight (needs aggro initiation in zone tick)
+- wimpy — mob flees at low HP (needs flee logic, probably in combat tick)
+- helper — mob assists other mobs in combat (needs combat awareness in zone tick)
+- memory — mob remembers and retaliates against past attackers (needs per-mob memory + aggro)
+- aware — mob can't be backstabbed (needs backstab system)
+
+## Room Flags — Runtime Wiring Needed
+- death — players entering should die/respawn (needs respawn system)
+
+## Perk Grants — Runtime Wiring Needed
+Wired up: dark, infravision, light (visibility), sneak (movement announcements), peaceful (combat).
+Still need runtime behavior:
+- nomagic — prevent spell casting (needs spell system)
+- invisible / detect_invis — actor visibility (needs visibility system beyond dark/light)
+- sense_life / hide — hidden actor detection (needs stealth system)
+- waterwalk — water room traversal (needs water system)
+- nocharm / nosummon / nosleep / nobash / noblind — immunity to specific effects (needs those effects)
+- protect_evil / protect_good — alignment-based damage reduction (needs alignment system)
+- notrack — prevent tracking (needs tracking system)
+
 ## CircleMUD Import
 - Object vnum 12104 (key referenced by rome-12038) doesn't exist in the CircleMUD source data.
   Stubbed as rome-12104 for now. Investigate whether the original .wld file is broken or if the
   parser missed it.
+
+## Combat Manager Refactor
+Now that mobs have a Commander that can execute commands, consider dissolving the combat
+manager into per-actor tick behavior:
+- Move threat tables onto ActorInstance (each actor tracks who they're fighting and threat levels)
+- On tick, each actor in combat checks their threat table and executes combat abilities
+  through their commander/handler, just like they execute movement commands for wandering
+- The combat manager's orchestration (pairing combatants, running auto_use, publishing
+  room messages) moves into the actor tick
+- This makes mobs and players symmetrical — both are just actors with a tick that
+  execute commands. The only difference is who issues the commands (AI vs player input).
+- Eliminates SetAbilityHandler wiring and the separate combat tick phase
+
+## Mob Wandering
+- wanderChance and scavengeChance consts in zone.go should be configurable, either per-zone or global config
+- Mobs without stay_zone can't currently wander across zone boundaries because tryWander only
+  looks up rooms in its own zone instance. Needs access to the full instances map to resolve
+  cross-zone exits.
 
 ## Consider
 - Should overhealing generate threat? Currently heal threat is based on the full heal amount, even if the target is already at max HP.

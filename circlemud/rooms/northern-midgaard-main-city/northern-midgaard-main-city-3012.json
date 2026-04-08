@@ -22,6 +22,9 @@
                 "room_id": "northern-midgaard-main-city-3040",
                 "description": "You see the city gate."
             }
-        }
+        },
+        "mobile_spawns": [
+            "northern-midgaard-main-city-3062"
+        ]
     }
 }

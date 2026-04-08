@@ -38,6 +38,12 @@
                 ],
                 "description": "The sign on the door says: Cityguard HeadQuarters WARNING: Authorized Personnel Only!"
             }
+        ],
+        "mobile_spawns": [
+            "northern-midgaard-main-city-3060",
+            "northern-midgaard-main-city-3060",
+            "northern-midgaard-main-city-3060",
+            "northern-midgaard-main-city-3060"
         ]
     }
 }

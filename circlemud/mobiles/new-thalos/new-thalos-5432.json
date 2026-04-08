@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "new-thalos-5432",
+    "spec": {
+        "aliases": [
+            "kareem",
+            "dwarf",
+            "mercenary"
+        ],
+        "short_desc": "Kareem",
+        "long_desc": "Kareem the Dwarven Mercenary stands here.",
+        "detailed_desc": "This short stocky fellow has a chest the girth of a barrel.",
+        "level": 12,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 66
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 11
+            }
+        ],
+        "flags": [
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 939
+    }
+}

@@ -1,0 +1,66 @@
+{
+    "version": 1,
+    "id": "rands-tower-6402",
+    "spec": {
+        "aliases": [
+            "book",
+            "monster",
+            "guardian"
+        ],
+        "short_desc": "the Book Monster",
+        "long_desc": "A mound of books rise up into a human shape and tries to hit you!",
+        "detailed_desc": "Ironically enough, the book-monster's head is War and Peace. Hmm.",
+        "level": 14,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 200
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 13
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "aggressive",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 18000,
+        "inventory": [
+            {
+                "object_id": "rands-tower-6410"
+            },
+            {
+                "object_id": "rands-tower-6411"
+            }
+        ]
+    }
+}

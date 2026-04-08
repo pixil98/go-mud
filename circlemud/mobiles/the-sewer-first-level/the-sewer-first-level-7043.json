@@ -1,0 +1,52 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7043",
+    "spec": {
+        "aliases": [
+            "basilisk",
+            "scaled"
+        ],
+        "short_desc": "the scaled basilisk",
+        "long_desc": "The scaled basilisk crawls towards you slowly.",
+        "detailed_desc": "The basilisk is a reptilian monster. It has eight legs, and a strong, toothy jaws. It is dull brown with yellowish underbelly. Its eyes are glowing pale green.",
+        "level": 13,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d7+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 172
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 9
+            }
+        ],
+        "flags": [
+            "scavenger"
+        ],
+        "exp_reward": 16000
+    }
+}

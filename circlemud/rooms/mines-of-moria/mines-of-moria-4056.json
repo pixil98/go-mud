@@ -20,6 +20,9 @@
                 ],
                 "description": "The fire seems to have been burning for quite a long time. The ceiling is covered with soot from the smoke, and ashes are littered all over the floor of the cave."
             }
+        ],
+        "mobile_spawns": [
+            "mines-of-moria-4052"
         ]
     }
 }

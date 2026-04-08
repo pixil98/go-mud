@@ -1,0 +1,66 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5309",
+    "spec": {
+        "aliases": [
+            "efreeti",
+            "efreet"
+        ],
+        "short_desc": "the efreeti",
+        "long_desc": "The efreeti stands here, sheathed in a column of fire.",
+        "detailed_desc": "The efreeti is a mighty being formed from living fire. He gazes down at you with disdain and scorn, arms folded across his mighty chest.",
+        "level": 20,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d6+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 600
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "aggressive",
+            "memory"
+        ],
+        "exp_reward": 40000,
+        "equipment": [
+            {
+                "slot": "hold",
+                "object_id": "the-great-pyramid-5307"
+            }
+        ]
+    }
+}

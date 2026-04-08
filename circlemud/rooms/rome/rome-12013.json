@@ -27,6 +27,9 @@
                 ],
                 "description": "The furniture that you see is very simple and plain. It is made of rough hewn wood and fastened together with nails. It looks very uncomfortable."
             }
+        ],
+        "mobile_spawns": [
+            "rome-12017"
         ]
     }
 }

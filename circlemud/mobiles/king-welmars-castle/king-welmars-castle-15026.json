@@ -1,0 +1,56 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15026",
+    "spec": {
+        "aliases": [
+            "jerry",
+            "guard",
+            "royal"
+        ],
+        "short_desc": "Jerry",
+        "long_desc": "Jerry the Royal Guard is here off duty, playing dice.",
+        "detailed_desc": "As all members of the Guard, Jerry wears the chain mail required of them as uniform. He seems very well trained, and moves like an experienced fighter.",
+        "level": 11,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 148
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 11
+            }
+        ],
+        "flags": [
+            "stay_zone"
+        ],
+        "exp_reward": 11000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "body",
+                "object_id": "king-welmars-castle-15015"
+            }
+        ]
+    }
+}

@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3008",
+    "spec": {
+        "aliases": [
+            "uncle",
+            "juan"
+        ],
+        "short_desc": "Uncle Juan",
+        "long_desc": "Uncle Juan is here ready to take your order.",
+        "detailed_desc": "He looks like he may or may not have a green card.",
+        "level": 33,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+18"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 160000
+    }
+}

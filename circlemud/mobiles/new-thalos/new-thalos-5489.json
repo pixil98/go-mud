@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "new-thalos-5489",
+    "spec": {
+        "aliases": [
+            "mayor",
+            "rabbit"
+        ],
+        "short_desc": "the mayor",
+        "long_desc": "The Mayor of New Thalos stands here.",
+        "detailed_desc": "You see a chubby rabbit dressed in his best suit.",
+        "level": 10,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d6+6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 616
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "stay_zone"
+        ],
+        "exp_reward": 15675,
+        "inventory": [
+            {
+                "object_id": "new-thalos-5401"
+            }
+        ]
+    }
+}

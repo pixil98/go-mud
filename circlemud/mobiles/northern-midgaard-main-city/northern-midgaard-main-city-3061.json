@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3061",
+    "spec": {
+        "aliases": [
+            "janitor"
+        ],
+        "short_desc": "the janitor",
+        "long_desc": "A janitor is walking around, cleaning up.",
+        "detailed_desc": "What a tough job he has.",
+        "level": 1,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 9
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 22
+            }
+        ],
+        "flags": [
+            "stay_zone",
+            "memory"
+        ],
+        "exp_reward": 100
+    }
+}

@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5206",
+    "spec": {
+        "aliases": [
+            "mimic",
+            "planks",
+            "wooden"
+        ],
+        "short_desc": "the mimic",
+        "long_desc": "A few wooden planks lie stacked on a low shelf.",
+        "detailed_desc": "The fact that these planks still rest on this shelf leads you to believe that someone has been here before you...",
+        "level": 11,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d3+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 122
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 11
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 12000,
+        "equipment": [
+            {
+                "slot": "body",
+                "object_id": "the-city-of-thalos-5222"
+            }
+        ]
+    }
+}

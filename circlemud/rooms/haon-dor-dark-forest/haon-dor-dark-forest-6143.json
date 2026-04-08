@@ -26,6 +26,9 @@
                 ],
                 "description": "Most of the bones on the floor appear to be of human origin."
             }
+        ],
+        "mobile_spawns": [
+            "haon-dor-dark-forest-6112"
         ]
     }
 }

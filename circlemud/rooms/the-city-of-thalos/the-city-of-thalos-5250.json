@@ -31,6 +31,9 @@
         ],
         "flags": [
             "nomob"
+        ],
+        "mobile_spawns": [
+            "the-city-of-thalos-5200"
         ]
     }
 }

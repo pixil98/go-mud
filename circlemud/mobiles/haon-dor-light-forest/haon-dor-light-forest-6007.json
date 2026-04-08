@@ -1,0 +1,54 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6007",
+    "spec": {
+        "aliases": [
+            "bobcat",
+            "cat"
+        ],
+        "short_desc": "the bobcat",
+        "long_desc": "A medium sized bobcat is stalking a bird here.",
+        "detailed_desc": "The bobcat has sharp claws and teeth, and will probably eat you instead of the bird if you give it the chance.",
+        "level": 5,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4+3"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 72
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 5
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive"
+        ],
+        "exp_reward": 1100
+    }
+}

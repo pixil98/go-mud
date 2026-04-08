@@ -37,6 +37,9 @@
                 ],
                 "description": "The chain reaches the clouds high above you. It must take some really powerful magic to hold such a chain in place."
             }
+        ],
+        "mobile_spawns": [
+            "southern-part-of-midgaard-3106"
         ]
     }
 }

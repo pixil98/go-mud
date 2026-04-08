@@ -27,6 +27,10 @@
                 ],
                 "description": "The small golden bricks are very smooth and also quite soft."
             }
+        ],
+        "mobile_spawns": [
+            "the-great-pyramid-5313",
+            "the-great-pyramid-5313"
         ]
     }
 }

@@ -36,6 +36,9 @@
                 ],
                 "description": "There are lots of books about everything here!"
             }
+        ],
+        "mobile_spawns": [
+            "rands-tower-6402"
         ]
     }
 }

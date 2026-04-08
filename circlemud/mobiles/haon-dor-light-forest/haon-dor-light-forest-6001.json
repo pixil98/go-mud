@@ -1,0 +1,69 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6001",
+    "spec": {
+        "aliases": [
+            "rabbit",
+            "small"
+        ],
+        "short_desc": "the rabbit",
+        "long_desc": "A small rabbit is foraging in the bushes here.",
+        "detailed_desc": "It is a small, furry creature with long ears and big feet.",
+        "level": 0,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 5
+            }
+        ],
+        "flags": [
+            "stay_zone"
+        ],
+        "exp_reward": 60,
+        "inventory": [
+            {
+                "object_id": "haon-dor-light-forest-6023"
+            },
+            {
+                "object_id": "haon-dor-light-forest-6023"
+            },
+            {
+                "object_id": "haon-dor-light-forest-6023"
+            },
+            {
+                "object_id": "haon-dor-light-forest-6023"
+            },
+            {
+                "object_id": "haon-dor-light-forest-6023"
+            },
+            {
+                "object_id": "haon-dor-light-forest-6023"
+            },
+            {
+                "object_id": "haon-dor-light-forest-6023"
+            },
+            {
+                "object_id": "haon-dor-light-forest-6023"
+            },
+            {
+                "object_id": "haon-dor-light-forest-6023"
+            }
+        ]
+    }
+}

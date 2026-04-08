@@ -1,0 +1,81 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2562",
+    "spec": {
+        "aliases": [
+            "master",
+            "guildmaster",
+            "white"
+        ],
+        "short_desc": "the Master of Goodness",
+        "long_desc": "The Master of Goodness is here frowning at your intrusion.",
+        "detailed_desc": "He looks like a self-righteous bastard.",
+        "level": 30,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -20
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d5+20"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 1200
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 30
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "stay_zone",
+            "memory"
+        ],
+        "exp_reward": 150000,
+        "inventory": [
+            {
+                "object_id": "the-high-tower-of-magic-2595"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "neck",
+                "object_id": "the-high-tower-of-magic-2584"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-high-tower-of-magic-2585"
+            },
+            {
+                "slot": "hold",
+                "object_id": "the-high-tower-of-magic-2577"
+            }
+        ]
+    }
+}

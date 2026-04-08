@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6207",
+    "spec": {
+        "aliases": [
+            "orc",
+            "woman"
+        ],
+        "short_desc": "the orc woman",
+        "long_desc": "A pregnant orc woman tries to stand to flee from you.",
+        "detailed_desc": "She is too far gone to move very quickly. You could kill her easily.",
+        "level": 5,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 100
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 73
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 4
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "wimpy"
+        ],
+        "exp_reward": 750
+    }
+}

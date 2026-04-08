@@ -1,0 +1,67 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-900",
+    "spec": {
+        "aliases": [
+            "homba"
+        ],
+        "short_desc": "the homba",
+        "long_desc": "The homba flits about.",
+        "detailed_desc": "Part kestrel, part bear, part wolf. Parts is parts, and makes an ugly whole.",
+        "level": 4,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "invisible"
+            },
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "waterwalk"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 60
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 4
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 1500
+    }
+}

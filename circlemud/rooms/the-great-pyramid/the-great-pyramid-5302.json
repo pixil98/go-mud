@@ -30,6 +30,9 @@
                 ],
                 "description": "You wonder how anyone could have built such a massive thing out in this heat."
             }
+        ],
+        "mobile_spawns": [
+            "the-great-pyramid-5300"
         ]
     }
 }

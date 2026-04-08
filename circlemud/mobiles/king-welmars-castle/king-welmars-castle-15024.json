@@ -1,0 +1,60 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15024",
+    "spec": {
+        "aliases": [
+            "david",
+            "man",
+            "guard"
+        ],
+        "short_desc": "David",
+        "long_desc": "David, a big, mean-looking man, stands here, guarding the door.",
+        "detailed_desc": "He really is big, and you get the feeling he wouldn't take kindly to an attempt to get past him.",
+        "level": 19,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d7+10"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 247
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 18
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 35000,
+        "inventory": [
+            {
+                "object_id": "king-welmars-castle-15007"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "body",
+                "object_id": "king-welmars-castle-15015"
+            }
+        ]
+    }
+}

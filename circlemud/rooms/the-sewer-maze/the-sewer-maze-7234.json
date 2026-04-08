@@ -16,6 +16,9 @@
                 "type": "grant",
                 "key": "dark"
             }
+        ],
+        "mobile_spawns": [
+            "the-sewer-maze-7204"
         ]
     }
 }

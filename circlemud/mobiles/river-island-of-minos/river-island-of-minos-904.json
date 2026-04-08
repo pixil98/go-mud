@@ -1,0 +1,76 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-904",
+    "spec": {
+        "aliases": [
+            "woundwort",
+            "general",
+            "demon"
+        ],
+        "short_desc": "General Woundwort",
+        "long_desc": "General Woundwort, the dark demon of Minos, awaits to maul you to shreds.",
+        "detailed_desc": "He looks vaguely like a rabbit, but sure doesn't act like one.",
+        "level": 25,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d5+12"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 600
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 120000,
+        "equipment": [
+            {
+                "slot": "hands",
+                "object_id": "river-island-of-minos-903"
+            },
+            {
+                "slot": "hold",
+                "object_id": "river-island-of-minos-902"
+            }
+        ]
+    }
+}

@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6201",
+    "spec": {
+        "aliases": [
+            "rabbit"
+        ],
+        "short_desc": "the rabbit",
+        "long_desc": "A small rabbit nibbles at a leaf here.",
+        "detailed_desc": "It is a small, furry rodent with big ears.",
+        "level": 0,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 30
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d3"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 8
+            }
+        ],
+        "flags": [
+            "wimpy"
+        ],
+        "exp_reward": 25
+    }
+}

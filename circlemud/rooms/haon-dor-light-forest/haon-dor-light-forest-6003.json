@@ -29,6 +29,9 @@
                 ],
                 "description": "The dense crowns of the mature trees leave only a fraction of the sky to be seen through the leaves."
             }
+        ],
+        "mobile_spawns": [
+            "haon-dor-light-forest-6012"
         ]
     }
 }

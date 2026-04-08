@@ -1,0 +1,48 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6011",
+    "spec": {
+        "aliases": [
+            "badger"
+        ],
+        "short_desc": "the sleepy badger",
+        "long_desc": "A furry brown badger is curled up under a log here.",
+        "detailed_desc": "The badger is slowly awakening and peering up at you from its burrow. You know that it won't be moving this slow for long. Its sharp claws and teeth catch your attention when you consider killing it.",
+        "level": 4,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "hide"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d3+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 53
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 3
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 650
+    }
+}

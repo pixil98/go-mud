@@ -1,0 +1,49 @@
+{
+    "version": 1,
+    "id": "new-thalos-5449",
+    "spec": {
+        "aliases": [
+            "dervish"
+        ],
+        "short_desc": "the raggety dervish",
+        "long_desc": "A raggety dervish stands here.",
+        "detailed_desc": "This man looks like he could use a lot of rest.",
+        "level": 8,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 36
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 8
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 105
+    }
+}

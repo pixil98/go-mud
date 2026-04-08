@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1511",
+    "spec": {
+        "aliases": [
+            "pharoah"
+        ],
+        "short_desc": "Pharoah",
+        "long_desc": "Pharoah has been sent here in retribution for a lifetime of evils.",
+        "detailed_desc": "Richly clothed and postured in arrogance and love of power, he looks at you with nothing more than a smirk of contempt.",
+        "level": 25,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d6+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 700
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 23
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 145000,
+        "equipment": [
+            {
+                "slot": "neck",
+                "object_id": "the-straight-path-1512"
+            }
+        ]
+    }
+}

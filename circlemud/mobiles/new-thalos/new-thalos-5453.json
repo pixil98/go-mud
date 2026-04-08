@@ -1,0 +1,48 @@
+{
+    "version": 1,
+    "id": "new-thalos-5453",
+    "spec": {
+        "aliases": [
+            "eunich"
+        ],
+        "short_desc": "a eunich",
+        "long_desc": "A eunich stands here watching over the girls.",
+        "detailed_desc": "You see a large man whose only duty is to protect the harem. He has been castrated for the ladies' safety.",
+        "level": 12,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 135
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 12
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive"
+        ],
+        "exp_reward": 1300
+    }
+}

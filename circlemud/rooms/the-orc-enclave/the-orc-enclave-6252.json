@@ -12,6 +12,9 @@
             "east": {
                 "room_id": "the-orc-enclave-6253"
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-orc-enclave-6204"
+        ]
     }
 }

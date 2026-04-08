@@ -1,0 +1,63 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6502",
+    "spec": {
+        "aliases": [
+            "wraith"
+        ],
+        "short_desc": "the wraith",
+        "long_desc": "A wraith is awaiting your first move here.",
+        "detailed_desc": "A black, almost transparent wraith.",
+        "level": 25,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d5+25"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 563
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 16
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive"
+        ],
+        "exp_reward": 125000,
+        "equipment": [
+            {
+                "slot": "hold",
+                "object_id": "the-dwarven-kingdom-6503"
+            }
+        ]
+    }
+}

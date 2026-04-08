@@ -1,0 +1,62 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3305",
+    "spec": {
+        "aliases": [
+            "aglandiir",
+            "dragon"
+        ],
+        "short_desc": "Aglandiir",
+        "long_desc": "The Dragon Prince, Aglandiir, sits here looking at you curiously.",
+        "detailed_desc": "Aglandiir is a prince of his kind, and he didn't get where he is today by letting people steal from his horde!",
+        "level": 30,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -100
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "8d5+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 1500
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "aggressive",
+            "memory"
+        ],
+        "exp_reward": 1000000,
+        "inventory": [
+            {
+                "object_id": "the-three-of-swords-3313"
+            }
+        ]
+    }
+}

@@ -56,6 +56,10 @@
                 ],
                 "description": "You could probably see most of the forest, and perhaps even the city from the top of the tree... of course, you would have to deal with whatever that shape is that you see pacing on one of the upper limbs."
             }
+        ],
+        "mobile_spawns": [
+            "haon-dor-light-forest-6009",
+            "haon-dor-light-forest-6012"
         ]
     }
 }

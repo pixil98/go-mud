@@ -19,6 +19,11 @@
                 ],
                 "description": "You can see the entire city of Rome from here. The buildings housing the Roman government are to the east. To the south east, off in the distance, is the massive aqueduct and further in that direction lies the Mountain of the Gods."
             }
+        ],
+        "mobile_spawns": [
+            "rome-12003",
+            "rome-12003",
+            "rome-12016"
         ]
     }
 }

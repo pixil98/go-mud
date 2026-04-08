@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "id": "god-simplex-1200",
+    "spec": {
+        "aliases": [
+            "innkeeper"
+        ],
+        "short_desc": "the Immortal Innkeeper",
+        "long_desc": "The Immortal Innkeeper is organizing her books here.",
+        "detailed_desc": "She appears to be having no problem tallying things up.",
+        "level": 30,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d8+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 950
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ]
+    }
+}

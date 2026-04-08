@@ -41,6 +41,11 @@
                 ],
                 "description": "Titus has enough hardware in here to outfit a large army. Maybe that's why he has a lucrative contract to sell weapons to the Emperor's armies for outrageous prices."
             }
+        ],
+        "mobile_spawns": [
+            "rome-12005",
+            "rome-12011",
+            "rome-12019"
         ]
     }
 }

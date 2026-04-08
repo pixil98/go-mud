@@ -22,6 +22,9 @@
                 ],
                 "description": "Each stone is at least fifteen feet tall, maybe more, and the dark material glows with a greenish aura providing more than enough light for you to see by."
             }
+        ],
+        "mobile_spawns": [
+            "king-welmars-castle-15032"
         ]
     }
 }

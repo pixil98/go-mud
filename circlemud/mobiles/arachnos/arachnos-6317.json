@@ -1,0 +1,54 @@
+{
+    "version": 1,
+    "id": "arachnos-6317",
+    "spec": {
+        "aliases": [
+            "dragon",
+            "wormkin",
+            "elder"
+        ],
+        "short_desc": "the elder wormkin",
+        "long_desc": "A wormkin that has grown a bit stares at you inquisitively.",
+        "detailed_desc": "A medium-sized dragon -- seems it hasn't killed anything yet by itself, though there is a first time for everything...",
+        "level": 16,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 230
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 15
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 24000
+    }
+}

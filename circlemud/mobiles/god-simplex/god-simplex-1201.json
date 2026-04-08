@@ -1,0 +1,49 @@
+{
+    "version": 1,
+    "id": "god-simplex-1201",
+    "spec": {
+        "aliases": [
+            "postmaster",
+            "master",
+            "post"
+        ],
+        "short_desc": "the Immortal Postmaster",
+        "long_desc": "The Immortal Postmaster is hard at work here.",
+        "detailed_desc": "Scary... a postal worker... working?",
+        "level": 30,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d8+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 950
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ]
+    }
+}

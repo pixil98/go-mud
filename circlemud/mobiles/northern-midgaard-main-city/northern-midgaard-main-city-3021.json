@@ -1,0 +1,57 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3021",
+    "spec": {
+        "aliases": [
+            "guildmaster",
+            "master",
+            "priest"
+        ],
+        "short_desc": "the priests' guildmaster",
+        "long_desc": "Your guildmaster is prayer to your God here.",
+        "detailed_desc": "You are in no doubt that this guildmaster is truly close to your God; he has a peaceful, loving look. You notice that he is surrounded by a white aura.",
+        "level": 34,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+24"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 700
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "memory"
+        ],
+        "exp_reward": 100000
+    }
+}

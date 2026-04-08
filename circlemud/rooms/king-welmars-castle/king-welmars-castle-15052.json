@@ -24,6 +24,9 @@
                 ],
                 "description": "Small, uninteresting... A candle that is as normal as can be."
             }
+        ],
+        "mobile_spawns": [
+            "king-welmars-castle-15019"
         ]
     }
 }

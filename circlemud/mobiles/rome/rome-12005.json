@@ -1,0 +1,66 @@
+{
+    "version": 1,
+    "id": "rome-12005",
+    "spec": {
+        "aliases": [
+            "slave"
+        ],
+        "short_desc": "the slave",
+        "long_desc": "A slave stands here, wishing that she was free.",
+        "detailed_desc": "A very pretty young woman who was captured instead of being killed when the Roman legions subjugated her land.",
+        "level": 3,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 7
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d7"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 48
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 350,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3023"
+            },
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3023"
+            },
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3023"
+            },
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3023"
+            },
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3023"
+            }
+        ]
+    }
+}

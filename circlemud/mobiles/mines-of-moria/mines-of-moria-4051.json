@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4051",
+    "spec": {
+        "aliases": [
+            "warrior"
+        ],
+        "short_desc": "the warrior",
+        "long_desc": "A tall warrior is here.",
+        "detailed_desc": "He seems to know his way with weapons.",
+        "level": 7,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 110
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 7
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 2500
+    }
+}

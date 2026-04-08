@@ -1,0 +1,54 @@
+{
+    "version": 1,
+    "id": "newbie-zone-18609",
+    "spec": {
+        "aliases": [
+            "minotaur"
+        ],
+        "short_desc": "the massive Minotaur",
+        "long_desc": "The Great Minotaur is wondering just what you'll taste like.",
+        "detailed_desc": "A massive man, with the head of a bull. He looks as strong as bull too, but not nearly as smart. Actually, now that you consider it... he looks a heck of a lot meaner than any bull you have ever seen... and he is coming this way!",
+        "level": 7,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 100
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 5
+            }
+        ],
+        "flags": [
+            "stay_zone"
+        ],
+        "exp_reward": 3000,
+        "equipment": [
+            {
+                "slot": "head",
+                "object_id": "newbie-zone-18610"
+            },
+            {
+                "slot": "body",
+                "object_id": "newbie-zone-18611"
+            }
+        ]
+    }
+}

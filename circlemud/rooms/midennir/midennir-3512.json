@@ -18,6 +18,11 @@
                 "room_id": "midennir-3509",
                 "description": "The forest continues here."
             }
-        }
+        },
+        "mobile_spawns": [
+            "midennir-3501",
+            "midennir-3501",
+            "midennir-3501"
+        ]
     }
 }

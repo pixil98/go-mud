@@ -1,0 +1,49 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4052",
+    "spec": {
+        "aliases": [
+            "hobgoblin"
+        ],
+        "short_desc": "the hobgoblin",
+        "long_desc": "A small hobgoblin stands here.",
+        "detailed_desc": "The hobgoblin looks quite lost.",
+        "level": 6,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 94
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 8
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "stay_zone"
+        ],
+        "exp_reward": 1500
+    }
+}

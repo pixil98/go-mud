@@ -16,6 +16,10 @@
                 "type": "grant",
                 "key": "nomagic"
             }
+        ],
+        "mobile_spawns": [
+            "northern-midgaard-main-city-3046",
+            "northern-midgaard-main-city-3065"
         ]
     }
 }

@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7007",
+    "spec": {
+        "aliases": [
+            "wanderer",
+            "evil"
+        ],
+        "short_desc": "the evil wanderer",
+        "long_desc": "The evil wanderer stares at you with a piercing gaze.",
+        "detailed_desc": "The evil wanderer is very thin. He is dressed in a grey cloak. He doesn't look like he'd be your first choice as a travelling companion.",
+        "level": 10,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 140
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 9
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "wimpy"
+        ],
+        "exp_reward": 9500
+    }
+}

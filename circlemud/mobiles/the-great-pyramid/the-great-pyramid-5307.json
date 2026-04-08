@@ -1,0 +1,88 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5307",
+    "spec": {
+        "aliases": [
+            "mummy",
+            "corpse"
+        ],
+        "short_desc": "the mummy",
+        "long_desc": "A mummy reaches for you, disturbed by your presence.",
+        "detailed_desc": "You only see the disfigured, rotting features of decaying human flesh, animated by the distempered spirit of a long-deceased person.",
+        "level": 12,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d6+6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 264
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 12
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 15000,
+        "inventory": [
+            {
+                "object_id": "the-great-pyramid-5306"
+            },
+            {
+                "object_id": "the-great-pyramid-5305"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "body",
+                "object_id": "the-great-pyramid-5304"
+            },
+            {
+                "slot": "body",
+                "object_id": "the-great-pyramid-5304"
+            },
+            {
+                "slot": "body",
+                "object_id": "the-great-pyramid-5304"
+            },
+            {
+                "slot": "body",
+                "object_id": "the-great-pyramid-5304"
+            }
+        ]
+    }
+}

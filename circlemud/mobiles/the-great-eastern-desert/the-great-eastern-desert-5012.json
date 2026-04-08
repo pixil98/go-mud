@@ -1,0 +1,65 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5012",
+    "spec": {
+        "aliases": [
+            "duergar",
+            "dark",
+            "dwarf"
+        ],
+        "short_desc": "the dark dwarf",
+        "long_desc": "A duergar is here mining precious stones with his pick.",
+        "detailed_desc": "The duergar could probably crush your head as easily as he does those rocks.",
+        "level": 5,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d5+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 71
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 4
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 1250,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "the-great-eastern-desert-5000"
+            }
+        ]
+    }
+}

@@ -1,0 +1,59 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2511",
+    "spec": {
+        "aliases": [
+            "broom"
+        ],
+        "short_desc": "the broom",
+        "long_desc": "A straw broom is here leaning against the wall.",
+        "detailed_desc": "The broom screams 'Take that you lout!'",
+        "level": 7,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 119
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 10
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 1600
+    }
+}

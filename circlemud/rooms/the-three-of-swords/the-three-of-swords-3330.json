@@ -14,6 +14,9 @@
                     "closed": true
                 }
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-three-of-swords-3308"
+        ]
     }
 }

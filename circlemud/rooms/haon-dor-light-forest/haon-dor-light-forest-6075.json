@@ -49,6 +49,9 @@
                 ],
                 "description": "You think you see the beginnings of a small trail to the east, winding through the younger part of the forest."
             }
+        ],
+        "mobile_spawns": [
+            "haon-dor-light-forest-6012"
         ]
     }
 }

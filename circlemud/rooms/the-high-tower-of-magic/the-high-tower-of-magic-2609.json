@@ -26,6 +26,11 @@
                     "closed": true
                 }
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-high-tower-of-magic-2541",
+            "the-high-tower-of-magic-2542",
+            "the-high-tower-of-magic-2545"
+        ]
     }
 }

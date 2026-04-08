@@ -1,0 +1,73 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15001",
+    "spec": {
+        "aliases": [
+            "king",
+            "welmar"
+        ],
+        "short_desc": "King Welmar",
+        "long_desc": "The wise King Welmar sits here in his throne.",
+        "detailed_desc": "In his later middle-age, with his beard starting to grey, King Welmar is still very powerfully built, and wouldn't take kindly to an attack. Despite that, you know he is well-loved throughout the land, and has a reputation as a wise and just ruler.",
+        "level": 33,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d8+16"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 1660
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 1000000,
+        "inventory": [
+            {
+                "object_id": "king-welmars-castle-15014"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "hold",
+                "object_id": "king-welmars-castle-15002"
+            },
+            {
+                "slot": "head",
+                "object_id": "king-welmars-castle-15003"
+            },
+            {
+                "slot": "light",
+                "object_id": "king-welmars-castle-15004"
+            }
+        ]
+    }
+}

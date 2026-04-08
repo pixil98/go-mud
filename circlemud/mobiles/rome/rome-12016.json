@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "id": "rome-12016",
+    "spec": {
+        "aliases": [
+            "vendor"
+        ],
+        "short_desc": "the stadium vendor",
+        "long_desc": "A stadium vendor is walking here, selling overpriced hotdogs and beer.",
+        "detailed_desc": "The vendor is a scruffy looking man who isn't afraid of a fight and looks like he has had just about enough of smart-mouthed spectators.",
+        "level": 8,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d5+15"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 13008
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 7
+            }
+        ],
+        "flags": [
+            "stay_zone"
+        ],
+        "exp_reward": 3700,
+        "inventory": [
+            {
+                "object_id": "rome-12010"
+            },
+            {
+                "object_id": "rome-12010"
+            },
+            {
+                "object_id": "rome-12010"
+            }
+        ]
+    }
+}

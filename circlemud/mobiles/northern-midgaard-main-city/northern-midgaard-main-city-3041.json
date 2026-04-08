@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3041",
+    "spec": {
+        "aliases": [
+            "waiter"
+        ],
+        "short_desc": "the waiter",
+        "long_desc": "A waiter is going around from one place to another.",
+        "detailed_desc": "A tired looking waiter.",
+        "level": 23,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+12"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 450
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 18
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 80000
+    }
+}

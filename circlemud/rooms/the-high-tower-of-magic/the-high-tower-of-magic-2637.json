@@ -25,6 +25,9 @@
                 "room_id": "the-high-tower-of-magic-2638",
                 "description": "All you can see are books."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-high-tower-of-magic-2553"
+        ]
     }
 }

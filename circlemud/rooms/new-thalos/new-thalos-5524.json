@@ -17,6 +17,10 @@
                 ],
                 "description": "The sign reads: Welcome to Braheem's... LIST - Shows you all of my wonderful creations. VALUE - Shows what an item might be worth to me. SELL - Allows you to rid yourself of excessive magic items. BUY - Allows you to rid youself of excessive cash."
             }
+        ],
+        "mobile_spawns": [
+            "new-thalos-5444",
+            "new-thalos-5480"
         ]
     }
 }

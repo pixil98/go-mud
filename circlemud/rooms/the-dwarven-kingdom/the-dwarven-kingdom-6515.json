@@ -13,6 +13,9 @@
                 "room_id": "the-dwarven-kingdom-6516",
                 "description": "The Hide & Tooth shop can be seen to the west."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-dwarven-kingdom-6505"
+        ]
     }
 }

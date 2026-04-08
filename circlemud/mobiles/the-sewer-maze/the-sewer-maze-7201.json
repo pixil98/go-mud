@@ -1,0 +1,67 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7201",
+    "spec": {
+        "aliases": [
+            "mindflayer",
+            "senior",
+            "mind"
+        ],
+        "short_desc": "the senior mindflayer",
+        "long_desc": "The senior mindflayer walks around here, looking for something useful.",
+        "detailed_desc": "This is a horrifying monster indeed, 6'6\" high. Dressed in purple and black, and carrying a large mace in its hand. In the center of its head are four large tentacles with very sharp points.",
+        "level": 8,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4+3"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 110
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 7
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "aware",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 4500,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "the-sewer-maze-7201"
+            }
+        ]
+    }
+}

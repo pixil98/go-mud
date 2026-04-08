@@ -1,0 +1,72 @@
+{
+    "version": 1,
+    "id": "rome-12021",
+    "spec": {
+        "aliases": [
+            "guard",
+            "royal",
+            "bodyguard"
+        ],
+        "short_desc": "the royal bodyguard",
+        "long_desc": "There is a royal bodyguard here, ready to die for the Emperor, if necessary.",
+        "detailed_desc": "The bodyguard is dressed in the finest of armor and wields only the deadliest of weapons. He is very strong and would put up one hell of a fight. He has been trained to be suspicious of all but the most innocent visitors, and likely to take offense of anyone with less than pure intentions.",
+        "level": 18,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d6+6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 238
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 18
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 35000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "shield",
+                "object_id": "northern-midgaard-main-city-3042"
+            },
+            {
+                "slot": "body",
+                "object_id": "northern-midgaard-main-city-3046"
+            },
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "shield",
+                "object_id": "northern-midgaard-main-city-3042"
+            },
+            {
+                "slot": "body",
+                "object_id": "northern-midgaard-main-city-3046"
+            }
+        ]
+    }
+}

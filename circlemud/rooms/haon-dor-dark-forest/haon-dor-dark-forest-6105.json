@@ -37,6 +37,9 @@
                 ],
                 "description": "The path seems all too frail. One of the giant roots could probably crush it in a single blow."
             }
+        ],
+        "mobile_spawns": [
+            "haon-dor-dark-forest-6111"
         ]
     }
 }

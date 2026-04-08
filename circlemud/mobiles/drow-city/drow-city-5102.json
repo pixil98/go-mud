@@ -1,0 +1,70 @@
+{
+    "version": 1,
+    "id": "drow-city-5102",
+    "spec": {
+        "aliases": [
+            "drow",
+            "noble",
+            "warrior"
+        ],
+        "short_desc": "the drow warrior",
+        "long_desc": "A drow warrior stands here guarding his home.",
+        "detailed_desc": "He looks kind of annoyed!",
+        "level": 12,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "14d1+7"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 165
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 11
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 15000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "drow-city-5101"
+            },
+            {
+                "slot": "wield",
+                "object_id": "drow-city-5101"
+            },
+            {
+                "slot": "wield",
+                "object_id": "drow-city-5101"
+            },
+            {
+                "slot": "wield",
+                "object_id": "drow-city-5101"
+            }
+        ]
+    }
+}

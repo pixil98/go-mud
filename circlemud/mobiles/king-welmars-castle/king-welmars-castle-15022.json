@@ -1,0 +1,56 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15022",
+    "spec": {
+        "aliases": [
+            "chef",
+            "cook"
+        ],
+        "short_desc": "the Chef",
+        "long_desc": "The Chef is here, shouting orders to the other cooks.",
+        "detailed_desc": "It seems he has been tasting his own food a bit too enthusiastically. He is, in other words, a bit fat.",
+        "level": 19,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d4+14"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 1295
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 16
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "wimpy",
+            "memory"
+        ],
+        "exp_reward": 40000,
+        "inventory": [
+            {
+                "object_id": "king-welmars-castle-15019"
+            },
+            {
+                "object_id": "king-welmars-castle-15020"
+            }
+        ]
+    }
+}

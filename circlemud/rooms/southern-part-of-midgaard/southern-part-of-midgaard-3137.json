@@ -35,6 +35,9 @@
                 ],
                 "description": "It is an ancient Quifatronic T-1000 mk I. These machines are known for their incredible durability, and for their even more incredible weight. They make a Cray II look like a laptop."
             }
+        ],
+        "mobile_spawns": [
+            "southern-part-of-midgaard-3104"
         ]
     }
 }

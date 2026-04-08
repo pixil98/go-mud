@@ -1,0 +1,78 @@
+{
+    "version": 1,
+    "id": "drow-city-5111",
+    "spec": {
+        "aliases": [
+            "yochlol"
+        ],
+        "short_desc": "the yochlol",
+        "long_desc": "A yochlol forms out of a swirling mist...",
+        "detailed_desc": "The yochlol is not in a good mood.",
+        "level": 23,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "15d2+30"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 500
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "aggressive",
+            "memory"
+        ],
+        "exp_reward": 80000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "drow-city-5113"
+            },
+            {
+                "slot": "hold",
+                "object_id": "drow-city-5115"
+            }
+        ]
+    }
+}

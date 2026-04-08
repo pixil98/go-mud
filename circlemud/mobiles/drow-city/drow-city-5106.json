@@ -1,0 +1,74 @@
+{
+    "version": 1,
+    "id": "drow-city-5106",
+    "spec": {
+        "aliases": [
+            "drow",
+            "weaponsmaster"
+        ],
+        "short_desc": "the weaponsmaster",
+        "long_desc": "A drow weaponsmaster is here shadow boxing.",
+        "detailed_desc": "He definitely know his way around in combat.",
+        "level": 23,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "12d2+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 430
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 80000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "drow-city-5105"
+            },
+            {
+                "slot": "hands",
+                "object_id": "drow-city-5109"
+            },
+            {
+                "slot": "wield",
+                "object_id": "drow-city-5105"
+            }
+        ]
+    }
+}

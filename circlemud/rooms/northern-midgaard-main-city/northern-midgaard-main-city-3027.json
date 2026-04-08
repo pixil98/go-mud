@@ -14,6 +14,11 @@
                 "room_id": "northern-midgaard-main-city-3028",
                 "description": "You see the thieves bar, where everything disappears."
             }
-        }
+        },
+        "mobile_spawns": [
+            "northern-midgaard-main-city-3026",
+            "northern-midgaard-main-city-3059",
+            "northern-midgaard-main-city-3060"
+        ]
     }
 }

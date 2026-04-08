@@ -1,0 +1,49 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4058",
+    "spec": {
+        "aliases": [
+            "giant",
+            "hill"
+        ],
+        "short_desc": "the hill giant",
+        "long_desc": "A hill giant is here, tossing some rocks around.",
+        "detailed_desc": "The hill giant looks like he's about 9 feet tall. By his actions you quickly come to the conclusion that he isn't very intelligent.",
+        "level": 13,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d10"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 170
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 12
+            }
+        ],
+        "flags": [
+            "stay_zone"
+        ],
+        "exp_reward": 16500
+    }
+}

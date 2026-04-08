@@ -1,0 +1,43 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6013",
+    "spec": {
+        "aliases": [
+            "chipmunk"
+        ],
+        "short_desc": "the small chipmunk",
+        "long_desc": "A small brown-red chipmunk dashes from tree to tree here.",
+        "detailed_desc": "The absolute zenith of hyperactivity, this small rodent seems to never tire of running up, down, and around the trees in this area. If you could ever catch it, you imagine it would make an easy meal.",
+        "level": 0,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "sneak"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 13
+            }
+        ],
+        "flags": [
+            "stay_zone"
+        ],
+        "exp_reward": 40
+    }
+}

@@ -18,6 +18,13 @@
             "west": {
                 "room_id": "arachnos-6309"
             }
-        }
+        },
+        "mobile_spawns": [
+            "arachnos-6308",
+            "arachnos-6308",
+            "arachnos-6308",
+            "arachnos-6308",
+            "arachnos-6308"
+        ]
     }
 }

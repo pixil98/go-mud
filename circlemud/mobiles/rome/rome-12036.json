@@ -1,0 +1,78 @@
+{
+    "version": 1,
+    "id": "rome-12036",
+    "spec": {
+        "aliases": [
+            "baker"
+        ],
+        "short_desc": "the baker",
+        "long_desc": "The baker looks at you calmly, wiping flour from his face with one hand.",
+        "detailed_desc": "A fat, nice looking baker. But you can see that he has many scars on his body.",
+        "level": 33,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+22"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30060
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 80000,
+        "inventory": [
+            {
+                "object_id": "northern-midgaard-main-city-3000"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3001"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3009"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3010"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3011"
+            },
+            {
+                "object_id": "rome-12006"
+            },
+            {
+                "object_id": "rome-12007"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            }
+        ]
+    }
+}

@@ -1,0 +1,67 @@
+{
+    "version": 1,
+    "id": "new-thalos-5414",
+    "spec": {
+        "aliases": [
+            "vera",
+            "lady"
+        ],
+        "short_desc": "Vera the veggie lady",
+        "long_desc": "Vera the veggie lady beems as you look over her stand.",
+        "detailed_desc": "A tall slender woman stands before you smiling broadly.",
+        "level": 35,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d5+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 10
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 2000,
+        "inventory": [
+            {
+                "object_id": "new-thalos-5456"
+            },
+            {
+                "object_id": "new-thalos-5457"
+            },
+            {
+                "object_id": "new-thalos-5458"
+            },
+            {
+                "object_id": "new-thalos-5459"
+            },
+            {
+                "object_id": "new-thalos-5460"
+            }
+        ]
+    }
+}

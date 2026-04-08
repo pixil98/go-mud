@@ -25,6 +25,11 @@
                 ],
                 "description": "He is in the final stages of a charge against his opponent... THUD! CLANG! CRASH!!!!... judging from the blood and the amount of distance that now separates the gladiators head from the rest of his body, you can safely assume that this was the final combat of his life."
             }
+        ],
+        "mobile_spawns": [
+            "rome-12006",
+            "rome-12006",
+            "rome-12006"
         ]
     }
 }

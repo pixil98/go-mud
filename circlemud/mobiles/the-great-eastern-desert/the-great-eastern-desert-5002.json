@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5002",
+    "spec": {
+        "aliases": [
+            "snake",
+            "coral"
+        ],
+        "short_desc": "the coral snake",
+        "long_desc": "A brightly colored snake slithers along the sands.",
+        "detailed_desc": "This relatively harmless snake has bright alternating bands of red, yellow and black.",
+        "level": 4,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d9"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 46
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 3
+            }
+        ],
+        "flags": [
+            "stay_zone"
+        ],
+        "exp_reward": 600
+    }
+}

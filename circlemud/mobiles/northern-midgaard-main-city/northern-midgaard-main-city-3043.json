@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3043",
+    "spec": {
+        "aliases": [
+            "waiter"
+        ],
+        "short_desc": "the waiter",
+        "long_desc": "A waiter who seems to have reached contact with his God is standing here.",
+        "detailed_desc": "This waiter almost makes you feel like you should drop to your knees and begin to worship your God. Naaah.",
+        "level": 23,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+12"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 450
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 19
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 80000,
+        "inventory": [
+            {
+                "object_id": "northern-midgaard-main-city-3002"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3004"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3024"
+            }
+        ]
+    }
+}

@@ -1,0 +1,42 @@
+{
+    "version": 1,
+    "id": "new-thalos-5446",
+    "spec": {
+        "aliases": [
+            "lugh",
+            "librarian"
+        ],
+        "short_desc": "Lugh the Librarian",
+        "long_desc": "Lugh the Librarian sits behind a desk.",
+        "detailed_desc": "The huge hulking mass rises as someone asks him a question.",
+        "level": 10,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d6+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 530
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 19
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "memory"
+        ],
+        "exp_reward": 23000
+    }
+}

@@ -1,0 +1,87 @@
+{
+    "version": 1,
+    "id": "rome-12034",
+    "spec": {
+        "aliases": [
+            "shopkeeper"
+        ],
+        "short_desc": "Froboz' shopkeeper",
+        "long_desc": "Froboz' shopkeeper is here, minding the store.",
+        "detailed_desc": "The shopkeeper is an older man in his middle to late fifties and looks like he enjoys the quiet life. There is a long scar running from the edge of his mouth to his right ear, making it look like he is always smiling.",
+        "level": 23,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+14"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 440
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 80000,
+        "inventory": [
+            {
+                "object_id": "northern-midgaard-main-city-3050"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3051"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3052"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3053"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3054"
+            },
+            {
+                "object_id": "rome-12030"
+            },
+            {
+                "object_id": "rome-12038"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "feet",
+                "object_id": "rome-12008"
+            }
+        ]
+    }
+}

@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3059",
+    "spec": {
+        "aliases": [
+            "keeper",
+            "peacekeeper"
+        ],
+        "short_desc": "the Peacekeeper",
+        "long_desc": "A Peacekeeper is standing here, ready to jump in at the first sign of trouble.",
+        "detailed_desc": "He looks very strong and wise. Looks like he doesn't answer to ANYONE.",
+        "level": 17,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d3+13"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 255
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 17
+            }
+        ],
+        "flags": [
+            "aware",
+            "stay_zone",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 30000
+    }
+}

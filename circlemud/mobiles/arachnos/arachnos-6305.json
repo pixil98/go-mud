@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "arachnos-6305",
+    "spec": {
+        "aliases": [
+            "wasp",
+            "queen"
+        ],
+        "short_desc": "the queen wasp",
+        "long_desc": "The queen wasp is here, thinking how tasty you look.",
+        "detailed_desc": "You notice a glazed look in her eyes.",
+        "level": 14,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 184
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 13
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive"
+        ],
+        "exp_reward": 18000
+    }
+}

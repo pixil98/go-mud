@@ -1,0 +1,62 @@
+{
+    "version": 1,
+    "id": "rome-12013",
+    "spec": {
+        "aliases": [
+            "page"
+        ],
+        "short_desc": "the page",
+        "long_desc": "A page stands here, waiting to run an errand.",
+        "detailed_desc": "You see a young boy who looks very strong and very fast. He has the look of a scholar about him.",
+        "level": 6,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 93
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 5
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 1600,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3020"
+            },
+            {
+                "slot": "feet",
+                "object_id": "rome-12008"
+            },
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3020"
+            },
+            {
+                "slot": "feet",
+                "object_id": "rome-12008"
+            }
+        ]
+    }
+}

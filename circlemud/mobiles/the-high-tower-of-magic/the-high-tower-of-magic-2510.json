@@ -1,0 +1,59 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2510",
+    "spec": {
+        "aliases": [
+            "jailor",
+            "mage"
+        ],
+        "short_desc": "the Jailor",
+        "long_desc": "The Jailor is here enjoying a comfortable nap.",
+        "detailed_desc": "He looks rather dirty.",
+        "level": 17,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d5+10"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 459
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 15
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 12000,
+        "equipment": [
+            {
+                "slot": "hold",
+                "object_id": "the-high-tower-of-magic-2522"
+            }
+        ]
+    }
+}

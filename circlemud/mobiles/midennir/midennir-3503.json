@@ -1,0 +1,62 @@
+{
+    "version": 1,
+    "id": "midennir-3503",
+    "spec": {
+        "aliases": [
+            "goblin",
+            "leader"
+        ],
+        "short_desc": "the goblin leader",
+        "long_desc": "The goblin leader surveys the room.",
+        "detailed_desc": "The leader doesn't look too happy that you have found him here. He grabs for his shortsword and lunges for your neck.",
+        "level": 9,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d5+3"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 132
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 10
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 8000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "midennir-3504"
+            }
+        ]
+    }
+}

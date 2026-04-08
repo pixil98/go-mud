@@ -1,0 +1,51 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5008",
+    "spec": {
+        "aliases": [
+            "nomad",
+            "warrior"
+        ],
+        "short_desc": "the nomad warrior",
+        "long_desc": "A proud nomad warrior stands here.",
+        "detailed_desc": "This warrior is dressed in typical nomad clothing and looks quite mean.",
+        "level": 10,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 111
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 9
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 7000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "the-great-eastern-desert-5018"
+            }
+        ]
+    }
+}

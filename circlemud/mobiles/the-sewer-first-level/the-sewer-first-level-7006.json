@@ -1,0 +1,48 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7006",
+    "spec": {
+        "aliases": [
+            "snake"
+        ],
+        "short_desc": "the snake",
+        "long_desc": "The snake slithers towards you. It looks very mean.",
+        "detailed_desc": "This snake is of a variety that you do not recall seeing recently. It has near black skin with small white diamond shaped spots all over its head and upper body. A thin green stripe stretches along each side of its body.",
+        "level": 4,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 7
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d9"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 50
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 4
+            }
+        ],
+        "flags": [
+            "aggressive"
+        ],
+        "exp_reward": 1000
+    }
+}

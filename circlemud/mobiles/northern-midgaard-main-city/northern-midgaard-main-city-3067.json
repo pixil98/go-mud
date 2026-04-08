@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3067",
+    "spec": {
+        "aliases": [
+            "cityguard",
+            "guard"
+        ],
+        "short_desc": "the cityguard",
+        "long_desc": "A cityguard is here, guarding the gate.",
+        "detailed_desc": "A big, strong, helpful, trustworthy guard.",
+        "level": 10,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 135
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 10
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "stay_zone",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 9000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            }
+        ]
+    }
+}

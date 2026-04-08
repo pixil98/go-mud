@@ -1,0 +1,59 @@
+{
+    "version": 1,
+    "id": "new-thalos-5450",
+    "spec": {
+        "aliases": [
+            "sultan"
+        ],
+        "short_desc": "the Sultan",
+        "long_desc": "The Sultan rests here on his throne.",
+        "detailed_desc": "You see a large wealthy man in red robes smiling at you.",
+        "level": 10,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 866
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 15
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "memory"
+        ],
+        "exp_reward": 25000
+    }
+}

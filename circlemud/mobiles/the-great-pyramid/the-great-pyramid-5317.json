@@ -1,0 +1,84 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5317",
+    "spec": {
+        "aliases": [
+            "ramses",
+            "mummy"
+        ],
+        "short_desc": "Ramses the Damned",
+        "long_desc": "You have awakened the mighty servant to the pharoahs, Ramses.",
+        "detailed_desc": "As your light spills over his face and body, you can see his features begin to fill out, swell, and harden, until an apparently healthy man stands before you, clad only in the raiments he was left in when he last slept. His hair is a soft black, his skin a deep chocolate, and his tall frame is totally still, his chest not even moving to breathe.",
+        "level": 38,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -18
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "8d5+40"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 1824
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 38
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "memory"
+        ],
+        "exp_reward": 1000000,
+        "inventory": [
+            {
+                "object_id": "the-great-pyramid-5319"
+            },
+            {
+                "object_id": "the-great-pyramid-5320"
+            },
+            {
+                "object_id": "the-great-pyramid-5321"
+            },
+            {
+                "object_id": "the-great-pyramid-5321"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "head",
+                "object_id": "the-great-pyramid-5322"
+            }
+        ]
+    }
+}

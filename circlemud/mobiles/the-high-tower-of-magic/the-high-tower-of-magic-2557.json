@@ -1,0 +1,66 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2557",
+    "spec": {
+        "aliases": [
+            "apprentice",
+            "black"
+        ],
+        "short_desc": "the black robed apprentice",
+        "long_desc": "A black robed apprentice jumps from the shadows and attacks.",
+        "detailed_desc": "She bears a wicked looking scar down the side of her face, though once she must have been beautiful, now the scar combined with what seems to be a permanent scowl make her looks quite fearsome.",
+        "level": 20,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d6+6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 600
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 18
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 27800,
+        "equipment": [
+            {
+                "slot": "body",
+                "object_id": "the-high-tower-of-magic-2578"
+            },
+            {
+                "slot": "wrist",
+                "object_id": "the-high-tower-of-magic-2579"
+            }
+        ]
+    }
+}

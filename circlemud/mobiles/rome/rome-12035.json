@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "rome-12035",
+    "spec": {
+        "aliases": [
+            "executioner"
+        ],
+        "short_desc": "the executioner",
+        "long_desc": "The executioner stands here, waiting to torture some sorry soul.",
+        "detailed_desc": "You see a burly man who is wearing a black hood that obscures his face. He has a very sadistic attitude and clearly loves his work.",
+        "level": 20,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d2+14"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 272
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 19
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "aggressive"
+        ],
+        "exp_reward": 40000,
+        "inventory": [
+            {
+                "object_id": "rome-12031"
+            }
+        ]
+    }
+}

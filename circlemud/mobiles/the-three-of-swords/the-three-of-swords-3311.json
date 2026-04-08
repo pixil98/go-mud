@@ -1,0 +1,56 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3311",
+    "spec": {
+        "aliases": [
+            "hunter"
+        ],
+        "short_desc": "the hunter",
+        "long_desc": "A hunter walks through the town streets on his own time.",
+        "detailed_desc": "He looks mean, as if the very personality of the mountains had infected him with hardness. His stride is purposeful, his face weathered, his eyes cold and dark. Others are standing out of his way as he walks on by.",
+        "level": 11,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -20
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 148
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 10
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "stay_zone",
+            "helper"
+        ],
+        "exp_reward": 11000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "the-three-of-swords-3317"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-three-of-swords-3317"
+            }
+        ]
+    }
+}

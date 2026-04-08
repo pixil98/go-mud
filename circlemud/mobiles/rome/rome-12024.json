@@ -1,0 +1,66 @@
+{
+    "version": 1,
+    "id": "rome-12024",
+    "spec": {
+        "aliases": [
+            "slimeball",
+            "slime",
+            "ball",
+            "green"
+        ],
+        "short_desc": "the slimeball",
+        "long_desc": "A green ball of slime is hanging over you, oozing downward.",
+        "detailed_desc": "There is a green 'ball' of slime oozing from the coating on the walls.",
+        "level": 12,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 157
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 11
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "aggressive"
+        ],
+        "exp_reward": 13000,
+        "inventory": [
+            {
+                "object_id": "rome-12030"
+            }
+        ]
+    }
+}

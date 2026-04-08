@@ -22,6 +22,9 @@
                 ],
                 "description": "The gate has been permanently rusted shut and is further secured by a large chain and padlock. Don't even bother THINKING about trying to open it."
             }
+        ],
+        "mobile_spawns": [
+            "rome-12018"
         ]
     }
 }

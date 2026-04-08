@@ -1,0 +1,59 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5306",
+    "spec": {
+        "aliases": [
+            "magic",
+            "carpet"
+        ],
+        "short_desc": "the magic carpet",
+        "long_desc": "A small woven carpet lies under your feet.",
+        "detailed_desc": "The carpet is simply beautiful, made from intricately woven silken material. It seems to rise up at the touch of your feet. Wait, it is rising, a few feet above the ground! In fact, it seems to be ALIVE!",
+        "level": 9,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 7
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d5+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 171
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 9
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "memory"
+        ],
+        "exp_reward": 6000
+    }
+}

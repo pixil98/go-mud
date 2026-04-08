@@ -26,6 +26,10 @@
                 ],
                 "description": "The giant emerald is flawless, and must be incredibly valuable."
             }
+        ],
+        "mobile_spawns": [
+            "the-high-tower-of-magic-2563",
+            "the-high-tower-of-magic-2564"
         ]
     }
 }

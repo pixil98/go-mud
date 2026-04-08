@@ -17,6 +17,9 @@
                 "room_id": "southern-part-of-midgaard-3112",
                 "description": "You see the western park entrance."
             }
-        }
+        },
+        "mobile_spawns": [
+            "southern-part-of-midgaard-3123"
+        ]
     }
 }

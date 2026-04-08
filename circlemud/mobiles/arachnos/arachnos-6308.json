@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "id": "arachnos-6308",
+    "spec": {
+        "aliases": [
+            "slave",
+            "human"
+        ],
+        "short_desc": "the slave",
+        "long_desc": "A human slave of Arachnos works here relentlessly.",
+        "detailed_desc": "The slave does not mind you, but will fight like a warrior if attacked. He serves the spider Empress, Arachnos, though whether it is by choice or because he was beguiled, you are not fully certain.",
+        "level": 11,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d7+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 142
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 12
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "stay_zone",
+            "memory"
+        ],
+        "exp_reward": 13500
+    }
+}

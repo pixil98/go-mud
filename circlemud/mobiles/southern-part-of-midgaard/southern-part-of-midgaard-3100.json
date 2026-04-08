@@ -1,0 +1,60 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3100",
+    "spec": {
+        "aliases": [
+            "maid"
+        ],
+        "short_desc": "the Maid",
+        "long_desc": "The Maid is waiting for your order.",
+        "detailed_desc": "She is very beautiful with golden hair, and deep blue eyes. A good reason for coming here more often, you think to yourself.",
+        "level": 33,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+22"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 80000,
+        "inventory": [
+            {
+                "object_id": "southern-part-of-midgaard-3100"
+            },
+            {
+                "object_id": "southern-part-of-midgaard-3101"
+            },
+            {
+                "object_id": "southern-part-of-midgaard-3102"
+            }
+        ]
+    }
+}

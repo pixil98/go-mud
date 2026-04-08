@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1510",
+    "spec": {
+        "aliases": [
+            "judas",
+            "escariot",
+            "apostle"
+        ],
+        "short_desc": "Judas Escariot",
+        "long_desc": "The wayward apostle approaches slowly, extending his arms in a hug.",
+        "detailed_desc": "You see nothing but the sadness of a man who would sell his own God.",
+        "level": 25,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d6+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 700
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 23
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger"
+        ],
+        "exp_reward": 145000
+    }
+}

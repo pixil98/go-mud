@@ -15,6 +15,9 @@
             "west": {
                 "room_id": "mines-of-moria-4125"
             }
-        }
+        },
+        "mobile_spawns": [
+            "mines-of-moria-4103"
+        ]
     }
 }

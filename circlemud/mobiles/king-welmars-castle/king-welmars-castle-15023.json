@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15023",
+    "spec": {
+        "aliases": [
+            "cook"
+        ],
+        "short_desc": "the cook",
+        "long_desc": "There is a cook here, making himself busy with a pot.",
+        "detailed_desc": "A junior cook, eager to do the Chef's bidding.",
+        "level": 4,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 60
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 3
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "wimpy"
+        ],
+        "exp_reward": 600,
+        "inventory": [
+            {
+                "object_id": "king-welmars-castle-15010"
+            }
+        ]
+    }
+}

@@ -1,0 +1,54 @@
+{
+    "version": 1,
+    "id": "new-thalos-5478",
+    "spec": {
+        "aliases": [
+            "pegasus"
+        ],
+        "short_desc": "the pegasus",
+        "long_desc": "The pegasus stands here, flexing its wings.",
+        "detailed_desc": "A magnificant winged steed, this horse looks much like the Arabian thoroughbreds you have seen in stables.",
+        "level": 10,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "waterwalk"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d10+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 705
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 16
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "stay_zone",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 6500
+    }
+}

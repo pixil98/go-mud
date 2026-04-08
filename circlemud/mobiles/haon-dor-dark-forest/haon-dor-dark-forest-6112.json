@@ -1,0 +1,60 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6112",
+    "spec": {
+        "aliases": [
+            "dragon",
+            "green"
+        ],
+        "short_desc": "the green dragon",
+        "long_desc": "A huge green dragon is here, its narrow yellow eyes glowing with rage.",
+        "detailed_desc": "This enormous winged serpent has dark green scales covering most of its colossal body. Numerous holes in its heavy wings tell of many fights as does the nicks in the horns on its head. It smells as disgusting as only dragons do.",
+        "level": 20,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+9"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 260
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 19
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 40000,
+        "inventory": [
+            {
+                "object_id": "haon-dor-dark-forest-6108"
+            },
+            {
+                "object_id": "haon-dor-dark-forest-6110"
+            },
+            {
+                "object_id": "haon-dor-dark-forest-6112"
+            }
+        ]
+    }
+}

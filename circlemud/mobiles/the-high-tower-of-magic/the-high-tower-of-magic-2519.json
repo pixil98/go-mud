@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2519",
+    "spec": {
+        "aliases": [
+            "kitten"
+        ],
+        "short_desc": "the small kitten",
+        "long_desc": "A small kitten is here meowing in terror.",
+        "detailed_desc": "The little ball of fur looks very unhappy. Singed fur and a few minor burns mark its mottled coat.",
+        "level": 1,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d4+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 11
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 11
+    }
+}

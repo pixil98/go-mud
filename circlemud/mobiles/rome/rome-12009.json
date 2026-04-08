@@ -1,0 +1,73 @@
+{
+    "version": 1,
+    "id": "rome-12009",
+    "spec": {
+        "aliases": [
+            "healer"
+        ],
+        "short_desc": "the healer",
+        "long_desc": "A healer is standing here.",
+        "detailed_desc": "You see a young man, still learning about magical healing, wearing a white coat and using a stethoscope.",
+        "level": 14,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d7+6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 184
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 13
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "memory"
+        ],
+        "exp_reward": 18000,
+        "inventory": [
+            {
+                "object_id": "rome-12028"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "body",
+                "object_id": "northern-midgaard-main-city-3043"
+            },
+            {
+                "slot": "shield",
+                "object_id": "northern-midgaard-main-city-3042"
+            },
+            {
+                "slot": "neck",
+                "object_id": "rome-12004"
+            }
+        ]
+    }
+}

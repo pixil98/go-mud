@@ -26,6 +26,9 @@
                 ],
                 "description": "Looks very comfortable indeed."
             }
+        ],
+        "mobile_spawns": [
+            "king-welmars-castle-15016"
         ]
     }
 }

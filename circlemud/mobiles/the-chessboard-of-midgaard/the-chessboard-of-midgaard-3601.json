@@ -1,0 +1,118 @@
+{
+    "version": 1,
+    "id": "the-chessboard-of-midgaard-3601",
+    "spec": {
+        "aliases": [
+            "white",
+            "pawn"
+        ],
+        "short_desc": "the Pawn of the White Court",
+        "long_desc": "You see a pawn standing here waiting for orders.",
+        "detailed_desc": "The White Pawn looks quite like a small knight without his powerful steed. His armor is spotless and white. He stands ready to give his life for the Crown.",
+        "level": 6,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 70
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 18
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 1000,
+        "equipment": [
+            {
+                "slot": "body",
+                "object_id": "the-chessboard-of-midgaard-3601"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-chessboard-of-midgaard-3603"
+            },
+            {
+                "slot": "body",
+                "object_id": "the-chessboard-of-midgaard-3601"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-chessboard-of-midgaard-3603"
+            },
+            {
+                "slot": "body",
+                "object_id": "the-chessboard-of-midgaard-3601"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-chessboard-of-midgaard-3603"
+            },
+            {
+                "slot": "body",
+                "object_id": "the-chessboard-of-midgaard-3601"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-chessboard-of-midgaard-3603"
+            },
+            {
+                "slot": "body",
+                "object_id": "the-chessboard-of-midgaard-3601"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-chessboard-of-midgaard-3603"
+            },
+            {
+                "slot": "body",
+                "object_id": "the-chessboard-of-midgaard-3601"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-chessboard-of-midgaard-3603"
+            },
+            {
+                "slot": "body",
+                "object_id": "the-chessboard-of-midgaard-3601"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-chessboard-of-midgaard-3603"
+            },
+            {
+                "slot": "body",
+                "object_id": "the-chessboard-of-midgaard-3601"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-chessboard-of-midgaard-3603"
+            }
+        ]
+    }
+}

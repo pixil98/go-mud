@@ -1,6 +1,7 @@
 package command
 
 import (
+	"context"
 	"fmt"
 	"time"
 
@@ -11,6 +12,15 @@ import (
 	"github.com/pixil98/go-mud/internal/messaging"
 	"github.com/pixil98/go-service"
 )
+
+// mobCommandAdapter wraps a command handler to satisfy game.MobCommander.
+type mobCommandAdapter struct {
+	handler *commands.Handler
+}
+
+func (a *mobCommandAdapter) ExecMobCommand(ctx context.Context, mob *game.MobileInstance, cmd string, args ...string) error {
+	return a.handler.Exec(ctx, mob, cmd, args...)
+}
 
 // BuildWorkers assembles and returns all service workers from the config.
 func BuildWorkers(config interface{}) (service.WorkerList, error) {
@@ -43,14 +53,6 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 		return nil, fmt.Errorf("creating world state: %w", err)
 	}
 
-	// Spawn initial mobiles and objects in all zones
-	for _, zi := range world.Instances() {
-		err := zi.Reset(true, world.Instances())
-		if err != nil {
-			return nil, err
-		}
-	}
-
 	// Create publisher for command handlers
 	publisher := messaging.NewNatsPublisher(natsServer)
 
@@ -63,6 +65,12 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 		return nil, fmt.Errorf("compiling commands: %w", err)
 	}
 	combatManager.SetAbilityHandler(cmdHandler)
+
+	// Wire mob commander and spawn initial mobiles/objects
+	world.SetMobCommander(&mobCommandAdapter{handler: cmdHandler})
+	if err := world.ResetAll(); err != nil {
+		return nil, err
+	}
 
 	// Create player manager
 	playerManager, err := cfg.PlayerManager.BuildPlayerManager(cmdHandler, world, dict)

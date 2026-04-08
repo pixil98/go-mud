@@ -14,6 +14,9 @@
                 "room_id": "the-city-of-thalos-5217",
                 "description": "A strong stench emanates from the meat stand next to you."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-city-of-thalos-5201"
+        ]
     }
 }

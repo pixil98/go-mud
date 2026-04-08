@@ -14,6 +14,9 @@
                 "room_id": "newbie-zone-18608",
                 "description": "An open field near The Great Field of Midgaard can be seen."
             }
-        }
+        },
+        "mobile_spawns": [
+            "newbie-zone-18606"
+        ]
     }
 }

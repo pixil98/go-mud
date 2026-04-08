@@ -1,0 +1,65 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2563",
+    "spec": {
+        "aliases": [
+            "cat",
+            "calico",
+            "familiar"
+        ],
+        "short_desc": "the calico cat",
+        "long_desc": "A large calico cat is lounging about here.",
+        "detailed_desc": "It looks incredibly large for a cat, no doubt a giant of its species. A beautiful jewel encrusted collar about its neck is its only adornment.",
+        "level": 25,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "sneak"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -9
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "5d5+10"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 875
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 19
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "stay_zone"
+        ],
+        "exp_reward": 30000,
+        "equipment": [
+            {
+                "slot": "neck",
+                "object_id": "the-high-tower-of-magic-2586"
+            }
+        ]
+    }
+}

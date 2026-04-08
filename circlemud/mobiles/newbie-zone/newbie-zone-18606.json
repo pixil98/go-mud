@@ -1,0 +1,42 @@
+{
+    "version": 1,
+    "id": "newbie-zone-18606",
+    "spec": {
+        "aliases": [
+            "crawler",
+            "creepy",
+            "bug",
+            "thing"
+        ],
+        "short_desc": "the creepy crawler",
+        "long_desc": "A creepy little crawling thing is scuttling along the floor at your feet.",
+        "detailed_desc": "Yuck! If they'd ever clean this place maybe it wouldn't attract vermin like this disgusting, little, six-legged, brown bug.",
+        "level": 1,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 12
+            }
+        ],
+        "flags": [
+            "stay_zone"
+        ],
+        "exp_reward": 100
+    }
+}

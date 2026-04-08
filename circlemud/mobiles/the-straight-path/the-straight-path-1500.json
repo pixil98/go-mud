@@ -1,0 +1,53 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1500",
+    "spec": {
+        "aliases": [
+            "allah",
+            "god",
+            "yahweh"
+        ],
+        "short_desc": "Allah",
+        "long_desc": "You resist the urge to avert your eyes from the sight of the one true God.",
+        "detailed_desc": "The sight is for each man a different, a mirror into the true nature of each person's body and soul. At first a proud, bitter old man, but just as easily a gentle extended hand, a smile, and gardens... gardens.",
+        "level": 30,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "8d8+9"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 3000
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 30
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "memory"
+        ],
+        "exp_reward": 400000
+    }
+}

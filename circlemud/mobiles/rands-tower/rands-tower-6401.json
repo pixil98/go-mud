@@ -1,0 +1,57 @@
+{
+    "version": 1,
+    "id": "rands-tower-6401",
+    "spec": {
+        "aliases": [
+            "demon",
+            "decay"
+        ],
+        "short_desc": "the Demon of Decay",
+        "long_desc": "A cloaked and clawed demon of decay comes at you viciously!",
+        "detailed_desc": "This demon has pure malevolence for anything living. Oops! You're living! I guess that means you!",
+        "level": 12,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d7+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 160
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 11
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "aggressive",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 10000
+    }
+}

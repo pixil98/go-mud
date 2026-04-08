@@ -14,6 +14,9 @@
                 "room_id": "the-city-of-thalos-5222",
                 "description": "Next to you is a stand full of ruined clothes and rugs."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-city-of-thalos-5201"
+        ]
     }
 }

@@ -1,0 +1,72 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7202",
+    "spec": {
+        "aliases": [
+            "mindflayer",
+            "junior",
+            "mind"
+        ],
+        "short_desc": "the junior mindflayer",
+        "long_desc": "The junior mindflayer is here, watching you carefully from the corner.",
+        "detailed_desc": "This mindflayer is six feet high. It has a small mace in its belt, and is dressed in purple and black cloth. It has four small tentacles in the center of its head.",
+        "level": 6,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d4+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 85
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 5
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "aware",
+            "wimpy",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 1500,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "the-sewer-maze-7202"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-sewer-maze-7202"
+            }
+        ]
+    }
+}

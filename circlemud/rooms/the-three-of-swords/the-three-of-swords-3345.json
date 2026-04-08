@@ -9,6 +9,9 @@
             "north": {
                 "room_id": "the-three-of-swords-3343"
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-three-of-swords-3301"
+        ]
     }
 }

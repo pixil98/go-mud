@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4102",
+    "spec": {
+        "aliases": [
+            "snake"
+        ],
+        "short_desc": "the snake",
+        "long_desc": "A large green snake is here, looks like a guardian for an evil force.",
+        "detailed_desc": "You see a evil creature.",
+        "level": 10,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d5+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 110
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 12
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "aggressive"
+        ],
+        "exp_reward": 9000,
+        "inventory": [
+            {
+                "object_id": "mines-of-moria-4103"
+            },
+            {
+                "object_id": "mines-of-moria-4104"
+            }
+        ]
+    }
+}

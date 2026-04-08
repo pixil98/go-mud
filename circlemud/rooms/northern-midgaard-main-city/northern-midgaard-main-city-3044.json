@@ -14,6 +14,9 @@
                 "room_id": "northern-midgaard-main-city-3043",
                 "description": "The alley leads west."
             }
-        }
+        },
+        "mobile_spawns": [
+            "northern-midgaard-main-city-3065"
+        ]
     }
 }

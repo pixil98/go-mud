@@ -1,0 +1,61 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2533",
+    "spec": {
+        "aliases": [
+            "assistant",
+            "scribe"
+        ],
+        "short_desc": "the scribe's assistant",
+        "long_desc": "The scribe's assistant is here folding parchments.",
+        "detailed_desc": "You can tell that he isn't trusted with the more important documents, since those ones are rolled and sealed with wax.",
+        "level": 16,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d4+6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 416
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 14
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 21300,
+        "inventory": [
+            {
+                "object_id": "the-high-tower-of-magic-2553"
+            }
+        ]
+    }
+}

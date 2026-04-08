@@ -22,6 +22,9 @@
                 "room_id": "the-chessboard-of-midgaard-3614",
                 "description": "A white square lies to the west."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-chessboard-of-midgaard-3600"
+        ]
     }
 }

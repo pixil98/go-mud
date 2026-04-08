@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "id": "rome-12001",
+    "spec": {
+        "aliases": [
+            "scorekeeper"
+        ],
+        "short_desc": "the scorekeeper",
+        "long_desc": "A scorekeeper has one eye on his stopwatch and the other on a clipboard.",
+        "detailed_desc": "The scorekeeper is a young man of about 25 years of age and is very intently studying his clipboard.",
+        "level": 7,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d4+3"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 95
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 6
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 2250,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3021"
+            },
+            {
+                "slot": "shield",
+                "object_id": "northern-midgaard-main-city-3042"
+            }
+        ]
+    }
+}

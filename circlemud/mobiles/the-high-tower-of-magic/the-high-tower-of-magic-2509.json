@@ -1,0 +1,52 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2509",
+    "spec": {
+        "aliases": [
+            "prisoner"
+        ],
+        "short_desc": "the prisoner",
+        "long_desc": "A prisoner is chained to the wall here.",
+        "detailed_desc": "Though his clothes are all in rags, you can see that at one time they must have been fine garments. A metal muzzle has been fitted over the poor wretch's mouth, whether to keep him from screaming, or to silence his spell casting you cannot tell. He looks quite mad, no doubt he has been mistreated horribly.",
+        "level": 16,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4+9"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 120
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 14
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 1800,
+        "equipment": [
+            {
+                "slot": "waist",
+                "object_id": "the-high-tower-of-magic-2548"
+            }
+        ]
+    }
+}

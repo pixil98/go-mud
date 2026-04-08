@@ -43,6 +43,11 @@
                 ],
                 "description": "The seal of the Emperor is mounted above the judge's stand."
             }
+        ],
+        "mobile_spawns": [
+            "rome-12014",
+            "rome-12028",
+            "rome-12029"
         ]
     }
 }

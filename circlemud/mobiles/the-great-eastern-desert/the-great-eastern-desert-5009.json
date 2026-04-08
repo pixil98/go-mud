@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5009",
+    "spec": {
+        "aliases": [
+            "slave",
+            "young"
+        ],
+        "short_desc": "the slave",
+        "long_desc": "A young slave sits here staring at you with pleading eyes.",
+        "detailed_desc": "She looks quite thin and weak.",
+        "level": 3,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 9
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 29
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "wimpy"
+        ],
+        "exp_reward": 300
+    }
+}

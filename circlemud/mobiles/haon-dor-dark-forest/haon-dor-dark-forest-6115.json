@@ -1,0 +1,86 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6115",
+    "spec": {
+        "aliases": [
+            "shargugh",
+            "brownie"
+        ],
+        "short_desc": "Shargugh",
+        "long_desc": "Shargugh the Forest Brownie is here, grinning broadly at you.",
+        "detailed_desc": "This little fellow is only three foot tall with wild matted brown hair and long tangled brown beard. He wears ragged brown and green clothing and looks as if he is having great fun.",
+        "level": 10,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "invisible"
+            },
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "grant",
+                "key": "waterwalk"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "sneak"
+            },
+            {
+                "type": "grant",
+                "key": "hide"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 59
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 19
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "stay_zone",
+            "wimpy",
+            "memory"
+        ],
+        "exp_reward": 11000,
+        "equipment": [
+            {
+                "slot": "finger",
+                "object_id": "haon-dor-dark-forest-6114"
+            }
+        ]
+    }
+}

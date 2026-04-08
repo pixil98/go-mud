@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6009",
+    "spec": {
+        "aliases": [
+            "robin"
+        ],
+        "short_desc": "the robin",
+        "long_desc": "A robin is hopping around looking for bugs to eat.",
+        "detailed_desc": "The robin looks quite intent on finding a bug or worm to eat.",
+        "level": 0,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 9
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 10
+            }
+        ],
+        "flags": [
+            "stay_zone"
+        ],
+        "exp_reward": 25
+    }
+}

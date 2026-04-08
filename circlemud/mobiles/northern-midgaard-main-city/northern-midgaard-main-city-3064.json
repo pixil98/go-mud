@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3064",
+    "spec": {
+        "aliases": [
+            "drunk"
+        ],
+        "short_desc": "the drunk",
+        "long_desc": "A singing, happy Drunk.",
+        "detailed_desc": "A drunk who seems to be too happy, and to carry too much money.",
+        "level": 2,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 8
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 34
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 1
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 200
+    }
+}

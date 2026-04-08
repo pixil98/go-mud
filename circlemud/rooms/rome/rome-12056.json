@@ -31,6 +31,9 @@
                 ],
                 "description": "The path is a little muddy, possibly due to a recent thundershower."
             }
+        ],
+        "mobile_spawns": [
+            "rome-12032"
         ]
     }
 }

@@ -15,6 +15,12 @@
         },
         "flags": [
             "nomob"
+        ],
+        "mobile_spawns": [
+            "new-thalos-5425",
+            "new-thalos-5426",
+            "new-thalos-5427",
+            "new-thalos-5428"
         ]
     }
 }

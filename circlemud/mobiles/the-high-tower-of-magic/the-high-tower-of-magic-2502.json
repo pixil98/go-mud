@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2502",
+    "spec": {
+        "aliases": [
+            "edgar"
+        ],
+        "short_desc": "Edgar",
+        "long_desc": "Edgar the Human Swordpupil is standing here, looking quite lost.",
+        "detailed_desc": "Edgar says 'pardon me, can you tell me where to buy cups?' You see before you, one of Midgaard's finest fighting elite, the mighty bunny slayer himself, Edgar the Horrible!",
+        "level": 1,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 37
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "wimpy"
+        ],
+        "exp_reward": 100
+    }
+}

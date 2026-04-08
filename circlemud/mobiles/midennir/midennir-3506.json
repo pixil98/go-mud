@@ -1,0 +1,57 @@
+{
+    "version": 1,
+    "id": "midennir-3506",
+    "spec": {
+        "aliases": [
+            "bard"
+        ],
+        "short_desc": "the bard",
+        "long_desc": "A sullen bard is here, drinking away his problems.",
+        "detailed_desc": "You can smell the alcohol on his breath from across the room. This poor bard has been sitting here quite a while, drinking himself into oblivion.",
+        "level": 8,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 122
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 7
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "stay_zone",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 3750,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "midennir-3502"
+            }
+        ]
+    }
+}

@@ -18,6 +18,9 @@
                 "room_id": "rome-12027",
                 "description": "It looks like a nobleman's estate. We are talking RICH nobleman's estate."
             }
-        }
+        },
+        "mobile_spawns": [
+            "rome-12017"
+        ]
     }
 }

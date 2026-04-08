@@ -1,0 +1,74 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6511",
+    "spec": {
+        "aliases": [
+            "dwarf"
+        ],
+        "short_desc": "the Dwarf",
+        "long_desc": "A dwarf is here.",
+        "detailed_desc": "",
+        "level": 6,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d3+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 85
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 5
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 1500,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "the-sewer-maze-7211"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-sewer-maze-7211"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-sewer-maze-7211"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-dwarven-kingdom-6504"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-sewer-maze-7211"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-sewer-maze-7211"
+            }
+        ]
+    }
+}

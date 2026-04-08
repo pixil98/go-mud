@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5205",
+    "spec": {
+        "aliases": [
+            "mimic",
+            "pottery",
+            "shards"
+        ],
+        "short_desc": "the mimic",
+        "long_desc": "Some broken shards of pottery lie strewn about the floor.",
+        "detailed_desc": "The pottery shards appear to have been part of a large vase at one point, probably before the city fell.",
+        "level": 11,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d5+3"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 108
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 6
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 9800,
+        "equipment": [
+            {
+                "slot": "hold",
+                "object_id": "the-city-of-thalos-5214"
+            }
+        ]
+    }
+}

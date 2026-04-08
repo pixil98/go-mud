@@ -1,0 +1,56 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15007",
+    "spec": {
+        "aliases": [
+            "jochem",
+            "guard",
+            "royal"
+        ],
+        "short_desc": "Jochem",
+        "long_desc": "Jochem the Royal Guard sits here, off duty.",
+        "detailed_desc": "As all members of the Guard, Jochem wears the chain mail required of them as uniform. He seems very well trained, and moves like a fighter who has seen more than one battle, and longs to see the next!",
+        "level": 13,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 168
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 13
+            }
+        ],
+        "flags": [
+            "stay_zone"
+        ],
+        "exp_reward": 16000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "body",
+                "object_id": "king-welmars-castle-15015"
+            }
+        ]
+    }
+}

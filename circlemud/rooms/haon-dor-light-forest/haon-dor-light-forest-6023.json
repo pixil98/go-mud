@@ -48,6 +48,9 @@
                 ],
                 "description": "Many carrion birds are circling to the north, you presume they are waiting for their turn to feast on a corpse."
             }
+        ],
+        "mobile_spawns": [
+            "haon-dor-light-forest-6004"
         ]
     }
 }

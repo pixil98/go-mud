@@ -1,0 +1,56 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6209",
+    "spec": {
+        "aliases": [
+            "orc",
+            "mutant",
+            "mutated"
+        ],
+        "short_desc": "the mutant orc",
+        "long_desc": "A horribly mutated orc stands here, gibbering.",
+        "detailed_desc": "It doesn't even appear to have registered your arrival... it is just talking to itself. Its body is a twisted wreck of orc, man, beast, and what-not.",
+        "level": 6,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 100
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 75
+            }
+        ],
+        "exp_reward": 10,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "the-orc-enclave-6204"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-orc-enclave-6204"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-orc-enclave-6204"
+            }
+        ]
+    }
+}

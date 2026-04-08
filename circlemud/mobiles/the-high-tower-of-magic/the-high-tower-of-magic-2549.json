@@ -1,0 +1,66 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2549",
+    "spec": {
+        "aliases": [
+            "necromancer",
+            "master"
+        ],
+        "short_desc": "the Necromancer",
+        "long_desc": "The Necromancer is here raising undead servants.",
+        "detailed_desc": "Attired all in black, the Necromancer is tall and gangly, but still quite an imposing figure. A dark cowl shrouds most of his face, but two blazing embers which serve as eyes can be seen through the shadow. The Necromancer shrieks some obscenities and orders his minions to attack.",
+        "level": 25,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -8
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d7+7"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 875
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 35250,
+        "equipment": [
+            {
+                "slot": "neck",
+                "object_id": "the-high-tower-of-magic-2570"
+            },
+            {
+                "slot": "hold",
+                "object_id": "the-high-tower-of-magic-2571"
+            }
+        ]
+    }
+}

@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15016",
+    "spec": {
+        "aliases": [
+            "butler",
+            "james"
+        ],
+        "short_desc": "James the Butler",
+        "long_desc": "James the Butler is standing here, looking pompous.",
+        "detailed_desc": "The typical perfect butler: upper middle age, a bit bald and with an impressive belly.",
+        "level": 8,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d9+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 106
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 7
+            }
+        ],
+        "flags": [
+            "stay_zone"
+        ],
+        "exp_reward": 3750,
+        "inventory": [
+            {
+                "object_id": "king-welmars-castle-15009"
+            }
+        ]
+    }
+}

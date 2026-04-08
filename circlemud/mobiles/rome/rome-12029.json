@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "id": "rome-12029",
+    "spec": {
+        "aliases": [
+            "defendant"
+        ],
+        "short_desc": "the defendant",
+        "long_desc": "The defendant stands here, pleading her case.",
+        "detailed_desc": "She looks to be well organized and full of confidence.",
+        "level": 11,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d7+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 148
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 11
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 11000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3024"
+            },
+            {
+                "slot": "body",
+                "object_id": "northern-midgaard-main-city-3043"
+            }
+        ]
+    }
+}

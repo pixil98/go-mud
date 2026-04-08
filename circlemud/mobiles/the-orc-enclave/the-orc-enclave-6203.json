@@ -1,0 +1,92 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6203",
+    "spec": {
+        "aliases": [
+            "orc",
+            "hunter"
+        ],
+        "short_desc": "the orc hunter",
+        "long_desc": "An orc hunter looks at you with hateful eyes.",
+        "detailed_desc": "He looks angry, desperate, and maybe a little sick. His green skin is definitely mottled, and he seems to limp a little bit...",
+        "level": 7,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d3+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 98
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 6
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "helper"
+        ],
+        "exp_reward": 2250,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "the-orc-enclave-6204"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-orc-enclave-6204"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-orc-enclave-6204"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-orc-enclave-6204"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-orc-enclave-6204"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-orc-enclave-6204"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-orc-enclave-6204"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-orc-enclave-6204"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-orc-enclave-6204"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-orc-enclave-6204"
+            }
+        ]
+    }
+}

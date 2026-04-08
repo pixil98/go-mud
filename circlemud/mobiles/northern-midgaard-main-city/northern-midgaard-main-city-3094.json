@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3094",
+    "spec": {
+        "aliases": [
+            "wolf"
+        ],
+        "short_desc": "the wolf",
+        "long_desc": "A large, trained wolf is here.",
+        "detailed_desc": "The wolf looks like a strong, fearless fighter.",
+        "level": 4,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 59
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 3
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger"
+        ],
+        "exp_reward": 1600
+    }
+}

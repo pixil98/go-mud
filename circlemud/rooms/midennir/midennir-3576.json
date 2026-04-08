@@ -10,6 +10,9 @@
                 "room_id": "midennir-3574",
                 "description": "You may retreat south back to the common room."
             }
-        }
+        },
+        "mobile_spawns": [
+            "midennir-3505"
+        ]
     }
 }

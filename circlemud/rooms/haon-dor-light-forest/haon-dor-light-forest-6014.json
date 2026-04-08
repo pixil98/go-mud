@@ -34,6 +34,9 @@
                 ],
                 "description": "The crowns of the old trees leave the forest in an unreal twilight illumination."
             }
+        ],
+        "mobile_spawns": [
+            "haon-dor-light-forest-6005"
         ]
     }
 }

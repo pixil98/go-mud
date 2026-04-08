@@ -1,0 +1,43 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6017",
+    "spec": {
+        "aliases": [
+            "fish"
+        ],
+        "short_desc": "the fish",
+        "long_desc": "A fish is swimming about here.",
+        "detailed_desc": "The fish looks about the right size for a meal.",
+        "level": 0,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "waterwalk"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d3"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 10
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 30
+    }
+}

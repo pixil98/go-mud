@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6100",
+    "spec": {
+        "aliases": [
+            "warg",
+            "vicious"
+        ],
+        "short_desc": "the vicious warg",
+        "long_desc": "A vicious warg is here, snarling angrily at you.",
+        "detailed_desc": "It is an exceptionally large wolf with thick, black fur. Saliva is dripping quickly from its long, white fangs. It looks quite dangerous and very angry.",
+        "level": 5,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 72
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 4
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 1000
+    }
+}

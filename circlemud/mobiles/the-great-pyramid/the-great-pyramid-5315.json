@@ -1,0 +1,64 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5315",
+    "spec": {
+        "aliases": [
+            "androsphinx",
+            "sphinx"
+        ],
+        "short_desc": "the androsphinx",
+        "long_desc": "A mighty androsphinx tosses its lion-like mane.",
+        "detailed_desc": "The mighty androsphinx is a huge creature, with the body of a lion whose face is quite man-like, perhaps even handsome, and a massive pair of feathered wings. Tales are told of pharoahs that were rendered permanently deaf by the mighty roar of this sphinx.",
+        "level": 27,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d10+20"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 999
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 27
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "memory"
+        ],
+        "exp_reward": 200000,
+        "inventory": [
+            {
+                "object_id": "the-great-pyramid-5316"
+            }
+        ]
+    }
+}

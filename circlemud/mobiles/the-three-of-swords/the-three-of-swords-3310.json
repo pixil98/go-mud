@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3310",
+    "spec": {
+        "aliases": [
+            "innkeeper"
+        ],
+        "short_desc": "the innkeeper",
+        "long_desc": "An aged innkeeper greets you as you enter.",
+        "detailed_desc": "He is old and greying, but seems to have been able to keep his mental faculties through the years. A large woolen sweater is wrapped about him for warmth. His blue eyes dance with amusement as he notices your weapons, but he doesn't seem too terribly startled.",
+        "level": 10,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 20
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 135
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 9
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 9000
+    }
+}

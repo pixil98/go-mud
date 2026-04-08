@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-911",
+    "spec": {
+        "aliases": [
+            "crab",
+            "crusty"
+        ],
+        "short_desc": "the crusty crab",
+        "long_desc": "A crusty looking crab is crawling around here searching for food.",
+        "detailed_desc": "It looks like a crab... what more can be said?",
+        "level": 2,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 35
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            }
+        ],
+        "flags": [
+            "wimpy",
+            "aggressive"
+        ],
+        "exp_reward": 150
+    }
+}

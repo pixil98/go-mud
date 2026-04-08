@@ -32,6 +32,10 @@
                 ],
                 "description": "This is some really strange stuff! You have never seen anything this color before. Your legs are totally obscured from the knee down."
             }
+        ],
+        "mobile_spawns": [
+            "rome-12019",
+            "rome-12034"
         ]
     }
 }

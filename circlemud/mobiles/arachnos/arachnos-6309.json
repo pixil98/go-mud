@@ -1,0 +1,62 @@
+{
+    "version": 1,
+    "id": "arachnos-6309",
+    "spec": {
+        "aliases": [
+            "quasit"
+        ],
+        "short_desc": "the quasit",
+        "long_desc": "A quasit blinks in and out, grinning at you.",
+        "detailed_desc": "Demoniac in nature, but more mischievous. He twiddles his thumbs and creates a magical treasure!",
+        "level": 10,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "invisible"
+            },
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "grant",
+                "key": "sneak"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 59
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 19
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 11000
+    }
+}

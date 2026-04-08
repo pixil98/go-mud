@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "id": "limbo---internal-10",
+    "spec": {
+        "aliases": [
+            "clone"
+        ],
+        "short_desc": "the clone",
+        "long_desc": "A boring old clone is standing here.",
+        "detailed_desc": "This clone is nothing to look at. No, really, it is quite boring.",
+        "level": 1,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d1+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ]
+    }
+}

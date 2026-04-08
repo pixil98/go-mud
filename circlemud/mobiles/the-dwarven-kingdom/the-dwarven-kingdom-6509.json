@@ -1,0 +1,66 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6509",
+    "spec": {
+        "aliases": [
+            "doctor",
+            "dwarven",
+            "healer"
+        ],
+        "short_desc": "the dwarven doctor",
+        "long_desc": "The dwarven doctor is here, aiding the sick of his people.",
+        "detailed_desc": "He is a very skilled healer, and extremely faithful to his god.",
+        "level": 22,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d8+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 411
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 60000,
+        "equipment": [
+            {
+                "slot": "hold",
+                "object_id": "the-dwarven-kingdom-6506"
+            }
+        ]
+    }
+}

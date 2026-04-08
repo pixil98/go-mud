@@ -22,6 +22,9 @@
                 "room_id": "northern-midgaard-main-city-3008",
                 "description": "You see the reception."
             }
-        }
+        },
+        "mobile_spawns": [
+            "northern-midgaard-main-city-3061"
+        ]
     }
 }

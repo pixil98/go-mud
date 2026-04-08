@@ -42,6 +42,9 @@
                 ],
                 "description": "The torch is bolted to the sconce and the sconce to the wall."
             }
+        ],
+        "mobile_spawns": [
+            "the-sewer-maze-7202"
         ]
     }
 }

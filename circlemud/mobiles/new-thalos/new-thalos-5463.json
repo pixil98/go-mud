@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "new-thalos-5463",
+    "spec": {
+        "aliases": [
+            "sultans",
+            "guard",
+            "chief"
+        ],
+        "short_desc": "the Chief Guard",
+        "long_desc": "The Chief of the Sultan's Guard stands here.",
+        "detailed_desc": "You see a large man skilled in hunting and killing.",
+        "level": 15,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 271
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "stay_zone"
+        ],
+        "exp_reward": 5000
+    }
+}

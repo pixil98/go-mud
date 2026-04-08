@@ -27,6 +27,10 @@
                 ],
                 "description": "The benches are made of rough cut lumber that has dried and split over time. You would probably get splinters if sat on them. The words 'BURT WAS HERE' have been carved into one of the benches with exquisite care."
             }
+        ],
+        "mobile_spawns": [
+            "rome-12003",
+            "rome-12003"
         ]
     }
 }

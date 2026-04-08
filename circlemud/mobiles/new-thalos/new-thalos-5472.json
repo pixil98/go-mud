@@ -1,0 +1,51 @@
+{
+    "version": 1,
+    "id": "new-thalos-5472",
+    "spec": {
+        "aliases": [
+            "dog",
+            "death"
+        ],
+        "short_desc": "the death dog",
+        "long_desc": "The death dog stands here.",
+        "detailed_desc": "A large two-headed hound barks at you vicously.",
+        "level": 4,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 7
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d10+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 91
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 1
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "stay_zone",
+            "memory"
+        ],
+        "exp_reward": 900
+    }
+}

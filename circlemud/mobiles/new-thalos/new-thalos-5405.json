@@ -1,0 +1,63 @@
+{
+    "version": 1,
+    "id": "new-thalos-5405",
+    "spec": {
+        "aliases": [
+            "bartender",
+            "man",
+            "mage",
+            "old"
+        ],
+        "short_desc": "the old withered man",
+        "long_desc": "An old withered man leans against the bar.",
+        "detailed_desc": "He looks distracted as he pours five drinks at once without error.",
+        "level": 35,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d5+3"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 12001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 11
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 1000,
+        "inventory": [
+            {
+                "object_id": "new-thalos-5467"
+            },
+            {
+                "object_id": "new-thalos-5468"
+            },
+            {
+                "object_id": "new-thalos-5469"
+            }
+        ]
+    }
+}

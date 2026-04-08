@@ -1,0 +1,53 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1520",
+    "spec": {
+        "aliases": [
+            "baby",
+            "innocent"
+        ],
+        "short_desc": "the innocent baby",
+        "long_desc": "Lying on the ground wrapped in blankets is the most innocent of babies.",
+        "detailed_desc": "The baby is barely aware of your presence, lost in a sleepy and contented yawn.",
+        "level": 22,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d6+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 200
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 23
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 145000
+    }
+}

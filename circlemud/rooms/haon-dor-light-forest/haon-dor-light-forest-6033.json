@@ -37,6 +37,10 @@
                 ],
                 "description": "To the south you see a river flowing roughly from the northeast to the west. It emerges from a dark opening in the side of a mountain and flows through Midgaard, and on into the forest. It has eroded a deep chasm in the soft stone under the forest floor, and is not visible for long after it enters the forest proper."
             }
+        ],
+        "mobile_spawns": [
+            "haon-dor-light-forest-6006",
+            "haon-dor-light-forest-6007"
         ]
     }
 }

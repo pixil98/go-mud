@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3309",
+    "spec": {
+        "aliases": [
+            "receptionist"
+        ],
+        "short_desc": "the Receptionist",
+        "long_desc": "A receptionist offers you a room.",
+        "detailed_desc": "He looks like a retired farmer now making an honest living in an inn. More power to him!",
+        "level": 12,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -30
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d7+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 155
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 11
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 8000
+    }
+}

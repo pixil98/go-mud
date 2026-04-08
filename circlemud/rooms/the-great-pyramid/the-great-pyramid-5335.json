@@ -32,6 +32,9 @@
                 ],
                 "description": "The hole is low, at the floor of the southern wall."
             }
+        ],
+        "mobile_spawns": [
+            "the-great-pyramid-5304"
         ]
     }
 }

@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7004",
+    "spec": {
+        "aliases": [
+            "beetle",
+            "giant",
+            "earth"
+        ],
+        "short_desc": "the giant earth beetle",
+        "long_desc": "The giant, mean-looking earth beetle is here.",
+        "detailed_desc": "Now, you've seen beetles, but this one is enormous. It stretches perhaps two feet from head to tail. As it notices you, it waves its six legs about and makes some strange skittering noises at you.",
+        "level": 8,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 118
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 7
+            }
+        ],
+        "exp_reward": 3750
+    }
+}

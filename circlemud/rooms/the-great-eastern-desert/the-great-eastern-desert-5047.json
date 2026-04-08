@@ -22,6 +22,9 @@
                 "room_id": "the-great-eastern-desert-5040",
                 "description": "Even from here, you can sense a great evil residing within the pyramid protruding from the sand to the west."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-great-eastern-desert-5000"
+        ]
     }
 }

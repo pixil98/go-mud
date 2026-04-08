@@ -12,6 +12,10 @@
             "up": {
                 "room_id": "the-high-tower-of-magic-2599"
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-high-tower-of-magic-2539",
+            "the-high-tower-of-magic-2539"
+        ]
     }
 }

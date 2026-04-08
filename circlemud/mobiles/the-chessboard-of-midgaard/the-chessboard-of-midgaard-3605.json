@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "id": "the-chessboard-of-midgaard-3605",
+    "spec": {
+        "aliases": [
+            "white",
+            "knight"
+        ],
+        "short_desc": "the White Knight",
+        "long_desc": "Here stands a magnificent knight of the light realm.",
+        "detailed_desc": "The White Knight is here, riding his ivory white war horse. His eyes gleam behind his visor in joy.",
+        "level": 18,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 382
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 12
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive"
+        ],
+        "exp_reward": 22500,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "the-chessboard-of-midgaard-3607"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-chessboard-of-midgaard-3607"
+            }
+        ]
+    }
+}

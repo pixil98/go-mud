@@ -1,6 +1,7 @@
 package game
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/google/uuid"
@@ -8,10 +9,16 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
+// MobCommander executes a command on behalf of a mob.
+type MobCommander interface {
+	ExecMobCommand(ctx context.Context, mob *MobileInstance, cmd string, args ...string) error
+}
+
 // MobileInstance represents a single spawned instance of a Mobile definition.
 // Location is set at spawn time and tracks which zone/room contains this mob.
 type MobileInstance struct {
-	Mobile storage.SmartIdentifier[*assets.Mobile]
+	Mobile    storage.SmartIdentifier[*assets.Mobile]
+	Commander MobCommander // if set, the mob executes commands autonomously on tick
 
 	ActorInstance
 }

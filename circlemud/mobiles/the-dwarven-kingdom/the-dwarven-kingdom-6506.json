@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6506",
+    "spec": {
+        "aliases": [
+            "giant"
+        ],
+        "short_desc": "the giant",
+        "long_desc": "A giant is wandering around the mountainside here.",
+        "detailed_desc": "The giant is about 18 feet tall, with arms of steel, and looks in excellent physical condition.",
+        "level": 19,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d3+8"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 380
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 18
+            }
+        ],
+        "flags": [
+            "stay_zone",
+            "memory"
+        ],
+        "exp_reward": 45000,
+        "equipment": [
+            {
+                "slot": "body",
+                "object_id": "the-dwarven-kingdom-6505"
+            }
+        ]
+    }
+}

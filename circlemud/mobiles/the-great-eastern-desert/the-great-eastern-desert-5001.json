@@ -1,0 +1,60 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5001",
+    "spec": {
+        "aliases": [
+            "dervish",
+            "large"
+        ],
+        "short_desc": "the dervish",
+        "long_desc": "A large dervish watches for signs of trouble.",
+        "detailed_desc": "Dressed in loose fitting rags, this man looks like he could use LOTS of rest.",
+        "level": 8,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "sneak"
+            },
+            {
+                "type": "grant",
+                "key": "hide"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 112
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 8
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 7000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            }
+        ]
+    }
+}

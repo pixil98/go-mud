@@ -1,0 +1,56 @@
+{
+    "version": 1,
+    "id": "new-thalos-5454",
+    "spec": {
+        "aliases": [
+            "sultans",
+            "favorite",
+            "girl",
+            "nichole"
+        ],
+        "short_desc": "Nichole, the Sultan's favorite",
+        "long_desc": "Nichole, the Sultan's favorite girl rests on a mound of pillows.",
+        "detailed_desc": "You see the most beautiful Arabian girl that has ever meet your eyes. Too bad she is about to kill you.",
+        "level": 10,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d5+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 55
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 17
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive"
+        ],
+        "exp_reward": 150
+    }
+}

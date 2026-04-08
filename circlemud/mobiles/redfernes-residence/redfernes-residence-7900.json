@@ -1,0 +1,99 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7900",
+    "spec": {
+        "aliases": [
+            "paladin",
+            "grand",
+            "knight"
+        ],
+        "short_desc": "the Grand Knight of Paladins",
+        "long_desc": "The Grand Knight is standing here, waiting for someone to help.",
+        "detailed_desc": "The Knight is standing here, smiling at you. He is dressed all in white, blue and silver. He looks VERY strong, as he stands here, ready to help the innocent.",
+        "level": 26,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+16"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 630
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "memory"
+        ],
+        "exp_reward": 170000,
+        "equipment": [
+            {
+                "slot": "hold",
+                "object_id": "redfernes-residence-7901"
+            },
+            {
+                "slot": "wield",
+                "object_id": "redfernes-residence-7910"
+            },
+            {
+                "slot": "body",
+                "object_id": "redfernes-residence-7914"
+            },
+            {
+                "slot": "legs",
+                "object_id": "redfernes-residence-7915"
+            },
+            {
+                "slot": "hands",
+                "object_id": "redfernes-residence-7916"
+            },
+            {
+                "slot": "head",
+                "object_id": "redfernes-residence-7917"
+            },
+            {
+                "slot": "shield",
+                "object_id": "redfernes-residence-7918"
+            },
+            {
+                "slot": "feet",
+                "object_id": "redfernes-residence-7919"
+            },
+            {
+                "slot": "arms",
+                "object_id": "redfernes-residence-7920"
+            }
+        ]
+    }
+}

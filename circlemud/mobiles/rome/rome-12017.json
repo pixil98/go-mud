@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "rome-12017",
+    "spec": {
+        "aliases": [
+            "citizen"
+        ],
+        "short_desc": "the citizen",
+        "long_desc": "A citizen of Rome is standing here.",
+        "detailed_desc": "It appears to be your ordinary citizen going about his business.",
+        "level": 5,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 89
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 4
+            }
+        ],
+        "flags": [
+            "stay_zone",
+            "memory"
+        ],
+        "exp_reward": 1000
+    }
+}

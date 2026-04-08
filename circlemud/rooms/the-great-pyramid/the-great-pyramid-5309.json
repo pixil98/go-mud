@@ -48,6 +48,10 @@
                 ],
                 "description": "You cannot understand the strange glyphs that cover the door, but most of them seem to depict scenes of fire and massive creatures of apparently tremendous strength. You have a feeling that the glyphs are serving as a warning."
             }
+        ],
+        "mobile_spawns": [
+            "the-great-pyramid-5303",
+            "the-great-pyramid-5303"
         ]
     }
 }

@@ -10,6 +10,12 @@
                 "room_id": "king-welmars-castle-15066",
                 "description": "Just near the north edge of the pit a small and narrow trail leads away."
             }
-        }
+        },
+        "mobile_spawns": [
+            "king-welmars-castle-15030",
+            "king-welmars-castle-15030",
+            "king-welmars-castle-15031",
+            "king-welmars-castle-15031"
+        ]
     }
 }

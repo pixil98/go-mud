@@ -33,6 +33,10 @@
                 "type": "grant",
                 "key": "dark"
             }
+        ],
+        "mobile_spawns": [
+            "rands-tower-6401",
+            "rands-tower-6401"
         ]
     }
 }

@@ -16,6 +16,10 @@
         },
         "flags": [
             "nomob"
+        ],
+        "mobile_spawns": [
+            "redfernes-residence-7901",
+            "redfernes-residence-7901"
         ]
     }
 }

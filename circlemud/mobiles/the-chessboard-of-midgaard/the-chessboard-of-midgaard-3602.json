@@ -1,0 +1,60 @@
+{
+    "version": 1,
+    "id": "the-chessboard-of-midgaard-3602",
+    "spec": {
+        "aliases": [
+            "black",
+            "rook",
+            "castle"
+        ],
+        "short_desc": "the Black Rook",
+        "long_desc": "In the corner you see a large, black, stone castle on wheels.",
+        "detailed_desc": "The Black Rook is a very large man-made tomb on wheels. Just from the looks of it, it will probably be YOUR tomb.",
+        "level": 27,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d8+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 512
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 9
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 85000,
+        "equipment": [
+            {
+                "slot": "body",
+                "object_id": "the-chessboard-of-midgaard-3604"
+            },
+            {
+                "slot": "body",
+                "object_id": "the-chessboard-of-midgaard-3604"
+            }
+        ]
+    }
+}

@@ -1,0 +1,52 @@
+{
+    "version": 1,
+    "id": "new-thalos-5419",
+    "spec": {
+        "aliases": [
+            "foreman",
+            "man"
+        ],
+        "short_desc": "the foreman",
+        "long_desc": "The foreman stands here screaming at the workers.",
+        "detailed_desc": "A worried working dwarf stands here constantly making notes in his book and looking at his watch.",
+        "level": 15,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 70
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 14
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "stay_zone"
+        ],
+        "exp_reward": 100,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "new-thalos-5485"
+            }
+        ]
+    }
+}

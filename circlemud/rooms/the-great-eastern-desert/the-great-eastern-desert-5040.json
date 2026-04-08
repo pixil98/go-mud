@@ -23,6 +23,9 @@
                 "zone_id": "the-great-pyramid",
                 "description": "The pyramid can be seen across the sands to the west."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-great-eastern-desert-5001"
+        ]
     }
 }

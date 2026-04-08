@@ -1,0 +1,64 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7002",
+    "spec": {
+        "aliases": [
+            "rat",
+            "sewer"
+        ],
+        "short_desc": "the sewer rat",
+        "long_desc": "The huge hungry-looking sewer rat sits here.",
+        "detailed_desc": "This creature is fairly large for a rat, but not so big that it could be called a giant rat. Sewer water drips off of its grey fur as it looks at you with black glistening eyes.",
+        "level": 5,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 60
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 4
+            }
+        ],
+        "flags": [
+            "aggressive"
+        ],
+        "exp_reward": 1000,
+        "inventory": [
+            {
+                "object_id": "the-sewer-maze-7208"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "finger",
+                "object_id": "the-second-sewer-7190"
+            },
+            {
+                "slot": "feet",
+                "object_id": "the-sewer-maze-7209"
+            }
+        ]
+    }
+}

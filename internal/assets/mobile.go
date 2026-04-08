@@ -8,6 +8,53 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
+// ---------------------------------------------------------------------------
+// Mobile flags
+// ---------------------------------------------------------------------------
+
+// MobileFlag defines a boolean behavior property of a mobile.
+type MobileFlag int
+
+// MobileFlag values.
+const (
+	MobileFlagUnknown    MobileFlag = iota
+	MobileFlagSentinel               // Doesn't wander from spawn room
+	MobileFlagAggressive             // Attacks players on sight
+	MobileFlagWimpy                  // Flees at low HP
+	MobileFlagHelper                 // Assists other mobs being attacked in same room
+	MobileFlagStayZone               // Won't wander outside its zone
+	MobileFlagScavenger              // Picks up valuables from the ground
+	MobileFlagMemory                 // Remembers and retaliates against attackers
+	MobileFlagAware                  // Cannot be backstabbed
+)
+
+func parseMobileFlag(s string) MobileFlag {
+	switch strings.ToLower(s) {
+	case "sentinel":
+		return MobileFlagSentinel
+	case "aggressive":
+		return MobileFlagAggressive
+	case "wimpy":
+		return MobileFlagWimpy
+	case "helper":
+		return MobileFlagHelper
+	case "stay_zone":
+		return MobileFlagStayZone
+	case "scavenger":
+		return MobileFlagScavenger
+	case "memory":
+		return MobileFlagMemory
+	case "aware":
+		return MobileFlagAware
+	default:
+		return MobileFlagUnknown
+	}
+}
+
+// ---------------------------------------------------------------------------
+// Mobile
+// ---------------------------------------------------------------------------
+
 // Mobile defines a type of mobile entity loaded from asset files.
 // Multiple instances can be spawned from one definition.
 // Mobile IDs follow the convention <zone>-<name> (e.g., "millbrook-guard").
@@ -36,9 +83,22 @@ type Mobile struct {
 	// Perks define the mobile's resources, combat stats, and other perk-driven values.
 	Perks []Perk `json:"perks,omitempty"`
 
+	// Flags are boolean behavior properties (e.g., "sentinel", "aggressive").
+	Flags []string `json:"flags,omitempty"`
+
 	// ExpReward overrides the base XP awarded when this mobile is killed.
 	// If 0, base XP is calculated from the mobile's level.
 	ExpReward int `json:"exp_reward,omitempty"`
+}
+
+// HasFlag returns true if the mobile has the given flag.
+func (m *Mobile) HasFlag(flag MobileFlag) bool {
+	for _, f := range m.Flags {
+		if parseMobileFlag(f) == flag {
+			return true
+		}
+	}
+	return false
 }
 
 // MatchName returns true if name matches any of this mobile's aliases (case-insensitive).
@@ -64,6 +124,11 @@ func (m *Mobile) Validate() error {
 	for i := range m.Perks {
 		if err := m.Perks[i].validate(); err != nil {
 			el.Add(fmt.Errorf("perk[%d]: %w", i, err))
+		}
+	}
+	for _, f := range m.Flags {
+		if parseMobileFlag(f) == MobileFlagUnknown {
+			el.Add(fmt.Errorf("unknown flag %q", f))
 		}
 	}
 	return el.Err()

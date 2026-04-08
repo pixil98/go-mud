@@ -1,0 +1,67 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3316",
+    "spec": {
+        "aliases": [
+            "bandit",
+            "guard"
+        ],
+        "short_desc": "the bandit guard",
+        "long_desc": "A bandit guard stands at attention here.",
+        "detailed_desc": "He may be a bandit, but he's no slacker. You wonder who would be able to keep these bandits in line enough to pull a good guard duty... (boy is this guy DIRTY!!!)",
+        "level": 18,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -30
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d6+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 235
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 17
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 32000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "the-three-of-swords-3315"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-three-of-swords-3315"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-three-of-swords-3315"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-three-of-swords-3315"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-three-of-swords-3315"
+            }
+        ]
+    }
+}

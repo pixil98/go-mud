@@ -5,6 +5,9 @@
         "name": "The Mercenaries Guild",
         "description": "This is the storage room for the mercenaries to be hired.",
         "zone_id": "new-thalos",
-        "exits": {}
+        "exits": {},
+        "mobile_spawns": [
+            "new-thalos-5464"
+        ]
     }
 }

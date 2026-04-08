@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "id": "new-thalos-5438",
+    "spec": {
+        "aliases": [
+            "gord"
+        ],
+        "short_desc": "Gord",
+        "long_desc": "Gord the Rogue stand here.",
+        "detailed_desc": "",
+        "level": 15,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 120
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "wimpy"
+        ],
+        "exp_reward": 1000
+    }
+}

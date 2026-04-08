@@ -29,6 +29,9 @@
                 ],
                 "description": "Firmly set into the wall of the shaft it is impossible to even move, in your estimate."
             }
+        ],
+        "mobile_spawns": [
+            "the-sewer-first-level-7001"
         ]
     }
 }

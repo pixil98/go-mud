@@ -18,6 +18,9 @@
         },
         "flags": [
             "nomob"
+        ],
+        "mobile_spawns": [
+            "northern-midgaard-main-city-3021"
         ]
     }
 }

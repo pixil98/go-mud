@@ -14,6 +14,9 @@
                 "room_id": "the-dwarven-kingdom-6500",
                 "description": "The path heads toward the main city of Midgaard."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-dwarven-kingdom-6501"
+        ]
     }
 }

@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3042",
+    "spec": {
+        "aliases": [
+            "waiter"
+        ],
+        "short_desc": "the waiter",
+        "long_desc": "A man now leads a quiet, peaceful life as a waiter is standing here.",
+        "detailed_desc": "This man was obviously a famous sorcerer in his younger days as you instantly recognize his face.",
+        "level": 23,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+12"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 450
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 19
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 80000,
+        "inventory": [
+            {
+                "object_id": "northern-midgaard-main-city-3002"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3003"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3020"
+            }
+        ]
+    }
+}

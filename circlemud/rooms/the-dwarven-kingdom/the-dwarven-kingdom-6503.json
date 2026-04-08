@@ -18,6 +18,9 @@
                 "room_id": "the-dwarven-kingdom-6505",
                 "description": "There is an entrance to the mountain."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-dwarven-kingdom-6501"
+        ]
     }
 }

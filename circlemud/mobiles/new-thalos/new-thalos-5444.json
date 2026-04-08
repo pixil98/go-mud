@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "new-thalos-5444",
+    "spec": {
+        "aliases": [
+            "vulture"
+        ],
+        "short_desc": "the vulture",
+        "long_desc": "A vulture circles above you.",
+        "detailed_desc": "As you look up at this bird, you see the only thing it wants is a corpse.",
+        "level": 2,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 7
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d6+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 4
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            }
+        ],
+        "flags": [
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 10
+    }
+}

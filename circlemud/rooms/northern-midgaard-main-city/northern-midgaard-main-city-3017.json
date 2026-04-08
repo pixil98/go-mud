@@ -14,6 +14,11 @@
                 "room_id": "northern-midgaard-main-city-3018",
                 "description": "You see your favorite place, the Mages' Bar."
             }
-        }
+        },
+        "mobile_spawns": [
+            "northern-midgaard-main-city-3024",
+            "northern-midgaard-main-city-3059",
+            "northern-midgaard-main-city-3060"
+        ]
     }
 }

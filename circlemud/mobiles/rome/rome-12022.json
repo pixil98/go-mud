@@ -1,0 +1,56 @@
+{
+    "version": 1,
+    "id": "rome-12022",
+    "spec": {
+        "aliases": [
+            "judge",
+            "justice"
+        ],
+        "short_desc": "the judge",
+        "long_desc": "A judge is standing here, reading a case.",
+        "detailed_desc": "He seems to be quite interested in the case, perhaps you shouldn't disturb him now, later would probably be a better time.",
+        "level": 21,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d7+11"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 360
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 50000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "finger",
+                "object_id": "rome-12012"
+            }
+        ]
+    }
+}

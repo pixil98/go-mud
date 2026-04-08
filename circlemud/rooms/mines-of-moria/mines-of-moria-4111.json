@@ -32,6 +32,10 @@
                 ],
                 "description": "The moss on the walls is orange. When you touch it, it feels very scrubby and flakes off to the touch leaving a slight orange tinge on your fingertips."
             }
+        ],
+        "mobile_spawns": [
+            "mines-of-moria-4102",
+            "mines-of-moria-4102"
         ]
     }
 }

@@ -22,6 +22,9 @@
                 "room_id": "the-city-of-thalos-5250",
                 "description": "Inside the temple, small patches of light shoot through each doorway as well as a few holes in the ceiling."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-city-of-thalos-5201"
+        ]
     }
 }

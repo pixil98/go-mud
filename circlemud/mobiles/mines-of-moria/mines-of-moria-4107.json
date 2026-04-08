@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4107",
+    "spec": {
+        "aliases": [
+            "kobold"
+        ],
+        "short_desc": "the kobold",
+        "long_desc": "A green kobold is here.",
+        "detailed_desc": "It looks slimy..",
+        "level": 7,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d9+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 65
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 6
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 3000,
+        "inventory": [
+            {
+                "object_id": "mines-of-moria-4104"
+            }
+        ]
+    }
+}

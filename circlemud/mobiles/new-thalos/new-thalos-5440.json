@@ -1,0 +1,57 @@
+{
+    "version": 1,
+    "id": "new-thalos-5440",
+    "spec": {
+        "aliases": [
+            "daghdha"
+        ],
+        "short_desc": "Daghdha",
+        "long_desc": "Daghdha the Arch-Magi stands here.",
+        "detailed_desc": "This man is dressed in long brown robes and has a penetrating gaze.",
+        "level": 15,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d6+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 190
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 15
+            }
+        ],
+        "flags": [
+            "stay_zone"
+        ],
+        "exp_reward": 8700
+    }
+}

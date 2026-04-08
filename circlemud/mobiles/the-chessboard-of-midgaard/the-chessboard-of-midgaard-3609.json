@@ -1,0 +1,63 @@
+{
+    "version": 1,
+    "id": "the-chessboard-of-midgaard-3609",
+    "spec": {
+        "aliases": [
+            "white",
+            "queen"
+        ],
+        "short_desc": "the White Queen",
+        "long_desc": "The White Queen stands here.",
+        "detailed_desc": "The White Queen is a stunningly beautiful woman with dark skin and a mass of light hair that frames her head like the sun. This is surely love at first sight for you.",
+        "level": 32,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d6+13"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 950
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 9
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "aggressive",
+            "memory"
+        ],
+        "exp_reward": 200000,
+        "equipment": [
+            {
+                "slot": "head",
+                "object_id": "the-chessboard-of-midgaard-3611"
+            }
+        ]
+    }
+}

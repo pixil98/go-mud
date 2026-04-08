@@ -16,6 +16,9 @@
                 "room_id": "the-city-of-thalos-5246",
                 "description": "Above you looms a tall watchtower."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-city-of-thalos-5209"
+        ]
     }
 }

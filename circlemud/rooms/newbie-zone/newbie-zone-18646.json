@@ -33,6 +33,9 @@
                 ],
                 "description": "It appears to be the crest of the Harlequin Guild."
             }
+        ],
+        "mobile_spawns": [
+            "newbie-zone-18611"
         ]
     }
 }

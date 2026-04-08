@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "new-thalos-5490",
+    "spec": {
+        "aliases": [
+            "chef"
+        ],
+        "short_desc": "the chef",
+        "long_desc": "The chef stands here making dinner.",
+        "detailed_desc": "You see a very large human who seems to taste everything he makes.",
+        "level": 14,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d10+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 25
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 14
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 40
+    }
+}

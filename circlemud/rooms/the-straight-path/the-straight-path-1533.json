@@ -15,6 +15,9 @@
             "down": {
                 "room_id": "the-straight-path-1536"
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-straight-path-1501"
+        ]
     }
 }

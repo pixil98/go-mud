@@ -34,6 +34,9 @@
                 ],
                 "description": "They are constructed of smooth, beautiful marble"
             }
+        ],
+        "mobile_spawns": [
+            "newbie-zone-18612"
         ]
     }
 }

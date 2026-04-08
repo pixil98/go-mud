@@ -26,6 +26,9 @@
                 ],
                 "description": "The sign reads: NO LOITERING! (by order of the Sultan of New Thalos)"
             }
+        ],
+        "mobile_spawns": [
+            "new-thalos-5468"
         ]
     }
 }

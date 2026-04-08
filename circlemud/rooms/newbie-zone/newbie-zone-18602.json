@@ -22,6 +22,10 @@
                 "room_id": "newbie-zone-18601",
                 "description": "More of the hallway there... how exciting!"
             }
-        }
+        },
+        "mobile_spawns": [
+            "newbie-zone-18603",
+            "newbie-zone-18606"
+        ]
     }
 }

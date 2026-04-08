@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "new-thalos-5452",
+    "spec": {
+        "aliases": [
+            "jailer"
+        ],
+        "short_desc": "the jailer",
+        "long_desc": "The Jailer sleeps here, snoring loudly.",
+        "detailed_desc": "You see a pathetic soul lying here. Probably some ex-nobleman that has fallen out of grace with the Sultan.",
+        "level": 18,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d6+6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 112
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 16
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "wimpy"
+        ],
+        "exp_reward": 1200,
+        "inventory": [
+            {
+                "object_id": "new-thalos-5493"
+            }
+        ]
+    }
+}

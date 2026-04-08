@@ -1,0 +1,64 @@
+{
+    "version": 1,
+    "id": "newbie-zone-18615",
+    "spec": {
+        "aliases": [
+            "newbie",
+            "smart"
+        ],
+        "short_desc": "the smart newbie",
+        "long_desc": "A newbie is here, and he looks quite sure of himself.",
+        "detailed_desc": "Here is a guy who has it all together. Nice equipment too, must have read the help files, Eh?",
+        "level": 5,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 9
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d3+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 70
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 5
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "stay_zone"
+        ],
+        "exp_reward": 1000,
+        "equipment": [
+            {
+                "slot": "arms",
+                "object_id": "newbie-zone-18613"
+            },
+            {
+                "slot": "legs",
+                "object_id": "newbie-zone-18612"
+            },
+            {
+                "slot": "body",
+                "object_id": "newbie-zone-18602"
+            },
+            {
+                "slot": "wield",
+                "object_id": "newbie-zone-18614"
+            }
+        ]
+    }
+}

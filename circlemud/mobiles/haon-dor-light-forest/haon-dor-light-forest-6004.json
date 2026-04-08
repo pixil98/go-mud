@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6004",
+    "spec": {
+        "aliases": [
+            "deer",
+            "fallow"
+        ],
+        "short_desc": "the fallow deer",
+        "long_desc": "A fallow deer is grazing peacefully here.",
+        "detailed_desc": "She is a graceful creature on long, slender legs, and with large, brown eyes looking back at you with an air of watchful interest.",
+        "level": 2,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 24
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 1
+            }
+        ],
+        "flags": [
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 230,
+        "inventory": [
+            {
+                "object_id": "haon-dor-light-forest-6024"
+            }
+        ]
+    }
+}

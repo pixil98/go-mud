@@ -9,6 +9,9 @@
             "down": {
                 "room_id": "the-three-of-swords-3356"
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-three-of-swords-3309"
+        ]
     }
 }

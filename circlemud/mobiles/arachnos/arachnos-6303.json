@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "arachnos-6303",
+    "spec": {
+        "aliases": [
+            "spider",
+            "wolf"
+        ],
+        "short_desc": "the wolf spider",
+        "long_desc": "The wolf spider is here, licking its bloody fangs.",
+        "detailed_desc": "The wolf spider is hairy, very hairy.",
+        "level": 6,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d5+3"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 94
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 8
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive"
+        ],
+        "exp_reward": 6000
+    }
+}

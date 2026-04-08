@@ -16,6 +16,9 @@
         },
         "flags": [
             "nomob"
+        ],
+        "mobile_spawns": [
+            "arachnos-6301"
         ]
     }
 }

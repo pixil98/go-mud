@@ -1,0 +1,52 @@
+{
+    "version": 1,
+    "id": "midennir-3504",
+    "spec": {
+        "aliases": [
+            "boy",
+            "small"
+        ],
+        "short_desc": "the small boy",
+        "long_desc": "A small boy sits here, licking his wounds.",
+        "detailed_desc": "The poor boy has numerous cuts and scratches, but appears to be all right. He is apparently the only survivor of the ambush.",
+        "level": 4,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 59
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 3
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "wimpy"
+        ],
+        "exp_reward": 600,
+        "equipment": [
+            {
+                "slot": "hold",
+                "object_id": "midennir-3508"
+            }
+        ]
+    }
+}

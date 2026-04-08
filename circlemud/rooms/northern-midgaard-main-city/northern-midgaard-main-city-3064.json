@@ -10,6 +10,9 @@
                 "room_id": "northern-midgaard-main-city-3008",
                 "description": "The Reception is to the south."
             }
-        }
+        },
+        "mobile_spawns": [
+            "northern-midgaard-main-city-3095"
+        ]
     }
 }

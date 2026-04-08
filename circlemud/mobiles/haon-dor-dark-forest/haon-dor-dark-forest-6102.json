@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6102",
+    "spec": {
+        "aliases": [
+            "wolf",
+            "grey"
+        ],
+        "short_desc": "the large, grey wolf",
+        "long_desc": "A large, grey wolf is here, glaring hungrily at you.",
+        "detailed_desc": "The large, grey wolf eyes you with interest while licking its lips.",
+        "level": 3,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 7
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d7"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 47
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 450
+    }
+}

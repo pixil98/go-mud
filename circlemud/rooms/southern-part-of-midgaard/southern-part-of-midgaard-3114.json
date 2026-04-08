@@ -12,6 +12,10 @@
             "west": {
                 "room_id": "southern-part-of-midgaard-3113"
             }
-        }
+        },
+        "mobile_spawns": [
+            "southern-part-of-midgaard-3120",
+            "southern-part-of-midgaard-3121"
+        ]
     }
 }

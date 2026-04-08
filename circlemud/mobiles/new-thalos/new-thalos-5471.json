@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "new-thalos-5471",
+    "spec": {
+        "aliases": [
+            "minotaur",
+            "lizard"
+        ],
+        "short_desc": "the minotaur lizard",
+        "long_desc": "the minotaur lizard stands here.",
+        "detailed_desc": "A huge lizard like reptile with horns like a minotaur.",
+        "level": 8,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 65
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 12
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 100
+    }
+}

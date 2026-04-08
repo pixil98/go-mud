@@ -30,6 +30,9 @@
                     }
                 }
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-chessboard-of-midgaard-3608"
+        ]
     }
 }

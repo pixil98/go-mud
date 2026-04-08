@@ -1,0 +1,54 @@
+{
+    "version": 1,
+    "id": "arachnos-6310",
+    "spec": {
+        "aliases": [
+            "spider",
+            "bird"
+        ],
+        "short_desc": "the bird spider",
+        "long_desc": "The bird spider snaps its powerful jaws.",
+        "detailed_desc": "The Bird Spider has very powerful jaws.",
+        "level": 14,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d9+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 108
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 13
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive"
+        ],
+        "exp_reward": 18000
+    }
+}

@@ -14,6 +14,10 @@
                 "room_id": "king-welmars-castle-15005",
                 "description": "You hear the clanging of pots, and smell cooking meat."
             }
-        }
+        },
+        "mobile_spawns": [
+            "king-welmars-castle-15017",
+            "king-welmars-castle-15017"
+        ]
     }
 }

@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "new-thalos-5435",
+    "spec": {
+        "aliases": [
+            "kid",
+            "thief"
+        ],
+        "short_desc": "the skinny kid",
+        "long_desc": "A skinny kid wanders around.",
+        "detailed_desc": "This small child sees you looking at him and quickly looks away.",
+        "level": 7,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d5+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 15
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 8
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "wimpy"
+        ],
+        "exp_reward": 100
+    }
+}

@@ -44,6 +44,9 @@
                 ],
                 "description": "The plaque reads: The Great Pyramid Created by the Andersen work crew."
             }
+        ],
+        "mobile_spawns": [
+            "the-great-pyramid-5302"
         ]
     }
 }

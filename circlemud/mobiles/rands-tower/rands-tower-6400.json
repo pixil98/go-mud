@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "rands-tower-6400",
+    "spec": {
+        "aliases": [
+            "goat",
+            "mountain"
+        ],
+        "short_desc": "the mountain goat",
+        "long_desc": "A mountain goat nibbles at a piece of grass here.",
+        "detailed_desc": "This goat is acclimated to the rugged terrain of the mountains. It looks at you and shies away a little.",
+        "level": 8,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d5+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 110
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 7
+            }
+        ],
+        "flags": [
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 4000
+    }
+}

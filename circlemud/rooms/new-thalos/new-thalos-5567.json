@@ -23,6 +23,9 @@
         },
         "flags": [
             "nomob"
+        ],
+        "mobile_spawns": [
+            "new-thalos-5444"
         ]
     }
 }

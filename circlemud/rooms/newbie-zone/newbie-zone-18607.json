@@ -21,6 +21,9 @@
                     "closed": true
                 }
             }
-        }
+        },
+        "mobile_spawns": [
+            "newbie-zone-18602"
+        ]
     }
 }

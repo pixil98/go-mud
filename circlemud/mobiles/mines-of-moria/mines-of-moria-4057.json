@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4057",
+    "spec": {
+        "aliases": [
+            "lion",
+            "mountain"
+        ],
+        "short_desc": "the mountain lion",
+        "long_desc": "A mountain lion is here, growling at you viciously.",
+        "detailed_desc": "The lion looks very nasty with huge claws and big teeth.",
+        "level": 5,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 70
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 4
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 900
+    }
+}

@@ -15,6 +15,9 @@
             "down": {
                 "room_id": "arachnos-6322"
             }
-        }
+        },
+        "mobile_spawns": [
+            "arachnos-6306"
+        ]
     }
 }

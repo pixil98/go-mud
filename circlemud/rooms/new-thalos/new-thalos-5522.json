@@ -17,6 +17,10 @@
                 ],
                 "description": "You think you hear noises from the vat... naaah."
             }
+        ],
+        "mobile_spawns": [
+            "new-thalos-5415",
+            "new-thalos-5444"
         ]
     }
 }

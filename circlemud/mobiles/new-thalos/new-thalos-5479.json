@@ -1,0 +1,57 @@
+{
+    "version": 1,
+    "id": "new-thalos-5479",
+    "spec": {
+        "aliases": [
+            "elriva"
+        ],
+        "short_desc": "Elriva",
+        "long_desc": "Elriva stands here mixing a love potion.",
+        "detailed_desc": "You see a very healthy female dressed in black, with long flowing hair to match her outfit.",
+        "level": 35,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d10+10"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 10
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 2000,
+        "inventory": [
+            {
+                "object_id": "new-thalos-5470"
+            },
+            {
+                "object_id": "new-thalos-5471"
+            },
+            {
+                "object_id": "new-thalos-5472"
+            },
+            {
+                "object_id": "new-thalos-5473"
+            },
+            {
+                "object_id": "new-thalos-5474"
+            }
+        ]
+    }
+}

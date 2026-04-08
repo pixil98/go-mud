@@ -1,0 +1,54 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3010",
+    "spec": {
+        "aliases": [
+            "postmaster",
+            "post",
+            "master"
+        ],
+        "short_desc": "the postmaster",
+        "long_desc": "The head postmaster is standing here, waiting to help you with your mail.",
+        "detailed_desc": "The Postmaster seems like a happy old man, though a bit sluggish. He worries about the reputation of the MMS (Midgaard Mail Service), as many people seem to think that it is slow. Perhaps if he were to brush the cobwebs from his uniform it would help to make a better impression.",
+        "level": 33,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+18"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ]
+    }
+}

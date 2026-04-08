@@ -10,6 +10,9 @@
                 "room_id": "the-city-of-thalos-5211",
                 "description": "A small side street runs past the house."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-city-of-thalos-5207"
+        ]
     }
 }

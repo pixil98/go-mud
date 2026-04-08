@@ -24,6 +24,10 @@
             "up": {
                 "room_id": "new-thalos-5559"
             }
-        }
+        },
+        "mobile_spawns": [
+            "new-thalos-5461",
+            "new-thalos-5482"
+        ]
     }
 }

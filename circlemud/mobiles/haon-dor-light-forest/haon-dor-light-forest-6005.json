@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6005",
+    "spec": {
+        "aliases": [
+            "fox",
+            "brown"
+        ],
+        "short_desc": "the brown fox",
+        "long_desc": "A brown fox is stalking rabbits through the underbrush here.",
+        "detailed_desc": "It is a large fox with beautiful, red-brown fur and a long, thick bushy tail.",
+        "level": 2,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 22
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            }
+        ],
+        "flags": [
+            "stay_zone"
+        ],
+        "exp_reward": 225
+    }
+}

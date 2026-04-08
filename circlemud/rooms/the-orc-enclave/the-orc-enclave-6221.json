@@ -24,6 +24,9 @@
                 ],
                 "description": "There is dried blood on it."
             }
+        ],
+        "mobile_spawns": [
+            "the-orc-enclave-6203"
         ]
     }
 }

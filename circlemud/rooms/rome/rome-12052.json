@@ -22,6 +22,9 @@
                 ],
                 "description": "The mountain trail is a little muddy, due to the recent rains."
             }
+        ],
+        "mobile_spawns": [
+            "rome-12031"
         ]
     }
 }

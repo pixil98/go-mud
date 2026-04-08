@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "new-thalos-5485",
+    "spec": {
+        "aliases": [
+            "gardener",
+            "elf"
+        ],
+        "short_desc": "the gardener",
+        "long_desc": "A small elf stands here tending the garden.",
+        "detailed_desc": "A young elf stands here in dirt covered overalls. He seems to be weeding his garden.",
+        "level": 10,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 125
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 10
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 1500
+    }
+}

@@ -1,0 +1,59 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4000",
+    "spec": {
+        "aliases": [
+            "snake",
+            "large"
+        ],
+        "short_desc": "the snake",
+        "long_desc": "A large dreadful snake is at your feet, hissing at you.",
+        "detailed_desc": "It looks hungry.",
+        "level": 11,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 100
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 13
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive"
+        ],
+        "exp_reward": 12000,
+        "inventory": [
+            {
+                "object_id": "mines-of-moria-4001"
+            }
+        ]
+    }
+}

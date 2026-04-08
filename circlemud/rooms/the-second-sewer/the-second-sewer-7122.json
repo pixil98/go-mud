@@ -23,6 +23,11 @@
                 ],
                 "description": "There is a crack here that looks like it has been made recently."
             }
+        ],
+        "mobile_spawns": [
+            "the-sewer-first-level-7005",
+            "the-sewer-first-level-7006",
+            "the-sewer-first-level-7006"
         ]
     }
 }

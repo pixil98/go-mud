@@ -13,6 +13,9 @@
                 "room_id": "mines-of-moria-4078",
                 "zone_id": "mines-of-moria"
             }
-        }
+        },
+        "mobile_spawns": [
+            "rands-tower-6400"
+        ]
     }
 }

@@ -56,6 +56,9 @@
                 ],
                 "description": "You see tracks of both hooved and other sorts of animals. Evidence of all sizes of animals is here in the mud, showing just how lively the forest is."
             }
+        ],
+        "mobile_spawns": [
+            "haon-dor-light-forest-6016"
         ]
     }
 }

@@ -1,0 +1,51 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3063",
+    "spec": {
+        "aliases": [
+            "mercenary"
+        ],
+        "short_desc": "the mercenary",
+        "long_desc": "A mercenary is waiting for a job here.",
+        "detailed_desc": "He looks pretty mean, and you imagine he'd do anything for money.",
+        "level": 5,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d6+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 72
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 5
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 900,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3021"
+            }
+        ]
+    }
+}

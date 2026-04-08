@@ -33,6 +33,11 @@
                 ],
                 "description": "To the southeast, off in the distance, stands a large stone structure that is used to channel water into the city."
             }
+        ],
+        "mobile_spawns": [
+            "rome-12012",
+            "rome-12017",
+            "rome-12017"
         ]
     }
 }

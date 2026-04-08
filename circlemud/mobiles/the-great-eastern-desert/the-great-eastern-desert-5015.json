@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5015",
+    "spec": {
+        "aliases": [
+            "dustdigger",
+            "oasis"
+        ],
+        "short_desc": "the dustdigger",
+        "long_desc": "A small oasis invites you to dive in.",
+        "detailed_desc": "Looking a little closer at this oasis, you begin to wonder why it seems to be moving about...",
+        "level": 7,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 91
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 10
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "aggressive"
+        ],
+        "exp_reward": 2250
+    }
+}

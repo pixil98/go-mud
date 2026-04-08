@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "new-thalos-5451",
+    "spec": {
+        "aliases": [
+            "harem",
+            "girl"
+        ],
+        "short_desc": "a harem girl",
+        "long_desc": "A lovely, veiled harem girl stands here.",
+        "detailed_desc": "You see a dark skinned beauty, wearing almost transparent silks and light blue veil. Her loyalty to the Sultan is unwavering.",
+        "level": 3,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 7
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d6+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 16
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 3
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 40
+    }
+}

@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1523",
+    "spec": {
+        "aliases": [
+            "soul"
+        ],
+        "short_desc": "the bodyless soul",
+        "long_desc": "You are overwhelmed by the presence of a soul that has transcended its body.",
+        "detailed_desc": "You sense certain tastes and smells, the winds through the gardens. Nothing can explain or describe this perfection, this utter bliss.",
+        "level": 28,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d8+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 1020
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 24
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive"
+        ],
+        "exp_reward": 190000,
+        "inventory": [
+            {
+                "object_id": "the-straight-path-1507"
+            }
+        ]
+    }
+}

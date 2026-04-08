@@ -31,6 +31,9 @@
                 ],
                 "description": "The sign reads: Free instructions provided by the waiter: Buy - Buy something (drinkable) from the waiter. List - The waiter will show you all the different drinks and specialties, and tell the price of each."
             }
+        ],
+        "mobile_spawns": [
+            "northern-midgaard-main-city-3043"
         ]
     }
 }

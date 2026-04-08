@@ -1,0 +1,72 @@
+{
+    "version": 1,
+    "id": "rome-12010",
+    "spec": {
+        "aliases": [
+            "herbalist",
+            "young",
+            "lady",
+            "beautiful"
+        ],
+        "short_desc": "the herbalist",
+        "long_desc": "There is a beautiful young lady here, carrying herbs to help the healer with.",
+        "detailed_desc": "The herbalist is a very beautiful young lady who is about 22 years old. She has deep brown eyes and shoulder-length chestnut hair. Her body is perfectly proportioned and she stands about 5' 5\" tall.",
+        "level": 10,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d7+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 122
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 9
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "wimpy",
+            "memory"
+        ],
+        "exp_reward": 8000,
+        "inventory": [
+            {
+                "object_id": "rome-12027"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3021"
+            },
+            {
+                "slot": "body",
+                "object_id": "northern-midgaard-main-city-3043"
+            },
+            {
+                "slot": "head",
+                "object_id": "rome-12005"
+            }
+        ]
+    }
+}

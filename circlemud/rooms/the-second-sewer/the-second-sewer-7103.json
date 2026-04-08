@@ -28,6 +28,10 @@
                 ],
                 "description": "You never saw such disgusting matter before, it nearly makes you puke."
             }
+        ],
+        "mobile_spawns": [
+            "the-sewer-first-level-7000",
+            "the-sewer-first-level-7000"
         ]
     }
 }

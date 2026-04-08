@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4105",
+    "spec": {
+        "aliases": [
+            "centipede"
+        ],
+        "short_desc": "the centipede",
+        "long_desc": "A small harmless centipede is here.",
+        "detailed_desc": "Well it doesn't seem to pay any attention to you.",
+        "level": 6,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 80
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 5
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 1500
+    }
+}

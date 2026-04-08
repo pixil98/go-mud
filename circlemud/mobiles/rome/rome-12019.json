@@ -1,0 +1,75 @@
+{
+    "version": 1,
+    "id": "rome-12019",
+    "spec": {
+        "aliases": [
+            "soldier"
+        ],
+        "short_desc": "the soldier",
+        "long_desc": "A soldier on leave is walking around looking for entertainment.",
+        "detailed_desc": "You see a member of one of the Emperor's elite legions. He looks VERY strong. You have this vague feeling that his entertainment isn't going to be a very wholesome activity.",
+        "level": 17,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d6+9"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 235
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 16
+            }
+        ],
+        "flags": [
+            "stay_zone",
+            "memory"
+        ],
+        "exp_reward": 28000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3021"
+            },
+            {
+                "slot": "feet",
+                "object_id": "rome-12008"
+            },
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3021"
+            },
+            {
+                "slot": "feet",
+                "object_id": "rome-12019"
+            },
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3021"
+            },
+            {
+                "slot": "feet",
+                "object_id": "rome-12008"
+            },
+            {
+                "slot": "body",
+                "object_id": "rome-12018"
+            }
+        ]
+    }
+}

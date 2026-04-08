@@ -1,0 +1,60 @@
+{
+    "version": 1,
+    "id": "new-thalos-5427",
+    "spec": {
+        "aliases": [
+            "statue",
+            "brihaspati"
+        ],
+        "short_desc": "the statue of Brihaspati",
+        "long_desc": "The statue of Brihaspati stands here.",
+        "detailed_desc": "The statue of Brihaspati, the God of Scholars and Knowledge is made of a weathered marble.",
+        "level": 15,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "6d10+10"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 1201
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 30
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "memory"
+        ],
+        "exp_reward": 12000
+    }
+}

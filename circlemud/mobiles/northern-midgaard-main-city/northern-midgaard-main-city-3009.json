@@ -1,0 +1,64 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3009",
+    "spec": {
+        "aliases": [
+            "wally",
+            "watermaster"
+        ],
+        "short_desc": "Wally the Watermaster",
+        "long_desc": "Wally the Watermaster is standing behind the counter.",
+        "detailed_desc": "Wally is a bit pudgy but looks very strong. He has a glass of Midgaard Natural Spring Water in his hand. When he notices you, he proudly displays his fine collection of contemporary waters.",
+        "level": 33,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+18"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 160000,
+        "inventory": [
+            {
+                "object_id": "southern-part-of-midgaard-3102"
+            },
+            {
+                "object_id": "southern-part-of-midgaard-3103"
+            },
+            {
+                "object_id": "southern-part-of-midgaard-3104"
+            },
+            {
+                "object_id": "haon-dor-light-forest-6013"
+            }
+        ]
+    }
+}

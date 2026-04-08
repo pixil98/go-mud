@@ -13,6 +13,9 @@
                 "room_id": "the-city-of-thalos-5244",
                 "description": "The wall has collapsed on the adjoining house, creating a new opening in it."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-city-of-thalos-5201"
+        ]
     }
 }

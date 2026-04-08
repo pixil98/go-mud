@@ -1,0 +1,59 @@
+{
+    "version": 1,
+    "id": "new-thalos-5469",
+    "spec": {
+        "aliases": [
+            "ixitxachitl",
+            "ray"
+        ],
+        "short_desc": "the ixitxachitl",
+        "long_desc": "A very large ray with a wicked looking tail swims here.",
+        "detailed_desc": "You see a large ray with sharp fangs and a barbed tail.",
+        "level": 10,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "waterwalk"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d4+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 129
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "memory"
+        ],
+        "exp_reward": 2000
+    }
+}

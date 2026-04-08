@@ -1,0 +1,64 @@
+{
+    "version": 1,
+    "id": "rome-12028",
+    "spec": {
+        "aliases": [
+            "bailiff"
+        ],
+        "short_desc": "the bailiff",
+        "long_desc": "The bailiff stands here, keeping order in the courtroom.",
+        "detailed_desc": "He is a very stern man and insists on absolute quiet in his courtroom unless the judge has given someone permisson to speak.",
+        "level": 16,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d7+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 205
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 15
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 24000,
+        "inventory": [
+            {
+                "object_id": "rome-12039"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "shield",
+                "object_id": "northern-midgaard-main-city-3042"
+            }
+        ]
+    }
+}

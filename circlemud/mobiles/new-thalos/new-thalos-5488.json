@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "new-thalos-5488",
+    "spec": {
+        "aliases": [
+            "mimic",
+            "painting"
+        ],
+        "short_desc": "the mimic",
+        "long_desc": "You see an incredibly life-like painting of the Sultan's mother.",
+        "detailed_desc": "Boy is she ugly.",
+        "level": 10,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 361
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 10
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 6000
+    }
+}

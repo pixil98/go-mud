@@ -10,6 +10,9 @@
                 "room_id": "the-city-of-thalos-5215",
                 "description": "The city lies below."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-city-of-thalos-5208"
+        ]
     }
 }

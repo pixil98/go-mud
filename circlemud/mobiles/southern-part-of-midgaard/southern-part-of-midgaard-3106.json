@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3106",
+    "spec": {
+        "aliases": [
+            "crier"
+        ],
+        "short_desc": "the Town Crier",
+        "long_desc": "The Town Crier is here, weeping quietly.",
+        "detailed_desc": "He is very good at his job - completely dissolved in tears.",
+        "level": 1,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 9
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 22
+            }
+        ],
+        "flags": [
+            "wimpy"
+        ],
+        "exp_reward": 100
+    }
+}

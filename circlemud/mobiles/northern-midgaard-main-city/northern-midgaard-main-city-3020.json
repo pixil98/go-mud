@@ -1,0 +1,57 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3020",
+    "spec": {
+        "aliases": [
+            "guildmaster",
+            "master",
+            "mage"
+        ],
+        "short_desc": "the mages' guildmaster",
+        "long_desc": "Your guildmaster is studying a spellbook while preparing to cast a spell.",
+        "detailed_desc": "Even though your guildmaster looks old and tired, you can clearly see the vast amount of knowledge she possesses. She is wearing fine magic clothing, and you notice that she is surrounded by a blue shimmering aura.",
+        "level": 34,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+24"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 700
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "memory"
+        ],
+        "exp_reward": 100000
+    }
+}

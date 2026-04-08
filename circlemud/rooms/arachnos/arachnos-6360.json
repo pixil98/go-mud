@@ -9,6 +9,9 @@
             "south": {
                 "room_id": "arachnos-6355"
             }
-        }
+        },
+        "mobile_spawns": [
+            "arachnos-6302"
+        ]
     }
 }

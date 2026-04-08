@@ -1,0 +1,61 @@
+{
+    "version": 1,
+    "id": "newbie-zone-18604",
+    "spec": {
+        "aliases": [
+            "keeper",
+            "guard",
+            "monster"
+        ],
+        "short_desc": "the Newbie Guard",
+        "long_desc": "The Newbie Guard is here wondering where that dragon went.",
+        "detailed_desc": "The Guard also had the job of taking care of the Alchemist's pet dragon, but he doesn't seem to be doing a good job of it. He looks at you and says, 'Have you seen that dragon? Master will have my head if I don't find him.'",
+        "level": 3,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 7
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d7"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 46
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 800,
+        "inventory": [
+            {
+                "object_id": "newbie-zone-18608"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "finger",
+                "object_id": "newbie-zone-18605"
+            },
+            {
+                "slot": "head",
+                "object_id": "newbie-zone-18603"
+            }
+        ]
+    }
+}

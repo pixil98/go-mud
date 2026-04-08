@@ -1,0 +1,71 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-906",
+    "spec": {
+        "aliases": [
+            "hanz",
+            "henchman"
+        ],
+        "short_desc": "Hanz the Henchman",
+        "long_desc": "Hanz is here flexing his muscles and squeezing grapefruits.",
+        "detailed_desc": "Hanz is no girlie man. He is very muscular and looks as if he could lift a large dragon.",
+        "level": 12,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 170
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 13
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 14000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "river-island-of-minos-907"
+            }
+        ]
+    }
+}

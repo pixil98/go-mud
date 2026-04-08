@@ -22,6 +22,11 @@
                 "type": "grant",
                 "key": "dark"
             }
+        ],
+        "mobile_spawns": [
+            "drow-city-5102",
+            "drow-city-5103",
+            "drow-city-5104"
         ]
     }
 }

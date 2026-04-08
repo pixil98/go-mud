@@ -34,6 +34,10 @@
                 ],
                 "description": "Although it is very hard to understand, you think it looks a lot like beer, poems about beer, and small beer-mugs."
             }
+        ],
+        "mobile_spawns": [
+            "northern-midgaard-main-city-3040",
+            "northern-midgaard-main-city-3064"
         ]
     }
 }

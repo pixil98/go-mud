@@ -1,0 +1,54 @@
+{
+    "version": 1,
+    "id": "arachnos-6316",
+    "spec": {
+        "aliases": [
+            "dragon",
+            "wormkin",
+            "young"
+        ],
+        "short_desc": "the young wormkin",
+        "long_desc": "A wormkin with no teeth plays here.",
+        "detailed_desc": "It is a rather small dragon, and you almost feel sad about killing it.",
+        "level": 9,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d5+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 130
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 8
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 6500
+    }
+}

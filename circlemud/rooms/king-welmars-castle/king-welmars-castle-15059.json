@@ -19,6 +19,9 @@
                     }
                 }
             }
-        }
+        },
+        "mobile_spawns": [
+            "king-welmars-castle-15015"
+        ]
     }
 }

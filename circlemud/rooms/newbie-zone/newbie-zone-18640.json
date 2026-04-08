@@ -36,6 +36,9 @@
                 ],
                 "description": "It says: Maynard, Death Jester of the Harlequins"
             }
+        ],
+        "mobile_spawns": [
+            "newbie-zone-18613"
         ]
     }
 }

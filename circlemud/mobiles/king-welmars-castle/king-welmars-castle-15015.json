@@ -1,0 +1,56 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15015",
+    "spec": {
+        "aliases": [
+            "ergan",
+            "murderer"
+        ],
+        "short_desc": "Ergan the Murderer",
+        "long_desc": "Slumped in a corner you see Ergan, aka the Murderer of Townsbridge.",
+        "detailed_desc": "You remember a time almost a decade ago, when the news of the day was how this man had slaughtered the entire population of the little village of Townsbridge. He was imprisoned, and here he is - a shadow of the undoubtedly great warrior he once was, but still to be reckoned with.",
+        "level": 13,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "sneak"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 173
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 12
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "aware",
+            "aggressive",
+            "wimpy"
+        ],
+        "exp_reward": 18000
+    }
+}

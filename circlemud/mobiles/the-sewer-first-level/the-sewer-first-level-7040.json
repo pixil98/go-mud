@@ -1,0 +1,59 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7040",
+    "spec": {
+        "aliases": [
+            "dragon",
+            "red"
+        ],
+        "short_desc": "the red dragon",
+        "long_desc": "The fierce-looking red dragon stares at you angrily.",
+        "detailed_desc": "The red dragon stares at you, angrily, as it wakes when you arrive. It says 'Oh, human YOU woke me up... Hsssss', while it moves closer, 'Can one NEVER sleep in peace... Hssss... '",
+        "level": 19,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d6+3"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 250
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 18
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "aggressive"
+        ],
+        "exp_reward": 40000
+    }
+}

@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3105",
+    "spec": {
+        "aliases": [
+            "mayor"
+        ],
+        "short_desc": "the Mayor",
+        "long_desc": "The Mayor is sitting in his huge chair, snoring loudly.",
+        "detailed_desc": "He is a stocky, middle-aged man with thin, grey hair.",
+        "level": 24,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+18"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 850
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 130000,
+        "equipment": [
+            {
+                "slot": "hold",
+                "object_id": "southern-part-of-midgaard-3112"
+            }
+        ]
+    }
+}

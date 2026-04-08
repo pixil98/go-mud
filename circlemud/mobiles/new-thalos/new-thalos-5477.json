@@ -1,0 +1,57 @@
+{
+    "version": 1,
+    "id": "new-thalos-5477",
+    "spec": {
+        "aliases": [
+            "giant",
+            "hornet"
+        ],
+        "short_desc": "the giant hornet",
+        "long_desc": "The giant hornet hovers here.",
+        "detailed_desc": "It is a hornet, what else can be said?",
+        "level": 5,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "waterwalk"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 6
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 5
+            }
+        ],
+        "flags": [
+            "aware"
+        ],
+        "exp_reward": 45
+    }
+}

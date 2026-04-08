@@ -14,6 +14,11 @@
                 "room_id": "rome-12024",
                 "description": "You see hundreds, perhaps thousands of people."
             }
-        }
+        },
+        "mobile_spawns": [
+            "rome-12003",
+            "rome-12003",
+            "rome-12016"
+        ]
     }
 }

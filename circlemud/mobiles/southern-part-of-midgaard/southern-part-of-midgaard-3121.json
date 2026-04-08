@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3121",
+    "spec": {
+        "aliases": [
+            "duckling"
+        ],
+        "short_desc": "the duckling",
+        "long_desc": "A duckling is swimming around in the pond.",
+        "detailed_desc": "The duckling is adorable, it looks most of all like a tiny furball.",
+        "level": 0,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 1
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 1
+    }
+}

@@ -39,6 +39,9 @@
                 ],
                 "description": "The branch of a large oak stretches out above the path from the east."
             }
+        ],
+        "mobile_spawns": [
+            "haon-dor-light-forest-6001"
         ]
     }
 }

@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3317",
+    "spec": {
+        "aliases": [
+            "miner",
+            "worker",
+            "slave"
+        ],
+        "short_desc": "the slave",
+        "long_desc": "A slave here is mining out a new passageway.",
+        "detailed_desc": "The slave looks up at you with pleading eyes. He wants his freedom. The chains around his ankles are tight, and you wonder if you should set him free, and if you even can.",
+        "level": 6,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 100
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 85
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 5
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "wimpy"
+        ],
+        "exp_reward": 1500
+    }
+}

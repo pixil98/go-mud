@@ -1,0 +1,54 @@
+{
+    "version": 1,
+    "id": "new-thalos-5474",
+    "spec": {
+        "aliases": [
+            "behir"
+        ],
+        "short_desc": "the behir",
+        "long_desc": "A behir slithers on the ground.",
+        "detailed_desc": "You see a large snake-like reptile with more than a dozen legs.",
+        "level": 12,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 158
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 11
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "stay_zone",
+            "memory"
+        ],
+        "exp_reward": 1000
+    }
+}

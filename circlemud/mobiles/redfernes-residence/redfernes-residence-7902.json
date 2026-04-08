@@ -1,0 +1,83 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7902",
+    "spec": {
+        "aliases": [
+            "cleaver"
+        ],
+        "short_desc": "the Cleaver",
+        "long_desc": "The Cleaver is here eyeing you hungrily in anticipation of its next meal.",
+        "detailed_desc": "The Cleaver is a huge spidery chittinous creature with four large spindly arms ending in cleaverlike talons that will surely cut you to ribbons.",
+        "level": 20,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "8d4+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 380
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 17
+            }
+        ],
+        "flags": [
+            "aware",
+            "aggressive",
+            "stay_zone",
+            "memory"
+        ],
+        "exp_reward": 65000,
+        "inventory": [
+            {
+                "object_id": "redfernes-residence-7902"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "wrist",
+                "object_id": "redfernes-residence-7907"
+            },
+            {
+                "slot": "wrist",
+                "object_id": "redfernes-residence-7907"
+            },
+            {
+                "slot": "head",
+                "object_id": "redfernes-residence-7911"
+            }
+        ]
+    }
+}

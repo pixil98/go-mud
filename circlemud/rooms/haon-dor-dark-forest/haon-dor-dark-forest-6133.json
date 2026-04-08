@@ -35,6 +35,11 @@
                 ],
                 "description": "It covers a ground area corresponding to an irregular circle with a diameter of about 20 feet and is nearly 10 feet tall. It looks very old."
             }
+        ],
+        "mobile_spawns": [
+            "haon-dor-dark-forest-6113",
+            "haon-dor-dark-forest-6113",
+            "haon-dor-dark-forest-6113"
         ]
     }
 }

@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6016",
+    "spec": {
+        "aliases": [
+            "buck",
+            "deer"
+        ],
+        "short_desc": "the young buck",
+        "long_desc": "A young 5-point buck is drinking from the lake here.",
+        "detailed_desc": "This young male deer is drinking from the edge of the lake and watching you warily. His antlers are not full size yet, and will no doubt be quite impressive in a few years.",
+        "level": 4,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d5+3"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 60
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 3
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "stay_zone"
+        ],
+        "exp_reward": 750,
+        "inventory": [
+            {
+                "object_id": "haon-dor-light-forest-6024"
+            }
+        ]
+    }
+}

@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3301",
+    "spec": {
+        "aliases": [
+            "storekeeper"
+        ],
+        "short_desc": "the storekeeper",
+        "long_desc": "A bored storekeeper waits for you to do something.",
+        "detailed_desc": "The bored storekeeper keeps a lazy eye on you as he waits for you to buy something. Whee.",
+        "level": 20,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -40
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d6+6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 260
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 19
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 40000,
+        "inventory": [
+            {
+                "object_id": "northern-midgaard-main-city-3032"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3037"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3038"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3039"
+            }
+        ]
+    }
+}

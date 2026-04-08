@@ -31,6 +31,9 @@
                 ],
                 "description": "Due to the availability of moisture and nutrients, a green viscous slime has grown and covered everything with a slippery coating. It seems to go out of its way to drip on you."
             }
+        ],
+        "mobile_spawns": [
+            "rome-12024"
         ]
     }
 }

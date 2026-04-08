@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7008",
+    "spec": {
+        "aliases": [
+            "homunculus",
+            "creature"
+        ],
+        "short_desc": "the creature homunculus",
+        "long_desc": "The creature homunculus is here, looking at you with an evil look.",
+        "detailed_desc": "The homunculus appears in a man-like form, about eighteen inches tall, has a greenish, reptilian skin, leathery wings, and a batlike mouth, with teeth dripping with a greenish sludge.",
+        "level": 11,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 148
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 10
+            }
+        ],
+        "exp_reward": 11500
+    }
+}

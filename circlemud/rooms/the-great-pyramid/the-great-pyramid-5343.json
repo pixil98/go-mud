@@ -26,6 +26,9 @@
                 ],
                 "description": "The cracks look like you might be able to pull away some pieces of the floor, perhaps even fit your body through the space you make."
             }
+        ],
+        "mobile_spawns": [
+            "the-great-pyramid-5305"
         ]
     }
 }

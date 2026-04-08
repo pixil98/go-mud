@@ -24,6 +24,10 @@
             "west": {
                 "room_id": "the-dwarven-kingdom-6522"
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-dwarven-kingdom-6500",
+            "the-dwarven-kingdom-6500"
+        ]
     }
 }

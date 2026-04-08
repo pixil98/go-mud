@@ -1,0 +1,60 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5312",
+    "spec": {
+        "aliases": [
+            "hieracosphinx",
+            "sphinx"
+        ],
+        "short_desc": "the hieracosphinx",
+        "long_desc": "A hieracosphinx looks at you cunningly.",
+        "detailed_desc": "The hieracosphinx are cunning, small, but nasty creatures, having the heads of birds, mighty wingspans, and a full set of four paws to rend their victims to pieces. They tend to be quite jealous of the sharper wits of their older cousins.",
+        "level": 15,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d10+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 375
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 15
+            }
+        ],
+        "flags": [
+            "aware",
+            "aggressive",
+            "stay_zone",
+            "memory"
+        ],
+        "exp_reward": 21000
+    }
+}

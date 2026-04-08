@@ -1,0 +1,49 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4053",
+    "spec": {
+        "aliases": [
+            "snake"
+        ],
+        "short_desc": "the snake",
+        "long_desc": "A brown snake watches you.",
+        "detailed_desc": "The snake looks quite mean.",
+        "level": 10,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d5+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 100
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 10
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive"
+        ],
+        "exp_reward": 12000
+    }
+}

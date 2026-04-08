@@ -1,0 +1,59 @@
+{
+    "version": 1,
+    "id": "arachnos-6311",
+    "spec": {
+        "aliases": [
+            "hermit"
+        ],
+        "short_desc": "the hermit",
+        "long_desc": "The hermit sits here and warns, 'Go back before it is too late!'",
+        "detailed_desc": "A dishevelled veteran warrior in disguise is what he is, but he means well.",
+        "level": 7,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d5+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 120
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 7
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "memory"
+        ],
+        "exp_reward": 2500,
+        "inventory": [
+            {
+                "object_id": "arachnos-6302"
+            }
+        ]
+    }
+}

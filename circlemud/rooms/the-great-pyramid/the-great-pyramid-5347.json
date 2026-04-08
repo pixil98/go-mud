@@ -18,6 +18,9 @@
                 "room_id": "the-great-pyramid-5353",
                 "description": "You see a lot of sand."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-great-pyramid-5315"
+        ]
     }
 }

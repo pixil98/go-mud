@@ -1,0 +1,75 @@
+{
+    "version": 1,
+    "id": "drow-city-5103",
+    "spec": {
+        "aliases": [
+            "drow",
+            "noble",
+            "mage"
+        ],
+        "short_desc": "the drow mage",
+        "long_desc": "A drow mage is here protecting his home.",
+        "detailed_desc": "The mage prepares to cast a spell... at you!!",
+        "level": 15,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "8d2+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 202
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 12
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 21000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "drow-city-5102"
+            },
+            {
+                "slot": "wield",
+                "object_id": "drow-city-5102"
+            },
+            {
+                "slot": "wield",
+                "object_id": "drow-city-5102"
+            },
+            {
+                "slot": "wield",
+                "object_id": "drow-city-5102"
+            }
+        ]
+    }
+}

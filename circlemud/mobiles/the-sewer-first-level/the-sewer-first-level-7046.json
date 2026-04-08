@@ -1,0 +1,51 @@
+{
+    "version": 1,
+    "id": "the-sewer-first-level-7046",
+    "spec": {
+        "aliases": [
+            "herald",
+            "mouse",
+            "killer",
+            "ettin"
+        ],
+        "short_desc": "Herald 'the mouse-killer' ettin",
+        "long_desc": "Herald is standing here looking confused at you.",
+        "detailed_desc": "When you look at Herald, you feel pity. His clothes are really poor, and one of his heads hangs down. At the rope around his stomach hangs dead mice and rats. He does not smell good.",
+        "level": 6,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 85
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 6
+            }
+        ],
+        "flags": [
+            "scavenger"
+        ],
+        "exp_reward": 1500
+    }
+}

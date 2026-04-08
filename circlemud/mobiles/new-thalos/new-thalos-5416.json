@@ -1,0 +1,73 @@
+{
+    "version": 1,
+    "id": "new-thalos-5416",
+    "spec": {
+        "aliases": [
+            "abdul",
+            "armorer"
+        ],
+        "short_desc": "Abdul the armorer",
+        "long_desc": "Abdul stands here, waiting to help you.",
+        "detailed_desc": "Abdul returns your gaze with a steady eye. You quickly glance away under his cold stare and place your order.",
+        "level": 35,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d5+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 10
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 2000,
+        "inventory": [
+            {
+                "object_id": "new-thalos-5415"
+            },
+            {
+                "object_id": "new-thalos-5416"
+            },
+            {
+                "object_id": "new-thalos-5417"
+            },
+            {
+                "object_id": "new-thalos-5418"
+            },
+            {
+                "object_id": "new-thalos-5419"
+            },
+            {
+                "object_id": "new-thalos-5420"
+            },
+            {
+                "object_id": "new-thalos-5421"
+            }
+        ]
+    }
+}

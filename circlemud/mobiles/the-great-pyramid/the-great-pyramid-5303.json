@@ -1,0 +1,77 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5303",
+    "spec": {
+        "aliases": [
+            "pyramid",
+            "watcher"
+        ],
+        "short_desc": "the pyramid watcher",
+        "long_desc": "The pyramid watcher protects the tombs from intruders.",
+        "detailed_desc": "The pyramid watcher has made a pledge to destroy any would-be looters of the tombs of the pharoahs. He is clad from head to foot in utilitarian sand-colored clothing.",
+        "level": 8,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 144
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 8
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "helper"
+        ],
+        "exp_reward": 3750,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "the-great-pyramid-5300"
+            },
+            {
+                "slot": "body",
+                "object_id": "the-great-pyramid-5301"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-great-pyramid-5300"
+            },
+            {
+                "slot": "body",
+                "object_id": "the-great-pyramid-5301"
+            },
+            {
+                "slot": "wield",
+                "object_id": "the-great-pyramid-5300"
+            },
+            {
+                "slot": "body",
+                "object_id": "the-great-pyramid-5301"
+            }
+        ]
+    }
+}

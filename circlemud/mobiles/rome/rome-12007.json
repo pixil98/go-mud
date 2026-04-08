@@ -1,0 +1,78 @@
+{
+    "version": 1,
+    "id": "rome-12007",
+    "spec": {
+        "aliases": [
+            "driver"
+        ],
+        "short_desc": "the chariot driver",
+        "long_desc": "There is a chariot driver here.",
+        "detailed_desc": "You see a very slight and small individual whose whole life is centered around nothing but horses and speed.",
+        "level": 10,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 141
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 9
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 9000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3021"
+            },
+            {
+                "slot": "feet",
+                "object_id": "rome-12008"
+            },
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3021"
+            },
+            {
+                "slot": "feet",
+                "object_id": "rome-12008"
+            },
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3021"
+            },
+            {
+                "slot": "feet",
+                "object_id": "rome-12008"
+            },
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3021"
+            },
+            {
+                "slot": "feet",
+                "object_id": "rome-12008"
+            }
+        ]
+    }
+}

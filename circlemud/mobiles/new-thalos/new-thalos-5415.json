@@ -1,0 +1,66 @@
+{
+    "version": 1,
+    "id": "new-thalos-5415",
+    "spec": {
+        "aliases": [
+            "butch"
+        ],
+        "short_desc": "Butch the meatcutter",
+        "long_desc": "Butch the meatcutter stands here in his bloodied apron.",
+        "detailed_desc": "This stocky dwarf has a mad glint in his eye as he twirls his clever carelessly into the air.",
+        "level": 35,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d5+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 10
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 2000,
+        "inventory": [
+            {
+                "object_id": "new-thalos-5461"
+            },
+            {
+                "object_id": "new-thalos-5462"
+            },
+            {
+                "object_id": "new-thalos-5463"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "new-thalos-5484"
+            }
+        ]
+    }
+}

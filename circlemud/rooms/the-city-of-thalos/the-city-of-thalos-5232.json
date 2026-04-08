@@ -21,6 +21,10 @@
             "west": {
                 "room_id": "the-city-of-thalos-5212"
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-city-of-thalos-5201",
+            "the-city-of-thalos-5207"
+        ]
     }
 }

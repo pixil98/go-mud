@@ -28,6 +28,9 @@
                 ],
                 "description": "The water is dirty but it looks like you would be able to swim in it."
             }
+        ],
+        "mobile_spawns": [
+            "the-sewer-maze-7203"
         ]
     }
 }

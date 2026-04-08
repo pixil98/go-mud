@@ -19,6 +19,10 @@
                 ],
                 "description": "The glassy particles reflect and refract your light source in a myriad of dazzling colours that dance across your eyes and make you giggle."
             }
+        ],
+        "mobile_spawns": [
+            "the-great-pyramid-5314",
+            "the-great-pyramid-5314"
         ]
     }
 }

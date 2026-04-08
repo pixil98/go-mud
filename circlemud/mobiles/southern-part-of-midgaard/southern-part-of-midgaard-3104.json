@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3104",
+    "spec": {
+        "aliases": [
+            "secretary"
+        ],
+        "short_desc": "the Secretary",
+        "long_desc": "A secretary is sitting at the desk, typing away on the typewriter.",
+        "detailed_desc": "She looks very busy. The Secretary says 'Sorry, but the Mayor is extremely busy today.' The Secretary says 'Please sit down and have a seat in the meantime.'",
+        "level": 12,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d7+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 160
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 11
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 13000
+    }
+}

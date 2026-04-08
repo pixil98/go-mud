@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5204",
+    "spec": {
+        "aliases": [
+            "mimic",
+            "floor"
+        ],
+        "short_desc": "the mimic",
+        "long_desc": "The stone floor of this house has been ripped apart.",
+        "detailed_desc": "What a mess, you wonder to yourself what could have caused this rampant destruction.",
+        "level": 11,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 122
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 9
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 10500,
+        "inventory": [
+            {
+                "object_id": "the-city-of-thalos-5218"
+            }
+        ]
+    }
+}

@@ -37,6 +37,11 @@
                 ],
                 "description": "The corpses looked as if they have been pierced by a large, jagged spear. The damage these people sustained is simply amazing. Worse, the lips on the bodies are a light shade of blue, hinting at poison in their systems."
             }
+        ],
+        "mobile_spawns": [
+            "midennir-3500",
+            "midennir-3500",
+            "midennir-3500"
         ]
     }
 }

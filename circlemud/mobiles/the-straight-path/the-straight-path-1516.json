@@ -1,0 +1,56 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1516",
+    "spec": {
+        "aliases": [
+            "angel",
+            "beautiful",
+            "iblis"
+        ],
+        "short_desc": "Iblis",
+        "long_desc": "You gaze in awe at the most beautiful of all angels, Iblis, the Fallen.",
+        "detailed_desc": "He smiles calmly, and begins to tell you of the time when he would not kneel, would not prostrate himself before the first human beings. And then he gestures at you, smiling, and conjures an image of all the temptations that will be yours if you in turn but follow him.",
+        "level": 25,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d6+5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 700
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 23
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "aggressive"
+        ],
+        "exp_reward": 145000
+    }
+}

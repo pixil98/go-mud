@@ -14,6 +14,11 @@
                 "room_id": "king-welmars-castle-15006",
                 "description": "You see a small, dimly lit passage."
             }
-        }
+        },
+        "mobile_spawns": [
+            "king-welmars-castle-15022",
+            "king-welmars-castle-15023",
+            "king-welmars-castle-15023"
+        ]
     }
 }

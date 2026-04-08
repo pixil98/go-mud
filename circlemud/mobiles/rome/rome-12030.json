@@ -1,0 +1,71 @@
+{
+    "version": 1,
+    "id": "rome-12030",
+    "spec": {
+        "aliases": [
+            "jupiter",
+            "king",
+            "god"
+        ],
+        "short_desc": "Jupiter",
+        "long_desc": "Jupiter, King of the Gods, is watching over his realm here.",
+        "detailed_desc": "He is the strongest of the Gods, and certainly no easy mark! His powers transcend the plane of the physical, and could easily kill an unprepared mortal.",
+        "level": 34,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "8d6+50"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 1250
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "memory"
+        ],
+        "exp_reward": 550000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "rome-12020"
+            }
+        ]
+    }
+}

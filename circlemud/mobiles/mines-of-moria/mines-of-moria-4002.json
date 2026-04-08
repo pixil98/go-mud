@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4002",
+    "spec": {
+        "aliases": [
+            "centipede"
+        ],
+        "short_desc": "the centipede",
+        "long_desc": "A small centipede is here, making its way across the floor.",
+        "detailed_desc": "It looks completely harmless.",
+        "level": 3,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 6
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 40
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 400
+    }
+}

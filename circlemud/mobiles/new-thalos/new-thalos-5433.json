@@ -1,0 +1,49 @@
+{
+    "version": 1,
+    "id": "new-thalos-5433",
+    "spec": {
+        "aliases": [
+            "nomad",
+            "merchant"
+        ],
+        "short_desc": "the nomad merchant",
+        "long_desc": "A nomad merchant looks you over.",
+        "detailed_desc": "This robust fellow returns your gaze with a smile, but something inside tells you not to trust him very far.",
+        "level": 35,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 20
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 1501
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 9
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "stay_zone",
+            "wimpy",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 800
+    }
+}

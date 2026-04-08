@@ -15,8 +15,24 @@ type WorldState struct {
 	subscriber Subscriber
 	players    map[string]*CharacterInstance
 
-	zones map[string]*ZoneInstance
-	perks *PerkCache
+	zones        map[string]*ZoneInstance
+	perks        *PerkCache
+	mobCommander MobCommander
+}
+
+// SetMobCommander sets the commander assigned to mobs at spawn time.
+func (w *WorldState) SetMobCommander(mc MobCommander) {
+	w.mobCommander = mc
+}
+
+// ResetAll resets all zones, spawning mobs and objects.
+func (w *WorldState) ResetAll() error {
+	for _, zi := range w.zones {
+		if err := zi.Reset(true, w.zones, w.mobCommander); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // NewWorldState creates a new WorldState with zone and room instances initialized.
@@ -156,7 +172,7 @@ type Subscriber interface {
 // world perks → players → zones → rooms → mobs.
 func (w *WorldState) Tick(_ context.Context) error {
 	for _, zi := range w.zones {
-		if err := zi.Reset(false, w.zones); err != nil {
+		if err := zi.Reset(false, w.zones, w.mobCommander); err != nil {
 			return err
 		}
 	}

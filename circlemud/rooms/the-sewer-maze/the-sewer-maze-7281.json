@@ -40,6 +40,10 @@
                 ],
                 "description": "The walls look alive."
             }
+        ],
+        "mobile_spawns": [
+            "the-sewer-first-level-7000",
+            "the-sewer-first-level-7000"
         ]
     }
 }

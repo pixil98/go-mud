@@ -1,0 +1,51 @@
+{
+    "version": 1,
+    "id": "new-thalos-5466",
+    "spec": {
+        "aliases": [
+            "blacksmith"
+        ],
+        "short_desc": "the blacksmith",
+        "long_desc": "The blacksmith stands here pumping air into his fire.",
+        "detailed_desc": "You see a large human, dripping in sweat, standing before you. He takes a break from his swealtering work to bid you welcome.",
+        "level": 35,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d4+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 2000,
+        "inventory": [
+            {
+                "object_id": "new-thalos-5487"
+            },
+            {
+                "object_id": "new-thalos-5488"
+            },
+            {
+                "object_id": "new-thalos-5489"
+            }
+        ]
+    }
+}

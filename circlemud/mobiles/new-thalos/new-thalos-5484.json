@@ -1,0 +1,87 @@
+{
+    "version": 1,
+    "id": "new-thalos-5484",
+    "spec": {
+        "aliases": [
+            "stitch"
+        ],
+        "short_desc": "Stitch, the leather dude",
+        "long_desc": "Stitch, the leather dude reclines in his chair.",
+        "detailed_desc": "You see a small hobbit with his feet kicked up on his desk waiting for some sucker, uhm, customer to walk in his store.",
+        "level": 35,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -5
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d6+6"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 30
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory"
+        ],
+        "exp_reward": 2000,
+        "inventory": [
+            {
+                "object_id": "new-thalos-5422"
+            },
+            {
+                "object_id": "new-thalos-5423"
+            },
+            {
+                "object_id": "new-thalos-5424"
+            },
+            {
+                "object_id": "new-thalos-5425"
+            },
+            {
+                "object_id": "new-thalos-5426"
+            },
+            {
+                "object_id": "new-thalos-5427"
+            },
+            {
+                "object_id": "new-thalos-5428"
+            },
+            {
+                "object_id": "new-thalos-5429"
+            },
+            {
+                "object_id": "new-thalos-5430"
+            },
+            {
+                "object_id": "new-thalos-5431"
+            },
+            {
+                "object_id": "new-thalos-5432"
+            },
+            {
+                "object_id": "new-thalos-5433"
+            }
+        ]
+    }
+}

@@ -16,6 +16,9 @@
                 "type": "grant",
                 "key": "dark"
             }
+        ],
+        "mobile_spawns": [
+            "king-welmars-castle-15002"
         ]
     }
 }

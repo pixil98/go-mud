@@ -34,6 +34,9 @@
                 ],
                 "description": "There are hundreds of pages of petitions, lawsuits and court orders sitting on the desk. One particularly interesting case involves a nobleman, a slave and a roll of toilet paper."
             }
+        ],
+        "mobile_spawns": [
+            "rome-12022"
         ]
     }
 }

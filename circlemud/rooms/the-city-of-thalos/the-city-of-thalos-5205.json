@@ -22,6 +22,9 @@
                 "room_id": "the-city-of-thalos-5207",
                 "description": "What looks like a market place lies this way."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-city-of-thalos-5209"
+        ]
     }
 }

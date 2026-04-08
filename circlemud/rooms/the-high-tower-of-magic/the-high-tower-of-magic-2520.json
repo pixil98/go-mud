@@ -13,6 +13,10 @@
                     "closed": true
                 }
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-high-tower-of-magic-2507",
+            "the-high-tower-of-magic-2508"
+        ]
     }
 }

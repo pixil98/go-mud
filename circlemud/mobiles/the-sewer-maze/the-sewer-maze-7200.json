@@ -1,0 +1,72 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7200",
+    "spec": {
+        "aliases": [
+            "mindflayer",
+            "master",
+            "mind"
+        ],
+        "short_desc": "the master mindflayer",
+        "long_desc": "The master mindflayer is here, looking at you with an evil look.",
+        "detailed_desc": "It is a seven foot tall humanoid dressed in a purple cloak, and swinging a black and purple rod above its head as if it was going to attack you any moment now. In the middle of its head are four tentacles with sharp points.",
+        "level": 14,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "sense_life"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d4+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 180
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 13
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "aware",
+            "aggressive",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 20000,
+        "inventory": [
+            {
+                "object_id": "the-sewer-maze-7205"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "the-sewer-maze-7200"
+            },
+            {
+                "slot": "neck",
+                "object_id": "the-sewer-maze-7203"
+            }
+        ]
+    }
+}

@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6204",
+    "spec": {
+        "aliases": [
+            "orc",
+            "chief"
+        ],
+        "short_desc": "the orc chief",
+        "long_desc": "An orc chief growls at you!",
+        "detailed_desc": "He wears a crown of oak leaves to show he is a leader. He carries a club to show he is a warrior. You wonder how good he is at both.",
+        "level": 10,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 20
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d7+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 135
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 9
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 9000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "the-orc-enclave-6204"
+            }
+        ]
+    }
+}

@@ -25,6 +25,9 @@
                 ],
                 "description": "The stairs are old, but in good repair. They lead up into the tower."
             }
+        ],
+        "mobile_spawns": [
+            "king-welmars-castle-15029"
         ]
     }
 }

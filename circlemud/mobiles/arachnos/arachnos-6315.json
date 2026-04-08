@@ -1,0 +1,62 @@
+{
+    "version": 1,
+    "id": "arachnos-6315",
+    "spec": {
+        "aliases": [
+            "ki-rin"
+        ],
+        "short_desc": "the Ki-Rin",
+        "long_desc": "The Ki-Rin smiles good-naturedly to you.",
+        "detailed_desc": "She is the last bastion of good in this realm. Her mission is to someday free the slaves of the Empress. She has been trapped here for time eternal, and now the evil power of Arachnos feeds upon her intense magical energies. She will never give up here fight against evil, though, and will continue her work in whatever manner presents itself.",
+        "level": 26,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d4+22"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 2580
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "scavenger",
+            "memory"
+        ],
+        "exp_reward": 170000,
+        "inventory": [
+            {
+                "object_id": "haon-dor-dark-forest-6109"
+            },
+            {
+                "object_id": "haon-dor-dark-forest-6109"
+            }
+        ]
+    }
+}

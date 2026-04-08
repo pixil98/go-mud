@@ -1,0 +1,64 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3046",
+    "spec": {
+        "aliases": [
+            "filthy"
+        ],
+        "short_desc": "Filthy",
+        "long_desc": "Filthy is standing here, eager to serve you a special drink.",
+        "detailed_desc": "Filthy looks real, ehm, dirty. He likes to keep his customers happy, but do not mess with him or else he'll get upset.",
+        "level": 33,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8+22"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 30001
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 19
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aware",
+            "memory"
+        ],
+        "exp_reward": 80000,
+        "inventory": [
+            {
+                "object_id": "northern-midgaard-main-city-3003"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3004"
+            }
+        ],
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            }
+        ]
+    }
+}

@@ -1,0 +1,54 @@
+{
+    "version": 1,
+    "id": "rome-12014",
+    "spec": {
+        "aliases": [
+            "plaintiff"
+        ],
+        "short_desc": "the plaintiff",
+        "long_desc": "The plaintiff stands here, pleading his case.",
+        "detailed_desc": "He looks pitiful. Absolutely pitiful.",
+        "level": 11,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6+3"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 158
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 10
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 12000,
+        "equipment": [
+            {
+                "slot": "wield",
+                "object_id": "northern-midgaard-main-city-3022"
+            },
+            {
+                "slot": "wrist",
+                "object_id": "rome-12011"
+            }
+        ]
+    }
+}

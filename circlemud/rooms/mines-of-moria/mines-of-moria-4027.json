@@ -21,6 +21,10 @@
                 "type": "grant",
                 "key": "dark"
             }
+        ],
+        "mobile_spawns": [
+            "mines-of-moria-4003",
+            "mines-of-moria-4003"
         ]
     }
 }

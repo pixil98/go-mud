@@ -1,0 +1,60 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4104",
+    "spec": {
+        "aliases": [
+            "orc",
+            "ugly"
+        ],
+        "short_desc": "the orc",
+        "long_desc": "A ugly orc is standing here.",
+        "detailed_desc": "It is quite disgusting to look at.",
+        "level": 7,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 95
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 6
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "aggressive",
+            "stay_zone",
+            "wimpy"
+        ],
+        "exp_reward": 2250
+    }
+}

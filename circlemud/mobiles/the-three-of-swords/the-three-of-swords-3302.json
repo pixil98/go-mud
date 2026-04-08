@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3302",
+    "spec": {
+        "aliases": [
+            "cowgirl"
+        ],
+        "short_desc": "the cowgirl",
+        "long_desc": "A cowgirl stand here ready to defend her horses...",
+        "detailed_desc": "This woman seems ready for anything you might do... she is truly a woman to be reckoned with...",
+        "level": 20,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "sneak"
+            },
+            {
+                "type": "grant",
+                "key": "hide"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -60
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d6+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 260
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 19
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "memory",
+            "helper"
+        ],
+        "exp_reward": 40000
+    }
+}

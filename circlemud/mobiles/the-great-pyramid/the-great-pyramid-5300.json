@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5300",
+    "spec": {
+        "aliases": [
+            "asp",
+            "snake"
+        ],
+        "short_desc": "the horrible asp",
+        "long_desc": "A small, poisonous asp slithers over your feet.",
+        "detailed_desc": "The asp is a small, smooth-scaled snake the color of worn pottery. The poison bite of this snake has felled many a mighty pharoah.",
+        "level": 5,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 8
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d6+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 75
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 6
+            }
+        ],
+        "flags": [
+            "aggressive",
+            "stay_zone"
+        ],
+        "exp_reward": 1000
+    }
+}

@@ -47,6 +47,10 @@
                 ],
                 "description": "Under a log you think you see some sort of hole, or animal's den. Looking closer, you can make out the form of what you believe to be a Badger resting inside of the den."
             }
+        ],
+        "mobile_spawns": [
+            "haon-dor-light-forest-6011",
+            "haon-dor-light-forest-6013"
         ]
     }
 }

@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "drow-city-5100",
+    "spec": {
+        "aliases": [
+            "goblin",
+            "slave"
+        ],
+        "short_desc": "the goblin slave",
+        "long_desc": "A goblin slave lies here asleep.",
+        "detailed_desc": "The defenseless goblin begs for mercy.",
+        "level": 1,
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 9
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d5"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 22
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "wimpy"
+        ],
+        "exp_reward": 100
+    }
+}

@@ -18,6 +18,9 @@
                 "room_id": "rome-12005",
                 "description": "It is difficult to see through the haze and dust."
             }
-        }
+        },
+        "mobile_spawns": [
+            "rome-12017"
+        ]
     }
 }

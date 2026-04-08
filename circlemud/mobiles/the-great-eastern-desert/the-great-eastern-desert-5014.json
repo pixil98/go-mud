@@ -1,0 +1,65 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5014",
+    "spec": {
+        "aliases": [
+            "myconoid",
+            "shaman"
+        ],
+        "short_desc": "the myconoid shaman",
+        "long_desc": "A rather large myconoid stands here chanting in a strange tongue.",
+        "detailed_desc": "The shaman shoots spores into the air.",
+        "level": 14,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "modifier",
+                "key": "core.defense.all.absorb.pct",
+                "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d7+2"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 185
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 13
+            }
+        ],
+        "flags": [
+            "scavenger",
+            "memory"
+        ],
+        "exp_reward": 18000,
+        "equipment": [
+            {
+                "slot": "neck",
+                "object_id": "the-great-eastern-desert-5003"
+            }
+        ]
+    }
+}

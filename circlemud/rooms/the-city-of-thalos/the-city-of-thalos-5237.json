@@ -17,6 +17,9 @@
                 "room_id": "the-city-of-thalos-5245",
                 "description": "The stairs and even the entire second floor itself looks very unsafe for travel. Gusts of wind make them creak and shudder."
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-city-of-thalos-5201"
+        ]
     }
 }

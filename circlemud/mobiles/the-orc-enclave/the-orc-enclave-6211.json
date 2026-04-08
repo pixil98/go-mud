@@ -1,0 +1,56 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6211",
+    "spec": {
+        "aliases": [
+            "child",
+            "elf",
+            "elven",
+            "apprentice"
+        ],
+        "short_desc": "the elven child",
+        "long_desc": "An elven child casts his fishing pole into the river.",
+        "detailed_desc": "He looks young and innocent. You wonder what he is doing here.",
+        "level": 3,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 60
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 50
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ],
+        "exp_reward": 400,
+        "inventory": [
+            {
+                "object_id": "the-orc-enclave-6200"
+            }
+        ]
+    }
+}

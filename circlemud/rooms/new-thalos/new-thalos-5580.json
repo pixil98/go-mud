@@ -21,6 +21,9 @@
                 ],
                 "description": "The large painting on the west wall appears to be of the temple of New Thalos, and occupies the entire western wall of this room."
             }
+        ],
+        "mobile_spawns": [
+            "new-thalos-5488"
         ]
     }
 }

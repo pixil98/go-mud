@@ -13,6 +13,11 @@
                 "room_id": "rome-12017",
                 "description": "Do you like lots of live lions that haven't been fed for a few days?"
             }
-        }
+        },
+        "mobile_spawns": [
+            "rome-12007",
+            "rome-12007",
+            "rome-12007"
+        ]
     }
 }

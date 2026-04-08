@@ -1,0 +1,61 @@
+{
+    "version": 1,
+    "id": "new-thalos-5475",
+    "spec": {
+        "aliases": [
+            "chimera",
+            "creature",
+            "lion",
+            "goat",
+            "dragon"
+        ],
+        "short_desc": "the chimera",
+        "long_desc": "A creature with three heads: lion, goat, and dragon stands here.",
+        "detailed_desc": "The chimera is still a mystery, better left unexplored. This creature has the hindquarters of a goat, the forepaws of a lion and the body of a red dragon.",
+        "level": 9,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "waterwalk"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d4+4"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 286
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 15
+            }
+        ],
+        "flags": [
+            "sentinel",
+            "aggressive",
+            "memory"
+        ],
+        "exp_reward": 3500
+    }
+}

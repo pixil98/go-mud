@@ -23,6 +23,9 @@
             "down": {
                 "room_id": "the-high-tower-of-magic-2538"
             }
-        }
+        },
+        "mobile_spawns": [
+            "the-high-tower-of-magic-2512"
+        ]
     }
 }
