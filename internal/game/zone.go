@@ -22,6 +22,8 @@ const (
 type ZoneInstance struct {
 	Zone storage.SmartIdentifier[*assets.Zone]
 
+	world *WorldState
+
 	nextReset        time.Time     // when zone should next reset (runtime only)
 	lifespanDuration time.Duration // parsed lifespan
 
@@ -30,14 +32,20 @@ type ZoneInstance struct {
 	Perks *PerkCache
 }
 
+// World returns the world state this zone belongs to.
+func (z *ZoneInstance) World() *WorldState {
+	return z.world
+}
+
 // NewZoneInstance creates a ZoneInstance from a resolved zone asset.
-func NewZoneInstance(zone storage.SmartIdentifier[*assets.Zone]) (*ZoneInstance, error) {
+func NewZoneInstance(zone storage.SmartIdentifier[*assets.Zone], world *WorldState) (*ZoneInstance, error) {
 	def := zone.Get()
 	if def == nil {
 		return nil, fmt.Errorf("unable to create instance from unresolved zone %q", zone.Id())
 	}
 	zi := &ZoneInstance{
 		Zone:  zone,
+		world: world,
 		rooms: make(map[string]*RoomInstance),
 		Perks: NewPerkCache(def.Perks, nil),
 	}
@@ -54,14 +62,14 @@ func NewZoneInstance(zone storage.SmartIdentifier[*assets.Zone]) (*ZoneInstance,
 // AddRoom adds a room instance to the zone and wires the zone's
 // PerkCache as a source for the room's PerkCache.
 func (z *ZoneInstance) AddRoom(ri *RoomInstance) {
+	ri.zone = z
 	ri.Perks.AddSource("zone", z.Perks)
 	z.rooms[ri.Room.Id()] = ri
 }
 
 // Reset checks reset conditions and respawns mobs/objects if appropriate.
 // If force is true, bypasses time/occupancy checks.
-// instances is the full set of zone instances for cross-zone door synchronization.
-func (z *ZoneInstance) Reset(force bool, instances map[string]*ZoneInstance, mc MobCommander) error {
+func (z *ZoneInstance) Reset(force bool, mc MobCommander) error {
 	now := time.Now()
 
 	if !force {
@@ -77,7 +85,7 @@ func (z *ZoneInstance) Reset(force bool, instances map[string]*ZoneInstance, mc 
 	}
 
 	for _, ri := range z.rooms {
-		err := ri.Reset(instances, mc)
+		err := ri.Reset(mc)
 		if err != nil {
 			return fmt.Errorf("resetting zone %q: %w", z.Zone.Id(), err)
 		}
@@ -123,48 +131,33 @@ func (z *ZoneInstance) wanderMobs() {
 			if rand.IntN(wanderChance) != 0 {
 				continue
 			}
-			z.tryWander(mi, ri)
+			tryWander(mi, ri)
 		}
 	}
 }
 
 // tryWander picks a random valid exit and executes the direction command
 // via the mob's commander.
-func (z *ZoneInstance) tryWander(mi *MobileInstance, from *RoomInstance) {
-	def := from.Room.Get()
-	if len(def.Exits) == 0 {
+func tryWander(mi *MobileInstance, from *RoomInstance) {
+	if len(from.exits) == 0 {
 		return
 	}
 
-	mob := mi.Mobile.Get()
-	stayZone := mob.HasFlag(assets.MobileFlagStayZone)
-	thisZone := def.Zone.Id()
+	stayZone := mi.Mobile.Get().HasFlag(assets.MobileFlagStayZone)
 
 	var directions []string
-
-	for dir, exit := range def.Exits {
-		if from.IsExitClosed(dir) {
+	for dir, re := range from.exits {
+		if re.closed || re.Dest == nil {
 			continue
 		}
 
-		destRoom := z.rooms[exit.Room.Id()]
-		if destRoom == nil {
-			continue
-		}
-
-		destDef := destRoom.Room.Get()
+		destDef := re.Dest.Room.Get()
 		if destDef.HasFlag(assets.RoomFlagNoMob) || destDef.HasFlag(assets.RoomFlagDeath) {
 			continue
 		}
 
-		if stayZone {
-			destZone := exit.Zone.Id()
-			if destZone == "" {
-				destZone = thisZone
-			}
-			if destZone != thisZone {
-				continue
-			}
+		if stayZone && re.Dest.zone != from.zone {
+			continue
 		}
 
 		directions = append(directions, dir)
@@ -292,4 +285,4 @@ func (z *ZoneInstance) FindObj(name string) *ObjectInstance {
 }
 
 // FindExit always returns ("", nil) — exits are only meaningful in room scope.
-func (z *ZoneInstance) FindExit(string) (string, *assets.Exit) { return "", nil }
+func (z *ZoneInstance) FindExit(string) (string, *ResolvedExit) { return "", nil }

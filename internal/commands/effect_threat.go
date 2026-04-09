@@ -45,7 +45,6 @@ func validateThreatConfig(config map[string]string) error {
 //   - "in_combat_only" ("true"/"false", optional): only affect mobs already in combat. Default false.
 type aoeThreatEffect struct {
 	combat CombatManager
-	world  ZoneLocator
 }
 
 func (e *aoeThreatEffect) Spec() *HandlerSpec { return nil }
@@ -88,12 +87,7 @@ func (e *aoeThreatEffect) Create(_ string, config map[string]string, _ []assets.
 			return errPeacefulArea
 		}
 
-		zoneId, roomId := actor.Location()
-		zi := e.world.GetZone(zoneId)
-		if zi == nil {
-			return nil
-		}
-		ri := zi.GetRoom(roomId)
+		ri := actor.Room()
 		if ri == nil {
 			return nil
 		}

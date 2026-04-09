@@ -17,7 +17,7 @@ type mockFinder struct {
 	players map[string]*game.CharacterInstance
 	mobs    map[string]*game.MobileInstance
 	objects map[string]*game.ObjectInstance
-	exits   map[string]assets.Exit
+	exits   map[string]*game.ResolvedExit
 }
 
 func (f *mockFinder) FindPlayer(name string) *game.CharacterInstance {
@@ -47,10 +47,10 @@ func (f *mockFinder) FindObj(name string) *game.ObjectInstance {
 	return nil
 }
 
-func (f *mockFinder) FindExit(name string) (string, *assets.Exit) {
+func (f *mockFinder) FindExit(name string) (string, *game.ResolvedExit) {
 	name = strings.ToLower(name)
-	if exit, ok := f.exits[name]; ok {
-		return name, &exit
+	if re, ok := f.exits[name]; ok {
+		return name, re
 	}
 	return "", nil
 }
@@ -368,14 +368,14 @@ func TestFindTarget_Exit(t *testing.T) {
 	}{
 		"finds exit": {
 			spaces: []SearchSpace{{Finder: &mockFinder{
-				exits: map[string]assets.Exit{"north": {}},
+				exits: map[string]*game.ResolvedExit{"north": {}},
 			}}},
 			name:         "north",
 			expDirection: "north",
 		},
 		"case insensitive": {
 			spaces: []SearchSpace{{Finder: &mockFinder{
-				exits: map[string]assets.Exit{"north": {}},
+				exits: map[string]*game.ResolvedExit{"north": {}},
 			}}},
 			name:         "NORTH",
 			expDirection: "north",
@@ -390,7 +390,7 @@ func TestFindTarget_Exit(t *testing.T) {
 				objects: map[string]*game.ObjectInstance{
 					"door-1": {InstanceId: "door-1", Object: storage.NewResolvedSmartIdentifier("door", &assets.Object{Aliases: []string{"north"}, ShortDesc: "a door"})},
 				},
-				exits: map[string]assets.Exit{"north": {}},
+				exits: map[string]*game.ResolvedExit{"north": {}},
 			}}},
 			name:         "north",
 			expDirection: "",

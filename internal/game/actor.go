@@ -28,7 +28,7 @@ type FollowTarget interface {
 	Notify(msg string)
 	HasGrant(key, arg string) bool
 	IsInCombat() bool
-	Location() (string, string)
+	Room() *RoomInstance
 	Move(from, to *RoomInstance)
 	Resource(name string) (current, maximum int)
 	IsCharacter() bool
@@ -60,8 +60,7 @@ type ActorInstance struct {
 	resources  map[string]int // current values only; max derived from PerkCache
 	level      int
 
-	zoneId   string
-	roomId   string
+	room     *RoomInstance
 	inCombat bool
 
 	following FollowTarget
@@ -175,11 +174,11 @@ func (a *ActorInstance) Id() string { return a.InstanceId }
 // Level returns the actor's current level.
 func (a *ActorInstance) Level() int { return a.level }
 
-// Location returns the actor's current zone and room.
-func (a *ActorInstance) Location() (zoneId, roomId string) {
+// Room returns the room the actor is currently in.
+func (a *ActorInstance) Room() *RoomInstance {
 	a.mu.RLock()
 	defer a.mu.RUnlock()
-	return a.zoneId, a.roomId
+	return a.room
 }
 
 // IsInCombat returns whether the actor is currently in combat.

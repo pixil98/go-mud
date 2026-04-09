@@ -14,7 +14,7 @@ import (
 type MoveObjActor interface {
 	Id() string
 	Notify(msg string)
-	Location() (string, string)
+	Room() *game.RoomInstance
 	Inventory() *game.Inventory
 }
 
@@ -32,13 +32,12 @@ type ObjectHolder interface {
 //   - message (required): Go template for room broadcast
 //   - no_self_target (optional): target name to prevent self-targeting
 type MoveObjHandlerFactory struct {
-	zones ZoneLocator
-	pub   game.Publisher
+	pub game.Publisher
 }
 
 // NewMoveObjHandlerFactory creates a handler factory for object movement commands.
-func NewMoveObjHandlerFactory(zones ZoneLocator, pub game.Publisher) *MoveObjHandlerFactory {
-	return &MoveObjHandlerFactory{zones: zones, pub: pub}
+func NewMoveObjHandlerFactory(pub game.Publisher) *MoveObjHandlerFactory {
+	return &MoveObjHandlerFactory{pub: pub}
 }
 
 // Spec returns the handler's target and config requirements.
@@ -123,9 +122,7 @@ func (f *MoveObjHandlerFactory) handle(ctx context.Context, char MoveObjActor, i
 			}
 		}
 
-		zoneId, roomId := char.Location()
-		room := f.zones.GetZone(zoneId).GetRoom(roomId)
-		if err := f.pub.Publish(room, exclude, []byte(in.Config["room_message"])); err != nil {
+		if err := f.pub.Publish(char.Room(), exclude, []byte(in.Config["room_message"])); err != nil {
 			slog.Warn("failed to publish room message", "error", err)
 		}
 	}
@@ -144,8 +141,7 @@ func (f *MoveObjHandlerFactory) resolveDestination(char MoveObjActor, in *Comman
 		return char.Inventory(), nil
 
 	case "room":
-		zoneId, roomId := char.Location()
-		return f.zones.GetZone(zoneId).GetRoom(roomId), nil
+		return char.Room(), nil
 
 	default:
 		return f.holderForTarget(in.Targets[dest])
@@ -157,7 +153,7 @@ func (f *MoveObjHandlerFactory) resolveDestination(char MoveObjActor, in *Comman
 // For object targets, validates the container flag and returns contents.
 func (f *MoveObjHandlerFactory) holderForTarget(ref *TargetRef) (ObjectHolder, error) {
 	if ref.Actor != nil {
-		return ref.Actor.Inventory(), nil
+		return ref.Actor.actor.Inventory(), nil
 	}
 
 	if ref.Obj != nil {

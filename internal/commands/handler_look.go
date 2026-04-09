@@ -12,7 +12,7 @@ import (
 type LookActor interface {
 	Id() string
 	Name() string
-	Location() (string, string)
+	Room() *game.RoomInstance
 	Notify(msg string)
 	HasGrant(key, arg string) bool
 }
@@ -20,13 +20,11 @@ type LookActor interface {
 var _ LookActor = (*game.CharacterInstance)(nil)
 
 // LookHandlerFactory creates handlers that display the current room.
-type LookHandlerFactory struct {
-	zones ZoneLocator
-}
+type LookHandlerFactory struct{}
 
-// NewLookHandlerFactory creates a new LookHandlerFactory with access to world state.
-func NewLookHandlerFactory(zones ZoneLocator) *LookHandlerFactory {
-	return &LookHandlerFactory{zones: zones}
+// NewLookHandlerFactory creates a new LookHandlerFactory.
+func NewLookHandlerFactory() *LookHandlerFactory {
+	return &LookHandlerFactory{}
 }
 
 // Spec returns the handler's target and config requirements.
@@ -48,7 +46,7 @@ func (f *LookHandlerFactory) ValidateConfig(config map[string]string) error {
 
 // Create returns a compiled CommandFunc for this handler.
 func (f *LookHandlerFactory) Create() (CommandFunc, error) {
-	return Adapt[LookActor](f.handle), nil
+	return Adapt(f.handle), nil
 }
 
 const darkRoomDesc = "It is pitch black..."
@@ -76,8 +74,7 @@ func DescribeRoom(actor interface {
 }
 
 func (f *LookHandlerFactory) handle(ctx context.Context, actor LookActor, in *CommandInput) error {
-	zoneId, roomId := actor.Location()
-	ri := f.zones.GetZone(zoneId).GetRoom(roomId)
+	ri := actor.Room()
 	if ri == nil {
 		return NewUserError("You are in an invalid location.")
 	}
@@ -108,7 +105,7 @@ func (f *LookHandlerFactory) showTarget(actor LookActor, target *TargetRef) erro
 	case targetTypeObject:
 		msg = target.Obj.Describe()
 	case targetTypeExit:
-		msg = target.Exit.exit.Description
+		msg = target.Exit.exit.Exit.Description
 		if msg == "" {
 			msg = "You see nothing special."
 		}

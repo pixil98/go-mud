@@ -9,8 +9,14 @@ import (
 
 func newTestCharacterInstance() *CharacterInstance {
 	char := storage.NewResolvedSmartIdentifier("test-char", &assets.Character{Name: "Tester"})
-	ci, _ := NewCharacterInstance(char, make(chan []byte, 1), "test-zone", "test-room")
+	room := newTestRoom("test-room")
+	ci, _ := NewCharacterInstance(char, make(chan []byte, 1), room)
 	return ci
+}
+
+func newTestRoom(id string) *RoomInstance {
+	ri, _ := NewRoomInstance(storage.NewResolvedSmartIdentifier(id, &assets.Room{Name: id}))
+	return ri
 }
 
 func TestCharacterInstance_OnDeath(t *testing.T) {
@@ -50,7 +56,7 @@ func TestCharacterInstance_OnDeath(t *testing.T) {
 			if tc.wantMsg {
 				msgs = make(chan []byte, 1)
 			}
-			ci, _ := NewCharacterInstance(char, msgs, "test-zone", "test-room")
+			ci, _ := NewCharacterInstance(char, msgs, newTestRoom("test-room"))
 			ci.SetOwn([]assets.Perk{hpMaxPerk})
 			ci.initResources()
 			ci.setResourceCurrent(assets.ResourceHp, tc.startHP)
@@ -208,7 +214,7 @@ func TestCharacterInstance_GainXP(t *testing.T) {
 			char := &assets.Character{Name: "Tester", Level: tc.startLevel, Experience: tc.startXP}
 			ci, _ := NewCharacterInstance(
 				storage.NewResolvedSmartIdentifier("test-char", char),
-				nil, "z", "r",
+				nil, newTestRoom("r"),
 			)
 
 			canAdvance := ci.GainXP(tc.gainXP)

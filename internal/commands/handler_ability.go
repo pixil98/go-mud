@@ -191,10 +191,9 @@ func (ca *compiledAbility) exec(actor shared.Actor, targets map[string]*TargetRe
 // HandlerFactory for command dispatch. It adds the unlock check, message
 // publishing, and spec/validation that the command system requires.
 type abilityCommandWrapper struct {
-	id    string
-	ca    *compiledAbility
-	world WorldView
-	pub   game.Publisher
+	id  string
+	ca  *compiledAbility
+	pub game.Publisher
 }
 
 // Spec returns the compiled spec from the underlying compiledAbility.
@@ -263,9 +262,7 @@ func (w *abilityCommandWrapper) publishResult(result *AbilityResult, actor share
 		exclude = append(exclude, result.TargetId)
 	}
 	if len(result.RoomLines) > 0 {
-		zoneId, roomId := actor.Location()
-		room := w.world.GetZone(zoneId).GetRoom(roomId)
-		if err := w.pub.Publish(room, exclude, []byte(strings.Join(result.RoomLines, "\n"))); err != nil {
+		if err := w.pub.Publish(actor.Room(), exclude, []byte(strings.Join(result.RoomLines, "\n"))); err != nil {
 			return err
 		}
 	}

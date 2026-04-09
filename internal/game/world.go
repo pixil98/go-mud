@@ -28,7 +28,7 @@ func (w *WorldState) SetMobCommander(mc MobCommander) {
 // ResetAll resets all zones, spawning mobs and objects.
 func (w *WorldState) ResetAll() error {
 	for _, zi := range w.zones {
-		if err := zi.Reset(true, w.zones, w.mobCommander); err != nil {
+		if err := zi.Reset(true, w.mobCommander); err != nil {
 			return err
 		}
 	}
@@ -39,21 +39,27 @@ func (w *WorldState) ResetAll() error {
 func NewWorldState(sub Subscriber, zones storage.Storer[*assets.Zone], rooms storage.Storer[*assets.Room]) (*WorldState, error) {
 	worldPerks := NewPerkCache(nil, nil)
 
+	w := &WorldState{
+		subscriber: sub,
+		players:    make(map[string]*CharacterInstance),
+		zones:      make(map[string]*ZoneInstance),
+		perks:      worldPerks,
+	}
+
 	// Build zone instances
-	instances := make(map[string]*ZoneInstance)
 	for zoneId, zone := range zones.GetAll() {
-		zi, err := NewZoneInstance(storage.NewResolvedSmartIdentifier(string(zoneId), zone))
+		zi, err := NewZoneInstance(storage.NewResolvedSmartIdentifier(string(zoneId), zone), w)
 		if err != nil {
 			return nil, err
 		}
 		zi.Perks.AddSource("world", worldPerks)
-		instances[zoneId] = zi
+		w.zones[zoneId] = zi
 	}
 
 	// Build room instances and add to their zones
 	for roomId, room := range rooms.GetAll() {
 		zoneId := room.Zone.Id()
-		if zi, ok := instances[zoneId]; ok {
+		if zi, ok := w.zones[zoneId]; ok {
 			ri, err := NewRoomInstance(storage.NewResolvedSmartIdentifier(string(roomId), room))
 			if err != nil {
 				return nil, err
@@ -62,12 +68,22 @@ func NewWorldState(sub Subscriber, zones storage.Storer[*assets.Zone], rooms sto
 		}
 	}
 
-	return &WorldState{
-		subscriber: sub,
-		players:    make(map[string]*CharacterInstance),
-		zones:      instances,
-		perks:      worldPerks,
-	}, nil
+	// Resolve exit destination pointers now that all rooms exist.
+	for _, zi := range w.zones {
+		for _, ri := range zi.rooms {
+			for _, re := range ri.exits {
+				destZoneId := re.Exit.Zone.Id()
+				if destZoneId == "" {
+					destZoneId = zi.Zone.Id()
+				}
+				if destZi, ok := w.zones[destZoneId]; ok {
+					re.Dest = destZi.rooms[re.Exit.Room.Id()]
+				}
+			}
+		}
+	}
+
+	return w, nil
 }
 
 // Perks returns the world-level perk cache.
@@ -104,8 +120,7 @@ func (w *WorldState) AddPlayer(ci *CharacterInstance) error {
 	}
 	ci.subscriber = w.subscriber
 	w.players[charId] = ci
-	zoneId, roomId := ci.Location()
-	room := w.zones[zoneId].GetRoom(roomId)
+	room := ci.Room()
 	ci.AddSource("room", room.Perks)
 	w.mu.Unlock()
 
@@ -122,8 +137,7 @@ func (w *WorldState) RemovePlayer(charId string) error {
 		return ErrPlayerNotFound
 	}
 
-	zoneId, roomId := ps.Location()
-	room := w.zones[zoneId].GetRoom(roomId)
+	room := ps.Room()
 	delete(w.players, charId)
 	w.mu.Unlock()
 
@@ -172,7 +186,7 @@ type Subscriber interface {
 // world perks → players → zones → rooms → mobs.
 func (w *WorldState) Tick(_ context.Context) error {
 	for _, zi := range w.zones {
-		if err := zi.Reset(false, w.zones, w.mobCommander); err != nil {
+		if err := zi.Reset(false, w.mobCommander); err != nil {
 			return err
 		}
 	}

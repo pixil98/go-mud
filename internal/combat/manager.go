@@ -18,7 +18,6 @@ type Manager struct {
 	mu         sync.Mutex
 	combatants map[string]*combatantState
 	pub        game.Publisher
-	zones      ZoneLocator
 	abilities  AbilityHandler
 }
 
@@ -29,11 +28,10 @@ type combatantState struct {
 }
 
 // NewManager creates a combat Manager.
-func NewManager(pub game.Publisher, zones ZoneLocator) *Manager {
+func NewManager(pub game.Publisher) *Manager {
 	return &Manager{
 		combatants: make(map[string]*combatantState),
 		pub:        pub,
-		zones:      zones,
 	}
 }
 
@@ -149,18 +147,16 @@ func ParseAttackArg(arg string) (dmgType, diceExpr string) {
 // Tick processes one round of auto_use abilities for all active combatants.
 func (m *Manager) Tick(_ context.Context) error {
 	type roomEntry struct {
-		zoneId string
-		roomId string
-		lines  []string
+		room  *game.RoomInstance
+		lines []string
 	}
-	roomMessages := make(map[string]*roomEntry)
+	roomMessages := make(map[*game.RoomInstance]*roomEntry)
 
-	addRoomLine := func(zoneId, roomId, line string) {
-		key := zoneId + "|" + roomId
-		if e, ok := roomMessages[key]; ok {
+	addRoomLine := func(room *game.RoomInstance, line string) {
+		if e, ok := roomMessages[room]; ok {
 			e.lines = append(e.lines, line)
 		} else {
-			roomMessages[key] = &roomEntry{zoneId: zoneId, roomId: roomId, lines: []string{line}}
+			roomMessages[room] = &roomEntry{room: room, lines: []string{line}}
 		}
 	}
 
@@ -174,8 +170,7 @@ func (m *Manager) Tick(_ context.Context) error {
 	var autoUses []autoUseTask
 	// roomPublish holds a per-attack room message with a per-target exclusion.
 	type roomPublish struct {
-		zoneId  string
-		roomId  string
+		room    *game.RoomInstance
 		msg     string
 		exclude string // charId of the target player to exclude, or ""
 	}
@@ -233,10 +228,8 @@ func (m *Manager) Tick(_ context.Context) error {
 			continue
 		}
 		if result.RoomMsg != "" {
-			zoneId, roomId := task.actor.Location()
 			roomPublishes = append(roomPublishes, roomPublish{
-				zoneId:  zoneId,
-				roomId:  roomId,
+				room:    task.actor.Room(),
 				msg:     result.RoomMsg,
 				exclude: result.TargetId,
 			})
@@ -256,8 +249,7 @@ func (m *Manager) Tick(_ context.Context) error {
 	var dead []deadEntry
 	for id, state := range m.combatants {
 		if !state.c.IsAlive() {
-			zoneId, roomId := state.c.Location()
-			addRoomLine(zoneId, roomId, fmt.Sprintf("%s is DEAD!  R.I.P.", state.c.Name()))
+			addRoomLine(state.c.Room(), fmt.Sprintf("%s is DEAD!  R.I.P.", state.c.Name()))
 			snap := make(map[string]int, len(state.threat))
 			for k, v := range state.threat {
 				snap[k] = v
@@ -289,19 +281,11 @@ func (m *Manager) Tick(_ context.Context) error {
 	// Publish per-attack room messages (3rd-person), excluding the target player
 	// who already received the 2nd-person TargetMsg via Notify above.
 	for _, rp := range roomPublishes {
-		zi := m.zones.GetZone(rp.zoneId)
-		if zi == nil {
-			continue
-		}
-		ri := zi.GetRoom(rp.roomId)
-		if ri == nil {
-			continue
-		}
 		var exclude []string
 		if rp.exclude != "" {
 			exclude = []string{rp.exclude}
 		}
-		if err := m.pub.Publish(ri, exclude, []byte(rp.msg)); err != nil {
+		if err := m.pub.Publish(rp.room, exclude, []byte(rp.msg)); err != nil {
 			slog.Warn("failed to publish room combat message", "error", err)
 		}
 	}
@@ -309,28 +293,16 @@ func (m *Manager) Tick(_ context.Context) error {
 	// Call OnDeath, remove mob, and place drops outside the lock (room operations acquire ri.mu).
 	for _, d := range dead {
 		drops := d.c.OnDeath()
-		zoneId, roomId := d.c.Location()
-		if zi := m.zones.GetZone(zoneId); zi != nil {
-			if ri := zi.GetRoom(roomId); ri != nil {
-				ri.RemoveMob(d.c.Id())
-				for _, obj := range drops {
-					ri.AddObj(obj)
-				}
-			}
+		ri := d.c.Room()
+		ri.RemoveMob(d.c.Id())
+		for _, obj := range drops {
+			ri.AddObj(obj)
 		}
 	}
 
 	// Publish bundled death room messages after OnDeath.
 	for _, entry := range roomMessages {
-		zi := m.zones.GetZone(entry.zoneId)
-		if zi == nil {
-			continue
-		}
-		ri := zi.GetRoom(entry.roomId)
-		if ri == nil {
-			continue
-		}
-		if err := m.pub.Publish(ri, nil, []byte(strings.Join(entry.lines, "\n"))); err != nil {
+		if err := m.pub.Publish(entry.room, nil, []byte(strings.Join(entry.lines, "\n"))); err != nil {
 			slog.Warn("failed to publish combat room messages", "error", err)
 		}
 	}
@@ -340,16 +312,13 @@ func (m *Manager) Tick(_ context.Context) error {
 		if len(d.threat) == 0 {
 			continue
 		}
-		zoneId, _ := d.c.Location()
-		zi := m.zones.GetZone(zoneId)
-		if zi == nil {
-			continue
-		}
 		mobLevel := d.c.Level()
 		baseXP := game.BaseExpForLevel(mobLevel)
-		zi.ForEachPlayer(func(charId string, ci *game.CharacterInstance) {
-			if _, ok := d.threat[ci.Id()]; !ok {
-				return
+		world := d.c.Room().Zone().World()
+		for actorId := range d.threat {
+			ci := world.GetPlayer(actorId)
+			if ci == nil {
+				continue
 			}
 			xp := int(float64(baseXP) * game.LevelDiffMultiplier(ci.Character.Get().Level, mobLevel))
 			canAdvance := ci.GainXP(xp)
@@ -358,7 +327,7 @@ func (m *Manager) Tick(_ context.Context) error {
 				msg += "\nYou feel ready to advance to the next level!"
 			}
 			ci.Notify(msg)
-		})
+		}
 	}
 
 	return nil

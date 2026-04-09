@@ -184,12 +184,11 @@ func TestRoomBuffEffect(t *testing.T) {
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			room, zone := newTestRoomInZone("test-room", "Test Room", "test-zone")
+			room, _ := newTestRoomInZone("test-room", "Test Room", "test-zone")
 			player := newTestPlayer("test-player", "Tester", room)
 			player.AddSource("room", room.Perks)
 
-			world := &mockBuffWorld{zones: map[string]*game.ZoneInstance{"test-zone": zone}}
-			effect := &buffEffect{scope: buffScopeRoom, world: world}
+			effect := &buffEffect{scope: buffScopeRoom}
 
 			// ValidateConfig first, then Create
 			if err := effect.ValidateConfig(tc.config); err != nil {
@@ -228,11 +227,11 @@ func TestRoomBuffEffect(t *testing.T) {
 }
 
 func TestRoomBuffEffectExpiry(t *testing.T) {
-	room, zone := newTestRoomInZone("test-room", "Test Room", "test-zone")
+	room, _ := newTestRoomInZone("test-room", "Test Room", "test-zone")
 	player := newTestPlayer("test-player", "Tester", room)
 	player.AddSource("room", room.Perks)
 
-	effect := &buffEffect{scope: buffScopeRoom, world: &mockBuffWorld{zones: map[string]*game.ZoneInstance{"test-zone": zone}}}
+	effect := &buffEffect{scope: buffScopeRoom}
 
 	config := map[string]string{
 		"duration":   "2",
@@ -365,8 +364,7 @@ func TestAttackEffect_PeacefulArea(t *testing.T) {
 }
 
 func TestDamageEffect_InitiatesCombat(t *testing.T) {
-	room, zone := newTestRoomInZone("r", "Room", "z")
-	_ = zone
+	room, _ := newTestRoomInZone("r", "Room", "z")
 	player := newTestPlayer("player", "Player", room)
 
 	mob := newTestMobInstance("mob-1", "Goblin", nil)
@@ -436,7 +434,7 @@ func TestAoeDamageEffect(t *testing.T) {
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			room, zone := newTestRoomInZone("r", "Room", "z")
+			room, _ := newTestRoomInZone("r", "Room", "z")
 			player := newTestPlayer("player", "Player", room)
 			setPlayerAP(player, 2)
 
@@ -455,8 +453,7 @@ func TestAoeDamageEffect(t *testing.T) {
 			}
 
 			cm := &mockCombatManager{}
-			world := &mockZoneLocator{zones: map[string]*game.ZoneInstance{"z": zone}}
-			effect := &aoeDamageEffect{combat: cm, world: world}
+			effect := &aoeDamageEffect{combat: cm}
 
 			config := map[string]string{"amount": "10"}
 			if tc.hitAllies {
@@ -491,7 +488,7 @@ func TestAoeDamageEffect(t *testing.T) {
 }
 
 func TestAoeDamageEffect_PeacefulArea(t *testing.T) {
-	room, zone := newTestRoomInZone("r", "Room", "z")
+	room, _ := newTestRoomInZone("r", "Room", "z")
 	player := newTestPlayer("player", "Player", room)
 	setPlayerAP(player, 2)
 	player.AddSource("room", room.Perks)
@@ -501,8 +498,7 @@ func TestAoeDamageEffect_PeacefulArea(t *testing.T) {
 	})
 
 	cm := &mockCombatManager{}
-	world := &mockZoneLocator{zones: map[string]*game.ZoneInstance{"z": zone}}
-	effect := &aoeDamageEffect{combat: cm, world: world}
+	effect := &aoeDamageEffect{combat: cm}
 
 	fn := effect.Create("test:0", map[string]string{"amount": "10"}, nil)
 	err := fn(player, nil, &AbilityResult{})
@@ -581,7 +577,7 @@ func TestAoeThreatEffect(t *testing.T) {
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			room, zone := newTestRoomInZone("r", "Room", "z")
+			room, _ := newTestRoomInZone("r", "Room", "z")
 			player := newTestPlayer("player", "Player", room)
 
 			for i, inCombat := range tc.mobInCombat {
@@ -592,8 +588,7 @@ func TestAoeThreatEffect(t *testing.T) {
 			}
 
 			cm := &mockCombatManager{startedErr: tc.startErr}
-			world := &mockZoneLocator{zones: map[string]*game.ZoneInstance{"z": zone}}
-			effect := &aoeThreatEffect{combat: cm, world: world}
+			effect := &aoeThreatEffect{combat: cm}
 
 			config := map[string]string{"mode": tc.mode}
 			if tc.amount != "" {
@@ -629,7 +624,7 @@ func TestAoeThreatEffect(t *testing.T) {
 }
 
 func TestAoeThreatEffect_PeacefulArea(t *testing.T) {
-	room, zone := newTestRoomInZone("r", "Room", "z")
+	room, _ := newTestRoomInZone("r", "Room", "z")
 	player := newTestPlayer("player", "Player", room)
 	player.AddSource("room", room.Perks)
 
@@ -641,8 +636,7 @@ func TestAoeThreatEffect_PeacefulArea(t *testing.T) {
 	room.AddMob(mi)
 
 	cm := &mockCombatManager{}
-	world := &mockZoneLocator{zones: map[string]*game.ZoneInstance{"z": zone}}
-	effect := &aoeThreatEffect{combat: cm, world: world}
+	effect := &aoeThreatEffect{combat: cm}
 
 	fn := effect.Create("test:0", map[string]string{"mode": "add", "amount": "10"}, nil)
 	err := fn(player, nil, &AbilityResult{})

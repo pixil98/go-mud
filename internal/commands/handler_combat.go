@@ -25,7 +25,7 @@ type CombatManager interface {
 type AssistedPlayer interface {
 	Name() string
 	CombatTargetId() string
-	Location() (zoneId, roomId string)
+	Room() *game.RoomInstance
 }
 
 var _ AssistedPlayer = (*game.CharacterInstance)(nil)
@@ -53,14 +53,13 @@ func (a *assistPlayerAdapter) GetPlayer(charId string) AssistedPlayer {
 // When no target is given, the actor assists their follow leader.
 type AssistHandlerFactory struct {
 	combat  CombatManager
-	zones   ZoneLocator
 	players AssistPlayerLookup
 	pub     game.Publisher
 }
 
 // NewAssistHandlerFactory creates a handler factory for the assist command.
-func NewAssistHandlerFactory(combat CombatManager, zones ZoneLocator, players PlayerLookup, pub game.Publisher) *AssistHandlerFactory {
-	return &AssistHandlerFactory{combat: combat, zones: zones, players: &assistPlayerAdapter{inner: players}, pub: pub}
+func NewAssistHandlerFactory(combat CombatManager, players PlayerLookup, pub game.Publisher) *AssistHandlerFactory {
+	return &AssistHandlerFactory{combat: combat, players: &assistPlayerAdapter{inner: players}, pub: pub}
 }
 
 // Spec returns the optional target player requirement for the assist handler.
@@ -106,8 +105,7 @@ func (f *AssistHandlerFactory) handle(ctx context.Context, in *CommandInput) err
 		return NewUserError(fmt.Sprintf("%s isn't fighting anyone.", assistedName))
 	}
 
-	assistedZone, assistedRoom := assisted.Location()
-	targetMob := f.zones.GetZone(assistedZone).GetRoom(assistedRoom).GetMob(targetMobId)
+	targetMob := assisted.Room().GetMob(targetMobId)
 	if err := f.combat.StartCombat(char, targetMob); err != nil {
 		return NewUserError(fmt.Sprintf("%s isn't fighting anything you can assist with.", assistedName))
 	}
@@ -118,11 +116,8 @@ func (f *AssistHandlerFactory) handle(ctx context.Context, in *CommandInput) err
 		slog.Warn("failed to notify assisted player", "error", err)
 	}
 
-	actorId := char.Id()
-	zoneID, roomID := char.Location()
-	room := f.zones.GetZone(zoneID).GetRoom(roomID)
 	roomMsg := fmt.Sprintf("%s jumps to %s's aid!", char.Name(), assistedName)
-	if err := f.pub.Publish(room, []string{actorId, assistedId}, []byte(roomMsg)); err != nil {
+	if err := f.pub.Publish(char.Room(), []string{char.Id(), assistedId}, []byte(roomMsg)); err != nil {
 		slog.Warn("failed to publish room assist message", "error", err)
 	}
 

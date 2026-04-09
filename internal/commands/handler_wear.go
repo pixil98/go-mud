@@ -13,7 +13,7 @@ import (
 type WearActor interface {
 	Id() string
 	Notify(msg string)
-	Location() (zoneId, roomId string)
+	Room() *game.RoomInstance
 	Inventory() *game.Inventory
 	Equip(slot string, obj *game.ObjectInstance) error
 	Asset() *assets.Character
@@ -25,13 +25,12 @@ var _ WearActor = (*game.CharacterInstance)(nil)
 // Targets:
 //   - target (required): the object to wear
 type WearHandlerFactory struct {
-	zones ZoneLocator
-	pub   game.Publisher
+	pub game.Publisher
 }
 
 // NewWearHandlerFactory creates a handler factory for equipping wearable item commands.
-func NewWearHandlerFactory(zones ZoneLocator, pub game.Publisher) *WearHandlerFactory {
-	return &WearHandlerFactory{zones: zones, pub: pub}
+func NewWearHandlerFactory(pub game.Publisher) *WearHandlerFactory {
+	return &WearHandlerFactory{pub: pub}
 }
 
 // Spec returns the handler's target and config requirements.
@@ -99,7 +98,5 @@ func (f *WearHandlerFactory) handle(ctx context.Context, actor WearActor, in *Co
 
 	// Broadcast to room
 	roomMsg := fmt.Sprintf("%s wears %s.", actor.Asset().Name, obj.ShortDesc)
-	zoneId, roomId := actor.Location()
-	room := f.zones.GetZone(zoneId).GetRoom(roomId)
-	return f.pub.Publish(room, []string{actor.Id()}, []byte(roomMsg))
+	return f.pub.Publish(actor.Room(), []string{actor.Id()}, []byte(roomMsg))
 }

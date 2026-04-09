@@ -1,7 +1,6 @@
 package combat
 
 import (
-	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/shared"
 )
 
@@ -17,9 +16,4 @@ type CombatAbilityResult struct {
 // execution to this interface.
 type AbilityHandler interface {
 	ExecCombatAbility(abilityId string, actor, target shared.Actor) (CombatAbilityResult, error)
-}
-
-// ZoneLocator retrieves a zone instance by zone ID, for publishing room messages.
-type ZoneLocator interface {
-	GetZone(zoneId string) *game.ZoneInstance
 }

@@ -151,7 +151,6 @@ func dealDamage(cm CombatManager, actor shared.Actor, target shared.Actor, raw i
 //   - "hit_allies" ("true"/"false", optional): also damage same-side targets. Default false.
 type aoeDamageEffect struct {
 	combat CombatManager
-	world  ZoneLocator
 }
 
 func (e *aoeDamageEffect) Spec() *HandlerSpec { return nil }
@@ -180,12 +179,7 @@ func (e *aoeDamageEffect) Create(_ string, config map[string]string, _ []assets.
 			return errPeacefulArea
 		}
 
-		zoneId, roomId := actor.Location()
-		zi := e.world.GetZone(zoneId)
-		if zi == nil {
-			return nil
-		}
-		ri := zi.GetRoom(roomId)
+		ri := actor.Room()
 		if ri == nil {
 			return nil
 		}

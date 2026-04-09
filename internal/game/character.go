@@ -49,7 +49,7 @@ type CharacterInstance struct {
 
 // NewCharacterInstance creates a CharacterInstance from a saved character spec,
 // materializing inventory and equipment into runtime instances.
-func NewCharacterInstance(char storage.SmartIdentifier[*assets.Character], msgs chan []byte, zoneId, roomId string) (*CharacterInstance, error) {
+func NewCharacterInstance(char storage.SmartIdentifier[*assets.Character], msgs chan []byte, room *RoomInstance) (*CharacterInstance, error) {
 	c := char.Get()
 	inv, eq, err := materializeInventoryEquipment(c)
 	if err != nil {
@@ -68,12 +68,11 @@ func NewCharacterInstance(char storage.SmartIdentifier[*assets.Character], msgs 
 		Character: char,
 		ActorInstance: ActorInstance{
 			InstanceId: char.Id(),
-			inventory:  inv,
-			equipment:  eq,
-			level:      c.Level,
-			zoneId:     zoneId,
-			roomId:     roomId,
-			PerkCache:  *NewPerkCache(racePerks, map[string]PerkSource{"equipment": eq}),
+			inventory: inv,
+			equipment: eq,
+			level:     c.Level,
+			room:      room,
+			PerkCache: *NewPerkCache(racePerks, map[string]PerkSource{"equipment": eq}),
 		},
 		lastActivity: time.Now(),
 		done:         make(chan struct{}),
@@ -375,17 +374,12 @@ func (ci *CharacterInstance) Notify(msg string) {
 // --- Game logic ---
 
 // Move updates the player's location and room instance player lists.
-// Room locks are acquired first (for map safety), then instance lock (for field update).
 func (ci *CharacterInstance) Move(fromRoom, toRoom *RoomInstance) {
-	toZoneId := toRoom.Room.Get().Zone.Id()
-	toRoomId := toRoom.Room.Id()
-
 	fromRoom.RemovePlayer(ci.Character.Id())
 	toRoom.AddPlayer(ci.Character.Id(), ci)
 
 	ci.mu.Lock()
-	ci.zoneId = toZoneId
-	ci.roomId = toRoomId
+	ci.room = toRoom
 	ci.RemoveSource("room")
 	ci.AddSource("room", toRoom.Perks)
 	ci.mu.Unlock()

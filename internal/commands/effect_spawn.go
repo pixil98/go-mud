@@ -21,7 +21,6 @@ const (
 //   - "mobile_id" (string, required): the asset ID of the mobile to spawn.
 type spawnMobEffect struct {
 	mobiles storage.Storer[*assets.Mobile]
-	world   ZoneLocator
 }
 
 func (e *spawnMobEffect) Spec() *HandlerSpec { return nil }
@@ -50,12 +49,7 @@ func (e *spawnMobEffect) Create(_ string, config map[string]string, _ []assets.T
 			return fmt.Errorf("spawn_mob: %w", err)
 		}
 
-		zoneId, roomId := actor.Location()
-		zi := e.world.GetZone(zoneId)
-		if zi == nil {
-			return nil
-		}
-		ri := zi.GetRoom(roomId)
+		ri := actor.Room()
 		if ri == nil {
 			return nil
 		}
@@ -71,7 +65,6 @@ func (e *spawnMobEffect) Create(_ string, config map[string]string, _ []assets.T
 //   - "destination" (string, optional): "room" (default) or "inventory".
 type spawnObjEffect struct {
 	objects storage.Storer[*assets.Object]
-	world   ZoneLocator
 }
 
 func (e *spawnObjEffect) Spec() *HandlerSpec { return nil }
@@ -113,12 +106,7 @@ func (e *spawnObjEffect) Create(_ string, config map[string]string, _ []assets.T
 		case SpawnDestInventory:
 			actor.Inventory().AddObj(oi)
 		case SpawnDestRoom:
-			zoneId, roomId := actor.Location()
-			zi := e.world.GetZone(zoneId)
-			if zi == nil {
-				return nil
-			}
-			ri := zi.GetRoom(roomId)
+			ri := actor.Room()
 			if ri == nil {
 				return nil
 			}

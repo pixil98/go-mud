@@ -57,7 +57,7 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	publisher := messaging.NewNatsPublisher(natsServer)
 
 	// Create combat manager
-	combatManager := combat.NewManager(publisher, world)
+	combatManager := combat.NewManager(publisher)
 
 	// Create command handler and compile all commands
 	cmdHandler, err := commands.NewHandler(storeCmds, dict, publisher, world, combatManager)

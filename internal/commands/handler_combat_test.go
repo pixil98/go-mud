@@ -5,7 +5,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/shared"
 )
 
@@ -87,8 +86,8 @@ func TestAssistHandler(t *testing.T) {
 				pub := &recordingPublisher{}
 				cm := &mockCombatManager{}
 
-				bob := &mockActor{id: "bob", name: "Bob", combatTargetId: "mob:test-mob", zoneId: "test-zone", roomId: "test-room"}
-				actor := &mockActor{id: "alice", name: "Alice", zoneId: "test-zone", roomId: "test-room"}
+				bob := &mockActor{id: "bob", name: "Bob", combatTargetId: "mob:test-mob", room: room}
+				actor := &mockActor{id: "alice", name: "Alice", room: room}
 
 				// Add a bystander so the room broadcast has a recipient.
 				_ = newTestPlayer("charlie", "Charlie", room)
@@ -96,7 +95,6 @@ func TestAssistHandler(t *testing.T) {
 				players := &mockAssistPlayerLookup{players: map[string]AssistedPlayer{"bob": bob}}
 				f := &AssistHandlerFactory{
 					combat:  cm,
-					zones:   &mockZoneLocator{zones: map[string]*game.ZoneInstance{"test-zone": zone}},
 					players: players,
 					pub:     pub,
 				}
@@ -129,13 +127,12 @@ func TestAssistHandler(t *testing.T) {
 				pub := &recordingPublisher{}
 				cm := &mockCombatManager{}
 
-				bob := &mockActor{id: "bob", name: "Bob", combatTargetId: "mob:test-mob", zoneId: "test-zone", roomId: "test-room"}
-				actor := &mockActor{id: "alice", name: "Alice", following: bob, zoneId: "test-zone", roomId: "test-room"}
+				bob := &mockActor{id: "bob", name: "Bob", combatTargetId: "mob:test-mob", room: room}
+				actor := &mockActor{id: "alice", name: "Alice", following: bob, room: room}
 
 				players := &mockAssistPlayerLookup{players: map[string]AssistedPlayer{"bob": bob}}
 				f := &AssistHandlerFactory{
 					combat:  cm,
-					zones:   &mockZoneLocator{zones: map[string]*game.ZoneInstance{"test-zone": zone}},
 					players: players,
 					pub:     pub,
 				}
@@ -153,11 +150,7 @@ func TestAssistHandler(t *testing.T) {
 		},
 		"already in combat": {
 			setup: func() (*AssistHandlerFactory, *CommandInput, *mockActor) {
-				cm := &mockCombatManager{}
-				pub := &recordingPublisher{}
-				players := &mockAssistPlayerLookup{}
-				f := &AssistHandlerFactory{combat: cm, zones: &mockZoneLocator{}, players: players, pub: pub}
-
+				f := &AssistHandlerFactory{combat: &mockCombatManager{}, players: &mockAssistPlayerLookup{}, pub: &recordingPublisher{}}
 				actor := &mockActor{id: "alice", name: "Alice", inCombat: true}
 				cmdCtx := &CommandInput{
 					Actor:   actor,
@@ -170,11 +163,7 @@ func TestAssistHandler(t *testing.T) {
 		},
 		"no target and not following": {
 			setup: func() (*AssistHandlerFactory, *CommandInput, *mockActor) {
-				cm := &mockCombatManager{}
-				pub := &recordingPublisher{}
-				players := &mockAssistPlayerLookup{}
-				f := &AssistHandlerFactory{combat: cm, zones: &mockZoneLocator{}, players: players, pub: pub}
-
+				f := &AssistHandlerFactory{combat: &mockCombatManager{}, players: &mockAssistPlayerLookup{}, pub: &recordingPublisher{}}
 				actor := &mockActor{id: "alice", name: "Alice"}
 				cmdCtx := &CommandInput{
 					Actor:   actor,
@@ -187,12 +176,8 @@ func TestAssistHandler(t *testing.T) {
 		},
 		"assisted player not in combat": {
 			setup: func() (*AssistHandlerFactory, *CommandInput, *mockActor) {
-				cm := &mockCombatManager{}
-				pub := &recordingPublisher{}
-				bob := &mockActor{id: "bob", name: "Bob"} // CombatTargetId returns ""
-				players := &mockAssistPlayerLookup{players: map[string]AssistedPlayer{"bob": bob}}
-				f := &AssistHandlerFactory{combat: cm, zones: &mockZoneLocator{}, players: players, pub: pub}
-
+				bob := &mockActor{id: "bob", name: "Bob"}
+				f := &AssistHandlerFactory{combat: &mockCombatManager{}, players: &mockAssistPlayerLookup{players: map[string]AssistedPlayer{"bob": bob}}, pub: &recordingPublisher{}}
 				actor := &mockActor{id: "alice", name: "Alice"}
 				cmdCtx := &CommandInput{
 					Actor: actor,

@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/assets"
-	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/shared"
 )
 
@@ -61,17 +60,10 @@ const (
 	buffScopeWorld
 )
 
-// buffWorld provides the zone/room lookup and world-level perks needed by buffEffect.
-type buffWorld interface {
-	ZoneLocator
-	Perks() *game.PerkCache
-}
-
 // buffEffect applies timed perks to a target determined by scope: a specific
 // actor (or self), the caster's room, zone, or the entire world.
 type buffEffect struct {
 	scope buffScope
-	world buffWorld
 }
 
 func (e *buffEffect) Spec() *HandlerSpec {
@@ -146,21 +138,11 @@ func (e *buffEffect) Create(id string, config map[string]string, targets []asset
 			}
 			actor.AddTimedPerks(name, p, dur)
 		case buffScopeRoom:
-			zoneId, roomId := actor.Location()
-			room := e.world.GetZone(zoneId).GetRoom(roomId)
-			if room == nil {
-				return fmt.Errorf("buff effect: room not found")
-			}
-			room.Perks.AddTimedPerks(name, p, dur)
+			actor.Room().Perks.AddTimedPerks(name, p, dur)
 		case buffScopeZone:
-			zoneId, _ := actor.Location()
-			zone := e.world.GetZone(zoneId)
-			if zone == nil {
-				return fmt.Errorf("buff effect: zone not found")
-			}
-			zone.Perks.AddTimedPerks(name, p, dur)
+			actor.Room().Zone().Perks.AddTimedPerks(name, p, dur)
 		case buffScopeWorld:
-			e.world.Perks().AddTimedPerks(name, p, dur)
+			actor.Room().Zone().World().Perks().AddTimedPerks(name, p, dur)
 		}
 		return nil
 	}

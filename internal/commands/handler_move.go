@@ -6,19 +6,18 @@ import (
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/assets"
+	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
 )
 
 // MoveHandlerFactory creates handlers that move players between rooms.
 // Config:
 //   - direction (required): the direction to move (north, south, east, west, up, down)
-type MoveHandlerFactory struct {
-	zones ZoneLocator
-}
+type MoveHandlerFactory struct{}
 
-// NewMoveHandlerFactory creates a new MoveHandlerFactory with access to world state.
-func NewMoveHandlerFactory(zones ZoneLocator) *MoveHandlerFactory {
-	return &MoveHandlerFactory{zones: zones}
+// NewMoveHandlerFactory creates a new MoveHandlerFactory.
+func NewMoveHandlerFactory() *MoveHandlerFactory {
+	return &MoveHandlerFactory{}
 }
 
 // Spec returns the handler's target and config requirements.
@@ -57,39 +56,30 @@ func (f *MoveHandlerFactory) handle(ctx context.Context, in *CommandInput) error
 		return fmt.Errorf("direction not set in config")
 	}
 
-	zoneId, roomId := char.Location()
-
 	// Look up current room instance
-	fromRoom := f.zones.GetZone(zoneId).GetRoom(roomId)
+	fromRoom := char.Room()
 	if fromRoom == nil {
 		return NewUserError("You are in an invalid location.")
 	}
 
 	// Check if exit exists
-	exit, exists := fromRoom.Room.Get().Exits[direction]
-	if !exists {
+	_, re := fromRoom.FindExit(direction)
+	if re == nil {
 		return NewUserError(fmt.Sprintf("You cannot go %s from here.", direction))
 	}
 
 	// Check if exit is blocked by a closure
-	if exit.Closure != nil {
-		if fromRoom.IsExitLocked(direction) {
-			return NewUserError(fmt.Sprintf("The %s is locked.", exit.Closure.Name))
+	if re.Exit.Closure != nil {
+		if re.IsLocked() {
+			return NewUserError(fmt.Sprintf("The %s is locked.", re.Exit.Closure.Name))
 		}
-		if fromRoom.IsExitClosed(direction) {
-			return NewUserError(fmt.Sprintf("The %s is closed.", exit.Closure.Name))
+		if re.IsClosed() {
+			return NewUserError(fmt.Sprintf("The %s is closed.", re.Exit.Closure.Name))
 		}
 	}
-
-	// Determine destination zone (default to current if not specified)
-	destZone := exit.Zone.Id()
-	if destZone == "" {
-		destZone = zoneId
-	}
-	destRoomId := exit.Room.Id()
 
 	// Get destination room instance
-	toRoom := f.zones.GetZone(destZone).GetRoom(destRoomId)
+	toRoom := re.Dest
 	if toRoom == nil {
 		return NewUserError("Alas, you cannot go that way...")
 	}
@@ -117,20 +107,26 @@ func (f *MoveHandlerFactory) handle(ctx context.Context, in *CommandInput) error
 }
 
 // announceDepart notifies players in the room that an actor is leaving.
-func announceDepart(actor interface{ Name() string; HasGrant(string, string) bool }, room *game.RoomInstance, direction string) {
+func announceDepart(actor interface {
+	Name() string
+	HasGrant(string, string) bool
+}, room *game.RoomInstance, direction string) {
 	if actor.HasGrant(assets.PerkGrantSneak, "") {
 		return
 	}
-	msg := fmt.Sprintf("%s leaves %s.", actor.Name(), direction)
+	msg := fmt.Sprintf("%s leaves %s.", display.Capitalize(actor.Name()), direction)
 	announceToRoom(room, actor, msg)
 }
 
 // announceArrive notifies players in the room that an actor has arrived.
-func announceArrive(actor interface{ Name() string; HasGrant(string, string) bool }, room *game.RoomInstance) {
+func announceArrive(actor interface {
+	Name() string
+	HasGrant(string, string) bool
+}, room *game.RoomInstance) {
 	if actor.HasGrant(assets.PerkGrantSneak, "") {
 		return
 	}
-	msg := fmt.Sprintf("%s has arrived.", actor.Name())
+	msg := fmt.Sprintf("%s has arrived.", display.Capitalize(actor.Name()))
 	announceToRoom(room, actor, msg)
 }
 
@@ -148,10 +144,8 @@ func announceToRoom(room *game.RoomInstance, actor interface{ Name() string }, m
 // fromRoom to toRoom. Followers not in the same room or in combat are skipped
 // along with their entire subtree.
 func moveFollowers(leader game.FollowTarget, fromRoom, toRoom *game.RoomInstance, direction string) {
-	fromRoomId := fromRoom.Room.Id()
 	for _, fl := range leader.Followers() {
-		_, followerRoom := fl.Location()
-		if followerRoom != fromRoomId {
+		if fl.Room() != fromRoom {
 			continue
 		}
 		if fl.IsInCombat() {

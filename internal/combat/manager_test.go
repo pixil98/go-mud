@@ -7,6 +7,7 @@ import (
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/shared"
+	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // --- mock helpers ---
@@ -22,7 +23,7 @@ type mockCombatant struct {
 	modifiers      map[string]int
 	grants         map[string][]string
 	combatTargetId string
-	zoneId, roomId string
+	room           *game.RoomInstance
 	deathCalled    bool
 }
 
@@ -68,7 +69,7 @@ func (c *mockCombatant) GrantArgs(key string) []string {
 
 func (c *mockCombatant) CombatTargetId() string                { return c.combatTargetId }
 func (c *mockCombatant) SetCombatTargetId(id string)           { c.combatTargetId = id }
-func (c *mockCombatant) Location() (string, string)            { return c.zoneId, c.roomId }
+func (c *mockCombatant) Room() *game.RoomInstance              { return c.room }
 func (c *mockCombatant) Level() int                            { return c.level }
 func (c *mockCombatant) OnDeath() []*game.ObjectInstance       { c.deathCalled = true; return nil }
 func (c *mockCombatant) IsCharacter() bool                     { return false }
@@ -84,6 +85,33 @@ func (c *mockCombatant) SetFollowerGrouped(string, bool)       {}
 func (c *mockCombatant) IsFollowerGrouped(string) bool         { return false }
 func (c *mockCombatant) GroupedFollowers() []game.FollowTarget { return nil }
 func (c *mockCombatant) Move(_, _ *game.RoomInstance)          {}
+
+// combatTestRoom creates a room wired into a zone and world so that
+// Room().Zone().World().GetPlayer() works in death-cleanup tests.
+func combatTestRoom() *game.RoomInstance {
+	zoneAsset := &assets.Zone{}
+	roomAsset := &assets.Room{Name: "r", Zone: storage.NewResolvedSmartIdentifier("z", zoneAsset)}
+	w, _ := game.NewWorldState(nil,
+		&singleStore[*assets.Zone]{id: "z", val: zoneAsset},
+		&singleStore[*assets.Room]{id: "r", val: roomAsset},
+	)
+	return w.GetZone("z").GetRoom("r")
+}
+
+type singleStore[T storage.ValidatingSpec] struct {
+	id  string
+	val T
+}
+
+func (s *singleStore[T]) Get(id string) T {
+	if id == s.id {
+		return s.val
+	}
+	var zero T
+	return zero
+}
+func (s *singleStore[T]) GetAll() map[string]T { return map[string]T{s.id: s.val} }
+func (s *singleStore[T]) Save(string, T) error { return nil }
 
 func newMC(id string) *mockCombatant {
 	return &mockCombatant{
@@ -106,13 +134,9 @@ func (p *mockCombatPub) Publish(_ game.PlayerGroup, _ []string, _ []byte) error 
 	return nil
 }
 
-type nilZones struct{}
-
-func (n *nilZones) GetZone(string) *game.ZoneInstance { return nil }
-
 func newTestManager() (*Manager, *mockCombatPub) {
 	pub := &mockCombatPub{}
-	return NewManager(pub, &nilZones{}), pub
+	return NewManager(pub), pub
 }
 
 // --- StartCombat tests ---
@@ -364,8 +388,11 @@ func TestManager_Tick_CallsAutoUses(t *testing.T) {
 
 func TestManager_Tick_DeathCleanup(t *testing.T) {
 	m, _ := newTestManager()
+	room := combatTestRoom()
 	a := newMC("a")
+	a.room = room
 	b := newMC("b")
+	b.room = room
 
 	if err := m.StartCombat(a, b); err != nil {
 		t.Fatalf("StartCombat: %v", err)

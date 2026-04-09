@@ -7,35 +7,6 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
-// mockZoneLocator is a test double for ZoneLocator.
-type mockZoneLocator struct {
-	zones map[string]*game.ZoneInstance
-}
-
-func (m *mockZoneLocator) GetZone(zoneId string) *game.ZoneInstance {
-	if m.zones == nil {
-		return nil
-	}
-	return m.zones[zoneId]
-}
-
-// mockBuffWorld is a test double for buffWorld (ZoneLocator + Perks()).
-type mockBuffWorld struct {
-	zones     map[string]*game.ZoneInstance
-	perkCache *game.PerkCache
-}
-
-func (m *mockBuffWorld) GetZone(zoneId string) *game.ZoneInstance {
-	if m.zones == nil {
-		return nil
-	}
-	return m.zones[zoneId]
-}
-
-func (m *mockBuffWorld) Perks() *game.PerkCache {
-	return m.perkCache
-}
-
 func newTestMobInstance(instanceId, name string, perks []assets.Perk) *game.MobileInstance {
 	return &game.MobileInstance{
 		Mobile: storage.NewResolvedSmartIdentifier(instanceId+"-spec", &assets.Mobile{ShortDesc: name}),
@@ -48,7 +19,7 @@ func newTestMobInstance(instanceId, name string, perks []assets.Perk) *game.Mobi
 
 func newTestZone(id string) (*game.ZoneInstance, error) {
 	zone := &assets.Zone{ResetMode: assets.ZoneResetNever}
-	return game.NewZoneInstance(storage.NewResolvedSmartIdentifier(id, zone))
+	return game.NewZoneInstance(storage.NewResolvedSmartIdentifier(id, zone), nil)
 }
 
 func newTestRoom(id, name, zoneId string) (*game.RoomInstance, error) {
@@ -65,7 +36,7 @@ func newTestRoom(id, name, zoneId string) (*game.RoomInstance, error) {
 func newTestPlayer(charId, name string, room *game.RoomInstance) *game.CharacterInstance {
 	msgs := make(chan []byte, 10)
 	charRef := storage.NewResolvedSmartIdentifier(charId, &assets.Character{Name: name})
-	ps, _ := game.NewCharacterInstance(charRef, msgs, room.Room.Get().Zone.Id(), room.Room.Id())
+	ps, _ := game.NewCharacterInstance(charRef, msgs, room)
 	room.AddPlayer(charId, ps)
 	return ps
 }
@@ -82,6 +53,7 @@ type mockActor struct {
 	inCombat       bool
 	combatTargetId string
 	grants         map[string]bool
+	room           *game.RoomInstance
 	zoneId         string
 	roomId         string
 	moved        bool
@@ -97,6 +69,7 @@ var _ shared.Actor = (*mockActor)(nil)
 func (m *mockActor) Id() string                               { return m.id }
 func (m *mockActor) Name() string                             { return m.name }
 func (m *mockActor) Notify(msg string)                        { m.notified = append(m.notified, msg) }
+func (m *mockActor) Room() *game.RoomInstance                  { return m.room }
 func (m *mockActor) Location() (string, string)               { return m.zoneId, m.roomId }
 func (m *mockActor) IsInCombat() bool                         { return m.inCombat }
 func (m *mockActor) IsAlive() bool                            { return true }

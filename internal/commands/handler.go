@@ -62,19 +62,7 @@ type HandlerSpec struct {
 // PlayerLookup finds a player by character ID.
 type PlayerLookup interface {
 	GetPlayer(charId string) *game.CharacterInstance
-}
-
-// ZoneLocator finds a zone instance by zone ID.
-type ZoneLocator interface {
-	GetZone(zoneId string) *game.ZoneInstance
-}
-
-// WorldView provides read-only access to the game world for command handlers
-// that need more than just zone lookup.
-type WorldView interface {
-	ZoneLocator
-	Instances() map[string]*game.ZoneInstance
-	ForEachPlayer(func(string, *game.CharacterInstance))
+	game.PlayerGroup
 }
 
 // HandlerFactory creates CommandFuncs from command configurations.
@@ -121,42 +109,40 @@ type Handler struct {
 	abilities map[string]*compiledAbility
 	effects   map[string]EffectHandler
 	combat    CombatManager
-	world     *game.WorldState
 }
 
 // NewHandler creates a Handler, registers all built-in command factories, and compiles every command from the store.
-func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, publisher game.Publisher, world *game.WorldState, combat CombatManager) (*Handler, error) {
+func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, publisher game.Publisher, world PlayerLookup, combat CombatManager) (*Handler, error) {
 	h := &Handler{
 		factories: make(map[string]HandlerFactory),
 		compiled:  make(map[string]*compiledCommand),
 		abilities: make(map[string]*compiledAbility),
 		effects:   make(map[string]EffectHandler),
 		combat:    combat,
-		world:     world,
 	}
 
 	// Register effect handlers
 	h.effects["attack"] = &attackEffect{combat: combat}
 	h.effects["damage"] = &damageEffect{combat: combat}
-	h.effects["aoe_damage"] = &aoeDamageEffect{combat: combat, world: world}
+	h.effects["aoe_damage"] = &aoeDamageEffect{combat: combat}
 	h.effects["actor_buff"] = &buffEffect{scope: buffScopeActor}
-	h.effects["room_buff"] = &buffEffect{scope: buffScopeRoom, world: world}
-	h.effects["zone_buff"] = &buffEffect{scope: buffScopeZone, world: world}
-	h.effects["world_buff"] = &buffEffect{scope: buffScopeWorld, world: world}
+	h.effects["room_buff"] = &buffEffect{scope: buffScopeRoom}
+	h.effects["zone_buff"] = &buffEffect{scope: buffScopeZone}
+	h.effects["world_buff"] = &buffEffect{scope: buffScopeWorld}
 	h.effects["threat"] = &threatEffect{combat: combat}
-	h.effects["aoe_threat"] = &aoeThreatEffect{combat: combat, world: world}
+	h.effects["aoe_threat"] = &aoeThreatEffect{combat: combat}
 	h.effects["heal"] = &healEffect{combat: combat}
-	h.effects["aoe_heal"] = &aoeHealEffect{combat: combat, world: world}
-	h.effects["spawn_obj"] = &spawnObjEffect{objects: dict.Objects, world: world}
-	h.effects["spawn_mob"] = &spawnMobEffect{mobiles: dict.Mobiles, world: world}
+	h.effects["aoe_heal"] = &aoeHealEffect{combat: combat}
+	h.effects["spawn_obj"] = &spawnObjEffect{objects: dict.Objects}
+	h.effects["spawn_mob"] = &spawnMobEffect{mobiles: dict.Mobiles}
 
 	// Register built-in handlers
 	for _, reg := range []struct {
 		name    string
 		factory HandlerFactory
 	}{
-		{"assist", NewAssistHandlerFactory(combat, world, world, publisher)},
-		{"closure", NewClosureHandlerFactory(world, publisher)},
+		{"assist", NewAssistHandlerFactory(combat, world, publisher)},
+		{"closure", NewClosureHandlerFactory(publisher)},
 		{"equipment", NewEquipmentHandlerFactory()},
 		{"follow", NewFollowHandlerFactory()},
 		{"gain", NewGainHandlerFactory()},
@@ -164,16 +150,16 @@ func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, pub
 		{"ungroup", NewUngroupHandlerFactory(publisher)},
 		{"help", NewHelpHandlerFactory(cmds, dict.Abilities)},
 		{"inventory", NewInventoryHandlerFactory()},
-		{"look", NewLookHandlerFactory(world)},
-		{"message", NewMessageHandlerFactory(world, publisher)},
-		{"move", NewMoveHandlerFactory(world)},
-		{"move_obj", NewMoveObjHandlerFactory(world, publisher)},
+		{"look", NewLookHandlerFactory()},
+		{"message", NewMessageHandlerFactory(publisher)},
+		{"move", NewMoveHandlerFactory()},
+		{"move_obj", NewMoveObjHandlerFactory(publisher)},
 		{"quit", NewQuitHandlerFactory()},
 		{"save", NewSaveHandlerFactory(dict.Characters)},
 		{"score", NewScoreHandlerFactory()},
 		{"title", NewTitleHandlerFactory()},
 		{"trees", NewTreesHandlerFactory(dict.Trees)},
-		{"wear", NewWearHandlerFactory(world, publisher)},
+		{"wear", NewWearHandlerFactory(publisher)},
 		{"who", NewWhoHandlerFactory(world)},
 	} {
 		if err := h.RegisterFactory(reg.name, reg.factory); err != nil {
@@ -190,7 +176,7 @@ func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, pub
 
 	// Auto-register all abilities as top-level commands
 	for id, ability := range dict.Abilities.GetAll() {
-		if err := h.registerAbility(id, ability, world, publisher); err != nil {
+		if err := h.registerAbility(id, ability, publisher); err != nil {
 			return nil, fmt.Errorf("registering ability %q: %w", id, err)
 		}
 	}
@@ -200,14 +186,14 @@ func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, pub
 
 // registerAbility compiles the ability's effects, stores the compiledAbility
 // for direct execution, and registers a command wrapper for dispatch.
-func (h *Handler) registerAbility(id string, ability *assets.Ability, world WorldView, pub game.Publisher) error {
+func (h *Handler) registerAbility(id string, ability *assets.Ability, pub game.Publisher) error {
 	ca, err := newCompiledAbility(id, ability, h.effects)
 	if err != nil {
 		return err
 	}
 	h.abilities[id] = ca
 
-	w := &abilityCommandWrapper{id: id, ca: ca, world: world, pub: pub}
+	w := &abilityCommandWrapper{id: id, ca: ca, pub: pub}
 	factoryName := "ability:" + id
 	if err := h.RegisterFactory(factoryName, w); err != nil {
 		return err
@@ -441,7 +427,7 @@ func (h *Handler) Exec(ctx context.Context, actor shared.Actor, cmdName string, 
 	}
 
 	// Resolve targets from targets section
-	resolver := NewTargetResolver(NewWorldScopes(h.world))
+	resolver := NewTargetResolver(NewWorldScopes())
 	targets, err := resolver.ResolveSpecs(compiled.cmd.Targets, inputMap, actor)
 	if err != nil {
 		return err

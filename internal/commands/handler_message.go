@@ -13,13 +13,12 @@ import (
 //   - recipient_message (required): template for message sent to scope targets
 //   - sender_message (optional): template for 2nd-person message sent to actor
 type MessageHandlerFactory struct {
-	world WorldView
-	pub   game.Publisher
+	pub game.Publisher
 }
 
 // NewMessageHandlerFactory creates a new MessageHandlerFactory with a publisher.
-func NewMessageHandlerFactory(world WorldView, pub game.Publisher) *MessageHandlerFactory {
-	return &MessageHandlerFactory{world: world, pub: pub}
+func NewMessageHandlerFactory(pub game.Publisher) *MessageHandlerFactory {
+	return &MessageHandlerFactory{pub: pub}
 }
 
 // Spec returns the handler's target and config requirements.
@@ -66,7 +65,6 @@ func (f *MessageHandlerFactory) handle(ctx context.Context, in *CommandInput) er
 	}
 
 	// Send message to scope targets, excluding actor only if they got a sender_message
-	zoneId, roomId := actor.Location()
 	var exclude []string
 	if senderMessage != "" {
 		exclude = []string{actor.Id()}
@@ -74,15 +72,13 @@ func (f *MessageHandlerFactory) handle(ctx context.Context, in *CommandInput) er
 
 	switch scope {
 	case "room":
-		room := f.world.GetZone(zoneId).GetRoom(roomId)
-		return f.pub.Publish(room, exclude, []byte(recipientMessage))
+		return f.pub.Publish(actor.Room(), exclude, []byte(recipientMessage))
 
 	case "zone":
-		zone := f.world.GetZone(zoneId)
-		return f.pub.Publish(zone, exclude, []byte(recipientMessage))
+		return f.pub.Publish(actor.Room().Zone(), exclude, []byte(recipientMessage))
 
 	case "world":
-		return f.pub.Publish(f.world, exclude, []byte(recipientMessage))
+		return f.pub.Publish(actor.Room().Zone().World(), exclude, []byte(recipientMessage))
 
 	case "player":
 		target := in.Targets["target"]

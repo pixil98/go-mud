@@ -14,7 +14,7 @@ type ClosureActor interface {
 	Id() string
 	Name() string
 	Notify(msg string)
-	Location() (string, string)
+	Room() *game.RoomInstance
 	Inventory() *game.Inventory
 }
 
@@ -27,13 +27,12 @@ var _ ClosureActor = (*game.CharacterInstance)(nil)
 // Targets:
 //   - target (required): an exit or container object resolved by the command system
 type ClosureHandlerFactory struct {
-	world WorldView
-	pub   game.Publisher
+	pub game.Publisher
 }
 
 // NewClosureHandlerFactory creates a handler factory for open/close/lock/unlock commands.
-func NewClosureHandlerFactory(world WorldView, pub game.Publisher) *ClosureHandlerFactory {
-	return &ClosureHandlerFactory{world: world, pub: pub}
+func NewClosureHandlerFactory(pub game.Publisher) *ClosureHandlerFactory {
+	return &ClosureHandlerFactory{pub: pub}
 }
 
 // Spec returns the required target (exit or container object) and config (action) for closure commands.
@@ -70,13 +69,11 @@ func (f *ClosureHandlerFactory) handle(ctx context.Context, char ClosureActor, i
 
 	switch target.Type {
 	case targetTypeExit:
-		closure := target.Exit.exit.Closure
-		if closure == nil {
+		re := target.Exit.exit
+		if re.Exit.Closure == nil {
 			return NewUserError(fmt.Sprintf("You can't %s that.", action))
 		}
-		zoneId, roomId := char.Location()
-		room := f.world.GetZone(zoneId).GetRoom(roomId)
-		return f.handleExit(action, target.Exit.Direction, closure, room, char)
+		return f.handleExit(action, target.Exit.Direction, re, char.Room(), char)
 
 	case targetTypeObject:
 		oi := target.Obj.instance
@@ -90,28 +87,29 @@ func (f *ClosureHandlerFactory) handle(ctx context.Context, char ClosureActor, i
 	}
 }
 
-func (f *ClosureHandlerFactory) handleExit(action, direction string, closure *assets.Closure, room *game.RoomInstance, char ClosureActor) error {
+func (f *ClosureHandlerFactory) handleExit(action, direction string, re *game.ResolvedExit, room *game.RoomInstance, char ClosureActor) error {
+	closure := re.Exit.Closure
 	name := closure.Name
 
 	switch action {
 	case "open":
-		if room.IsExitLocked(direction) {
+		if re.IsLocked() {
 			return NewUserError(fmt.Sprintf("The %s is locked.", name))
 		}
-		if !room.IsExitClosed(direction) {
+		if !re.IsClosed() {
 			return NewUserError(fmt.Sprintf("The %s is already open.", name))
 		}
 
 	case "close":
-		if room.IsExitClosed(direction) {
+		if re.IsClosed() {
 			return NewUserError(fmt.Sprintf("The %s is already closed.", name))
 		}
 
 	case "lock":
-		if !room.IsExitClosed(direction) {
+		if !re.IsClosed() {
 			return NewUserError(fmt.Sprintf("You need to close the %s first.", name))
 		}
-		if room.IsExitLocked(direction) {
+		if re.IsLocked() {
 			return NewUserError(fmt.Sprintf("The %s is already locked.", name))
 		}
 		if closure.Lock == nil {
@@ -122,7 +120,7 @@ func (f *ClosureHandlerFactory) handleExit(action, direction string, closure *as
 		}
 
 	case "unlock":
-		if !room.IsExitLocked(direction) {
+		if !re.IsLocked() {
 			return NewUserError(fmt.Sprintf("The %s is not locked.", name))
 		}
 		if closure.Lock == nil {
@@ -133,28 +131,26 @@ func (f *ClosureHandlerFactory) handleExit(action, direction string, closure *as
 		}
 	}
 
-	// Apply state change to this exit and the other side of the door
-	exit := room.Room.Get().Exits[direction]
-	applyExitAction(action, room, direction)
-	zoneId, roomId := char.Location()
-	if otherRoom, otherDir := game.FindOtherSide(exit, zoneId, roomId, f.world.Instances()); otherRoom != nil {
-		applyExitAction(action, otherRoom, otherDir)
+	// Apply state change to this exit and the other side of the door.
+	applyExitAction(action, re)
+	if _, other := re.OtherSide(room); other != nil {
+		applyExitAction(action, other)
 	}
 
 	return f.publish(char, fmt.Sprintf("You %s the %s.", action, name), fmt.Sprintf("%s %ss the %s.", char.Name(), action, name))
 }
 
-// applyExitAction applies a closure state change to a single exit.
-func applyExitAction(action string, room *game.RoomInstance, direction string) {
+// applyExitAction applies a closure state change to a resolved exit.
+func applyExitAction(action string, re *game.ResolvedExit) {
 	switch action {
 	case "open":
-		room.SetExitClosed(direction, false)
+		re.SetClosed(false)
 	case "close":
-		room.SetExitClosed(direction, true)
+		re.SetClosed(true)
 	case "lock":
-		room.SetExitLocked(direction, true)
+		re.SetLocked(true)
 	case "unlock":
-		room.SetExitLocked(direction, false)
+		re.SetLocked(false)
 	}
 }
 
@@ -229,7 +225,5 @@ func (f *ClosureHandlerFactory) publish(char ClosureActor, selfMsg, roomMsg stri
 	if f.pub == nil {
 		return nil
 	}
-	zoneId, roomId := char.Location()
-	room := f.world.GetZone(zoneId).GetRoom(roomId)
-	return f.pub.Publish(room, []string{char.Id()}, []byte(roomMsg))
+	return f.pub.Publish(char.Room(), []string{char.Id()}, []byte(roomMsg))
 }

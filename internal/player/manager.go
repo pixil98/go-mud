@@ -172,8 +172,8 @@ func (m *PlayerManager) newPlayer(conn io.ReadWriter) (*Player, error) {
 		if err := charRef.Resolve(m.dict.Characters); err != nil {
 			return nil, fmt.Errorf("resolving character %q: %w", charId, err)
 		}
-		zoneId, roomId := m.startingLocation(charRef.Get())
-		ci, err := game.NewCharacterInstance(charRef, msgs, zoneId, roomId)
+		room := m.startingRoom(charRef.Get())
+		ci, err := game.NewCharacterInstance(charRef, msgs, room)
 		if err != nil {
 			return nil, fmt.Errorf("creating character instance: %w", err)
 		}
@@ -270,29 +270,26 @@ func (m *PlayerManager) initCharacter(rw io.ReadWriter, char *assets.Character) 
 	return nil
 }
 
-// startingLocation returns the zone and room a character should start in.
-// Uses saved location if the zone and room are still valid, otherwise falls back to defaults.
-func (m *PlayerManager) startingLocation(char *assets.Character) (string, string) {
+// startingRoom returns the room instance a character should start in.
+// Uses saved location if still valid, otherwise falls back to defaults.
+func (m *PlayerManager) startingRoom(char *assets.Character) *game.RoomInstance {
+	defaultRoom := m.world.GetZone(m.defaultZone).GetRoom(m.defaultRoom)
+
 	if char.LastZone == "" || char.LastRoom == "" {
-		return m.defaultZone, m.defaultRoom
+		return defaultRoom
 	}
 
-	// Verify zone exists
-	if m.dict.Zones.Get(char.LastZone) == nil {
+	zi := m.world.GetZone(char.LastZone)
+	if zi == nil {
 		slog.Warn("saved zone not found, using default", "char", char.Name, "zone", char.LastZone)
-		return m.defaultZone, m.defaultRoom
+		return defaultRoom
 	}
 
-	// Verify room exists and is in the saved zone
-	room := m.dict.Rooms.Get(string(char.LastRoom))
-	if room == nil {
+	ri := zi.GetRoom(char.LastRoom)
+	if ri == nil {
 		slog.Warn("saved room not found, using default", "char", char.Name, "room", char.LastRoom)
-		return m.defaultZone, m.defaultRoom
-	}
-	if room.Zone.Id() != string(char.LastZone) {
-		slog.Warn("saved room not in saved zone, using default", "char", char.Name, "zone", char.LastZone, "room", char.LastRoom, "room_zone", room.Zone.Id())
-		return m.defaultZone, m.defaultRoom
+		return defaultRoom
 	}
 
-	return char.LastZone, char.LastRoom
+	return ri
 }

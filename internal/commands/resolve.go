@@ -29,7 +29,7 @@ type MobileFinder interface {
 
 // ExitFinder finds an exit by direction name within a search scope.
 type ExitFinder interface {
-	FindExit(string) (string, *assets.Exit)
+	FindExit(string) (string, *game.ResolvedExit)
 }
 
 // TargetFinder combines all finder interfaces.
@@ -192,11 +192,11 @@ func (r *ObjectRef) Describe() string {
 
 // ExitRef is the template-facing view of a resolved exit.
 type ExitRef struct {
-	Direction string       // Direction key (e.g., "north", "south")
-	exit      *assets.Exit // The exit definition
+	Direction string              // Direction key (e.g., "north", "south")
+	exit      *game.ResolvedExit // The resolved exit instance
 }
 
-func exitRefFrom(direction string, exit *assets.Exit) *ExitRef {
+func exitRefFrom(direction string, exit *game.ResolvedExit) *ExitRef {
 	return &ExitRef{
 		Direction: direction,
 		exit:      exit,

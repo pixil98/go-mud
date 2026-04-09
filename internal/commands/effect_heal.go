@@ -18,7 +18,6 @@ import (
 //   - "hit_enemies" ("true"/"false", optional): also heal opposite-side targets. Default false.
 type aoeHealEffect struct {
 	combat CombatManager
-	world  ZoneLocator
 }
 
 func (e *aoeHealEffect) Spec() *HandlerSpec { return nil }
@@ -46,12 +45,7 @@ func (e *aoeHealEffect) Create(_ string, config map[string]string, _ []assets.Ta
 	}
 
 	return func(actor shared.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
-		zoneId, roomId := actor.Location()
-		zi := e.world.GetZone(zoneId)
-		if zi == nil {
-			return nil
-		}
-		ri := zi.GetRoom(roomId)
+		ri := actor.Room()
 		if ri == nil {
 			return nil
 		}

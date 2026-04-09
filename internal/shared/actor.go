@@ -11,7 +11,7 @@ import (
 type Actor interface {
 	Id() string
 	Name() string
-	Location() (zoneId, roomId string)
+	Room() *game.RoomInstance
 	IsInCombat() bool
 	IsAlive() bool
 	Level() int

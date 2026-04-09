@@ -3,7 +3,6 @@ package commands
 import (
 	"strings"
 
-	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/shared"
 )
@@ -16,7 +15,7 @@ type objectOnlyFinder struct {
 
 func (f objectOnlyFinder) FindPlayer(string) *game.CharacterInstance { return nil }
 func (f objectOnlyFinder) FindMob(string) *game.MobileInstance       { return nil }
-func (f objectOnlyFinder) FindExit(string) (string, *assets.Exit)    { return "", nil }
+func (f objectOnlyFinder) FindExit(string) (string, *game.ResolvedExit) { return "", nil }
 
 // playerOnlyFinder wraps a PlayerGroup into a full TargetFinder.
 // FindPlayer searches members by name; mobs, objects, and exits always return nil.
@@ -40,24 +39,20 @@ func (f playerOnlyFinder) FindPlayer(name string) *game.CharacterInstance {
 
 func (f playerOnlyFinder) FindObj(string) *game.ObjectInstance    { return nil }
 func (f playerOnlyFinder) FindMob(string) *game.MobileInstance    { return nil }
-func (f playerOnlyFinder) FindExit(string) (string, *assets.Exit) { return "", nil }
+func (f playerOnlyFinder) FindExit(string) (string, *game.ResolvedExit) { return "", nil }
 
-// WorldScopes implements TargetScopes using a WorldView.
-// It translates scope flags into the correct search spaces by looking up
-// rooms, zones, inventory, and equipment from the world view.
-type WorldScopes struct {
-	world WorldView
-}
+// WorldScopes translates scope flags into search spaces by navigating
+// from the actor's room pointer.
+type WorldScopes struct{}
 
-// NewWorldScopes creates a TargetScopes backed by the given WorldView.
-func NewWorldScopes(world WorldView) *WorldScopes {
-	return &WorldScopes{world: world}
+// NewWorldScopes creates a WorldScopes.
+func NewWorldScopes() *WorldScopes {
+	return &WorldScopes{}
 }
 
 // SpacesFor returns search spaces for the given scope flags, ordered from
 // narrowest (inventory) to broadest (world).
 func (ws *WorldScopes) SpacesFor(s scope, actor shared.Actor) ([]SearchSpace, error) {
-	zoneId, roomId := actor.Location()
 
 	var spaces []SearchSpace
 
@@ -78,7 +73,7 @@ func (ws *WorldScopes) SpacesFor(s scope, actor shared.Actor) ([]SearchSpace, er
 		}
 	}
 	if s&scopeRoom != 0 {
-		room := ws.world.GetZone(zoneId).GetRoom(roomId)
+		room := actor.Room()
 		spaces = append(spaces, SearchSpace{
 			Finder:  room,
 			Remover: room,
@@ -92,13 +87,12 @@ func (ws *WorldScopes) SpacesFor(s scope, actor shared.Actor) ([]SearchSpace, er
 		}
 	}
 	if s&scopeZone != 0 {
-		zone := ws.world.GetZone(zoneId)
 		spaces = append(spaces, SearchSpace{
-			Finder: zone,
+			Finder: actor.Room().Zone(),
 		})
 	}
 	if s&scopeWorld != 0 {
-		for _, zi := range ws.world.Instances() {
+		for _, zi := range actor.Room().Zone().World().Instances() {
 			spaces = append(spaces, SearchSpace{
 				Finder: zi,
 			})
