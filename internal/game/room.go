@@ -12,6 +12,8 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
+// --- ResolvedExit ---
+
 // ResolvedExit holds a resolved pointer to the destination room along with the
 // original exit definition and runtime closure state.
 type ResolvedExit struct {
@@ -33,9 +35,28 @@ func (re *ResolvedExit) IsLocked() bool { return re.locked }
 // SetLocked sets the locked state.
 func (re *ResolvedExit) SetLocked(v bool) { re.locked = v }
 
+// OtherSide finds the reverse exit on the destination room that leads back
+// to source. Returns the direction and resolved exit, or ("", nil) if not found.
+func (re *ResolvedExit) OtherSide(source *RoomInstance) (string, *ResolvedExit) {
+	if re.Dest == nil {
+		return "", nil
+	}
+	for dir, other := range re.Dest.exits {
+		if other.Exit.Closure == nil {
+			continue
+		}
+		if other.Dest == source {
+			return dir, other
+		}
+	}
+	return "", nil
+}
+
+// --- RoomInstance ---
+
 // RoomInstance holds the runtime state for a room — spawned mobs, objects, and players.
-// The mutex protects the players, mobiles, and exit closure state. Object operations
-// delegate to the objects Inventory, which handles its own locking.
+// The mutex protects the players and mobiles maps. Object operations delegate to
+// the objects Inventory, which handles its own locking.
 type RoomInstance struct {
 	Room storage.SmartIdentifier[*assets.Room]
 
@@ -77,57 +98,9 @@ func (ri *RoomInstance) Tick() {
 	ri.objects.Tick()
 }
 
-// initExitClosures resets closed/locked state on resolved exits from their definitions.
-// Caller must hold the write lock or call before the instance is shared.
-func (ri *RoomInstance) initExitClosures() {
-	for _, re := range ri.exits {
-		if re.Exit.Closure != nil {
-			re.closed = re.Exit.Closure.Closed
-			if re.Exit.Closure.Lock != nil {
-				re.locked = re.Exit.Closure.Lock.Locked
-			}
-		} else {
-			re.closed = false
-			re.locked = false
-		}
-	}
-}
-
 // Zone returns the zone this room belongs to.
 func (ri *RoomInstance) Zone() *ZoneInstance {
 	return ri.zone
-}
-
-// FindExit looks up an exit by direction key or closure name (case-insensitive).
-// Returns the direction key and the resolved exit, or ("", nil) if not found.
-func (ri *RoomInstance) FindExit(name string) (string, *ResolvedExit) {
-	name = strings.ToLower(name)
-	if re, ok := ri.exits[name]; ok {
-		return name, re
-	}
-	for dir, re := range ri.exits {
-		if re.Exit.Closure != nil && strings.EqualFold(re.Exit.Closure.Name, name) {
-			return dir, re
-		}
-	}
-	return "", nil
-}
-
-// OtherSide finds the reverse exit on the destination room that leads back
-// to source. Returns the direction and resolved exit, or ("", nil) if not found.
-func (re *ResolvedExit) OtherSide(source *RoomInstance) (string, *ResolvedExit) {
-	if re.Dest == nil {
-		return "", nil
-	}
-	for dir, other := range re.Dest.exits {
-		if other.Exit.Closure == nil {
-			continue
-		}
-		if other.Dest == source {
-			return dir, other
-		}
-	}
-	return "", nil
 }
 
 // Reset clears all mobs and objects and respawns them from the room definition.
@@ -177,54 +150,77 @@ func (ri *RoomInstance) Reset(mc MobCommander) error {
 	return nil
 }
 
+// Describe returns the full room description including objects, mobs, players, and exits.
+// actorName is excluded from the player list.
+func (ri *RoomInstance) Describe(actorName string) string {
+	var sb strings.Builder
+	def := ri.Room.Get()
+	sb.WriteString(display.Colorize(display.Color.Yellow, def.Name))
+	sb.WriteString("\n")
+	sb.WriteString(display.Wrap(def.Description))
+	sb.WriteString("\n")
+	sb.WriteString(display.Colorize(display.Color.Cyan, formatExits(ri.exits)))
+	sb.WriteString("\n")
 
-// FindMob searches room mobs for one whose definition matches the given name.
-// Falls back to matching by instance ID if no name match is found.
-func (ri *RoomInstance) FindMob(name string) *MobileInstance {
+	ri.objects.ForEachObj(func(_ string, oi *ObjectInstance) {
+		desc := oi.Object.Get().LongDesc
+		if desc == "" {
+			desc = fmt.Sprintf("%s is here.", oi.Object.Get().ShortDesc)
+		}
+		fmt.Fprintf(&sb, "%s\n", display.Colorize(display.Color.Green, desc))
+	})
+
 	ri.mu.RLock()
-	defer ri.mu.RUnlock()
-
 	for _, mi := range ri.mobiles {
-		if mi.Mobile.Get().MatchName(name) {
-			return mi
+		desc := mi.Mobile.Get().LongDesc
+		if desc == "" {
+			desc = fmt.Sprintf("%s is here.", mi.Name())
+		}
+		fmt.Fprintf(&sb, "%s%s\n", display.Colorize(display.Color.Yellow, desc), formatFlags(mi.Flags()))
+	}
+	for _, ps := range ri.players {
+		if ps.Name() != actorName {
+			fmt.Fprintf(&sb, "%s%s\n", display.Colorize(display.Color.Yellow, fmt.Sprintf("%s is here.", ps.Name())), formatFlags(ps.Flags()))
 		}
 	}
-	// Fall back to instance ID lookup (used by combat target defaulting).
-	return ri.mobiles[name]
+	ri.mu.RUnlock()
+
+	return strings.TrimRight(sb.String(), "\n")
 }
 
-// GetMob returns the MobileInstance with the given instanceId, or nil if not found.
-func (ri *RoomInstance) GetMob(instanceId string) *MobileInstance {
+// HasLight returns true if any actor in the room has the light grant.
+func (ri *RoomInstance) HasLight() bool {
 	ri.mu.RLock()
 	defer ri.mu.RUnlock()
-	return ri.mobiles[instanceId]
-}
 
-// ForEachMob calls fn for each mob in the room while holding the lock.
-func (ri *RoomInstance) ForEachMob(fn func(*MobileInstance)) {
-	ri.mu.Lock()
-	defer ri.mu.Unlock()
-	for _, mi := range ri.mobiles {
-		fn(mi)
+	for _, ps := range ri.players {
+		if ps.HasGrant(assets.PerkGrantLight, "") {
+			return true
+		}
 	}
+	for _, mi := range ri.mobiles {
+		if mi.HasGrant(assets.PerkGrantLight, "") {
+			return true
+		}
+	}
+	return false
 }
 
-// AddMob places an existing MobileInstance into the room, setting its location.
-func (ri *RoomInstance) AddMob(mi *MobileInstance) {
-	ri.mu.Lock()
-	defer ri.mu.Unlock()
-	ri.addMob(mi)
-}
+// --- Exit operations ---
 
-// addMob inserts a mob and sets its location. Caller must hold the write lock.
-func (ri *RoomInstance) addMob(mi *MobileInstance) {
-	mi.room = ri
-	ri.mobiles[mi.Id()] = mi
-}
-
-// FindObj searches room objects for one whose definition matches the given name.
-func (ri *RoomInstance) FindObj(name string) *ObjectInstance {
-	return ri.objects.FindObj(name)
+// FindExit looks up an exit by direction key or closure name (case-insensitive).
+// Returns the direction key and the resolved exit, or ("", nil) if not found.
+func (ri *RoomInstance) FindExit(name string) (string, *ResolvedExit) {
+	name = strings.ToLower(name)
+	if re, ok := ri.exits[name]; ok {
+		return name, re
+	}
+	for dir, re := range ri.exits {
+		if re.Exit.Closure != nil && strings.EqualFold(re.Exit.Closure.Name, name) {
+			return dir, re
+		}
+	}
+	return "", nil
 }
 
 // FindExtraDesc searches the room's extra descriptions and then the extra
@@ -259,6 +255,87 @@ func (ri *RoomInstance) FindExtraDesc(keyword string) *assets.ExtraDesc {
 	return found
 }
 
+// initExitClosures resets closed/locked state on resolved exits from their definitions.
+// Caller must hold the write lock or call before the instance is shared.
+func (ri *RoomInstance) initExitClosures() {
+	for _, re := range ri.exits {
+		if re.Exit.Closure != nil {
+			re.closed = re.Exit.Closure.Closed
+			if re.Exit.Closure.Lock != nil {
+				re.locked = re.Exit.Closure.Lock.Locked
+			}
+		} else {
+			re.closed = false
+			re.locked = false
+		}
+	}
+}
+
+// --- Mob operations ---
+
+// FindMob searches room mobs for one whose definition matches the given name.
+// Falls back to matching by instance ID if no name match is found.
+func (ri *RoomInstance) FindMob(name string) *MobileInstance {
+	ri.mu.RLock()
+	defer ri.mu.RUnlock()
+
+	for _, mi := range ri.mobiles {
+		if mi.Mobile.Get().MatchName(name) {
+			return mi
+		}
+	}
+	return ri.mobiles[name]
+}
+
+// GetMob returns the MobileInstance with the given instanceId, or nil if not found.
+func (ri *RoomInstance) GetMob(instanceId string) *MobileInstance {
+	ri.mu.RLock()
+	defer ri.mu.RUnlock()
+	return ri.mobiles[instanceId]
+}
+
+// AddMob places an existing MobileInstance into the room, setting its location.
+func (ri *RoomInstance) AddMob(mi *MobileInstance) {
+	ri.mu.Lock()
+	defer ri.mu.Unlock()
+	ri.addMob(mi)
+}
+
+// RemoveMob removes a mobile instance from the room by instance ID.
+// Returns the removed instance, or nil if not found.
+func (ri *RoomInstance) RemoveMob(instanceId string) *MobileInstance {
+	ri.mu.Lock()
+	defer ri.mu.Unlock()
+
+	if mi, ok := ri.mobiles[instanceId]; ok {
+		delete(ri.mobiles, instanceId)
+		return mi
+	}
+	return nil
+}
+
+// ForEachMob calls fn for each mob in the room while holding the lock.
+func (ri *RoomInstance) ForEachMob(fn func(*MobileInstance)) {
+	ri.mu.Lock()
+	defer ri.mu.Unlock()
+	for _, mi := range ri.mobiles {
+		fn(mi)
+	}
+}
+
+// addMob inserts a mob and sets its location. Caller must hold the write lock.
+func (ri *RoomInstance) addMob(mi *MobileInstance) {
+	mi.room = ri
+	ri.mobiles[mi.Id()] = mi
+}
+
+// --- Object operations ---
+
+// FindObj searches room objects for one whose definition matches the given name.
+func (ri *RoomInstance) FindObj(name string) *ObjectInstance {
+	return ri.objects.FindObj(name)
+}
+
 // AddObj places an object instance in this room.
 func (ri *RoomInstance) AddObj(obj *ObjectInstance) {
 	ri.objects.AddObj(obj)
@@ -268,6 +345,8 @@ func (ri *RoomInstance) AddObj(obj *ObjectInstance) {
 func (ri *RoomInstance) RemoveObj(instanceId string) *ObjectInstance {
 	return ri.objects.RemoveObj(instanceId)
 }
+
+// --- Player operations ---
 
 // FindPlayer searches room players for one whose character name matches the given name.
 func (ri *RoomInstance) FindPlayer(name string) *CharacterInstance {
@@ -298,61 +377,6 @@ func (ri *RoomInstance) RemovePlayer(charId string) {
 	delete(ri.players, charId)
 }
 
-// Describe returns the full room description including objects, mobs, players, and exits.
-// actorName is excluded from the player list.
-func (ri *RoomInstance) Describe(actorName string) string {
-	var sb strings.Builder
-	def := ri.Room.Get()
-	sb.WriteString(display.Colorize(display.Color.Yellow, def.Name))
-	sb.WriteString("\n")
-	sb.WriteString(display.Wrap(def.Description))
-	sb.WriteString("\n")
-	sb.WriteString(display.Colorize(display.Color.Cyan, formatExits(ri.exits)))
-	sb.WriteString("\n")
-
-	// Show objects
-	ri.objects.ForEachObj(func(_ string, oi *ObjectInstance) {
-		desc := oi.Object.Get().LongDesc
-		if desc == "" {
-			desc = fmt.Sprintf("%s is here.", oi.Object.Get().ShortDesc)
-		}
-		fmt.Fprintf(&sb, "%s\n", display.Colorize(display.Color.Green, desc))
-	})
-
-	ri.mu.RLock()
-	// Show mobs
-	for _, mi := range ri.mobiles {
-		desc := mi.Mobile.Get().LongDesc
-		if desc == "" {
-			desc = fmt.Sprintf("%s is here.", mi.Name())
-		}
-		fmt.Fprintf(&sb, "%s%s\n", display.Colorize(display.Color.Yellow, desc), formatFlags(mi.Flags()))
-	}
-
-	// Show other players
-	for _, ps := range ri.players {
-		if ps.Name() != actorName {
-			fmt.Fprintf(&sb, "%s%s\n", display.Colorize(display.Color.Yellow, fmt.Sprintf("%s is here.", ps.Name())), formatFlags(ps.Flags()))
-		}
-	}
-	ri.mu.RUnlock()
-
-	return strings.TrimRight(sb.String(), "\n")
-}
-
-// RemoveMob removes a mobile instance from the room by instance ID.
-// Returns the removed instance, or nil if not found.
-func (ri *RoomInstance) RemoveMob(instanceId string) *MobileInstance {
-	ri.mu.Lock()
-	defer ri.mu.Unlock()
-
-	if mi, ok := ri.mobiles[instanceId]; ok {
-		delete(ri.mobiles, instanceId)
-		return mi
-	}
-	return nil
-}
-
 // ForEachPlayer calls fn for each player in the room while holding the lock.
 func (ri *RoomInstance) ForEachPlayer(fn func(string, *CharacterInstance)) {
 	ri.mu.Lock()
@@ -370,23 +394,7 @@ func (ri *RoomInstance) PlayerCount() int {
 	return len(ri.players)
 }
 
-// HasLight returns true if any actor in the room has the light grant.
-func (ri *RoomInstance) HasLight() bool {
-	ri.mu.RLock()
-	defer ri.mu.RUnlock()
-
-	for _, ps := range ri.players {
-		if ps.HasGrant(assets.PerkGrantLight, "") {
-			return true
-		}
-	}
-	for _, mi := range ri.mobiles {
-		if mi.HasGrant(assets.PerkGrantLight, "") {
-			return true
-		}
-	}
-	return false
-}
+// --- Formatting helpers ---
 
 func formatFlags(flags []string) string {
 	var s strings.Builder
