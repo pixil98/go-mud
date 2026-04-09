@@ -3,10 +3,19 @@ package game
 import (
 	"context"
 	"fmt"
+	"log/slog"
+	"math/rand/v2"
 
 	"github.com/google/uuid"
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/storage"
+)
+
+const (
+	// wanderChance is the 1-in-N chance a mob attempts to wander each tick.
+	wanderChance = 20
+	// scavengeChance is the 1-in-N chance a scavenger mob picks up an item each tick.
+	scavengeChance = 10
 )
 
 // MobCommander executes a command on behalf of a mob.
@@ -65,9 +74,14 @@ func (mi *MobileInstance) Name() string {
 	return mi.Mobile.Get().ShortDesc
 }
 
-// Tick advances one game tick: expires timed perks and regenerates
-// resources when out of combat.
+// Tick advances one game tick: expires timed perks, regenerates resources,
+// and runs autonomous behavior (wandering, scavenging) when not in combat.
 func (mi *MobileInstance) Tick() {
+	if mi.Commander == nil {
+		slog.Error("mob ticking without commander", "mob", mi.Mobile.Id())
+		return
+	}
+
 	mi.PerkCache.Tick()
 	mi.inventory.Tick()
 	mi.equipment.Tick()
@@ -75,6 +89,89 @@ func (mi *MobileInstance) Tick() {
 		mi.mu.Lock()
 		mi.regenTick()
 		mi.mu.Unlock()
+	}
+
+	// Autonomous behavior requires no combat.
+	if mi.IsInCombat() {
+		return
+	}
+	mi.tryWander()
+	mi.tryScavenge()
+}
+
+// tryWander gives the mob a chance to move to a random adjacent room.
+func (mi *MobileInstance) tryWander() {
+	if mi.Mobile.Get().HasFlag(assets.MobileFlagSentinel) {
+		return
+	}
+	if rand.IntN(wanderChance) != 0 {
+		return
+	}
+
+	from := mi.Room()
+	if len(from.exits) == 0 {
+		return
+	}
+
+	stayZone := mi.Mobile.Get().HasFlag(assets.MobileFlagStayZone)
+
+	var directions []string
+	for dir, re := range from.exits {
+		if re.closed || re.Dest == nil {
+			continue
+		}
+		destDef := re.Dest.Room.Get()
+		if destDef.HasFlag(assets.RoomFlagNoMob) || destDef.HasFlag(assets.RoomFlagDeath) {
+			continue
+		}
+		if stayZone && re.Dest.zone != from.zone {
+			continue
+		}
+		directions = append(directions, dir)
+	}
+
+	if len(directions) == 0 {
+		return
+	}
+
+	dir := directions[rand.IntN(len(directions))]
+	if err := mi.Commander.ExecMobCommand(context.Background(), mi, dir); err != nil {
+		slog.Debug("mob wander failed", "mob", mi.Mobile.Id(), "direction", dir, "error", err)
+	}
+}
+
+// tryScavenge gives a scavenger mob a chance to pick up an item from its room.
+func (mi *MobileInstance) tryScavenge() {
+	if !mi.Mobile.Get().HasFlag(assets.MobileFlagScavenger) {
+		return
+	}
+	if rand.IntN(scavengeChance) != 0 {
+		return
+	}
+
+	from := mi.Room()
+	if from.objects.Len() == 0 {
+		return
+	}
+
+	var alias string
+	from.objects.ForEachObj(func(_ string, oi *ObjectInstance) {
+		if alias != "" {
+			return
+		}
+		def := oi.Object.Get()
+		if def.HasFlag(assets.ObjectFlagImmobile) {
+			return
+		}
+		if len(def.Aliases) > 0 {
+			alias = def.Aliases[0]
+		}
+	})
+	if alias == "" {
+		return
+	}
+	if err := mi.Commander.ExecMobCommand(context.Background(), mi, "get", alias); err != nil {
+		slog.Debug("mob scavenge failed", "mob", mi.Mobile.Id(), "item", alias, "error", err)
 	}
 }
 

@@ -71,15 +71,10 @@ func NewRoomInstance(room storage.SmartIdentifier[*assets.Room]) (*RoomInstance,
 	return ri, nil
 }
 
-// Tick advances one game tick for the room: expires timed perks and ticks all mobs.
+// Tick advances one game tick for the room: expires timed perks and object decay.
 func (ri *RoomInstance) Tick() {
 	ri.Perks.Tick()
 	ri.objects.Tick()
-	ri.mu.RLock()
-	for _, mi := range ri.mobiles {
-		mi.Tick()
-	}
-	ri.mu.RUnlock()
 }
 
 // initExitClosures resets closed/locked state on resolved exits from their definitions.

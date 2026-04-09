@@ -198,6 +198,24 @@ func (w *WorldState) Tick(_ context.Context) error {
 	for _, zi := range w.zones {
 		zi.Tick()
 	}
+	w.tickMobs()
 
 	return nil
+}
+
+// tickMobs snapshots all mobs in the world and ticks each one once.
+// A world-level snapshot prevents double-ticking when mobs wander across
+// rooms or zones during their tick.
+func (w *WorldState) tickMobs() {
+	var mobs []*MobileInstance
+	for _, zi := range w.zones {
+		zi.ForEachRoom(func(_ string, ri *RoomInstance) {
+			ri.ForEachMob(func(mi *MobileInstance) {
+				mobs = append(mobs, mi)
+			})
+		})
+	}
+	for _, mi := range mobs {
+		mi.Tick()
+	}
 }
