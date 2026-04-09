@@ -54,9 +54,8 @@
     "circlemud_unused": {
         "alignment": 1000,
         "gold": 2000,
-        "gender": "M",
+        "gender": "MALE",
         "flags": [
-            "SPEC",
             "NOCHARM",
             "NOSUMMON",
             "NOSLEEP",

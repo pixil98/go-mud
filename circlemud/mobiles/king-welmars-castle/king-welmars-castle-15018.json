@@ -40,7 +40,7 @@
     "circlemud_unused": {
         "alignment": -250,
         "gold": 5,
-        "gender": "N",
+        "gender": "NEUTRAL",
         "flags": [
             "NOBASH",
             "NOBLIND"

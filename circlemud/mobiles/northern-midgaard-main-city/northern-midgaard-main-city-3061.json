@@ -40,9 +40,6 @@
     "circlemud_unused": {
         "alignment": 800,
         "gold": 34,
-        "gender": "M",
-        "flags": [
-            "SPEC"
-        ]
+        "gender": "MALE"
     }
 }

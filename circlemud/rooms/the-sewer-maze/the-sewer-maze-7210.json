@@ -6,6 +6,14 @@
         "description": "You are in a sewer junction. To the north is a small hole, to the west is a narrow crawlway and to the east and south the sewer continues.",
         "zone_id": "the-sewer-maze",
         "exits": {
+            "north": {
+                "room_id": "the-sewer-maze-7211",
+                "description": "You can see a small cave-like room."
+            },
+            "east": {
+                "room_id": "the-sewer-maze-7212",
+                "description": "You can see a sewer drain."
+            },
             "south": {
                 "room_id": "the-sewer-maze-7215",
                 "description": "You can see a sewer drain."

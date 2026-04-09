@@ -58,7 +58,7 @@
         "exp_reward": 30750,
         "equipment": [
             {
-                "slot": "body",
+                "slot": "about",
                 "object_id": "the-high-tower-of-magic-2573"
             },
             {
@@ -69,9 +69,6 @@
     },
     "circlemud_unused": {
         "gold": 6723,
-        "gender": "M",
-        "flags": [
-            "SPEC"
-        ]
+        "gender": "MALE"
     }
 }

@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "the-tunnels-in-the-sewer-7314",
+    "spec": {
+        "name": "The Stalagmite T-Cross",
+        "description": "You are standing in a cross. To the north you can see some light. Otherwise it is dark.",
+        "zone_id": "the-tunnels-in-the-sewer",
+        "exits": {
+            "north": {
+                "room_id": "the-tunnels-in-the-sewer-7317",
+                "description": "You see some light ahead."
+            },
+            "east": {
+                "room_id": "the-tunnels-in-the-sewer-7315"
+            },
+            "south": {
+                "room_id": "the-tunnels-in-the-sewer-7311"
+            }
+        },
+        "flags": [
+            "nomob"
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
+    }
+}

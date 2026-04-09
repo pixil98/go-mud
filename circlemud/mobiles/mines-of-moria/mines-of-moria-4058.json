@@ -48,7 +48,7 @@
     },
     "circlemud_unused": {
         "gold": 1000,
-        "gender": "M",
+        "gender": "MALE",
         "flags": [
             "NOBASH"
         ]

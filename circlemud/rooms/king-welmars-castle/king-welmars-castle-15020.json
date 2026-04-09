@@ -6,6 +6,10 @@
         "description": "You are standing in a north-south leading passage. There is a door to the east.",
         "zone_id": "king-welmars-castle",
         "exits": {
+            "north": {
+                "room_id": "king-welmars-castle-15025",
+                "description": "The passage leads to a staircase."
+            },
             "east": {
                 "room_id": "king-welmars-castle-15021",
                 "description": "The door is quite small and unobtrusive.",

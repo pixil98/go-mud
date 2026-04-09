@@ -38,6 +38,6 @@
         "exp_reward": 6000
     },
     "circlemud_unused": {
-        "gender": "M"
+        "gender": "MALE"
     }
 }

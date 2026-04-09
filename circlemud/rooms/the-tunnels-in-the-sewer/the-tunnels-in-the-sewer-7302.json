@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "the-tunnels-in-the-sewer-7302",
+    "spec": {
+        "name": "Cave Room",
+        "description": "You are standing in a room. It is much cooler now. The walls are glowing.",
+        "zone_id": "the-tunnels-in-the-sewer",
+        "exits": {
+            "east": {
+                "room_id": "the-tunnels-in-the-sewer-7303",
+                "description": "To the east you see the tunnel going downwards."
+            },
+            "south": {
+                "room_id": "the-tunnels-in-the-sewer-7301",
+                "description": "To the south you see a dark cave tunnel."
+            },
+            "west": {
+                "room_id": "the-tunnels-in-the-sewer-7321"
+            }
+        }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
+    }
+}

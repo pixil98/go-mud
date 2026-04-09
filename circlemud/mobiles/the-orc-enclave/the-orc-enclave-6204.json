@@ -58,6 +58,6 @@
     "circlemud_unused": {
         "alignment": -600,
         "gold": 17,
-        "gender": "M"
+        "gender": "MALE"
     }
 }

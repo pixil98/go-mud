@@ -59,9 +59,8 @@
     },
     "circlemud_unused": {
         "gold": 1200,
-        "gender": "N",
+        "gender": "NEUTRAL",
         "flags": [
-            "SPEC",
             "NOCHARM",
             "NOSUMMON",
             "NOSLEEP",

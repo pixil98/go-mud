@@ -48,9 +48,6 @@
     },
     "circlemud_unused": {
         "alignment": -600,
-        "gender": "N",
-        "flags": [
-            "SPEC"
-        ]
+        "gender": "NEUTRAL"
     }
 }

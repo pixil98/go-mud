@@ -44,7 +44,7 @@
     },
     "circlemud_unused": {
         "alignment": -700,
-        "gender": "N",
+        "gender": "NEUTRAL",
         "flags": [
             "AGGR_GOOD",
             "NOBASH"

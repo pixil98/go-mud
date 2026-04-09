@@ -62,9 +62,8 @@
     },
     "circlemud_unused": {
         "gold": 5000,
-        "gender": "M",
+        "gender": "MALE",
         "flags": [
-            "SPEC",
             "AGGR_EVIL",
             "AGGR_GOOD"
         ]

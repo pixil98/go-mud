@@ -6,6 +6,10 @@
         "description": "You are on a paved road that runs east to west. You can see an elaborate looking estate to the south and to the north-west, off in the distance, you can see a very large stone structure.",
         "zone_id": "rome",
         "exits": {
+            "east": {
+                "room_id": "rome-12033",
+                "description": "The road leads off to the east."
+            },
             "south": {
                 "room_id": "rome-12027",
                 "description": "It looks like a Nobleman's estate. We are talking RICH nobleman's estate."

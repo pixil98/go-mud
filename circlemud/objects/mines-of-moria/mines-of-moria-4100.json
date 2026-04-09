@@ -30,9 +30,9 @@
         "rent": 800,
         "weight": 8,
         "effects": [
-            "ANTI_MAGIC_USER",
             "ANTI_GOOD",
-            "ANTI_NEUTRAL"
+            "ANTI_NEUTRAL",
+            "ANTI_MAGIC_USER"
         ]
     }
 }

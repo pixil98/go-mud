@@ -47,9 +47,6 @@
         ]
     },
     "circlemud_unused": {
-        "gender": "F",
-        "flags": [
-            "SPEC"
-        ]
+        "gender": "FEMALE"
     }
 }

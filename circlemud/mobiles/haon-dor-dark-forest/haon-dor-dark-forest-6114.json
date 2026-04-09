@@ -73,9 +73,8 @@
     },
     "circlemud_unused": {
         "alignment": -1000,
-        "gender": "F",
+        "gender": "FEMALE",
         "flags": [
-            "SPEC",
             "AGGR_GOOD"
         ]
     }

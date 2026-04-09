@@ -1,0 +1,67 @@
+{
+    "version": 1,
+    "id": "limbo-1",
+    "spec": {
+        "aliases": [
+            "Puff",
+            "dragon",
+            "fractal"
+        ],
+        "short_desc": "Puff",
+        "long_desc": "Puff the Fractal Dragon is here, contemplating a higher reality.",
+        "detailed_desc": "Is that some type of differential curve involving some strange, and unknown calculus that she seems to be made out of?",
+        "level": 26,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
+            },
+            {
+                "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -1
+            },
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d6+3"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 600
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 19
+            }
+        ],
+        "exp_reward": 155000
+    },
+    "circlemud_unused": {
+        "alignment": 1000,
+        "gold": 10000,
+        "gender": "FEMALE",
+        "flags": [
+            "NOCHARM",
+            "NOSUMMON",
+            "NOSLEEP",
+            "NOBASH",
+            "NOBLIND"
+        ]
+    }
+}

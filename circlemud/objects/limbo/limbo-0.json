@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "limbo-0",
+    "spec": {
+        "aliases": [
+            "bug"
+        ],
+        "short_desc": "a bug",
+        "long_desc": "This object is BAD! If you see it, there must be a bug in the game. Please report it immediately using the BUG command.",
+        "detailed_desc": "This object is BAD! If you see it, there must be a bug in the game. Please report it immediately using the BUG command.",
+        "flags": [
+            "immobile"
+        ]
+    }
+}

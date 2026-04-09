@@ -8,7 +8,7 @@
             "bulletin"
         ],
         "short_desc": "a holy bulletin board",
-        "long_desc": "A large bulletin board is mounted on a wall here.  It glows with a faint aura.",
+        "long_desc": "A large bulletin board is mounted on a wall here. It glows with a faint aura.",
         "detailed_desc": "If you can read this, the board is not working.",
         "flags": [
             "immobile"

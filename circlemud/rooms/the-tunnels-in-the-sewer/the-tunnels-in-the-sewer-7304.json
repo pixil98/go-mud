@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "the-tunnels-in-the-sewer-7304",
+    "spec": {
+        "name": "The Cave Turning-Point",
+        "description": "The mud is getting deeper. You are wondering, 'Would it be an idea to leave, before I disappear?'. To the south you notice a flat round stone is blocking the way. To the west you can see mud.",
+        "zone_id": "the-tunnels-in-the-sewer",
+        "exits": {
+            "south": {
+                "room_id": "the-tunnels-in-the-sewer-7305",
+                "description": "You can see an opening behind the stone.",
+                "closure": {
+                    "name": "stone",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "the-tunnels-in-the-sewer-7303"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "flat",
+                    "round",
+                    "stone"
+                ],
+                "description": "The stone looks very uninteresting. BUT as you are about to turn away, you see a strip of light coming through a small hole. Conclusion: The stone is moveable."
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD",
+        "flags": [
+            "INDOORS"
+        ]
+    }
+}

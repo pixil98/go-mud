@@ -49,7 +49,7 @@
         "exp_reward": 35000
     },
     "circlemud_unused": {
-        "gender": "N",
+        "gender": "NEUTRAL",
         "flags": [
             "NOCHARM",
             "NOSUMMON",

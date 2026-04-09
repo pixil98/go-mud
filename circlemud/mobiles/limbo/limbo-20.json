@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "limbo-20",
+    "spec": {
+        "aliases": [
+            "elemental"
+        ],
+        "short_desc": "the elemental",
+        "long_desc": "An elemental is standing patiently here.",
+        "detailed_desc": "This creature is the essence of the elements, and appears to be waiting patiently for something to occur.",
+        "level": 1,
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d1+1"
+            },
+            {
+                "type": "grant",
+                "key": "auto_use",
+                "arg": "attack:1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 20
+            }
+        ],
+        "flags": [
+            "sentinel"
+        ]
+    },
+    "circlemud_unused": {
+        "gender": "NEUTRAL"
+    }
+}

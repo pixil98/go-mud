@@ -8,7 +8,7 @@
             "green"
         ],
         "short_desc": "a yellow and green ring",
-        "long_desc": "A ring is here, with yellow and green ornamentation.  It looks very old.",
+        "long_desc": "A ring is here, with yellow and green ornamentation. It looks very old.",
         "detailed_desc": "It feels heavy.",
         "flags": [
             "wearable",

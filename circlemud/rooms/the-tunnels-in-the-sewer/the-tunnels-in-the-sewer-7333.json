@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "the-tunnels-in-the-sewer-7333",
+    "spec": {
+        "name": "The End Of Long Tunnel",
+        "description": "You are at a end of a long tunnel. Right in front of you, you can see a grey mass. To the east you can see a tremendously long tunnel, but you know that, you were just there.",
+        "zone_id": "the-tunnels-in-the-sewer",
+        "exits": {
+            "east": {
+                "room_id": "the-tunnels-in-the-sewer-7331",
+                "description": "A long tunnel. JUST like in the description!"
+            },
+            "west": {
+                "room_id": "the-tunnels-in-the-sewer-7334",
+                "description": "A grey mass is blocking the way.",
+                "closure": {
+                    "name": "mass",
+                    "closed": true
+                }
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "grey",
+                    "mass"
+                ],
+                "description": "The mass is nothing but a mass, but it is quite suspicious!"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "MOUNTAIN",
+        "flags": [
+            "INDOORS"
+        ]
+    }
+}

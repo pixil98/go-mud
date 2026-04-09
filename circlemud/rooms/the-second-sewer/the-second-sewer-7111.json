@@ -47,6 +47,12 @@
             },
             {
                 "keywords": [
+                    "step"
+                ],
+                "description": "A small rock sticks out right under it, otherwise the way is DOWN, DOWN, and SPLAT!!!"
+            },
+            {
+                "keywords": [
                     "rock"
                 ],
                 "description": "It looks as if it can be opened in a door-like fashion. Maybe this will lead the way down."

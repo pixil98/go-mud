@@ -70,9 +70,8 @@
     "circlemud_unused": {
         "alignment": 1000,
         "gold": 80000,
-        "gender": "F",
+        "gender": "FEMALE",
         "flags": [
-            "SPEC",
             "NOCHARM",
             "NOSUMMON",
             "NOSLEEP",

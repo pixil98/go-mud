@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "the-tunnels-in-the-sewer-7308",
+    "spec": {
+        "name": "The Long Tunnel",
+        "description": "Here there is almost no mud, as you stand at the top of a small rock. Just beside you there are a sign which says 'WARNING! The worms are dangerous!'",
+        "zone_id": "the-tunnels-in-the-sewer",
+        "exits": {
+            "north": {
+                "room_id": "the-tunnels-in-the-sewer-7303",
+                "description": "You can see a lot of mud... Yuck!"
+            },
+            "south": {
+                "room_id": "the-tunnels-in-the-sewer-7307",
+                "description": "The tunnel goes a little downwards."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
+    }
+}

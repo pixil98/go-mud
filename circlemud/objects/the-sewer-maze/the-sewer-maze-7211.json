@@ -8,7 +8,7 @@
         ],
         "short_desc": "a short sword",
         "long_desc": "A short sword is lying here.",
-        "detailed_desc": "A short sword is lying here.",
+        "detailed_desc": "This is a very nice little weapon.",
         "flags": [
             "wearable"
         ],

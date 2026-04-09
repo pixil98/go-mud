@@ -46,8 +46,8 @@
         ],
         "flags": [
             "sentinel",
-            "helper",
-            "memory"
+            "memory",
+            "helper"
         ],
         "exp_reward": 40000,
         "equipment": [
@@ -58,6 +58,10 @@
             {
                 "slot": "legs",
                 "object_id": "haon-dor-dark-forest-6117"
+            },
+            {
+                "slot": "about",
+                "object_id": "haon-dor-dark-forest-6118"
             },
             {
                 "slot": "waist",
@@ -72,9 +76,6 @@
     "circlemud_unused": {
         "alignment": -1000,
         "gold": 5000,
-        "gender": "F",
-        "flags": [
-            "SPEC"
-        ]
+        "gender": "FEMALE"
     }
 }

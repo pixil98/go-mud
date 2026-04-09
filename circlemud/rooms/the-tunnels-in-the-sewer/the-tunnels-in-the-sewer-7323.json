@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "the-tunnels-in-the-sewer-7323",
+    "spec": {
+        "name": "The L-Shaped Room",
+        "description": "You are standing in deep darkness. To the south there is a small exit. To the east you can see a gaping hole.",
+        "zone_id": "the-tunnels-in-the-sewer",
+        "exits": {
+            "east": {
+                "room_id": "the-tunnels-in-the-sewer-7324"
+            },
+            "south": {
+                "room_id": "the-tunnels-in-the-sewer-7322"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
+    }
+}

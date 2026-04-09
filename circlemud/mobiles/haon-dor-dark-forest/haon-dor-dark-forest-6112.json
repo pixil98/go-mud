@@ -59,9 +59,8 @@
     },
     "circlemud_unused": {
         "alignment": -1000,
-        "gender": "N",
+        "gender": "NEUTRAL",
         "flags": [
-            "SPEC",
             "NOCHARM",
             "NOSUMMON",
             "NOBASH"

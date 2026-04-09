@@ -13,6 +13,10 @@
             "east": {
                 "room_id": "the-second-sewer-7190",
                 "description": "You stare into mid-air, and right under there is absolutely nothing but darkness. You shiver by the thought of falling that distance."
+            },
+            "south": {
+                "room_id": "the-second-sewer-7109",
+                "description": "The ledge continues further south into darkness."
             }
         },
         "perks": [

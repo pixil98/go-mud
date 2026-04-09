@@ -25,15 +25,15 @@
             },
             {
                 "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "grant",
                 "key": "sneak"
             },
             {
                 "type": "grant",
                 "key": "hide"
-            },
-            {
-                "type": "grant",
-                "key": "notrack"
             },
             {
                 "type": "modifier",
@@ -68,7 +68,7 @@
         "exp_reward": 400000
     },
     "circlemud_unused": {
-        "gender": "N",
+        "gender": "NEUTRAL",
         "flags": [
             "NOCHARM",
             "NOSUMMON",

@@ -53,7 +53,7 @@
     },
     "circlemud_unused": {
         "alignment": 1000,
-        "gender": "N",
+        "gender": "NEUTRAL",
         "flags": [
             "NOSLEEP",
             "NOBASH"

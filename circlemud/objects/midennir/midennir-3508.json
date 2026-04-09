@@ -8,7 +8,7 @@
         ],
         "short_desc": "the gyroscope",
         "long_desc": "A small toy is spinning about on the ground here.",
-        "detailed_desc": "A small toy is spinning about on the ground here.",
+        "detailed_desc": "As the gyroscope spins around and around you find yourself almost hypnotized by its movement.",
         "flags": [
             "wearable"
         ],

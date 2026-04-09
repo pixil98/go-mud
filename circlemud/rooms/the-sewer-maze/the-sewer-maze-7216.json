@@ -6,6 +6,10 @@
         "description": "You are swimming in some dirty water and are holding your breath. You'd better continue onwards before you drown. It is a good thing that you can hold your light above the water-level.",
         "zone_id": "the-sewer-maze",
         "exits": {
+            "north": {
+                "room_id": "the-sewer-maze-7215",
+                "description": "It is hard to see, but it looks like the drain runs slightly upwards."
+            },
             "south": {
                 "room_id": "the-sewer-maze-7217",
                 "description": "It is hard to see, but it looks like the drain runs a little bit upwards."

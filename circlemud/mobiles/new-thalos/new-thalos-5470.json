@@ -48,7 +48,7 @@
         "exp_reward": 100
     },
     "circlemud_unused": {
-        "gender": "M",
+        "gender": "MALE",
         "flags": [
             "NOSLEEP",
             "NOBASH"

@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "id": "the-tunnels-in-the-sewer-7345",
+    "spec": {
+        "name": "The Pool",
+        "description": "You are swimming in DARKNESS. You feel something touching your right leg.",
+        "zone_id": "the-tunnels-in-the-sewer",
+        "exits": {
+            "north": {
+                "room_id": "the-tunnels-in-the-sewer-7343",
+                "description": "To dark to tell."
+            },
+            "east": {
+                "room_id": "the-tunnels-in-the-sewer-7313",
+                "description": "You can feel a warm breeze."
+            },
+            "west": {
+                "room_id": "the-tunnels-in-the-sewer-7344"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "WATER_SWIM",
+        "flags": [
+            "INDOORS"
+        ]
+    }
+}

@@ -7,7 +7,7 @@
             "platinum"
         ],
         "short_desc": "a platinum ring",
-        "long_desc": "A shining ring of platinum lies here.  It has a tiny inscription.",
+        "long_desc": "A shining ring of platinum lies here. It has a tiny inscription.",
         "detailed_desc": "The inscription on the ring reads: Cursed be the gods that supply coins to mortals! And cursed be the mortal that accepts valuable gifts from the gods! Especially cursed are those who do not leave the toilet seat up!",
         "flags": [
             "wearable",

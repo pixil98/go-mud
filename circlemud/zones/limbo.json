@@ -1,0 +1,10 @@
+{
+    "version": 1,
+    "id": "limbo",
+    "spec": {
+        "name": "Limbo - Internal",
+        "reset_mode": "lifespan",
+        "lifespan": "10m"
+    },
+    "creators": "DikuMud"
+}

@@ -17,10 +17,6 @@
             },
             {
                 "type": "grant",
-                "key": "infravision"
-            },
-            {
-                "type": "grant",
                 "key": "notrack"
             },
             {
@@ -60,7 +56,7 @@
     "circlemud_unused": {
         "alignment": -200,
         "gold": 7500,
-        "gender": "N",
+        "gender": "NEUTRAL",
         "flags": [
             "NOCHARM",
             "NOSUMMON",

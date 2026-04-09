@@ -6,6 +6,9 @@
         "description": "You stand in a junction leading north, west and east.",
         "zone_id": "the-sewer-first-level",
         "exits": {
+            "north": {
+                "room_id": "the-sewer-first-level-7048"
+            },
             "east": {
                 "room_id": "the-sewer-first-level-7060",
                 "description": "Darkness has closed in on that part of the sewer system, you can't see a thing in that direction."

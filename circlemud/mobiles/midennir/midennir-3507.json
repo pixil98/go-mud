@@ -13,11 +13,11 @@
         "perks": [
             {
                 "type": "grant",
-                "key": "sneak"
+                "key": "notrack"
             },
             {
                 "type": "grant",
-                "key": "notrack"
+                "key": "sneak"
             },
             {
                 "type": "modifier",
@@ -61,6 +61,6 @@
     "circlemud_unused": {
         "alignment": -900,
         "gold": 1000,
-        "gender": "M"
+        "gender": "MALE"
     }
 }

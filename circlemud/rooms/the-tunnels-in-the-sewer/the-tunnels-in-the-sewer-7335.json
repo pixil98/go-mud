@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "the-tunnels-in-the-sewer-7335",
+    "spec": {
+        "name": "A Dark Tunnel",
+        "description": "You are standing in a dark tunnel. It continues to the north and to the south. Bones are spread on the floor.",
+        "zone_id": "the-tunnels-in-the-sewer",
+        "exits": {
+            "north": {
+                "room_id": "the-tunnels-in-the-sewer-7334"
+            },
+            "south": {
+                "room_id": "the-tunnels-in-the-sewer-7336"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "bones",
+                    "bone"
+                ],
+                "description": "It looks like bones of a human."
+            }
+        ],
+        "mobile_spawns": [
+            "the-sewer-first-level-7042"
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
+    }
+}

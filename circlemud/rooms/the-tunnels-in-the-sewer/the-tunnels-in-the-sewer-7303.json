@@ -1,0 +1,48 @@
+{
+    "version": 1,
+    "id": "the-tunnels-in-the-sewer-7303",
+    "spec": {
+        "name": "The Cave T-Cross",
+        "description": "You are standing in a mudlike substance. The smell here is awful, it is rotten. To the west you can see some light.",
+        "zone_id": "the-tunnels-in-the-sewer",
+        "exits": {
+            "east": {
+                "room_id": "the-tunnels-in-the-sewer-7304",
+                "description": "To the east the tunnel still goes downwards."
+            },
+            "south": {
+                "room_id": "the-tunnels-in-the-sewer-7308"
+            },
+            "west": {
+                "room_id": "the-tunnels-in-the-sewer-7302",
+                "description": "You can see some light to the west."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "mud"
+                ],
+                "description": "When you examine the mud, you notice small worms crawling around."
+            },
+            {
+                "keywords": [
+                    "worms"
+                ],
+                "description": "The worms are purple. They do not look edible."
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD",
+        "flags": [
+            "INDOORS"
+        ]
+    }
+}

@@ -7,7 +7,7 @@
         ],
         "short_desc": "some food",
         "long_desc": "There's some food lying here.",
-        "detailed_desc": "There's some food lying here."
+        "detailed_desc": "It is just random and assorted food. Don't ask questions. It is only a game."
     },
     "circlemud_unused": {
         "cost": 20,

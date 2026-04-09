@@ -9,9 +9,14 @@
             "east": {
                 "room_id": "the-second-sewer-7104"
             },
+            "up": {
+                "room_id": "the-sewer-first-level-7004",
+                "zone_id": "the-sewer-first-level",
+                "description": "Up. You can't see a thing up there, it is way too dark."
+            },
             "down": {
-                "room_id": "the-sewer-maze-7300",
-                "zone_id": "the-sewer-maze",
+                "room_id": "the-tunnels-in-the-sewer-7300",
+                "zone_id": "the-tunnels-in-the-sewer",
                 "closure": {
                     "name": "trapdoor",
                     "closed": true

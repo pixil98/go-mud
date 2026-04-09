@@ -10,6 +10,10 @@
                 "room_id": "the-second-sewer-7103",
                 "description": "You can see a mud area starting in that direction."
             },
+            "east": {
+                "room_id": "the-second-sewer-7112",
+                "description": "East. You can't even make out what it might look like, it is just too dark."
+            },
             "west": {
                 "room_id": "the-second-sewer-7102",
                 "description": "West. There is a room with a ladder leading up."

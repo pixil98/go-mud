@@ -6,6 +6,10 @@
         "description": "This is a hard dirt track about a quarter of a mile long. There are hoof prints everywhere, and you see a large cloud of dust approaching. You had better move before you get run over. A small tunnel leads west, you can see the crowd to the east. You can hear loud snarls and roars coming from below.",
         "zone_id": "rome",
         "exits": {
+            "west": {
+                "room_id": "rome-12009",
+                "description": "You see athletes warming up and stretching."
+            },
             "up": {
                 "room_id": "rome-12023"
             },

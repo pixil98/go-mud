@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "the-tunnels-in-the-sewer-7326",
+    "spec": {
+        "name": "The Crossing",
+        "description": "You are standing in a crossing of hallways. You can leave this place in every direction, except up and down. In the dust you notice strange footprints.",
+        "zone_id": "the-tunnels-in-the-sewer",
+        "exits": {
+            "north": {
+                "room_id": "the-tunnels-in-the-sewer-7331"
+            },
+            "east": {
+                "room_id": "the-tunnels-in-the-sewer-7330"
+            },
+            "south": {
+                "room_id": "the-tunnels-in-the-sewer-7327"
+            },
+            "west": {
+                "room_id": "the-tunnels-in-the-sewer-7325"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "footprints",
+                    "foot"
+                ],
+                "description": "You have never seen this kind of footprint before!"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
+    }
+}

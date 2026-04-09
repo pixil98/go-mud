@@ -11,6 +11,14 @@
         "detailed_desc": "If you can read this, the board is not working.",
         "flags": [
             "immobile"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "bulletin"
+                ],
+                "description": "Use 'look board' to read the board."
+            }
         ]
     }
 }

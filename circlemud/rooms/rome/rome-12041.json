@@ -6,6 +6,10 @@
         "description": "You are in a massive stone structure that has been designed to channel water into the city of Rome. Due to the recent drought, the water level is low, allowing passage without a boat. The walls and floor are covered with algae and slime producing treacherous footing conditions. There are exits to the north, south and east.",
         "zone_id": "rome",
         "exits": {
+            "north": {
+                "room_id": "rome-12039",
+                "description": "You can see a wide street to the north."
+            },
             "east": {
                 "room_id": "rome-12048",
                 "description": "You see more aqueduct."

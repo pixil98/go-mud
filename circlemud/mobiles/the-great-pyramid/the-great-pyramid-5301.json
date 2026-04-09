@@ -45,9 +45,6 @@
     },
     "circlemud_unused": {
         "gold": 25,
-        "gender": "N",
-        "flags": [
-            "SPEC"
-        ]
+        "gender": "NEUTRAL"
     }
 }

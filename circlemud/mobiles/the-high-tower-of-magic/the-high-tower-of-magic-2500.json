@@ -65,7 +65,7 @@
     "circlemud_unused": {
         "alignment": -350,
         "gold": 100,
-        "gender": "N",
+        "gender": "NEUTRAL",
         "flags": [
             "NOCHARM",
             "NOSUMMON",

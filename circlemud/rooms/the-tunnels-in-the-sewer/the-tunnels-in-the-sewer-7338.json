@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "the-tunnels-in-the-sewer-7338",
+    "spec": {
+        "name": "The South-Eastern Part Of The Basilisk's Cave",
+        "description": "There is a very small hole in wall from which the smoke is coming from. Otherwise it is pitch black. Exits are north and west.",
+        "zone_id": "the-tunnels-in-the-sewer",
+        "exits": {
+            "north": {
+                "room_id": "the-tunnels-in-the-sewer-7337",
+                "description": "You can see nothing but smoke."
+            },
+            "west": {
+                "room_id": "the-tunnels-in-the-sewer-7340",
+                "description": "You can see nothing but smoke."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "hole",
+                    "small"
+                ],
+                "description": "It seems to be a small hole, about one foot in diameter."
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD",
+        "flags": [
+            "INDOORS"
+        ]
+    }
+}

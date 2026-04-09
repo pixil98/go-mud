@@ -17,13 +17,13 @@
                 "key": "detect_invis"
             },
             {
-                "type": "grant",
-                "key": "infravision"
-            },
-            {
                 "type": "modifier",
                 "key": "core.defense.all.absorb.pct",
                 "value": 50
+            },
+            {
+                "type": "grant",
+                "key": "infravision"
             },
             {
                 "type": "modifier",
@@ -81,9 +81,8 @@
     "circlemud_unused": {
         "alignment": 1000,
         "gold": 21900,
-        "gender": "M",
+        "gender": "MALE",
         "flags": [
-            "SPEC",
             "AGGR_EVIL",
             "AGGR_NEUTRAL"
         ]

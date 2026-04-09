@@ -1,0 +1,48 @@
+{
+    "version": 1,
+    "id": "the-tunnels-in-the-sewer-7318",
+    "spec": {
+        "name": "The Square Lair",
+        "description": "You are standing in the north-east part of the lair. You see a sign on the wall.",
+        "zone_id": "the-tunnels-in-the-sewer",
+        "exits": {
+            "east": {
+                "room_id": "the-tunnels-in-the-sewer-7321",
+                "description": "You see a wooden door.",
+                "closure": {
+                    "name": "door",
+                    "closed": true
+                }
+            },
+            "south": {
+                "room_id": "the-tunnels-in-the-sewer-7317",
+                "description": "Another part of the lair."
+            },
+            "west": {
+                "room_id": "the-tunnels-in-the-sewer-7319",
+                "description": "Another part of the lair."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "sign",
+                    "wall"
+                ],
+                "description": "The sign says 'Gods of War I call you, my sword is by my side, I seek a light free from all false pride' Reyemle Grug..."
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
+    }
+}

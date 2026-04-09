@@ -73,7 +73,7 @@
                 "object_id": "northern-midgaard-main-city-3042"
             },
             {
-                "slot": "body",
+                "slot": "about",
                 "object_id": "rome-12014"
             }
         ]
@@ -81,9 +81,8 @@
     "circlemud_unused": {
         "alignment": 300,
         "gold": 32000,
-        "gender": "M",
+        "gender": "MALE",
         "flags": [
-            "SPEC",
             "NOCHARM",
             "NOSUMMON"
         ]

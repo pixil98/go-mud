@@ -8,8 +8,8 @@
             "green"
         ],
         "short_desc": "a green slime mould",
-        "long_desc": "A green slime mould is here.  Stinks like you wouldn't believe!",
-        "detailed_desc": "A green slime mould is here.  Stinks like you wouldn't believe!"
+        "long_desc": "A green slime mould is here. Stinks like you wouldn't believe!",
+        "detailed_desc": "It wasn't meant to be food -- at least, certainly not for humans."
     },
     "circlemud_unused": {
         "cost": 20,

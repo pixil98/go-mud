@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "the-tunnels-in-the-sewer-7327",
+    "spec": {
+        "name": "The L-Shaped Room",
+        "description": "You are standing in a L-shaped room. You can hear noises from the long tunnel to the east. You feel very afraid! A sign is hanging on the wall.",
+        "zone_id": "the-tunnels-in-the-sewer",
+        "exits": {
+            "north": {
+                "room_id": "the-tunnels-in-the-sewer-7326"
+            },
+            "east": {
+                "room_id": "the-tunnels-in-the-sewer-7328"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "sign"
+                ],
+                "description": "The sign says: DANGER!!"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD",
+        "flags": [
+            "INDOORS"
+        ]
+    }
+}

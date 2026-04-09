@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "the-tunnels-in-the-sewer-7334",
+    "spec": {
+        "name": "The Stair-Room",
+        "description": "You are standing in a small room. Drawings of faces in pain are on the walls. You can feel that darkness is ruling the place. There is one exit: south.",
+        "zone_id": "the-tunnels-in-the-sewer",
+        "exits": {
+            "south": {
+                "room_id": "the-tunnels-in-the-sewer-7335",
+                "description": "Nothing but darkness..."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
+    }
+}

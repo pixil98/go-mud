@@ -14,11 +14,11 @@
         "perks": [
             {
                 "type": "grant",
-                "key": "sneak"
+                "key": "infravision"
             },
             {
                 "type": "grant",
-                "key": "infravision"
+                "key": "sneak"
             },
             {
                 "type": "modifier",
@@ -49,6 +49,6 @@
     "circlemud_unused": {
         "alignment": -700,
         "gold": 1,
-        "gender": "N"
+        "gender": "NEUTRAL"
     }
 }

@@ -50,13 +50,13 @@
             }
         ],
         "flags": [
-            "wimpy",
-            "aggressive"
+            "aggressive",
+            "wimpy"
         ],
         "exp_reward": 150
     },
     "circlemud_unused": {
-        "gender": "N",
+        "gender": "NEUTRAL",
         "flags": [
             "NOBASH"
         ]

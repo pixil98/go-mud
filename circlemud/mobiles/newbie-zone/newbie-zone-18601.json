@@ -44,7 +44,7 @@
         "exp_reward": 1200,
         "equipment": [
             {
-                "slot": "body",
+                "slot": "about",
                 "object_id": "newbie-zone-18604"
             }
         ]
@@ -52,6 +52,6 @@
     "circlemud_unused": {
         "alignment": -750,
         "gold": 100,
-        "gender": "N"
+        "gender": "NEUTRAL"
     }
 }

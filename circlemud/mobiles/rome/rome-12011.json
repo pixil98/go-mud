@@ -11,13 +11,13 @@
         "level": 23,
         "perks": [
             {
+                "type": "grant",
+                "key": "detect_invis"
+            },
+            {
                 "type": "modifier",
                 "key": "core.defense.all.absorb.pct",
                 "value": 50
-            },
-            {
-                "type": "grant",
-                "key": "detect_invis"
             },
             {
                 "type": "modifier",
@@ -90,6 +90,6 @@
     "circlemud_unused": {
         "alignment": 750,
         "gold": 5000,
-        "gender": "M"
+        "gender": "MALE"
     }
 }

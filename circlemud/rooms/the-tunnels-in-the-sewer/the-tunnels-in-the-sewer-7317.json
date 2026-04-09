@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "the-tunnels-in-the-sewer-7317",
+    "spec": {
+        "name": "The Square Lair",
+        "description": "You are standing in the south-east part of the lair. You can see a skeleton lying in the corner.",
+        "zone_id": "the-tunnels-in-the-sewer",
+        "exits": {
+            "north": {
+                "room_id": "the-tunnels-in-the-sewer-7318",
+                "description": "Another part of the lair."
+            },
+            "west": {
+                "room_id": "the-tunnels-in-the-sewer-7320",
+                "description": "Another part of the lair."
+            },
+            "south": {
+                "room_id": "the-tunnels-in-the-sewer-7314"
+            }
+        },
+        "extra_descs": [
+            {
+                "keywords": [
+                    "skeleton"
+                ],
+                "description": "It looks like a adventurer who wasn't lucky. You'd better watch out..."
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
+    }
+}

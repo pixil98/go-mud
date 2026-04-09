@@ -27,13 +27,37 @@
         ],
         "object_spawns": [
             {
-                "object_id": "rands-tower-6416"
+                "object_id": "rands-tower-6416",
+                "contents": [
+                    {
+                        "object_id": "rands-tower-6401"
+                    }
+                ]
             },
             {
-                "object_id": "rands-tower-6417"
+                "object_id": "rands-tower-6417",
+                "contents": [
+                    {
+                        "object_id": "rands-tower-6405"
+                    },
+                    {
+                        "object_id": "rands-tower-6407"
+                    }
+                ]
             },
             {
-                "object_id": "rands-tower-6418"
+                "object_id": "rands-tower-6418",
+                "contents": [
+                    {
+                        "object_id": "rands-tower-6406"
+                    },
+                    {
+                        "object_id": "rands-tower-6408"
+                    },
+                    {
+                        "object_id": "rands-tower-6412"
+                    }
+                ]
             }
         ]
     },

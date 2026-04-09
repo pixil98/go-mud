@@ -6,6 +6,10 @@
         "description": "This is a Room with walls that glitters like gold though not quite like it. This is strange as it looks as if the glitter lights the whole room. It looks very bright. To the south the floor is covered with yucky water. The north leads to a sort of a guard room.",
         "zone_id": "the-sewer-first-level",
         "exits": {
+            "north": {
+                "room_id": "the-sewer-first-level-7045",
+                "description": "To the north you can see the guard room."
+            },
             "south": {
                 "room_id": "the-sewer-first-level-7047",
                 "description": "To the south there is nothing but water and an exit leads east from there."

@@ -12,6 +12,9 @@
             },
             "east": {
                 "room_id": "the-second-sewer-7122"
+            },
+            "west": {
+                "room_id": "the-second-sewer-7104"
             }
         },
         "perks": [

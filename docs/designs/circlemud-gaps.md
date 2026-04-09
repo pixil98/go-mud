@@ -5,14 +5,18 @@ The goal is not a perfect 1:1 mapping — just enough to support a sample world 
 
 ## Import Status
 
-1878 rooms across 29 zones imported into `circlemud/rooms/` and `circlemud/zones/`.
+1878 rooms across 30 zones imported into `circlemud/rooms/` and `circlemud/zones/`.
 569 mobiles imported into `circlemud/mobiles/`.
-678 objects imported into `circlemud/objects/`.
+679 objects imported into `circlemud/objects/`.
 Alternate config at `config.circlemud.json`.
 
+Unified importer at `tools/import_circlemud.py` parses original CircleMUD source files
+directly (`.wld`, `.mob`, `.obj`, `.zon`) from the CircleMUD GitHub repo. Index-driven —
+automatically discovers all zones from the source index files.
+
 Zone reset commands (M/O/G/E/P/D) translated into declarative spawns:
-- M commands → `Room.MobSpawns` (723 rooms)
-- O commands → `Room.ObjSpawns` with nested contents from P commands (138 rooms)
+- M commands → `Room.MobSpawns`
+- O commands → `Room.ObjSpawns` with nested contents from P commands
 - G/E commands → `Mobile.Inventory` and `Mobile.Equipment` (first-wins per slot to handle mobs placed with different loadouts)
 
 ---
@@ -162,7 +166,7 @@ HITROLL → `core.combat.attack.flat`; DAMROLL → `core.damage.all.flat`.
 
 ## Zones — DONE
 
-29 zones imported with name, reset mode, and lifespan.
+30 zones imported with name, reset mode, and lifespan.
 
 ### Zone reset commands — done
 

@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "the-tunnels-in-the-sewer-7328",
+    "spec": {
+        "name": "The Dragon's Lair",
+        "description": "You can see burned walls, the floorstones are fiery red. All kinds of bones are scattered all over the floor. On the walls you can see some burned shapes. You smell burnt flesh. Two creatures are half melted into the floor.",
+        "zone_id": "the-tunnels-in-the-sewer",
+        "exits": {
+            "north": {
+                "room_id": "the-tunnels-in-the-sewer-7329",
+                "description": "You can see a long tunnel."
+            },
+            "west": {
+                "room_id": "the-tunnels-in-the-sewer-7327",
+                "description": "You can see nothing but darkness."
+            }
+        },
+        "mobile_spawns": [
+            "the-sewer-first-level-7040"
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD",
+        "flags": [
+            "INDOORS"
+        ]
+    }
+}

@@ -8,7 +8,7 @@
         ],
         "short_desc": "a shot",
         "long_desc": "A shot of whisky is sitting here.",
-        "detailed_desc": "A shot of whisky is sitting here.",
+        "detailed_desc": "Whew! Looks like potent stuff!",
         "flags": [
             "wearable"
         ],

@@ -58,9 +58,6 @@
     },
     "circlemud_unused": {
         "alignment": -850,
-        "gender": "N",
-        "flags": [
-            "ISNPC"
-        ]
+        "gender": "NEUTRAL"
     }
 }

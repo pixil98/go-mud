@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "the-tunnels-in-the-sewer-7337",
+    "spec": {
+        "name": "The North-Eastern Part Of The Basilisk's Cave",
+        "description": "It is hard to see here because of the smoke. To the north you can barely see a small tunnel. Other exits are to the south and to the west.",
+        "zone_id": "the-tunnels-in-the-sewer",
+        "exits": {
+            "north": {
+                "room_id": "the-tunnels-in-the-sewer-7336"
+            },
+            "south": {
+                "room_id": "the-tunnels-in-the-sewer-7338"
+            },
+            "west": {
+                "room_id": "the-tunnels-in-the-sewer-7339"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD",
+        "flags": [
+            "INDOORS"
+        ]
+    }
+}

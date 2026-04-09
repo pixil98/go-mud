@@ -1,0 +1,81 @@
+{
+    "version": 1,
+    "id": "the-tunnels-in-the-sewer-7324",
+    "spec": {
+        "name": "The Circular Hall",
+        "description": "You are standing in round hall. To the north, east and south you can see a stone head hanging on the walls.",
+        "zone_id": "the-tunnels-in-the-sewer",
+        "exits": {
+            "north": {
+                "room_id": "the-tunnels-in-the-sewer-7324",
+                "description": "You see a red dragon's head hanging on the wall.",
+                "closure": {
+                    "name": "head",
+                    "closed": true
+                }
+            },
+            "east": {
+                "room_id": "the-tunnels-in-the-sewer-7325",
+                "description": "You see a green dragon's head hanging on the wall.",
+                "closure": {
+                    "name": "head",
+                    "closed": true
+                }
+            },
+            "south": {
+                "room_id": "the-tunnels-in-the-sewer-7324",
+                "description": "You see a blue dragon's head hanging on the wall.",
+                "closure": {
+                    "name": "head",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "the-tunnels-in-the-sewer-7323",
+                "description": "You see a room far away."
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "head",
+                    "heads"
+                ],
+                "description": "When you study the faces of the heads you see that they are faces of dragons. The face to the north is red, the face to the east is green, and the face to the south is blue."
+            },
+            {
+                "keywords": [
+                    "green"
+                ],
+                "description": "This looks like an evil dragon."
+            },
+            {
+                "keywords": [
+                    "red"
+                ],
+                "description": "This looks like a neutral dragon."
+            },
+            {
+                "keywords": [
+                    "blue"
+                ],
+                "description": "This looks like a good dragon."
+            }
+        ],
+        "mobile_spawns": [
+            "the-sewer-first-level-7046"
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
+    }
+}

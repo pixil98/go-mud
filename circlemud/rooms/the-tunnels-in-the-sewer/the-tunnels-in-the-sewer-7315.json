@@ -1,0 +1,43 @@
+{
+    "version": 1,
+    "id": "the-tunnels-in-the-sewer-7315",
+    "spec": {
+        "name": "The Blind End Room",
+        "description": "This room is obviously a blind end. To the north you see a primitive picture.",
+        "zone_id": "the-tunnels-in-the-sewer",
+        "exits": {
+            "north": {
+                "room_id": "the-tunnels-in-the-sewer-7316",
+                "description": "You see a primitive picture of some people dancing around a huge sun. The sun is about 7 feet in diameter, which shows the size of the picture.",
+                "closure": {
+                    "name": "sun",
+                    "closed": true
+                }
+            },
+            "west": {
+                "room_id": "the-tunnels-in-the-sewer-7314"
+            }
+        },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "dark"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "primitive",
+                    "picture"
+                ],
+                "description": "You see some people dancing around a huge sun. The sun is about 7 feet in diameter, which shows the size of the picture."
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
+    }
+}

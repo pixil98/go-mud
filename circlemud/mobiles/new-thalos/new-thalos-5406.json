@@ -42,6 +42,6 @@
     },
     "circlemud_unused": {
         "gold": 21,
-        "gender": "M"
+        "gender": "MALE"
     }
 }

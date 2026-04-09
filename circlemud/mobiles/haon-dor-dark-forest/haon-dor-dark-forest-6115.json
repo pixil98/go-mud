@@ -33,15 +33,15 @@
             },
             {
                 "type": "grant",
+                "key": "notrack"
+            },
+            {
+                "type": "grant",
                 "key": "sneak"
             },
             {
                 "type": "grant",
                 "key": "hide"
-            },
-            {
-                "type": "grant",
-                "key": "notrack"
             },
             {
                 "type": "modifier",
@@ -86,9 +86,6 @@
     "circlemud_unused": {
         "alignment": 1000,
         "gold": 1000,
-        "gender": "M",
-        "flags": [
-            "SPEC"
-        ]
+        "gender": "MALE"
     }
 }

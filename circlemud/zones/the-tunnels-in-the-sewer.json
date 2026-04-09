@@ -1,0 +1,10 @@
+{
+    "version": 1,
+    "id": "the-tunnels-in-the-sewer",
+    "spec": {
+        "name": "The Tunnels In The Sewer",
+        "reset_mode": "lifespan",
+        "lifespan": "25m"
+    },
+    "creators": "Redferne of DikuMud"
+}
