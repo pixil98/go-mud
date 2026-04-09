@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "rands-tower-6402",
+    "spec": {
+        "aliases": [
+            "agate",
+            "gem"
+        ],
+        "short_desc": "an agate",
+        "long_desc": "A small gem lies here.",
+        "detailed_desc": "A small gem lies here."
+    },
+    "circlemud_unused": {
+        "cost": 5000,
+        "rent": 500,
+        "weight": 1
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2528",
+    "spec": {
+        "aliases": [
+            "wand",
+            "wooden"
+        ],
+        "short_desc": "a wooden stick",
+        "long_desc": "a wooden stick is here",
+        "detailed_desc": "a wooden stick is here",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 600,
+        "rent": 60,
+        "weight": 4,
+        "type": "WAND",
+        "values": [
+            20,
+            10,
+            10,
+            3
+        ]
+    }
+}

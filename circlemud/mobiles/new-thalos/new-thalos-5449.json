@@ -45,5 +45,10 @@
             "stay_zone"
         ],
         "exp_reward": 105
+    },
+    "circlemud_unused": {
+        "alignment": -750,
+        "gold": 1,
+        "gender": "M"
     }
 }

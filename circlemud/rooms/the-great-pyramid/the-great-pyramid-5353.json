@@ -28,5 +28,8 @@
                 "description": "The sand is very white, and very sandy. There sure is a lot of it."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

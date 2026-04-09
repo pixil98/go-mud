@@ -20,5 +20,11 @@
                 "description": "As you look out the windows, you are granted a view of the countryside."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

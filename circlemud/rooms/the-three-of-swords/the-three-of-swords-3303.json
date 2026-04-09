@@ -18,5 +18,8 @@
                 "room_id": "the-three-of-swords-3302"
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

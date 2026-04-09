@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15015",
+    "spec": {
+        "aliases": [
+            "hauberk",
+            "mail",
+            "chain"
+        ],
+        "short_desc": "a guard's chain mail hauberk",
+        "long_desc": "A chain mail hauberk lies on the floor",
+        "detailed_desc": "A chain mail hauberk lies on the floor",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "body"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 2000,
+        "rent": 500,
+        "weight": 60
+    }
+}

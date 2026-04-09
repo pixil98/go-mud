@@ -66,5 +66,18 @@
                 "object_id": "the-great-pyramid-5317"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 500,
+        "gold": 125000,
+        "gender": "N",
+        "flags": [
+            "SPEC",
+            "NOCHARM",
+            "NOSUMMON",
+            "NOSLEEP",
+            "NOBASH",
+            "NOBLIND"
+        ]
     }
 }

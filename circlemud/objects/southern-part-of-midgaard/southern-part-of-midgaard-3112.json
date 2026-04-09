@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3112",
+    "spec": {
+        "aliases": [
+            "key",
+            "city"
+        ],
+        "short_desc": "the City Key",
+        "long_desc": "The very big City Key is lying here.",
+        "detailed_desc": "It is probably the biggest key you have seen in your life. It is made from polished gold and has various patterns on it along with the Midgaard Coat of Arms."
+    },
+    "circlemud_unused": {
+        "cost": 10000,
+        "rent": 500,
+        "weight": 30,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

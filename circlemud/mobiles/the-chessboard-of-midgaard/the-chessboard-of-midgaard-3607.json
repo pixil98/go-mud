@@ -50,11 +50,12 @@
             {
                 "slot": "hold",
                 "object_id": "the-chessboard-of-midgaard-3609"
-            },
-            {
-                "slot": "hold",
-                "object_id": "the-chessboard-of-midgaard-3609"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 500,
+        "gold": 4000,
+        "gender": "N"
     }
 }

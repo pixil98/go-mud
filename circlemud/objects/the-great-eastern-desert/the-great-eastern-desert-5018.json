@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5018",
+    "spec": {
+        "aliases": [
+            "cutlass",
+            "pointed",
+            "long"
+        ],
+        "short_desc": "a long, pointed cutlass",
+        "long_desc": "A long, pointed cutlass lies here.",
+        "detailed_desc": "A long, pointed cutlass lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d7"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 550,
+        "rent": 10,
+        "weight": 5,
+        "effects": [
+            "ANTI_NEUTRAL"
+        ]
+    }
+}

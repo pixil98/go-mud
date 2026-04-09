@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5032",
+    "spec": {
+        "aliases": [
+            "emerald",
+            "gem",
+            "fiery",
+            "green"
+        ],
+        "short_desc": "a fiery green emerald",
+        "long_desc": "A fiery green emerald sits here.",
+        "detailed_desc": "A fiery green emerald sits here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 5500,
+        "rent": 200,
+        "weight": 7,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

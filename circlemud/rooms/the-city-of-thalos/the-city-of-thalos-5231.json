@@ -13,6 +13,25 @@
             "east": {
                 "room_id": "the-city-of-thalos-5234"
             }
-        }
+        },
+        "object_spawns": [
+            {
+                "object_id": "the-city-of-thalos-5225",
+                "contents": [
+                    {
+                        "object_id": "the-city-of-thalos-5215"
+                    },
+                    {
+                        "object_id": "the-city-of-thalos-5216"
+                    }
+                ]
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5250",
+    "spec": {
+        "aliases": [
+            "mandolin"
+        ],
+        "short_desc": "a mandolin",
+        "long_desc": "A mandolin lies against the wall.",
+        "detailed_desc": "A mandolin lies against the wall.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 3000,
+        "rent": 1500,
+        "weight": 20,
+        "effects": [
+            "MAGIC"
+        ],
+        "type": "STAFF",
+        "values": [
+            13,
+            3,
+            3,
+            15
+        ]
+    }
+}

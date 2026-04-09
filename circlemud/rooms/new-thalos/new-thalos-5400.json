@@ -19,5 +19,11 @@
                 "description": "The spiral stairs lead up to the reception area."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

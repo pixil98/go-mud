@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "rome-12023",
+    "spec": {
+        "aliases": [
+            "sandals",
+            "winged",
+            "mercury"
+        ],
+        "short_desc": "a pair of winged sandals",
+        "long_desc": "Mercury's winged sandals have been left here.",
+        "detailed_desc": "Mercury's winged sandals have been left here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "feet"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 8
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.dex",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 75000,
+        "rent": 13000,
+        "weight": 14,
+        "effects": [
+            "GLOW",
+            "ANTI_NEUTRAL"
+        ]
+    }
+}

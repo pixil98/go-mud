@@ -28,5 +28,11 @@
             "drow-city-5103",
             "drow-city-5104"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

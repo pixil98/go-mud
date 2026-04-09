@@ -26,5 +26,11 @@
         "mobile_spawns": [
             "king-welmars-castle-15032"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

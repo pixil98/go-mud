@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5021",
+    "spec": {
+        "aliases": [
+            "bow",
+            "golden"
+        ],
+        "short_desc": "a golden bow",
+        "long_desc": "A powerful golden bow lies here.",
+        "detailed_desc": "A powerful golden bow lies here.",
+        "flags": [
+            "wearable",
+            "invisible"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d6"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "blast",
+        "cost": 150000,
+        "rent": 20000,
+        "weight": 20,
+        "effects": [
+            "GLOW",
+            "HUM",
+            "MAGIC",
+            "BLESS",
+            "ANTI_THIEF"
+        ]
+    }
+}

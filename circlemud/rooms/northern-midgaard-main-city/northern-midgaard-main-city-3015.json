@@ -23,5 +23,8 @@
                 "description": "You see the market square."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

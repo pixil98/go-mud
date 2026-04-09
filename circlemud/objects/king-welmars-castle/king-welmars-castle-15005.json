@@ -1,0 +1,16 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15005",
+    "spec": {
+        "aliases": [
+            "telescope",
+            "scope"
+        ],
+        "short_desc": "a large telescope",
+        "long_desc": "There is a large telescope here, pointing at the sky.",
+        "detailed_desc": "A small sign says: Made in Siberia.",
+        "flags": [
+            "immobile"
+        ]
+    }
+}

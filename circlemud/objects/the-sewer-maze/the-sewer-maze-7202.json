@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7202",
+    "spec": {
+        "aliases": [
+            "mace",
+            "small"
+        ],
+        "short_desc": "the small mace",
+        "long_desc": "a small mace has been left here.",
+        "detailed_desc": "This weapon does look like it does a lot of damage, but then you never know. It consists of a black handle and a purple head.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d6"
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pound",
+        "cost": 600,
+        "rent": 200,
+        "weight": 6,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

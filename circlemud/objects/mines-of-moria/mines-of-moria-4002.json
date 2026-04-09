@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4002",
+    "spec": {
+        "aliases": [
+            "coins"
+        ],
+        "short_desc": "some coins",
+        "long_desc": "A small pile of coins is on the ground.",
+        "detailed_desc": "A small pile of coins is on the ground."
+    },
+    "circlemud_unused": {
+        "type": "MONEY",
+        "values": [
+            500,
+            0,
+            0,
+            0
+        ]
+    }
+}

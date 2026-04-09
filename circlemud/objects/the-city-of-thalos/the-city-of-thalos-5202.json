@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5202",
+    "spec": {
+        "aliases": [
+            "gauntlets",
+            "iron"
+        ],
+        "short_desc": "a pair of iron gauntlets",
+        "long_desc": "A pair of iron gauntlets rests heavily on the ground.",
+        "detailed_desc": "A pair of iron gauntlets rests heavily on the ground.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hands"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 7
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": -3
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 2200,
+        "rent": 900,
+        "weight": 10
+    }
+}

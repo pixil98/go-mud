@@ -61,5 +61,10 @@
                 "object_id": "the-great-eastern-desert-5000"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -850,
+        "gold": 170,
+        "gender": "M"
     }
 }

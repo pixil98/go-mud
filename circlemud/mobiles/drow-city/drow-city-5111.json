@@ -74,5 +74,16 @@
                 "object_id": "drow-city-5115"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -1000,
+        "gold": 60000,
+        "gender": "F",
+        "flags": [
+            "NOCHARM",
+            "NOSUMMON",
+            "NOBASH",
+            "NOBLIND"
+        ]
     }
 }

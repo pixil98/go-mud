@@ -109,7 +109,7 @@ def vnum_to_id(vnum, vnum_to_zone, zones):
     return f"{zone_slug}-{vnum}"
 
 
-def convert_exit(ex, source_zone_slug, vnum_to_zone, zones):
+def convert_exit(ex, source_zone_slug, vnum_to_zone, zones, known_obj_vnums):
     dest_vnum = ex["room_linked"]
     if dest_vnum < 0:
         return None
@@ -135,7 +135,7 @@ def convert_exit(ex, source_zone_slug, vnum_to_zone, zones):
             "closed": True,
         }
         key_num = ex.get("key_number", -1)
-        if key_num >= 0:
+        if key_num > 0 and key_num in known_obj_vnums:
             lock = {
                 "key_id": vnum_to_id(key_num, vnum_to_zone, zones),
                 "locked": True,
@@ -148,13 +148,17 @@ def convert_exit(ex, source_zone_slug, vnum_to_zone, zones):
     return result
 
 
-def convert_room(src, zone_slug, vnum_to_zone, zones):
+def convert_room(src, zone_slug, vnum_to_zone, zones, known_obj_vnums):
     flags = []
     perks = []
 
+    skipped_flags = []
     for f in src.get("flags", []):
-        mapping = ROOM_FLAGS.get(f.get("note", ""))
+        note = f.get("note", "")
+        mapping = ROOM_FLAGS.get(note)
         if mapping is None:
+            if note:
+                skipped_flags.append(note)
             continue
         if mapping["type"] == "flag":
             flags.append(mapping["flag"])
@@ -166,7 +170,7 @@ def convert_room(src, zone_slug, vnum_to_zone, zones):
         direction = DIRECTIONS.get(ex.get("dir"))
         if direction is None:
             continue
-        converted = convert_exit(ex, zone_slug, vnum_to_zone, zones)
+        converted = convert_exit(ex, zone_slug, vnum_to_zone, zones, known_obj_vnums)
         if converted is None:
             continue
         exits[direction] = converted
@@ -193,11 +197,24 @@ def convert_room(src, zone_slug, vnum_to_zone, zones):
     if extra_descs:
         room["extra_descs"] = extra_descs
 
-    return {
+    # --- circlemud_unused: preserve unmapped data ---
+    unused = {}
+    sector = src.get("sector_type", {}).get("note", "")
+    if sector:
+        unused["sector_type"] = sector
+    if skipped_flags:
+        unused["flags"] = skipped_flags
+
+    result = {
         "version": 1,
         "id": room_id(zone_slug, vnum),
         "spec": room,
     }
+
+    if unused:
+        result["circlemud_unused"] = unused
+
+    return result
 
 
 # --- Zone asset conversion ---
@@ -252,6 +269,18 @@ def main():
             vnum_to_zone[src_room["id"]] = zone_slug
         print(f"{len(rooms)} rooms")
 
+    # Fetch known object vnums for key reference validation
+    print("Fetching object vnums for key validation...", flush=True)
+    known_obj_vnums = set()
+    for zn in WLD_FILES:
+        try:
+            objs = fetch_json(f"obj/{zn}.json")
+            for o in objs:
+                known_obj_vnums.add(o["id"])
+        except Exception:
+            pass
+    print(f"Found {len(known_obj_vnums)} known objects")
+
     # Write room assets
     total = 0
     for zone_num, rooms in all_rooms.items():
@@ -259,7 +288,7 @@ def main():
         zone_rooms_dir = os.path.join(rooms_dir, zone_slug)
         os.makedirs(zone_rooms_dir, exist_ok=True)
         for src_room in rooms:
-            out = convert_room(src_room, zone_slug, vnum_to_zone, zones)
+            out = convert_room(src_room, zone_slug, vnum_to_zone, zones, known_obj_vnums)
             vnum = src_room["id"]
             filename = f"{zone_slug}-{vnum}.json"
             filepath = os.path.join(zone_rooms_dir, filename)

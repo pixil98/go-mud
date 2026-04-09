@@ -15,5 +15,11 @@
             "the-dwarven-kingdom-6511",
             "the-dwarven-kingdom-6511"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

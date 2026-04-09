@@ -1,0 +1,43 @@
+{
+    "version": 1,
+    "id": "rome-12013",
+    "spec": {
+        "aliases": [
+            "pendant",
+            "jade"
+        ],
+        "short_desc": "a jade pendant",
+        "long_desc": "A beautiful jade pendant has been left here.",
+        "detailed_desc": "A beautiful jade pendant has been left here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "neck"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.stats.int",
+                "value": 1
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.wis",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 16500,
+        "rent": 6000,
+        "weight": 30,
+        "type": "WORN",
+        "values": [
+            0,
+            0,
+            0,
+            0
+        ]
+    }
+}

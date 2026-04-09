@@ -11,5 +11,11 @@
                 "description": "You can see the dirt road through the doorway to the east."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

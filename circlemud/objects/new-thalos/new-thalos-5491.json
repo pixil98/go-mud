@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "new-thalos-5491",
+    "spec": {
+        "aliases": [
+            "seed",
+            "sesame"
+        ],
+        "short_desc": "a sesame seed",
+        "long_desc": "A sesame seed lies here.",
+        "detailed_desc": "A sesame seed lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 10,
+        "weight": 1,
+        "type": "FOOD",
+        "values": [
+            6,
+            0,
+            0,
+            0
+        ]
+    }
+}

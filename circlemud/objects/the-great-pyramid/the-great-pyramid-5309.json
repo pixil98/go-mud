@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5309",
+    "spec": {
+        "aliases": [
+            "key",
+            "stone"
+        ],
+        "short_desc": "a stone key",
+        "long_desc": "A stone key has been dropped here.",
+        "detailed_desc": "The key is made from stone, but is otherwise unremarkable.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 15,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

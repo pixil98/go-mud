@@ -23,5 +23,11 @@
             "new-thalos-5405",
             "new-thalos-5406"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

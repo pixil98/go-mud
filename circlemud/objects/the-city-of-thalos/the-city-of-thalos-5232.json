@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5232",
+    "spec": {
+        "aliases": [
+            "stone",
+            "blue",
+            "incandescent"
+        ],
+        "short_desc": "an incandescent blue stone",
+        "long_desc": "A small incandescent blue stone lies here.",
+        "detailed_desc": "A small incandescent blue stone lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.stats.wis",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 5500,
+        "rent": 600,
+        "weight": 10,
+        "effects": [
+            "NODONATE",
+            "MAGIC"
+        ]
+    }
+}

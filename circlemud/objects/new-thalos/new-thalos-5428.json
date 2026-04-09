@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "new-thalos-5428",
+    "spec": {
+        "aliases": [
+            "boots",
+            "padded",
+            "leather"
+        ],
+        "short_desc": "a pair of padded leather boots",
+        "long_desc": "A pair of padded leather boots lies here.",
+        "detailed_desc": "A pair of padded leather boots lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "feet"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 410,
+        "rent": 200,
+        "weight": 2
+    }
+}

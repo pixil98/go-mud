@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "rome-12024",
+    "spec": {
+        "aliases": [
+            "scroll",
+            "dark",
+            "grey"
+        ],
+        "short_desc": "a dark grey scroll",
+        "long_desc": "A scroll has been carelessly left here.",
+        "detailed_desc": "A scroll has been carelessly left here.",
+        "flags": [
+            "wearable",
+            "invisible"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 5000,
+        "rent": 2000,
+        "weight": 2,
+        "effects": [
+            "ANTI_WARRIOR"
+        ],
+        "type": "SCROLL",
+        "values": [
+            20,
+            4,
+            15,
+            1
+        ]
+    }
+}

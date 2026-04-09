@@ -21,5 +21,11 @@
             "river-island-of-minos-900",
             "river-island-of-minos-900"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

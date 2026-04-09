@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "id": "new-thalos-5415",
+    "spec": {
+        "aliases": [
+            "suit",
+            "mail",
+            "banded"
+        ],
+        "short_desc": "a suit of banded mail",
+        "long_desc": "A suit of banded mail lies here.",
+        "detailed_desc": "A suit of banded mail lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "body"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 8
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 3400,
+        "rent": 800,
+        "weight": 25,
+        "effects": [
+            "GLOW",
+            "MAGIC",
+            "ANTI_MAGIC_USER",
+            "ANTI_CLERIC",
+            "ANTI_THIEF"
+        ]
+    }
+}

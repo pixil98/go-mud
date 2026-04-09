@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6113",
+    "spec": {
+        "aliases": [
+            "sceptre",
+            "iron"
+        ],
+        "short_desc": "an iron sceptre",
+        "long_desc": "An iron sceptre lies on the ground.",
+        "detailed_desc": "It is a heavy sceptre made from solid iron.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "light"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 5000,
+        "rent": 700,
+        "weight": 10,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

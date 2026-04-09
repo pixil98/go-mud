@@ -11,5 +11,8 @@
                 "description": "You see the front of the Inn."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

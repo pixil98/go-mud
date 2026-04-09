@@ -43,5 +43,9 @@
             "aggressive"
         ],
         "exp_reward": 9000
+    },
+    "circlemud_unused": {
+        "alignment": 1000,
+        "gender": "M"
     }
 }

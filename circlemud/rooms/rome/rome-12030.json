@@ -19,5 +19,8 @@
                 "description": "You see the bakery of Rome."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

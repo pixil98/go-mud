@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2531",
+    "spec": {
+        "aliases": [
+            "wings",
+            "bat"
+        ],
+        "short_desc": "a small pair of bat wings",
+        "long_desc": "A small pair of bat wings is here.",
+        "detailed_desc": "A small pair of bat wings is here."
+    },
+    "circlemud_unused": {
+        "cost": 1,
+        "rent": 1,
+        "weight": 2
+    }
+}

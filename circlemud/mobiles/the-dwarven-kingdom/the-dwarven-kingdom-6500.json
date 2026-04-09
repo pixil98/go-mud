@@ -71,52 +71,8 @@
                 "object_id": "the-dwarven-kingdom-6515"
             },
             {
-                "slot": "wield",
-                "object_id": "the-dwarven-kingdom-6504"
-            },
-            {
-                "slot": "body",
-                "object_id": "the-dwarven-kingdom-6505"
-            },
-            {
-                "slot": "hold",
-                "object_id": "the-dwarven-kingdom-6502"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-dwarven-kingdom-6504"
-            },
-            {
-                "slot": "body",
-                "object_id": "the-dwarven-kingdom-6505"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-dwarven-kingdom-6504"
-            },
-            {
-                "slot": "body",
-                "object_id": "the-dwarven-kingdom-6505"
-            },
-            {
                 "slot": "hands",
                 "object_id": "the-dwarven-kingdom-6512"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-dwarven-kingdom-6509"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-dwarven-kingdom-6508"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-dwarven-kingdom-6508"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-dwarven-kingdom-6509"
             },
             {
                 "slot": "head",
@@ -126,6 +82,14 @@
                 "slot": "finger",
                 "object_id": "the-dwarven-kingdom-6511"
             }
+        ]
+    },
+    "circlemud_unused": {
+        "alignment": 1000,
+        "gold": 10000,
+        "gender": "M",
+        "flags": [
+            "SPEC"
         ]
     }
 }

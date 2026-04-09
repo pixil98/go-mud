@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5027",
+    "spec": {
+        "aliases": [
+            "diamond",
+            "gem"
+        ],
+        "short_desc": "a glittering diamond",
+        "long_desc": "A glittering diamond lies at your feet.",
+        "detailed_desc": "A glittering diamond lies at your feet.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 9500,
+        "rent": 200,
+        "weight": 10,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

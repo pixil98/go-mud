@@ -42,5 +42,8 @@
                 "description": "Very cute little creatures, they seem to enjoy life."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

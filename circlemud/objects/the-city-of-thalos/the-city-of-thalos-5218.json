@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5218",
+    "spec": {
+        "aliases": [
+            "talisman",
+            "demon"
+        ],
+        "short_desc": "a demon-faced talisman",
+        "long_desc": "A demon-faced talisman glares at you angrily.",
+        "detailed_desc": "A demon-faced talisman glares at you angrily.",
+        "flags": [
+            "wearable",
+            "no_drop"
+        ],
+        "wear_slots": [
+            "neck"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.str",
+                "value": -10
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.dex",
+                "value": -8
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 2500,
+        "rent": 150,
+        "weight": 11,
+        "effects": [
+            "GLOW",
+            "MAGIC"
+        ]
+    }
+}

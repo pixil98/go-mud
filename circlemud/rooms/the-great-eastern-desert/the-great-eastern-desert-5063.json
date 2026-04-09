@@ -14,5 +14,8 @@
                 "description": "The desert sands blow down in your face."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "MOUNTAIN"
     }
 }

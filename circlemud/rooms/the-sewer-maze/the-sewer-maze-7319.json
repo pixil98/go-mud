@@ -33,5 +33,11 @@
                 "description": "The sign says 'I'm wandering around in a everlasting tale, seeking the light to regain my pride Corama..."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

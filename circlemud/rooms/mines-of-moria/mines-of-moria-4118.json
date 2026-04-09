@@ -17,5 +17,11 @@
                 "room_id": "mines-of-moria-4119"
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

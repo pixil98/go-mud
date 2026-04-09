@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3052",
+    "spec": {
+        "aliases": [
+            "scroll",
+            "recall"
+        ],
+        "short_desc": "a scroll of recall",
+        "long_desc": "A scroll has carelessly been left here.",
+        "detailed_desc": "The scroll has written a formulae of 'Word of Recall' upon it.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 2001,
+        "rent": 10,
+        "weight": 4,
+        "effects": [
+            "MAGIC"
+        ],
+        "type": "SCROLL",
+        "values": [
+            12,
+            42,
+            -1,
+            -1
+        ]
+    }
+}

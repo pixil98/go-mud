@@ -23,5 +23,8 @@
                 "description": "The market place continues."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

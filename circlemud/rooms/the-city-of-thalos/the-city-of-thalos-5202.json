@@ -21,6 +21,14 @@
                 "room_id": "the-city-of-thalos-5203",
                 "description": "A withered garden path lies this way."
             }
-        }
+        },
+        "object_spawns": [
+            {
+                "object_id": "the-city-of-thalos-5230"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

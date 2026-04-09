@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3104",
+    "spec": {
+        "aliases": [
+            "canteen",
+            "water"
+        ],
+        "short_desc": "a canteen",
+        "long_desc": "A canteen has been set on the ground here.",
+        "detailed_desc": "It is a fairly big canteen. Looks like it can hold a lot of liquid."
+    },
+    "circlemud_unused": {
+        "cost": 45,
+        "rent": 15,
+        "weight": 20,
+        "type": "DRINKCON",
+        "values": [
+            80,
+            80,
+            15,
+            0
+        ]
+    }
+}

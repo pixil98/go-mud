@@ -57,19 +57,15 @@
             {
                 "slot": "wield",
                 "object_id": "drow-city-5102"
-            },
-            {
-                "slot": "wield",
-                "object_id": "drow-city-5102"
-            },
-            {
-                "slot": "wield",
-                "object_id": "drow-city-5102"
-            },
-            {
-                "slot": "wield",
-                "object_id": "drow-city-5102"
             }
+        ]
+    },
+    "circlemud_unused": {
+        "alignment": -1000,
+        "gold": 2000,
+        "gender": "M",
+        "flags": [
+            "SPEC"
         ]
     }
 }

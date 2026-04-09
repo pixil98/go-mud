@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6103",
+    "spec": {
+        "aliases": [
+            "branch",
+            "grey",
+            "long"
+        ],
+        "short_desc": "a long, grey branch",
+        "long_desc": "A long, grey branch rests heavily on the ground.",
+        "detailed_desc": "It is quite heavy and looks as if it has been dropped from great height. It is long dead and very dry. Could probably be lighted quite easily.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "light"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "burn_time_hours": 25,
+        "cost": 1,
+        "rent": 3,
+        "weight": 20
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "the-chessboard-of-midgaard-3615",
+    "spec": {
+        "aliases": [
+            "key",
+            "white",
+            "treasury"
+        ],
+        "short_desc": "the Key to the White Treasury",
+        "long_desc": "There is a bright white key lying here.",
+        "detailed_desc": "There is a bright white key lying here.",
+        "flags": [
+            "wearable",
+            "invisible",
+            "no_sell"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 1000,
+        "rent": 300,
+        "weight": 1,
+        "effects": [
+            "NORENT",
+            "NODONATE"
+        ]
+    }
+}

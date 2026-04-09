@@ -33,5 +33,11 @@
                 "description": "You see some people dancing around a huge sun. The sun is about 7 feet in diameter, which shows the size of the picture."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

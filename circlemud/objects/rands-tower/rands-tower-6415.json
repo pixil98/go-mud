@@ -1,0 +1,43 @@
+{
+    "version": 1,
+    "id": "rands-tower-6415",
+    "spec": {
+        "aliases": [
+            "staff",
+            "rand"
+        ],
+        "short_desc": "Rand's staff",
+        "long_desc": "There is a metal-shod staff here.",
+        "detailed_desc": "There is a metal-shod staff here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 8
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 100000,
+        "rent": 25000,
+        "weight": 7,
+        "effects": [
+            "GLOW",
+            "MAGIC",
+            "ANTI_CLERIC",
+            "ANTI_THIEF",
+            "ANTI_WARRIOR"
+        ]
+    }
+}

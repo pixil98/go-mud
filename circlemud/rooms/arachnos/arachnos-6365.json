@@ -19,5 +19,8 @@
                 "room_id": "arachnos-6390"
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

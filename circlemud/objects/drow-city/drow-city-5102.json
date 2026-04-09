@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "id": "drow-city-5102",
+    "spec": {
+        "aliases": [
+            "whip",
+            "snake",
+            "twoheaded"
+        ],
+        "short_desc": "a two-headed snake whip",
+        "long_desc": "A whip with two snakes heads lies here.",
+        "detailed_desc": "A whip with two snakes heads lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 1750,
+        "rent": 1500,
+        "weight": 12,
+        "effects": [
+            "GLOW",
+            "HUM"
+        ]
+    }
+}

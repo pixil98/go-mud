@@ -1,0 +1,49 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7906",
+    "spec": {
+        "aliases": [
+            "dagger",
+            "plain",
+            "black"
+        ],
+        "short_desc": "a plain dagger",
+        "long_desc": "A long black, but very plain, dagger rests here.",
+        "detailed_desc": "A long black, but very plain, dagger rests here.",
+        "flags": [
+            "wearable",
+            "invisible",
+            "no_drop"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "5d3"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": -3
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": -1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pierce",
+        "cost": 6500,
+        "rent": 15000,
+        "weight": 3,
+        "effects": [
+            "NODONATE",
+            "ANTI_CLERIC"
+        ]
+    }
+}

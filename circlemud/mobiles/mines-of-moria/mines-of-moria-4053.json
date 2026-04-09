@@ -45,5 +45,12 @@
             "aggressive"
         ],
         "exp_reward": 12000
+    },
+    "circlemud_unused": {
+        "alignment": -600,
+        "gender": "N",
+        "flags": [
+            "SPEC"
+        ]
     }
 }

@@ -15,5 +15,8 @@
                 "description": "There is a bit of a slope downward to the west."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

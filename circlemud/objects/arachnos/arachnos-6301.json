@@ -1,0 +1,49 @@
+{
+    "version": 1,
+    "id": "arachnos-6301",
+    "spec": {
+        "aliases": [
+            "knife",
+            "thief"
+        ],
+        "short_desc": "a very sharp knife",
+        "long_desc": "A very sharp knife lies here.",
+        "detailed_desc": "A keen knife, very sharp -- you could cut the air in two!",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "8d1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.dex",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 3
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pierce",
+        "cost": 1000,
+        "rent": 2500,
+        "weight": 9,
+        "effects": [
+            "MAGIC",
+            "ANTI_NEUTRAL",
+            "ANTI_MAGIC_USER",
+            "ANTI_CLERIC",
+            "ANTI_WARRIOR"
+        ]
+    }
+}

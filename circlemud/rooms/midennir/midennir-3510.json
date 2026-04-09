@@ -19,5 +19,8 @@
                 "description": "There is an especially dark section of forest this way."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

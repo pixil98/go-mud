@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2512",
+    "spec": {
+        "aliases": [
+            "bar",
+            "adamantite"
+        ],
+        "short_desc": "a bar of adamantite",
+        "long_desc": "A bar of adamantite has been left here.",
+        "detailed_desc": "A bar of adamantite has been left here."
+    },
+    "circlemud_unused": {
+        "cost": 5000,
+        "rent": 1000,
+        "weight": 15
+    }
+}

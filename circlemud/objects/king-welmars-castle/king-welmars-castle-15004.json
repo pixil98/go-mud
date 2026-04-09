@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15004",
+    "spec": {
+        "aliases": [
+            "apple",
+            "golden"
+        ],
+        "short_desc": "a golden apple",
+        "long_desc": "There is a golden apple here.",
+        "detailed_desc": "There is a golden apple here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "light"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 8000,
+        "rent": 400,
+        "weight": 5,
+        "effects": [
+            "MAGIC",
+            "ANTI_EVIL"
+        ]
+    }
+}

@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6118",
+    "spec": {
+        "aliases": [
+            "cloak",
+            "black"
+        ],
+        "short_desc": "a black, hooded cloak",
+        "long_desc": "A large, hooded cloak, as dark as the night, has been left here.",
+        "detailed_desc": "It is a heavy, black cloak with a large hood. The word 'Isha' is written inside it with a silver thread.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "about"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -6
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 8000,
+        "rent": 4000,
+        "weight": 20,
+        "effects": [
+            "MAGIC"
+        ],
+        "type": "WORN",
+        "values": [
+            0,
+            0,
+            0,
+            0
+        ]
+    }
+}

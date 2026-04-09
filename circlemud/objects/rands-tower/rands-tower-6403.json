@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "rands-tower-6403",
+    "spec": {
+        "aliases": [
+            "jade",
+            "jewel"
+        ],
+        "short_desc": "a piece of jade",
+        "long_desc": "A small jewel gleams here.",
+        "detailed_desc": "A small jewel gleams here."
+    },
+    "circlemud_unused": {
+        "cost": 10000,
+        "rent": 1000,
+        "weight": 1
+    }
+}

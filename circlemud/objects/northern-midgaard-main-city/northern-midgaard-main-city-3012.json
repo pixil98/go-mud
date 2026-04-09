@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3012",
+    "spec": {
+        "aliases": [
+            "taco",
+            "mexican"
+        ],
+        "short_desc": "a Mexican taco",
+        "long_desc": "A tasty looking Mexican taco has been dropped here.",
+        "detailed_desc": "A tasty looking Mexican taco has been dropped here."
+    },
+    "circlemud_unused": {
+        "cost": 15,
+        "rent": 15,
+        "weight": 1,
+        "type": "FOOD",
+        "values": [
+            15,
+            0,
+            0,
+            0
+        ]
+    }
+}

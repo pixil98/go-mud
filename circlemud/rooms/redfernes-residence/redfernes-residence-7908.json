@@ -16,6 +16,18 @@
         },
         "flags": [
             "nomob"
+        ],
+        "object_spawns": [
+            {
+                "object_id": "redfernes-residence-7921"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS",
+            "PRIVATE"
         ]
     }
 }

@@ -23,5 +23,8 @@
                 "description": "That would probably be the Coliseum. There are a few good matches scheduled for today."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

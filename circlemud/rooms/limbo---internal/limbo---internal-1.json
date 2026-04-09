@@ -9,5 +9,11 @@
         "mobile_spawns": [
             "limbo---internal-1"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

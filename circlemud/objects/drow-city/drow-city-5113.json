@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "drow-city-5113",
+    "spec": {
+        "aliases": [
+            "dagger",
+            "sacrificial",
+            "spider"
+        ],
+        "short_desc": "a spider shaped dagger",
+        "long_desc": "A dagger with spider leg shaped blades lies on the ground.",
+        "detailed_desc": "A dagger with spider leg shaped blades lies on the ground.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d4"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 3
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 3
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pierce",
+        "cost": 12000,
+        "rent": 15000,
+        "weight": 8,
+        "effects": [
+            "MAGIC",
+            "ANTI_GOOD",
+            "ANTI_MAGIC_USER",
+            "ANTI_CLERIC",
+            "ANTI_WARRIOR"
+        ]
+    }
+}

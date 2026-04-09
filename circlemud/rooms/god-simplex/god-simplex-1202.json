@@ -15,6 +15,18 @@
                 "type": "grant",
                 "key": "nomagic"
             }
+        ],
+        "object_spawns": [
+            {
+                "object_id": "northern-midgaard-main-city-3097"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS",
+            "SOUNDPROOF"
         ]
     }
 }

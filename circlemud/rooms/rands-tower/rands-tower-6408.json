@@ -30,5 +30,11 @@
                 "description": "White sheets, pillow-cases, etc. Not really anything that you need, but interesting."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

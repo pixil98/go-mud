@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "new-thalos-5474",
+    "spec": {
+        "aliases": [
+            "potion",
+            "dark",
+            "blue"
+        ],
+        "short_desc": "a dark blue potion",
+        "long_desc": "A dark blue potion lies here.",
+        "detailed_desc": "This dark blue potion has a small label on it reading 'Restoration'",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 4000,
+        "rent": 15,
+        "weight": 1,
+        "type": "POTION",
+        "values": [
+            10,
+            35,
+            14,
+            -1
+        ]
+    }
+}

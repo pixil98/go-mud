@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "id": "rome-12022",
+    "spec": {
+        "aliases": [
+            "necklace",
+            "crystal",
+            "venus"
+        ],
+        "short_desc": "a crystal necklace",
+        "long_desc": "Someone has left the crystal necklace of knowledge here.",
+        "detailed_desc": "Someone has left the crystal necklace of knowledge here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "neck"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.stats.int",
+                "value": 3
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.wis",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 50000,
+        "rent": 12000,
+        "weight": 35,
+        "effects": [
+            "HUM"
+        ],
+        "type": "WORN",
+        "values": [
+            0,
+            0,
+            0,
+            0
+        ]
+    }
+}

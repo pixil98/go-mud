@@ -23,5 +23,8 @@
                 "description": "It is built from large grey rocks that have been fastened to each other with some kind of mortar. It is far too high to climb."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

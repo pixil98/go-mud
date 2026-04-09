@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15011",
+    "spec": {
+        "aliases": [
+            "chest",
+            "wooden"
+        ],
+        "short_desc": "a large wooden chest",
+        "long_desc": "A large wooden chest stands here in a corner.",
+        "detailed_desc": "It is equipped with a small lock, that any self-respecting thief should be able to pick.",
+        "flags": [
+            "container"
+        ],
+        "closure": {
+            "closed": true,
+            "lock": {
+                "key_id": "king-welmars-castle-15010",
+                "locked": true
+            }
+        }
+    },
+    "circlemud_unused": {
+        "capacity": 800,
+        "cost": 400,
+        "rent": 100,
+        "weight": 450
+    }
+}

@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "id": "new-thalos-5417",
+    "spec": {
+        "aliases": [
+            "suit",
+            "plate",
+            "field"
+        ],
+        "short_desc": "a suit of field plate",
+        "long_desc": "A suit of field plate lies here.",
+        "detailed_desc": "A suit of field plate lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "body"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 9
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 4000,
+        "rent": 1000,
+        "weight": 28,
+        "effects": [
+            "GLOW",
+            "MAGIC",
+            "ANTI_MAGIC_USER",
+            "ANTI_CLERIC",
+            "ANTI_THIEF"
+        ]
+    }
+}

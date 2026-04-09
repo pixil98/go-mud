@@ -18,5 +18,11 @@
         "mobile_spawns": [
             "the-great-pyramid-5304"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

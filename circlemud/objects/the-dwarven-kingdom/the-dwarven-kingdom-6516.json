@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6516",
+    "spec": {
+        "aliases": [
+            "key",
+            "old"
+        ],
+        "short_desc": "an old key",
+        "long_desc": "Someone seems to have dropped an old key.",
+        "detailed_desc": "Someone seems to have dropped an old key.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 1,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

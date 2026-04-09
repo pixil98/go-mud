@@ -14,5 +14,8 @@
                 "zone_id": "the-great-eastern-desert"
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "WATER_NOSWIM"
     }
 }

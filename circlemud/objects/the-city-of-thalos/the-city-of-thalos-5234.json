@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5234",
+    "spec": {
+        "aliases": [
+            "stone",
+            "pink"
+        ],
+        "short_desc": "a pink stone",
+        "long_desc": "A tiny pink stone lies at your feet.",
+        "detailed_desc": "A tiny pink stone lies at your feet.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.stats.con",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 5500,
+        "rent": 600,
+        "weight": 10,
+        "effects": [
+            "NODONATE",
+            "MAGIC"
+        ]
+    }
+}

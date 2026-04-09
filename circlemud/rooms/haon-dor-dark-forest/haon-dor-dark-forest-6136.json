@@ -48,5 +48,11 @@
                 "description": "The dark and dusty trail seems fragile compared to the massive trunks, and in some places, giant grey roots have broken up through its surface."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

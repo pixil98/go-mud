@@ -48,5 +48,11 @@
             "rome-12027",
             "rome-12027"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5217",
+    "spec": {
+        "aliases": [
+            "flute",
+            "silver"
+        ],
+        "short_desc": "a silver flute",
+        "long_desc": "A brilliant silver flute glimmers from beneath a rock.",
+        "detailed_desc": "A brilliant silver flute glimmers from beneath a rock.",
+        "flags": [
+            "wearable",
+            "invisible"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 10500,
+        "rent": 8000,
+        "weight": 3,
+        "effects": [
+            "MAGIC"
+        ],
+        "type": "STAFF",
+        "values": [
+            18,
+            2,
+            2,
+            7
+        ]
+    }
+}

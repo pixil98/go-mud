@@ -84,5 +84,13 @@
                 "object_id": "new-thalos-5414"
             }
         ]
+    },
+    "circlemud_unused": {
+        "gold": 1,
+        "gender": "M",
+        "flags": [
+            "NOCHARM",
+            "NOSUMMON"
+        ]
     }
 }

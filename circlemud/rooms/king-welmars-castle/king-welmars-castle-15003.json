@@ -15,5 +15,8 @@
                 "description": "The King's Road continues in a straight line to the west."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

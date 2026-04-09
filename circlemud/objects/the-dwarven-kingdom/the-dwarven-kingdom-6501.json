@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6501",
+    "spec": {
+        "aliases": [
+            "gold",
+            "treasure",
+            "coins"
+        ],
+        "short_desc": "the Queen's treasure",
+        "long_desc": "A large pile of treasure has been left here, it must be the Queen's.",
+        "detailed_desc": "A large pile of treasure has been left here, it must be the Queen's."
+    },
+    "circlemud_unused": {
+        "cost": 65000,
+        "weight": 20,
+        "type": "MONEY",
+        "values": [
+            65000,
+            0,
+            0,
+            0
+        ]
+    }
+}

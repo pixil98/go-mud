@@ -12,6 +12,37 @@
             "west": {
                 "room_id": "the-city-of-thalos-5232"
             }
-        }
+        },
+        "object_spawns": [
+            {
+                "object_id": "the-city-of-thalos-5227",
+                "contents": [
+                    {
+                        "object_id": "the-city-of-thalos-5201"
+                    },
+                    {
+                        "object_id": "the-city-of-thalos-5202"
+                    },
+                    {
+                        "object_id": "the-city-of-thalos-5203"
+                    },
+                    {
+                        "object_id": "the-city-of-thalos-5204"
+                    },
+                    {
+                        "object_id": "the-city-of-thalos-5205"
+                    },
+                    {
+                        "object_id": "the-city-of-thalos-5206"
+                    }
+                ]
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

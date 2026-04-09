@@ -15,5 +15,8 @@
                 "description": "The forest of Miden'nir spreads out before you."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "MOUNTAIN"
     }
 }

@@ -20,5 +20,8 @@
                 "description": "What more is a plot device than something to block a certain direction for reasons beyond your comprehension."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

@@ -50,5 +50,11 @@
                 "description": "You can just make out the outline of a trapdoor here in the soil. The earth is probably there to conceal a secret entrance. This looks as if it leads down into the seemingly solid rock face of the ledge."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "MOUNTAIN",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

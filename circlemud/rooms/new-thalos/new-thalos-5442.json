@@ -21,5 +21,8 @@
                 "description": "#====================================================# | | | THE DUMP OF NEW THALOS | | | | | | ----- | | | | Enter at your own risk. | | -the management | | | #====================================================#"
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

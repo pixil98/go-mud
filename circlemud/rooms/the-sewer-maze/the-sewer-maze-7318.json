@@ -38,5 +38,11 @@
                 "description": "The sign says 'Gods of War I call you, my sword is by my side, I seek a light free from all false pride' Reyemle Grug..."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

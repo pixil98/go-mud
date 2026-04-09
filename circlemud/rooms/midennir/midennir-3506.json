@@ -19,5 +19,8 @@
                 "description": "The forest gets lighter as you go west."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

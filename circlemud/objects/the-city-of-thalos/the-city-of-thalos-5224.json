@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5224",
+    "spec": {
+        "aliases": [
+            "seal",
+            "ebony"
+        ],
+        "short_desc": "an engraved ebony seal",
+        "long_desc": "A small, engraved ebony seal is here.",
+        "detailed_desc": "A small, engraved ebony seal is here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 2,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

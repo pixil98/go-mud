@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "new-thalos-5432",
+    "spec": {
+        "aliases": [
+            "gloves",
+            "studded",
+            "leather"
+        ],
+        "short_desc": "a pair of studded leather gloves",
+        "long_desc": "A pair of studded leather gloves lie here.",
+        "detailed_desc": "A pair of studded leather gloves lie here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hands"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 500,
+        "rent": 200,
+        "weight": 3
+    }
+}

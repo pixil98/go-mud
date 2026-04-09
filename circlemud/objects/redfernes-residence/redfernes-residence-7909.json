@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7909",
+    "spec": {
+        "aliases": [
+            "ring",
+            "gold",
+            "goldring"
+        ],
+        "short_desc": "a golden ring",
+        "long_desc": "A shiny goldring has been abandoned here.",
+        "detailed_desc": "A shiny goldring has been abandoned here.",
+        "flags": [
+            "wearable",
+            "invisible",
+            "no_sell"
+        ],
+        "wear_slots": [
+            "finger"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.stats.int",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 3500,
+        "rent": 2000,
+        "weight": 20,
+        "effects": [
+            "NODONATE",
+            "ANTI_MAGIC_USER",
+            "ANTI_WARRIOR"
+        ],
+        "type": "WORN",
+        "values": [
+            0,
+            0,
+            0,
+            0
+        ]
+    }
+}

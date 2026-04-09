@@ -27,5 +27,11 @@
                 "description": "You can't see it clearly through the energy field of the pentagram, but you sense that whatever it is, it is very, very, very, very angry."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

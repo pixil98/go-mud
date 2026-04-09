@@ -51,25 +51,14 @@
                 "object_id": "rome-12008"
             },
             {
-                "slot": "wield",
-                "object_id": "northern-midgaard-main-city-3021"
-            },
-            {
-                "slot": "feet",
-                "object_id": "rome-12019"
-            },
-            {
-                "slot": "wield",
-                "object_id": "northern-midgaard-main-city-3021"
-            },
-            {
-                "slot": "feet",
-                "object_id": "rome-12008"
-            },
-            {
                 "slot": "body",
                 "object_id": "rome-12018"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 300,
+        "gold": 1281,
+        "gender": "M"
     }
 }

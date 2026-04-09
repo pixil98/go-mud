@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "rome-12036",
+    "spec": {
+        "aliases": [
+            "key",
+            "pearl"
+        ],
+        "short_desc": "a key with a pearl handle",
+        "long_desc": "A key with a pearl handle is sitting on the ground.",
+        "detailed_desc": "A key with a pearl handle is sitting on the ground."
+    },
+    "circlemud_unused": {
+        "weight": 10,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

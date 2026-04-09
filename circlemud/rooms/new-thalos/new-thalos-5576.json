@@ -28,5 +28,11 @@
                 "description": "You see a the fighting image of some armor clad humanoid wielding a weapon."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

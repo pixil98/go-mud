@@ -6,12 +6,14 @@ The goal is not a perfect 1:1 mapping — just enough to support a sample world 
 ## Import Status
 
 1878 rooms across 29 zones imported into `circlemud/rooms/` and `circlemud/zones/`.
-46 stub key objects in `circlemud/objects/`. Alternate config at `config.circlemud.json`.
+569 mobiles imported into `circlemud/mobiles/`.
+678 objects imported into `circlemud/objects/`.
+Alternate config at `config.circlemud.json`.
 
-**Still needed to make the import playable:**
-- Import mobiles and wire them into room `mobile_spawns`
-- Import objects (weapons, armor, containers, etc.) and wire into room `object_spawns` and mobile `inventory`/`equipment`
-- Zone reset commands (M/O/G/E/P/D) define which mobs/objects load where — these need to be translated into our declarative `MobSpawns`, `ObjSpawns`, `Mobile.Inventory`, and `Mobile.Equipment`
+Zone reset commands (M/O/G/E/P/D) translated into declarative spawns:
+- M commands → `Room.MobSpawns` (723 rooms)
+- O commands → `Room.ObjSpawns` with nested contents from P commands (138 rooms)
+- G/E commands → `Mobile.Inventory` and `Mobile.Equipment` (first-wins per slot to handle mobs placed with different loadouts)
 
 ---
 
@@ -59,103 +61,122 @@ Zone-level concern, not a room property. Deferred until zone reset improvements.
 
 ---
 
-## Mobiles — TODO
+## Mobiles — DONE
 
-### Import
-CircleMUD mob data exists at `_output/mob/` in the parser repo. Need to:
-1. Import mob definitions into `circlemud/mobiles/`
-2. Translate zone reset M commands into `Room.MobSpawns`
-3. Translate zone reset G/E commands into `Mobile.Inventory` and `Mobile.Equipment`
+### Import — done
+569 mobs imported via `tools/import_circlemud_mobs.py`.
+Zone reset M/G/E commands translated into `Room.MobSpawns`, `Mobile.Inventory`, and `Mobile.Equipment`.
+Equipment uses first-wins per slot when the same mob is placed with different gear.
+Unmapped properties (alignment, gold, gender, skipped flags) preserved in `circlemud_unused`.
 
-### Behavior flags (action bitvector)
-These are mob flags (like room flags — properties of the mob, not effects on others).
+### Behavior flags (action bitvector) — done
+Mapped to `Mobile.Flags`:
 
-| CircleMUD Flag | Description | Notes |
+| CircleMUD Flag | Our flag | Status |
 |---|---|---|
-| SENTINEL | Doesn't wander | Need mob wandering system |
-| SCAVENGER | Picks up valuables from the ground | |
-| AWARE | Cannot be backstabbed | |
-| AGGRESSIVE | Attacks all visible players | |
-| STAY_ZONE | Won't wander outside its zone | |
-| WIMPY | Flees at ~20% HP | |
-| AGGR_EVIL/GOOD/NEUTRAL | Attacks aligned players | Needs alignment system |
-| MEMORY | Remembers and retaliates | |
-| HELPER | Assists other mobs in same room | |
+| SENTINEL | `sentinel` | Done |
+| SCAVENGER | `scavenger` | Done |
+| AWARE | `aware` | Done |
+| AGGRESSIVE | `aggressive` | Done |
+| STAY_ZONE | `stay_zone` | Done |
+| WIMPY | `wimpy` | Done |
+| MEMORY | `memory` | Done |
+| HELPER | `helper` | Done |
+| AGGR_EVIL/GOOD/NEUTRAL | — | Deferred (needs alignment system) |
 
-### Affection flags
-These are perks (effects on the mob itself, composable from multiple sources).
+### Affection flags — done
+Mapped to perk grants:
 
-| CircleMUD Flag | Our grant key | Notes |
+| CircleMUD Flag | Our grant key | Status |
 |---|---|---|
-| INVISIBLE | `invisible` | |
-| DETECT_INVIS | `detect_invis` | |
-| SENSE_LIFE | `sense_life` | |
-| WATERWALK | `waterwalk` | |
-| SANCTUARY | modifier `core.defense.all.absorb.pct 50` | |
-| INFRAVISION | `infravision` | Already defined |
-| SNEAK | `sneak` | |
-| HIDE | `hide` | |
-| NOCHARM | `nocharm` | |
-| NOSUMMON | `nosummon` | |
-| NOSLEEP | `nosleep` | |
-| NOBASH | `nobash` | |
-| NOBLIND | `noblind` | |
+| INVISIBLE | `invisible` | Done |
+| DETECT_INVIS | `detect_invis` | Done |
+| SENSE_LIFE | `sense_life` | Done |
+| WATERWALK | `waterwalk` | Done |
+| SANCTUARY | modifier `core.defense.all.absorb.pct 50` | Done |
+| INFRAVISION | `infravision` | Done |
+| SNEAK | `sneak` | Done |
+| HIDE | `hide` | Done |
+| NOCHARM | `nocharm` | Done |
+| NOSUMMON | `nosummon` | Done |
+| NOSLEEP | `nosleep` | Done |
+| NOBASH | `nobash` | Done |
+| NOBLIND | `noblind` | Done |
 
 ### Other mob gaps
 - **BaseStats on mobs** — add `BaseStats map[StatKey]int` to `Mobile`
-- **Gold drops** — deferred until currency system
-- **Alignment** — deferred until alignment system
+- **Gold drops** — deferred until currency system (preserved in `circlemud_unused`)
+- **Alignment** — deferred until alignment system (preserved in `circlemud_unused`)
 - **Attack type flavor** — deferred
 
 ---
 
-## Objects — TODO
+## Objects — DONE
 
-### Import
-CircleMUD object data exists at `_output/obj/` in the parser repo. Need to:
-1. Import object definitions into `circlemud/objects/` (replacing current key stubs)
-2. Map CircleMUD object types to our flags/perks (weapon, armor, container, etc.)
-3. Translate zone reset O/P commands into `Room.ObjSpawns` with nested contents
+### Import — done
+678 objects imported via `tools/import_circlemud_objs.py`.
+Zone reset O/P commands translated into `Room.ObjSpawns` with nested contents.
+Alias-matching extra descriptions promoted to `detailed_desc`; non-overlapping kept as `extra_descs`.
+Unmapped properties (cost, rent, weight, skipped effects) preserved in `circlemud_unused`.
+Containers with locks referencing missing key objects stored as keyless with original key vnum in `circlemud_unused`.
 
-### Object flags
-Extend existing `Flags []string` with new values:
+### Object type mapping — done
 
-| Flag | Description |
-|---|---|
-| `invisible` | Object starts invisible |
-| `no_drop` | Cursed — cannot be dropped |
-| `no_sell` | Shopkeepers will not buy or sell |
+| CircleMUD Type | Our mapping | Status |
+|---|---|---|
+| WEAPON | `attack` grant perk with damage dice | Done |
+| ARMOR | `core.combat.ac.flat` modifier perk | Done |
+| LIGHT | `light` grant perk | Done (finite burn time deferred) |
+| CONTAINER | `container` flag + closure with lock/key | Done |
+| KEY | No special properties | Done |
+| TREASURE/OTHER/TRASH | No special properties | Done |
+| Spell items (SCROLL, WAND, STAFF, POTION) | Type + values in `circlemud_unused` | Deferred until spell system |
+| FOOD/DRINKCON/FOUNTAIN | Type + values in `circlemud_unused` | Deferred until hunger/thirst |
+| BOAT | Type in `circlemud_unused` | Deferred until water traversal |
+
+### Object flags — done
+
+| Flag | Description | Status |
+|---|---|---|
+| `invisible` | Object starts invisible | Done |
+| `no_drop` | Cursed — cannot be dropped | Done |
+| `no_sell` | Shopkeepers will not buy or sell | Done |
+| `wearable` | Derived from wear bitvector slots | Done |
+| `immobile` | No WEAR_TAKE in source data | Done |
+
+### Affect fields — done
+Mapped to modifier perks: STR, DEX, INT, WIS, CON, CHA → `core.stats.*`;
+HIT → `core.resource.hp.max`; AC → `core.combat.ac.flat`;
+HITROLL → `core.combat.attack.flat`; DAMROLL → `core.damage.all.flat`.
 
 ### Other object gaps
-- **Cosmetic aura** — `Aura string` field (GLOW, HUM, BLESS)
-- **Light sources** — `light` grant on equipment (basic version done); finite burn time not yet supported
-- **Boat** — object flag for water traversal
+- **Cosmetic aura** — GLOW, HUM, BLESS preserved in `circlemud_unused` effects
+- **Light sources** — `light` grant done; finite burn time in `circlemud_unused`
+- **Boat** — deferred until water traversal
 - **Spell delivery items** — deferred until spell system
 - **Food/drink** — deferred until hunger/thirst
-- **Item cost** — deferred until currency/shops
-- **Alignment restrictions** — deferred until alignment
-- **Affect fields** — mostly covered by perks; HP max modifier needs a well-known key
+- **Item cost** — deferred until currency/shops (preserved in `circlemud_unused`)
+- **Alignment restrictions** — deferred until alignment (preserved in `circlemud_unused`)
 
 ---
 
-## Zones — partially done
+## Zones — DONE
 
 29 zones imported with name, reset mode, and lifespan.
 
-### Zone reset commands — TODO
-The zone files contain imperative reset commands that define the world state:
+### Zone reset commands — done
 
 | Command | Description | Our equivalent | Status |
 |---|---|---|---|
-| M — load mob to room | `Room.MobSpawns` | Need to translate from zone data |
-| O — load object to room | `Room.ObjSpawns` | Need to translate from zone data |
-| G — give object to mob | `Mobile.Inventory` | Need to translate from zone data |
-| E — equip object on mob | `Mobile.Equipment` | Need to translate from zone data |
-| P — put object in object | `ObjectSpawn.Contents` | Need to translate from zone data |
-| D — set door state | `Exit.Closure` | Already handled by room import |
+| M — load mob to room | `Room.MobSpawns` | Done |
+| O — load object to room | `Room.ObjSpawns` | Done |
+| G — give object to mob | `Mobile.Inventory` | Done |
+| E — equip object on mob | `Mobile.Equipment` | Done |
+| P — put object in object | `ObjectSpawn.Contents` | Done |
+| D — set door state | `Exit.Closure` | Done |
 | R — remove object | Skip | Decaying objects handle this |
 
-### Spawn max-existing limits
+### Spawn max-existing limits — deferred
 Zone reset commands include a `max` field (max live instances when spawning). Our spawn system has no equivalent. Deferred.
 
 ---

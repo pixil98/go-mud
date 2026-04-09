@@ -45,5 +45,13 @@
                 "description": "The floor up ahead looks... strange. You don't think going ahead would be a good idea."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "HILLS",
+        "flags": [
+            "INDOORS",
+            "NOTRACK",
+            "PRIVATE"
+        ]
     }
 }

@@ -49,5 +49,8 @@
                 "description": "Hills rise up all around you, blocking your view of the terrain."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "HILLS"
     }
 }

@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "new-thalos-5495",
+    "spec": {
+        "aliases": [
+            "claw",
+            "wolverine"
+        ],
+        "short_desc": "the wolverine claw",
+        "long_desc": "A claw from some animal lies here.",
+        "detailed_desc": "A claw from some animal lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d6"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": -20
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "claw",
+        "cost": 400,
+        "rent": 50,
+        "weight": 2,
+        "effects": [
+            "HUM",
+            "ANTI_NEUTRAL"
+        ]
+    }
+}

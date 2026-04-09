@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "id": "rome-12031",
+    "spec": {
+        "aliases": [
+            "mace",
+            "executioner"
+        ],
+        "short_desc": "an executioner's mace",
+        "long_desc": "An executioner's mace is lying here.",
+        "detailed_desc": "An executioner's mace is lying here.",
+        "flags": [
+            "wearable",
+            "no_drop"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "5d1"
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.dex",
+                "value": -2
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.str",
+                "value": -2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pound",
+        "cost": 3000,
+        "rent": 18,
+        "weight": 13,
+        "effects": [
+            "ANTI_MAGIC_USER",
+            "ANTI_THIEF"
+        ]
+    }
+}

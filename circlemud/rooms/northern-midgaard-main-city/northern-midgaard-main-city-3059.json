@@ -15,5 +15,8 @@
                 "description": "You see the Temple Altar."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

@@ -22,5 +22,8 @@
                 "description": "Inside the building you see long pieces of metal, an oven, and some anvils."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

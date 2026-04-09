@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15017",
+    "spec": {
+        "aliases": [
+            "key",
+            "cell"
+        ],
+        "short_desc": "the cell key",
+        "long_desc": "A key lies on the floor.",
+        "detailed_desc": "This appears to be the key for the cells of the castle."
+    },
+    "circlemud_unused": {
+        "weight": 3,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

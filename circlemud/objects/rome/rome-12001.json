@@ -1,0 +1,42 @@
+{
+    "version": 1,
+    "id": "rome-12001",
+    "spec": {
+        "aliases": [
+            "belt",
+            "bronze"
+        ],
+        "short_desc": "a bronze belt",
+        "long_desc": "There is a bronze belt on the ground here.",
+        "detailed_desc": "There is a bronze belt on the ground here.",
+        "flags": [
+            "wearable",
+            "invisible"
+        ],
+        "wear_slots": [
+            "waist"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.str",
+                "value": -2
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 10000,
+        "rent": 500,
+        "weight": 5
+    }
+}

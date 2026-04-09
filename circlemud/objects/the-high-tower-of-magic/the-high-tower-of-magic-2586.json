@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2586",
+    "spec": {
+        "aliases": [
+            "collar",
+            "spiked"
+        ],
+        "short_desc": "a spiked collar",
+        "long_desc": "A small spiked collar is here.",
+        "detailed_desc": "A small spiked collar is here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "neck"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -2
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 3
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 10000,
+        "rent": 5000,
+        "weight": 9,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

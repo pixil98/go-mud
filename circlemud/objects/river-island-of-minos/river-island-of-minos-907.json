@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-907",
+    "spec": {
+        "aliases": [
+            "spear",
+            "heavy"
+        ],
+        "short_desc": "a heavy spear",
+        "long_desc": "A heavy spear has been tossed on the ground here.",
+        "detailed_desc": "A heavy spear has been tossed on the ground here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d7"
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pierce",
+        "cost": 450,
+        "rent": 200,
+        "weight": 8
+    }
+}

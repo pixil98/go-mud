@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5324",
+    "spec": {
+        "aliases": [
+            "wand",
+            "sun",
+            "brass",
+            "pipe"
+        ],
+        "short_desc": "a blazing sun wand",
+        "long_desc": "A small length of brass pipe shines here with its own light.",
+        "detailed_desc": "This small brass shaft is a holy weapon used by the ancient people of this land to defend against the deadliest of foes. It shines with the brilliant blazing light of the sun.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 25000,
+        "rent": 1000,
+        "weight": 10,
+        "effects": [
+            "GLOW",
+            "MAGIC",
+            "ANTI_WARRIOR"
+        ],
+        "type": "WAND",
+        "values": [
+            25,
+            5,
+            5,
+            27
+        ]
+    }
+}

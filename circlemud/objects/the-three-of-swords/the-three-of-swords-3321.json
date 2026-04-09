@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3321",
+    "spec": {
+        "aliases": [
+            "shot",
+            "whisky"
+        ],
+        "short_desc": "a shot",
+        "long_desc": "A shot of whisky is sitting here.",
+        "detailed_desc": "A shot of whisky is sitting here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 10,
+        "rent": 5,
+        "weight": 1,
+        "type": "DRINKCON",
+        "values": [
+            1,
+            1,
+            5,
+            0
+        ]
+    }
+}

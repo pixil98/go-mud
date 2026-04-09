@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5321",
+    "spec": {
+        "aliases": [
+            "elixir",
+            "small",
+            "glass"
+        ],
+        "short_desc": "a small elixir",
+        "long_desc": "A small glass elixir lies under your feet.",
+        "detailed_desc": "The elixir is deceptively small. Something tells you that its contents are truly quite potent. Perhaps too potent for ordinary mortals to attempt to consume."
+    },
+    "circlemud_unused": {
+        "cost": 10000,
+        "rent": 500,
+        "weight": 2,
+        "effects": [
+            "MAGIC"
+        ],
+        "type": "POTION",
+        "values": [
+            30,
+            39,
+            1,
+            36
+        ]
+    }
+}

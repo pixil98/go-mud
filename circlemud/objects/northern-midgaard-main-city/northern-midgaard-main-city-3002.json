@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3002",
+    "spec": {
+        "aliases": [
+            "bottle",
+            "dark",
+            "ale"
+        ],
+        "short_desc": "a bottle",
+        "long_desc": "A dark bottle of ale has been left here.",
+        "detailed_desc": "A dark bottle of ale has been left here."
+    },
+    "circlemud_unused": {
+        "cost": 10,
+        "rent": 3,
+        "weight": 10,
+        "type": "DRINKCON",
+        "values": [
+            8,
+            8,
+            3,
+            0
+        ]
+    }
+}

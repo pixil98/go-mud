@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2568",
+    "spec": {
+        "aliases": [
+            "pouch",
+            "belt",
+            "beltpouch"
+        ],
+        "short_desc": "a beltpouch",
+        "long_desc": "A beltpouch is here.",
+        "detailed_desc": "A beltpouch is here.",
+        "flags": [
+            "wearable",
+            "container"
+        ],
+        "wear_slots": [
+            "waist"
+        ]
+    },
+    "circlemud_unused": {
+        "capacity": 50,
+        "cost": 750,
+        "rent": 50,
+        "weight": 5
+    }
+}

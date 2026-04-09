@@ -18,5 +18,8 @@
                 }
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

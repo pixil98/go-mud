@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "rands-tower-6420",
+    "spec": {
+        "aliases": [
+            "food"
+        ],
+        "short_desc": "some food",
+        "long_desc": "There's some food lying here.",
+        "detailed_desc": "There's some food lying here."
+    },
+    "circlemud_unused": {
+        "cost": 20,
+        "rent": 10,
+        "weight": 3,
+        "type": "FOOD",
+        "values": [
+            8,
+            0,
+            0,
+            0
+        ]
+    }
+}

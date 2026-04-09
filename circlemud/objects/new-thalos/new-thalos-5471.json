@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "new-thalos-5471",
+    "spec": {
+        "aliases": [
+            "potion",
+            "green"
+        ],
+        "short_desc": "a deep-green potion",
+        "long_desc": "A deep-green potion lies here.",
+        "detailed_desc": "The potion inside the bottle is a greenish colour and has a small label which reads 'Curative'",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 5000,
+        "rent": 15,
+        "weight": 1,
+        "effects": [
+            "GLOW",
+            "MAGIC"
+        ],
+        "type": "POTION",
+        "values": [
+            10,
+            15,
+            35,
+            -1
+        ]
+    }
+}

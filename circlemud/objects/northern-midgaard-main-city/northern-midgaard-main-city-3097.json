@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3097",
+    "spec": {
+        "aliases": [
+            "board",
+            "frozen",
+            "bulletin"
+        ],
+        "short_desc": "a frozen bulletin board",
+        "long_desc": "A large bulletin board is here, carved from a block of ice.",
+        "detailed_desc": "If you can read this, the board is not working.",
+        "flags": [
+            "immobile"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "freeze",
+                    "bulletin"
+                ],
+                "description": "Use 'look board' to read the board."
+            }
+        ]
+    }
+}

@@ -18,6 +18,46 @@
                 "type": "grant",
                 "key": "dark"
             }
+        ],
+        "object_spawns": [
+            {
+                "object_id": "the-great-eastern-desert-5023",
+                "contents": [
+                    {
+                        "object_id": "the-great-eastern-desert-5025"
+                    },
+                    {
+                        "object_id": "the-great-eastern-desert-5026"
+                    },
+                    {
+                        "object_id": "the-great-eastern-desert-5027"
+                    },
+                    {
+                        "object_id": "the-great-eastern-desert-5028"
+                    },
+                    {
+                        "object_id": "the-great-eastern-desert-5029"
+                    },
+                    {
+                        "object_id": "the-great-eastern-desert-5030"
+                    },
+                    {
+                        "object_id": "the-great-eastern-desert-5031"
+                    },
+                    {
+                        "object_id": "the-great-eastern-desert-5032"
+                    },
+                    {
+                        "object_id": "the-great-eastern-desert-5015"
+                    }
+                ]
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "MOUNTAIN",
+        "flags": [
+            "INDOORS"
         ]
     }
 }

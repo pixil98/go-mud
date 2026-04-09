@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5240",
+    "spec": {
+        "aliases": [
+            "stone",
+            "purple",
+            "vibrant"
+        ],
+        "short_desc": "a vibrant purple stone",
+        "long_desc": "A stunningly vibrant purple stone attracts your attention.",
+        "detailed_desc": "A stunningly vibrant purple stone attracts your attention.",
+        "flags": [
+            "wearable",
+            "no_drop"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": -50
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 10200,
+        "rent": 1000,
+        "weight": 10,
+        "effects": [
+            "NODONATE",
+            "MAGIC"
+        ]
+    }
+}

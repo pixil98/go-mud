@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3013",
+    "spec": {
+        "aliases": [
+            "burrito",
+            "hot"
+        ],
+        "short_desc": "a spicy hot burrito",
+        "long_desc": "A spicy looking burrito has been set here.",
+        "detailed_desc": "A spicy looking burrito has been set here."
+    },
+    "circlemud_unused": {
+        "cost": 10,
+        "rent": 10,
+        "weight": 1,
+        "type": "FOOD",
+        "values": [
+            10,
+            0,
+            0,
+            0
+        ]
+    }
+}

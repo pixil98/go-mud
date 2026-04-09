@@ -47,5 +47,10 @@
                 "object_id": "newbie-zone-18602"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 100,
+        "gold": 700,
+        "gender": "F"
     }
 }

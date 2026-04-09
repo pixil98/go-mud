@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6500",
+    "spec": {
+        "aliases": [
+            "key",
+            "treasury"
+        ],
+        "short_desc": "a treasury key",
+        "long_desc": "There is a key for the treasury lying here.",
+        "detailed_desc": "There is a key for the treasury lying here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 1,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

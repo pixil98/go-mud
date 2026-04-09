@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "rands-tower-6400",
+    "spec": {
+        "aliases": [
+            "dagger",
+            "glowing"
+        ],
+        "short_desc": "a glowing dagger",
+        "long_desc": "A glowing dagger glows here.",
+        "detailed_desc": "A glowing dagger glows here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d4"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 3
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pierce",
+        "cost": 1000,
+        "rent": 300,
+        "weight": 1,
+        "effects": [
+            "GLOW",
+            "MAGIC"
+        ]
+    }
+}

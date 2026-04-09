@@ -24,6 +24,26 @@
             "the-high-tower-of-magic-2552",
             "the-high-tower-of-magic-2552",
             "the-high-tower-of-magic-2552"
+        ],
+        "object_spawns": [
+            {
+                "object_id": "the-high-tower-of-magic-2530",
+                "contents": [
+                    {
+                        "object_id": "the-high-tower-of-magic-2531"
+                    },
+                    {
+                        "object_id": "the-high-tower-of-magic-2532"
+                    }
+                ]
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS",
+            "NOTRACK"
         ]
     }
 }

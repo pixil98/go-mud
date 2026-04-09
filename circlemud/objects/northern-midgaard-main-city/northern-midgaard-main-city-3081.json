@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3081",
+    "spec": {
+        "aliases": [
+            "pants",
+            "leather"
+        ],
+        "short_desc": "a pair of leather pants",
+        "long_desc": "A pair of leather pants is lying on the ground.",
+        "detailed_desc": "A pair of leather pants is lying on the ground.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "legs"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 150,
+        "rent": 10,
+        "weight": 8
+    }
+}

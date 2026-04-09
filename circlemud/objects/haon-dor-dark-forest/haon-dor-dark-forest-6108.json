@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6108",
+    "spec": {
+        "aliases": [
+            "coins",
+            "gold"
+        ],
+        "short_desc": "a big pile of gold coins",
+        "long_desc": "A big pile of gold coins is lying here.",
+        "detailed_desc": "A big pile of gold coins is lying here."
+    },
+    "circlemud_unused": {
+        "cost": 15326,
+        "weight": 15,
+        "type": "MONEY",
+        "values": [
+            15326,
+            0,
+            0,
+            0
+        ]
+    }
+}

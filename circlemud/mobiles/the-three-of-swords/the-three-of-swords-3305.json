@@ -58,5 +58,17 @@
                 "object_id": "the-three-of-swords-3313"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 750,
+        "gold": 500000,
+        "gender": "M",
+        "flags": [
+            "NOCHARM",
+            "NOSUMMON",
+            "NOSLEEP",
+            "NOBASH",
+            "NOBLIND"
+        ]
     }
 }

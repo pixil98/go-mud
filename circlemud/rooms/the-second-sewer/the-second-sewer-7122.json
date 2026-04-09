@@ -29,5 +29,11 @@
             "the-sewer-first-level-7006",
             "the-sewer-first-level-7006"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

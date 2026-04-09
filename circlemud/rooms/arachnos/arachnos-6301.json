@@ -20,5 +20,8 @@
         "mobile_spawns": [
             "arachnos-6301"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

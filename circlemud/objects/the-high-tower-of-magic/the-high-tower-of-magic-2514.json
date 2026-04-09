@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2514",
+    "spec": {
+        "aliases": [
+            "chest"
+        ],
+        "short_desc": "a chest",
+        "long_desc": "A chest is here.",
+        "detailed_desc": "A chest is here.",
+        "flags": [
+            "immobile",
+            "container"
+        ],
+        "closure": {
+            "closed": true
+        }
+    },
+    "circlemud_unused": {
+        "capacity": 5000,
+        "keyless_lock": true,
+        "keyless_lock_missing_key": 1316,
+        "keyless_lock_pickproof": true,
+        "cost": 1000,
+        "rent": 1000,
+        "weight": 1000,
+        "effects": [
+            "GLOW"
+        ]
+    }
+}

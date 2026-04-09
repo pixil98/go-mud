@@ -15,5 +15,11 @@
             "the-city-of-thalos-5201",
             "the-city-of-thalos-5204"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

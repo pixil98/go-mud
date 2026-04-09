@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "rome-12021",
+    "spec": {
+        "aliases": [
+            "loincloth",
+            "red",
+            "mars"
+        ],
+        "short_desc": "a red loincloth",
+        "long_desc": "Mars' red loincloth is resting here.",
+        "detailed_desc": "Mars' red loincloth is resting here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "waist"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 15
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.str",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.dex",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 100000,
+        "rent": 20000,
+        "weight": 30,
+        "effects": [
+            "HUM",
+            "ANTI_EVIL"
+        ]
+    }
+}

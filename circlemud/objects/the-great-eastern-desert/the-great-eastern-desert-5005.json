@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5005",
+    "spec": {
+        "aliases": [
+            "bone",
+            "leg"
+        ],
+        "short_desc": "a large leg bone",
+        "long_desc": "A large leg bone rests on the ground.",
+        "detailed_desc": "A large leg bone rests on the ground.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d4"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pound",
+        "cost": 300,
+        "rent": 60,
+        "weight": 5
+    }
+}

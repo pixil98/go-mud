@@ -13,6 +13,14 @@
         "mobile_spawns": [
             "river-island-of-minos-911",
             "river-island-of-minos-911"
+        ],
+        "object_spawns": [
+            {
+                "object_id": "river-island-of-minos-909"
+            }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

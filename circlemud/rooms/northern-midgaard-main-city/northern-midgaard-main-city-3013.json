@@ -23,5 +23,8 @@
                 "description": "You see the main street."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

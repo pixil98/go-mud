@@ -36,5 +36,11 @@
                 "description": "The writing says 'The one to the east, belongs to the beast. To the west you will surely END your quest!'."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

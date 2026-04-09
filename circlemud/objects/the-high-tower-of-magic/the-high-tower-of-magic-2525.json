@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2525",
+    "spec": {
+        "aliases": [
+            "staff",
+            "red",
+            "white"
+        ],
+        "short_desc": "a red and white staff",
+        "long_desc": "a red and white staff is leaning against the wall here",
+        "detailed_desc": "a red and white staff is leaning against the wall here",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 5500,
+        "rent": 500,
+        "weight": 8,
+        "type": "STAFF",
+        "values": [
+            20,
+            3,
+            3,
+            28
+        ]
+    }
+}

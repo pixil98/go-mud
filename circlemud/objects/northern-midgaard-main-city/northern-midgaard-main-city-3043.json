@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3043",
+    "spec": {
+        "aliases": [
+            "jacket",
+            "soft",
+            "leather"
+        ],
+        "short_desc": "a leather jacket",
+        "long_desc": "A soft leather jacket is lying on the ground.",
+        "detailed_desc": "A soft leather jacket is lying on the ground.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "body"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 200,
+        "rent": 10,
+        "weight": 10
+    }
+}

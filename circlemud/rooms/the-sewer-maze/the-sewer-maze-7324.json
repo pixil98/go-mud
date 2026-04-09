@@ -11,12 +11,7 @@
                 "description": "You see a red dragon's head hanging on the wall.",
                 "closure": {
                     "name": "head",
-                    "closed": true,
-                    "lock": {
-                        "key_id": "limbo---internal-0",
-                        "locked": true,
-                        "pickproof": true
-                    }
+                    "closed": true
                 }
             },
             "east": {
@@ -32,12 +27,7 @@
                 "description": "You see a blue dragon's head hanging on the wall.",
                 "closure": {
                     "name": "head",
-                    "closed": true,
-                    "lock": {
-                        "key_id": "limbo---internal-0",
-                        "locked": true,
-                        "pickproof": true
-                    }
+                    "closed": true
                 }
             },
             "west": {
@@ -77,6 +67,12 @@
                 ],
                 "description": "This looks like a good dragon."
             }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
         ]
     }
 }

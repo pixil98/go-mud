@@ -40,5 +40,11 @@
                 "description": "On this side the coffin lid is smooth featureless stone."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "new-thalos-5492",
+    "spec": {
+        "aliases": [
+            "spear",
+            "gae",
+            "bolg"
+        ],
+        "short_desc": "Gae Bolg",
+        "long_desc": "A beautiful spear is lying on the ground here.",
+        "detailed_desc": "The beautiful, glowing spear is close to eight feet long and has a bright, polished silver blade that tapers at the end into what must be the finest point you have ever seen.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "5d3"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pierce",
+        "cost": 18000,
+        "rent": 12500,
+        "weight": 12,
+        "effects": [
+            "GLOW",
+            "MAGIC",
+            "ANTI_MAGIC_USER",
+            "ANTI_CLERIC",
+            "ANTI_THIEF"
+        ]
+    }
+}

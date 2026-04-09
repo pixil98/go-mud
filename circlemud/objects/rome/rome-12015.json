@@ -1,0 +1,42 @@
+{
+    "version": 1,
+    "id": "rome-12015",
+    "spec": {
+        "aliases": [
+            "sword",
+            "tempered"
+        ],
+        "short_desc": "a tempered sword",
+        "long_desc": "A nasty looking tempered sword is lying here.",
+        "detailed_desc": "A nasty looking tempered sword is lying here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d8"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": -2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 15000,
+        "rent": 5000,
+        "weight": 16,
+        "effects": [
+            "HUM",
+            "ANTI_MAGIC_USER",
+            "ANTI_CLERIC"
+        ]
+    }
+}

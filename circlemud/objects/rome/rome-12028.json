@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "rome-12028",
+    "spec": {
+        "aliases": [
+            "staff",
+            "kodarta"
+        ],
+        "short_desc": "a Kodarta staff",
+        "long_desc": "A Kodarta staff has been carelessly left here.",
+        "detailed_desc": "A Kodarta staff has been carelessly left here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 35000,
+        "rent": 4000,
+        "weight": 6,
+        "type": "STAFF",
+        "values": [
+            17,
+            3,
+            3,
+            15
+        ]
+    }
+}

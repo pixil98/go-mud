@@ -42,5 +42,12 @@
             "stay_zone"
         ],
         "exp_reward": 2000
+    },
+    "circlemud_unused": {
+        "gold": 25,
+        "gender": "N",
+        "flags": [
+            "SPEC"
+        ]
     }
 }

@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6110",
+    "spec": {
+        "aliases": [
+            "potion",
+            "yellow",
+            "musky"
+        ],
+        "short_desc": "a musky yellow potion",
+        "long_desc": "A yellow potion has been left here.",
+        "detailed_desc": "It has a deep yellow color and and a strong spicy smell."
+    },
+    "circlemud_unused": {
+        "cost": 1000,
+        "rent": 200,
+        "weight": 2,
+        "effects": [
+            "MAGIC"
+        ],
+        "type": "POTION",
+        "values": [
+            15,
+            39,
+            -1,
+            -1
+        ]
+    }
+}

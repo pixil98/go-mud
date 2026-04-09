@@ -16,5 +16,11 @@
                 "room_id": "the-three-of-swords-3317"
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

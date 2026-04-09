@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6507",
+    "spec": {
+        "aliases": [
+            "stick",
+            "black",
+            "long"
+        ],
+        "short_desc": "a long, black stick",
+        "long_desc": "There is a long, black stick here.",
+        "detailed_desc": "There is a long, black stick here.",
+        "flags": [
+            "wearable",
+            "no_sell"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 100,
+        "rent": 6000,
+        "weight": 1
+    }
+}

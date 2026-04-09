@@ -45,5 +45,9 @@
             "aggressive"
         ],
         "exp_reward": 18000
+    },
+    "circlemud_unused": {
+        "alignment": -800,
+        "gender": "F"
     }
 }

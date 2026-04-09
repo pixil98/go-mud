@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15006",
+    "spec": {
+        "aliases": [
+            "sword",
+            "training"
+        ],
+        "short_desc": "a training sword",
+        "long_desc": "A training sword with blunt edges is leaned against a wall.",
+        "detailed_desc": "A training sword with blunt edges is leaned against a wall.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d4"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": -2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 300,
+        "rent": 5,
+        "weight": 7
+    }
+}

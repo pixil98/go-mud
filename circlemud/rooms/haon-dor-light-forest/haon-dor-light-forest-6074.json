@@ -42,5 +42,8 @@
         "mobile_spawns": [
             "haon-dor-light-forest-6005"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

@@ -31,5 +31,11 @@
                 "description": "The stalagmites are very tall, and looks very beautiful."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

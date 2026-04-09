@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-905",
+    "spec": {
+        "aliases": [
+            "flail"
+        ],
+        "short_desc": "a flail",
+        "long_desc": "A flail has been carelessly left here.",
+        "detailed_desc": "A flail has been carelessly left here.",
+        "flags": [
+            "wearable",
+            "invisible",
+            "no_drop"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d4"
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pound",
+        "cost": 5000,
+        "rent": 3500,
+        "weight": 8,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

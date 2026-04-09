@@ -1,0 +1,43 @@
+{
+    "version": 1,
+    "id": "rome-12012",
+    "spec": {
+        "aliases": [
+            "ring",
+            "sapphire"
+        ],
+        "short_desc": "a sapphire ring",
+        "long_desc": "A sapphire ring has been left here.",
+        "detailed_desc": "A sapphire ring has been left here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "finger"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 35000,
+        "rent": 5500,
+        "weight": 20,
+        "type": "WORN",
+        "values": [
+            0,
+            0,
+            0,
+            0
+        ]
+    }
+}

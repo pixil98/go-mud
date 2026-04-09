@@ -31,5 +31,8 @@
                 "description": "The trees are fairly young, not much more than a hundred years or so."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

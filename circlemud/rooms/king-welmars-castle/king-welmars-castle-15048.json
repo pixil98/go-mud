@@ -23,5 +23,11 @@
                 "description": "The stairs are made out of granite, and seem solid enough."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

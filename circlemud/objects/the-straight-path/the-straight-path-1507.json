@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1507",
+    "spec": {
+        "aliases": [
+            "ethereal",
+            "flame"
+        ],
+        "short_desc": "an ethereal flame",
+        "long_desc": "The entire room is aglow from the flame at your feet.",
+        "detailed_desc": "Even being near it fills you with a peaceful and comforted feeling.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "light"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 10
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 5,
+        "rent": 2500,
+        "effects": [
+            "GLOW",
+            "ANTI_GOOD",
+            "ANTI_EVIL",
+            "ANTI_THIEF",
+            "ANTI_WARRIOR"
+        ]
+    }
+}

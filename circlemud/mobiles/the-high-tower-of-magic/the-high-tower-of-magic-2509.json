@@ -48,5 +48,9 @@
                 "object_id": "the-high-tower-of-magic-2548"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 100,
+        "gender": "M"
     }
 }

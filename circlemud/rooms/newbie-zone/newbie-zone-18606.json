@@ -39,5 +39,11 @@
             "newbie-zone-18604",
             "newbie-zone-18606"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

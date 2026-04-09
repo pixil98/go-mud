@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "arachnos-6303",
+    "spec": {
+        "aliases": [
+            "headress",
+            "pontiff",
+            "ornament",
+            "cone",
+            "head"
+        ],
+        "short_desc": "a pontiff's headress",
+        "long_desc": "A white cone-shaped head ornament with religious symbols lies here.",
+        "detailed_desc": "A starchy headress worn by powerful secular types.",
+        "flags": [
+            "wearable",
+            "invisible"
+        ],
+        "wear_slots": [
+            "head"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 6
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.wis",
+                "value": 3
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 20000,
+        "rent": 10000,
+        "weight": 5,
+        "effects": [
+            "MAGIC",
+            "ANTI_MAGIC_USER",
+            "ANTI_THIEF",
+            "ANTI_WARRIOR"
+        ]
+    }
+}

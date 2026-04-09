@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5300",
+    "spec": {
+        "aliases": [
+            "mace",
+            "egyptian"
+        ],
+        "short_desc": "an egyptian mace",
+        "long_desc": "A hierogylph-engraved mace has been left here.",
+        "detailed_desc": "The mace is formed from solid brass, and engraved in strange hieroglyphs.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pound",
+        "cost": 800,
+        "rent": 50,
+        "weight": 10
+    }
+}

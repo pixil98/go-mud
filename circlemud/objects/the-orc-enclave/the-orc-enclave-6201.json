@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6201",
+    "spec": {
+        "aliases": [
+            "manacles"
+        ],
+        "short_desc": "a set of manacles",
+        "long_desc": "A set of iron manacles lie here.",
+        "detailed_desc": "They're big steel cuffs, meant to be locked around the hands.",
+        "flags": [
+            "wearable",
+            "no_drop"
+        ],
+        "wear_slots": [
+            "hands"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": -20
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 100,
+        "rent": 20,
+        "weight": 20
+    }
+}

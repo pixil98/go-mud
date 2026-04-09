@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "drow-city-5100",
+    "spec": {
+        "aliases": [
+            "longsword",
+            "commoner"
+        ],
+        "short_desc": "a commoner's longsword",
+        "long_desc": "A commoner's longsword made of adamantite has been left here.",
+        "detailed_desc": "A commoner's longsword made of adamantite has been left here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 1
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 1000,
+        "rent": 500,
+        "weight": 12,
+        "effects": [
+            "ANTI_MAGIC_USER"
+        ]
+    }
+}

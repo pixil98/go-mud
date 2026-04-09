@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2565",
+    "spec": {
+        "aliases": [
+            "belt",
+            "holster"
+        ],
+        "short_desc": "a holstered belt",
+        "long_desc": "A holstered belt is here.",
+        "detailed_desc": "A holstered belt is here.",
+        "flags": [
+            "wearable",
+            "container"
+        ],
+        "wear_slots": [
+            "waist"
+        ]
+    },
+    "circlemud_unused": {
+        "capacity": 20,
+        "cost": 290,
+        "rent": 29,
+        "weight": 4
+    }
+}

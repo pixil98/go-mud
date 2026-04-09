@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6102",
+    "spec": {
+        "aliases": [
+            "tree",
+            "opening"
+        ],
+        "short_desc": "a colossal tree",
+        "long_desc": "A colossal tree blocks the way westward.",
+        "detailed_desc": "This enormous tree must be a thousand years old. Its rough bark looks grey and pale and is decorated with scratches and clawmarks. On its west side is a small opening just above ground level.",
+        "flags": [
+            "immobile",
+            "container"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "opening"
+                ],
+                "description": "The opening is far too narrow for you to squeeze through but it looks as if the tree is hollow."
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "capacity": 1000
+    }
+}

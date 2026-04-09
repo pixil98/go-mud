@@ -32,5 +32,8 @@
                 "description": "You can't see much, but it seems that something beneath the surface is creating them."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

@@ -19,5 +19,8 @@
         "mobile_spawns": [
             "new-thalos-5461"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

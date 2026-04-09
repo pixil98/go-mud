@@ -51,5 +51,10 @@
                 "object_id": "redfernes-residence-7900"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -800,
+        "gold": 2513,
+        "gender": "N"
     }
 }

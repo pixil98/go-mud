@@ -19,5 +19,8 @@
                 "description": "A black square lies to the west."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

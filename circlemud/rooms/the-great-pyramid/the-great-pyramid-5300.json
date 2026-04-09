@@ -34,5 +34,8 @@
                 "description": "The massive pyramid rises out of the sand, a monument to long-dead pharoahs."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

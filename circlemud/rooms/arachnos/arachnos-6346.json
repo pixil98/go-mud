@@ -17,5 +17,8 @@
                 "zone_id": "haon-dor-dark-forest"
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

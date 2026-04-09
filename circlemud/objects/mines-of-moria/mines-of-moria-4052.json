@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4052",
+    "spec": {
+        "aliases": [
+            "mushroom"
+        ],
+        "short_desc": "a mushroom",
+        "long_desc": "A small mushroom is here.",
+        "detailed_desc": "Let's put it this way - I wouldn't eat it!!",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 9,
+        "rent": 3,
+        "weight": 1,
+        "type": "FOOD",
+        "values": [
+            2,
+            0,
+            0,
+            1
+        ]
+    }
+}

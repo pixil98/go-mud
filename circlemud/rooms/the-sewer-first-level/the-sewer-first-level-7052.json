@@ -19,5 +19,11 @@
                 "description": "In the south end of the pipe the \"floor\" is completely covered with water."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

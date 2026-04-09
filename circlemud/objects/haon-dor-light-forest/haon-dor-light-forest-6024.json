@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6024",
+    "spec": {
+        "aliases": [
+            "meat",
+            "deer",
+            "venison"
+        ],
+        "short_desc": "a piece of venison",
+        "long_desc": "A large piece of venison.",
+        "detailed_desc": "A large piece of venison."
+    },
+    "circlemud_unused": {
+        "cost": 80,
+        "rent": 20,
+        "weight": 10,
+        "type": "FOOD",
+        "values": [
+            24,
+            0,
+            0,
+            0
+        ]
+    }
+}

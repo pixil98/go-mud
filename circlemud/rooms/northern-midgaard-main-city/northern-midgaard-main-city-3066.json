@@ -16,5 +16,8 @@
                 "description": "There is a large rusty gate just to the west."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

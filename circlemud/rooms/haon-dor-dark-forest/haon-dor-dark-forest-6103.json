@@ -39,6 +39,17 @@
                 ],
                 "description": "These ancient trees must have been here for many, many years. It is impossible to catch even a glimpse of anything above the lowest branches."
             }
+        ],
+        "object_spawns": [
+            {
+                "object_id": "haon-dor-dark-forest-6102"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST",
+        "flags": [
+            "INDOORS"
         ]
     }
 }

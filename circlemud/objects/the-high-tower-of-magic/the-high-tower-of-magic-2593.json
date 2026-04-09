@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2593",
+    "spec": {
+        "aliases": [
+            "key",
+            "grey",
+            "metal"
+        ],
+        "short_desc": "a grey key",
+        "long_desc": "A key made of a strange grey metal has been left here.",
+        "detailed_desc": "A key made of a strange grey metal has been left here.",
+        "flags": [
+            "wearable",
+            "no_sell"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 2,
+        "effects": [
+            "NORENT",
+            "NODONATE"
+        ]
+    }
+}

@@ -25,6 +25,30 @@
             "southern-part-of-midgaard-3103",
             "southern-part-of-midgaard-3103",
             "southern-part-of-midgaard-3103"
+        ],
+        "object_spawns": [
+            {
+                "object_id": "southern-part-of-midgaard-3109",
+                "contents": [
+                    {
+                        "object_id": "southern-part-of-midgaard-3108"
+                    }
+                ]
+            },
+            {
+                "object_id": "southern-part-of-midgaard-3110",
+                "contents": [
+                    {
+                        "object_id": "southern-part-of-midgaard-3115"
+                    }
+                ]
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
         ]
     }
 }

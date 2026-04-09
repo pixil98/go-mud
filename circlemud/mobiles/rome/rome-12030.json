@@ -67,5 +67,19 @@
                 "object_id": "rome-12020"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 1000,
+        "gold": 250000,
+        "gender": "M",
+        "flags": [
+            "SPEC",
+            "AGGR_EVIL",
+            "NOCHARM",
+            "NOSUMMON",
+            "NOSLEEP",
+            "NOBASH",
+            "NOBLIND"
+        ]
     }
 }

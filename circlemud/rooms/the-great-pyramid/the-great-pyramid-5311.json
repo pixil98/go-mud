@@ -14,5 +14,11 @@
         "mobile_spawns": [
             "the-great-pyramid-5309"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "WATER_NOSWIM",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

@@ -26,5 +26,8 @@
                 "description": "You can faintly see the woods continue beyond it, but it seems there's no way through. The field rises high up into the air, and seems to form a ceiling above the woods, preventing a flying entrance. You'd also bet it extends deep into the ground."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

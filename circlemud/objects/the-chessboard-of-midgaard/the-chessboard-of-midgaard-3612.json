@@ -1,0 +1,43 @@
+{
+    "version": 1,
+    "id": "the-chessboard-of-midgaard-3612",
+    "spec": {
+        "aliases": [
+            "sceptre",
+            "black",
+            "king"
+        ],
+        "short_desc": "the Black King's Sceptre",
+        "long_desc": "The Sceptre of the Black King lies here, collecting dust.",
+        "detailed_desc": "The Sceptre of the Black King lies here, collecting dust.",
+        "flags": [
+            "wearable",
+            "invisible"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.stats.str",
+                "value": 1
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 85000,
+        "rent": 1,
+        "weight": 200,
+        "effects": [
+            "HUM",
+            "MAGIC",
+            "ANTI_GOOD"
+        ]
+    }
+}

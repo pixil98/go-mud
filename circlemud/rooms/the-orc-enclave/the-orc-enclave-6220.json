@@ -13,5 +13,8 @@
                 "room_id": "the-orc-enclave-6221"
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

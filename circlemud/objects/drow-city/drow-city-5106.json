@@ -1,0 +1,48 @@
+{
+    "version": 1,
+    "id": "drow-city-5106",
+    "spec": {
+        "aliases": [
+            "whip",
+            "snake",
+            "fiveheaded"
+        ],
+        "short_desc": "a five-headed snake whip",
+        "long_desc": "A whip with 5 snake heads has been carelessly dropped here.",
+        "detailed_desc": "A whip with 5 snake heads has been carelessly dropped here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d6"
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.str",
+                "value": -2
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.int",
+                "value": -2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 12000,
+        "rent": 4500,
+        "weight": 12,
+        "effects": [
+            "GLOW",
+            "MAGIC",
+            "ANTI_GOOD"
+        ]
+    }
+}

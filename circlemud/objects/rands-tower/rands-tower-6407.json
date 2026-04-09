@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "rands-tower-6407",
+    "spec": {
+        "aliases": [
+            "pole",
+            "tent"
+        ],
+        "short_desc": "a tent pole",
+        "long_desc": "A tent pole has been tossed away here.",
+        "detailed_desc": "A tent pole has been tossed away here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 25000,
+        "rent": 5000,
+        "weight": 10,
+        "effects": [
+            "GLOW",
+            "MAGIC"
+        ],
+        "type": "WAND",
+        "values": [
+            25,
+            5,
+            5,
+            38
+        ]
+    }
+}

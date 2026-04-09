@@ -32,6 +32,17 @@
                 ],
                 "description": "It seems they are stored here temporarily to enable changing of the decoration in the Castle on a regular basis."
             }
+        ],
+        "object_spawns": [
+            {
+                "object_id": "king-welmars-castle-15001"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
         ]
     }
 }

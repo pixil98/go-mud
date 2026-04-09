@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5006",
+    "spec": {
+        "aliases": [
+            "cactus",
+            "cup",
+            "water"
+        ],
+        "short_desc": "a small cactus cup",
+        "long_desc": "A small cactus cup lies on the ground.",
+        "detailed_desc": "A small cactus cup lies on the ground."
+    },
+    "circlemud_unused": {
+        "cost": 30,
+        "rent": 5,
+        "weight": 6,
+        "type": "DRINKCON",
+        "values": [
+            5,
+            5,
+            0,
+            0
+        ]
+    }
+}

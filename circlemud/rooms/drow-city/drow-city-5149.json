@@ -24,6 +24,17 @@
                 "type": "grant",
                 "key": "dark"
             }
+        ],
+        "object_spawns": [
+            {
+                "object_id": "drow-city-5116"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
         ]
     }
 }

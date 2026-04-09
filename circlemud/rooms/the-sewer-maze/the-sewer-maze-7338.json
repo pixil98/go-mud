@@ -30,5 +30,11 @@
                 "description": "It seems to be a small hole, about one foot in diameter."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

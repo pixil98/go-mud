@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "rands-tower-6410",
+    "spec": {
+        "aliases": [
+            "book",
+            "chaos"
+        ],
+        "short_desc": "the Book of Chaos",
+        "long_desc": "A book with a title written in moving letters rests here.",
+        "detailed_desc": "A book with a title written in moving letters rests here.",
+        "flags": [
+            "wearable",
+            "no_drop"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 100000,
+        "rent": 25000,
+        "weight": 25,
+        "effects": [
+            "GLOW",
+            "HUM",
+            "MAGIC"
+        ],
+        "type": "WAND",
+        "values": [
+            20,
+            1,
+            1,
+            26
+        ]
+    }
+}

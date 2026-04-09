@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "id": "rome-12014",
+    "spec": {
+        "aliases": [
+            "robe",
+            "froboz"
+        ],
+        "short_desc": "Froboz' robe",
+        "long_desc": "Froboz' robe has been dropped here.",
+        "detailed_desc": "Froboz' robe has been dropped here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "about"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -6
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 15000,
+        "rent": 2500,
+        "weight": 5,
+        "type": "WORN",
+        "values": [
+            0,
+            0,
+            0,
+            0
+        ]
+    }
+}

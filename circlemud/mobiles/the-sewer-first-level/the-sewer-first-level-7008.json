@@ -46,5 +46,15 @@
             }
         ],
         "exp_reward": 11500
+    },
+    "circlemud_unused": {
+        "alignment": -780,
+        "gold": 500,
+        "gender": "N",
+        "flags": [
+            "NOCHARM",
+            "NOSUMMON",
+            "NOSLEEP"
+        ]
     }
 }

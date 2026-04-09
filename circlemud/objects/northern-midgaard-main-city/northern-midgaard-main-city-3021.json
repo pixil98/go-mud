@@ -1,0 +1,43 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3021",
+    "spec": {
+        "aliases": [
+            "sword",
+            "small"
+        ],
+        "short_desc": "a small sword",
+        "long_desc": "A small sword lies here.",
+        "detailed_desc": "The small sword seems to have an inscription of some sort inscription...",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d6"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "inscription"
+                ],
+                "description": "It says: 'May this sword be a good companion.'"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pierce",
+        "cost": 60,
+        "rent": 10,
+        "weight": 3,
+        "effects": [
+            "ANTI_CLERIC"
+        ]
+    }
+}

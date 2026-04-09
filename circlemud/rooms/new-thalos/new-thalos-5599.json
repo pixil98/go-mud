@@ -32,5 +32,13 @@
             "new-thalos-5472",
             "new-thalos-5472"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS",
+            "SOUNDPROOF",
+            "PRIVATE"
+        ]
     }
 }

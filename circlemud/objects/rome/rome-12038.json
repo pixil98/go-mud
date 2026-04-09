@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "rome-12038",
+    "spec": {
+        "aliases": [
+            "key",
+            "opal"
+        ],
+        "short_desc": "an opal key",
+        "long_desc": "An opal key has been left here.",
+        "detailed_desc": "An opal key has been left here."
+    },
+    "circlemud_unused": {
+        "weight": 20,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

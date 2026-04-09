@@ -15,5 +15,11 @@
                 "description": "You can see nothing but darkness."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

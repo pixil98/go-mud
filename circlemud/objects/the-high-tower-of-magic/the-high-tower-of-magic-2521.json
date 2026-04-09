@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2521",
+    "spec": {
+        "aliases": [
+            "cabinet",
+            "silver"
+        ],
+        "short_desc": "a silver chased cabinet",
+        "long_desc": "A large cabinet with a silver finish is here.",
+        "detailed_desc": "A large cabinet with a silver finish is here.",
+        "flags": [
+            "immobile",
+            "container"
+        ],
+        "closure": {
+            "closed": true,
+            "lock": {
+                "key_id": "the-high-tower-of-magic-2523",
+                "locked": true,
+                "pickproof": true
+            }
+        }
+    },
+    "circlemud_unused": {
+        "capacity": 5000,
+        "cost": 1,
+        "rent": 1,
+        "weight": 10000
+    }
+}

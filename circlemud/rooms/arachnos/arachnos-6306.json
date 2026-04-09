@@ -17,5 +17,8 @@
             "arachnos-6301",
             "arachnos-6301"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

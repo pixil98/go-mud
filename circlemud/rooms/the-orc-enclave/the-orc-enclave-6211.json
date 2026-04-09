@@ -29,5 +29,8 @@
                 "description": "Demi-human, from the size. The foreheads slop down to a blocky brow, and the braincase seems rather small. On a hunch, you check one of the feet of a torched body. Cloven, like a pig's... Orcs."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

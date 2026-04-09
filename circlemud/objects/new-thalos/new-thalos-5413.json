@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "new-thalos-5413",
+    "spec": {
+        "aliases": [
+            "scimitar"
+        ],
+        "short_desc": "a scimitar",
+        "long_desc": "A scimitar lies here.",
+        "detailed_desc": "A scimitar lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d9"
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 1200,
+        "rent": 150,
+        "weight": 10
+    }
+}

@@ -60,5 +60,10 @@
                 "object_id": "northern-midgaard-main-city-3053"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 900,
+        "gold": 5000,
+        "gender": "M"
     }
 }

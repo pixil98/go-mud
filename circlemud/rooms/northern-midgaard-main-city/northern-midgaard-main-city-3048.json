@@ -21,5 +21,11 @@
             "northern-midgaard-main-city-3046",
             "northern-midgaard-main-city-3065"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

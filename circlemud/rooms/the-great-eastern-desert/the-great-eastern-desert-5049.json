@@ -25,6 +25,14 @@
         },
         "mobile_spawns": [
             "the-great-eastern-desert-5015"
+        ],
+        "object_spawns": [
+            {
+                "object_id": "the-great-eastern-desert-5006"
+            }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

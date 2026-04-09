@@ -52,5 +52,14 @@
             "wimpy"
         ],
         "exp_reward": 18000
+    },
+    "circlemud_unused": {
+        "alignment": -1000,
+        "gender": "M",
+        "flags": [
+            "SPEC",
+            "NOCHARM",
+            "NOSUMMON"
+        ]
     }
 }

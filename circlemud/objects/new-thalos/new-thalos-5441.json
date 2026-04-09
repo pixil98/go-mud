@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "new-thalos-5441",
+    "spec": {
+        "aliases": [
+            "bread"
+        ],
+        "short_desc": "some bread",
+        "long_desc": "Some bread lies here.",
+        "detailed_desc": "Some bread lies here."
+    },
+    "circlemud_unused": {
+        "cost": 3,
+        "rent": 10,
+        "weight": 1,
+        "type": "FOOD",
+        "values": [
+            3,
+            0,
+            0,
+            0
+        ]
+    }
+}

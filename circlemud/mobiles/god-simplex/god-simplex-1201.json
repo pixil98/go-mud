@@ -45,5 +45,11 @@
         "flags": [
             "sentinel"
         ]
+    },
+    "circlemud_unused": {
+        "gender": "F",
+        "flags": [
+            "SPEC"
+        ]
     }
 }

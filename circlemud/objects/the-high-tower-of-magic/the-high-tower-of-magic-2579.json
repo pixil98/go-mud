@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2579",
+    "spec": {
+        "aliases": [
+            "bracelet",
+            "onyx"
+        ],
+        "short_desc": "an onyx bracelet",
+        "long_desc": "A hoop of black onyx is here.",
+        "detailed_desc": "A hoop of black onyx is here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wrist"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 8500,
+        "rent": 850,
+        "weight": 6,
+        "effects": [
+            "MAGIC",
+            "ANTI_GOOD",
+            "ANTI_NEUTRAL"
+        ]
+    }
+}

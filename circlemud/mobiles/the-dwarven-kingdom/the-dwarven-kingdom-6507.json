@@ -53,19 +53,12 @@
             {
                 "slot": "wield",
                 "object_id": "the-dwarven-kingdom-6508"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-dwarven-kingdom-6508"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-dwarven-kingdom-6508"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-dwarven-kingdom-6508"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 500,
+        "gold": 600,
+        "gender": "M"
     }
 }

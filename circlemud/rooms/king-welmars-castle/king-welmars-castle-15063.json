@@ -15,5 +15,8 @@
                 "description": "The overgrown trail continues to the northwest."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "HILLS"
     }
 }

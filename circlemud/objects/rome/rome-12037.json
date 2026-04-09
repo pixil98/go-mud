@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "rome-12037",
+    "spec": {
+        "aliases": [
+            "key",
+            "aquamarine"
+        ],
+        "short_desc": "an aquamarine key",
+        "long_desc": "There is an aquamarine colored key here.",
+        "detailed_desc": "There is an aquamarine colored key here."
+    },
+    "circlemud_unused": {
+        "weight": 10,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

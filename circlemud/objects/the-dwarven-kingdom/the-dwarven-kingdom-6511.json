@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6511",
+    "spec": {
+        "aliases": [
+            "ring",
+            "gold",
+            "dwarven"
+        ],
+        "short_desc": "a golden dwarven ring",
+        "long_desc": "A golden dwarven ring is lying here.",
+        "detailed_desc": "A golden dwarven ring is lying here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "finger"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 1
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 10000,
+        "rent": 10000,
+        "weight": 1,
+        "effects": [
+            "MAGIC"
+        ],
+        "type": "WORN",
+        "values": [
+            0,
+            0,
+            0,
+            0
+        ]
+    }
+}

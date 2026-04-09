@@ -19,5 +19,8 @@
                 "room_id": "southern-part-of-midgaard-3116"
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

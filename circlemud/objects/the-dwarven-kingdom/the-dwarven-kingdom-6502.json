@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6502",
+    "spec": {
+        "aliases": [
+            "key",
+            "mine"
+        ],
+        "short_desc": "a mine key",
+        "long_desc": "There is a key to the mines lying here.",
+        "detailed_desc": "There is a key to the mines lying here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 1,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

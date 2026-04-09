@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "rands-tower-6417",
+    "spec": {
+        "aliases": [
+            "chest",
+            "wooden"
+        ],
+        "short_desc": "a wooden chest",
+        "long_desc": "There is a wooden chest here.",
+        "detailed_desc": "There is a wooden chest here.",
+        "flags": [
+            "immobile",
+            "container"
+        ],
+        "closure": {
+            "closed": true
+        }
+    },
+    "circlemud_unused": {
+        "capacity": 500,
+        "keyless_lock": true
+    }
+}

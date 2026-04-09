@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2527",
+    "spec": {
+        "aliases": [
+            "rod",
+            "black"
+        ],
+        "short_desc": "a black rod",
+        "long_desc": "A black rod has been left here.",
+        "detailed_desc": "A black rod has been left here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 1200,
+        "rent": 200,
+        "weight": 4,
+        "type": "WAND",
+        "values": [
+            20,
+            3,
+            3,
+            22
+        ]
+    }
+}

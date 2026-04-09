@@ -14,5 +14,8 @@
                 "room_id": "mines-of-moria-4076"
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "MOUNTAIN"
     }
 }

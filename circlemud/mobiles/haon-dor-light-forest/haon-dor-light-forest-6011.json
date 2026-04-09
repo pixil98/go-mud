@@ -44,5 +44,9 @@
             "sentinel"
         ],
         "exp_reward": 650
+    },
+    "circlemud_unused": {
+        "alignment": 50,
+        "gender": "N"
     }
 }

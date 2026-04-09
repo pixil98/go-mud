@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "new-thalos-5406",
+    "spec": {
+        "aliases": [
+            "corbin",
+            "bec"
+        ],
+        "short_desc": "a bec de corbin",
+        "long_desc": "A bec de corbin lies here.",
+        "detailed_desc": "A bec de corbin lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 5400,
+        "rent": 50,
+        "weight": 3
+    }
+}

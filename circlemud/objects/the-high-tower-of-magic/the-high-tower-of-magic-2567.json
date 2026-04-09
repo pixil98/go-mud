@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2567",
+    "spec": {
+        "aliases": [
+            "chisel",
+            "runed"
+        ],
+        "short_desc": "a runed chisel",
+        "long_desc": "A runed chisel is here.",
+        "detailed_desc": "A runed chisel is here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d3"
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.dex",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pierce",
+        "cost": 1500,
+        "rent": 500,
+        "weight": 6,
+        "effects": [
+            "GLOW",
+            "MAGIC"
+        ]
+    }
+}

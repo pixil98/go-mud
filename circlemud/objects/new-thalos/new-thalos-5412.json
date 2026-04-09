@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "id": "new-thalos-5412",
+    "spec": {
+        "aliases": [
+            "sword",
+            "bastard",
+            "two-handed"
+        ],
+        "short_desc": "a two-handed bastard sword",
+        "long_desc": "A two handed bastard sword lies here.",
+        "detailed_desc": "A two handed bastard sword lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 12580,
+        "rent": 10000,
+        "weight": 18
+    }
+}

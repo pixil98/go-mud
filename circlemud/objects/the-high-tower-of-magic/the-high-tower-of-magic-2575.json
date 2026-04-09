@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2575",
+    "spec": {
+        "aliases": [
+            "cloak",
+            "grey"
+        ],
+        "short_desc": "a long grey cloak",
+        "long_desc": "A pile of grey cloth has been left here.",
+        "detailed_desc": "A pile of grey cloth has been left here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "neck"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -12
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 12000,
+        "rent": 1200,
+        "weight": 7,
+        "effects": [
+            "MAGIC",
+            "ANTI_GOOD",
+            "ANTI_EVIL"
+        ]
+    }
+}

@@ -51,5 +51,11 @@
                 "description": "The sticky substance is hanging like ropes between the ancient trees, crossing the path just out of reach. It might be possible to climb one of the sticky trunks."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

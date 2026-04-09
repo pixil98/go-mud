@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2590",
+    "spec": {
+        "aliases": [
+            "ward",
+            "major",
+            "clear",
+            "crystal"
+        ],
+        "short_desc": "a ward major",
+        "long_desc": "A large clear crystal cube is here.",
+        "detailed_desc": "A large clear crystal cube is here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 20000,
+        "rent": 2000,
+        "weight": 6,
+        "effects": [
+            "GLOW",
+            "MAGIC"
+        ]
+    }
+}

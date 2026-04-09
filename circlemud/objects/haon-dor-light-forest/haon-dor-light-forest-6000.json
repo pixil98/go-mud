@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6000",
+    "spec": {
+        "aliases": [
+            "axe",
+            "lumber"
+        ],
+        "short_desc": "a lumber axe",
+        "long_desc": "A heavy lumber axe lies here.",
+        "detailed_desc": "It is a heavy axe of the kind lumberjacks use to chop down trees.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d3"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 50,
+        "rent": 15,
+        "weight": 12,
+        "effects": [
+            "NODONATE"
+        ]
+    }
+}

@@ -15,5 +15,8 @@
                 "description": "Only rats and fool adventurers play in garbage."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

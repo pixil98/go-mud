@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3303",
+    "spec": {
+        "aliases": [
+            "barrel",
+            "perfume"
+        ],
+        "short_desc": "a barrel of perfume",
+        "long_desc": "You can smell a barrel on the other side of the room from here.",
+        "detailed_desc": "Smells good...the label reads: \"Somewhere between GPA and MUD there lies... OBSESSION\""
+    },
+    "circlemud_unused": {
+        "cost": 100000,
+        "rent": 10000,
+        "weight": 20
+    }
+}

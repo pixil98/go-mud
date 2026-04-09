@@ -16,5 +16,11 @@
                 "room_id": "the-orc-enclave-6246"
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "HILLS",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

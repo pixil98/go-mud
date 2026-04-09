@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2534",
+    "spec": {
+        "aliases": [
+            "spectacles",
+            "glasses"
+        ],
+        "short_desc": "a pair of spectacles",
+        "long_desc": "A pair of wire-rimmed spectacles has been left here.",
+        "detailed_desc": "A pair of wire-rimmed spectacles has been left here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "head"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.stats.int",
+                "value": 1
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.wis",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 10000,
+        "rent": 5000,
+        "weight": 4,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

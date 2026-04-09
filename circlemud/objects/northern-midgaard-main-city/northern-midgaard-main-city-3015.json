@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3015",
+    "spec": {
+        "aliases": [
+            "meat",
+            "chunk"
+        ],
+        "short_desc": "a piece of meat",
+        "long_desc": "A rather dubious looking piece of meat is on the ground here.",
+        "detailed_desc": "It isn't so much that the meat looks poisoned or anything, but that you just are not sure of its origins. You doubt that a hunter would drop a side of venison or rabbit meat... what in the world could this meat have come from, you wonder..."
+    },
+    "circlemud_unused": {
+        "cost": 24,
+        "rent": 10,
+        "weight": 5,
+        "type": "FOOD",
+        "values": [
+            14,
+            0,
+            0,
+            0
+        ]
+    }
+}

@@ -53,5 +53,13 @@
             "aware"
         ],
         "exp_reward": 45
+    },
+    "circlemud_unused": {
+        "alignment": 300,
+        "gender": "N",
+        "flags": [
+            "NOBASH",
+            "NOBLIND"
+        ]
     }
 }

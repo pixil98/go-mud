@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-903",
+    "spec": {
+        "aliases": [
+            "gauntlets",
+            "troll"
+        ],
+        "short_desc": "a pair of troll gauntlets",
+        "long_desc": "A pair of gauntlets made from troll skin lie on the ground.",
+        "detailed_desc": "A pair of gauntlets made from troll skin lie on the ground.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hands"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 2000,
+        "rent": 1350,
+        "weight": 8,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

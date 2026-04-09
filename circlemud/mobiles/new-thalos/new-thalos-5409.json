@@ -41,5 +41,10 @@
             "stay_zone",
             "wimpy"
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -20,
+        "gold": 1,
+        "gender": "M"
     }
 }

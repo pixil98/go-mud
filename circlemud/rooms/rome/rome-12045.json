@@ -36,5 +36,8 @@
             "rome-12017",
             "rome-12019"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

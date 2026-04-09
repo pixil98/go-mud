@@ -27,5 +27,11 @@
                 "description": "It nearly is enough to light the passage."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

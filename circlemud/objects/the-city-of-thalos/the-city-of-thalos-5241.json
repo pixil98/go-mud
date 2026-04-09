@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5241",
+    "spec": {
+        "aliases": [
+            "stone",
+            "pink",
+            "green"
+        ],
+        "short_desc": "a pink and green stone",
+        "long_desc": "A bright pink and green stone has been left here.",
+        "detailed_desc": "A bright pink and green stone has been left here.",
+        "flags": [
+            "wearable",
+            "no_drop"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": -5
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 6600,
+        "rent": 1000,
+        "weight": 10,
+        "effects": [
+            "NODONATE",
+            "MAGIC"
+        ]
+    }
+}

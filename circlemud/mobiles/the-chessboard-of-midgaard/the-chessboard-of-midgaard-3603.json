@@ -50,11 +50,17 @@
             {
                 "slot": "body",
                 "object_id": "the-chessboard-of-midgaard-3605"
-            },
-            {
-                "slot": "body",
-                "object_id": "the-chessboard-of-midgaard-3605"
             }
+        ]
+    },
+    "circlemud_unused": {
+        "alignment": 600,
+        "gold": 5000,
+        "gender": "N",
+        "flags": [
+            "NOSLEEP",
+            "NOBASH",
+            "NOBLIND"
         ]
     }
 }

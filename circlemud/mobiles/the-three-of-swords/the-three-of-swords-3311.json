@@ -46,11 +46,12 @@
             {
                 "slot": "wield",
                 "object_id": "the-three-of-swords-3317"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-three-of-swords-3317"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 500,
+        "gold": 1200,
+        "gender": "M"
     }
 }

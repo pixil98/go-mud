@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5203",
+    "spec": {
+        "aliases": [
+            "sleeves",
+            "iron"
+        ],
+        "short_desc": "a pair of iron sleeves",
+        "long_desc": "A set of iron sleeves lies on the ground.",
+        "detailed_desc": "A set of iron sleeves lies on the ground.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "arms"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 7
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": -4
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 2450,
+        "rent": 500,
+        "weight": 10
+    }
+}

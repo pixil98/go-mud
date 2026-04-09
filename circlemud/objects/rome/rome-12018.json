@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "rome-12018",
+    "spec": {
+        "aliases": [
+            "plate",
+            "breast",
+            "roman",
+            "combat"
+        ],
+        "short_desc": "a Roman combat breast plate",
+        "long_desc": "A piece of military combat plate has been left here.",
+        "detailed_desc": "A piece of military combat plate has been left here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "body"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 8
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.dex",
+                "value": 1
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": -2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 50000,
+        "rent": 9500,
+        "weight": 135,
+        "effects": [
+            "GLOW"
+        ]
+    }
+}

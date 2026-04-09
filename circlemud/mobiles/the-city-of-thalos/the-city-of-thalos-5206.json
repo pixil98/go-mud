@@ -43,5 +43,12 @@
                 "object_id": "the-city-of-thalos-5222"
             }
         ]
+    },
+    "circlemud_unused": {
+        "gender": "N",
+        "flags": [
+            "NOBASH",
+            "NOBLIND"
+        ]
     }
 }

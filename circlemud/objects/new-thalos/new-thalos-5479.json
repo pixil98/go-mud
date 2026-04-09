@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "id": "new-thalos-5479",
+    "spec": {
+        "aliases": [
+            "wand",
+            "grey",
+            "silver"
+        ],
+        "short_desc": "a grey-silver wand",
+        "long_desc": "A grey-silver wand lies here.",
+        "detailed_desc": "You see a small engraved storm cloud at the base of this wand.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 10000,
+        "rent": 15,
+        "weight": 1,
+        "effects": [
+            "MAGIC",
+            "ANTI_CLERIC",
+            "ANTI_THIEF",
+            "ANTI_WARRIOR"
+        ],
+        "type": "WAND",
+        "values": [
+            15,
+            1,
+            1,
+            6
+        ]
+    }
+}

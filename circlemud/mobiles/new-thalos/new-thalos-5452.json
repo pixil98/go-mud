@@ -42,5 +42,10 @@
                 "object_id": "new-thalos-5493"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -100,
+        "gold": 157,
+        "gender": "M"
     }
 }

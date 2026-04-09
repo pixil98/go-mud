@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6508",
+    "spec": {
+        "aliases": [
+            "club",
+            "dwarven"
+        ],
+        "short_desc": "a dwarven club",
+        "long_desc": "There is a dwarven club lying here.",
+        "detailed_desc": "There is a dwarven club lying here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d3"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 3000,
+        "rent": 300,
+        "weight": 12
+    }
+}

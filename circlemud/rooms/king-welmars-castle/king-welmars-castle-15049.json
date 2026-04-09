@@ -39,5 +39,11 @@
                 "description": "The stairs are made of marble, and there are pillars carved in the likenesses of trees with little animals running up and down the trunks."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

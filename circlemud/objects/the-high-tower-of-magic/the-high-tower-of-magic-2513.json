@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2513",
+    "spec": {
+        "aliases": [
+            "hammer",
+            "mithril"
+        ],
+        "short_desc": "a mithril hammer",
+        "long_desc": "a mithril hammer has been left here",
+        "detailed_desc": "a mithril hammer has been left here",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.str",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pound",
+        "cost": 10000,
+        "rent": 1000,
+        "weight": 19,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

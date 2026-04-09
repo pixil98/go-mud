@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2561",
+    "spec": {
+        "aliases": [
+            "white",
+            "milky",
+            "potion"
+        ],
+        "short_desc": "a milky white potion",
+        "long_desc": "A milky white potion is here.",
+        "detailed_desc": "A milky white potion is here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 750,
+        "rent": 50,
+        "weight": 2,
+        "type": "POTION",
+        "values": [
+            14,
+            42,
+            -1,
+            -1
+        ]
+    }
+}

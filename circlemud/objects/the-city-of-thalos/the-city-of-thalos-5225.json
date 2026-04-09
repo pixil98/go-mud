@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5225",
+    "spec": {
+        "aliases": [
+            "desk",
+            "curved"
+        ],
+        "short_desc": "the desk",
+        "flags": [
+            "immobile",
+            "container"
+        ],
+        "closure": {
+            "closed": true,
+            "lock": {
+                "key_id": "the-city-of-thalos-5224",
+                "locked": true
+            }
+        }
+    },
+    "circlemud_unused": {
+        "capacity": 100
+    }
+}

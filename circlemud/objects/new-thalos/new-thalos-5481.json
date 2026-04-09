@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "id": "new-thalos-5481",
+    "spec": {
+        "aliases": [
+            "wand",
+            "oak"
+        ],
+        "short_desc": "an oak wand",
+        "long_desc": "A wand of oak lies here.",
+        "detailed_desc": "A wand of oak lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 500,
+        "rent": 15,
+        "weight": 1,
+        "effects": [
+            "MAGIC"
+        ],
+        "type": "WAND",
+        "values": [
+            5,
+            1,
+            1,
+            32
+        ]
+    }
+}

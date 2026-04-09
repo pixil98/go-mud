@@ -16,5 +16,8 @@
                 "description": "The waters of this swampy pool are flowing slowly towards the south."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "WATER_NOSWIM"
     }
 }

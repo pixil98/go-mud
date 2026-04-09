@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3038",
+    "spec": {
+        "aliases": [
+            "nail"
+        ],
+        "short_desc": "a nail",
+        "long_desc": "A penny nail lies in the dust.",
+        "detailed_desc": "Its a common iron nail, used for carpentry work.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d1"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pierce",
+        "cost": 5,
+        "rent": 1,
+        "weight": 1
+    }
+}

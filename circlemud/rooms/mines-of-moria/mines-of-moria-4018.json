@@ -28,5 +28,11 @@
                 "description": "You had better watch out - some of the bones are human!"
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

@@ -19,6 +19,29 @@
         ],
         "flags": [
             "nomob"
+        ],
+        "object_spawns": [
+            {
+                "object_id": "the-great-pyramid-5318"
+            },
+            {
+                "object_id": "the-great-pyramid-5324"
+            },
+            {
+                "object_id": "the-great-pyramid-5325"
+            },
+            {
+                "object_id": "the-great-pyramid-5326"
+            },
+            {
+                "object_id": "the-great-pyramid-5327"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
         ]
     }
 }

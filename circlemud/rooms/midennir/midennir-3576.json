@@ -14,5 +14,12 @@
         "mobile_spawns": [
             "midennir-3505"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS",
+            "SOUNDPROOF"
+        ]
     }
 }

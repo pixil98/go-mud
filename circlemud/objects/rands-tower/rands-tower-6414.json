@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "rands-tower-6414",
+    "spec": {
+        "aliases": [
+            "bottle",
+            "peska"
+        ],
+        "short_desc": "a bottle of peska",
+        "long_desc": "There is a bottle of a milky fluid here.",
+        "detailed_desc": "It is a milky concoction, with strange motes floating in it."
+    },
+    "circlemud_unused": {
+        "cost": 15000,
+        "rent": 3000,
+        "weight": 12,
+        "type": "POTION",
+        "values": [
+            30,
+            28,
+            3,
+            1
+        ]
+    }
+}

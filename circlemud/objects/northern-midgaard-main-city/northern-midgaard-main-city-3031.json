@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3031",
+    "spec": {
+        "aliases": [
+            "lantern",
+            "brass"
+        ],
+        "short_desc": "a lantern",
+        "long_desc": "A brass lantern is here.",
+        "detailed_desc": "A brass lantern is here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "body",
+            "head",
+            "legs",
+            "arms",
+            "shield",
+            "about",
+            "waist",
+            "wrist",
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "light"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "burn_time_hours": 96,
+        "cost": 50,
+        "rent": 10,
+        "weight": 1
+    }
+}

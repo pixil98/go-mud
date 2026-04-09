@@ -54,5 +54,14 @@
             "sentinel",
             "memory"
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 1000,
+        "gold": 1,
+        "gender": "M",
+        "flags": [
+            "NOCHARM",
+            "NOSUMMON"
+        ]
     }
 }

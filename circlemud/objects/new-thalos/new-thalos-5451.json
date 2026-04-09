@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "new-thalos-5451",
+    "spec": {
+        "aliases": [
+            "robe",
+            "common"
+        ],
+        "short_desc": "a common robe",
+        "long_desc": "A nicely made robe of common cloth lies here.",
+        "detailed_desc": "A nicely made robe of common cloth lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "neck"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 90,
+        "rent": 20,
+        "weight": 2
+    }
+}

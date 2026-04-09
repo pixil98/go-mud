@@ -5,5 +5,6 @@
         "name": "Redferne's Residence",
         "reset_mode": "lifespan",
         "lifespan": "50m"
-    }
+    },
+    "creators": "Redferne of DikuMud, modified by Cyron of VieMud"
 }

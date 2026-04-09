@@ -15,5 +15,8 @@
                 "description": "You see the alley."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "rome-12007",
+    "spec": {
+        "aliases": [
+            "orange"
+        ],
+        "short_desc": "an orange",
+        "long_desc": "A sun-ripened orange has been left here.",
+        "detailed_desc": "A sun-ripened orange has been left here."
+    },
+    "circlemud_unused": {
+        "cost": 6,
+        "rent": 6,
+        "weight": 1,
+        "type": "FOOD",
+        "values": [
+            6,
+            0,
+            0,
+            0
+        ]
+    }
+}

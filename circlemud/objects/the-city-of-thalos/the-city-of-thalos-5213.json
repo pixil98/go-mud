@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5213",
+    "spec": {
+        "aliases": [
+            "staff",
+            "serpentine"
+        ],
+        "short_desc": "a green serpentine staff",
+        "long_desc": "A green serpentine staff has been left here.",
+        "detailed_desc": "A green serpentine staff has been left here.",
+        "flags": [
+            "wearable",
+            "invisible"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 6600,
+        "rent": 300,
+        "weight": 12,
+        "effects": [
+            "MAGIC"
+        ],
+        "type": "STAFF",
+        "values": [
+            15,
+            2,
+            2,
+            23
+        ]
+    }
+}

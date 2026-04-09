@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2551",
+    "spec": {
+        "aliases": [
+            "scroll",
+            "bound"
+        ],
+        "short_desc": "a bound scroll",
+        "long_desc": "A bound scroll is here blowing in the breeze.",
+        "detailed_desc": "A bound scroll is here blowing in the breeze.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -6
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 9500,
+        "rent": 3000,
+        "weight": 3,
+        "effects": [
+            "MAGIC"
+        ],
+        "type": "SCROLL",
+        "values": [
+            16,
+            1,
+            2,
+            34
+        ]
+    }
+}

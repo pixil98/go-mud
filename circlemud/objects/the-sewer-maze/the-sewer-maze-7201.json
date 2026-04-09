@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7201",
+    "spec": {
+        "aliases": [
+            "mace",
+            "large"
+        ],
+        "short_desc": "the large mace",
+        "long_desc": "A large mace lies here.",
+        "detailed_desc": "The mace is pretty large with a weight of 10 lbs. The head is actually four purple tentacles tied together.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d6"
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pound",
+        "cost": 1000,
+        "rent": 400,
+        "weight": 10,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

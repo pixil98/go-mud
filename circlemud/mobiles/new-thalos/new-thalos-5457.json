@@ -55,5 +55,12 @@
             "memory"
         ],
         "exp_reward": 500
+    },
+    "circlemud_unused": {
+        "gender": "M",
+        "flags": [
+            "NOCHARM",
+            "NOSUMMON"
+        ]
     }
 }

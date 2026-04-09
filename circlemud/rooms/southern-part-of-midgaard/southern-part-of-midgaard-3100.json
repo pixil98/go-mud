@@ -20,5 +20,8 @@
                 "description": "The promenade continues far south."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

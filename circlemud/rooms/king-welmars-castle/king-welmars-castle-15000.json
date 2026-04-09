@@ -31,5 +31,8 @@
                 "description": "The traveller smiles cheerfully and calls 'hello' when you greet him, but continues on his way. The traveller is in excellent condition."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

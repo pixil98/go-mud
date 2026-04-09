@@ -32,5 +32,11 @@
         "flags": [
             "nomob"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "HILLS",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

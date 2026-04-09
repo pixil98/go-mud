@@ -27,5 +27,11 @@
         "mobile_spawns": [
             "the-sewer-first-level-7006"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "MOUNTAIN",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

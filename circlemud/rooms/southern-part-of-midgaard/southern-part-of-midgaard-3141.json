@@ -9,6 +9,17 @@
             "south": {
                 "room_id": "southern-part-of-midgaard-3140"
             }
-        }
+        },
+        "object_spawns": [
+            {
+                "object_id": "southern-part-of-midgaard-3113"
+            },
+            {
+                "object_id": "southern-part-of-midgaard-3114"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

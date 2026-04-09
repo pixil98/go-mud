@@ -25,5 +25,8 @@
                 "description": "A few boot prints lead way in the dust here. There is definitely traffic here, but this area is not what you would call well-travelled."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "HILLS"
     }
 }

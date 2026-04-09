@@ -39,31 +39,10 @@
         "inventory": [
             {
                 "object_id": "haon-dor-light-forest-6023"
-            },
-            {
-                "object_id": "haon-dor-light-forest-6023"
-            },
-            {
-                "object_id": "haon-dor-light-forest-6023"
-            },
-            {
-                "object_id": "haon-dor-light-forest-6023"
-            },
-            {
-                "object_id": "haon-dor-light-forest-6023"
-            },
-            {
-                "object_id": "haon-dor-light-forest-6023"
-            },
-            {
-                "object_id": "haon-dor-light-forest-6023"
-            },
-            {
-                "object_id": "haon-dor-light-forest-6023"
-            },
-            {
-                "object_id": "haon-dor-light-forest-6023"
             }
         ]
+    },
+    "circlemud_unused": {
+        "gender": "N"
     }
 }

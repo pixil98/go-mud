@@ -19,5 +19,11 @@
                 "description": "You hear clanging of pots, and smell cooking meat."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

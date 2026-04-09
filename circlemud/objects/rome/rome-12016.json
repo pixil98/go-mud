@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "id": "rome-12016",
+    "spec": {
+        "aliases": [
+            "sword",
+            "quenched"
+        ],
+        "short_desc": "a quenched sword",
+        "long_desc": "A very bloody, but quenched, sword has been left here.",
+        "detailed_desc": "A very bloody, but quenched, sword has been left here.",
+        "flags": [
+            "wearable",
+            "invisible"
+        ],
+        "wear_slots": [
+            "wield",
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d5"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 10000,
+        "rent": 4000,
+        "weight": 14,
+        "effects": [
+            "ANTI_MAGIC_USER",
+            "ANTI_CLERIC"
+        ]
+    }
+}

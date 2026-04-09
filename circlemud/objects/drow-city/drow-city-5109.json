@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "drow-city-5109",
+    "spec": {
+        "aliases": [
+            "gauntlets"
+        ],
+        "short_desc": "a pair of gauntlets",
+        "long_desc": "A pair of gauntlets is lying on the ground.",
+        "detailed_desc": "A pair of gauntlets is lying on the ground.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hands"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.stats.str",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 10000,
+        "rent": 3000,
+        "weight": 2,
+        "effects": [
+            "GLOW"
+        ],
+        "type": "WORN",
+        "values": [
+            0,
+            0,
+            0,
+            0
+        ]
+    }
+}

@@ -15,5 +15,8 @@
                 "description": "The trail continues."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6001",
+    "spec": {
+        "aliases": [
+            "shirt",
+            "chequered"
+        ],
+        "short_desc": "a chequered shirt",
+        "long_desc": "A chequered shirt lies here.",
+        "detailed_desc": "It is an extra large, chequered shirt made from heavy cloth.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "body"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 20,
+        "rent": 8,
+        "weight": 2,
+        "effects": [
+            "NODONATE"
+        ]
+    }
+}

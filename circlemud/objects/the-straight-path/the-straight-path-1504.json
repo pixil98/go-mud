@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1504",
+    "spec": {
+        "aliases": [
+            "armband",
+            "band",
+            "faded"
+        ],
+        "short_desc": "a faded armband",
+        "long_desc": "A ragged and faded looking piece of cloth has been left here, forgotten.",
+        "detailed_desc": "It has some sort of militia insignia on it, perhaps an indication of a rank or award in some military order unknown to you.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "arms"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.stats.cha",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.con",
+                "value": -1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 15,
+        "rent": 50,
+        "effects": [
+            "ANTI_GOOD"
+        ]
+    }
+}

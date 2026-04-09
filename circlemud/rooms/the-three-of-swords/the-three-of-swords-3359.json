@@ -13,5 +13,8 @@
                 "room_id": "the-three-of-swords-3360"
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "MOUNTAIN"
     }
 }

@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "new-thalos-5427",
+    "spec": {
+        "aliases": [
+            "gloves",
+            "leather"
+        ],
+        "short_desc": "a pair of leather gloves",
+        "long_desc": "A pair of leather gloves lies here.",
+        "detailed_desc": "A pair of leather gloves lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hands"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 150,
+        "rent": 200,
+        "weight": 2
+    }
+}

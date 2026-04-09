@@ -44,5 +44,11 @@
         "mobile_spawns": [
             "haon-dor-light-forest-6002"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

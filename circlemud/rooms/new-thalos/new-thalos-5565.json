@@ -25,5 +25,11 @@
                 "description": "Engraved on the plaque are the following words: The Holy Shrine of Allah"
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

@@ -39,5 +39,11 @@
         "mobile_spawns": [
             "southern-part-of-midgaard-3104"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

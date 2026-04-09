@@ -25,5 +25,11 @@
                 "description": "The small hole in the floor refuses to give up its secrets about what can be found below."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

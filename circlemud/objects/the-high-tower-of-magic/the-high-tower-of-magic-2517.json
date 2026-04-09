@@ -1,0 +1,42 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2517",
+    "spec": {
+        "aliases": [
+            "dagger",
+            "silver"
+        ],
+        "short_desc": "a silver dagger",
+        "long_desc": "A finely crafted dagger made of silver is on the ground here.",
+        "detailed_desc": "A finely crafted dagger made of silver is on the ground here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d3"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pierce",
+        "cost": 15000,
+        "rent": 1200,
+        "weight": 5
+    }
+}

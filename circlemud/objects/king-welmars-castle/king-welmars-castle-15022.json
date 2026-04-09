@@ -1,0 +1,16 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15022",
+    "spec": {
+        "aliases": [
+            "wail",
+            "sound"
+        ],
+        "short_desc": "the wailing sound from the east",
+        "long_desc": "There is an eerie wailing sound coming from the house to the east.",
+        "detailed_desc": "There is an eerie wailing sound coming from the house to the east.",
+        "flags": [
+            "immobile"
+        ]
+    }
+}

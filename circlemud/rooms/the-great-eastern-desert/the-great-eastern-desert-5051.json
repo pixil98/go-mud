@@ -19,5 +19,8 @@
                 "description": "Sand as far as the eye can see."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

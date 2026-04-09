@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3313",
+    "spec": {
+        "aliases": [
+            "sword",
+            "short"
+        ],
+        "short_desc": "a short sword",
+        "long_desc": "A short sword lies here... a work of art!",
+        "detailed_desc": "It brings tears to your eyes. This must have been Gabadiel the smith's masterpiece; his final work. Simply invaluble.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield",
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d6"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 4
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.dex",
+                "value": 3
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 10000000,
+        "rent": 30000,
+        "weight": 10,
+        "effects": [
+            "GLOW",
+            "NODONATE",
+            "BLESS",
+            "ANTI_MAGIC_USER",
+            "ANTI_CLERIC"
+        ]
+    }
+}

@@ -1,0 +1,49 @@
+{
+    "version": 1,
+    "id": "arachnos-6304",
+    "spec": {
+        "aliases": [
+            "visor",
+            "black",
+            "knight"
+        ],
+        "short_desc": "a black knight's visor",
+        "long_desc": "A black visor sits here.",
+        "detailed_desc": "A visor that protects the head, good for warriors.",
+        "flags": [
+            "wearable",
+            "invisible"
+        ],
+        "wear_slots": [
+            "head"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 8
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.str",
+                "value": 1
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.con",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 20000,
+        "rent": 10000,
+        "weight": 5,
+        "effects": [
+            "MAGIC",
+            "ANTI_MAGIC_USER",
+            "ANTI_CLERIC",
+            "ANTI_THIEF"
+        ]
+    }
+}

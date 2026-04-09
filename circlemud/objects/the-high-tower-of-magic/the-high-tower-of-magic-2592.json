@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2592",
+    "spec": {
+        "aliases": [
+            "green",
+            "scale",
+            "shirt"
+        ],
+        "short_desc": "a tight fitting green dragon scale shirt",
+        "long_desc": "Some green dragon scales which have been sewn together are here.",
+        "detailed_desc": "this Green dragon scale shirt was made from a poor unfortunate green dragon.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "body"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 10
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.dex",
+                "value": 3
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -5
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 10000,
+        "rent": 1000,
+        "weight": 9,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

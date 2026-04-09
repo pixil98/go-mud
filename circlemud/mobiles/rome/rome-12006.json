@@ -41,25 +41,14 @@
                 "object_id": "northern-midgaard-main-city-3022"
             },
             {
-                "slot": "wield",
-                "object_id": "northern-midgaard-main-city-3022"
-            },
-            {
-                "slot": "wield",
-                "object_id": "northern-midgaard-main-city-3022"
-            },
-            {
-                "slot": "wield",
-                "object_id": "northern-midgaard-main-city-3022"
-            },
-            {
-                "slot": "wield",
-                "object_id": "northern-midgaard-main-city-3022"
-            },
-            {
                 "slot": "head",
                 "object_id": "rome-12002"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -250,
+        "gold": 700,
+        "gender": "M"
     }
 }

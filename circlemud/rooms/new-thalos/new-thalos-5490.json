@@ -27,5 +27,11 @@
                 "description": "A huge boulder stands here. In its center someone has carved out a perfect round hole."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

@@ -50,5 +50,9 @@
                 "object_id": "rome-12011"
             }
         ]
+    },
+    "circlemud_unused": {
+        "gold": 1000,
+        "gender": "M"
     }
 }

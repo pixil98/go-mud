@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6101",
+    "spec": {
+        "aliases": [
+            "sign"
+        ],
+        "short_desc": "a sign",
+        "long_desc": "An old, battered sign lies on the ground.",
+        "detailed_desc": "Only some of the letters are legible :- _ _________| |_________ / | | \\ / CAR.AX | | M.STY \\ \\ M..SI.N | | SW..P / \\_________| |_________/ | |"
+    },
+    "circlemud_unused": {
+        "cost": 2,
+        "rent": 2,
+        "weight": 10
+    }
+}

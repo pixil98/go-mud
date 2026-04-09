@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3076",
+    "spec": {
+        "aliases": [
+            "cap",
+            "leather"
+        ],
+        "short_desc": "a leather cap",
+        "long_desc": "A leather cap is lying on the ground.",
+        "detailed_desc": "A leather cap is lying on the ground.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "head"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 150,
+        "rent": 10,
+        "weight": 3
+    }
+}

@@ -54,5 +54,11 @@
                 "description": "It looks as if it is made of stainless steel, and it would function as a club of considerable power, but alas... You can't take at all since it is firmly set into the concrete wall."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

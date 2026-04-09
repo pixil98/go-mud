@@ -15,5 +15,11 @@
                 "description": "The mighty clay road leads off in this direction."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

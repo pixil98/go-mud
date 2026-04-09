@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15003",
+    "spec": {
+        "aliases": [
+            "crown",
+            "golden"
+        ],
+        "short_desc": "a golden crown",
+        "long_desc": "A magnificently jewelled golden crown has been left here.",
+        "detailed_desc": "A magnificently jewelled golden crown has been left here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "head"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 7
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.int",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 12000,
+        "rent": 10000,
+        "weight": 40,
+        "effects": [
+            "MAGIC",
+            "ANTI_EVIL"
+        ]
+    }
+}

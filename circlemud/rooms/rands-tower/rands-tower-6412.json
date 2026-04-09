@@ -40,5 +40,11 @@
         "mobile_spawns": [
             "rands-tower-6402"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

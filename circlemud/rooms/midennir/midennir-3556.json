@@ -22,5 +22,8 @@
             "midennir-3502",
             "midennir-3503"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

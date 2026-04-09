@@ -11,11 +11,7 @@
                 "description": "These double doors have the outline of a man blasted into them...",
                 "closure": {
                     "name": "double",
-                    "closed": true,
-                    "lock": {
-                        "key_id": "limbo---internal-0",
-                        "locked": true
-                    }
+                    "closed": true
                 }
             }
         },
@@ -24,6 +20,17 @@
                 "type": "grant",
                 "key": "dark"
             }
+        ],
+        "object_spawns": [
+            {
+                "object_id": "rands-tower-6415"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
         ]
     }
 }

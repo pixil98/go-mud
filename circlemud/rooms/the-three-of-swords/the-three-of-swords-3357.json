@@ -19,5 +19,11 @@
             "the-three-of-swords-3318",
             "the-three-of-swords-3319"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

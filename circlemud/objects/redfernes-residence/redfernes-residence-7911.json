@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7911",
+    "spec": {
+        "aliases": [
+            "helmet",
+            "large"
+        ],
+        "short_desc": "a large helmet",
+        "long_desc": "There is a large helmet on the floor.",
+        "detailed_desc": "This looks like some heavy protection, for the head of course.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "head"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 7
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 4500,
+        "rent": 1500,
+        "weight": 5,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

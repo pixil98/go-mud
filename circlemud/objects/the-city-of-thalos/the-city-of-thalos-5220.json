@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5220",
+    "spec": {
+        "aliases": [
+            "fountain",
+            "blood",
+            "cracked"
+        ],
+        "short_desc": "a large cracked fountain",
+        "detailed_desc": "A pool of blood lies in the bottom of the fountain.",
+        "flags": [
+            "immobile"
+        ]
+    },
+    "circlemud_unused": {
+        "type": "FOUNTAIN",
+        "values": [
+            10,
+            10,
+            13,
+            1
+        ]
+    }
+}

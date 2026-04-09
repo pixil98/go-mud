@@ -68,5 +68,16 @@
                 "object_id": "the-city-of-thalos-5223"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -870,
+        "gold": 28560,
+        "gender": "N",
+        "flags": [
+            "SPEC",
+            "NOCHARM",
+            "NOSUMMON",
+            "NOBASH"
+        ]
     }
 }

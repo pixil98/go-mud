@@ -48,5 +48,9 @@
                 "object_id": "midennir-3508"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 500,
+        "gender": "M"
     }
 }

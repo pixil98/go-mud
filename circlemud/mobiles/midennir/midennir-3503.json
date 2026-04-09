@@ -58,5 +58,13 @@
                 "object_id": "midennir-3504"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -900,
+        "gold": 1000,
+        "gender": "M",
+        "flags": [
+            "AGGR_GOOD"
+        ]
     }
 }

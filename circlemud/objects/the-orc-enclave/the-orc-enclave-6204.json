@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6204",
+    "spec": {
+        "aliases": [
+            "club"
+        ],
+        "short_desc": "a club",
+        "long_desc": "A crude wooden club sits here.",
+        "detailed_desc": "It is a big, wooden club.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d2"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pound",
+        "cost": 10,
+        "rent": 2,
+        "weight": 12
+    }
+}

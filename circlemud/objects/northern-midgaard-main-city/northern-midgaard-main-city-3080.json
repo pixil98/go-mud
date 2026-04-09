@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3080",
+    "spec": {
+        "aliases": [
+            "leggings",
+            "bronze"
+        ],
+        "short_desc": "a pair of bronze leggings",
+        "long_desc": "A pair of bronze leggings is lying on the ground.",
+        "detailed_desc": "A pair of bronze leggings is lying on the ground.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "legs"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 6
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 3500,
+        "rent": 100,
+        "weight": 8
+    }
+}

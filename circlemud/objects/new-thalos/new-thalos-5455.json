@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "new-thalos-5455",
+    "spec": {
+        "aliases": [
+            "jacket",
+            "silk"
+        ],
+        "short_desc": "a silk jacket",
+        "long_desc": "A nicely made silk jacket lies here.",
+        "detailed_desc": "A nicely made silk jacket lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "about"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 3800,
+        "rent": 100,
+        "weight": 1
+    }
+}

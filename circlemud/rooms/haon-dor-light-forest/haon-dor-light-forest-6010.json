@@ -42,6 +42,36 @@
                 ],
                 "description": "On the table is carved : /) /) Danny and Mari, Oct 31, 1991 ( o o ) = x = m m ***(========-"
             }
+        ],
+        "object_spawns": [
+            {
+                "object_id": "haon-dor-light-forest-6003",
+                "contents": [
+                    {
+                        "object_id": "haon-dor-light-forest-6006"
+                    }
+                ]
+            },
+            {
+                "object_id": "haon-dor-light-forest-6004"
+            },
+            {
+                "object_id": "haon-dor-light-forest-6005",
+                "contents": [
+                    {
+                        "object_id": "haon-dor-light-forest-6007"
+                    }
+                ]
+            },
+            {
+                "object_id": "haon-dor-light-forest-6013"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
         ]
     }
 }

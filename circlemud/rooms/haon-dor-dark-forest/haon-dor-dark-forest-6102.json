@@ -44,5 +44,11 @@
                 "description": "These ancient trees must have been here for many, many years. It is impossible to catch even a glimpse of anything above the lowest branches."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

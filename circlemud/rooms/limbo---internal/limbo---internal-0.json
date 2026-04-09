@@ -12,5 +12,11 @@
                 "description": "The Temple of Midgaard floats above you."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

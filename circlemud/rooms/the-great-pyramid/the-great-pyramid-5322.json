@@ -48,5 +48,11 @@
                 "description": "You are now certain that the wind is the cold breath of some unearthly giant animal, whose voice rumbles lowly on the breeze, and whose massive jaws could easily swallow you whole. You move closer for a better look, when suddenly a pair of eyes flashes. A cold voice echoes: 'SEEK YE THE DIAMOND... IN THE ROUGH...' ... Then all is silent."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

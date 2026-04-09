@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5317",
+    "spec": {
+        "aliases": [
+            "parchment",
+            "answer"
+        ],
+        "short_desc": "the answer",
+        "long_desc": "A small piece of parchment covered in hieroglyphics lies here.",
+        "detailed_desc": "You cannot decipher the strange hieroglyphics that cover the sheet of parchment.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 1,
+        "rent": 1,
+        "weight": 1,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

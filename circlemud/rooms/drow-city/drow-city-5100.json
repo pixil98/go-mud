@@ -37,5 +37,11 @@
                 "description": "A large adamantite gate with giant spider shaped emblems stands here."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

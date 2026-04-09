@@ -59,5 +59,13 @@
             "aggressive"
         ],
         "exp_reward": 10000
+    },
+    "circlemud_unused": {
+        "gender": "N",
+        "flags": [
+            "NOCHARM",
+            "NOSLEEP",
+            "NOBLIND"
+        ]
     }
 }

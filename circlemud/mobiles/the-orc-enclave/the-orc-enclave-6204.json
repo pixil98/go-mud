@@ -54,5 +54,10 @@
                 "object_id": "the-orc-enclave-6204"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -600,
+        "gold": 17,
+        "gender": "M"
     }
 }

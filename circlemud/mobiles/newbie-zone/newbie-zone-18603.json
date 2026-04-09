@@ -44,5 +44,9 @@
                 "object_id": "newbie-zone-18607"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 100,
+        "gender": "M"
     }
 }

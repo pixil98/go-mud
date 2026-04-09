@@ -23,5 +23,11 @@
                 "description": "The shadow looks like a man in great pain."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

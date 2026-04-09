@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "new-thalos-5422",
+    "spec": {
+        "aliases": [
+            "buckler",
+            "shield"
+        ],
+        "short_desc": "a buckler",
+        "long_desc": "A buckler lies here.",
+        "detailed_desc": "A buckler lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "shield"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 30,
+        "rent": 7,
+        "weight": 6
+    }
+}

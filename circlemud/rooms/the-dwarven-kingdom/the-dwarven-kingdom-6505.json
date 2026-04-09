@@ -25,6 +25,14 @@
         "mobile_spawns": [
             "the-dwarven-kingdom-6500",
             "the-dwarven-kingdom-6500"
+        ],
+        "object_spawns": [
+            {
+                "object_id": "the-dwarven-kingdom-6507"
+            }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

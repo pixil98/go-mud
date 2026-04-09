@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5024",
+    "spec": {
+        "aliases": [
+            "key",
+            "golden"
+        ],
+        "short_desc": "a golden key",
+        "long_desc": "A shiny golden key lies here.",
+        "detailed_desc": "A shiny golden key lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 150,
+        "weight": 1,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3114",
+    "spec": {
+        "aliases": [
+            "coins",
+            "gold"
+        ],
+        "short_desc": "a small pile of gold coins",
+        "long_desc": "A small pile of gold coins lies here.",
+        "detailed_desc": "A small pile of gold coins lies here."
+    },
+    "circlemud_unused": {
+        "type": "MONEY",
+        "values": [
+            37,
+            0,
+            0,
+            0
+        ]
+    }
+}

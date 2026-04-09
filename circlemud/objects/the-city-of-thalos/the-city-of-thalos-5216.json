@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5216",
+    "spec": {
+        "aliases": [
+            "scroll",
+            "bound"
+        ],
+        "short_desc": "a bound scroll",
+        "long_desc": "A bound scroll of detection lies at your feet.",
+        "detailed_desc": "A bound scroll of detection lies at your feet."
+    },
+    "circlemud_unused": {
+        "cost": 4200,
+        "rent": 100,
+        "weight": 15,
+        "effects": [
+            "MAGIC"
+        ],
+        "type": "SCROLL",
+        "values": [
+            15,
+            18,
+            19,
+            20
+        ]
+    }
+}

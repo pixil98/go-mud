@@ -58,5 +58,8 @@
         "mobile_spawns": [
             "northern-midgaard-main-city-3067"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

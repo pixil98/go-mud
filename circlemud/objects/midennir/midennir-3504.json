@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "midennir-3504",
+    "spec": {
+        "aliases": [
+            "spear",
+            "small"
+        ],
+        "short_desc": "a small spear",
+        "long_desc": "A small spear lies here.",
+        "detailed_desc": "A small spear lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "5d1"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pierce",
+        "cost": 500,
+        "rent": 120,
+        "weight": 15,
+        "effects": [
+            "ANTI_MAGIC_USER"
+        ]
+    }
+}

@@ -31,5 +31,8 @@
                 "description": "The sign reads: The Woodsman"
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

@@ -48,23 +48,15 @@
             {
                 "slot": "wield",
                 "object_id": "northern-midgaard-main-city-3022"
-            },
-            {
-                "slot": "wield",
-                "object_id": "northern-midgaard-main-city-3022"
-            },
-            {
-                "slot": "wield",
-                "object_id": "northern-midgaard-main-city-3022"
-            },
-            {
-                "slot": "wield",
-                "object_id": "northern-midgaard-main-city-3022"
-            },
-            {
-                "slot": "wield",
-                "object_id": "northern-midgaard-main-city-3022"
             }
+        ]
+    },
+    "circlemud_unused": {
+        "alignment": 1000,
+        "gold": 500,
+        "gender": "M",
+        "flags": [
+            "SPEC"
         ]
     }
 }

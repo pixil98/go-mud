@@ -42,5 +42,8 @@
                 "description": "The crowns of the old trees almost cut out all light."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

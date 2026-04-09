@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6510",
+    "spec": {
+        "aliases": [
+            "helmet",
+            "dwarven"
+        ],
+        "short_desc": "a dwarven helmet",
+        "long_desc": "A dwarven helmet is here.",
+        "detailed_desc": "A dwarven helmet is here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "head"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 2500,
+        "rent": 500,
+        "weight": 4
+    }
+}

@@ -25,5 +25,11 @@
                 "description": "The bones have whitened and cracked in the dry air, apparently the remains of adventurers, thieves, and creatures that did not survive the fall."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

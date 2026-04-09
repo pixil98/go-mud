@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3306",
+    "spec": {
+        "aliases": [
+            "potion",
+            "protection",
+            "dun",
+            "vial"
+        ],
+        "short_desc": "a potion of protection",
+        "long_desc": "A vial of a dun fluid is here.",
+        "detailed_desc": "Looks thick, and brownish-grey (dun). Ick!"
+    },
+    "circlemud_unused": {
+        "cost": 10000,
+        "rent": 2000,
+        "weight": 1,
+        "effects": [
+            "GLOW"
+        ],
+        "type": "POTION",
+        "values": [
+            20,
+            36,
+            1,
+            3
+        ]
+    }
+}

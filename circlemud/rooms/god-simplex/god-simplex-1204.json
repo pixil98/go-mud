@@ -31,6 +31,17 @@
                 "zone_id": "northern-midgaard-main-city",
                 "description": "You see the hustle and bustle of the Temple of Midgaard at the bottom of the stairs."
             }
-        }
+        },
+        "object_spawns": [
+            {
+                "object_id": "northern-midgaard-main-city-3098"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

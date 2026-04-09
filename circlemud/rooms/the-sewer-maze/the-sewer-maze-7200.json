@@ -37,6 +37,20 @@
                 ],
                 "description": "You read the number '666'."
             }
+        ],
+        "object_spawns": [
+            {
+                "object_id": "the-sewer-maze-7204"
+            },
+            {
+                "object_id": "the-sewer-maze-7210"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
         ]
     }
 }

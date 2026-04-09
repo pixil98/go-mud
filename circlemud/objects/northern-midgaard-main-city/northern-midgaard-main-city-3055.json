@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3055",
+    "spec": {
+        "aliases": [
+            "staff",
+            "metal"
+        ],
+        "short_desc": "a metal staff",
+        "long_desc": "A metal staff has carelessly been left here.",
+        "detailed_desc": "The staff is made of metals unknown to you.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 8500,
+        "rent": 300,
+        "weight": 7,
+        "effects": [
+            "MAGIC"
+        ],
+        "type": "STAFF",
+        "values": [
+            10,
+            8,
+            8,
+            15
+        ]
+    }
+}

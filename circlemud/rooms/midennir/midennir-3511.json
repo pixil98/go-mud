@@ -15,5 +15,8 @@
                 "description": "To the south, the path re-enters the forest."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

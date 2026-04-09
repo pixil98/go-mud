@@ -32,5 +32,11 @@
                 "description": "They are orcish, and you could swear they were all warning symbols."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "HILLS",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

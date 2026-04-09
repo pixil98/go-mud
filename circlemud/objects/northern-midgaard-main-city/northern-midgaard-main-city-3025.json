@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3025",
+    "spec": {
+        "aliases": [
+            "flail",
+            "large"
+        ],
+        "short_desc": "a flail",
+        "long_desc": "A large flail is here.",
+        "detailed_desc": "A large flail is here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pound",
+        "cost": 625,
+        "rent": 10,
+        "weight": 6
+    }
+}

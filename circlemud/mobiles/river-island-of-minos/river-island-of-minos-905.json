@@ -67,5 +67,10 @@
                 "object_id": "river-island-of-minos-905"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -300,
+        "gold": 1000,
+        "gender": "M"
     }
 }

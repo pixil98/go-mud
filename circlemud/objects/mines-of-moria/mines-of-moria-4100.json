@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4100",
+    "spec": {
+        "aliases": [
+            "blade",
+            "black",
+            "demon"
+        ],
+        "short_desc": "a black demon blade",
+        "long_desc": "A black demon blade is here.",
+        "detailed_desc": "You'll become as evil as the weapon, if you use it as you sense the forces of evil controlling the weapon...",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d4"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pierce",
+        "cost": 10000,
+        "rent": 800,
+        "weight": 8,
+        "effects": [
+            "ANTI_MAGIC_USER",
+            "ANTI_GOOD",
+            "ANTI_NEUTRAL"
+        ]
+    }
+}

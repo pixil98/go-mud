@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "rome-12008",
+    "spec": {
+        "aliases": [
+            "sandals",
+            "leather"
+        ],
+        "short_desc": "a pair of leather sandals",
+        "long_desc": "A pair of leather sandals has been dropped here.",
+        "detailed_desc": "A pair of leather sandals has been dropped here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "feet"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 250,
+        "rent": 41,
+        "weight": 2
+    }
+}

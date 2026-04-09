@@ -28,5 +28,8 @@
                 "description": "The three sets of tracks split up here, one west, one east, one south."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "MOUNTAIN"
     }
 }

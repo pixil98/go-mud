@@ -34,5 +34,11 @@
                 "description": "You have never seen this kind of footprint before!"
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

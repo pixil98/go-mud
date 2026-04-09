@@ -98,5 +98,15 @@
                 "object_id": "northern-midgaard-main-city-3022"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 900,
+        "gold": 28500,
+        "gender": "M",
+        "flags": [
+            "SPEC",
+            "NOCHARM",
+            "NOSUMMON"
+        ]
     }
 }

@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3116",
+    "spec": {
+        "aliases": [
+            "candlestick",
+            "candle",
+            "stick",
+            "pewter"
+        ],
+        "short_desc": "a candlestick",
+        "long_desc": "A pewter candlestick is standing here.",
+        "detailed_desc": "It is a rather old-looking three-armed candlestick made from pewter. Its candles are a yellowish white color.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "light"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "burn_time_hours": 24,
+        "cost": 150,
+        "rent": 10,
+        "weight": 5
+    }
+}

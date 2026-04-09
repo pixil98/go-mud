@@ -23,5 +23,11 @@
                 "description": "You can see small and very cramped cells which are filthy. You shiver and vow to never do anything that would cause you to become a resident."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

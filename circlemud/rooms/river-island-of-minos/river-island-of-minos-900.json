@@ -14,5 +14,8 @@
                 "room_id": "river-island-of-minos-901"
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "WATER_NOSWIM"
     }
 }

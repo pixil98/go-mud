@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7205",
+    "spec": {
+        "aliases": [
+            "key",
+            "black"
+        ],
+        "short_desc": "a black key",
+        "long_desc": "A black key has been left on the floor.",
+        "detailed_desc": "This little key is made from a black metal of unknown origin.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 2,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

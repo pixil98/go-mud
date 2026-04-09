@@ -43,5 +43,11 @@
                 "description": "Beginner? This book goes beyond most of what YOU know about magic anyway. But then, there are levels of magical knowledge, it seems."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

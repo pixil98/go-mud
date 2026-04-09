@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "rome-12003",
+    "spec": {
+        "aliases": [
+            "whistle",
+            "coach"
+        ],
+        "short_desc": "a coach's whistle",
+        "long_desc": "A coach's whistle has been left here.",
+        "detailed_desc": "A coach's whistle has been left here.",
+        "flags": [
+            "wearable",
+            "no_drop"
+        ],
+        "wear_slots": [
+            "neck"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 1000,
+        "rent": 200,
+        "weight": 1
+    }
+}

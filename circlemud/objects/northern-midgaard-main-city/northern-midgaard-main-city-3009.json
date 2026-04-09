@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3009",
+    "spec": {
+        "aliases": [
+            "waybread",
+            "bread"
+        ],
+        "short_desc": "a waybread",
+        "long_desc": "Some waybread has been put here.",
+        "detailed_desc": "The waybread is the traditional feed of elves when travelling, they call it lembas. It is said to refresh the weary traveler greatly."
+    },
+    "circlemud_unused": {
+        "cost": 50,
+        "rent": 50,
+        "weight": 1,
+        "type": "FOOD",
+        "values": [
+            24,
+            0,
+            0,
+            0
+        ]
+    }
+}

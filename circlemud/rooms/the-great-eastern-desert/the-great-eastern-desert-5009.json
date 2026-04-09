@@ -25,5 +25,11 @@
         "mobile_spawns": [
             "the-great-eastern-desert-5011"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "MOUNTAIN",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

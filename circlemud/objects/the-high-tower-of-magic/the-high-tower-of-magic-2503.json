@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2503",
+    "spec": {
+        "aliases": [
+            "rack",
+            "spice"
+        ],
+        "short_desc": "a spice rack",
+        "flags": [
+            "container"
+        ]
+    },
+    "circlemud_unused": {
+        "capacity": 50,
+        "cost": 1500,
+        "rent": 500,
+        "weight": 10
+    }
+}

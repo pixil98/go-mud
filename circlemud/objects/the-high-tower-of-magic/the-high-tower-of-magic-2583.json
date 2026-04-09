@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2583",
+    "spec": {
+        "aliases": [
+            "bracelet",
+            "white",
+            "gold"
+        ],
+        "short_desc": "a white gold bracelet",
+        "long_desc": "A hoop of silvery metal is here.",
+        "detailed_desc": "A hoop of silvery metal is here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wrist"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 5000,
+        "rent": 1000,
+        "weight": 5,
+        "effects": [
+            "MAGIC",
+            "ANTI_EVIL",
+            "ANTI_NEUTRAL"
+        ]
+    }
+}

@@ -61,11 +61,18 @@
             {
                 "slot": "wield",
                 "object_id": "the-great-pyramid-5308"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-great-pyramid-5308"
             }
+        ]
+    },
+    "circlemud_unused": {
+        "gold": 35000,
+        "gender": "F",
+        "flags": [
+            "NOCHARM",
+            "NOSUMMON",
+            "NOSLEEP",
+            "NOBASH",
+            "NOBLIND"
         ]
     }
 }

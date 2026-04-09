@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-906",
+    "spec": {
+        "aliases": [
+            "coins",
+            "gold",
+            "treasure"
+        ],
+        "short_desc": "a great pile of treasure",
+        "long_desc": "A great, gleaming pile of treasure lies at your feet.",
+        "detailed_desc": "A great, gleaming pile of treasure lies at your feet."
+    },
+    "circlemud_unused": {
+        "cost": 43500,
+        "weight": 20,
+        "type": "MONEY",
+        "values": [
+            43500,
+            0,
+            0,
+            0
+        ]
+    }
+}

@@ -5,5 +5,6 @@
         "name": "New Thalos",
         "reset_mode": "lifespan",
         "lifespan": "20m"
-    }
+    },
+    "creators": "Duke of SillyMUD"
 }

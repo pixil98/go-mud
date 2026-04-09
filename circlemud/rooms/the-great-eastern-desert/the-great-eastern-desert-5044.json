@@ -23,6 +23,14 @@
                 "zone_id": "the-city-of-thalos",
                 "description": "Sand as far as the eye can see."
             }
-        }
+        },
+        "object_spawns": [
+            {
+                "object_id": "the-great-eastern-desert-5006"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4051",
+    "spec": {
+        "aliases": [
+            "helmet",
+            "metal"
+        ],
+        "short_desc": "a metal helmet",
+        "long_desc": "A metal helmet in here.",
+        "detailed_desc": "It looks somehow magical!.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "head"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -5
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 3000,
+        "rent": 100,
+        "weight": 4,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

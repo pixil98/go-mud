@@ -45,16 +45,15 @@
         "inventory": [
             {
                 "object_id": "northern-midgaard-main-city-3015"
-            },
-            {
-                "object_id": "northern-midgaard-main-city-3015"
-            },
-            {
-                "object_id": "northern-midgaard-main-city-3015"
-            },
-            {
-                "object_id": "northern-midgaard-main-city-3015"
             }
+        ]
+    },
+    "circlemud_unused": {
+        "alignment": -200,
+        "gender": "M",
+        "flags": [
+            "SPEC",
+            "NOBASH"
         ]
     }
 }

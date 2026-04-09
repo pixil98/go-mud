@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3307",
+    "spec": {
+        "aliases": [
+            "crown"
+        ],
+        "short_desc": "a dragon's crown",
+        "long_desc": "Aglandiir's crown sits here, radiating a shield.",
+        "detailed_desc": "The shield repulses you, making you wonder how you're going to get your hands on this huge, valuble chunk of gold...",
+        "flags": [
+            "immobile"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 400,
+        "effects": [
+            "GLOW"
+        ]
+    }
+}

@@ -22,5 +22,11 @@
             "southern-part-of-midgaard-3100",
             "southern-part-of-midgaard-3101"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

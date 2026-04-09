@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "id": "the-chessboard-of-midgaard-3605",
+    "spec": {
+        "aliases": [
+            "armour",
+            "white",
+            "rook"
+        ],
+        "short_desc": "some White Rook Armour",
+        "long_desc": "Some armour made from the remains of a white rook lies heaped on the floor.",
+        "detailed_desc": "Some armour made from the remains of a white rook lies heaped on the floor.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "body"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.con",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 17000,
+        "rent": 5,
+        "weight": 60,
+        "effects": [
+            "GLOW",
+            "MAGIC",
+            "ANTI_EVIL"
+        ]
+    }
+}

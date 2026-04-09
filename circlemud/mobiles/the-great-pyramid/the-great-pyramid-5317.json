@@ -69,9 +69,6 @@
             },
             {
                 "object_id": "the-great-pyramid-5321"
-            },
-            {
-                "object_id": "the-great-pyramid-5321"
             }
         ],
         "equipment": [
@@ -79,6 +76,18 @@
                 "slot": "head",
                 "object_id": "the-great-pyramid-5322"
             }
+        ]
+    },
+    "circlemud_unused": {
+        "alignment": 150,
+        "gold": 88000,
+        "gender": "M",
+        "flags": [
+            "SPEC",
+            "NOCHARM",
+            "NOSUMMON",
+            "NOSLEEP",
+            "NOBLIND"
         ]
     }
 }

@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2510",
+    "spec": {
+        "aliases": [
+            "bar",
+            "gold"
+        ],
+        "short_desc": "a bar of gold",
+        "long_desc": "A bar of gold has been left here.",
+        "detailed_desc": "A bar of gold has been left here."
+    },
+    "circlemud_unused": {
+        "cost": 2000,
+        "rent": 750,
+        "weight": 11
+    }
+}

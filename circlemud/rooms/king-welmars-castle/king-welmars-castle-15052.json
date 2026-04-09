@@ -27,6 +27,17 @@
         ],
         "mobile_spawns": [
             "king-welmars-castle-15019"
+        ],
+        "object_spawns": [
+            {
+                "object_id": "king-welmars-castle-15005"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
         ]
     }
 }

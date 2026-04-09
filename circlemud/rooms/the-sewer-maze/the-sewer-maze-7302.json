@@ -18,5 +18,11 @@
                 "room_id": "the-sewer-maze-7321"
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

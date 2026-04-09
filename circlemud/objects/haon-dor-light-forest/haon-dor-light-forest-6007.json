@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6007",
+    "spec": {
+        "aliases": [
+            "coins",
+            "gold"
+        ],
+        "short_desc": "a heap of gold coins",
+        "long_desc": "Some gold coins lie piled up in a heap on the floor.",
+        "detailed_desc": "The coins seem to be gold. They are obviously valuable."
+    },
+    "circlemud_unused": {
+        "cost": 127,
+        "weight": 1,
+        "type": "MONEY",
+        "values": [
+            127,
+            0,
+            0,
+            0
+        ]
+    }
+}

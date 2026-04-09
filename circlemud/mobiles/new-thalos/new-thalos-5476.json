@@ -63,5 +63,14 @@
             "memory"
         ],
         "exp_reward": 2400
+    },
+    "circlemud_unused": {
+        "alignment": 300,
+        "gender": "N",
+        "flags": [
+            "NOCHARM",
+            "NOSUMMON",
+            "NOBASH"
+        ]
     }
 }

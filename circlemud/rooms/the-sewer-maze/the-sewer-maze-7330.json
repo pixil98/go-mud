@@ -28,5 +28,11 @@
                 "description": "The breeze comes from a hole above you. NO way to get up there."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

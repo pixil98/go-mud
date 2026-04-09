@@ -41,6 +41,20 @@
                 ],
                 "description": "Looks like normal, fragile lab equipment to you."
             }
+        ],
+        "object_spawns": [
+            {
+                "object_id": "rands-tower-6413"
+            },
+            {
+                "object_id": "rands-tower-6414"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
         ]
     }
 }

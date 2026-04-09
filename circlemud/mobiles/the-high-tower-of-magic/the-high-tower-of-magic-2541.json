@@ -57,5 +57,13 @@
                 "object_id": "the-high-tower-of-magic-2567"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 300,
+        "gold": 2678,
+        "gender": "M",
+        "flags": [
+            "SPEC"
+        ]
     }
 }

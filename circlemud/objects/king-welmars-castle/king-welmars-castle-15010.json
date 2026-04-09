@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15010",
+    "spec": {
+        "aliases": [
+            "key",
+            "small"
+        ],
+        "short_desc": "a small key",
+        "long_desc": "A small key lies here.",
+        "detailed_desc": "A small key lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "rent": 100,
+        "weight": 1,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

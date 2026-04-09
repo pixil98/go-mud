@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "rome-12010",
+    "spec": {
+        "aliases": [
+            "hotdog",
+            "frank",
+            "dog"
+        ],
+        "short_desc": "a hotdog",
+        "long_desc": "A hotdog loaded with chili and onions has been left here.",
+        "detailed_desc": "A hotdog loaded with chili and onions has been left here."
+    },
+    "circlemud_unused": {
+        "cost": 11,
+        "rent": 11,
+        "weight": 1,
+        "type": "FOOD",
+        "values": [
+            8,
+            0,
+            0,
+            0
+        ]
+    }
+}

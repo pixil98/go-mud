@@ -41,5 +41,13 @@
             "stay_zone"
         ],
         "exp_reward": 3575
+    },
+    "circlemud_unused": {
+        "alignment": -700,
+        "gender": "N",
+        "flags": [
+            "AGGR_GOOD",
+            "NOBASH"
+        ]
     }
 }

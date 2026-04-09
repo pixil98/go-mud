@@ -30,5 +30,11 @@
                 "description": "This is a statue of a imp, pointing to the west. The imp looks like a man with horns and a tail."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

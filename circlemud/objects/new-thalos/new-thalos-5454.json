@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5454",
+    "spec": {
+        "aliases": [
+            "sash"
+        ],
+        "short_desc": "a sash",
+        "long_desc": "A nicely made sash lies here.",
+        "detailed_desc": "A nicely made sash lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "waist"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 20,
+        "rent": 10,
+        "weight": 1
+    }
+}

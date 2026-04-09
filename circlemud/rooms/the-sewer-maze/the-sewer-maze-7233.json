@@ -25,5 +25,11 @@
             "the-sewer-maze-7203",
             "the-sewer-maze-7203"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

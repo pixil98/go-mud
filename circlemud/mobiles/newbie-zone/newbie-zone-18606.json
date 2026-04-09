@@ -38,5 +38,9 @@
             "stay_zone"
         ],
         "exp_reward": 100
+    },
+    "circlemud_unused": {
+        "alignment": -250,
+        "gender": "N"
     }
 }

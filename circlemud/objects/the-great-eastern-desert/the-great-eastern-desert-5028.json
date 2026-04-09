@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5028",
+    "spec": {
+        "aliases": [
+            "sapphire",
+            "gem"
+        ],
+        "short_desc": "a brilliant sapphire",
+        "long_desc": "A brilliant sapphire lies here, twinkling happily.",
+        "detailed_desc": "A brilliant sapphire lies here, twinkling happily.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 3500,
+        "rent": 200,
+        "weight": 7,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

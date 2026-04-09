@@ -26,5 +26,11 @@
                 "description": "It looks like a adventurer who wasn't lucky. You'd better watch out..."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

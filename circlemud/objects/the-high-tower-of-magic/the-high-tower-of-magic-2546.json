@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2546",
+    "spec": {
+        "aliases": [
+            "waybread"
+        ],
+        "short_desc": "a waybread",
+        "long_desc": "A loaf of waybread has been left here.",
+        "detailed_desc": "A loaf of waybread has been left here."
+    },
+    "circlemud_unused": {
+        "cost": 65,
+        "rent": 5,
+        "weight": 3,
+        "type": "FOOD",
+        "values": [
+            32,
+            0,
+            0,
+            0
+        ]
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15018",
+    "spec": {
+        "aliases": [
+            "corpse"
+        ],
+        "short_desc": "a corpse",
+        "long_desc": "There is a corpse lying in the middle of the floor of the building here.",
+        "detailed_desc": "There is a corpse lying in the middle of the floor of the building here.",
+        "flags": [
+            "immobile"
+        ]
+    }
+}

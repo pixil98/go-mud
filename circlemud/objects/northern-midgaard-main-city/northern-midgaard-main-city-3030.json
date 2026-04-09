@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3030",
+    "spec": {
+        "aliases": [
+            "torch"
+        ],
+        "short_desc": "a torch",
+        "long_desc": "A large torch.",
+        "detailed_desc": "A large torch.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "body",
+            "head",
+            "legs",
+            "arms",
+            "shield",
+            "about",
+            "waist",
+            "wrist",
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "light"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "burn_time_hours": 24,
+        "cost": 10,
+        "rent": 10,
+        "weight": 1
+    }
+}

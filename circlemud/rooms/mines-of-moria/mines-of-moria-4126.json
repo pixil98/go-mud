@@ -25,5 +25,14 @@
             "nomob",
             "single_occupant"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "MOUNTAIN",
+        "flags": [
+            "INDOORS",
+            "SOUNDPROOF",
+            "NOTRACK",
+            "PRIVATE"
+        ]
     }
 }

@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3011",
+    "spec": {
+        "aliases": [
+            "danish",
+            "pastry"
+        ],
+        "short_desc": "a danish pastry",
+        "long_desc": "A nice looking delicious danish pastry has been placed here.",
+        "detailed_desc": "A nice looking delicious danish pastry has been placed here."
+    },
+    "circlemud_unused": {
+        "cost": 5,
+        "rent": 5,
+        "weight": 1,
+        "type": "FOOD",
+        "values": [
+            5,
+            0,
+            0,
+            0
+        ]
+    }
+}

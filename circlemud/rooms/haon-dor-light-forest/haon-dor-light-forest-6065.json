@@ -31,6 +31,14 @@
                 ],
                 "description": "The trees are mostly young oaks and tall beeches."
             }
+        ],
+        "object_spawns": [
+            {
+                "object_id": "haon-dor-light-forest-6011"
+            }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

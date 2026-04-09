@@ -27,5 +27,11 @@
                 "description": "Well, you can't see where it comes from..."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

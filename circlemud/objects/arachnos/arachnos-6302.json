@@ -1,0 +1,43 @@
+{
+    "version": 1,
+    "id": "arachnos-6302",
+    "spec": {
+        "aliases": [
+            "hat",
+            "wizard"
+        ],
+        "short_desc": "a wizard's hat",
+        "long_desc": "A blue wizard's hat lies here.",
+        "detailed_desc": "A hat made of blue cloth. It looks very comfortable.",
+        "flags": [
+            "wearable",
+            "invisible"
+        ],
+        "wear_slots": [
+            "head"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 6
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.int",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 20000,
+        "rent": 10000,
+        "weight": 5,
+        "effects": [
+            "MAGIC",
+            "ANTI_CLERIC",
+            "ANTI_THIEF",
+            "ANTI_WARRIOR"
+        ]
+    }
+}

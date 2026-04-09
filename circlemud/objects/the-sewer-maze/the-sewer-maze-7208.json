@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7208",
+    "spec": {
+        "aliases": [
+            "stick",
+            "small"
+        ],
+        "short_desc": "a small stick",
+        "long_desc": "A small stick lies here.",
+        "detailed_desc": "The small stick does not look interesting at all. But just as you are going to throw it away you notice some small letters.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "light"
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "letters",
+                    "letter"
+                ],
+                "description": "They read: Hold me"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 200,
+        "rent": 200,
+        "weight": 4
+    }
+}

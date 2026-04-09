@@ -19,6 +19,17 @@
             "northern-midgaard-main-city-3026",
             "northern-midgaard-main-city-3059",
             "northern-midgaard-main-city-3060"
+        ],
+        "object_spawns": [
+            {
+                "object_id": "northern-midgaard-main-city-3034"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
         ]
     }
 }

@@ -46,5 +46,11 @@
         "mobile_spawns": [
             "the-sewer-maze-7202"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

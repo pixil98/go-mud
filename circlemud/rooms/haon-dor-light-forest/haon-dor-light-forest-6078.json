@@ -34,6 +34,14 @@
                 ],
                 "description": "The terrian is very hilly and rough to the north and west. You have heard that there is a halfling village somewhere in the hills."
             }
+        ],
+        "object_spawns": [
+            {
+                "object_id": "haon-dor-light-forest-6011"
+            }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "HILLS"
     }
 }

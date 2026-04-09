@@ -20,5 +20,11 @@
                 "description": "The old man looks like he has been trapped down here far too long, and has begun to lose his mind. He moves about slowly, cackling to himself. He turns to you and shouts, 'nope measse! nope measse!', then turns back and stares into the fire. 'What a strange person,' you think to yourself."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

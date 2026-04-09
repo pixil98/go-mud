@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6504",
+    "spec": {
+        "aliases": [
+            "hammer",
+            "dwarven"
+        ],
+        "short_desc": "a dwarven hammer",
+        "long_desc": "There is a dwarven hammer lying here.",
+        "detailed_desc": "There is a dwarven hammer lying here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pound",
+        "cost": 5500,
+        "rent": 1000,
+        "weight": 13
+    }
+}

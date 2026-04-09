@@ -1,0 +1,42 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5221",
+    "spec": {
+        "aliases": [
+            "sword",
+            "two-handed"
+        ],
+        "short_desc": "a two-handed sword",
+        "long_desc": "A nice two-handed sword hangs on a hook in the wall.",
+        "detailed_desc": "A nice two-handed sword hangs on a hook in the wall.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d6"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": -3
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 4
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 55000,
+        "rent": 8000,
+        "weight": 22
+    }
+}

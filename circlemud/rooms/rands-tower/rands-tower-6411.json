@@ -36,6 +36,31 @@
         ],
         "mobile_spawns": [
             "rands-tower-6403"
+        ],
+        "object_spawns": [
+            {
+                "object_id": "rands-tower-6404"
+            },
+            {
+                "object_id": "rands-tower-6409",
+                "contents": [
+                    {
+                        "object_id": "rands-tower-6402"
+                    },
+                    {
+                        "object_id": "rands-tower-6403"
+                    },
+                    {
+                        "object_id": "rands-tower-6400"
+                    }
+                ]
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
         ]
     }
 }

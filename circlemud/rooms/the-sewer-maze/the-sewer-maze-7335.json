@@ -28,5 +28,11 @@
                 "description": "It looks like bones of a human."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

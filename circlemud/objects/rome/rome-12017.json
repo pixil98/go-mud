@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "rome-12017",
+    "spec": {
+        "aliases": [
+            "bracers",
+            "moorish"
+        ],
+        "short_desc": "a pair of Moorish bracers",
+        "long_desc": "A pair of Moorish bracers has been dropped here.",
+        "detailed_desc": "A pair of Moorish bracers has been dropped here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "arms"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 8
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.dex",
+                "value": -2
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 25000,
+        "rent": 10000,
+        "weight": 15,
+        "effects": [
+            "GLOW"
+        ]
+    }
+}

@@ -48,5 +48,8 @@
             "rome-12007",
             "rome-12008"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

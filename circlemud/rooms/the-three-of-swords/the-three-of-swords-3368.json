@@ -18,5 +18,12 @@
             "the-three-of-swords-3306",
             "the-three-of-swords-3306"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "MOUNTAIN",
+        "flags": [
+            "NOTRACK",
+            "PRIVATE"
+        ]
     }
 }

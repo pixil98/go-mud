@@ -62,5 +62,13 @@
                 "object_id": "rome-12030"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -500,
+        "gender": "N",
+        "flags": [
+            "NOBASH",
+            "NOBLIND"
+        ]
     }
 }

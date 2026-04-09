@@ -20,6 +20,18 @@
                     "closed": true
                 }
             }
-        }
+        },
+        "object_spawns": [
+            {
+                "object_id": "the-high-tower-of-magic-2519"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS",
+            "NOTRACK"
+        ]
     }
 }

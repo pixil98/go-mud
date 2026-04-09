@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3041",
+    "spec": {
+        "aliases": [
+            "shirt",
+            "chain",
+            "mail"
+        ],
+        "short_desc": "a chain mail shirt",
+        "long_desc": "A chain mail shirt is lying on the ground.",
+        "detailed_desc": "A chain mail shirt is lying on the ground.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "body"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 2500,
+        "rent": 50,
+        "weight": 60
+    }
+}

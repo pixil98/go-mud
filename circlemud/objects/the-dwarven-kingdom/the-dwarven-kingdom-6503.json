@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6503",
+    "spec": {
+        "aliases": [
+            "key",
+            "bright",
+            "gold"
+        ],
+        "short_desc": "a bright golden key",
+        "long_desc": "There is a bright golden key lying here.",
+        "detailed_desc": "There is a bright golden key lying here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 1,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5239",
+    "spec": {
+        "aliases": [
+            "stone",
+            "grey",
+            "dull"
+        ],
+        "short_desc": "a dull grey stone",
+        "long_desc": "You can barely make out a dull grey stone on the ground.",
+        "detailed_desc": "You can barely make out a dull grey stone on the ground.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 20,
+        "rent": 200,
+        "weight": 10,
+        "effects": [
+            "NODONATE",
+            "MAGIC"
+        ]
+    }
+}

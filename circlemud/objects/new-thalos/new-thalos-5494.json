@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "new-thalos-5494",
+    "spec": {
+        "aliases": [
+            "key"
+        ],
+        "short_desc": "the dungeon key",
+        "long_desc": "The dungeon key lies here.",
+        "detailed_desc": "The dungeon key lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 100,
+        "rent": 200,
+        "weight": 1,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

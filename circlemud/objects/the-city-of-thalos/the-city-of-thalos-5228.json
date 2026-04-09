@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5228",
+    "spec": {
+        "aliases": [
+            "arm",
+            "rotted"
+        ],
+        "short_desc": "a half-rotted arm",
+        "long_desc": "A half-rotted arm floats lazily past your feet.",
+        "detailed_desc": "A half-rotted arm floats lazily past your feet."
+    },
+    "circlemud_unused": {
+        "rent": 10,
+        "weight": 20,
+        "type": "FOOD",
+        "values": [
+            50,
+            0,
+            0,
+            1
+        ]
+    }
+}

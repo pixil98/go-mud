@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6111",
+    "spec": {
+        "aliases": [
+            "shield",
+            "round",
+            "large"
+        ],
+        "short_desc": "a large round shield",
+        "long_desc": "A large round shield has been left here.",
+        "detailed_desc": "It is made from hard wood that has been reinforced with heavy iron bands.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "shield"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 300,
+        "rent": 800,
+        "weight": 15
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6014",
+    "spec": {
+        "aliases": [
+            "water",
+            "brook"
+        ],
+        "short_desc": "a small brook",
+        "long_desc": "A small brook trickles through the forest beside the path.",
+        "detailed_desc": "The water looks clean and refreshing.",
+        "flags": [
+            "immobile"
+        ]
+    },
+    "circlemud_unused": {
+        "type": "FOUNTAIN",
+        "values": [
+            50000,
+            50000,
+            15,
+            0
+        ]
+    }
+}

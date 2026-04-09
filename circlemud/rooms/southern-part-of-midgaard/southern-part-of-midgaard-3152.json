@@ -15,5 +15,8 @@
                 "description": "The gravel road continues southward."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

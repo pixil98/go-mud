@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "new-thalos-5416",
+    "spec": {
+        "aliases": [
+            "suit",
+            "brigandine"
+        ],
+        "short_desc": "a suit of brigandine",
+        "long_desc": "A suit of brigandine lies here.",
+        "detailed_desc": "A suit of brigandine lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "body"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 7
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 2000,
+        "rent": 420,
+        "weight": 20,
+        "effects": [
+            "GLOW",
+            "MAGIC",
+            "ANTI_MAGIC_USER",
+            "ANTI_THIEF"
+        ]
+    }
+}

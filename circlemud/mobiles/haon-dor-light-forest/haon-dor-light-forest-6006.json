@@ -41,5 +41,8 @@
             "sentinel"
         ],
         "exp_reward": 25
+    },
+    "circlemud_unused": {
+        "gender": "N"
     }
 }

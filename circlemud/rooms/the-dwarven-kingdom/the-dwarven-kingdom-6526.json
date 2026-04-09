@@ -34,5 +34,11 @@
                 "description": "After blowing all the dust off the floor, you notice a trapdoor!"
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

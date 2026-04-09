@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4050",
+    "spec": {
+        "aliases": [
+            "potion",
+            "purple"
+        ],
+        "short_desc": "a purple potion",
+        "long_desc": "A purple potion is here.",
+        "detailed_desc": "It looks rather strange!",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 35500,
+        "rent": 2000,
+        "weight": 1,
+        "type": "POTION",
+        "values": [
+            17,
+            14,
+            36,
+            33
+        ]
+    }
+}

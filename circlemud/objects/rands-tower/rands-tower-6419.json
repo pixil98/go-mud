@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "rands-tower-6419",
+    "spec": {
+        "aliases": [
+            "basin",
+            "water"
+        ],
+        "short_desc": "a water basin",
+        "long_desc": "A basin filled with crisp, clean water is here.",
+        "detailed_desc": "A basin filled with crisp, clean water is here.",
+        "flags": [
+            "immobile"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 100,
+        "effects": [
+            "GLOW"
+        ],
+        "type": "DRINKCON",
+        "values": [
+            100,
+            100,
+            0,
+            0
+        ]
+    }
+}

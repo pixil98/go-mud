@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "new-thalos-5462",
+    "spec": {
+        "aliases": [
+            "beef",
+            "side"
+        ],
+        "short_desc": "a side of beef",
+        "long_desc": "A side of beef lies here.",
+        "detailed_desc": "A side of beef lies here."
+    },
+    "circlemud_unused": {
+        "cost": 20,
+        "rent": 50,
+        "weight": 5,
+        "type": "FOOD",
+        "values": [
+            15,
+            0,
+            0,
+            0
+        ]
+    }
+}

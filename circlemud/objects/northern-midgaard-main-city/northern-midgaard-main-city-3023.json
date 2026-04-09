@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3023",
+    "spec": {
+        "aliases": [
+            "club",
+            "wooden"
+        ],
+        "short_desc": "a wooden club",
+        "long_desc": "A simple looking wooden club is here.",
+        "detailed_desc": "A simple looking wooden club is here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d3"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pound",
+        "cost": 12,
+        "rent": 10,
+        "weight": 3
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3086",
+    "spec": {
+        "aliases": [
+            "sleeves",
+            "leather"
+        ],
+        "short_desc": "a pair of leather sleeves",
+        "long_desc": "A pair of leather sleeves is lying on the ground.",
+        "detailed_desc": "A pair of leather sleeves is lying on the ground.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "arms"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 75,
+        "rent": 10,
+        "weight": 4
+    }
+}

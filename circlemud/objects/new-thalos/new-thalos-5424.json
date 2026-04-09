@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "new-thalos-5424",
+    "spec": {
+        "aliases": [
+            "sleeves",
+            "leather"
+        ],
+        "short_desc": "a pair of leather sleeves",
+        "long_desc": "A pair of leather sleeves lies here.",
+        "detailed_desc": "A pair of leather sleeves lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "arms"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 350,
+        "rent": 200,
+        "weight": 2
+    }
+}

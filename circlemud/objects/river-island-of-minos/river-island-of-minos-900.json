@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-900",
+    "spec": {
+        "aliases": [
+            "key",
+            "golden",
+            "heavy"
+        ],
+        "short_desc": "a golden key",
+        "long_desc": "A heavy golden key lies here.",
+        "detailed_desc": "A heavy golden key lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 1,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

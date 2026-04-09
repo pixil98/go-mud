@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3301",
+    "spec": {
+        "aliases": [
+            "bale",
+            "wheat"
+        ],
+        "short_desc": "a bale of wheat",
+        "long_desc": "There is a bale of wheat here.",
+        "detailed_desc": "It doesn't look appetizing to you, but a horse might enjoy this..."
+    },
+    "circlemud_unused": {
+        "cost": 1000,
+        "rent": 1000,
+        "weight": 100,
+        "type": "FOOD",
+        "values": [
+            24,
+            0,
+            0,
+            0
+        ]
+    }
+}

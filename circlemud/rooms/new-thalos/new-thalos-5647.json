@@ -13,5 +13,8 @@
                 "room_id": "new-thalos-5646"
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "WATER_NOSWIM"
     }
 }

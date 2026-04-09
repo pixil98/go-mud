@@ -24,5 +24,11 @@
             "the-great-pyramid-5314",
             "the-great-pyramid-5314"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

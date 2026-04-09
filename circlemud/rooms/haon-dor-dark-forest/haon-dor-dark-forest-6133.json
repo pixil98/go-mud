@@ -41,5 +41,11 @@
             "haon-dor-dark-forest-6113",
             "haon-dor-dark-forest-6113"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "WATER_SWIM",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

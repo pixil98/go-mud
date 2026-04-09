@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3304",
+    "spec": {
+        "aliases": [
+            "statue"
+        ],
+        "short_desc": "a statue",
+        "long_desc": "There is a statue of Aglandiir here, made of solid gold.",
+        "detailed_desc": "He's a pretty striking chap, for a dragon."
+    },
+    "circlemud_unused": {
+        "cost": 150000,
+        "rent": 15000,
+        "weight": 30
+    }
+}

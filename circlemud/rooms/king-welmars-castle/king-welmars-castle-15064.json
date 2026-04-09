@@ -27,5 +27,8 @@
                 "description": "/----------------------------------\\ | Welcome to the hamlet of | | Townsbridge | | | | | | Population: 276 | | | \\----------------------------------/ The number 276 has been scratched out and replaced with the number 0."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

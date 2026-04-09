@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2506",
+    "spec": {
+        "aliases": [
+            "sandwich"
+        ],
+        "short_desc": "a finger sandwich",
+        "long_desc": "A finger sandwich is here.",
+        "detailed_desc": "It would look quite tasty if someone had first removed the fingernails!",
+        "flags": [
+            "no_sell"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 15,
+        "rent": 5,
+        "weight": 2,
+        "type": "FOOD",
+        "values": [
+            20,
+            0,
+            0,
+            0
+        ]
+    }
+}

@@ -22,6 +22,26 @@
         },
         "flags": [
             "nomob"
+        ],
+        "object_spawns": [
+            {
+                "object_id": "redfernes-residence-7904",
+                "contents": [
+                    {
+                        "object_id": "redfernes-residence-7903"
+                    },
+                    {
+                        "object_id": "redfernes-residence-7909"
+                    }
+                ]
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS",
+            "PRIVATE"
         ]
     }
 }

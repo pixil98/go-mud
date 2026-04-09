@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "drow-city-5114",
+    "spec": {
+        "aliases": [
+            "hat",
+            "green"
+        ],
+        "short_desc": "a small bright green hat",
+        "long_desc": "A small bright green hat lies in the dirt.",
+        "detailed_desc": "A small bright green hat lies in the dirt.",
+        "flags": [
+            "wearable",
+            "no_drop"
+        ],
+        "wear_slots": [
+            "head"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 10
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 2000,
+        "rent": 600,
+        "weight": 1
+    }
+}

@@ -29,5 +29,11 @@
                 "description": "You see a lot of organic decay on the floor."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3034",
+    "spec": {
+        "aliases": [
+            "atm",
+            "teller",
+            "bank",
+            "machine"
+        ],
+        "short_desc": "an automatic teller machine",
+        "long_desc": "An automatic teller machine has been installed in the wall here.",
+        "detailed_desc": "There is a small note on the machine which says: To use, type 'BALANCE', 'WITHDRAW <amount>', or 'DEPOSIT <amount>'. Please report any strange occurrences to the bank manager.",
+        "flags": [
+            "immobile"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 5000,
+        "effects": [
+            "NORENT",
+            "NODONATE",
+            "NOINVIS",
+            "MAGIC"
+        ]
+    }
+}

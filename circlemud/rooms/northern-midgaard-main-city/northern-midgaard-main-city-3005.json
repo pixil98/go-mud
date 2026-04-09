@@ -22,6 +22,14 @@
                 "room_id": "northern-midgaard-main-city-3004",
                 "description": "You see the entrance to the Clerics' Guild."
             }
-        }
+        },
+        "object_spawns": [
+            {
+                "object_id": "northern-midgaard-main-city-3035"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

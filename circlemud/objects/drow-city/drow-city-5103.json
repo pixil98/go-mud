@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "id": "drow-city-5103",
+    "spec": {
+        "aliases": [
+            "whip",
+            "snake",
+            "threeheaded"
+        ],
+        "short_desc": "a three-headed snake whip",
+        "long_desc": "A whip with three snake heads has been left here.",
+        "detailed_desc": "A whip with three snake heads has been left here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d7"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 5000,
+        "rent": 2300,
+        "weight": 12,
+        "effects": [
+            "GLOW",
+            "HUM"
+        ]
+    }
+}

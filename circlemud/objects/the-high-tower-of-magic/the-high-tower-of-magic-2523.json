@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2523",
+    "spec": {
+        "aliases": [
+            "key",
+            "silvery"
+        ],
+        "short_desc": "a silvery key",
+        "long_desc": "A silvery key has been left here.",
+        "detailed_desc": "A silvery key has been left here.",
+        "flags": [
+            "no_sell"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 1,
+        "effects": [
+            "NORENT",
+            "NODONATE"
+        ]
+    }
+}

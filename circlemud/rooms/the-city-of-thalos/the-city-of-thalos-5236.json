@@ -15,5 +15,8 @@
             "the-city-of-thalos-5201",
             "the-city-of-thalos-5206"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

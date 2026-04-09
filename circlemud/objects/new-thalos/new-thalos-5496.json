@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "new-thalos-5496",
+    "spec": {
+        "aliases": [
+            "wrath",
+            "allah",
+            "mace"
+        ],
+        "short_desc": "the wrath of Allah",
+        "long_desc": "A large ornate mace floats above the ground here.",
+        "detailed_desc": "A large ornate mace floats above the ground here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d4"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "crush",
+        "cost": 25000,
+        "rent": 12500,
+        "weight": 16,
+        "effects": [
+            "GLOW",
+            "MAGIC",
+            "ANTI_MAGIC_USER",
+            "ANTI_THIEF",
+            "ANTI_WARRIOR"
+        ]
+    }
+}

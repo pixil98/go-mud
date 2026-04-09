@@ -25,5 +25,11 @@
                 "description": ",_____________________________. | | | Gabadiel's | | Smithery | | --------------> | | | | -- BUAG SIGNS INC.| `-----------------------------' | | | | | | | |"
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "MOUNTAIN",
+        "flags": [
+            "NOTRACK"
+        ]
     }
 }

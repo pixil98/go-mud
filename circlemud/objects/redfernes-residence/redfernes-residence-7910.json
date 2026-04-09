@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7910",
+    "spec": {
+        "aliases": [
+            "sword",
+            "bastard"
+        ],
+        "short_desc": "a huge bastard sword",
+        "long_desc": "There is a huge bastard sword here.",
+        "detailed_desc": "Quite a heavy weapon, with a pure white hilt.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8"
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 3
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 1700,
+        "rent": 800,
+        "weight": 18,
+        "effects": [
+            "MAGIC",
+            "ANTI_EVIL",
+            "ANTI_NEUTRAL",
+            "ANTI_MAGIC_USER",
+            "ANTI_CLERIC"
+        ]
+    }
+}

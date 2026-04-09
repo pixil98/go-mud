@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2508",
+    "spec": {
+        "aliases": [
+            "cabinet"
+        ],
+        "short_desc": "a cabinet",
+        "long_desc": "A cabinet is here.",
+        "detailed_desc": "A cabinet is here.",
+        "flags": [
+            "immobile",
+            "container"
+        ],
+        "closure": {
+            "closed": true
+        }
+    },
+    "circlemud_unused": {
+        "capacity": 5000,
+        "cost": 10,
+        "rent": 10,
+        "weight": 10000
+    }
+}

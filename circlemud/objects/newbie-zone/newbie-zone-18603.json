@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "id": "newbie-zone-18603",
+    "spec": {
+        "aliases": [
+            "helm",
+            "helmet",
+            "newbie"
+        ],
+        "short_desc": "a bright newbie helm",
+        "long_desc": "A bright newbie helm is hoping a loose head will wander by.",
+        "detailed_desc": "A bright newbie helm is hoping a loose head will wander by.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "head"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.con",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 4,
+        "effects": [
+            "GLOW",
+            "MAGIC"
+        ]
+    }
+}

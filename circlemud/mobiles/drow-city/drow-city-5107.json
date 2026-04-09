@@ -72,21 +72,21 @@
                 "object_id": "drow-city-5106"
             },
             {
-                "slot": "wield",
-                "object_id": "drow-city-5106"
-            },
-            {
                 "slot": "head",
                 "object_id": "drow-city-5111"
-            },
-            {
-                "slot": "wield",
-                "object_id": "drow-city-5106"
             },
             {
                 "slot": "arms",
                 "object_id": "drow-city-5108"
             }
+        ]
+    },
+    "circlemud_unused": {
+        "alignment": -1000,
+        "gold": 30000,
+        "gender": "F",
+        "flags": [
+            "SPEC"
         ]
     }
 }

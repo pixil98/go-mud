@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7210",
+    "spec": {
+        "aliases": [
+            "treasure",
+            "coins"
+        ],
+        "short_desc": "a huge treasure",
+        "long_desc": "There is a huge treasure here, looking very valuable.",
+        "detailed_desc": "This looks like a whole lot of coins."
+    },
+    "circlemud_unused": {
+        "cost": 6522,
+        "weight": 5,
+        "type": "MONEY",
+        "values": [
+            6522,
+            0,
+            0,
+            0
+        ]
+    }
+}

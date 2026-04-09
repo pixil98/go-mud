@@ -27,5 +27,12 @@
                 "description": "This is truly a wonderful relic of the past. In it is a large cushion."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS",
+            "PRIVATE"
+        ]
     }
 }

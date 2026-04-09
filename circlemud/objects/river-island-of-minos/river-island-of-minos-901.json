@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-901",
+    "spec": {
+        "aliases": [
+            "shield",
+            "minotaur"
+        ],
+        "short_desc": "a dark minotaur shield",
+        "long_desc": "A dark minotaur shield has been left here.",
+        "detailed_desc": "A strong, sturdy shield. It brings to mind legends of a shield that provided protection from poisonous gases.",
+        "flags": [
+            "wearable",
+            "no_drop"
+        ],
+        "wear_slots": [
+            "shield"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 12
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 5000,
+        "rent": 1350,
+        "weight": 12,
+        "effects": [
+            "NODONATE",
+            "MAGIC"
+        ]
+    }
+}

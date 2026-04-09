@@ -17,5 +17,8 @@
             "king-welmars-castle-15031",
             "king-welmars-castle-15031"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

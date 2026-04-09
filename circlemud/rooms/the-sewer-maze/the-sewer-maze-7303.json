@@ -38,5 +38,11 @@
                 "description": "The worms are purple. They do not look edible."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2547",
+    "spec": {
+        "aliases": [
+            "cleaver"
+        ],
+        "short_desc": "a meat cleaver",
+        "long_desc": "A meat cleaver is sticking in the wall here.",
+        "detailed_desc": "A meat cleaver is sticking in the wall here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d4"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "sting",
+        "cost": 600,
+        "rent": 100,
+        "weight": 8
+    }
+}

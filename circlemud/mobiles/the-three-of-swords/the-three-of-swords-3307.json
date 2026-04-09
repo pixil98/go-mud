@@ -52,5 +52,10 @@
                 "object_id": "the-three-of-swords-3312"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -600,
+        "gold": 6500,
+        "gender": "F"
     }
 }

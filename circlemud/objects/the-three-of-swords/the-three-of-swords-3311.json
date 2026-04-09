@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3311",
+    "spec": {
+        "aliases": [
+            "knife"
+        ],
+        "short_desc": "a knife",
+        "long_desc": "An exquisitely crafted knife rests here.",
+        "detailed_desc": "The craftsmanship... it takes your breath away! This knife... it had to have been forged by the legendary smith Gabadiel. It must be worth a fortune!",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield",
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d5"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 3
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.dex",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pierce",
+        "cost": 1000000,
+        "rent": 20000,
+        "weight": 8,
+        "effects": [
+            "NODONATE",
+            "ANTI_CLERIC"
+        ]
+    }
+}

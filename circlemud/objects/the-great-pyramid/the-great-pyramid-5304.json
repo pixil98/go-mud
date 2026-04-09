@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5304",
+    "spec": {
+        "aliases": [
+            "wrappings",
+            "cloth"
+        ],
+        "short_desc": "some cloth wrappings",
+        "long_desc": "Long cloth wrappings lie on the ground in a pile.",
+        "detailed_desc": "The cloth wrappings are old, wrinkled, and stink of embalming fluid.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "body"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 1250,
+        "rent": 175,
+        "weight": 15
+    }
+}

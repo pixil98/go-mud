@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "rands-tower-6404",
+    "spec": {
+        "aliases": [
+            "sculpture"
+        ],
+        "short_desc": "a piece of sculpture",
+        "long_desc": "A nice piece of sculpture is here.",
+        "detailed_desc": "It is of a beautiful woman, straining beneath a heavy weight. She looks tired, with chiseled tears staining her cheeks. It makes you sad."
+    },
+    "circlemud_unused": {
+        "cost": 20000,
+        "rent": 2000,
+        "weight": 75
+    }
+}

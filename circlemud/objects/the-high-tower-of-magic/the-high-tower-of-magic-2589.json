@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2589",
+    "spec": {
+        "aliases": [
+            "bracelet",
+            "emerald"
+        ],
+        "short_desc": "an emerald bracelet",
+        "long_desc": "A beautifully crafted hoop of emerald is here.",
+        "detailed_desc": "A beautifully crafted hoop of emerald is here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wrist"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -5
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.int",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 30000,
+        "rent": 3500,
+        "weight": 5,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

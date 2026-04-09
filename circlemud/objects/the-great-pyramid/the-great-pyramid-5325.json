@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5325",
+    "spec": {
+        "aliases": [
+            "ring",
+            "sandy"
+        ],
+        "short_desc": "a sandy-coloured ring",
+        "long_desc": "A small sandy-coloured ring has been carelessly dropped here.",
+        "detailed_desc": "The ring is small, smooth, sandy-coloured and unremarkable, save that it gives off a continuous low humming noise that tickles your fingertips.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "finger"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 8
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.int",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 20000,
+        "rent": 750,
+        "weight": 5,
+        "effects": [
+            "HUM",
+            "MAGIC"
+        ]
+    }
+}

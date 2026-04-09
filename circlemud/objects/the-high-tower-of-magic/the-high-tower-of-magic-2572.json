@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2572",
+    "spec": {
+        "aliases": [
+            "club",
+            "spiked"
+        ],
+        "short_desc": "a huge spiked club",
+        "long_desc": "A huge spiked club has been left here.",
+        "detailed_desc": "A huge spiked club has been left here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d5"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "claw",
+        "cost": 750,
+        "rent": 200,
+        "weight": 29
+    }
+}

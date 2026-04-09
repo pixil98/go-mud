@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2538",
+    "spec": {
+        "aliases": [
+            "key",
+            "intricate"
+        ],
+        "short_desc": "an intricately carved key",
+        "long_desc": "An intricately carved key has been left here.",
+        "detailed_desc": "An intricately carved key has been left here.",
+        "flags": [
+            "wearable",
+            "no_sell"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 1,
+        "effects": [
+            "GLOW",
+            "NORENT",
+            "NODONATE",
+            "MAGIC"
+        ]
+    }
+}

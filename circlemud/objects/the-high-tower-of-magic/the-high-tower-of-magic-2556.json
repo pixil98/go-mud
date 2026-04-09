@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2556",
+    "spec": {
+        "aliases": [
+            "spoon",
+            "silver"
+        ],
+        "short_desc": "a silver stirring spoon",
+        "long_desc": "A silver stirring spoon has been left here.",
+        "detailed_desc": "A silver stirring spoon has been left here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 5650,
+        "rent": 900,
+        "weight": 1,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

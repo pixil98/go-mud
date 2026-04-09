@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3115",
+    "spec": {
+        "aliases": [
+            "gold",
+            "coins"
+        ],
+        "short_desc": "the gold",
+        "long_desc": "A lot of gold is here.",
+        "detailed_desc": "A lot of gold is here."
+    },
+    "circlemud_unused": {
+        "cost": 32385,
+        "type": "MONEY",
+        "values": [
+            32385,
+            0,
+            0,
+            0
+        ]
+    }
+}

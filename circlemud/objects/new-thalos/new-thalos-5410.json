@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "new-thalos-5410",
+    "spec": {
+        "aliases": [
+            "guisarme"
+        ],
+        "short_desc": "a guisarme",
+        "long_desc": "A guisarme lies here.",
+        "detailed_desc": "A guisarme lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "bite",
+        "cost": 1953,
+        "rent": 20,
+        "weight": 4
+    }
+}

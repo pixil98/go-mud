@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5307",
+    "spec": {
+        "aliases": [
+            "ball",
+            "fire"
+        ],
+        "short_desc": "a small hot ball of fire",
+        "long_desc": "A little ball of fire hovers in the air before your eyes.",
+        "detailed_desc": "The ball of fire is hot to the touch and very very bright.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "light"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 10
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 3500,
+        "rent": 500,
+        "weight": 10,
+        "effects": [
+            "GLOW",
+            "MAGIC",
+            "ANTI_WARRIOR"
+        ]
+    }
+}

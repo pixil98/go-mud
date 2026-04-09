@@ -27,5 +27,11 @@
                 "description": "The hay is very dirty. The smell of it makes you feel sick."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

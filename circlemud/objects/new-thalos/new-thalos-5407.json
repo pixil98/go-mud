@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "new-thalos-5407",
+    "spec": {
+        "aliases": [
+            "guisarme",
+            "bill"
+        ],
+        "short_desc": "a bill-guisarme",
+        "long_desc": "A bill-guisarme lies here.",
+        "detailed_desc": "A bill-guisarme lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d10"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 1300,
+        "rent": 50,
+        "weight": 3
+    }
+}

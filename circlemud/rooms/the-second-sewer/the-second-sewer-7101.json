@@ -28,5 +28,11 @@
                 "description": "You never saw such disgusting matter before, it nearly makes you puke."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "MOUNTAIN",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

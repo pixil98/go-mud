@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5244",
+    "spec": {
+        "aliases": [
+            "stone",
+            "iridescent"
+        ],
+        "short_desc": "an iridescent stone",
+        "long_desc": "A large iridescent stone has been left here.",
+        "detailed_desc": "A large iridescent stone has been left here.",
+        "flags": [
+            "wearable",
+            "no_drop"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": -100
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 3700,
+        "rent": 1000,
+        "weight": 10,
+        "effects": [
+            "NODONATE",
+            "MAGIC"
+        ]
+    }
+}

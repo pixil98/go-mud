@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "new-thalos-5447",
+    "spec": {
+        "aliases": [
+            "boots",
+            "hiking"
+        ],
+        "short_desc": "a pair of hiking boots",
+        "long_desc": "A nicely made pair of boots lies here.",
+        "detailed_desc": "A nicely made pair of boots lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "feet"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 390,
+        "rent": 10,
+        "weight": 3
+    }
+}

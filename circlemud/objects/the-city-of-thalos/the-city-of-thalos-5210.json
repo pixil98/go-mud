@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5210",
+    "spec": {
+        "aliases": [
+            "potion",
+            "black"
+        ],
+        "short_desc": "a black potion",
+        "long_desc": "A jet black potion sits upright waiting to be taken.",
+        "detailed_desc": "A jet black potion sits upright waiting to be taken.",
+        "flags": [
+            "invisible"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 6000,
+        "rent": 1000,
+        "weight": 5,
+        "effects": [
+            "MAGIC"
+        ],
+        "type": "POTION",
+        "values": [
+            16,
+            4,
+            36,
+            39
+        ]
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5449",
+    "spec": {
+        "aliases": [
+            "girdle"
+        ],
+        "short_desc": "a girdle",
+        "long_desc": "A nicely made girdle lies here.",
+        "detailed_desc": "A nicely made girdle lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "waist"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 375,
+        "rent": 10,
+        "weight": 1
+    }
+}

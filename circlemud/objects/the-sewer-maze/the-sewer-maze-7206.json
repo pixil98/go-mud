@@ -1,0 +1,49 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7206",
+    "spec": {
+        "aliases": [
+            "skull",
+            "white"
+        ],
+        "short_desc": "a strange white skull",
+        "long_desc": "A strange white skull lies on the floor looking at you.",
+        "detailed_desc": "The skull has two small horns in the forehead. You notice some writing on the inside.",
+        "flags": [
+            "wearable",
+            "no_drop"
+        ],
+        "wear_slots": [
+            "head"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.dex",
+                "value": -4
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "writing",
+                    "text"
+                ],
+                "description": "You read the number '666'."
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "rent": 250,
+        "weight": 30,
+        "effects": [
+            "GLOW",
+            "HUM"
+        ]
+    }
+}

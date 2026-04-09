@@ -57,5 +57,15 @@
                 "object_id": "the-high-tower-of-magic-2572"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -500,
+        "gender": "N",
+        "flags": [
+            "NOCHARM",
+            "NOSUMMON",
+            "NOSLEEP",
+            "NOBLIND"
+        ]
     }
 }

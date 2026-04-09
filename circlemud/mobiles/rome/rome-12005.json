@@ -44,23 +44,11 @@
             {
                 "slot": "wield",
                 "object_id": "northern-midgaard-main-city-3023"
-            },
-            {
-                "slot": "wield",
-                "object_id": "northern-midgaard-main-city-3023"
-            },
-            {
-                "slot": "wield",
-                "object_id": "northern-midgaard-main-city-3023"
-            },
-            {
-                "slot": "wield",
-                "object_id": "northern-midgaard-main-city-3023"
-            },
-            {
-                "slot": "wield",
-                "object_id": "northern-midgaard-main-city-3023"
             }
         ]
+    },
+    "circlemud_unused": {
+        "gold": 10,
+        "gender": "F"
     }
 }

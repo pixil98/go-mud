@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3111",
+    "spec": {
+        "aliases": [
+            "bench"
+        ],
+        "short_desc": "the Bench",
+        "long_desc": "A white-painted wooden bench is standing here.",
+        "detailed_desc": "It is a quite heavy but very comfortable bench. It is placed with its front towards the river so you can sit and watch the river and the houses on the other side.",
+        "flags": [
+            "immobile"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 600,
+        "rent": 200,
+        "weight": 100
+    }
+}

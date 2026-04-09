@@ -82,5 +82,13 @@
                 "object_id": "haon-dor-dark-forest-6114"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 1000,
+        "gold": 1000,
+        "gender": "M",
+        "flags": [
+            "SPEC"
+        ]
     }
 }

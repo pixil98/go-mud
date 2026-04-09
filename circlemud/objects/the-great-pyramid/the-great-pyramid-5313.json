@@ -1,0 +1,48 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5313",
+    "spec": {
+        "aliases": [
+            "lamp"
+        ],
+        "short_desc": "the lamp",
+        "long_desc": "A small, tarnished, battered lamp has been dropped here.",
+        "detailed_desc": "The lamp is quite old and tarnished. You rub at it to get some of the grime off, but it doesn't seem like anybody is home.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -5
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 25000,
+        "rent": 600,
+        "weight": 10,
+        "effects": [
+            "GLOW",
+            "HUM",
+            "MAGIC",
+            "ANTI_EVIL"
+        ],
+        "type": "STAFF",
+        "values": [
+            25,
+            5,
+            5,
+            51
+        ]
+    }
+}

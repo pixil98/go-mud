@@ -52,5 +52,9 @@
                 "object_id": "southern-part-of-midgaard-3107"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 800,
+        "gender": "M"
     }
 }

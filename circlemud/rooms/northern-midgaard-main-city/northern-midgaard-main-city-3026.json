@@ -31,5 +31,8 @@
             "northern-midgaard-main-city-3063",
             "northern-midgaard-main-city-3066"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

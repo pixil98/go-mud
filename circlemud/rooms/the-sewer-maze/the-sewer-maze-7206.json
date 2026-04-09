@@ -43,6 +43,17 @@
                 ],
                 "description": "The torch is bolted to the sconce and the sconce to the wall."
             }
+        ],
+        "object_spawns": [
+            {
+                "object_id": "the-sewer-maze-7206"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
         ]
     }
 }

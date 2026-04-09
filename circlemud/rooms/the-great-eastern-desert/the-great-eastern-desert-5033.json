@@ -27,5 +27,8 @@
             "the-great-eastern-desert-5015",
             "the-great-eastern-desert-5000"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

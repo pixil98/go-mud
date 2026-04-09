@@ -22,5 +22,8 @@
                 "room_id": "the-great-eastern-desert-5063"
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

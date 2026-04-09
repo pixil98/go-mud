@@ -23,5 +23,11 @@
             "the-great-eastern-desert-5013",
             "the-great-eastern-desert-5014"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "MOUNTAIN",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

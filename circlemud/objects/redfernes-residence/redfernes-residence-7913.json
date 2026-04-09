@@ -1,0 +1,56 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7913",
+    "spec": {
+        "aliases": [
+            "sword",
+            "two-handed"
+        ],
+        "short_desc": "a two-handed sword",
+        "long_desc": "On the floor rests a enormous two-handed sword.",
+        "detailed_desc": "You notice that there has been inscribed some runes and a sort of pattern, which resembles flames running along the edge.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d6"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 10
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 3
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "runes"
+                ],
+                "description": "On the blade you can read 'Flame And Strength United Are My Soul Power'."
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 3500,
+        "rent": 3500,
+        "weight": 22,
+        "effects": [
+            "MAGIC",
+            "ANTI_GOOD",
+            "ANTI_EVIL",
+            "ANTI_MAGIC_USER"
+        ]
+    }
+}

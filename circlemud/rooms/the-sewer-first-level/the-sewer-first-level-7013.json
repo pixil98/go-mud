@@ -39,5 +39,11 @@
                 "description": "It is NOT the kind of matter that would concern you too much, normally, but as you are in the middle of it, it just might become your main concern. REAL YUCKY!"
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "MOUNTAIN",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

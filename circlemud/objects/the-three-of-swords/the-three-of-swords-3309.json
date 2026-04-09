@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3309",
+    "spec": {
+        "aliases": [
+            "bread",
+            "loaf"
+        ],
+        "short_desc": "a loaf of bread",
+        "long_desc": "A fresh loaf of bread lies here.",
+        "detailed_desc": "Mmmm... Rye!"
+    },
+    "circlemud_unused": {
+        "cost": 10,
+        "rent": 5,
+        "weight": 1,
+        "type": "FOOD",
+        "values": [
+            12,
+            0,
+            0,
+            0
+        ]
+    }
+}

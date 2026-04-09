@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "rome-12019",
+    "spec": {
+        "aliases": [
+            "boots",
+            "combat"
+        ],
+        "short_desc": "a pair of Roman combat boots",
+        "long_desc": "A pair of combat boots have been left here.",
+        "detailed_desc": "A pair of combat boots have been left here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "feet"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 8
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.str",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": -1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 8750,
+        "rent": 9000,
+        "weight": 45,
+        "effects": [
+            "GLOW"
+        ]
+    }
+}

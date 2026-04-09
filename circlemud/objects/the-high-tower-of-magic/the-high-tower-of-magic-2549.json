@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2549",
+    "spec": {
+        "aliases": [
+            "dagger",
+            "silvery"
+        ],
+        "short_desc": "a silvery dagger",
+        "long_desc": "A long dagger that seems to be made of silver is here.",
+        "detailed_desc": "A long dagger that seems to be made of silver is here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pierce",
+        "cost": 1200,
+        "rent": 500,
+        "weight": 5,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

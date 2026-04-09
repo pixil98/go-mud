@@ -26,5 +26,11 @@
         "mobile_spawns": [
             "mines-of-moria-4100"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

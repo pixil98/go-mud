@@ -47,5 +47,11 @@
                 "description": "The torch is bolted to the sconce and the sconce to the wall."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

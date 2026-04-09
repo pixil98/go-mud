@@ -40,5 +40,9 @@
             "stay_zone"
         ],
         "exp_reward": 50
+    },
+    "circlemud_unused": {
+        "gold": 1,
+        "gender": "M"
     }
 }

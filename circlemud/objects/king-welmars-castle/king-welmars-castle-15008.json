@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15008",
+    "spec": {
+        "aliases": [
+            "Verminator",
+            "sword"
+        ],
+        "short_desc": "Verminator",
+        "long_desc": "A strange looking sword is lying upon the ground here.",
+        "detailed_desc": "This strange sword seems to be made of black metal, an eerie green glow surrounds the blade.",
+        "flags": [
+            "wearable",
+            "no_sell"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d4"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pierce",
+        "cost": 1,
+        "rent": 4000,
+        "weight": 2,
+        "effects": [
+            "GLOW",
+            "NODONATE",
+            "ANTI_GOOD",
+            "ANTI_MAGIC_USER",
+            "ANTI_CLERIC",
+            "ANTI_THIEF"
+        ]
+    }
+}

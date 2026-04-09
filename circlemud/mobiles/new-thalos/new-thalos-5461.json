@@ -54,43 +54,15 @@
             {
                 "slot": "shield",
                 "object_id": "new-thalos-5421"
-            },
-            {
-                "slot": "wield",
-                "object_id": "new-thalos-5413"
-            },
-            {
-                "slot": "body",
-                "object_id": "new-thalos-5417"
-            },
-            {
-                "slot": "shield",
-                "object_id": "new-thalos-5421"
-            },
-            {
-                "slot": "wield",
-                "object_id": "new-thalos-5413"
-            },
-            {
-                "slot": "body",
-                "object_id": "new-thalos-5417"
-            },
-            {
-                "slot": "shield",
-                "object_id": "new-thalos-5421"
-            },
-            {
-                "slot": "wield",
-                "object_id": "new-thalos-5413"
-            },
-            {
-                "slot": "body",
-                "object_id": "new-thalos-5417"
-            },
-            {
-                "slot": "shield",
-                "object_id": "new-thalos-5421"
             }
+        ]
+    },
+    "circlemud_unused": {
+        "alignment": 1000,
+        "gold": 150,
+        "gender": "M",
+        "flags": [
+            "SPEC"
         ]
     }
 }

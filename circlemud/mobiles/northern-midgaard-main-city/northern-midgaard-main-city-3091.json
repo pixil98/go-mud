@@ -36,5 +36,11 @@
             "scavenger"
         ],
         "exp_reward": 125
+    },
+    "circlemud_unused": {
+        "gender": "N",
+        "flags": [
+            "NOSUMMON"
+        ]
     }
 }

@@ -18,6 +18,17 @@
         ],
         "mobile_spawns": [
             "new-thalos-5412"
+        ],
+        "object_spawns": [
+            {
+                "object_id": "northern-midgaard-main-city-3034"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
         ]
     }
 }

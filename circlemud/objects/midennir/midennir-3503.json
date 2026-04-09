@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "midennir-3503",
+    "spec": {
+        "aliases": [
+            "jacket",
+            "studded",
+            "leather"
+        ],
+        "short_desc": "a studded leather jacket",
+        "long_desc": "A studded leather jacket is lying on the ground.",
+        "detailed_desc": "A studded leather jacket is lying on the ground.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "body"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 500,
+        "rent": 10,
+        "weight": 20
+    }
+}

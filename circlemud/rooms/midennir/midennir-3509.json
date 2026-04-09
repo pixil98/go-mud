@@ -23,5 +23,8 @@
             "midennir-3501",
             "midennir-3501"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

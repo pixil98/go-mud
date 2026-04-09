@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "drow-city-5112",
+    "spec": {
+        "aliases": [
+            "ring",
+            "ruby"
+        ],
+        "short_desc": "a small ruby ring",
+        "long_desc": "A small ruby ring lies in the dirt.",
+        "detailed_desc": "A small ruby ring lies in the dirt.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "finger"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 25
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 20000,
+        "rent": 8000,
+        "weight": 1,
+        "effects": [
+            "MAGIC"
+        ],
+        "type": "WORN",
+        "values": [
+            0,
+            0,
+            0,
+            0
+        ]
+    }
+}

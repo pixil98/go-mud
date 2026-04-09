@@ -42,6 +42,17 @@
                 ],
                 "description": "The benches are not of the comfortable kind."
             }
+        ],
+        "object_spawns": [
+            {
+                "object_id": "southern-part-of-midgaard-3116"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
         ]
     }
 }

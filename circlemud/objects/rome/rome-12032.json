@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "rome-12032",
+    "spec": {
+        "aliases": [
+            "mug",
+            "beer"
+        ],
+        "short_desc": "a mug",
+        "long_desc": "A frosty mug has been left on the ground here.",
+        "detailed_desc": "A frosty mug has been left on the ground here."
+    },
+    "circlemud_unused": {
+        "cost": 10,
+        "rent": 5,
+        "weight": 3,
+        "type": "DRINKCON",
+        "values": [
+            3,
+            3,
+            1,
+            0
+        ]
+    }
+}

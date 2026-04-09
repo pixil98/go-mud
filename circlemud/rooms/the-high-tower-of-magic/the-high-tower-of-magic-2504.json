@@ -35,5 +35,12 @@
         "mobile_spawns": [
             "the-high-tower-of-magic-2500"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST",
+        "flags": [
+            "SOUNDPROOF",
+            "NOTRACK"
+        ]
     }
 }

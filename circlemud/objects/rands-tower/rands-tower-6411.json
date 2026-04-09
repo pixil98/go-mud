@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "rands-tower-6411",
+    "spec": {
+        "aliases": [
+            "book",
+            "elder"
+        ],
+        "short_desc": "the Book of the Elder",
+        "long_desc": "A grey-bound book lies here.",
+        "detailed_desc": "A grey-bound book lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 300000,
+        "rent": 50000,
+        "weight": 25,
+        "effects": [
+            "GLOW",
+            "HUM",
+            "MAGIC"
+        ],
+        "type": "WAND",
+        "values": [
+            30,
+            1,
+            1,
+            28
+        ]
+    }
+}

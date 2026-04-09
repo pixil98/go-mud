@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "new-thalos-5434",
+    "spec": {
+        "aliases": [
+            "sack"
+        ],
+        "short_desc": "a sack",
+        "long_desc": "A sack lies here",
+        "detailed_desc": "A sack lies here",
+        "flags": [
+            "wearable",
+            "container"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "capacity": 50,
+        "cost": 20,
+        "rent": 200,
+        "weight": 1
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3005",
+    "spec": {
+        "aliases": [
+            "key",
+            "dull",
+            "metal"
+        ],
+        "short_desc": "a key of dull metal",
+        "long_desc": "A key made of a dull metal is lying on the ground here.",
+        "detailed_desc": "A key made of a dull metal is lying on the ground here.",
+        "flags": [
+            "wearable",
+            "no_sell"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 1,
+        "effects": [
+            "NORENT",
+            "NODONATE"
+        ]
+    }
+}

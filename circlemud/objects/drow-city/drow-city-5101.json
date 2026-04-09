@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "drow-city-5101",
+    "spec": {
+        "aliases": [
+            "longsword",
+            "noble"
+        ],
+        "short_desc": "a noble's longsword",
+        "long_desc": "A drow noble's longsword, made of adamantite, lies here.",
+        "detailed_desc": "A drow noble's longsword, made of adamantite, lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 1500,
+        "rent": 800,
+        "weight": 12,
+        "effects": [
+            "ANTI_MAGIC_USER"
+        ]
+    }
+}

@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "the-chessboard-of-midgaard-3600",
+    "spec": {
+        "aliases": [
+            "armour",
+            "black",
+            "pawn"
+        ],
+        "short_desc": "some Black Pawn Armour",
+        "long_desc": "A pile of black armour is here.",
+        "detailed_desc": "A pile of black armour is here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "body"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 300,
+        "rent": 1,
+        "weight": 13,
+        "effects": [
+            "ANTI_GOOD"
+        ]
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "new-thalos-5490",
+    "spec": {
+        "aliases": [
+            "chessboard"
+        ],
+        "short_desc": "a chessboard",
+        "long_desc": "A heavy marble chessboard lies here.",
+        "detailed_desc": "A heavy marble chessboard lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d30"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "crush",
+        "cost": 100,
+        "rent": 20,
+        "weight": 10
+    }
+}

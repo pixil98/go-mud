@@ -55,11 +55,15 @@
             {
                 "slot": "wield",
                 "object_id": "midennir-3500"
-            },
-            {
-                "slot": "wield",
-                "object_id": "midennir-3500"
             }
+        ]
+    },
+    "circlemud_unused": {
+        "alignment": -600,
+        "gold": 300,
+        "gender": "M",
+        "flags": [
+            "AGGR_GOOD"
         ]
     }
 }

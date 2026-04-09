@@ -54,5 +54,11 @@
             "aggressive"
         ],
         "exp_reward": 150
+    },
+    "circlemud_unused": {
+        "gender": "N",
+        "flags": [
+            "NOBASH"
+        ]
     }
 }

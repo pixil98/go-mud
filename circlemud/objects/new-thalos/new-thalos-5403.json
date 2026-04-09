@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "id": "new-thalos-5403",
+    "spec": {
+        "aliases": [
+            "morningstar",
+            "morning",
+            "star"
+        ],
+        "short_desc": "a morningstar",
+        "long_desc": "A small spiked metal ball connected to a rod by links of chain lies here.",
+        "detailed_desc": "A small spiked metal ball connected to a rod by links of chain lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d5"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "crush",
+        "cost": 1200,
+        "rent": 500,
+        "weight": 5
+    }
+}

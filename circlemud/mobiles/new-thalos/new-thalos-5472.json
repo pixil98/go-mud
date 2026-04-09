@@ -47,5 +47,8 @@
             "memory"
         ],
         "exp_reward": 900
+    },
+    "circlemud_unused": {
+        "gender": "N"
     }
 }

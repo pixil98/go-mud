@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3317",
+    "spec": {
+        "aliases": [
+            "bow",
+            "hunting"
+        ],
+        "short_desc": "a hunting bow",
+        "long_desc": "A hunting bow lies here, unwanted",
+        "detailed_desc": "This is the type of weapon you would use to bag some deer or rabbits, but not the type you'd take into battle...",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d5"
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pierce",
+        "cost": 400,
+        "rent": 40,
+        "weight": 6
+    }
+}

@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3318",
+    "spec": {
+        "aliases": [
+            "vest",
+            "leather"
+        ],
+        "short_desc": "a leather vest",
+        "long_desc": "A nice leather vest lies here.",
+        "detailed_desc": "The seams are delicately sewn with a enruned thread...",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "body"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 6
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 5000,
+        "rent": 500,
+        "weight": 6,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

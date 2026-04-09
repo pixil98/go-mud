@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "id": "drow-city-5105",
+    "spec": {
+        "aliases": [
+            "longsword",
+            "black"
+        ],
+        "short_desc": "a black longsword",
+        "long_desc": "A black longsword has been carelessly left here.",
+        "detailed_desc": "A black longsword has been carelessly left here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 10250,
+        "rent": 4000,
+        "weight": 12,
+        "effects": [
+            "GLOW",
+            "MAGIC",
+            "ANTI_MAGIC_USER"
+        ]
+    }
+}

@@ -34,5 +34,11 @@
                 "description": "The stone looks very uninteresting. BUT as you are about to turn away, you see a strip of light coming through a small hole. Conclusion: The stone is moveable."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

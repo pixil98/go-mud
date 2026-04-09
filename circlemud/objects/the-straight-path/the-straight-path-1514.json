@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1514",
+    "spec": {
+        "aliases": [
+            "image",
+            "azathoth",
+            "graven"
+        ],
+        "short_desc": "a graven image of Azathoth",
+        "long_desc": "You frown in disgust at the hideous icon of a false god that you have found.",
+        "detailed_desc": "You frown in disgust at the hideous icon of a false god that you have found.",
+        "flags": [
+            "wearable",
+            "no_sell"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.stats.cha",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 1000,
+        "rent": 500,
+        "weight": 2,
+        "effects": [
+            "ANTI_GOOD",
+            "ANTI_NEUTRAL"
+        ]
+    }
+}

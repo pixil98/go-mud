@@ -59,5 +59,12 @@
             "scavenger",
             "stay_zone"
         ]
+    },
+    "circlemud_unused": {
+        "gender": "N",
+        "flags": [
+            "SPEC",
+            "NOBASH"
+        ]
     }
 }

@@ -28,5 +28,11 @@
                 "description": "It looks dark and murky, and emanates a foul stench."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

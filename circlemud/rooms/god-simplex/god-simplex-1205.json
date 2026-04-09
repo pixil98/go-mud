@@ -14,5 +14,11 @@
         "mobile_spawns": [
             "god-simplex-1201"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

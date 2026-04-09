@@ -13,6 +13,34 @@
         },
         "mobile_spawns": [
             "the-great-eastern-desert-5006"
+        ],
+        "object_spawns": [
+            {
+                "object_id": "the-great-eastern-desert-5008",
+                "contents": [
+                    {
+                        "object_id": "the-great-eastern-desert-5014"
+                    }
+                ]
+            },
+            {
+                "object_id": "the-great-eastern-desert-5009"
+            },
+            {
+                "object_id": "the-great-eastern-desert-5010",
+                "contents": [
+                    {
+                        "object_id": "the-great-eastern-desert-5013"
+                    }
+                ]
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD",
+        "flags": [
+            "INDOORS",
+            "NOTRACK"
         ]
     }
 }

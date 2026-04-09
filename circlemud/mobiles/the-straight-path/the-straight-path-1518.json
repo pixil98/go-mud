@@ -59,5 +59,10 @@
                 "object_id": "the-straight-path-1513"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -1000,
+        "gold": 40000,
+        "gender": "M"
     }
 }

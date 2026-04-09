@@ -24,5 +24,8 @@
                 "description": "A small dirt trail leads off to the west where it joins a large clay road some distance away."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

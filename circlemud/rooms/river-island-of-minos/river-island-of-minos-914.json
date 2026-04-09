@@ -22,5 +22,8 @@
                 "description": "A sign beside the dark cave opening reads: WARNING! Only fools and dead people pass this way. The tests of Minos, our glorious ruler, await."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

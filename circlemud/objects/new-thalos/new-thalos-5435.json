@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "new-thalos-5435",
+    "spec": {
+        "aliases": [
+            "lamp",
+            "oil",
+            "oillamp"
+        ],
+        "short_desc": "an oil lamp",
+        "long_desc": "An oil lamp lies here",
+        "detailed_desc": "An oil lamp lies here",
+        "perks": [
+            {
+                "type": "grant",
+                "key": "light"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "burn_time_hours": 48,
+        "cost": 100,
+        "rent": 200,
+        "weight": 1
+    }
+}

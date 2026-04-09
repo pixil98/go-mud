@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3032",
+    "spec": {
+        "aliases": [
+            "bag"
+        ],
+        "short_desc": "a bag",
+        "long_desc": "A small bag is here.",
+        "detailed_desc": "A small bag is here.",
+        "flags": [
+            "wearable",
+            "container"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "capacity": 50,
+        "cost": 20,
+        "rent": 10,
+        "weight": 2
+    }
+}

@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5208",
+    "spec": {
+        "aliases": [
+            "shield",
+            "iron"
+        ],
+        "short_desc": "a sturdy iron shield",
+        "long_desc": "A small, but sturdy, iron shield has been left here.",
+        "detailed_desc": "A small, but sturdy, iron shield has been left here.",
+        "flags": [
+            "wearable",
+            "no_drop"
+        ],
+        "wear_slots": [
+            "shield"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 500,
+        "rent": 1000,
+        "weight": 5,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

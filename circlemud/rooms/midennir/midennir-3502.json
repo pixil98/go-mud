@@ -23,5 +23,8 @@
                 "description": "The well trodden path leads down to the northeast towards a small bustling village."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

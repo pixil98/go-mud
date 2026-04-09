@@ -48,5 +48,11 @@
                 "description": "It looks as if it can be opened in a door-like fashion. Maybe this will lead the way down."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "MOUNTAIN",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

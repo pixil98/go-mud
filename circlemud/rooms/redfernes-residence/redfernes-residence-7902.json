@@ -67,5 +67,12 @@
                 "description": "You see a large and winding river cut through the landscape, starting at an enormous inland lake, it seeps through Midgaard and finally ends up in the Grand Sea on the west coast of the land."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS",
+            "PRIVATE"
+        ]
     }
 }

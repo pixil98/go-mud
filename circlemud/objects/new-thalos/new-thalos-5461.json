@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "new-thalos-5461",
+    "spec": {
+        "aliases": [
+            "lamb",
+            "leg"
+        ],
+        "short_desc": "a leg of lamb",
+        "long_desc": "A leg of lamb lies here.",
+        "detailed_desc": "A leg of lamb lies here."
+    },
+    "circlemud_unused": {
+        "cost": 10,
+        "rent": 20,
+        "weight": 2,
+        "type": "FOOD",
+        "values": [
+            10,
+            0,
+            0,
+            0
+        ]
+    }
+}

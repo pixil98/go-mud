@@ -19,6 +19,17 @@
                 "type": "grant",
                 "key": "dark"
             }
+        ],
+        "object_spawns": [
+            {
+                "object_id": "rands-tower-6419"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
         ]
     }
 }

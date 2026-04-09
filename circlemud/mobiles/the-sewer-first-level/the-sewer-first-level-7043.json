@@ -48,5 +48,10 @@
             "scavenger"
         ],
         "exp_reward": 16000
+    },
+    "circlemud_unused": {
+        "alignment": -250,
+        "gold": 350,
+        "gender": "N"
     }
 }

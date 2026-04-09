@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2577",
+    "spec": {
+        "aliases": [
+            "minor",
+            "ward",
+            "cube",
+            "clear"
+        ],
+        "short_desc": "a ward minor",
+        "long_desc": "A small clear cube is sitting here.",
+        "detailed_desc": "A small clear cube is sitting here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -5
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 5000,
+        "rent": 1000,
+        "weight": 5,
+        "effects": [
+            "GLOW",
+            "MAGIC"
+        ]
+    }
+}

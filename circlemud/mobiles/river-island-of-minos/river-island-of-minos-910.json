@@ -67,11 +67,17 @@
             {
                 "slot": "wield",
                 "object_id": "river-island-of-minos-908"
-            },
-            {
-                "slot": "wield",
-                "object_id": "river-island-of-minos-908"
             }
+        ]
+    },
+    "circlemud_unused": {
+        "alignment": 350,
+        "gold": 1500,
+        "gender": "M",
+        "flags": [
+            "NOCHARM",
+            "NOSUMMON",
+            "NOBASH"
         ]
     }
 }

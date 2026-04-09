@@ -26,5 +26,11 @@
                 "description": "The glittering silver looks like it is INSIDE the walls."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

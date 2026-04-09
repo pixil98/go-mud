@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4102",
+    "spec": {
+        "aliases": [
+            "scroll",
+            "ysafg"
+        ],
+        "short_desc": "a scroll which reads 'ysafg'",
+        "long_desc": "A scroll which reads 'ysafg', it looks very fragile and quite old.",
+        "detailed_desc": "It looks informative."
+    },
+    "circlemud_unused": {
+        "cost": 1500,
+        "rent": 10,
+        "weight": 1,
+        "type": "SCROLL",
+        "values": [
+            1,
+            44,
+            -1,
+            -1
+        ]
+    }
+}

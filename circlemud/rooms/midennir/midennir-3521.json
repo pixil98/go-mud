@@ -42,6 +42,25 @@
             "midennir-3500",
             "midennir-3500",
             "midennir-3500"
+        ],
+        "object_spawns": [
+            {
+                "object_id": "midennir-3505"
+            },
+            {
+                "object_id": "midennir-3506",
+                "contents": [
+                    {
+                        "object_id": "midennir-3507"
+                    }
+                ]
+            },
+            {
+                "object_id": "midennir-3505"
+            }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

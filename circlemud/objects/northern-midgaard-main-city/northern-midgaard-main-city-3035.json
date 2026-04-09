@@ -1,0 +1,42 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3035",
+    "spec": {
+        "aliases": [
+            "fountain",
+            "water"
+        ],
+        "short_desc": "the large fountain",
+        "long_desc": "A large fountain carved from blue-streaked marble is here, bubbling merrily.",
+        "detailed_desc": "A large fountain carved from blue-streaked marble is here, bubbling merrily.",
+        "flags": [
+            "immobile"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "marble",
+                    "blue",
+                    "streaked"
+                ],
+                "description": "It is a well crafted fountain, carved from a single piece of very beautiful white marble shot through with electric blue streaks that look almost like lightning dancing along the sides of the fountain. It seems to be enchanted in some manner, as the water level seems to never lower."
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 9999,
+        "effects": [
+            "NORENT",
+            "NODONATE",
+            "NOINVIS",
+            "MAGIC"
+        ],
+        "type": "FOUNTAIN",
+        "values": [
+            9999,
+            9999,
+            15,
+            0
+        ]
+    }
+}

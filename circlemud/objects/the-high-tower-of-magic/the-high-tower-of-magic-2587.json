@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2587",
+    "spec": {
+        "aliases": [
+            "cloak",
+            "shimmering"
+        ],
+        "short_desc": "a shimmering cloak of many colors",
+        "long_desc": "A multi-colored pile of cloth is here.",
+        "detailed_desc": "A multi-colored pile of cloth is here.",
+        "flags": [
+            "wearable",
+            "container"
+        ],
+        "wear_slots": [
+            "neck"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -15
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "capacity": 100,
+        "cost": 25000,
+        "rent": 5500,
+        "weight": 8,
+        "effects": [
+            "GLOW",
+            "MAGIC"
+        ]
+    }
+}

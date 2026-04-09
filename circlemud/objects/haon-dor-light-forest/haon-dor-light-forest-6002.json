@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6002",
+    "spec": {
+        "aliases": [
+            "boots",
+            "leather"
+        ],
+        "short_desc": "a pair of worn leather boots",
+        "long_desc": "A pair of worn leather boots lies here.",
+        "detailed_desc": "They are fashioned from rough leather that has been oiled frequently to make it stay waterproof. They look worn but quite functional.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "feet"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 60,
+        "rent": 10,
+        "weight": 4,
+        "effects": [
+            "NODONATE"
+        ]
+    }
+}

@@ -27,5 +27,8 @@
                 "description": ",_____________________________. | | | Stanneg by the Mountains | | | | Population: 27 | | | | -- BUAG SIGNS INC.| `-----------------------------' | | | | | | | |"
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

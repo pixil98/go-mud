@@ -32,5 +32,11 @@
                 "description": "The ancient grey giants seem to observe you silently."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "new-thalos-5437",
+    "spec": {
+        "aliases": [
+            "basket"
+        ],
+        "short_desc": "a basket",
+        "long_desc": "A basket lies here.",
+        "detailed_desc": "A basket lies here.",
+        "flags": [
+            "container"
+        ]
+    },
+    "circlemud_unused": {
+        "capacity": 50,
+        "cost": 250,
+        "rent": 50,
+        "weight": 4
+    }
+}

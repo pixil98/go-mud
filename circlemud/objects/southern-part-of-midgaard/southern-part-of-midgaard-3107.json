@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3107",
+    "spec": {
+        "aliases": [
+            "key",
+            "wooden"
+        ],
+        "short_desc": "a wooden key",
+        "long_desc": "A wooden key has been left here.",
+        "detailed_desc": "The wooden key is not special. In fact it is just about the most boring key you've ever seen in your life."
+    },
+    "circlemud_unused": {
+        "rent": 10,
+        "weight": 1,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

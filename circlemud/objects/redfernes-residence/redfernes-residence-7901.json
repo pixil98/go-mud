@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7901",
+    "spec": {
+        "aliases": [
+            "key",
+            "copper"
+        ],
+        "short_desc": "a copper key",
+        "long_desc": "A copper key has been left on the floor.",
+        "detailed_desc": "This little key is made from copper.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 2,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

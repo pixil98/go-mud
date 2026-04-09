@@ -58,5 +58,17 @@
                 "object_id": "the-high-tower-of-magic-2500"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 500,
+        "gold": 985,
+        "gender": "N",
+        "flags": [
+            "NOCHARM",
+            "NOSUMMON",
+            "NOSLEEP",
+            "NOBASH",
+            "NOBLIND"
+        ]
     }
 }

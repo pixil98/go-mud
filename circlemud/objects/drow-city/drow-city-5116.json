@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "drow-city-5116",
+    "spec": {
+        "aliases": [
+            "gold",
+            "treasure",
+            "coins"
+        ],
+        "short_desc": "a pile of golden coins",
+        "long_desc": "A large pile of golden coins is lying here.",
+        "detailed_desc": "A large pile of golden coins is lying here."
+    },
+    "circlemud_unused": {
+        "cost": 17645,
+        "weight": 10,
+        "type": "MONEY",
+        "values": [
+            17645,
+            0,
+            0,
+            0
+        ]
+    }
+}

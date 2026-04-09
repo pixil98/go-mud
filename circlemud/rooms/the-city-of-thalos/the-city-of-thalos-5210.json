@@ -25,5 +25,8 @@
                 "description": "A small clay dwelling sits here."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

@@ -45,5 +45,12 @@
             "stay_zone"
         ],
         "exp_reward": 16500
+    },
+    "circlemud_unused": {
+        "gold": 1000,
+        "gender": "M",
+        "flags": [
+            "NOBASH"
+        ]
     }
 }

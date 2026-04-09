@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5312",
+    "spec": {
+        "aliases": [
+            "scarab",
+            "emerald"
+        ],
+        "short_desc": "a small emerald scarab",
+        "long_desc": "A small emerald scarab lies here on the ground.",
+        "detailed_desc": "The scarab is intricately detailed, down to the tiny hairs on its insectile legs and the faceting of the emeralds in its eyes.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 5,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

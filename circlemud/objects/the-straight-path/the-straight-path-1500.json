@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1500",
+    "spec": {
+        "aliases": [
+            "scales",
+            "justice",
+            "scale"
+        ],
+        "short_desc": "the Scales of Justice",
+        "long_desc": "Two beautiful plates shaped like scales have been left here.",
+        "detailed_desc": "As you look at the scales, you notice that they seem to sway back and forth of their own accord, as if weighing something that is to you still unseen.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.stats.int",
+                "value": 1
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.wis",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 15000,
+        "rent": 2200,
+        "weight": 10,
+        "effects": [
+            "GLOW",
+            "ANTI_EVIL"
+        ]
+    }
+}

@@ -19,5 +19,8 @@
             "rome-12007",
             "rome-12007"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

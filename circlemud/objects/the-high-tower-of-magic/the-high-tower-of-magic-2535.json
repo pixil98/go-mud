@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2535",
+    "spec": {
+        "aliases": [
+            "altar"
+        ],
+        "short_desc": "a golden altar",
+        "flags": [
+            "immobile",
+            "container"
+        ],
+        "closure": {
+            "closed": true
+        }
+    },
+    "circlemud_unused": {
+        "capacity": 1000,
+        "cost": 1,
+        "rent": 1,
+        "weight": 5000
+    }
+}

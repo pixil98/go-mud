@@ -15,6 +15,14 @@
             "west": {
                 "room_id": "the-city-of-thalos-5218"
             }
-        }
+        },
+        "object_spawns": [
+            {
+                "object_id": "the-city-of-thalos-5234"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

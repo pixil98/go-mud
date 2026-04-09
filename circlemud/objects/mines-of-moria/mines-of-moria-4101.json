@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4101",
+    "spec": {
+        "aliases": [
+            "gloves",
+            "swordmans"
+        ],
+        "short_desc": "a pair of swordsmans' gloves",
+        "long_desc": "A pair of finely crafted gloves are lying on the ground here.",
+        "detailed_desc": "They look like the right kind of equipment to use when fighting.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hands"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 3500,
+        "rent": 800,
+        "weight": 1,
+        "effects": [
+            "ANTI_GOOD"
+        ]
+    }
+}

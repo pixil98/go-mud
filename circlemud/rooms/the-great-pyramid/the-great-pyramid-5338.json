@@ -15,5 +15,11 @@
                 "description": "The stairs spiral down into a dusty hallway."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

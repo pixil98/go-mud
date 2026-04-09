@@ -17,5 +17,8 @@
             "the-orc-enclave-6200",
             "the-orc-enclave-6201"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

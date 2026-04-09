@@ -19,5 +19,11 @@
                 "description": "You can see water."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "HILLS",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

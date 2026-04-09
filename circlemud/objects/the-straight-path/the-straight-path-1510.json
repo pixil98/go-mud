@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1510",
+    "spec": {
+        "aliases": [
+            "surah",
+            "book"
+        ],
+        "short_desc": "a surah of the book",
+        "long_desc": "You notice a thin parchment, with flowing script and rich decorative trim.",
+        "detailed_desc": "Al-Kafirun Say: \"Oh ye that reject the Faith, I do not worship what you worship, nor do you worship what I worship. To you be your Way, and to me mine.\"",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "light"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 3
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 3
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 500,
+        "rent": 8000,
+        "effects": [
+            "NODONATE",
+            "ANTI_EVIL",
+            "ANTI_NEUTRAL",
+            "ANTI_MAGIC_USER",
+            "ANTI_CLERIC"
+        ]
+    }
+}

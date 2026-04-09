@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "drow-city-5110",
+    "spec": {
+        "aliases": [
+            "wand",
+            "blue",
+            "silver"
+        ],
+        "short_desc": "a silvery blue wand",
+        "long_desc": "A silvery blue wand has been dropped in the dirt.",
+        "detailed_desc": "A silvery blue wand has been dropped in the dirt.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 4000,
+        "rent": 3000,
+        "weight": 1,
+        "effects": [
+            "MAGIC"
+        ],
+        "type": "WAND",
+        "values": [
+            10,
+            3,
+            3,
+            30
+        ]
+    }
+}

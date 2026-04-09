@@ -44,5 +44,10 @@
             "helper"
         ],
         "exp_reward": 16000
+    },
+    "circlemud_unused": {
+        "alignment": 900,
+        "gold": 3500,
+        "gender": "M"
     }
 }

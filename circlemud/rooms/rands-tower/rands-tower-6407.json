@@ -38,5 +38,11 @@
             "rands-tower-6401",
             "rands-tower-6401"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

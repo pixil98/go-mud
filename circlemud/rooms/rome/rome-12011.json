@@ -31,5 +31,11 @@
             "rome-12009",
             "rome-12010"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

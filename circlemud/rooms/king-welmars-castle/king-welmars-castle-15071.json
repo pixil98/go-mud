@@ -11,5 +11,8 @@
                 "description": "You can see the dirt road to the west."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

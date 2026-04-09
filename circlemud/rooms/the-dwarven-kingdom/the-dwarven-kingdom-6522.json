@@ -18,5 +18,11 @@
                 "description": "There is a wall poster of a nude Minne Pearl."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

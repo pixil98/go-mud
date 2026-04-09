@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5315",
+    "spec": {
+        "aliases": [
+            "book",
+            "riddles"
+        ],
+        "short_desc": "a book of riddles",
+        "long_desc": "A medium-sized parchment book with well-worn pages lies here.",
+        "detailed_desc": "The book has well-worn pages, containing many befuddling riddles to surprise, confuse, and amuse you. You find yourself bewildered by its contents and put it down to sort your head out."
+    },
+    "circlemud_unused": {
+        "cost": 7500,
+        "rent": 250,
+        "weight": 15,
+        "type": "SCROLL",
+        "values": [
+            21,
+            201,
+            20,
+            22
+        ]
+    }
+}

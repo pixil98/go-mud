@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2570",
+    "spec": {
+        "aliases": [
+            "cowl",
+            "dark"
+        ],
+        "short_desc": "a dark cowl",
+        "long_desc": "A dark cowl is here.",
+        "detailed_desc": "A dark cowl is here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "neck"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -8
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 1200,
+        "rent": 400,
+        "weight": 5,
+        "effects": [
+            "GLOW",
+            "HUM",
+            "MAGIC",
+            "ANTI_GOOD"
+        ]
+    }
+}

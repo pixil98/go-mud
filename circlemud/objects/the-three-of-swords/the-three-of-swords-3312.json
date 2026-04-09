@@ -1,0 +1,48 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3312",
+    "spec": {
+        "aliases": [
+            "sword",
+            "long"
+        ],
+        "short_desc": "a long sword",
+        "long_desc": "A superb long sword sticks in the earth.",
+        "detailed_desc": "This sword is light, but the heft is perfectly balanced. Such an incredible weapon can only have be crafted by the legendary smith Gabadiel, and as such be worth a fortune!",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield",
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d7"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.str",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 750000,
+        "rent": 15000,
+        "weight": 15,
+        "effects": [
+            "NODONATE",
+            "ANTI_MAGIC_USER",
+            "ANTI_CLERIC"
+        ]
+    }
+}

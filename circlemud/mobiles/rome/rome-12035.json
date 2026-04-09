@@ -46,5 +46,14 @@
                 "object_id": "rome-12031"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -1000,
+        "gold": 1000,
+        "gender": "M",
+        "flags": [
+            "NOCHARM",
+            "NOSUMMON"
+        ]
     }
 }

@@ -49,5 +49,10 @@
             "sentinel"
         ],
         "exp_reward": 145000
+    },
+    "circlemud_unused": {
+        "alignment": 1000,
+        "gold": 22000,
+        "gender": "M"
     }
 }

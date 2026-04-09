@@ -5,5 +5,6 @@
         "name": "Southern part of Midgaard",
         "reset_mode": "lifespan",
         "lifespan": "40m"
-    }
+    },
+    "creators": "DikuMud"
 }

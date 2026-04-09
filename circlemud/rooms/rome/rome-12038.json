@@ -11,13 +11,15 @@
                 "description": "You see that the doublehung door leads to the senate chambers.",
                 "closure": {
                     "name": "door",
-                    "closed": true,
-                    "lock": {
-                        "key_id": "rome-12104",
-                        "locked": true
-                    }
+                    "closed": true
                 }
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

@@ -29,5 +29,11 @@
                 "description": "The plaque on the door reads: THE ART EXHIBIT of NEW THALOS - the management is not responsible for lost items."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

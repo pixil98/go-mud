@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2505",
+    "spec": {
+        "aliases": [
+            "chunk",
+            "meat"
+        ],
+        "short_desc": "a large chunk of meat",
+        "long_desc": "A large chunk of meat is here.",
+        "detailed_desc": "A large chunk of meat is here."
+    },
+    "circlemud_unused": {
+        "cost": 20,
+        "rent": 5,
+        "weight": 2,
+        "type": "FOOD",
+        "values": [
+            24,
+            0,
+            0,
+            1
+        ]
+    }
+}

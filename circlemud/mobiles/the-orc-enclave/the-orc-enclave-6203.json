@@ -50,43 +50,11 @@
             {
                 "slot": "wield",
                 "object_id": "the-orc-enclave-6204"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-orc-enclave-6204"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-orc-enclave-6204"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-orc-enclave-6204"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-orc-enclave-6204"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-orc-enclave-6204"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-orc-enclave-6204"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-orc-enclave-6204"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-orc-enclave-6204"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-orc-enclave-6204"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -350,
+        "gender": "M"
     }
 }

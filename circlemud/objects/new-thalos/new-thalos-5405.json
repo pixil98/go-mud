@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "new-thalos-5405",
+    "spec": {
+        "aliases": [
+            "bardiche"
+        ],
+        "short_desc": "a bardiche",
+        "long_desc": "A bardiche lies here.",
+        "detailed_desc": "A bardiche lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 1900,
+        "rent": 110,
+        "weight": 4
+    }
+}

@@ -23,5 +23,11 @@
             "river-island-of-minos-905",
             "river-island-of-minos-906"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

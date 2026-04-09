@@ -10,5 +10,11 @@
                 "room_id": "new-thalos-5587"
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

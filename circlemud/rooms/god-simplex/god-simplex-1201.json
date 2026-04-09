@@ -15,5 +15,12 @@
             "god-simplex-1200",
             "god-simplex-1202"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS",
+            "PRIVATE"
+        ]
     }
 }

@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "new-thalos-5442",
+    "spec": {
+        "aliases": [
+            "rations",
+            "dry"
+        ],
+        "short_desc": "some dry rations",
+        "long_desc": "Some dry rations lie here.",
+        "detailed_desc": "Some dry rations lie here."
+    },
+    "circlemud_unused": {
+        "cost": 20,
+        "rent": 30,
+        "weight": 2,
+        "type": "FOOD",
+        "values": [
+            20,
+            0,
+            0,
+            0
+        ]
+    }
+}

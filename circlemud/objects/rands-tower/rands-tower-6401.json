@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "rands-tower-6401",
+    "spec": {
+        "aliases": [
+            "platemail",
+            "glowing",
+            "plate",
+            "mail"
+        ],
+        "short_desc": "the glowing platemail",
+        "long_desc": "Some glowing platemail lies in a heap here.",
+        "detailed_desc": "Some glowing platemail lies in a heap here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "body"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 15
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 30000,
+        "rent": 10000,
+        "weight": 150,
+        "effects": [
+            "GLOW",
+            "MAGIC"
+        ]
+    }
+}

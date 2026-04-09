@@ -16,5 +16,12 @@
         "mobile_spawns": [
             "the-dwarven-kingdom-6503"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS",
+            "SOUNDPROOF"
+        ]
     }
 }

@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7907",
+    "spec": {
+        "aliases": [
+            "bracelet",
+            "spiked"
+        ],
+        "short_desc": "a large spiked bracelet",
+        "long_desc": "A large spiked bracelet has been left here.",
+        "detailed_desc": "A large spiked bracelet has been left here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wrist"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -4
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 1200,
+        "rent": 2000,
+        "weight": 1,
+        "effects": [
+            "MAGIC"
+        ],
+        "type": "WORN",
+        "values": [
+            0,
+            0,
+            0,
+            0
+        ]
+    }
+}

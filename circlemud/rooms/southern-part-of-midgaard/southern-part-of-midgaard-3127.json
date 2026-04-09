@@ -18,5 +18,8 @@
                 "description": "Through the South Gate you can see a small path leading southwards."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

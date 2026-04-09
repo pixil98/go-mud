@@ -35,5 +35,11 @@
                 "description": "The writing says 'BEWARE adventurer!'"
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

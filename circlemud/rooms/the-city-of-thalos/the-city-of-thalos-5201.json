@@ -23,5 +23,8 @@
                 "description": "Main Street lies this way."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

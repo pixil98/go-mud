@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5201",
+    "spec": {
+        "aliases": [
+            "helm",
+            "iron"
+        ],
+        "short_desc": "an iron helm",
+        "long_desc": "An iron helm has been left on the ground.",
+        "detailed_desc": "An iron helm has been left on the ground.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "head"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 7
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": -2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 5000,
+        "rent": 800,
+        "weight": 10
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2539",
+    "spec": {
+        "aliases": [
+            "a",
+            "pile",
+            "of",
+            "coins"
+        ],
+        "short_desc": "a pile of coins is here",
+        "long_desc": "A pile of coins is here.",
+        "detailed_desc": "A pile of coins is here."
+    },
+    "circlemud_unused": {
+        "cost": 23574,
+        "weight": 23,
+        "type": "MONEY",
+        "values": [
+            23574,
+            0,
+            0,
+            0
+        ]
+    }
+}

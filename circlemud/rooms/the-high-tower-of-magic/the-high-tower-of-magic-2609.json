@@ -32,5 +32,12 @@
             "the-high-tower-of-magic-2542",
             "the-high-tower-of-magic-2545"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS",
+            "NOTRACK"
+        ]
     }
 }

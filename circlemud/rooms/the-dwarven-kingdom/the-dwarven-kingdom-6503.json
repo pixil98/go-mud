@@ -21,6 +21,14 @@
         },
         "mobile_spawns": [
             "the-dwarven-kingdom-6501"
+        ],
+        "object_spawns": [
+            {
+                "object_id": "the-dwarven-kingdom-6507"
+            }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "HILLS"
     }
 }

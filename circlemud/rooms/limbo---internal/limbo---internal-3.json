@@ -12,5 +12,12 @@
                 "description": "You notice that the portal above you looks almost like glass, albeit very dirty glass."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS",
+            "PRIVATE"
+        ]
     }
 }

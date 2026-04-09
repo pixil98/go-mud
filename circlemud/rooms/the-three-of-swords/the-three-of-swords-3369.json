@@ -22,5 +22,13 @@
                 "key": "dark"
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "HILLS",
+        "flags": [
+            "INDOORS",
+            "NOTRACK",
+            "PRIVATE"
+        ]
     }
 }

@@ -31,5 +31,8 @@
                 "description": "The trees are mostly old beeches and oaks."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

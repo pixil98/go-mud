@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5207",
+    "spec": {
+        "aliases": [
+            "plate",
+            "breast",
+            "iron"
+        ],
+        "short_desc": "a battered iron breast plate",
+        "long_desc": "A battered iron breast plate lies here.",
+        "detailed_desc": "A battered iron breast plate lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "body"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": -6
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 13000,
+        "rent": 150,
+        "weight": 125
+    }
+}

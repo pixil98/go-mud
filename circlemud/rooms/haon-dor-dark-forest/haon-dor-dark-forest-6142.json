@@ -37,5 +37,11 @@
                 "description": "The disgusting smell of a large reptile emanates from the cave opening."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5242",
+    "spec": {
+        "aliases": [
+            "stone",
+            "green",
+            "pale"
+        ],
+        "short_desc": "a pale green stone",
+        "long_desc": "A pale green stone lies here collecting dust.",
+        "detailed_desc": "A pale green stone lies here collecting dust.",
+        "flags": [
+            "wearable",
+            "no_drop"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": -5
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 7100,
+        "rent": 1000,
+        "weight": 10,
+        "effects": [
+            "NODONATE",
+            "MAGIC"
+        ]
+    }
+}

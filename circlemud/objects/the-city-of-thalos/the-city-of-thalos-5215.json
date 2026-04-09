@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5215",
+    "spec": {
+        "aliases": [
+            "scroll",
+            "tattered"
+        ],
+        "short_desc": "a tattered scroll",
+        "long_desc": "A worn and tattered scroll has been left here.",
+        "detailed_desc": "A worn and tattered scroll has been left here."
+    },
+    "circlemud_unused": {
+        "cost": 11000,
+        "rent": 4000,
+        "weight": 15,
+        "effects": [
+            "MAGIC"
+        ],
+        "type": "SCROLL",
+        "values": [
+            24,
+            24,
+            44,
+            4
+        ]
+    }
+}

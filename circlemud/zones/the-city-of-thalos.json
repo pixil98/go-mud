@@ -5,5 +5,6 @@
         "name": "The City Of Thalos",
         "reset_mode": "lifespan",
         "lifespan": "15m"
-    }
+    },
+    "creators": "Rorschach"
 }

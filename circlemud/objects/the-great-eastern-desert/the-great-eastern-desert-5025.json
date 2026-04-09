@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5025",
+    "spec": {
+        "aliases": [
+            "bracelet",
+            "copper"
+        ],
+        "short_desc": "a copper bracelet",
+        "long_desc": "A tarnished copper bracelet lies at your feet.",
+        "detailed_desc": "A tarnished copper bracelet lies at your feet.",
+        "flags": [
+            "wearable",
+            "no_drop"
+        ],
+        "wear_slots": [
+            "wrist"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -5
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 10
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": -4
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 23000,
+        "rent": 2500,
+        "weight": 10,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

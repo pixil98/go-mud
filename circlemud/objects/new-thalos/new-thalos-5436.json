@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "new-thalos-5436",
+    "spec": {
+        "aliases": [
+            "backpack",
+            "back",
+            "pack"
+        ],
+        "short_desc": "a backpack",
+        "long_desc": "A backpack lies here",
+        "detailed_desc": "A backpack lies here",
+        "flags": [
+            "wearable",
+            "container"
+        ],
+        "wear_slots": [
+            "about"
+        ],
+        "closure": {
+            "closed": false
+        }
+    },
+    "circlemud_unused": {
+        "capacity": 75,
+        "cost": 100,
+        "rent": 100,
+        "weight": 8
+    }
+}

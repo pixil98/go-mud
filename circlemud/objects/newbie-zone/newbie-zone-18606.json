@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "newbie-zone-18606",
+    "spec": {
+        "aliases": [
+            "dagger",
+            "newbie"
+        ],
+        "short_desc": "a shiny newbie dagger",
+        "long_desc": "A shiny newbie dagger is lying here looking for a back to stab.",
+        "detailed_desc": "A shiny newbie dagger is lying here looking for a back to stab.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield",
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d4"
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pierce",
+        "weight": 1,
+        "effects": [
+            "GLOW",
+            "MAGIC"
+        ]
+    }
+}

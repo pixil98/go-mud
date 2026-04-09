@@ -17,6 +17,9 @@ const (
 	ObjectFlagContainer
 	ObjectFlagImmobile
 	ObjectFlagWearable
+	ObjectFlagInvisible
+	ObjectFlagNoDrop
+	ObjectFlagNoSell
 )
 
 func parseObjectFlag(s string) ObjectFlag {
@@ -27,6 +30,12 @@ func parseObjectFlag(s string) ObjectFlag {
 		return ObjectFlagImmobile
 	case "wearable":
 		return ObjectFlagWearable
+	case "invisible":
+		return ObjectFlagInvisible
+	case "no_drop":
+		return ObjectFlagNoDrop
+	case "no_sell":
+		return ObjectFlagNoSell
 	default:
 		return ObjectFlagUnknown
 	}

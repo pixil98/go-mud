@@ -1,0 +1,43 @@
+{
+    "version": 1,
+    "id": "the-chessboard-of-midgaard-3606",
+    "spec": {
+        "aliases": [
+            "lance",
+            "black",
+            "knight"
+        ],
+        "short_desc": "the Lance of the Black Knight",
+        "long_desc": "The Lance of the Black Knight lies here, waiting to rust.",
+        "detailed_desc": "The Lance of the Black Knight lies here, waiting to rust.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d6"
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "crush",
+        "cost": 10000,
+        "rent": 3,
+        "weight": 18,
+        "effects": [
+            "HUM",
+            "MAGIC",
+            "ANTI_GOOD"
+        ]
+    }
+}

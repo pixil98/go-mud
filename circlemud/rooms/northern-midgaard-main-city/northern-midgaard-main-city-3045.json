@@ -19,5 +19,8 @@
                 "description": "The alley leads west."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

@@ -18,5 +18,12 @@
                 "description": "Stretching out as far as the eye can see is a canopy of dark tree tops which can only be the Haon-Dor-Dark Forest. A faint light in the distance to the northeast marks what is probably the city of Midgaard."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS",
+            "NOTRACK"
+        ]
     }
 }

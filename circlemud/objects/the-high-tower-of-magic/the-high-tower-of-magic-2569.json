@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2569",
+    "spec": {
+        "aliases": [
+            "dust"
+        ],
+        "short_desc": "some sparkling dust",
+        "long_desc": "Some sparkling dust is in a pile here.",
+        "detailed_desc": "Some sparkling dust is in a pile here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 1000,
+        "rent": 150,
+        "weight": 2,
+        "type": "STAFF",
+        "values": [
+            20,
+            1,
+            1,
+            38
+        ]
+    }
+}

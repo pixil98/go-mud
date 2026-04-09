@@ -62,5 +62,8 @@
                 "description": "You could probably see most of the forest, and perhaps even the city from the top of the tree... of course, you'd have to deal with whatever that shape is pacing on one of the upper limbs."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

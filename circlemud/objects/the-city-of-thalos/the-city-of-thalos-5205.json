@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5205",
+    "spec": {
+        "aliases": [
+            "greaves",
+            "iron"
+        ],
+        "short_desc": "a set of iron greaves",
+        "long_desc": "A set of iron greaves lie here unattended.",
+        "detailed_desc": "A set of iron greaves lie here unattended.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "legs"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 7
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": -3
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.dex",
+                "value": -3
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 5400,
+        "rent": 210,
+        "weight": 10
+    }
+}

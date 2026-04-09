@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "new-thalos-5486",
+    "spec": {
+        "aliases": [
+            "hammer",
+            "sledge"
+        ],
+        "short_desc": "a sledge hammer",
+        "long_desc": "A sledge hammer lies here.",
+        "detailed_desc": "A sledge hammer lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d3"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "crush",
+        "cost": 200,
+        "rent": 40,
+        "weight": 24
+    }
+}

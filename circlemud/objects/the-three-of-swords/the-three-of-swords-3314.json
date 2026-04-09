@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3314",
+    "spec": {
+        "aliases": [
+            "corpse"
+        ],
+        "short_desc": "a dismembered and burnt corpse",
+        "long_desc": "A dismembered and burnt corpse lies on the ground here.",
+        "detailed_desc": "It is still smouldering a little; the culprits can't be far off!",
+        "flags": [
+            "immobile"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 1,
+        "rent": 1,
+        "weight": 1
+    }
+}

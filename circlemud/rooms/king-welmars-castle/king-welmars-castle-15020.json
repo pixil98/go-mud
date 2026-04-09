@@ -19,5 +19,11 @@
                 "description": "The passage continues to the south."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

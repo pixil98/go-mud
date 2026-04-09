@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "new-thalos-5457",
+    "spec": {
+        "aliases": [
+            "carrot"
+        ],
+        "short_desc": "a carrot",
+        "long_desc": "A carrot lies here.",
+        "detailed_desc": "A carrot lies here."
+    },
+    "circlemud_unused": {
+        "cost": 4,
+        "rent": 10,
+        "weight": 1,
+        "type": "FOOD",
+        "values": [
+            3,
+            0,
+            0,
+            0
+        ]
+    }
+}

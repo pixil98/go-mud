@@ -10,6 +10,17 @@
                 "room_id": "king-welmars-castle-15066",
                 "description": "You can see the dirt road through the doorway to the east."
             }
-        }
+        },
+        "object_spawns": [
+            {
+                "object_id": "king-welmars-castle-15018"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

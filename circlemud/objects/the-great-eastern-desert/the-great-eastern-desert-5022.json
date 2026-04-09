@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5022",
+    "spec": {
+        "aliases": [
+            "scroll",
+            "encrypted"
+        ],
+        "short_desc": "an encrypted scroll",
+        "long_desc": "An encrypted scroll lies at your feet.",
+        "detailed_desc": "An encrypted scroll lies at your feet."
+    },
+    "circlemud_unused": {
+        "cost": 1500,
+        "rent": 500,
+        "weight": 7,
+        "type": "SCROLL",
+        "values": [
+            22,
+            14,
+            35,
+            43
+        ]
+    }
+}

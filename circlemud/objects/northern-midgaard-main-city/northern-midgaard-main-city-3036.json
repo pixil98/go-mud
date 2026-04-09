@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3036",
+    "spec": {
+        "aliases": [
+            "cashcard",
+            "card",
+            "atm"
+        ],
+        "short_desc": "a cashcard",
+        "long_desc": "A handy dandy cashcard is sitting on the ground here.",
+        "detailed_desc": "There is some writing on the back of the card which reads: To use, type 'BALANCE', 'WITHDRAW <amount>', or 'DEPOSIT <amount>'. Please report any strange occurrences to the bank manager.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 10000,
+        "rent": 10,
+        "weight": 1,
+        "effects": [
+            "NORENT",
+            "NODONATE",
+            "NOINVIS",
+            "MAGIC"
+        ]
+    }
+}

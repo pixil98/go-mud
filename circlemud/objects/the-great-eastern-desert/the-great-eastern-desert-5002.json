@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5002",
+    "spec": {
+        "aliases": [
+            "halberd"
+        ],
+        "short_desc": "a halberd",
+        "long_desc": "A mighty halberd lies against the wall.",
+        "detailed_desc": "A mighty halberd lies against the wall.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d5"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 12000,
+        "rent": 10000,
+        "weight": 16,
+        "effects": [
+            "MAGIC",
+            "BLESS"
+        ]
+    }
+}

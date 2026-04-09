@@ -19,5 +19,8 @@
                 "description": "There is a strong stench coming from this direction."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

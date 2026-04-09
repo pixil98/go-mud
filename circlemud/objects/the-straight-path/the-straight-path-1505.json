@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1505",
+    "spec": {
+        "aliases": [
+            "scimitar",
+            "jeweled"
+        ],
+        "short_desc": "a jeweled scimitar",
+        "long_desc": "A stunning curved blade glistens on the ground.",
+        "detailed_desc": "The entire rim and edge of the scimitar's handle is bedecked in a gorgeous array of stones and precious metals.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "7d1"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 5000,
+        "rent": 500,
+        "weight": 5,
+        "effects": [
+            "GLOW",
+            "ANTI_EVIL",
+            "ANTI_CLERIC"
+        ]
+    }
+}

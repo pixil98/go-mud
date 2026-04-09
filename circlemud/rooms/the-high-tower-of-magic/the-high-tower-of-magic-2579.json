@@ -30,6 +30,41 @@
                     }
                 }
             }
-        }
+        },
+        "object_spawns": [
+            {
+                "object_id": "the-high-tower-of-magic-2508",
+                "contents": [
+                    {
+                        "object_id": "northern-midgaard-main-city-3020"
+                    },
+                    {
+                        "object_id": "northern-midgaard-main-city-3021"
+                    },
+                    {
+                        "object_id": "northern-midgaard-main-city-3022"
+                    }
+                ]
+            },
+            {
+                "object_id": "the-high-tower-of-magic-2509"
+            },
+            {
+                "object_id": "the-high-tower-of-magic-2510"
+            },
+            {
+                "object_id": "the-high-tower-of-magic-2511"
+            },
+            {
+                "object_id": "the-high-tower-of-magic-2512"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS",
+            "NOTRACK"
+        ]
     }
 }

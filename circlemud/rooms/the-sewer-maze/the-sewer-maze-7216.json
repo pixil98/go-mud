@@ -17,5 +17,11 @@
                 "key": "dark"
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "WATER_SWIM",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

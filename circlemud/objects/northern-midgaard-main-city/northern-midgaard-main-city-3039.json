@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3039",
+    "spec": {
+        "aliases": [
+            "pot"
+        ],
+        "short_desc": "a pot",
+        "long_desc": "A cast-iron pot sits on the ground.",
+        "detailed_desc": "It is a nice pot. You could use it, if you ever settled down.",
+        "flags": [
+            "container"
+        ]
+    },
+    "circlemud_unused": {
+        "capacity": 10,
+        "cost": 100,
+        "rent": 20,
+        "weight": 10
+    }
+}

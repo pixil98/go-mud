@@ -18,6 +18,14 @@
                 "room_id": "southern-part-of-midgaard-3101",
                 "description": "You see the promenade."
             }
-        }
+        },
+        "object_spawns": [
+            {
+                "object_id": "southern-part-of-midgaard-3111"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

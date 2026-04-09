@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2504",
+    "spec": {
+        "aliases": [
+            "slice",
+            "bread",
+            "traveller"
+        ],
+        "short_desc": "a slice of traveller's bread",
+        "long_desc": "A slice of traveller's bread is here looking very tasty.",
+        "detailed_desc": "A slice of traveller's bread is here looking very tasty."
+    },
+    "circlemud_unused": {
+        "cost": 12,
+        "rent": 3,
+        "weight": 1,
+        "type": "FOOD",
+        "values": [
+            15,
+            0,
+            0,
+            0
+        ]
+    }
+}

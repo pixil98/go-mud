@@ -16,6 +16,14 @@
                 "room_id": "the-city-of-thalos-5248",
                 "description": "Winds howl high above your head in the tower above. You hear the screams of tens of howling lamias above you!"
             }
-        }
+        },
+        "object_spawns": [
+            {
+                "object_id": "the-city-of-thalos-5242"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

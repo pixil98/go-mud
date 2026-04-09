@@ -47,5 +47,11 @@
                 "description": "The markings indicate that this tomb is indeed the tomb of the greatest pharoahs of the ancient civilization that built this massive pyramid."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

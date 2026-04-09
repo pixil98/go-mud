@@ -23,5 +23,8 @@
         "mobile_spawns": [
             "new-thalos-5469"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "WATER_NOSWIM"
     }
 }

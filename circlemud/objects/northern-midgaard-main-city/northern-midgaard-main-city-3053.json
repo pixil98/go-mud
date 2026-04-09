@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3053",
+    "spec": {
+        "aliases": [
+            "wand",
+            "grey"
+        ],
+        "short_desc": "a grey wand of invisibility",
+        "long_desc": "A grey wand has carelessly been left here.",
+        "detailed_desc": "The wand is an old dark grey stick. You notice a small symbol etched at the base of the wand. It looks like this: \\ / - O - / \\",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 4000,
+        "rent": 100,
+        "weight": 2,
+        "effects": [
+            "MAGIC"
+        ],
+        "type": "WAND",
+        "values": [
+            12,
+            2,
+            2,
+            29
+        ]
+    }
+}

@@ -15,5 +15,8 @@
                 "description": "The gravel road continues southward to an open space before a small building."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

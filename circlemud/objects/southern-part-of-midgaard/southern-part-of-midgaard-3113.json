@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3113",
+    "spec": {
+        "aliases": [
+            "fountain",
+            "water"
+        ],
+        "short_desc": "a fountain",
+        "long_desc": "A small white fountain is standing here, gurgling happily.",
+        "detailed_desc": "It is very nice. Made from fine white marble.",
+        "flags": [
+            "immobile"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 999,
+        "type": "FOUNTAIN",
+        "values": [
+            999,
+            999,
+            15,
+            0
+        ]
+    }
+}

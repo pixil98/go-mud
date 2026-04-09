@@ -56,63 +56,12 @@
             {
                 "slot": "wield",
                 "object_id": "the-chessboard-of-midgaard-3602"
-            },
-            {
-                "slot": "body",
-                "object_id": "the-chessboard-of-midgaard-3600"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-chessboard-of-midgaard-3602"
-            },
-            {
-                "slot": "body",
-                "object_id": "the-chessboard-of-midgaard-3600"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-chessboard-of-midgaard-3602"
-            },
-            {
-                "slot": "body",
-                "object_id": "the-chessboard-of-midgaard-3600"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-chessboard-of-midgaard-3602"
-            },
-            {
-                "slot": "body",
-                "object_id": "the-chessboard-of-midgaard-3600"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-chessboard-of-midgaard-3602"
-            },
-            {
-                "slot": "body",
-                "object_id": "the-chessboard-of-midgaard-3600"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-chessboard-of-midgaard-3602"
-            },
-            {
-                "slot": "body",
-                "object_id": "the-chessboard-of-midgaard-3600"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-chessboard-of-midgaard-3602"
-            },
-            {
-                "slot": "body",
-                "object_id": "the-chessboard-of-midgaard-3600"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-chessboard-of-midgaard-3602"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -400,
+        "gold": 500,
+        "gender": "M"
     }
 }

@@ -40,5 +40,8 @@
                 "description": "To the northwest you see hills covered by dense forest."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "HILLS"
     }
 }

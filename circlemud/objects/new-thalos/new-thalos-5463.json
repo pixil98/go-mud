@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "new-thalos-5463",
+    "spec": {
+        "aliases": [
+            "chicken",
+            "whole"
+        ],
+        "short_desc": "a whole chicken",
+        "long_desc": "A whole skinned chicken lies here.",
+        "detailed_desc": "A whole skinned chicken lies here."
+    },
+    "circlemud_unused": {
+        "cost": 12,
+        "rent": 30,
+        "weight": 3,
+        "type": "FOOD",
+        "values": [
+            12,
+            0,
+            0,
+            0
+        ]
+    }
+}

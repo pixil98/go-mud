@@ -13,5 +13,8 @@
                 "room_id": "mines-of-moria-4043"
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

@@ -36,5 +36,11 @@
                 "description": "The hieroglyphics are covered with a thick layer of dust. You clear the dust away with your hand, and find that you cannot comprehend them."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

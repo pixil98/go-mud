@@ -21,5 +21,8 @@
                 "description": "This seems to be the only guild house in the entire city. Its dark nature makes you wonder about its origins."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

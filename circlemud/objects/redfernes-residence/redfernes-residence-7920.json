@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7920",
+    "spec": {
+        "aliases": [
+            "plates",
+            "arm",
+            "silvery",
+            "silver"
+        ],
+        "short_desc": "some silvery arm plates",
+        "long_desc": "On the floor you see some arm plates.",
+        "detailed_desc": "They seem to be made from silver or platinum. You see the outline of a rose.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "arms"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 7
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 12500,
+        "rent": 5000,
+        "weight": 40,
+        "effects": [
+            "MAGIC",
+            "ANTI_EVIL",
+            "ANTI_NEUTRAL"
+        ]
+    }
+}

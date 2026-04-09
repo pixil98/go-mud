@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "new-thalos-5483",
+    "spec": {
+        "aliases": [
+            "shears",
+            "sewing"
+        ],
+        "short_desc": "a pair of sewing shears",
+        "long_desc": "A pair of sewing shears lies here.",
+        "detailed_desc": "A pair of sewing shears lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d4"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "sting",
+        "cost": 100,
+        "rent": 50,
+        "weight": 2
+    }
+}

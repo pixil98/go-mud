@@ -47,5 +47,9 @@
             "wimpy"
         ],
         "exp_reward": 99
+    },
+    "circlemud_unused": {
+        "gold": 1,
+        "gender": "M"
     }
 }

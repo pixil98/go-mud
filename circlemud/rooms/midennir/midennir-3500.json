@@ -18,5 +18,8 @@
                 "room_id": "midennir-3501"
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

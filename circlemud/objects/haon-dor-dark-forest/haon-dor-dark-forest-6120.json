@@ -1,0 +1,49 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6120",
+    "spec": {
+        "aliases": [
+            "sword",
+            "long",
+            "slender"
+        ],
+        "short_desc": "a long, slender sword",
+        "long_desc": "A long, slender sword lies on the ground.",
+        "detailed_desc": "It is a long, slender sword that seems to be made from silver. The word 'Isha' has been engraved on the hilt.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d6"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 4
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 30000,
+        "rent": 6000,
+        "weight": 4,
+        "effects": [
+            "GLOW",
+            "MAGIC",
+            "ANTI_GOOD",
+            "ANTI_NEUTRAL"
+        ]
+    }
+}

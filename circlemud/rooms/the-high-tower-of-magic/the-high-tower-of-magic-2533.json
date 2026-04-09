@@ -23,6 +23,21 @@
         "mobile_spawns": [
             "the-high-tower-of-magic-2511",
             "the-high-tower-of-magic-2511"
+        ],
+        "object_spawns": [
+            {
+                "object_id": "the-high-tower-of-magic-2507"
+            },
+            {
+                "object_id": "the-high-tower-of-magic-2507"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS",
+            "NOTRACK"
         ]
     }
 }

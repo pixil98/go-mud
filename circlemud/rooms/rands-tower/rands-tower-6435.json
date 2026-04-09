@@ -14,11 +14,7 @@
                 "description": "These doors seem incredible. Unfortunately, they're locked.",
                 "closure": {
                     "name": "door",
-                    "closed": true,
-                    "lock": {
-                        "key_id": "limbo---internal-0",
-                        "locked": true
-                    }
+                    "closed": true
                 }
             }
         },
@@ -38,6 +34,12 @@
                 ],
                 "description": "They look nice, but aren't very valuable."
             }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
         ]
     }
 }

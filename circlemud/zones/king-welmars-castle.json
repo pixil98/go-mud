@@ -5,5 +5,6 @@
         "name": "King Welmar's Castle",
         "reset_mode": "lifespan",
         "lifespan": "120m"
-    }
+    },
+    "creators": "Pjotr and Sapowox of CircleMUD"
 }

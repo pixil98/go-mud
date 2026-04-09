@@ -30,5 +30,11 @@
                 "description": "As you look closer you can make out a crack in the center of the stones above your head. With some effort you might be able to lift that section up and get outside!"
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

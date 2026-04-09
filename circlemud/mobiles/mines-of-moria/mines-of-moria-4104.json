@@ -56,5 +56,10 @@
             "wimpy"
         ],
         "exp_reward": 2250
+    },
+    "circlemud_unused": {
+        "alignment": -200,
+        "gold": 200,
+        "gender": "M"
     }
 }

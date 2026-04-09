@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6115",
+    "spec": {
+        "aliases": [
+            "star",
+            "morning-star"
+        ],
+        "short_desc": "the morning star",
+        "long_desc": "the morning star is here collecting dust while it lies on the ground.",
+        "detailed_desc": "the morning star is here collecting dust while it lies on the ground.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d9"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pound",
+        "cost": 15000,
+        "rent": 2000,
+        "weight": 10,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

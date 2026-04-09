@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2544",
+    "spec": {
+        "aliases": [
+            "backpack",
+            "leather"
+        ],
+        "short_desc": "a leather backpack",
+        "long_desc": "A leather backpack is here.",
+        "detailed_desc": "A leather backpack is here.",
+        "flags": [
+            "wearable",
+            "container"
+        ],
+        "wear_slots": [
+            "about"
+        ]
+    },
+    "circlemud_unused": {
+        "capacity": 750,
+        "cost": 750,
+        "rent": 50,
+        "weight": 9
+    }
+}

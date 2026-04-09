@@ -23,5 +23,11 @@
             "the-dwarven-kingdom-6507",
             "the-dwarven-kingdom-6507"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

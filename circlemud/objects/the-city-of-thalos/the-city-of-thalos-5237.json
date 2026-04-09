@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5237",
+    "spec": {
+        "aliases": [
+            "stone",
+            "lavender",
+            "green"
+        ],
+        "short_desc": "a lavender and green stone",
+        "long_desc": "A stunning lavender and green stone rests on the ground.",
+        "detailed_desc": "A stunning lavender and green stone rests on the ground.",
+        "flags": [
+            "wearable",
+            "no_drop"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 4700,
+        "rent": 600,
+        "weight": 10,
+        "effects": [
+            "NODONATE",
+            "MAGIC"
+        ]
+    }
+}

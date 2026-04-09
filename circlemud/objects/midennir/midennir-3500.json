@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "midennir-3500",
+    "spec": {
+        "aliases": [
+            "sword",
+            "small"
+        ],
+        "short_desc": "a small sword",
+        "long_desc": "A small sword lies here.",
+        "detailed_desc": "A small sword lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d6"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pierce",
+        "cost": 60,
+        "rent": 10,
+        "weight": 3
+    }
+}

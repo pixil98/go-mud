@@ -38,5 +38,8 @@
             }
         ],
         "exp_reward": 1
+    },
+    "circlemud_unused": {
+        "gender": "N"
     }
 }

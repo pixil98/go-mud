@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "the-chessboard-of-midgaard-3602",
+    "spec": {
+        "aliases": [
+            "sword",
+            "black",
+            "pawn"
+        ],
+        "short_desc": "a Black Pawn's Sword",
+        "long_desc": "The sword of a Black Pawn lies here.",
+        "detailed_desc": "The sword of a Black Pawn lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d4"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 100,
+        "rent": 1,
+        "weight": 10,
+        "effects": [
+            "ANTI_GOOD"
+        ]
+    }
+}

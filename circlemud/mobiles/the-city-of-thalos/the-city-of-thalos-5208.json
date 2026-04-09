@@ -64,13 +64,22 @@
                 "object_id": "the-city-of-thalos-5200"
             },
             {
-                "slot": "hold",
-                "object_id": "the-city-of-thalos-5226"
-            },
-            {
                 "slot": "wield",
                 "object_id": "the-city-of-thalos-5221"
             }
+        ]
+    },
+    "circlemud_unused": {
+        "alignment": 800,
+        "gold": 4250,
+        "gender": "N",
+        "flags": [
+            "AGGR_EVIL",
+            "NOCHARM",
+            "NOSUMMON",
+            "NOSLEEP",
+            "NOBASH",
+            "NOBLIND"
         ]
     }
 }

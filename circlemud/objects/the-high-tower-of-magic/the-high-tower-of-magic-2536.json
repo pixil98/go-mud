@@ -1,0 +1,42 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2536",
+    "spec": {
+        "aliases": [
+            "medallion",
+            "heart"
+        ],
+        "short_desc": "a heart shaped medallion",
+        "long_desc": "A heart shaped medallion is here.",
+        "detailed_desc": "A heart shaped medallion is here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "neck"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.stats.wis",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.con",
+                "value": -1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 10000,
+        "rent": 1000,
+        "weight": 3,
+        "effects": [
+            "HUM",
+            "NODONATE",
+            "NOINVIS",
+            "BLESS"
+        ]
+    }
+}

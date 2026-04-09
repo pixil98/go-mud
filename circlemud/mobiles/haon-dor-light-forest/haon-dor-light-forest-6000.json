@@ -62,5 +62,10 @@
                 "object_id": "haon-dor-light-forest-6002"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 370,
+        "gold": 100,
+        "gender": "M"
     }
 }

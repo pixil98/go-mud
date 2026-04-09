@@ -16,5 +16,8 @@
                 "description": "If you go south, you will enter the Miden'Nir."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

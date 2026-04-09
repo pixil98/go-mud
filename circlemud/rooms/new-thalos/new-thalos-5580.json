@@ -25,5 +25,11 @@
         "mobile_spawns": [
             "new-thalos-5488"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

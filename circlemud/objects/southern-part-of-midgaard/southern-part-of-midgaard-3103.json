@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3103",
+    "spec": {
+        "aliases": [
+            "bottle",
+            "water"
+        ],
+        "short_desc": "a bottle",
+        "long_desc": "A bottle of Evian natural spring water is here.",
+        "detailed_desc": "It is a large, clean bottle. There is a large label pasted on the side.",
+        "extra_descs": [
+            {
+                "keywords": [
+                    "label"
+                ],
+                "description": "You've been ripped off! It says here at the bottom of the label, in really really small letters, 'Bottled in the Midgaard branch of Evian Inc. This water is from the natural, mostly clean River of Midgaard.'"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 10,
+        "rent": 6,
+        "weight": 1,
+        "type": "DRINKCON",
+        "values": [
+            24,
+            24,
+            15,
+            0
+        ]
+    }
+}

@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "new-thalos-5487",
+    "spec": {
+        "aliases": [
+            "shoe",
+            "horse"
+        ],
+        "short_desc": "a horse shoe",
+        "long_desc": "A horse shoe lies here.",
+        "detailed_desc": "A horse shoe lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "neck",
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 1000,
+        "rent": 200,
+        "weight": 2,
+        "effects": [
+            "HUM",
+            "MAGIC"
+        ]
+    }
+}

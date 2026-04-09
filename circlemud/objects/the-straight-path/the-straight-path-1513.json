@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1513",
+    "spec": {
+        "aliases": [
+            "amulet",
+            "ra"
+        ],
+        "short_desc": "the Amulet of Ra",
+        "long_desc": "You have found a beautiful gleaming disc with a golden image of the sun god.",
+        "detailed_desc": "You have found a beautiful gleaming disc with a golden image of the sun god.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "neck"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.stats.int",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.wis",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 7500,
+        "rent": 1500,
+        "weight": 5,
+        "effects": [
+            "GLOW",
+            "MAGIC"
+        ],
+        "type": "WORN",
+        "values": [
+            0,
+            0,
+            0,
+            0
+        ]
+    }
+}

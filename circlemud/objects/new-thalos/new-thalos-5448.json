@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "new-thalos-5448",
+    "spec": {
+        "aliases": [
+            "cloak",
+            "fur"
+        ],
+        "short_desc": "a fur cloak",
+        "long_desc": "A nicely made fur cloak lies here.",
+        "detailed_desc": "A nicely made fur cloak lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "about"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 4550,
+        "rent": 50,
+        "weight": 2
+    }
+}

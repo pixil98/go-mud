@@ -25,5 +25,11 @@
                 "description": "It is open, empty, and uninteresting."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

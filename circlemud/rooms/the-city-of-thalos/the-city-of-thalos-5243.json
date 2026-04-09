@@ -18,5 +18,8 @@
                 "description": "A side street runs by here."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

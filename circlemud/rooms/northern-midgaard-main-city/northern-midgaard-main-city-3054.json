@@ -32,5 +32,11 @@
                 "description": "The statue represents the one-eyed Odin sitting on a his throne. He has long, grey hair and beard and a strict look on his face. On top of the throne, just above his shoulders, his two ravens Hugin and Munin are sitting and at his feet are his wolves Gere and Freke."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

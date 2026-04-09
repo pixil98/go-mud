@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5303",
+    "spec": {
+        "aliases": [
+            "turban",
+            "cloth"
+        ],
+        "short_desc": "a dirty cloth turban",
+        "long_desc": "A dirty cloth turban has been forgotten here.",
+        "detailed_desc": "The turban used to be white cloth, now it is covered with oil and dirt from the head and hair of its previous owner, who must not have bathed much.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "head"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.dex",
+                "value": 1
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 5
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 1500,
+        "rent": 250,
+        "weight": 10,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1503",
+    "spec": {
+        "aliases": [
+            "protector",
+            "faithful",
+            "shield"
+        ],
+        "short_desc": "the Protector of the Faithful",
+        "long_desc": "A weighty looking shield has been abandoned by one unworthy to hold it.",
+        "detailed_desc": "It evades your attempts to focus on it, deflecting your gaze as it deflects the weapons that will try to kill you.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "shield"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 15
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 5000,
+        "rent": 1500,
+        "weight": 20,
+        "effects": [
+            "ANTI_EVIL",
+            "ANTI_CLERIC"
+        ]
+    }
+}

@@ -9,6 +9,23 @@
             "south": {
                 "room_id": "the-high-tower-of-magic-2644"
             }
-        }
+        },
+        "object_spawns": [
+            {
+                "object_id": "the-high-tower-of-magic-2533",
+                "contents": [
+                    {
+                        "object_id": "the-high-tower-of-magic-2534"
+                    }
+                ]
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS",
+            "NOTRACK"
+        ]
     }
 }

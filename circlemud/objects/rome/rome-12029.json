@@ -1,0 +1,43 @@
+{
+    "version": 1,
+    "id": "rome-12029",
+    "spec": {
+        "aliases": [
+            "wand",
+            "prototype"
+        ],
+        "short_desc": "a prototype wand",
+        "long_desc": "There is a prototype of a new magical wand lying here.",
+        "detailed_desc": "There is a prototype of a new magical wand lying here.",
+        "flags": [
+            "wearable",
+            "invisible",
+            "no_drop"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": -3
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 20000,
+        "rent": 13000,
+        "weight": 26,
+        "effects": [
+            "ANTI_GOOD"
+        ],
+        "type": "WAND",
+        "values": [
+            30,
+            4,
+            3,
+            26
+        ]
+    }
+}

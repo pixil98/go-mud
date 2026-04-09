@@ -26,5 +26,8 @@
         "mobile_spawns": [
             "the-great-eastern-desert-5004"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

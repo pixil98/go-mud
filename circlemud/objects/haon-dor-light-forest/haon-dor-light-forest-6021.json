@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6021",
+    "spec": {
+        "aliases": [
+            "nest",
+            "bird"
+        ],
+        "short_desc": "the bird's nest",
+        "flags": [
+            "immobile",
+            "container"
+        ]
+    },
+    "circlemud_unused": {
+        "capacity": 30
+    }
+}

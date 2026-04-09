@@ -34,5 +34,8 @@
         "mobile_spawns": [
             "the-great-pyramid-5300"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "MOUNTAIN"
     }
 }

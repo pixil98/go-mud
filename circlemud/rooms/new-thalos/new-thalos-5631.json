@@ -17,5 +17,8 @@
             "new-thalos-5442",
             "new-thalos-5442"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

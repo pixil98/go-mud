@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6003",
+    "spec": {
+        "aliases": [
+            "fireplace"
+        ],
+        "short_desc": "a fireplace",
+        "long_desc": "A fireplace made from stone is set against the east wall.",
+        "detailed_desc": "It is fashioned from stones of various sizes that have been stacked on top of each other and fastened with mortar. Its chimney is constructed likewise and leads the smoke out through the low cabin ceiling.",
+        "flags": [
+            "immobile",
+            "container"
+        ]
+    },
+    "circlemud_unused": {
+        "capacity": 200
+    }
+}

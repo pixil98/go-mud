@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "new-thalos-5475",
+    "spec": {
+        "aliases": [
+            "bottle",
+            "scorpion",
+            "flaming",
+            "beer"
+        ],
+        "short_desc": "a flaming scorpion",
+        "long_desc": "A bottle of strong beer lies here.",
+        "detailed_desc": "A bottle of strong beer lies here."
+    },
+    "circlemud_unused": {
+        "cost": 500,
+        "rent": 10,
+        "weight": 1,
+        "type": "DRINKCON",
+        "values": [
+            5,
+            5,
+            1,
+            0
+        ]
+    }
+}

@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "new-thalos-5419",
+    "spec": {
+        "aliases": [
+            "suit",
+            "splintmail",
+            "splint",
+            "mail"
+        ],
+        "short_desc": "a suit of splintmail",
+        "long_desc": "A suit of splintmail aromr lies here.",
+        "detailed_desc": "A suit of splintmail aromr lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "body"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 2500,
+        "rent": 100,
+        "weight": 5,
+        "effects": [
+            "ANTI_MAGIC_USER"
+        ]
+    }
+}

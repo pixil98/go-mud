@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "new-thalos-5438",
+    "spec": {
+        "aliases": [
+            "pouch",
+            "belt"
+        ],
+        "short_desc": "a belt pouch",
+        "long_desc": "A belt pouch lies here",
+        "detailed_desc": "A belt pouch lies here",
+        "flags": [
+            "wearable",
+            "container"
+        ],
+        "wear_slots": [
+            "waist"
+        ]
+    },
+    "circlemud_unused": {
+        "capacity": 25,
+        "cost": 100,
+        "rent": 20,
+        "weight": 3
+    }
+}

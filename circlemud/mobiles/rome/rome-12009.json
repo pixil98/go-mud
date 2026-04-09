@@ -69,5 +69,13 @@
                 "object_id": "rome-12004"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 900,
+        "gold": 1500,
+        "gender": "M",
+        "flags": [
+            "SPEC"
+        ]
     }
 }

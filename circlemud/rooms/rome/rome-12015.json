@@ -15,5 +15,8 @@
                 "description": "The stairs look safe enough."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE"
     }
 }

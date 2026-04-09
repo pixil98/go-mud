@@ -15,5 +15,11 @@
                 "description": "The hallway proceeds towards the west towards a musty smell."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

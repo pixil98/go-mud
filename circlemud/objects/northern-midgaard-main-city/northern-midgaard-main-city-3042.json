@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3042",
+    "spec": {
+        "aliases": [
+            "shield",
+            "wooden"
+        ],
+        "short_desc": "a shield",
+        "long_desc": "A small wooden shield is lying on the ground.",
+        "detailed_desc": "A small wooden shield is lying on the ground.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "shield"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 100,
+        "rent": 10,
+        "weight": 3
+    }
+}

@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6512",
+    "spec": {
+        "aliases": [
+            "gloves",
+            "dwarven"
+        ],
+        "short_desc": "a pair of dwarven gloves",
+        "long_desc": "A pair of thick dwarven gloves lay here.",
+        "detailed_desc": "A pair of thick dwarven gloves lay here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hands"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.con",
+                "value": 1
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.dex",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 4000,
+        "rent": 200,
+        "weight": 2
+    }
+}

@@ -51,5 +51,13 @@
                 "object_id": "king-welmars-castle-15015"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 250,
+        "gold": 2000,
+        "gender": "M",
+        "flags": [
+            "SPEC"
+        ]
     }
 }

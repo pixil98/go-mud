@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2550",
+    "spec": {
+        "aliases": [
+            "scroll"
+        ],
+        "short_desc": "a scroll",
+        "long_desc": "A scroll is here.",
+        "detailed_desc": "A scroll is here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 3000,
+        "rent": 1000,
+        "weight": 5,
+        "type": "SCROLL",
+        "values": [
+            21,
+            4,
+            17,
+            38
+        ]
+    }
+}

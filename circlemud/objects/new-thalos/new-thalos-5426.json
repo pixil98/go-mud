@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "new-thalos-5426",
+    "spec": {
+        "aliases": [
+            "pants",
+            "leather"
+        ],
+        "short_desc": "a pair of leather pants",
+        "long_desc": "A pair of leather pants lies here.",
+        "detailed_desc": "A pair of leather pants lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "legs"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 850,
+        "rent": 200,
+        "weight": 2
+    }
+}

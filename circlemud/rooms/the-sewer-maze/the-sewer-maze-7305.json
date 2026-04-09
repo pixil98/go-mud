@@ -38,5 +38,11 @@
                 "description": "The crystal globe is glowing with a pulsing light. It looks like there is smoke inside it."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

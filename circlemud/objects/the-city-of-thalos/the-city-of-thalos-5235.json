@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5235",
+    "spec": {
+        "aliases": [
+            "stone",
+            "pearly",
+            "white"
+        ],
+        "short_desc": "a pearly white stone",
+        "long_desc": "A lovely, pearly white stone has been carelessly left here.",
+        "detailed_desc": "A lovely, pearly white stone has been carelessly left here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 8700,
+        "rent": 600,
+        "weight": 10,
+        "effects": [
+            "NODONATE",
+            "MAGIC"
+        ]
+    }
+}

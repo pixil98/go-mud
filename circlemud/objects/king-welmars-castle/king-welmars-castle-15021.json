@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15021",
+    "spec": {
+        "aliases": [
+            "glow"
+        ],
+        "short_desc": "the glow from the west",
+        "long_desc": "There is a strange glow coming from the west.",
+        "detailed_desc": "The glow from the west appears to be quite strong, but it does not give enough light to see by here, nor can you see the source of the glow.",
+        "flags": [
+            "immobile"
+        ]
+    }
+}

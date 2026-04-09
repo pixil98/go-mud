@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6018",
+    "spec": {
+        "aliases": [
+            "slab",
+            "meat"
+        ],
+        "short_desc": "a large slab of meat",
+        "long_desc": "A large piece of freshly cut boar meat is on the ground here.",
+        "detailed_desc": "It looks quite filling."
+    },
+    "circlemud_unused": {
+        "cost": 40,
+        "rent": 1,
+        "weight": 15,
+        "type": "FOOD",
+        "values": [
+            24,
+            0,
+            0,
+            0
+        ]
+    }
+}

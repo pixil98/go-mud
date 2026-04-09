@@ -29,6 +29,14 @@
                 ],
                 "description": "The trees are quite tall considering most of them appear to be quite young. On one of the trees, crude letters forming the word 'Haon-Dor' have been carved into the bark."
             }
+        ],
+        "object_spawns": [
+            {
+                "object_id": "haon-dor-light-forest-6012"
+            }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

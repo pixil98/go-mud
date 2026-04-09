@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3060",
+    "spec": {
+        "aliases": [
+            "raft"
+        ],
+        "short_desc": "a raft",
+        "long_desc": "A raft has been left here.",
+        "detailed_desc": "The raft looks very primitive."
+    },
+    "circlemud_unused": {
+        "cost": 400,
+        "rent": 10,
+        "weight": 75,
+        "type": "BOAT",
+        "values": [
+            0,
+            0,
+            0,
+            0
+        ]
+    }
+}

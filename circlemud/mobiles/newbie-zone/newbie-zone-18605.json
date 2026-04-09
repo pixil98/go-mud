@@ -46,5 +46,9 @@
                 "object_id": "newbie-zone-18609"
             }
         ]
+    },
+    "circlemud_unused": {
+        "gold": 1000,
+        "gender": "N"
     }
 }

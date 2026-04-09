@@ -17,6 +17,29 @@
         "mobile_spawns": [
             "the-high-tower-of-magic-2534",
             "the-high-tower-of-magic-2535"
+        ],
+        "object_spawns": [
+            {
+                "object_id": "the-high-tower-of-magic-2514",
+                "contents": [
+                    {
+                        "object_id": "the-high-tower-of-magic-2516"
+                    },
+                    {
+                        "object_id": "the-high-tower-of-magic-2517"
+                    },
+                    {
+                        "object_id": "the-high-tower-of-magic-2518"
+                    }
+                ]
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS",
+            "NOTRACK"
         ]
     }
 }

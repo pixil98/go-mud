@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "rome-12004",
+    "spec": {
+        "aliases": [
+            "stethoscope",
+            "object"
+        ],
+        "short_desc": "a stethoscope",
+        "long_desc": "There is an odd object laying on the ground here.",
+        "detailed_desc": "There is an odd object laying on the ground here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "neck"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 4
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": -3
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 15000,
+        "rent": 2000,
+        "weight": 1,
+        "effects": [
+            "BLESS"
+        ],
+        "type": "WORN",
+        "values": [
+            0,
+            0,
+            0,
+            0
+        ]
+    }
+}

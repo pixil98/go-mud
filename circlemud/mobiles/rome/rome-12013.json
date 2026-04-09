@@ -48,15 +48,10 @@
             {
                 "slot": "feet",
                 "object_id": "rome-12008"
-            },
-            {
-                "slot": "wield",
-                "object_id": "northern-midgaard-main-city-3020"
-            },
-            {
-                "slot": "feet",
-                "object_id": "rome-12008"
             }
         ]
+    },
+    "circlemud_unused": {
+        "gender": "M"
     }
 }

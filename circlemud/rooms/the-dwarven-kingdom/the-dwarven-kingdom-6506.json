@@ -22,5 +22,11 @@
                 "description": "They hang over the road in the most ominous of ways."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

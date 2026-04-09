@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5327",
+    "spec": {
+        "aliases": [
+            "leggings",
+            "sphinxian"
+        ],
+        "short_desc": "a pair of sphinxian leggings",
+        "long_desc": "Massive leggings formed from the body of a sphinx stand here.",
+        "detailed_desc": "Massive leggings formed from the body of a sphinx stand here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "legs"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 10
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.str",
+                "value": 3
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 20000,
+        "rent": 500,
+        "weight": 20,
+        "effects": [
+            "MAGIC",
+            "ANTI_EVIL"
+        ]
+    }
+}

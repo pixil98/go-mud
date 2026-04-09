@@ -20,6 +20,17 @@
         },
         "mobile_spawns": [
             "the-city-of-thalos-5207"
+        ],
+        "object_spawns": [
+            {
+                "object_id": "the-city-of-thalos-5219"
+            },
+            {
+                "object_id": "the-city-of-thalos-5235"
+            }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

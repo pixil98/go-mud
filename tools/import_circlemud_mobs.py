@@ -149,18 +149,24 @@ def convert_mob(src, zone_slug, v2z, zones):
     flags = []
 
     # Behavior flags
+    skipped_flags = []
     for f in src.get("flags", []):
         note = f.get("note", "")
         if note in MOB_FLAGS:
             flags.append(MOB_FLAGS[note])
+        elif note:
+            skipped_flags.append(note)
 
     # Affection grants
+    skipped_affects = []
     for a in src.get("affects", []):
         note = a.get("note", "")
         if note == "SANCTUARY":
             perks.append({"type": "modifier", "key": "core.defense.all.absorb.pct", "value": 50})
         elif note in AFFECT_GRANTS:
             perks.append({"type": "grant", "key": AFFECT_GRANTS[note]})
+        elif note:
+            skipped_affects.append(note)
 
     # Armor class
     ac = src.get("armor_class")
@@ -210,11 +216,32 @@ def convert_mob(src, zone_slug, v2z, zones):
     if exp > 0:
         mobile["exp_reward"] = exp
 
-    return {
+    # --- circlemud_unused: preserve unmapped data ---
+    unused = {}
+    alignment = src.get("alignment", 0)
+    if alignment != 0:
+        unused["alignment"] = alignment
+    gold = src.get("gold", 0)
+    if gold != 0:
+        unused["gold"] = gold
+    gender = src.get("gender", {}).get("note", "")
+    if gender:
+        unused["gender"] = gender
+    if skipped_flags:
+        unused["flags"] = skipped_flags
+    if skipped_affects:
+        unused["affects"] = skipped_affects
+
+    result = {
         "version": 1,
         "id": mid,
         "spec": mobile,
     }
+
+    if unused:
+        result["circlemud_unused"] = unused
+
+    return result
 
 
 # ---------------------------------------------------------------------------
@@ -233,6 +260,12 @@ def process_zone_placements(zones, v2z, all_zone_data):
     mob_equipment = {}    # mob_id -> [{"slot": ..., "object_id": ...}, ...]
     referenced_objs = set()
 
+    # Deduplicate across multiple placements of the same mob.
+    # First-wins per slot prevents a mob from ending up with multiple
+    # weapons when placed in different rooms with different loadouts.
+    seen_equip_slots = {}  # mid -> set of slots already filled
+    seen_inventory = set()  # (mid, oid)
+
     for zone_num, zone_data in all_zone_data.items():
         for zone in zone_data:
             for mob_entry in zone.get("mobs", []):
@@ -250,11 +283,14 @@ def process_zone_placements(zones, v2z, all_zone_data):
                 for inv_item in mob_entry.get("inventory", []):
                     oid = obj_id(inv_item["id"], v2z, zones)
                     referenced_objs.add(oid)
-                    if mid not in mob_inventory:
-                        mob_inventory[mid] = []
-                    mob_inventory[mid].append({"object_id": oid})
+                    key = (mid, oid)
+                    if key not in seen_inventory:
+                        seen_inventory.add(key)
+                        if mid not in mob_inventory:
+                            mob_inventory[mid] = []
+                        mob_inventory[mid].append({"object_id": oid})
 
-                # Equipment (E commands)
+                # Equipment (E commands) — first-wins per slot
                 for eq_item in mob_entry.get("equipped", []):
                     slot_note = eq_item.get("note", "")
                     slot = EQUIP_SLOTS.get(slot_note)
@@ -262,9 +298,12 @@ def process_zone_placements(zones, v2z, all_zone_data):
                         continue
                     oid = obj_id(eq_item["id"], v2z, zones)
                     referenced_objs.add(oid)
-                    if mid not in mob_equipment:
-                        mob_equipment[mid] = []
-                    mob_equipment[mid].append({"slot": slot, "object_id": oid})
+                    filled = seen_equip_slots.setdefault(mid, set())
+                    if slot not in filled:
+                        filled.add(slot)
+                        if mid not in mob_equipment:
+                            mob_equipment[mid] = []
+                        mob_equipment[mid].append({"slot": slot, "object_id": oid})
 
     return room_spawns, mob_inventory, mob_equipment, referenced_objs
 

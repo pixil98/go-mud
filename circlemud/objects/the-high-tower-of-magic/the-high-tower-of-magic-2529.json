@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2529",
+    "spec": {
+        "aliases": [
+            "wand",
+            "metal"
+        ],
+        "short_desc": "a metal wand",
+        "long_desc": "A metal wand is here.",
+        "detailed_desc": "A metal wand is here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 2000,
+        "rent": 350,
+        "weight": 5,
+        "type": "WAND",
+        "values": [
+            20,
+            20,
+            4,
+            25
+        ]
+    }
+}

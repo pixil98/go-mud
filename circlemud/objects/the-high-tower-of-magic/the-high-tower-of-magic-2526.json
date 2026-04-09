@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2526",
+    "spec": {
+        "aliases": [
+            "staff",
+            "burnt"
+        ],
+        "short_desc": "a burnt staff",
+        "long_desc": "A burnt staff is leaning against the wall here.",
+        "detailed_desc": "A burnt staff is leaning against the wall here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 1100,
+        "rent": 600,
+        "weight": 6,
+        "type": "STAFF",
+        "values": [
+            20,
+            4,
+            4,
+            4
+        ]
+    }
+}

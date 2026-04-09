@@ -31,5 +31,8 @@
                 "description": "You wonder how anyone could have built such a massive thing out in this heat."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "MOUNTAIN"
     }
 }

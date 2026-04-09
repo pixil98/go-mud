@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3004",
+    "spec": {
+        "aliases": [
+            "bottle",
+            "local"
+        ],
+        "short_desc": "a bottle",
+        "long_desc": "A dark bottle has been left here.",
+        "detailed_desc": "A dark bottle has been left here."
+    },
+    "circlemud_unused": {
+        "cost": 20,
+        "rent": 7,
+        "weight": 10,
+        "type": "DRINKCON",
+        "values": [
+            8,
+            8,
+            8,
+            0
+        ]
+    }
+}

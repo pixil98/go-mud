@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4053",
+    "spec": {
+        "aliases": [
+            "dirk"
+        ],
+        "short_desc": "a thieves' dirk",
+        "long_desc": "A beautifully crafted dirk is lying here.",
+        "detailed_desc": "It is a medium sized, beautifully crafted dirk made from some greyish alloy. Its blade is double-edged and very thin... this looks like a good thieves' weapon.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 1
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pierce",
+        "cost": 850,
+        "rent": 500,
+        "weight": 2,
+        "effects": [
+            "ANTI_CLERIC",
+            "ANTI_WARRIOR"
+        ]
+    }
+}

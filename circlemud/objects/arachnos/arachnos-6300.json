@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "arachnos-6300",
+    "spec": {
+        "aliases": [
+            "key",
+            "black"
+        ],
+        "short_desc": "a black key",
+        "long_desc": "A somewhat plain black key has been left here.",
+        "detailed_desc": "A somewhat plain black key has been left here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 1,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

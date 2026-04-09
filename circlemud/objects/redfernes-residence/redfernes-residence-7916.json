@@ -1,0 +1,42 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7916",
+    "spec": {
+        "aliases": [
+            "gloves",
+            "silvery",
+            "silver"
+        ],
+        "short_desc": "a pair of silvery gloves",
+        "long_desc": "You can see a pair of gloves on the floor.",
+        "detailed_desc": "The gloves are made of silver threads.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hands"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 2500,
+        "rent": 2000,
+        "weight": 14,
+        "effects": [
+            "MAGIC",
+            "ANTI_EVIL",
+            "ANTI_NEUTRAL"
+        ]
+    }
+}

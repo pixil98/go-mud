@@ -17,5 +17,12 @@
         "mobile_spawns": [
             "the-high-tower-of-magic-2514"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS",
+            "NOTRACK"
+        ]
     }
 }

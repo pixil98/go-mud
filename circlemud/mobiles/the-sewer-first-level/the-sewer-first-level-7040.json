@@ -55,5 +55,15 @@
             "aggressive"
         ],
         "exp_reward": 40000
+    },
+    "circlemud_unused": {
+        "alignment": -1000,
+        "gold": 16842,
+        "gender": "N",
+        "flags": [
+            "NOCHARM",
+            "NOSUMMON",
+            "NOBASH"
+        ]
     }
 }

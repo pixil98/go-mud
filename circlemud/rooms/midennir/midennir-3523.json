@@ -19,5 +19,8 @@
                 "description": "The sky becomes lighter in this direction."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

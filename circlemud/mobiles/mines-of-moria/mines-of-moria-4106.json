@@ -51,5 +51,10 @@
                 "object_id": "mines-of-moria-4101"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -300,
+        "gold": 500,
+        "gender": "M"
     }
 }

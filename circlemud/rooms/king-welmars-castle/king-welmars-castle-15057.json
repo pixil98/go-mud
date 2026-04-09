@@ -67,5 +67,11 @@
                 "description": "The plaque in the keystone is engraved with four simple words: Ergan, Murderer of Townsbridge"
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

@@ -45,39 +45,16 @@
             {
                 "slot": "wield",
                 "object_id": "the-three-of-swords-3315"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-three-of-swords-3315"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-three-of-swords-3315"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-three-of-swords-3315"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-three-of-swords-3315"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-three-of-swords-3315"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-three-of-swords-3315"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-three-of-swords-3315"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-three-of-swords-3315"
             }
+        ]
+    },
+    "circlemud_unused": {
+        "alignment": -500,
+        "gold": 1000,
+        "gender": "M",
+        "flags": [
+            "AGGR_GOOD",
+            "AGGR_NEUTRAL"
         ]
     }
 }

@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6020",
+    "spec": {
+        "aliases": [
+            "log",
+            "hollow",
+            "floating"
+        ],
+        "short_desc": "a hollow log",
+        "detailed_desc": "It looks like it would probably float."
+    },
+    "circlemud_unused": {
+        "cost": 2,
+        "rent": 1,
+        "weight": 48,
+        "type": "BOAT",
+        "values": [
+            0,
+            0,
+            0,
+            0
+        ]
+    }
+}

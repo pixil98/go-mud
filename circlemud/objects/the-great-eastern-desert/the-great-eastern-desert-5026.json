@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5026",
+    "spec": {
+        "aliases": [
+            "ruby",
+            "gem"
+        ],
+        "short_desc": "a large ruby",
+        "long_desc": "A large ruby lies on the ground, collecting dust.",
+        "detailed_desc": "A large ruby lies on the ground, collecting dust.",
+        "flags": [
+            "wearable",
+            "no_drop"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 4000,
+        "rent": 200,
+        "weight": 9,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

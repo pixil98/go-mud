@@ -48,5 +48,11 @@
                 "description": "Some of the trunks to the west are covered in a thin, almost transparent substance. It looks like small threads woven carefully together."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

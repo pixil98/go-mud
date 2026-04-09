@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "new-thalos-5476",
+    "spec": {
+        "aliases": [
+            "barrel",
+            "beer"
+        ],
+        "short_desc": "a barrel",
+        "long_desc": "A barrel of beer lies here.",
+        "detailed_desc": "A barrel of beer lies here."
+    },
+    "circlemud_unused": {
+        "cost": 900,
+        "rent": 50,
+        "weight": 15,
+        "type": "DRINKCON",
+        "values": [
+            10,
+            10,
+            1,
+            0
+        ]
+    }
+}

@@ -34,5 +34,11 @@
                 "description": "The writings are covered in sand and worn nearly away by the passage of time: 'I am Ramses the Damned, once counselor and aide to the mightiest of pharoahs and queens of this land. Much time has passed since I last walked the earth. Disturb my rest at your peril.'"
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-902",
+    "spec": {
+        "aliases": [
+            "potion",
+            "speckled"
+        ],
+        "short_desc": "a speckled potion",
+        "long_desc": "A speckled potion speckles here.",
+        "detailed_desc": "A speckled potion speckles here."
+    },
+    "circlemud_unused": {
+        "cost": 1300,
+        "rent": 500,
+        "weight": 2,
+        "effects": [
+            "MAGIC"
+        ],
+        "type": "POTION",
+        "values": [
+            15,
+            15,
+            15,
+            15
+        ]
+    }
+}

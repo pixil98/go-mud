@@ -27,6 +27,17 @@
                 "room_id": "the-dwarven-kingdom-6526",
                 "description": "This looks like an entrance to some type of store room."
             }
-        }
+        },
+        "object_spawns": [
+            {
+                "object_id": "the-dwarven-kingdom-6507"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

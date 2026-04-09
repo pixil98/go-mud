@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "rome-12039",
+    "spec": {
+        "aliases": [
+            "key",
+            "steel"
+        ],
+        "short_desc": "a steel key",
+        "long_desc": "A steel key is lying on the ground.",
+        "detailed_desc": "A steel key is lying on the ground."
+    },
+    "circlemud_unused": {
+        "weight": 1,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

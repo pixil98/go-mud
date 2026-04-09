@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3045",
+    "spec": {
+        "aliases": [
+            "jacket",
+            "scale",
+            "mail"
+        ],
+        "short_desc": "a scale mail jacket",
+        "long_desc": "A scale mail jacket is lying on the ground.",
+        "detailed_desc": "A scale mail jacket is lying on the ground.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "body"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 1000,
+        "rent": 10,
+        "weight": 40
+    }
+}

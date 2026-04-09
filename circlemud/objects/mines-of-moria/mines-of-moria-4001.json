@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4001",
+    "spec": {
+        "aliases": [
+            "corpse",
+            "goblin"
+        ],
+        "short_desc": "a goblin's corpse",
+        "long_desc": "A halfway decayed corpse of a goblin is here, giving off a foul odor.",
+        "detailed_desc": "A halfway decayed corpse of a goblin is here, giving off a foul odor.",
+        "flags": [
+            "container"
+        ]
+    },
+    "circlemud_unused": {
+        "capacity": 1,
+        "rent": 500,
+        "weight": 20
+    }
+}

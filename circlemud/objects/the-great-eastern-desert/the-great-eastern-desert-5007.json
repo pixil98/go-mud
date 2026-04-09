@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5007",
+    "spec": {
+        "aliases": [
+            "basket",
+            "wicker",
+            "small"
+        ],
+        "short_desc": "a small wicker basket",
+        "long_desc": "A small wicker basket sits on the ground.",
+        "detailed_desc": "A small wicker basket sits on the ground.",
+        "flags": [
+            "container"
+        ],
+        "closure": {
+            "closed": true
+        }
+    },
+    "circlemud_unused": {
+        "capacity": 100,
+        "cost": 5000,
+        "rent": 50,
+        "weight": 50
+    }
+}

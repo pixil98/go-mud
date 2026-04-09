@@ -17,5 +17,11 @@
             "the-straight-path-1507",
             "the-straight-path-1514"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

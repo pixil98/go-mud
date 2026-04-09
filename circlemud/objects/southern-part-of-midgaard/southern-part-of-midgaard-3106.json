@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3106",
+    "spec": {
+        "aliases": [
+            "key",
+            "rusty"
+        ],
+        "short_desc": "a rusty key",
+        "long_desc": "A rusty key has been left here.",
+        "detailed_desc": "The key is a fairly large rusty key. You notice a lot of dirt it."
+    },
+    "circlemud_unused": {
+        "rent": 10,
+        "weight": 1,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

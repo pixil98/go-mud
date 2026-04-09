@@ -17,5 +17,8 @@
             "southern-part-of-midgaard-3120",
             "southern-part-of-midgaard-3121"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "WATER_SWIM"
     }
 }

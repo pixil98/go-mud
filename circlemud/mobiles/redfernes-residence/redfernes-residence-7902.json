@@ -71,13 +71,20 @@
                 "object_id": "redfernes-residence-7907"
             },
             {
-                "slot": "wrist",
-                "object_id": "redfernes-residence-7907"
-            },
-            {
                 "slot": "head",
                 "object_id": "redfernes-residence-7911"
             }
+        ]
+    },
+    "circlemud_unused": {
+        "gold": 2000,
+        "gender": "N",
+        "flags": [
+            "NOCHARM",
+            "NOSUMMON",
+            "NOSLEEP",
+            "NOBASH",
+            "NOBLIND"
         ]
     }
 }

@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6514",
+    "spec": {
+        "aliases": [
+            "pick",
+            "mining"
+        ],
+        "short_desc": "a mining pick",
+        "long_desc": "There is a mining pick here.",
+        "detailed_desc": "It looks almost blessed!",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d3"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pierce",
+        "cost": 300,
+        "rent": 10,
+        "weight": 9,
+        "effects": [
+            "BLESS"
+        ]
+    }
+}

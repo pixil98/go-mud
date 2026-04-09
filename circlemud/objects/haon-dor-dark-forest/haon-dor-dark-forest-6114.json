@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6114",
+    "spec": {
+        "aliases": [
+            "ring",
+            "iron"
+        ],
+        "short_desc": "an iron ring",
+        "long_desc": "An iron ring has been left here.",
+        "detailed_desc": "It is a quite heavy human-sized ring made from solid iron. It lacks decorations of any kind.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "finger"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -4
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 5000,
+        "rent": 500,
+        "weight": 10,
+        "effects": [
+            "MAGIC"
+        ],
+        "type": "WORN",
+        "values": [
+            0,
+            0,
+            0,
+            0
+        ]
+    }
+}

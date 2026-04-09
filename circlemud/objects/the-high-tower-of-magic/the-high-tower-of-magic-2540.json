@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2540",
+    "spec": {
+        "aliases": [
+            "cloak",
+            "brown"
+        ],
+        "short_desc": "a brown cloak",
+        "long_desc": "A travel worn cloak has carelessly been left here.",
+        "detailed_desc": "A travel worn cloak has carelessly been left here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "neck"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -5
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 2000,
+        "rent": 250,
+        "weight": 5
+    }
+}

@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "rome-12005",
+    "spec": {
+        "aliases": [
+            "hairpin"
+        ],
+        "short_desc": "a hairpin",
+        "long_desc": "A woman's hairpin is lying here.",
+        "detailed_desc": "A woman's hairpin is lying here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "head"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.stats.str",
+                "value": -1
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.int",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 3000,
+        "rent": 500,
+        "weight": 1,
+        "effects": [
+            "BLESS"
+        ],
+        "type": "WORN",
+        "values": [
+            0,
+            0,
+            0,
+            0
+        ]
+    }
+}

@@ -32,5 +32,8 @@
             "rome-12003",
             "rome-12003"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

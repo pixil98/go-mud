@@ -43,5 +43,10 @@
             "memory"
         ],
         "exp_reward": 13500
+    },
+    "circlemud_unused": {
+        "alignment": -50,
+        "gold": 1000,
+        "gender": "M"
     }
 }

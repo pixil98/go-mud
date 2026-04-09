@@ -45,10 +45,12 @@
         "inventory": [
             {
                 "object_id": "arachnos-6305"
-            },
-            {
-                "object_id": "arachnos-6305"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -200,
+        "gold": 200,
+        "gender": "N"
     }
 }

@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5219",
+    "spec": {
+        "aliases": [
+            "venison",
+            "chunk"
+        ],
+        "short_desc": "a chunk of venison",
+        "long_desc": "A large chunk of venison sits here, ready to be eaten.",
+        "detailed_desc": "A large chunk of venison sits here, ready to be eaten."
+    },
+    "circlemud_unused": {
+        "cost": 100,
+        "rent": 20,
+        "weight": 20,
+        "type": "FOOD",
+        "values": [
+            24,
+            0,
+            0,
+            0
+        ]
+    }
+}

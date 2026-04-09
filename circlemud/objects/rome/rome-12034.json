@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "rome-12034",
+    "spec": {
+        "aliases": [
+            "key",
+            "double"
+        ],
+        "short_desc": "a double sided key",
+        "long_desc": "A double sided key has been left here.",
+        "detailed_desc": "A double sided key has been left here."
+    },
+    "circlemud_unused": {
+        "weight": 10,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

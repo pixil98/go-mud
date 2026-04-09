@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-908",
+    "spec": {
+        "aliases": [
+            "trident"
+        ],
+        "short_desc": "a trident",
+        "long_desc": "There is a warrior's trident here.",
+        "detailed_desc": "This is a common trident, often used by gladiators or mermen. It has three sharp prongs jutting from the business end and a smooth wooden handle with two comfortable grip points.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d4"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pierce",
+        "cost": 350,
+        "rent": 200,
+        "weight": 8
+    }
+}

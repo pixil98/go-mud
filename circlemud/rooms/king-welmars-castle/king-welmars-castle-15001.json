@@ -15,5 +15,8 @@
                 "description": "You see that the King's Road continues westwards towards a large city."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

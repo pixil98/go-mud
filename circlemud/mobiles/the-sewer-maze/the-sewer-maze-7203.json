@@ -51,19 +51,16 @@
             {
                 "slot": "wield",
                 "object_id": "the-sewer-maze-7211"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-sewer-maze-7211"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-sewer-maze-7211"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-sewer-maze-7211"
             }
+        ]
+    },
+    "circlemud_unused": {
+        "alignment": -700,
+        "gold": 50,
+        "gender": "N",
+        "flags": [
+            "AGGR_GOOD",
+            "AGGR_NEUTRAL"
         ]
     }
 }

@@ -42,5 +42,15 @@
             "memory"
         ],
         "exp_reward": 160000
+    },
+    "circlemud_unused": {
+        "alignment": 900,
+        "gold": 2000,
+        "gender": "M",
+        "flags": [
+            "SPEC",
+            "NOCHARM",
+            "NOSUMMON"
+        ]
     }
 }

@@ -17,5 +17,8 @@
                 "room_id": "southern-part-of-midgaard-3202"
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "WATER_NOSWIM"
     }
 }

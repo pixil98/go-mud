@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7903",
+    "spec": {
+        "aliases": [
+            "treasure",
+            "coins"
+        ],
+        "short_desc": "a huge treasure",
+        "long_desc": "There is a huge treasure here, looking moderately valuable.",
+        "detailed_desc": "This looks like a whole lot of coins, though not as many as you expected."
+    },
+    "circlemud_unused": {
+        "cost": 7734,
+        "weight": 5,
+        "type": "MONEY",
+        "values": [
+            7734,
+            0,
+            0,
+            0
+        ]
+    }
+}

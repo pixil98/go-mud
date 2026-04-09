@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "new-thalos-5452",
+    "spec": {
+        "aliases": [
+            "robe",
+            "embroidered"
+        ],
+        "short_desc": "an embroidered robe",
+        "long_desc": "A nicely made robe of embroidered cloth lies here.",
+        "detailed_desc": "A nicely made robe of embroidered cloth lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "neck"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 2500,
+        "rent": 5,
+        "weight": 2
+    }
+}

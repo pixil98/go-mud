@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2518",
+    "spec": {
+        "aliases": [
+            "scimitar"
+        ],
+        "short_desc": "a curved scimitar",
+        "long_desc": "A curved scimitar is here in a jewel-covered sheath.",
+        "detailed_desc": "A curved scimitar is here in a jewel-covered sheath.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d7"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 3
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 17500,
+        "rent": 1950,
+        "weight": 10
+    }
+}

@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7203",
+    "spec": {
+        "aliases": [
+            "cloak",
+            "purple"
+        ],
+        "short_desc": "a purple cloak",
+        "long_desc": "A purple cloak lies on the floor.",
+        "detailed_desc": "This is a very fine made cloak from an unknown material, in a nice purple color.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "neck"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 5000,
+        "rent": 6000,
+        "weight": 20,
+        "effects": [
+            "MAGIC"
+        ],
+        "type": "WORN",
+        "values": [
+            0,
+            0,
+            0,
+            0
+        ]
+    }
+}

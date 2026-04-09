@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6117",
+    "spec": {
+        "aliases": [
+            "skirt",
+            "scale"
+        ],
+        "short_desc": "a black dragon scale skirt",
+        "long_desc": "A black dragon scale skirt has been left here.",
+        "detailed_desc": "It is a short skirt made from big, black dragon scales joined with silver threads. Its inside has been made from the soft skin on the dragon's belly, making it very comfortable to wear. The word 'Isha' has been engraved on one of the scales.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "legs"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 6
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 5000,
+        "rent": 100,
+        "weight": 8,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

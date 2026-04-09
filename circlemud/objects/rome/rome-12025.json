@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "id": "rome-12025",
+    "spec": {
+        "aliases": [
+            "scroll",
+            "ornate"
+        ],
+        "short_desc": "an ornate scroll",
+        "long_desc": "An ornate scroll has been left here.",
+        "detailed_desc": "An ornate scroll has been left here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 7000,
+        "rent": 3000,
+        "weight": 2,
+        "effects": [
+            "ANTI_WARRIOR"
+        ],
+        "type": "SCROLL",
+        "values": [
+            18,
+            10,
+            10,
+            16
+        ]
+    }
+}

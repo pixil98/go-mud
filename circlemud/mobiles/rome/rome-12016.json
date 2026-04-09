@@ -43,13 +43,12 @@
         "inventory": [
             {
                 "object_id": "rome-12010"
-            },
-            {
-                "object_id": "rome-12010"
-            },
-            {
-                "object_id": "rome-12010"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -150,
+        "gold": 500,
+        "gender": "M"
     }
 }

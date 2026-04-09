@@ -21,6 +21,17 @@
                 "type": "grant",
                 "key": "dark"
             }
+        ],
+        "object_spawns": [
+            {
+                "object_id": "mines-of-moria-4052"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD",
+        "flags": [
+            "INDOORS"
         ]
     }
 }

@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7918",
+    "spec": {
+        "aliases": [
+            "shield",
+            "rose"
+        ],
+        "short_desc": "the shield of the rose",
+        "long_desc": "The shield of the rose rests on the floor.",
+        "detailed_desc": "On the shield you see a clear and perfect painting of a dark red rose on a white background. You also notice an inscription.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "shield"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 12
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "inscription"
+                ],
+                "description": "The inscription reads: Pax Est Sanctuum"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 15000,
+        "rent": 7500,
+        "weight": 60,
+        "effects": [
+            "MAGIC",
+            "ANTI_EVIL",
+            "ANTI_NEUTRAL"
+        ]
+    }
+}

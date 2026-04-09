@@ -22,5 +22,8 @@
                 "description": "The tracks lead south."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "MOUNTAIN"
     }
 }

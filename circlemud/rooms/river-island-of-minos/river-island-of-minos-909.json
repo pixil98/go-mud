@@ -17,5 +17,8 @@
             "river-island-of-minos-910",
             "river-island-of-minos-910"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "WATER_NOSWIM"
     }
 }

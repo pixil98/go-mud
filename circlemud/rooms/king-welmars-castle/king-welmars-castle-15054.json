@@ -10,6 +10,17 @@
                 "room_id": "king-welmars-castle-15048",
                 "description": "You see the stairs going back down to the second floor."
             }
-        }
+        },
+        "object_spawns": [
+            {
+                "object_id": "king-welmars-castle-15013"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

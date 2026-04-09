@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6019",
+    "spec": {
+        "aliases": [
+            "tusks",
+            "pair"
+        ],
+        "short_desc": "a pair of boar tusks",
+        "long_desc": "A pair of large boar tusks have been dropped here.",
+        "detailed_desc": "They look like they might be worth something to a craftsman.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 60,
+        "rent": 1,
+        "weight": 10
+    }
+}

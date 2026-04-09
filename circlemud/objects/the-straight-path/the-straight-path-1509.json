@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1509",
+    "spec": {
+        "aliases": [
+            "history",
+            "burnt",
+            "book"
+        ],
+        "short_desc": "a burnt history",
+        "long_desc": "You have found a burnt book, some forgotten history lying on the ground.",
+        "detailed_desc": "So this is the jester's joke. All of our works have turned to dust, and will end in nothing. It is for this that he laughs.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.stats.wis",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 10,
+        "rent": 500,
+        "weight": 2
+    }
+}

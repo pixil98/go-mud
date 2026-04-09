@@ -46,5 +46,10 @@
                 "object_id": "the-dwarven-kingdom-6505"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 600,
+        "gold": 2000,
+        "gender": "M"
     }
 }

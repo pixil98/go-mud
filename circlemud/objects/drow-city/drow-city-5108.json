@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "drow-city-5108",
+    "spec": {
+        "aliases": [
+            "bracers",
+            "iron"
+        ],
+        "short_desc": "a pair of bracers",
+        "long_desc": "A pair of iron bracers has been dropped here.",
+        "detailed_desc": "A pair of iron bracers has been dropped here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "arms"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 8
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": -1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 2000,
+        "rent": 1000,
+        "weight": 3,
+        "effects": [
+            "GLOW",
+            "MAGIC"
+        ]
+    }
+}

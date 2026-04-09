@@ -95,5 +95,16 @@
                 "object_id": "redfernes-residence-7920"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 1000,
+        "gold": 31570,
+        "gender": "M",
+        "flags": [
+            "SPEC",
+            "AGGR_EVIL",
+            "NOCHARM",
+            "NOSUMMON"
+        ]
     }
 }

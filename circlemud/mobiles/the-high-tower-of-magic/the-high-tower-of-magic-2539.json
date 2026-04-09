@@ -52,5 +52,17 @@
             "helper"
         ],
         "exp_reward": 17500
+    },
+    "circlemud_unused": {
+        "alignment": 100,
+        "gold": 1000,
+        "gender": "N",
+        "flags": [
+            "NOCHARM",
+            "NOSUMMON",
+            "NOSLEEP",
+            "NOBASH",
+            "NOBLIND"
+        ]
     }
 }

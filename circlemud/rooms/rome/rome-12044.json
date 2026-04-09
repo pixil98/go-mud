@@ -27,5 +27,11 @@
                 "description": "You see a stairway leading out of the building."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

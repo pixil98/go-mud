@@ -25,6 +25,23 @@
             "king-welmars-castle-15008",
             "king-welmars-castle-15012",
             "king-welmars-castle-15013"
+        ],
+        "object_spawns": [
+            {
+                "object_id": "northern-midgaard-main-city-3020"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3021"
+            },
+            {
+                "object_id": "northern-midgaard-main-city-3022"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
         ]
     }
 }

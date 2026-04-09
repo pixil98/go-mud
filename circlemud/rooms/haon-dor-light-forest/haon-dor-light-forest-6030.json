@@ -72,5 +72,8 @@
             "haon-dor-light-forest-6012",
             "haon-dor-light-forest-6013"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "MOUNTAIN"
     }
 }

@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5204",
+    "spec": {
+        "aliases": [
+            "boots",
+            "iron"
+        ],
+        "short_desc": "a pair of iron boots",
+        "long_desc": "A pair of iron boots has been left here.",
+        "detailed_desc": "A pair of iron boots has been left here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "feet"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": -1
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.dex",
+                "value": -2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 800,
+        "rent": 200,
+        "weight": 6
+    }
+}

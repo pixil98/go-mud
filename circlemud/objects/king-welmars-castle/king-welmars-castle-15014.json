@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15014",
+    "spec": {
+        "aliases": [
+            "key"
+        ],
+        "short_desc": "a key",
+        "long_desc": "A key lies on the floor.",
+        "detailed_desc": "It has a finely carved letter 'W' inscribed on it."
+    },
+    "circlemud_unused": {
+        "weight": 13,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

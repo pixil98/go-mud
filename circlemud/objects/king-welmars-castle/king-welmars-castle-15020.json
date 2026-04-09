@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15020",
+    "spec": {
+        "aliases": [
+            "caviar"
+        ],
+        "short_desc": "some Russian caviar",
+        "long_desc": "There is some delicious-looking Russian caviar here, making your mouth water.",
+        "detailed_desc": "There is some delicious-looking Russian caviar here, making your mouth water."
+    },
+    "circlemud_unused": {
+        "cost": 250,
+        "rent": 20,
+        "weight": 1,
+        "type": "FOOD",
+        "values": [
+            2,
+            0,
+            0,
+            0
+        ]
+    }
+}

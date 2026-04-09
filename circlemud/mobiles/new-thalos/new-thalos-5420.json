@@ -41,11 +41,12 @@
             {
                 "slot": "wield",
                 "object_id": "new-thalos-5486"
-            },
-            {
-                "slot": "wield",
-                "object_id": "new-thalos-5486"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 10,
+        "gold": 1,
+        "gender": "M"
     }
 }

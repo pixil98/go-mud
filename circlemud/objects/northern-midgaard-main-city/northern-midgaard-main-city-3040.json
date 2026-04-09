@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3040",
+    "spec": {
+        "aliases": [
+            "plate",
+            "breast"
+        ],
+        "short_desc": "a breast plate",
+        "long_desc": "A breast plate is lying on the ground.",
+        "detailed_desc": "A breast plate is lying on the ground.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "body"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 7
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 18000,
+        "rent": 150,
+        "weight": 100
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7904",
+    "spec": {
+        "aliases": [
+            "chest",
+            "wooden"
+        ],
+        "short_desc": "a wooden chest",
+        "long_desc": "A wooden chest stands in the corner.",
+        "detailed_desc": "It is a robust chest made from short, heavy planks that have been fastened together with tenons. It is equipped with a simple brass lock.",
+        "flags": [
+            "immobile",
+            "container"
+        ],
+        "closure": {
+            "closed": true,
+            "lock": {
+                "key_id": "redfernes-residence-7902",
+                "locked": true,
+                "pickproof": true
+            }
+        }
+    },
+    "circlemud_unused": {
+        "capacity": 100
+    }
+}

@@ -31,5 +31,11 @@
                 "description": "They are constructed of smooth, beautiful marble"
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

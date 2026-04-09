@@ -44,5 +44,11 @@
                 "description": "The chairs are arranged around the fireplace."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

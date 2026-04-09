@@ -53,10 +53,18 @@
         "inventory": [
             {
                 "object_id": "haon-dor-dark-forest-6109"
-            },
-            {
-                "object_id": "haon-dor-dark-forest-6109"
             }
+        ]
+    },
+    "circlemud_unused": {
+        "alignment": 1000,
+        "gold": 15000,
+        "gender": "F",
+        "flags": [
+            "SPEC",
+            "AGGR_EVIL",
+            "NOCHARM",
+            "NOSUMMON"
         ]
     }
 }

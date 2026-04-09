@@ -15,6 +15,21 @@
                 "type": "grant",
                 "key": "dark"
             }
+        ],
+        "object_spawns": [
+            {
+                "object_id": "river-island-of-minos-904"
+            },
+            {
+                "object_id": "river-island-of-minos-906"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS",
+            "PRIVATE"
         ]
     }
 }

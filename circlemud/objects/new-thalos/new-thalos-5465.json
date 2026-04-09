@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "new-thalos-5465",
+    "spec": {
+        "aliases": [
+            "muscle"
+        ],
+        "short_desc": "a muscle",
+        "long_desc": "A muscle lies here.",
+        "detailed_desc": "A muscle lies here."
+    },
+    "circlemud_unused": {
+        "cost": 4,
+        "rent": 10,
+        "weight": 1,
+        "type": "FOOD",
+        "values": [
+            4,
+            0,
+            0,
+            0
+        ]
+    }
+}

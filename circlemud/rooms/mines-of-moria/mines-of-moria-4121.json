@@ -33,5 +33,11 @@
                 "description": "The rock wall to the east looks like it might be able to be moved."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

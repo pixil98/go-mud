@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5003",
+    "spec": {
+        "aliases": [
+            "amulet",
+            "mushroom"
+        ],
+        "short_desc": "a mushroom amulet",
+        "long_desc": "A mushroom-shaped amulet lies on the ground.",
+        "detailed_desc": "A mushroom-shaped amulet lies on the ground.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "neck"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.stats.con",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 1500,
+        "rent": 4000,
+        "weight": 2,
+        "effects": [
+            "MAGIC",
+            "ANTI_WARRIOR"
+        ]
+    }
+}

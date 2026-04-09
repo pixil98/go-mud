@@ -47,5 +47,9 @@
                 "object_id": "new-thalos-5400"
             }
         ]
+    },
+    "circlemud_unused": {
+        "gold": 15,
+        "gender": "M"
     }
 }

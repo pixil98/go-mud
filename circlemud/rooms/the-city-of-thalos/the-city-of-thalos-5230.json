@@ -10,6 +10,20 @@
                 "room_id": "the-city-of-thalos-5213",
                 "description": "A small side street runs past the tavern."
             }
-        }
+        },
+        "object_spawns": [
+            {
+                "object_id": "the-city-of-thalos-5250"
+            },
+            {
+                "object_id": "the-city-of-thalos-5251"
+            },
+            {
+                "object_id": "the-city-of-thalos-5239"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

@@ -15,5 +15,8 @@
                 "description": "It gets darker and thicker this way."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

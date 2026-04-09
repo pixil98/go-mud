@@ -45,11 +45,12 @@
             {
                 "slot": "wield",
                 "object_id": "the-chessboard-of-midgaard-3606"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-chessboard-of-midgaard-3606"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -400,
+        "gold": 3000,
+        "gender": "N"
     }
 }

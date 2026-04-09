@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6116",
+    "spec": {
+        "aliases": [
+            "shirt",
+            "scale"
+        ],
+        "short_desc": "a black dragon scale shirt",
+        "long_desc": "A black dragon scale shirt has been left here.",
+        "detailed_desc": "It is a sleeveless shirt made from big, black dragon scales joined with silver threads. Its inside has been made from the soft skin on the dragon's belly, making it very comfortable to wear. The word 'Isha' has been engraved on one of the scales.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "body"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 6
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 10000,
+        "rent": 100,
+        "weight": 10,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

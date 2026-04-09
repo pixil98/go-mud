@@ -45,11 +45,12 @@
             {
                 "slot": "hold",
                 "object_id": "new-thalos-5490"
-            },
-            {
-                "slot": "hold",
-                "object_id": "new-thalos-5490"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 200,
+        "gold": 1,
+        "gender": "M"
     }
 }

@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "rome-12002",
+    "spec": {
+        "aliases": [
+            "helmet",
+            "roman",
+            "combat"
+        ],
+        "short_desc": "a Roman combat helmet",
+        "long_desc": "A Roman combat helmet has been left here.",
+        "detailed_desc": "A Roman combat helmet has been left here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "head"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 8
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.dex",
+                "value": -2
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 12000,
+        "rent": 8000,
+        "weight": 25,
+        "effects": [
+            "GLOW"
+        ]
+    }
+}

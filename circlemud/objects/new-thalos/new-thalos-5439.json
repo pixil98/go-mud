@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "new-thalos-5439",
+    "spec": {
+        "aliases": [
+            "candle"
+        ],
+        "short_desc": "a candle",
+        "long_desc": "A candle lies here",
+        "detailed_desc": "A candle lies here",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "light"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "burn_time_hours": 50,
+        "cost": 35,
+        "rent": 10,
+        "weight": 1
+    }
+}

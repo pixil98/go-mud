@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7900",
+    "spec": {
+        "aliases": [
+            "key",
+            "steel"
+        ],
+        "short_desc": "a large key",
+        "long_desc": "A large steel key has been left here.",
+        "detailed_desc": "This huge key is made from solid steel.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 2,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

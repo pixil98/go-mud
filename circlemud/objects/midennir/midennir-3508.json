@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "midennir-3508",
+    "spec": {
+        "aliases": [
+            "gyroscope",
+            "toy"
+        ],
+        "short_desc": "the gyroscope",
+        "long_desc": "A small toy is spinning about on the ground here.",
+        "detailed_desc": "A small toy is spinning about on the ground here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "finger",
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 25,
+        "rent": 600,
+        "weight": 1,
+        "effects": [
+            "HUM"
+        ]
+    }
+}

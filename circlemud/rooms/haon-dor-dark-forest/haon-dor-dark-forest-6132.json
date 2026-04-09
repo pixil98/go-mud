@@ -37,5 +37,11 @@
                 "description": "The spider web stretches out to the west. It looks as if it is possible to walk on it."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "WATER_SWIM",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

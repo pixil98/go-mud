@@ -20,5 +20,11 @@
             "the-orc-enclave-6205",
             "the-orc-enclave-6207"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "HILLS",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

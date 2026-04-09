@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2582",
+    "spec": {
+        "aliases": [
+            "robe",
+            "white"
+        ],
+        "short_desc": "a white robe",
+        "long_desc": "A pile of white cloth is on the ground here.",
+        "detailed_desc": "A pile of white cloth is on the ground here.",
+        "flags": [
+            "wearable",
+            "container"
+        ],
+        "wear_slots": [
+            "about"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -9
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "capacity": 50,
+        "cost": 7500,
+        "rent": 750,
+        "weight": 7,
+        "effects": [
+            "MAGIC",
+            "ANTI_EVIL",
+            "ANTI_NEUTRAL"
+        ]
+    }
+}

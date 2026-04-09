@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "id": "newbie-zone-18610",
+    "spec": {
+        "aliases": [
+            "horns",
+            "horn"
+        ],
+        "short_desc": "the horns of the Minotaur",
+        "long_desc": "The horns of the great Minotaur lie here.",
+        "detailed_desc": "The horns of the great Minotaur lie here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "head"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.str",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 100,
+        "weight": 8,
+        "effects": [
+            "ANTI_CLERIC"
+        ]
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "new-thalos-5430",
+    "spec": {
+        "aliases": [
+            "sleeves",
+            "studded",
+            "leather"
+        ],
+        "short_desc": "a pair of studded leather sleeves",
+        "long_desc": "A pair of studded leather sleeves lie here.",
+        "detailed_desc": "A pair of studded leather sleeves lie here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "arms"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 500,
+        "rent": 200,
+        "weight": 3
+    }
+}

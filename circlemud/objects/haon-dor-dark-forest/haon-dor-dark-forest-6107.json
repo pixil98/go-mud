@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6107",
+    "spec": {
+        "aliases": [
+            "toadstool"
+        ],
+        "short_desc": "a toadstool",
+        "long_desc": "A large toadstool grows nearby.",
+        "detailed_desc": "It is a large, brown boletus that must weigh nearly five pounds. It has small white spots and the top surface is covered in a thin layer of transparent slime that emits a weak, musty smell. Not the most delicious thing you have seen."
+    },
+    "circlemud_unused": {
+        "cost": 20,
+        "rent": 20,
+        "weight": 5,
+        "type": "FOOD",
+        "values": [
+            12,
+            0,
+            0,
+            1
+        ]
+    }
+}

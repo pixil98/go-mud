@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7914",
+    "spec": {
+        "aliases": [
+            "plate",
+            "breast",
+            "silvery",
+            "silver"
+        ],
+        "short_desc": "a silvery breast plate",
+        "long_desc": "There is a silvery breast plate on the floor.",
+        "detailed_desc": "On the breast plate you notice a relief of large rose. The metal seems to be some kind of silver or platinum.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "body"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 10
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 20000,
+        "rent": 5000,
+        "weight": 70,
+        "effects": [
+            "MAGIC",
+            "ANTI_EVIL",
+            "ANTI_NEUTRAL"
+        ]
+    }
+}

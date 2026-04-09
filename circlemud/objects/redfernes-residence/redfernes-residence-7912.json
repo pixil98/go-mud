@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7912",
+    "spec": {
+        "aliases": [
+            "helmet",
+            "chaos"
+        ],
+        "short_desc": "a chaos helmet",
+        "long_desc": "On the floor is a grand evil-looking chaos helmet.",
+        "detailed_desc": "This helmet has mounted some mean looking spikes on the front, moreover it looks like good protection.",
+        "flags": [
+            "wearable",
+            "invisible"
+        ],
+        "wear_slots": [
+            "head"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 8
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 2300,
+        "rent": 1000,
+        "weight": 8,
+        "effects": [
+            "MAGIC",
+            "ANTI_GOOD"
+        ]
+    }
+}

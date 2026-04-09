@@ -35,5 +35,11 @@
         "mobile_spawns": [
             "the-sewer-first-level-7004"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

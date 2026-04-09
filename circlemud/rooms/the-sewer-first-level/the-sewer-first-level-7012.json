@@ -29,5 +29,11 @@
                 "description": "It is as dark as tar and looks like something out of a toilet, on top of that, the smell is absolutely overwhelming."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "MOUNTAIN",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

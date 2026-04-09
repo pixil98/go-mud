@@ -41,5 +41,8 @@
         "mobile_spawns": [
             "southern-part-of-midgaard-3106"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

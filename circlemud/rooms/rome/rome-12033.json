@@ -26,5 +26,8 @@
         "mobile_spawns": [
             "rome-12017"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

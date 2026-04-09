@@ -23,5 +23,11 @@
             "mines-of-moria-4003",
             "mines-of-moria-4003"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

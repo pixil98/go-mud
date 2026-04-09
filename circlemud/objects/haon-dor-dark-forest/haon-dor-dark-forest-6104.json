@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6104",
+    "spec": {
+        "aliases": [
+            "branch",
+            "grey",
+            "long"
+        ],
+        "short_desc": "a long, grey branch",
+        "long_desc": "A long, grey branch rests heavily on the ground.",
+        "detailed_desc": "It is very heavy and looks as if it has been dropped from great height. It is long and straight and the wood is very hard, still being full of sap. Although it does not fit very well in your hand, it could be used as a clumsy but very heavy weapon.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": -2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pound",
+        "cost": 60,
+        "rent": 20,
+        "weight": 18
+    }
+}

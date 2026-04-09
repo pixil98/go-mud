@@ -31,5 +31,8 @@
                 "description": "The sign is covered with soot and the wood is quite charred, but you can still make out the following letters: T TO SB DGE NER L RE"
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

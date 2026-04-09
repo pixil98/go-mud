@@ -1,0 +1,49 @@
+{
+    "version": 1,
+    "id": "rome-12020",
+    "spec": {
+        "aliases": [
+            "thunderbolt",
+            "jupiter"
+        ],
+        "short_desc": "Jupiter's Thunderbolt",
+        "long_desc": "Jupiter's Thunderbolt has been left here.",
+        "detailed_desc": "Jupiter's Thunderbolt has been left here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d6"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 3
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 3
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "crush",
+        "cost": 100000,
+        "rent": 25000,
+        "weight": 22,
+        "effects": [
+            "HUM",
+            "MAGIC",
+            "ANTI_EVIL",
+            "ANTI_MAGIC_USER",
+            "ANTI_CLERIC"
+        ]
+    }
+}

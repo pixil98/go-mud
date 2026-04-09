@@ -11,5 +11,11 @@
                 "description": "To dark to tell, but you can feel something nearby."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "MOUNTAIN",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

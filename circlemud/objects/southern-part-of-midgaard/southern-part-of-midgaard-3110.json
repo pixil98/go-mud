@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3110",
+    "spec": {
+        "aliases": [
+            "safe"
+        ],
+        "short_desc": "the safe",
+        "long_desc": "A safe is placed in a dark corner of the room.",
+        "detailed_desc": "The safe is very heavy and has a keyhole.",
+        "flags": [
+            "immobile",
+            "container"
+        ],
+        "closure": {
+            "closed": true,
+            "lock": {
+                "key_id": "southern-part-of-midgaard-3108",
+                "locked": true,
+                "pickproof": true
+            }
+        }
+    },
+    "circlemud_unused": {
+        "capacity": 34,
+        "weight": 999
+    }
+}

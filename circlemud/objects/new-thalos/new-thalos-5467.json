@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "new-thalos-5467",
+    "spec": {
+        "aliases": [
+            "glass",
+            "liquor",
+            "blue",
+            "oasis",
+            "whisky"
+        ],
+        "short_desc": "a glass",
+        "long_desc": "A glass of blue alcohol rests here.",
+        "detailed_desc": "A glass of blue alcohol rests here."
+    },
+    "circlemud_unused": {
+        "cost": 1800,
+        "rent": 10,
+        "weight": 1,
+        "type": "DRINKCON",
+        "values": [
+            5,
+            5,
+            5,
+            0
+        ]
+    }
+}

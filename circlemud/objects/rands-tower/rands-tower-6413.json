@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "rands-tower-6413",
+    "spec": {
+        "aliases": [
+            "mevais",
+            "herb",
+            "leaf"
+        ],
+        "short_desc": "a leaf of mevais",
+        "long_desc": "A small black leaf of a mevais plant lies here, well preserved.",
+        "detailed_desc": "Quaffing this down might provide interesting effects."
+    },
+    "circlemud_unused": {
+        "weight": 1,
+        "type": "POTION",
+        "values": [
+            30,
+            27,
+            33,
+            4
+        ]
+    }
+}

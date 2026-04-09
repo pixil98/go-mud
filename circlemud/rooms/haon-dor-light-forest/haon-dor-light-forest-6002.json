@@ -41,5 +41,8 @@
                 "description": "The young, slender trees look beautiful, their fresh, green leaves moving lightly in the wind."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

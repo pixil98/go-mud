@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "river-island-of-minos-909",
+    "spec": {
+        "aliases": [
+            "boots",
+            "boat"
+        ],
+        "short_desc": "a pair of boots",
+        "long_desc": "A pair of boots sit here in a puddle of water.",
+        "detailed_desc": "The boots are made of a strange lightweight hide and float in a puddle of water.",
+        "flags": [
+            "wearable",
+            "no_sell"
+        ],
+        "wear_slots": [
+            "feet"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 5000,
+        "rent": 1850,
+        "weight": 1,
+        "effects": [
+            "NODONATE",
+            "NOINVIS"
+        ],
+        "type": "BOAT",
+        "values": [
+            0,
+            0,
+            0,
+            0
+        ]
+    }
+}

@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "midennir-3505",
+    "spec": {
+        "aliases": [
+            "corpse",
+            "mutilated"
+        ],
+        "short_desc": "a mutilated corpse",
+        "long_desc": "A mutilated corpse has been left on the ground here.",
+        "detailed_desc": "Looks to be an aftermath of whatever caused this carnage.",
+        "flags": [
+            "immobile",
+            "container"
+        ]
+    },
+    "circlemud_unused": {
+        "capacity": 20,
+        "weight": 25
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6012",
+    "spec": {
+        "aliases": [
+            "sign"
+        ],
+        "short_desc": "a large sign",
+        "long_desc": "A large sign mounted on a pole is standing by the roadside.",
+        "detailed_desc": "It says :- Haon-Dor -------- This is the Forest of Haon-Dor. Enter at your own risk. Please report any strange occurrences to Furry, as Quifael and Derkhil are currently indisposed.",
+        "flags": [
+            "immobile"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "pole"
+                ],
+                "description": "Not the most interesting pole in the world. Better leave it here, though, as it holds the sign in place."
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 100
+    }
+}

@@ -24,5 +24,12 @@
                 "description": "Looking up the huge statue you see Akbal calmly gazing out across his lands, he seems pleased."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS",
+            "NOTRACK"
+        ]
     }
 }

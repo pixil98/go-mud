@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15002",
+    "spec": {
+        "aliases": [
+            "sceptre",
+            "royal",
+            "golden"
+        ],
+        "short_desc": "a golden sceptre",
+        "long_desc": "A golden Royal sceptre lies on the ground.",
+        "detailed_desc": "A golden Royal sceptre lies on the ground.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 15000,
+        "rent": 3000,
+        "weight": 20,
+        "effects": [
+            "MAGIC",
+            "ANTI_EVIL"
+        ]
+    }
+}

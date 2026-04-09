@@ -24,6 +24,23 @@
             "rands-tower-6404",
             "rands-tower-6404",
             "rands-tower-6404"
+        ],
+        "object_spawns": [
+            {
+                "object_id": "rands-tower-6416"
+            },
+            {
+                "object_id": "rands-tower-6417"
+            },
+            {
+                "object_id": "rands-tower-6418"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
         ]
     }
 }

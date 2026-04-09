@@ -25,5 +25,11 @@
                 "description": "They seem to be made of granite, and stretch down into a more dimly lit area than where you come from."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

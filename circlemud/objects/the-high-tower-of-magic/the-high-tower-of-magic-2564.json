@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2564",
+    "spec": {
+        "aliases": [
+            "figurine",
+            "humanoid",
+            "small"
+        ],
+        "short_desc": "a small figurine",
+        "long_desc": "A small figurine in the shape of a humanoid is standing here.",
+        "detailed_desc": "A small figurine in the shape of a humanoid is standing here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 6000,
+        "rent": 650,
+        "weight": 4,
+        "effects": [
+            "MAGIC"
+        ],
+        "type": "STAFF",
+        "values": [
+            21,
+            10,
+            10,
+            32
+        ]
+    }
+}

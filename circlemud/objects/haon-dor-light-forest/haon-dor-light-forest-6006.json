@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6006",
+    "spec": {
+        "aliases": [
+            "key",
+            "brass"
+        ],
+        "short_desc": "a small brass key",
+        "long_desc": "A small brass key lies here.",
+        "detailed_desc": "It is a small, simple brass key with no inscriptions or marks of any kind.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 1,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

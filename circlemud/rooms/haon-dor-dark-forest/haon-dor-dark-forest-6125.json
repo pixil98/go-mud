@@ -45,6 +45,17 @@
                 ],
                 "description": "The path seems all too frail. One of the giant roots could probably crush it in a single blow."
             }
+        ],
+        "object_spawns": [
+            {
+                "object_id": "haon-dor-dark-forest-6104"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST",
+        "flags": [
+            "INDOORS"
         ]
     }
 }

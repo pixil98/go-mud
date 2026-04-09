@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "new-thalos-5401",
+    "spec": {
+        "aliases": [
+            "city",
+            "key"
+        ],
+        "short_desc": "the Key to the City of New Thalos",
+        "long_desc": "The heavy city key lies here in the dust",
+        "detailed_desc": "The heavy city key lies here in the dust",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 5,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

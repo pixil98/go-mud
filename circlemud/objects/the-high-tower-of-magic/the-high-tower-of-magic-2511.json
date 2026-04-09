@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2511",
+    "spec": {
+        "aliases": [
+            "bar",
+            "mithril"
+        ],
+        "short_desc": "a bar of mithril",
+        "long_desc": "A bar of mithril has been left here.",
+        "detailed_desc": "A bar of mithril has been left here."
+    },
+    "circlemud_unused": {
+        "cost": 3000,
+        "rent": 950,
+        "weight": 12
+    }
+}

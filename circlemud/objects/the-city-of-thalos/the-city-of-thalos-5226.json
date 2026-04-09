@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5226",
+    "spec": {
+        "aliases": [
+            "seal",
+            "ivory"
+        ],
+        "short_desc": "an engraved ivory seal",
+        "long_desc": "A small, engraved ivory seal lies here.",
+        "detailed_desc": "A small, engraved ivory seal lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 2,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

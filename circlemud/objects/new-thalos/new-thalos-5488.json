@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "new-thalos-5488",
+    "spec": {
+        "aliases": [
+            "saddle"
+        ],
+        "short_desc": "a saddle",
+        "long_desc": "A saddle lies here.",
+        "detailed_desc": "A saddle lies here."
+    },
+    "circlemud_unused": {
+        "cost": 100,
+        "rent": 50,
+        "weight": 4
+    }
+}

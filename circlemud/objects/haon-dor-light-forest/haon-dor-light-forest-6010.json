@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6010",
+    "spec": {
+        "aliases": [
+            "blackberries",
+            "berries"
+        ],
+        "short_desc": "some blackberries",
+        "long_desc": "Some blackberries grow on a bush nearby.",
+        "detailed_desc": "They look very tasty indeed."
+    },
+    "circlemud_unused": {
+        "weight": 1,
+        "effects": [
+            "NORENT"
+        ],
+        "type": "FOOD",
+        "values": [
+            3,
+            0,
+            0,
+            0
+        ]
+    }
+}

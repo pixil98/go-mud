@@ -18,5 +18,8 @@
         "mobile_spawns": [
             "midennir-3504"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

@@ -21,5 +21,8 @@
         "mobile_spawns": [
             "the-three-of-swords-3300"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

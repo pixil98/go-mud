@@ -76,5 +76,14 @@
                 "object_id": "river-island-of-minos-900"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -1000,
+        "gender": "M",
+        "flags": [
+            "NOCHARM",
+            "NOSUMMON",
+            "NOBASH"
+        ]
     }
 }

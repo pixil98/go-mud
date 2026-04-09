@@ -27,5 +27,11 @@
                 "description": "Hey!! This is first-class stuff!! - White Cloud brand with lotion. The roll is about half-used."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

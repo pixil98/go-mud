@@ -35,5 +35,8 @@
                 "description": "The tall trees are young and slender, not much more than a hundred years or so."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

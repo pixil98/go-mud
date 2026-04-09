@@ -48,5 +48,8 @@
         "mobile_spawns": [
             "the-great-pyramid-5302"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

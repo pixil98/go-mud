@@ -16,5 +16,8 @@
         "mobile_spawns": [
             "rands-tower-6400"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "MOUNTAIN"
     }
 }

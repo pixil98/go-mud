@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "id": "new-thalos-5478",
+    "spec": {
+        "aliases": [
+            "scroll",
+            "recall"
+        ],
+        "short_desc": "a scroll of recall",
+        "long_desc": "A scroll of recall lies here.",
+        "detailed_desc": "A scroll of recall lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 2000,
+        "rent": 25,
+        "weight": 4,
+        "effects": [
+            "MAGIC"
+        ],
+        "type": "SCROLL",
+        "values": [
+            12,
+            42,
+            -1,
+            -1
+        ]
+    }
+}

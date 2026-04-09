@@ -42,5 +42,11 @@
             "haon-dor-dark-forest-6100",
             "haon-dor-dark-forest-6100"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

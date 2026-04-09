@@ -16,5 +16,8 @@
         "flags": [
             "nomob"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

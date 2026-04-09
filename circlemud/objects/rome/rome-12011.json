@@ -1,0 +1,43 @@
+{
+    "version": 1,
+    "id": "rome-12011",
+    "spec": {
+        "aliases": [
+            "bracelet",
+            "silver",
+            "gold"
+        ],
+        "short_desc": "a silver and gold bracelet",
+        "long_desc": "A bracelet, made from silver and gold, has been carelessly left here.",
+        "detailed_desc": "A bracelet, made from silver and gold, has been carelessly left here.",
+        "flags": [
+            "wearable",
+            "no_drop"
+        ],
+        "wear_slots": [
+            "wrist"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": -3
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 10000,
+        "rent": 8000,
+        "weight": 14,
+        "effects": [
+            "HUM"
+        ],
+        "type": "WORN",
+        "values": [
+            0,
+            0,
+            0,
+            0
+        ]
+    }
+}

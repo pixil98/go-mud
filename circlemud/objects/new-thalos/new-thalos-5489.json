@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "new-thalos-5489",
+    "spec": {
+        "aliases": [
+            "crop",
+            "riding"
+        ],
+        "short_desc": "a riding crop",
+        "long_desc": "A riding crop lies here.",
+        "detailed_desc": "A riding crop lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d4"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "whip",
+        "cost": 50,
+        "rent": 10,
+        "weight": 1
+    }
+}

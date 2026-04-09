@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5305",
+    "spec": {
+        "aliases": [
+            "bottle",
+            "fluid"
+        ],
+        "short_desc": "a bottle of embalming fluid",
+        "long_desc": "A dusty bottle lies here on the ground.",
+        "detailed_desc": "The bottle is dusty and the fluid has a strange sickly-sweet smell to it."
+    },
+    "circlemud_unused": {
+        "cost": 250,
+        "rent": 50,
+        "weight": 5,
+        "type": "POTION",
+        "values": [
+            5,
+            33,
+            -1,
+            -1
+        ]
+    }
+}

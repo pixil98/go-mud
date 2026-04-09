@@ -30,5 +30,8 @@
                 "description": "Why are you looking in a pothole? Are you poor or something?"
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

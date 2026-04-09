@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "the-chessboard-of-midgaard-3608",
+    "spec": {
+        "aliases": [
+            "staff",
+            "black",
+            "bishop"
+        ],
+        "short_desc": "the Staff of the Black Bishop",
+        "long_desc": "The Black Bishop's Staff is lying here.",
+        "detailed_desc": "The Black Bishop's Staff is lying here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 20000,
+        "rent": 6,
+        "weight": 3,
+        "effects": [
+            "GLOW",
+            "MAGIC",
+            "ANTI_GOOD"
+        ],
+        "type": "STAFF",
+        "values": [
+            20,
+            5,
+            5,
+            36
+        ]
+    }
+}

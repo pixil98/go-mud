@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "the-second-sewer-7190",
+    "spec": {
+        "aliases": [
+            "ring",
+            "silver"
+        ],
+        "short_desc": "a glinting silver ring",
+        "long_desc": "A lovely silver ring has been left here.",
+        "detailed_desc": "A lovely silver ring has been left here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "finger"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -10
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 16000,
+        "rent": 5000,
+        "weight": 9,
+        "effects": [
+            "MAGIC"
+        ],
+        "type": "WORN",
+        "values": [
+            0,
+            0,
+            10,
+            0
+        ]
+    }
+}

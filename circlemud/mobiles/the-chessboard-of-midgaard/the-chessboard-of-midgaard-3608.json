@@ -59,5 +59,10 @@
                 "object_id": "the-chessboard-of-midgaard-3610"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -750,
+        "gold": 10000,
+        "gender": "N"
     }
 }

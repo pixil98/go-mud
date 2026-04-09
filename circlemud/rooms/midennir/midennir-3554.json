@@ -27,5 +27,8 @@
                 "description": "The twigs and leaves have all been piled together as a makeshift bed for some small humanoid."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

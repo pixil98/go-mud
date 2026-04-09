@@ -17,5 +17,12 @@
                 "room_id": "the-high-tower-of-magic-2588"
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS",
+            "NOTRACK"
+        ]
     }
 }

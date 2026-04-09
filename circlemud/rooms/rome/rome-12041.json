@@ -34,5 +34,11 @@
         "mobile_spawns": [
             "rome-12024"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "WATER_SWIM",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

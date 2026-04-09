@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "the-chessboard-of-midgaard-3616",
+    "spec": {
+        "aliases": [
+            "coins",
+            "gold",
+            "black",
+            "royal",
+            "treasure"
+        ],
+        "short_desc": "the Black Royal Treasure",
+        "long_desc": "There are a LOT of coins here.",
+        "detailed_desc": "There are a LOT of coins here."
+    },
+    "circlemud_unused": {
+        "cost": 10000,
+        "weight": 10,
+        "type": "MONEY",
+        "values": [
+            10000,
+            0,
+            0,
+            0
+        ]
+    }
+}

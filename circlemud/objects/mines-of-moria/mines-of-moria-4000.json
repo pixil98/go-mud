@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4000",
+    "spec": {
+        "aliases": [
+            "ring",
+            "yellow",
+            "green"
+        ],
+        "short_desc": "a yellow and green ring",
+        "long_desc": "A ring is here, with yellow and green ornamentation.  It looks very old.",
+        "detailed_desc": "It feels heavy.",
+        "flags": [
+            "wearable",
+            "no_drop",
+            "no_sell"
+        ],
+        "wear_slots": [
+            "finger"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.stats.str",
+                "value": -2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 50,
+        "rent": 20,
+        "weight": 1,
+        "effects": [
+            "NODONATE"
+        ]
+    }
+}

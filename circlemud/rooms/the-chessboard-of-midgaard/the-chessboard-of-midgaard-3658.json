@@ -22,5 +22,8 @@
         "mobile_spawns": [
             "the-chessboard-of-midgaard-3605"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

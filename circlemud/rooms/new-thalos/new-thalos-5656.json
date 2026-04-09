@@ -19,5 +19,8 @@
                 "room_id": "new-thalos-5651"
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE"
     }
 }

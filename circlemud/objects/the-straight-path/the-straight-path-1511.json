@@ -1,0 +1,48 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1511",
+    "spec": {
+        "aliases": [
+            "forge",
+            "unity"
+        ],
+        "short_desc": "the Forge of Unity",
+        "long_desc": "It is surely the best of men who has left these gloves to aid you.",
+        "detailed_desc": "It is surely the best of men who has left these gloves to aid you.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hands"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 5
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 10
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 12000,
+        "rent": 4000,
+        "weight": 5,
+        "effects": [
+            "BLESS",
+            "ANTI_EVIL",
+            "ANTI_NEUTRAL",
+            "ANTI_MAGIC_USER",
+            "ANTI_CLERIC"
+        ]
+    }
+}

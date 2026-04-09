@@ -31,5 +31,8 @@
             "new-thalos-5462",
             "new-thalos-5462"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

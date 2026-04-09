@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6017",
+    "spec": {
+        "aliases": [
+            "corpse",
+            "boar"
+        ],
+        "short_desc": "the corpse of a boar",
+        "flags": [
+            "immobile",
+            "container"
+        ]
+    },
+    "circlemud_unused": {
+        "capacity": 100,
+        "cost": 1,
+        "rent": 1,
+        "weight": 500
+    }
+}

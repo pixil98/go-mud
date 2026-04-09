@@ -5,5 +5,6 @@
         "name": "The Great Eastern Desert",
         "reset_mode": "lifespan",
         "lifespan": "30m"
-    }
+    },
+    "creators": "Rorschach"
 }

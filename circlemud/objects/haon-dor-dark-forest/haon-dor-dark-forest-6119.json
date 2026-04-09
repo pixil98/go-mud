@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "haon-dor-dark-forest-6119",
+    "spec": {
+        "aliases": [
+            "belt",
+            "silver"
+        ],
+        "short_desc": "a broad silver belt",
+        "long_desc": "A broad silver belt has been left here.",
+        "detailed_desc": "It is a broad belt made from tiny silver rings woven together.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "waist"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 6
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 5000,
+        "rent": 3500,
+        "weight": 4,
+        "effects": [
+            "GLOW",
+            "MAGIC"
+        ]
+    }
+}

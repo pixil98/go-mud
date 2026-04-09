@@ -29,6 +29,17 @@
         ],
         "mobile_spawns": [
             "haon-dor-dark-forest-6112"
+        ],
+        "object_spawns": [
+            {
+                "object_id": "haon-dor-dark-forest-6111"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST",
+        "flags": [
+            "INDOORS"
         ]
     }
 }

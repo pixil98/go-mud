@@ -19,5 +19,11 @@
                 "description": "You see the Training Room."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

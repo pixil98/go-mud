@@ -22,5 +22,8 @@
         "mobile_spawns": [
             "newbie-zone-18602"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

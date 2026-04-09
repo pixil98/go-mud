@@ -1,0 +1,56 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15000",
+    "spec": {
+        "aliases": [
+            "nothingness",
+            "universal"
+        ],
+        "short_desc": "Sapowox's Universal Nothingness",
+        "long_desc": "You are quite unable to perceive Sapowox's Universal Nothingness here.",
+        "detailed_desc": "You are not sure, but you do not seem not able to figure out what it isn't, because it doesn't much resemble anything you haven't ever seen. You feel a bit of mortal confusion, but you notice a small inscription on it.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "6d4"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 2
+            }
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "text",
+                    "writing",
+                    "inscription"
+                ],
+                "description": "It just says: ' (void *) ' Not very enlightening, is it?"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "sting",
+        "rent": 200000,
+        "weight": 40,
+        "effects": [
+            "HUM",
+            "NORENT",
+            "MAGIC"
+        ]
+    }
+}

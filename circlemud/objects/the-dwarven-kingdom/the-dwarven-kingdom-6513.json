@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6513",
+    "spec": {
+        "aliases": [
+            "coal",
+            "chunk"
+        ],
+        "short_desc": "a chunk of coal",
+        "long_desc": "There is a chunk of coal here.",
+        "detailed_desc": "There is a chunk of coal here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 100
+    }
+}

@@ -56,5 +56,15 @@
                 "object_id": "southern-part-of-midgaard-3102"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 1000,
+        "gold": 2000,
+        "gender": "F",
+        "flags": [
+            "SPEC",
+            "NOCHARM",
+            "NOSUMMON"
+        ]
     }
 }

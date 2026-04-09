@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3071",
+    "spec": {
+        "aliases": [
+            "gloves",
+            "leather"
+        ],
+        "short_desc": "a pair of leather gloves",
+        "long_desc": "A pair of leather gloves is lying on the ground.",
+        "detailed_desc": "A pair of leather gloves is lying on the ground.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hands"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 75,
+        "rent": 10,
+        "weight": 3
+    }
+}

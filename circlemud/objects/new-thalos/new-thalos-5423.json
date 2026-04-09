@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "new-thalos-5423",
+    "spec": {
+        "aliases": [
+            "jacket",
+            "leather"
+        ],
+        "short_desc": "a leather jacket",
+        "long_desc": "A leather jacket lies here.",
+        "detailed_desc": "A leather jacket lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "body"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 3
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 600,
+        "rent": 200,
+        "weight": 6
+    }
+}

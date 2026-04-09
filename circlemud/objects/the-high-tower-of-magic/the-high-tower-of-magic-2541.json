@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2541",
+    "spec": {
+        "aliases": [
+            "chameleon",
+            "poncho",
+            "cloth"
+        ],
+        "short_desc": "a chameleon poncho",
+        "long_desc": "Some multicolored cloth is on the ground here",
+        "detailed_desc": "Some multicolored cloth is on the ground here",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "about"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.stats.dex",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -3
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 15000,
+        "rent": 5000,
+        "weight": 4,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

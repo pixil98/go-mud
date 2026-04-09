@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "the-chessboard-of-midgaard-3601",
+    "spec": {
+        "aliases": [
+            "armour",
+            "white",
+            "pawn"
+        ],
+        "short_desc": "some White Pawn Armour",
+        "long_desc": "A pile of white armour is here.",
+        "detailed_desc": "A pile of white armour is here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "body"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 300,
+        "rent": 1,
+        "weight": 13,
+        "effects": [
+            "ANTI_EVIL"
+        ]
+    }
+}

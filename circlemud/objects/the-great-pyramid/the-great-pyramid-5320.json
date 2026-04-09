@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5320",
+    "spec": {
+        "aliases": [
+            "curse",
+            "mummy"
+        ],
+        "short_desc": "the curse of the mummy",
+        "long_desc": "Some fortunate soul has escaped the mummy's curse, for now.",
+        "detailed_desc": "Rumor has it that whomever disturbs the grave of the mummy shall be cursed for all eternity, and that the descendents of that person shall likewise be cursed for ten generations to follow.",
+        "flags": [
+            "wearable",
+            "invisible",
+            "no_drop"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": -50
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 500,
+        "rent": 50,
+        "weight": 1,
+        "effects": [
+            "NORENT",
+            "NODONATE",
+            "MAGIC"
+        ]
+    }
+}

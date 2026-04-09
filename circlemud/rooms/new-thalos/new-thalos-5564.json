@@ -18,5 +18,11 @@
                 "description": "The message appears to read: I hate being a Tanner"
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

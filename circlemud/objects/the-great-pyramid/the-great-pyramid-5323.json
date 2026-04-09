@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5323",
+    "spec": {
+        "aliases": [
+            "diamond"
+        ],
+        "short_desc": "the diamond",
+        "detailed_desc": "Aha! You see a multifaceted gemstone, which strangely reflects no light, making it very hard to see when it lies on the ground."
+    },
+    "circlemud_unused": {
+        "weight": 5
+    }
+}

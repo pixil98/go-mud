@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5222",
+    "spec": {
+        "aliases": [
+            "robe",
+            "black",
+            "silk"
+        ],
+        "short_desc": "a black silk robe",
+        "long_desc": "A black silk robe lies heaped in one corner.",
+        "detailed_desc": "A black silk robe lies heaped in one corner.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "about"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 1300,
+        "rent": 500,
+        "weight": 6
+    }
+}

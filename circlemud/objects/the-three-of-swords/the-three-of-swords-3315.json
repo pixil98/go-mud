@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3315",
+    "spec": {
+        "aliases": [
+            "scimitar"
+        ],
+        "short_desc": "a scimitar",
+        "long_desc": "A scimitar as long as your arm lies here.",
+        "detailed_desc": "This weapon really isn't of too high a quality.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d7"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 500,
+        "rent": 50,
+        "weight": 10
+    }
+}

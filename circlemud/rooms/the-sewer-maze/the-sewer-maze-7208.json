@@ -36,5 +36,11 @@
                 "description": "The slime is slimy and uninteresting."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

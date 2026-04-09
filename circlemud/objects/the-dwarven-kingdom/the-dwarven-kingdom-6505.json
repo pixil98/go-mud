@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6505",
+    "spec": {
+        "aliases": [
+            "plate",
+            "dwarven",
+            "mail"
+        ],
+        "short_desc": "the dwarven plate mail",
+        "long_desc": "There is dwarven plate mail lying here.",
+        "detailed_desc": "There is dwarven plate mail lying here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "body"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 6
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 4500,
+        "rent": 300,
+        "weight": 80
+    }
+}

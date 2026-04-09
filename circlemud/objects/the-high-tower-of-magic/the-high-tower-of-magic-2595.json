@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2595",
+    "spec": {
+        "aliases": [
+            "key",
+            "white",
+            "ivory"
+        ],
+        "short_desc": "a white key",
+        "long_desc": "A key made of white ivory has been left here.",
+        "detailed_desc": "A key made of white ivory has been left here.",
+        "flags": [
+            "wearable",
+            "no_sell"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 2,
+        "effects": [
+            "NORENT",
+            "NODONATE"
+        ]
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "id": "arachnos-6305",
+    "spec": {
+        "aliases": [
+            "potion",
+            "thick",
+            "white"
+        ],
+        "short_desc": "a thick white potion",
+        "long_desc": "A thick white potion has been left here.",
+        "detailed_desc": "A thick white potion has been left here."
+    },
+    "circlemud_unused": {
+        "cost": 21000,
+        "rent": 1000,
+        "weight": 9,
+        "effects": [
+            "MAGIC"
+        ],
+        "type": "POTION",
+        "values": [
+            25,
+            15,
+            35,
+            19
+        ]
+    }
+}

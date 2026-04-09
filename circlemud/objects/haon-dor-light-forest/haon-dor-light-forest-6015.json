@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6015",
+    "spec": {
+        "aliases": [
+            "water",
+            "lake"
+        ],
+        "short_desc": "the lake",
+        "flags": [
+            "immobile"
+        ]
+    },
+    "circlemud_unused": {
+        "type": "FOUNTAIN",
+        "values": [
+            50000,
+            50000,
+            0,
+            0
+        ]
+    }
+}

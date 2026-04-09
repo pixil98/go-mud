@@ -19,5 +19,8 @@
                 "description": "There is a small path leading west."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

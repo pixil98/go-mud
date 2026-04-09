@@ -68,5 +68,12 @@
                 "object_id": "the-sewer-maze-7203"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -800,
+        "gender": "N",
+        "flags": [
+            "SPEC"
+        ]
     }
 }

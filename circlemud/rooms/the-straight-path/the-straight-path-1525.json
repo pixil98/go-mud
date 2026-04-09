@@ -16,5 +16,11 @@
         "mobile_spawns": [
             "the-straight-path-1521"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

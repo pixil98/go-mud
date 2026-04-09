@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "drow-city-5115",
+    "spec": {
+        "aliases": [
+            "key",
+            "adamantite"
+        ],
+        "short_desc": "an adamantite key",
+        "long_desc": "A key made of a strange metal is lying here.",
+        "detailed_desc": "A key made of a strange metal is lying here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 1,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

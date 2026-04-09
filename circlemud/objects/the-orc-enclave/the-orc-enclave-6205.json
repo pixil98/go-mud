@@ -1,0 +1,43 @@
+{
+    "version": 1,
+    "id": "the-orc-enclave-6205",
+    "spec": {
+        "aliases": [
+            "Starkblade",
+            "knife",
+            "dagger",
+            "blade"
+        ],
+        "short_desc": "Starkblade",
+        "long_desc": "A knife hums with eternal energy here.",
+        "detailed_desc": "It is an odd knife, with an inset of sapphire in the pommel. It hums constantly, and your hand stings a bit when you touch it.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d7"
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": -20
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 100000,
+        "rent": 20000,
+        "weight": 1,
+        "effects": [
+            "HUM",
+            "ANTI_WARRIOR"
+        ]
+    }
+}

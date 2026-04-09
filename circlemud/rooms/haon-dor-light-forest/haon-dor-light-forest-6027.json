@@ -49,6 +49,14 @@
             "haon-dor-light-forest-6018",
             "haon-dor-light-forest-6019",
             "haon-dor-light-forest-6019"
+        ],
+        "object_spawns": [
+            {
+                "object_id": "haon-dor-light-forest-6015"
+            }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "WATER_NOSWIM"
     }
 }

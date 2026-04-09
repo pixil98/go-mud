@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3022",
+    "spec": {
+        "aliases": [
+            "sword",
+            "long"
+        ],
+        "short_desc": "a long sword",
+        "long_desc": "A long sword has been left here.",
+        "detailed_desc": "A long sword has been left here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d8"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 600,
+        "rent": 10,
+        "weight": 8,
+        "effects": [
+            "ANTI_CLERIC"
+        ]
+    }
+}

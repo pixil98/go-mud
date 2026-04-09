@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "new-thalos-5464",
+    "spec": {
+        "aliases": [
+            "herring",
+            "salted"
+        ],
+        "short_desc": "a salted herring",
+        "long_desc": "A salted herring lies here.",
+        "detailed_desc": "A salted herring lies here."
+    },
+    "circlemud_unused": {
+        "cost": 8,
+        "rent": 10,
+        "weight": 1,
+        "type": "FOOD",
+        "values": [
+            8,
+            0,
+            0,
+            0
+        ]
+    }
+}

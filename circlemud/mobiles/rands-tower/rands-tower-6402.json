@@ -62,5 +62,15 @@
                 "object_id": "rands-tower-6411"
             }
         ]
+    },
+    "circlemud_unused": {
+        "gender": "N",
+        "flags": [
+            "NOCHARM",
+            "NOSUMMON",
+            "NOSLEEP",
+            "NOBASH",
+            "NOBLIND"
+        ]
     }
 }

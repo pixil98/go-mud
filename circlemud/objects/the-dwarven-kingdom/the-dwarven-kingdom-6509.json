@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "the-dwarven-kingdom-6509",
+    "spec": {
+        "aliases": [
+            "axe",
+            "two-handed",
+            "dwarven"
+        ],
+        "short_desc": "a two-handed dwarven axe",
+        "long_desc": "A two-handed dwarven axe is here.",
+        "detailed_desc": "A two-handed dwarven axe is here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d7"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.str",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 5000,
+        "rent": 3000,
+        "weight": 14,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

@@ -19,5 +19,11 @@
         "mobile_spawns": [
             "drow-city-5105"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

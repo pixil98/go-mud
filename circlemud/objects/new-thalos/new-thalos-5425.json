@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "new-thalos-5425",
+    "spec": {
+        "aliases": [
+            "cap",
+            "leather"
+        ],
+        "short_desc": "a leather cap",
+        "long_desc": "A leather cap lies here",
+        "detailed_desc": "A leather cap lies here",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "head"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 65,
+        "rent": 200,
+        "weight": 2
+    }
+}

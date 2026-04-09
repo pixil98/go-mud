@@ -15,5 +15,11 @@
                 "description": "You see the stairs at the bottom of the tower."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

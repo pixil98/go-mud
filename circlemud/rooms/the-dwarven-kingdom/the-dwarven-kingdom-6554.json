@@ -18,6 +18,18 @@
                     }
                 }
             }
-        }
+        },
+        "object_spawns": [
+            {
+                "object_id": "the-dwarven-kingdom-6501"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS",
+            "PRIVATE"
+        ]
     }
 }

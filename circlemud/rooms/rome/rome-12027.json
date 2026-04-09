@@ -54,5 +54,8 @@
                 "description": "All of the plants, trees and shrubs are perfectly trimmed, without so much as a dead leaf anywhere to be seen. You welcome the shade that they give from the harsh sun above."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

@@ -10,6 +10,17 @@
                 "room_id": "god-simplex-1204",
                 "description": "The Immortal Board Room is just down through the floor. Funny how you didn't notice that exit before isn't it?"
             }
-        }
+        },
+        "object_spawns": [
+            {
+                "object_id": "northern-midgaard-main-city-3096"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

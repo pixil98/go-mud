@@ -11,5 +11,8 @@
                 "description": "You can return to cleaner lands this way."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

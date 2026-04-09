@@ -52,5 +52,13 @@
             "wimpy"
         ],
         "exp_reward": 2300
+    },
+    "circlemud_unused": {
+        "alignment": -200,
+        "gold": 382,
+        "gender": "M",
+        "flags": [
+            "SPEC"
+        ]
     }
 }

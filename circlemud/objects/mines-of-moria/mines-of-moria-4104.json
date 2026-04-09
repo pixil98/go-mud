@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "mines-of-moria-4104",
+    "spec": {
+        "aliases": [
+            "slime",
+            "mould",
+            "green"
+        ],
+        "short_desc": "a green slime mould",
+        "long_desc": "A green slime mould is here.  Stinks like you wouldn't believe!",
+        "detailed_desc": "A green slime mould is here.  Stinks like you wouldn't believe!"
+    },
+    "circlemud_unused": {
+        "cost": 20,
+        "rent": 8,
+        "weight": 1,
+        "type": "FOOD",
+        "values": [
+            24,
+            0,
+            0,
+            1
+        ]
+    }
+}

@@ -14,5 +14,8 @@
         "mobile_spawns": [
             "rome-12030"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "MOUNTAIN"
     }
 }

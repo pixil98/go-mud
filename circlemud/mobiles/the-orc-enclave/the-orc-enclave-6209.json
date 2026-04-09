@@ -42,15 +42,10 @@
             {
                 "slot": "wield",
                 "object_id": "the-orc-enclave-6204"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-orc-enclave-6204"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-orc-enclave-6204"
             }
         ]
+    },
+    "circlemud_unused": {
+        "gender": "N"
     }
 }

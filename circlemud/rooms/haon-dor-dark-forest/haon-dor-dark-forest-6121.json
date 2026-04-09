@@ -42,5 +42,11 @@
                 "description": "The path seems all too frail. One of the giant roots could probably crush it in a single blow."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

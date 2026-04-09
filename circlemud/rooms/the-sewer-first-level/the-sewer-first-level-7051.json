@@ -14,5 +14,11 @@
                 "description": "To the south you can see a strange light flowing from there."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

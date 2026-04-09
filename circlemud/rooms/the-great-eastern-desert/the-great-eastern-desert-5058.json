@@ -26,5 +26,11 @@
         "mobile_spawns": [
             "the-great-eastern-desert-5017"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD",
+        "flags": [
+            "NOTRACK"
+        ]
     }
 }

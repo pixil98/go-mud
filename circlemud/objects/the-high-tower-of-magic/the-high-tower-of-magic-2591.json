@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2591",
+    "spec": {
+        "aliases": [
+            "ebony",
+            "kris"
+        ],
+        "short_desc": "the ebony kris",
+        "long_desc": "A wavy bladed knife made of ebony is here.",
+        "detailed_desc": "A wavy bladed knife made of ebony is here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d4"
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.dex",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 5
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pierce",
+        "cost": 60000,
+        "rent": 5000,
+        "weight": 9,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

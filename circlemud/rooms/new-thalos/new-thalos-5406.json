@@ -32,6 +32,14 @@
             "new-thalos-5437",
             "new-thalos-5440",
             "new-thalos-5463"
+        ],
+        "object_spawns": [
+            {
+                "object_id": "new-thalos-5402"
+            }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

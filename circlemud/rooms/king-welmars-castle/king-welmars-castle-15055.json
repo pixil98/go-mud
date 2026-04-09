@@ -15,5 +15,11 @@
                 "description": "The stairs lead upwards out of this dank, dark place."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

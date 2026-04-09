@@ -55,23 +55,12 @@
             {
                 "slot": "hold",
                 "object_id": "drow-city-5110"
-            },
-            {
-                "slot": "wield",
-                "object_id": "drow-city-5104"
-            },
-            {
-                "slot": "hold",
-                "object_id": "drow-city-5110"
-            },
-            {
-                "slot": "wield",
-                "object_id": "drow-city-5104"
-            },
-            {
-                "slot": "hold",
-                "object_id": "drow-city-5110"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -1000,
+        "gold": 10000,
+        "gender": "M"
     }
 }

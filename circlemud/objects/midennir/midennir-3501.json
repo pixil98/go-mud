@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "midennir-3501",
+    "spec": {
+        "aliases": [
+            "sword",
+            "long"
+        ],
+        "short_desc": "a fine long sword",
+        "long_desc": "A long sword has been left here.",
+        "detailed_desc": "A long sword has been left here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d9"
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 600,
+        "rent": 10,
+        "weight": 8,
+        "effects": [
+            "GLOW",
+            "ANTI_CLERIC"
+        ]
+    }
+}

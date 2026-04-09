@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3096",
+    "spec": {
+        "aliases": [
+            "board",
+            "social",
+            "bulletin"
+        ],
+        "short_desc": "a social bulletin board",
+        "long_desc": "A large, sociable bulletin board is mounted on a wall here.",
+        "detailed_desc": "If you can read this, the board is not working.",
+        "flags": [
+            "immobile"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "social",
+                    "bulletin"
+                ],
+                "description": "Use 'look board' to read the board."
+            }
+        ]
+    }
+}

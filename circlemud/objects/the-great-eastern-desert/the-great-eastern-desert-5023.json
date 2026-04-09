@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5023",
+    "spec": {
+        "aliases": [
+            "chest",
+            "iron",
+            "bound"
+        ],
+        "short_desc": "an iron bound chest",
+        "long_desc": "An iron bound chest with a shiny lock sits here.",
+        "detailed_desc": "An iron bound chest with a shiny lock sits here.",
+        "flags": [
+            "immobile",
+            "container"
+        ],
+        "closure": {
+            "closed": true,
+            "lock": {
+                "key_id": "the-great-eastern-desert-5024",
+                "locked": true
+            }
+        }
+    },
+    "circlemud_unused": {
+        "capacity": 200,
+        "cost": 1000,
+        "weight": 200
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3024",
+    "spec": {
+        "aliases": [
+            "warhammer",
+            "hammer"
+        ],
+        "short_desc": "a warhammer",
+        "long_desc": "A medium sized warhammer is here.",
+        "detailed_desc": "A medium sized warhammer is here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d5"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pound",
+        "cost": 50,
+        "rent": 10,
+        "weight": 6
+    }
+}

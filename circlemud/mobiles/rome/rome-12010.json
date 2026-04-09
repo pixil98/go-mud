@@ -68,5 +68,10 @@
                 "object_id": "rome-12005"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 1000,
+        "gold": 500,
+        "gender": "F"
     }
 }

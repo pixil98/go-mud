@@ -11,5 +11,8 @@
                 "description": "You see devastation everywhere. Houses lie in ruin and skeletons litter the streets. You see strange beasts stalking the shadows."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

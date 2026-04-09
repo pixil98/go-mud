@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2522",
+    "spec": {
+        "aliases": [
+            "key",
+            "old"
+        ],
+        "short_desc": "an old key",
+        "long_desc": "An old key is here",
+        "detailed_desc": "An old key is here",
+        "flags": [
+            "no_sell"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 1,
+        "effects": [
+            "NORENT",
+            "NODONATE"
+        ]
+    }
+}

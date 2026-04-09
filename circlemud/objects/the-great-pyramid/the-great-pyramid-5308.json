@@ -1,0 +1,49 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5308",
+    "spec": {
+        "aliases": [
+            "scimitar",
+            "stone"
+        ],
+        "short_desc": "a stone scimitar",
+        "long_desc": "A curved scimitar made of stone rests on the ground.",
+        "detailed_desc": "The scimitar is formed from solid stone, chipped and carved to perfection, with a sharp, cold blade that is marred only by a few nicks here and there.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "4d3"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 3
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 10000,
+        "rent": 750,
+        "weight": 18,
+        "effects": [
+            "HUM",
+            "MAGIC",
+            "ANTI_MAGIC_USER",
+            "ANTI_CLERIC",
+            "ANTI_THIEF"
+        ]
+    }
+}

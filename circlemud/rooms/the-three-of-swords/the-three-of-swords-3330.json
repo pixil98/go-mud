@@ -17,6 +17,23 @@
         },
         "mobile_spawns": [
             "the-three-of-swords-3308"
+        ],
+        "object_spawns": [
+            {
+                "object_id": "the-three-of-swords-3316"
+            },
+            {
+                "object_id": "the-three-of-swords-3316"
+            },
+            {
+                "object_id": "the-three-of-swords-3316"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
         ]
     }
 }

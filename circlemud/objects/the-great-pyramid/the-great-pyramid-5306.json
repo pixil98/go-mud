@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5306",
+    "spec": {
+        "aliases": [
+            "jar",
+            "formaldehyde"
+        ],
+        "short_desc": "a jar of formaldehyde",
+        "long_desc": "A small jar lies here on the ground.",
+        "detailed_desc": "The jar is sticky and smells really bad."
+    },
+    "circlemud_unused": {
+        "cost": 300,
+        "rent": 60,
+        "weight": 6,
+        "type": "POTION",
+        "values": [
+            10,
+            16,
+            -1,
+            -1
+        ]
+    }
+}

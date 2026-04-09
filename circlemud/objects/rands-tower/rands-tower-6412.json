@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "id": "rands-tower-6412",
+    "spec": {
+        "aliases": [
+            "lens",
+            "occluded"
+        ],
+        "short_desc": "the Occluded Lens",
+        "long_desc": "A smoky lens about a foot around has been scuffled in the dirt here.",
+        "detailed_desc": "A smoky lens about a foot around has been scuffled in the dirt here.",
+        "flags": [
+            "wearable",
+            "no_drop"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.stats.wis",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 200000,
+        "rent": 50000,
+        "weight": 20,
+        "effects": [
+            "GLOW",
+            "MAGIC",
+            "ANTI_GOOD",
+            "ANTI_EVIL"
+        ]
+    }
+}

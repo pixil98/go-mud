@@ -30,6 +30,40 @@
                     }
                 }
             }
-        }
+        },
+        "object_spawns": [
+            {
+                "object_id": "the-high-tower-of-magic-2520",
+                "contents": [
+                    {
+                        "object_id": "the-high-tower-of-magic-2525"
+                    },
+                    {
+                        "object_id": "the-high-tower-of-magic-2526"
+                    }
+                ]
+            },
+            {
+                "object_id": "the-high-tower-of-magic-2521",
+                "contents": [
+                    {
+                        "object_id": "the-high-tower-of-magic-2527"
+                    },
+                    {
+                        "object_id": "the-high-tower-of-magic-2528"
+                    },
+                    {
+                        "object_id": "the-high-tower-of-magic-2529"
+                    }
+                ]
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS",
+            "NOTRACK"
+        ]
     }
 }

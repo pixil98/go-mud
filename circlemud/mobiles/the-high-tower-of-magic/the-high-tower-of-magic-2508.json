@@ -53,5 +53,13 @@
             "helper"
         ],
         "exp_reward": 4600
+    },
+    "circlemud_unused": {
+        "alignment": -200,
+        "gold": 116,
+        "gender": "M",
+        "flags": [
+            "SPEC"
+        ]
     }
 }

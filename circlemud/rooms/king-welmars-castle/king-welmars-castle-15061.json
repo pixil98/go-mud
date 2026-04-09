@@ -15,5 +15,8 @@
                 "description": "The trail continues southwards."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "HILLS"
     }
 }

@@ -17,5 +17,8 @@
                 "room_id": "new-thalos-5627"
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "MOUNTAIN"
     }
 }

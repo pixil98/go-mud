@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15016",
+    "spec": {
+        "aliases": [
+            "broadsword",
+            "sword",
+            "large"
+        ],
+        "short_desc": "a large broadsword",
+        "long_desc": "There is a large broadsword lying here.",
+        "detailed_desc": "There is a large broadsword lying here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d6"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 1300,
+        "rent": 3000,
+        "weight": 14
+    }
+}

@@ -40,5 +40,10 @@
         "flags": [
             "wimpy"
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -10,
+        "gold": 1,
+        "gender": "M"
     }
 }

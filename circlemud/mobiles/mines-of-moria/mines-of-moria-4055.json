@@ -48,10 +48,12 @@
         "inventory": [
             {
                 "object_id": "mines-of-moria-4050"
-            },
-            {
-                "object_id": "mines-of-moria-4050"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -500,
+        "gold": 300,
+        "gender": "M"
     }
 }

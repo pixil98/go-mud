@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "redfernes-residence-7917",
+    "spec": {
+        "aliases": [
+            "helmet",
+            "silvery",
+            "silver"
+        ],
+        "short_desc": "a silvery helmet",
+        "long_desc": "The silvery helmet lies here.",
+        "detailed_desc": "The helmet is made from platinum or silver and has a white fur brush attached on the top.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "head"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 8
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 9000,
+        "rent": 5000,
+        "weight": 35,
+        "effects": [
+            "MAGIC",
+            "ANTI_EVIL",
+            "ANTI_NEUTRAL"
+        ]
+    }
+}

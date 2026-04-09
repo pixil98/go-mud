@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5301",
+    "spec": {
+        "aliases": [
+            "robe",
+            "sand"
+        ],
+        "short_desc": "some sand-colored robes",
+        "long_desc": "Sand-colored robes lie here.",
+        "detailed_desc": "The robes are colored a sandy off-white, and are in fact caked and covered with sand as well. You don't seem to be able to remove all of the sand, no matter how much you try.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "about"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 4
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 500,
+        "rent": 40,
+        "weight": 5
+    }
+}

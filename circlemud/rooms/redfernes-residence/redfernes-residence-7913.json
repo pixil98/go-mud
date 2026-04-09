@@ -17,6 +17,29 @@
         },
         "mobile_spawns": [
             "redfernes-residence-7902"
+        ],
+        "object_spawns": [
+            {
+                "object_id": "redfernes-residence-7905",
+                "contents": [
+                    {
+                        "object_id": "redfernes-residence-7906"
+                    },
+                    {
+                        "object_id": "redfernes-residence-7912"
+                    },
+                    {
+                        "object_id": "redfernes-residence-7913"
+                    }
+                ]
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS",
+            "PRIVATE"
         ]
     }
 }

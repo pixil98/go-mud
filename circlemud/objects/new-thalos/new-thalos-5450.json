@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "id": "new-thalos-5450",
+    "spec": {
+        "aliases": [
+            "hose"
+        ],
+        "short_desc": "a pair of hose",
+        "long_desc": "A nicely made pair of hose lies here.",
+        "detailed_desc": "A nicely made pair of hose lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "legs"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 120,
+        "rent": 10,
+        "weight": 1
+    }
+}

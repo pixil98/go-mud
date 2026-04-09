@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5000",
+    "spec": {
+        "aliases": [
+            "pick",
+            "mining"
+        ],
+        "short_desc": "a small mining pick",
+        "long_desc": "A small mining pick made of what appears to be silver lies on the ground.",
+        "detailed_desc": "A small mining pick made of what appears to be silver lies on the ground.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d9"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pierce",
+        "cost": 600,
+        "rent": 500,
+        "weight": 3,
+        "effects": [
+            "ANTI_GOOD"
+        ]
+    }
+}

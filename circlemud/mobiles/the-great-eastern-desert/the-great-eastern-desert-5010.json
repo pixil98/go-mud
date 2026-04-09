@@ -79,5 +79,17 @@
                 "object_id": "the-great-eastern-desert-5002"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -1000,
+        "gold": 75000,
+        "gender": "N",
+        "flags": [
+            "SPEC",
+            "NOCHARM",
+            "NOSUMMON",
+            "NOSLEEP",
+            "NOBASH"
+        ]
     }
 }

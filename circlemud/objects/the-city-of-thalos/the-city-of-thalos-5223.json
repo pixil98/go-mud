@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5223",
+    "spec": {
+        "aliases": [
+            "cloak",
+            "green"
+        ],
+        "short_desc": "a dark green cloak",
+        "long_desc": "A beautiful dark green cloak has been dropped here by someone.",
+        "detailed_desc": "A beautiful dark green cloak has been dropped here by someone.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "neck"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 8
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -5
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 14500,
+        "rent": 4000,
+        "weight": 12,
+        "effects": [
+            "GLOW",
+            "MAGIC"
+        ]
+    }
+}

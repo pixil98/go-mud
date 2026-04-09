@@ -19,5 +19,8 @@
                 "description": "More trees and some small hills."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

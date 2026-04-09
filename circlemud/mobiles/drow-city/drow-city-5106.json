@@ -64,11 +64,12 @@
             {
                 "slot": "hands",
                 "object_id": "drow-city-5109"
-            },
-            {
-                "slot": "wield",
-                "object_id": "drow-city-5105"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -1000,
+        "gold": 15000,
+        "gender": "M"
     }
 }

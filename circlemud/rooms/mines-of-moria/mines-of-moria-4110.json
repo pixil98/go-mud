@@ -28,5 +28,11 @@
                 "description": "Before you head down, you drop a rock to see how deep the hole is... After about five minutes, it still hasn't hit bottom. Thus, for reasons of sanity, you decide not to go this way."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

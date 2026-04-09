@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3300",
+    "spec": {
+        "aliases": [
+            "orange"
+        ],
+        "short_desc": "an orange",
+        "long_desc": "An orange lies on the ground here.",
+        "detailed_desc": "You wonder how it got here, seeing how oranges are non-migratory."
+    },
+    "circlemud_unused": {
+        "cost": 8,
+        "rent": 8,
+        "weight": 1,
+        "type": "FOOD",
+        "values": [
+            8,
+            0,
+            0,
+            0
+        ]
+    }
+}

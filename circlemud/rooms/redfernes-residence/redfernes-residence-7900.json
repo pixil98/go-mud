@@ -30,5 +30,11 @@
         "mobile_spawns": [
             "redfernes-residence-7900"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "PRIVATE"
+        ]
     }
 }

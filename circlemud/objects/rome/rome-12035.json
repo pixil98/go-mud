@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "rome-12035",
+    "spec": {
+        "aliases": [
+            "key",
+            "diamond"
+        ],
+        "short_desc": "a diamond studded key",
+        "long_desc": "A diamond studded key is sitting on the ground.",
+        "detailed_desc": "A diamond studded key is sitting on the ground."
+    },
+    "circlemud_unused": {
+        "weight": 30,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

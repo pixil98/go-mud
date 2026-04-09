@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "rands-tower-6409",
+    "spec": {
+        "aliases": [
+            "desk"
+        ],
+        "short_desc": "a desk",
+        "long_desc": "There is an ebony desk here.",
+        "detailed_desc": "There is an ebony desk here.",
+        "flags": [
+            "immobile",
+            "container"
+        ],
+        "closure": {
+            "closed": true
+        }
+    },
+    "circlemud_unused": {
+        "capacity": 100,
+        "keyless_lock": true,
+        "weight": 800
+    }
+}

@@ -22,6 +22,14 @@
                 "room_id": "king-welmars-castle-15072",
                 "description": "A small, dark trail leads off into the woods to the west."
             }
-        }
+        },
+        "object_spawns": [
+            {
+                "object_id": "king-welmars-castle-15022"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

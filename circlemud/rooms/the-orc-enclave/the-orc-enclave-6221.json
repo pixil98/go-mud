@@ -28,5 +28,8 @@
         "mobile_spawns": [
             "the-orc-enclave-6203"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

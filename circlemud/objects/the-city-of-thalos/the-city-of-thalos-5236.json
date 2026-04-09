@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5236",
+    "spec": {
+        "aliases": [
+            "stone",
+            "lavender",
+            "pale"
+        ],
+        "short_desc": "a pale lavender stone",
+        "long_desc": "A beautiful pale lavender stone lies here.",
+        "detailed_desc": "A beautiful pale lavender stone lies here.",
+        "flags": [
+            "wearable",
+            "no_drop"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 4300,
+        "rent": 600,
+        "weight": 10,
+        "effects": [
+            "NODONATE",
+            "MAGIC"
+        ]
+    }
+}

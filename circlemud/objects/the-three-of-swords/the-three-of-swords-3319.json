@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3319",
+    "spec": {
+        "aliases": [
+            "glass",
+            "beer"
+        ],
+        "short_desc": "a glass",
+        "long_desc": "A glass of beer sits forgotten here.",
+        "detailed_desc": "This is a nice glass filled with homebrew. There doesn't seem to be too much stuff floating in it.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 5,
+        "rent": 1,
+        "weight": 2,
+        "type": "DRINKCON",
+        "values": [
+            1,
+            1,
+            1,
+            0
+        ]
+    }
+}

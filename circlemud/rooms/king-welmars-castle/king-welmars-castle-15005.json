@@ -20,5 +20,11 @@
             "king-welmars-castle-15023",
             "king-welmars-castle-15023"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

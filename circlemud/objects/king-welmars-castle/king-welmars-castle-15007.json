@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15007",
+    "spec": {
+        "aliases": [
+            "key",
+            "huge"
+        ],
+        "short_desc": "a huge key",
+        "long_desc": "There is a huge, heavy-looking key on the floor here.",
+        "detailed_desc": "There is a huge, heavy-looking key on the floor here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 1,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

@@ -54,19 +54,17 @@
             {
                 "slot": "body",
                 "object_id": "northern-midgaard-main-city-3046"
-            },
-            {
-                "slot": "wield",
-                "object_id": "northern-midgaard-main-city-3022"
-            },
-            {
-                "slot": "shield",
-                "object_id": "northern-midgaard-main-city-3042"
-            },
-            {
-                "slot": "body",
-                "object_id": "northern-midgaard-main-city-3046"
             }
+        ]
+    },
+    "circlemud_unused": {
+        "alignment": 990,
+        "gold": 5000,
+        "gender": "M",
+        "flags": [
+            "SPEC",
+            "AGGR_EVIL",
+            "AGGR_NEUTRAL"
         ]
     }
 }

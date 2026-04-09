@@ -1,0 +1,16 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3117",
+    "spec": {
+        "aliases": [
+            "tree",
+            "elm"
+        ],
+        "short_desc": "an elm tree",
+        "long_desc": "An old elm tree grows here.",
+        "detailed_desc": "An old elm tree grows here.",
+        "flags": [
+            "immobile"
+        ]
+    }
+}

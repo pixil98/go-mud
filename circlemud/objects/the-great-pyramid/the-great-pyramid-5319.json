@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5319",
+    "spec": {
+        "aliases": [
+            "sand",
+            "pile"
+        ],
+        "short_desc": "a pile of sand",
+        "long_desc": "You see a small pile of sand.",
+        "detailed_desc": "You think you see some coins and valuables glinting amongst the grains of sand."
+    },
+    "circlemud_unused": {
+        "cost": 12986,
+        "weight": 12,
+        "type": "MONEY",
+        "values": [
+            12986,
+            0,
+            0,
+            0
+        ]
+    }
+}

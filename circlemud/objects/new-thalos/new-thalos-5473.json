@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "new-thalos-5473",
+    "spec": {
+        "aliases": [
+            "potion",
+            "white"
+        ],
+        "short_desc": "an off-white potion",
+        "long_desc": "An off-white potion lies here.",
+        "detailed_desc": "This potion bottle contains a whitish liquid that looks rather thick. A small label reads 'Redemption'",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 3000,
+        "rent": 15,
+        "weight": 1,
+        "type": "POTION",
+        "values": [
+            15,
+            14,
+            28,
+            36
+        ]
+    }
+}

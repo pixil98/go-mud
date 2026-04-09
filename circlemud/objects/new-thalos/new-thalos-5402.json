@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "new-thalos-5402",
+    "spec": {
+        "aliases": [
+            "fountain",
+            "water"
+        ],
+        "short_desc": "the large central fountain",
+        "long_desc": "The large central fountain domintating the central square rests here.",
+        "detailed_desc": "The large central fountain domintating the central square rests here.",
+        "flags": [
+            "immobile"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 9999,
+        "effects": [
+            "NORENT",
+            "NOINVIS"
+        ],
+        "type": "FOUNTAIN",
+        "values": [
+            9999,
+            9999,
+            0,
+            0
+        ]
+    }
+}

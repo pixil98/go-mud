@@ -33,5 +33,11 @@
             "the-high-tower-of-magic-2500",
             "the-high-tower-of-magic-2501"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST",
+        "flags": [
+            "NOTRACK"
+        ]
     }
 }

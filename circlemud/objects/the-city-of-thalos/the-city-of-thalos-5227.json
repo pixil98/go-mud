@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "the-city-of-thalos-5227",
+    "spec": {
+        "aliases": [
+            "cabinet",
+            "glass"
+        ],
+        "short_desc": "the glass cabinet",
+        "flags": [
+            "immobile",
+            "container"
+        ],
+        "closure": {
+            "closed": true,
+            "lock": {
+                "key_id": "the-city-of-thalos-5226",
+                "locked": true
+            }
+        }
+    },
+    "circlemud_unused": {
+        "capacity": 500
+    }
+}

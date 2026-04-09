@@ -19,5 +19,11 @@
         "mobile_spawns": [
             "river-island-of-minos-903"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

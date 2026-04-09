@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3101",
+    "spec": {
+        "aliases": [
+            "cup",
+            "coffee"
+        ],
+        "short_desc": "a cup",
+        "long_desc": "A cup has been set here.",
+        "detailed_desc": "It is a small simple cup."
+    },
+    "circlemud_unused": {
+        "cost": 7,
+        "rent": 1,
+        "weight": 1,
+        "type": "DRINKCON",
+        "values": [
+            8,
+            8,
+            12,
+            0
+        ]
+    }
+}

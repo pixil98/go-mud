@@ -37,5 +37,8 @@
                 "description": "The fruit trees, nourished by the fertile ground at the edge of the stream and sustained by the brilliant sunshine, line the banks of the stream and are laden with fruit."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "HILLS"
     }
 }

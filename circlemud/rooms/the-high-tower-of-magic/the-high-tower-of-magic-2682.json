@@ -22,6 +22,32 @@
                 "type": "grant",
                 "key": "dark"
             }
+        ],
+        "object_spawns": [
+            {
+                "object_id": "the-high-tower-of-magic-2540"
+            },
+            {
+                "object_id": "the-high-tower-of-magic-2541"
+            },
+            {
+                "object_id": "the-high-tower-of-magic-2542"
+            },
+            {
+                "object_id": "the-high-tower-of-magic-2544",
+                "contents": [
+                    {
+                        "object_id": "the-high-tower-of-magic-2543"
+                    }
+                ]
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS",
+            "NOTRACK"
         ]
     }
 }

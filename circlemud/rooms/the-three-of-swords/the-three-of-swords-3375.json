@@ -12,6 +12,34 @@
         },
         "mobile_spawns": [
             "the-three-of-swords-3305"
+        ],
+        "object_spawns": [
+            {
+                "object_id": "the-three-of-swords-3302"
+            },
+            {
+                "object_id": "the-three-of-swords-3303"
+            },
+            {
+                "object_id": "the-three-of-swords-3304"
+            },
+            {
+                "object_id": "the-three-of-swords-3305"
+            },
+            {
+                "object_id": "the-three-of-swords-3306"
+            },
+            {
+                "object_id": "the-three-of-swords-3307"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "HILLS",
+        "flags": [
+            "INDOORS",
+            "NOTRACK",
+            "PRIVATE"
         ]
     }
 }

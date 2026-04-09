@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3070",
+    "spec": {
+        "aliases": [
+            "gauntlets",
+            "bronze"
+        ],
+        "short_desc": "a pair of bronze gauntlets",
+        "long_desc": "A pair of bronze gauntlets is lying on the ground.",
+        "detailed_desc": "A pair of bronze gauntlets is lying on the ground.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hands"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 6
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 1750,
+        "rent": 100,
+        "weight": 8
+    }
+}

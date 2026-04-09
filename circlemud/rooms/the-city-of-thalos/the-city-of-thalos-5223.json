@@ -14,5 +14,8 @@
                 "room_id": "the-city-of-thalos-5222"
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

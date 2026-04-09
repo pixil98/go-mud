@@ -24,5 +24,11 @@
                 "description": "The writing says 'A prayer to the GODS will not be heard, though the only exit is death... Mother, I love you'."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

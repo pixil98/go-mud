@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5013",
+    "spec": {
+        "aliases": [
+            "map",
+            "tattered",
+            "old"
+        ],
+        "short_desc": "an old, tattered map",
+        "long_desc": "An old, tattered, and much faded map lies here.",
+        "detailed_desc": "An old, tattered, and much faded map lies here."
+    },
+    "circlemud_unused": {
+        "cost": 300,
+        "rent": 20,
+        "weight": 1
+    }
+}

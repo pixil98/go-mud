@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "id": "the-straight-path-1506",
+    "spec": {
+        "aliases": [
+            "ember",
+            "charred"
+        ],
+        "short_desc": "a charred ember",
+        "long_desc": "You glance briefly at a smouldering ember that rests at your feet.",
+        "detailed_desc": "It glares back at you, almost angrily.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "light"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 5,
+        "rent": 2500,
+        "effects": [
+            "GLOW",
+            "ANTI_GOOD",
+            "ANTI_CLERIC",
+            "ANTI_THIEF",
+            "ANTI_WARRIOR"
+        ]
+    }
+}

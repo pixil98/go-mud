@@ -50,11 +50,12 @@
             {
                 "slot": "wield",
                 "object_id": "the-sewer-maze-7211"
-            },
-            {
-                "slot": "wield",
-                "object_id": "the-sewer-maze-7211"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": 500,
+        "gold": 75,
+        "gender": "M"
     }
 }

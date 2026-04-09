@@ -68,5 +68,15 @@
                 "object_id": "the-great-eastern-desert-5021"
             }
         ]
+    },
+    "circlemud_unused": {
+        "alignment": -300,
+        "gold": 2540,
+        "gender": "N",
+        "flags": [
+            "SPEC",
+            "NOSLEEP",
+            "NOBLIND"
+        ]
     }
 }

@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "haon-dor-light-forest-6013",
+    "spec": {
+        "aliases": [
+            "barrel",
+            "water"
+        ],
+        "short_desc": "a barrel",
+        "long_desc": "A water barrel has been left here.",
+        "detailed_desc": "A water barrel has been left here."
+    },
+    "circlemud_unused": {
+        "cost": 60,
+        "rent": 20,
+        "weight": 45,
+        "type": "DRINKCON",
+        "values": [
+            40,
+            40,
+            15,
+            0
+        ]
+    }
+}

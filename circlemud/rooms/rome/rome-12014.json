@@ -24,5 +24,11 @@
                 "description": "It smells of sweat and is covered with mud."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

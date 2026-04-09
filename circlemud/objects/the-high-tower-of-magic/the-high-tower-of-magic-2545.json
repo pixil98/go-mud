@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2545",
+    "spec": {
+        "aliases": [
+            "cup",
+            "brew",
+            "herbal",
+            "tea"
+        ],
+        "short_desc": "a herbal brew",
+        "long_desc": "A herbal brew is here.",
+        "detailed_desc": "A herbal brew is here."
+    },
+    "circlemud_unused": {
+        "cost": 11,
+        "rent": 5,
+        "weight": 2,
+        "type": "DRINKCON",
+        "values": [
+            5,
+            5,
+            11,
+            1
+        ]
+    }
+}

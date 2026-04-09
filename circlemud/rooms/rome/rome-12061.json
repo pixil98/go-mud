@@ -14,5 +14,11 @@
         "mobile_spawns": [
             "rome-12035"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

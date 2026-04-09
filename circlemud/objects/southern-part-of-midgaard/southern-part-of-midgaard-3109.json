@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "southern-part-of-midgaard-3109",
+    "spec": {
+        "aliases": [
+            "desk",
+            "drawer"
+        ],
+        "short_desc": "the desk",
+        "long_desc": "A desk is set against the western wall.",
+        "detailed_desc": "The desk looks very sparse, there is a drawer in the left side.",
+        "flags": [
+            "immobile",
+            "container"
+        ],
+        "extra_descs": [
+            {
+                "keywords": [
+                    "drawer"
+                ],
+                "description": "You notice a keyhole in the drawer."
+            }
+        ],
+        "closure": {
+            "closed": true,
+            "lock": {
+                "key_id": "southern-part-of-midgaard-3107",
+                "locked": true,
+                "pickproof": true
+            }
+        }
+    },
+    "circlemud_unused": {
+        "capacity": 34,
+        "weight": 100
+    }
+}

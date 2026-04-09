@@ -32,6 +32,25 @@
         "mobile_spawns": [
             "the-great-pyramid-5310",
             "the-great-pyramid-5310"
+        ],
+        "object_spawns": [
+            {
+                "object_id": "the-great-pyramid-5310",
+                "contents": [
+                    {
+                        "object_id": "the-great-pyramid-5311"
+                    },
+                    {
+                        "object_id": "the-great-pyramid-5312"
+                    }
+                ]
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
         ]
     }
 }

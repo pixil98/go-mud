@@ -13,5 +13,8 @@
                 "room_id": "rands-tower-6400"
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "MOUNTAIN"
     }
 }

@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "id": "drow-city-5111",
+    "spec": {
+        "aliases": [
+            "helmet",
+            "small"
+        ],
+        "short_desc": "a small helmet",
+        "long_desc": "A small helmet lies up against a rock.",
+        "detailed_desc": "A small helmet lies up against a rock.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "head"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 1
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.int",
+                "value": 3
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 6000,
+        "rent": 3000,
+        "weight": 5,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

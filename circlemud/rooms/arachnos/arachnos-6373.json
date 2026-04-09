@@ -16,5 +16,8 @@
         "mobile_spawns": [
             "arachnos-6311"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

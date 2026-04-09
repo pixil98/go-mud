@@ -22,6 +22,17 @@
                 ],
                 "description": "The beds all look comfortable, despite the fact that this is just the servants' place."
             }
+        ],
+        "object_spawns": [
+            {
+                "object_id": "king-welmars-castle-15011"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
         ]
     }
 }

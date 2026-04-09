@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5017",
+    "spec": {
+        "aliases": [
+            "scimitar",
+            "curved"
+        ],
+        "short_desc": "a curved scimitar",
+        "long_desc": "A curved scimitar lies at your feet.",
+        "detailed_desc": "A curved scimitar lies at your feet.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d7"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 600,
+        "rent": 150,
+        "weight": 6,
+        "effects": [
+            "ANTI_NEUTRAL"
+        ]
+    }
+}

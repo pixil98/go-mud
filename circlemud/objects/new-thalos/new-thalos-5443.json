@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "new-thalos-5443",
+    "spec": {
+        "aliases": [
+            "rations",
+            "iron"
+        ],
+        "short_desc": "some iron rations",
+        "long_desc": "A tin of iron rations lies here.",
+        "detailed_desc": "A tin of iron rations lies here."
+    },
+    "circlemud_unused": {
+        "cost": 25,
+        "rent": 50,
+        "weight": 3,
+        "type": "FOOD",
+        "values": [
+            25,
+            0,
+            0,
+            0
+        ]
+    }
+}

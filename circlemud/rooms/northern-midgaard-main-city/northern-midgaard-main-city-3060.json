@@ -15,5 +15,8 @@
                 "description": "You see the path which goes back to Midgaard."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY"
     }
 }

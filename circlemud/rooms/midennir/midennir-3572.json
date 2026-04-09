@@ -19,5 +19,8 @@
                 "description": "This way leads to the back of the Inn."
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }

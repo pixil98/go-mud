@@ -1,0 +1,45 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5001",
+    "spec": {
+        "aliases": [
+            "suit",
+            "mail",
+            "banded"
+        ],
+        "short_desc": "a glowing suit of banded mail",
+        "long_desc": "A glowing suit of banded mail lies on the ground.",
+        "detailed_desc": "A glowing suit of banded mail lies on the ground.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "body"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 7
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.dex",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": -4
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 75000,
+        "rent": 20000,
+        "effects": [
+            "GLOW",
+            "MAGIC"
+        ]
+    }
+}

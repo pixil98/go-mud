@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "id": "rome-12000",
+    "spec": {
+        "aliases": [
+            "ring",
+            "pewter"
+        ],
+        "short_desc": "a pewter ring",
+        "long_desc": "There is a pewter ring lying here.",
+        "detailed_desc": "There is a pewter ring lying here.",
+        "flags": [
+            "wearable",
+            "invisible"
+        ],
+        "wear_slots": [
+            "finger"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 10
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.dex",
+                "value": 1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 15000,
+        "rent": 2500,
+        "weight": 5,
+        "effects": [
+            "MAGIC"
+        ],
+        "type": "WORN",
+        "values": [
+            0,
+            0,
+            0,
+            0
+        ]
+    }
+}

@@ -1,0 +1,53 @@
+{
+    "version": 1,
+    "id": "midennir-3507",
+    "spec": {
+        "aliases": [
+            "dagger",
+            "ornate"
+        ],
+        "short_desc": "an ornate dagger",
+        "long_desc": "A beautiful looking dagger is stuck in the ground.",
+        "detailed_desc": "The hilt of this dagger looks to be two intertwined snakes. At the end of it, there is a small red ruby.",
+        "flags": [
+            "wearable",
+            "invisible",
+            "no_drop",
+            "no_sell"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "3d3"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 5
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": -3
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pierce",
+        "cost": 1000,
+        "rent": 500,
+        "weight": 4,
+        "effects": [
+            "NODONATE",
+            "MAGIC",
+            "ANTI_EVIL",
+            "ANTI_MAGIC_USER",
+            "ANTI_CLERIC",
+            "ANTI_WARRIOR"
+        ]
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3037",
+    "spec": {
+        "aliases": [
+            "candle"
+        ],
+        "short_desc": "a candle",
+        "long_desc": "A candle lies here, unlit.",
+        "detailed_desc": "A home-made candle, how quaint!",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "light"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "burn_time_hours": 4,
+        "cost": 5,
+        "rent": 1,
+        "weight": 1
+    }
+}

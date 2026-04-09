@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "id": "the-great-eastern-desert-5012",
+    "spec": {
+        "aliases": [
+            "stakes",
+            "bundle",
+            "bunch"
+        ],
+        "short_desc": "a bunch of stakes",
+        "long_desc": "A small bundle of stakes lies here.",
+        "detailed_desc": "A small bundle of stakes lies here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d2"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "pierce",
+        "cost": 250,
+        "rent": 30,
+        "weight": 6
+    }
+}

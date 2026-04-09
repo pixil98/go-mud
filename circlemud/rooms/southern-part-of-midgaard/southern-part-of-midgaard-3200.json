@@ -22,5 +22,8 @@
                 "description": "It is built from large grey rocks that have been fastened to each other with some kind of mortar. Looks pretty solid."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "WATER_NOSWIM"
     }
 }

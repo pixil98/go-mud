@@ -37,5 +37,11 @@
         "mobile_spawns": [
             "newbie-zone-18611"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

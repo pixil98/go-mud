@@ -21,5 +21,11 @@
                 "room_id": "the-dwarven-kingdom-6542"
             }
         }
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

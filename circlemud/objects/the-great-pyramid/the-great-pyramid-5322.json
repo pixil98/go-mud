@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "id": "the-great-pyramid-5322",
+    "spec": {
+        "aliases": [
+            "mask",
+            "golden"
+        ],
+        "short_desc": "a golden mask",
+        "long_desc": "A beautiful, intricately detailed mask has been forgotten here.",
+        "detailed_desc": "This beautiful mask was shaped from solid gold and magically enchanted to perfectly fit the face of any who choose to wear it, its golden features and turquoise highlights even moving to match the expressions of the face of the wearer.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "head"
+        ],
+        "perks": [
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 10
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 10
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "cost": 15000,
+        "rent": 750,
+        "weight": 10,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

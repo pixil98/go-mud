@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "id": "the-three-of-swords-3305",
+    "spec": {
+        "aliases": [
+            "halberd"
+        ],
+        "short_desc": "a halberd",
+        "long_desc": "A runed halberd lies on the ground here.",
+        "detailed_desc": "The runes glow with a bright light, making you think that this might be a pretty decent weapon.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "1d12"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 5
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 10000,
+        "rent": 3000,
+        "weight": 16,
+        "effects": [
+            "MAGIC"
+        ]
+    }
+}

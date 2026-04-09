@@ -26,5 +26,11 @@
                 "description": "It looks good, but as you look closely you notice that it has no value."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "CITY",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

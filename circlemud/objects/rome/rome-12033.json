@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "id": "rome-12033",
+    "spec": {
+        "aliases": [
+            "key",
+            "rusted"
+        ],
+        "short_desc": "a rusted key",
+        "long_desc": "There is a rusted key here.",
+        "detailed_desc": "There is a rusted key here."
+    },
+    "circlemud_unused": {
+        "weight": 1,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

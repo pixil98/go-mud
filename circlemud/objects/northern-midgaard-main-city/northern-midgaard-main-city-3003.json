@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3003",
+    "spec": {
+        "aliases": [
+            "bottle",
+            "firebreather"
+        ],
+        "short_desc": "a bottle",
+        "long_desc": "A bottle of firebreather has been left here.",
+        "detailed_desc": "A bottle of firebreather has been left here."
+    },
+    "circlemud_unused": {
+        "cost": 50,
+        "rent": 17,
+        "weight": 10,
+        "type": "DRINKCON",
+        "values": [
+            8,
+            8,
+            7,
+            0
+        ]
+    }
+}

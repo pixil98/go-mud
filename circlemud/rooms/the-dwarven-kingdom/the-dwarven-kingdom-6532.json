@@ -28,6 +28,17 @@
             "down": {
                 "room_id": "the-dwarven-kingdom-6533"
             }
-        }
+        },
+        "object_spawns": [
+            {
+                "object_id": "the-dwarven-kingdom-6516"
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

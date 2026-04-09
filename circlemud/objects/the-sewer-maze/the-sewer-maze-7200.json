@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "id": "the-sewer-maze-7200",
+    "spec": {
+        "aliases": [
+            "rod",
+            "devil"
+        ],
+        "short_desc": "the devil rod",
+        "long_desc": "The mysterious devil rod lies on the floor.",
+        "detailed_desc": "This is indeed a mysterious rod. It is dark black at the base but has four very sharp purple tentacles at the end.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d5"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 3
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.str",
+                "value": -1
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 16000,
+        "rent": 800,
+        "weight": 6,
+        "effects": [
+            "MAGIC",
+            "ANTI_GOOD"
+        ]
+    }
+}

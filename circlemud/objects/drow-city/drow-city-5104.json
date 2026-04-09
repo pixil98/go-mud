@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "id": "drow-city-5104",
+    "spec": {
+        "aliases": [
+            "whip",
+            "snake",
+            "fourheaded"
+        ],
+        "short_desc": "a four-headed snake whip",
+        "long_desc": "A whip with four snake heads has been carelessly left here.",
+        "detailed_desc": "A whip with four snake heads has been carelessly left here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "wield"
+        ],
+        "perks": [
+            {
+                "type": "grant",
+                "key": "attack",
+                "arg": "2d8"
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.attack.flat",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.damage.all.flat",
+                "value": 2
+            }
+        ]
+    },
+    "circlemud_unused": {
+        "weapon_type": "slash",
+        "cost": 10250,
+        "rent": 4000,
+        "weight": 12,
+        "effects": [
+            "GLOW",
+            "HUM"
+        ]
+    }
+}

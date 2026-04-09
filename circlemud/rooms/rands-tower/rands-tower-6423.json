@@ -34,5 +34,11 @@
                 "description": "Many of these show scenes of high magic and heroism. Just like almost every tapestry and painting you've seen."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "INSIDE",
+        "flags": [
+            "INDOORS"
+        ]
     }
 }

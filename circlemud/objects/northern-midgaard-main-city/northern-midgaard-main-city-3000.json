@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "id": "northern-midgaard-main-city-3000",
+    "spec": {
+        "aliases": [
+            "barrel",
+            "beer"
+        ],
+        "short_desc": "a barrel",
+        "long_desc": "A beer barrel has been left here.",
+        "detailed_desc": "A beer barrel has been left here."
+    },
+    "circlemud_unused": {
+        "cost": 300,
+        "rent": 100,
+        "weight": 65,
+        "type": "DRINKCON",
+        "values": [
+            50,
+            50,
+            1,
+            0
+        ]
+    }
+}

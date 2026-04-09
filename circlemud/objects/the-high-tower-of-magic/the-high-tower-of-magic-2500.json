@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "id": "the-high-tower-of-magic-2500",
+    "spec": {
+        "aliases": [
+            "key",
+            "diamond"
+        ],
+        "short_desc": "a diamond key",
+        "long_desc": "A glinting key of diamond has been left here.",
+        "detailed_desc": "A glinting key of diamond has been left here.",
+        "flags": [
+            "wearable",
+            "no_sell"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 2,
+        "effects": [
+            "NORENT",
+            "NODONATE"
+        ]
+    }
+}

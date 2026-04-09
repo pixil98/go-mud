@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "king-welmars-castle-15009",
+    "spec": {
+        "aliases": [
+            "key",
+            "butlers",
+            "butler"
+        ],
+        "short_desc": "the Butler's key",
+        "long_desc": "The Butler's key is here.",
+        "detailed_desc": "The Butler's key is here.",
+        "flags": [
+            "wearable"
+        ],
+        "wear_slots": [
+            "hold"
+        ]
+    },
+    "circlemud_unused": {
+        "weight": 3,
+        "effects": [
+            "NORENT"
+        ]
+    }
+}

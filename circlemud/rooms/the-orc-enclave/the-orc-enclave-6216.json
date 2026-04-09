@@ -13,5 +13,8 @@
         "mobile_spawns": [
             "the-orc-enclave-6211"
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FIELD"
     }
 }

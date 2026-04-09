@@ -25,5 +25,8 @@
                 "description": "You can see a clearing beyond, the barrier not fully blocking out the area behind. You think it might be possible to push your way through, if the damn thing doesn't kill you first."
             }
         ]
+    },
+    "circlemud_unused": {
+        "sector_type": "FOREST"
     }
 }
