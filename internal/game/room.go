@@ -188,24 +188,6 @@ func (ri *RoomInstance) Describe(actorName string) string {
 	return strings.TrimRight(sb.String(), "\n")
 }
 
-// HasLight returns true if any actor in the room has the light grant.
-func (ri *RoomInstance) HasLight() bool {
-	ri.mu.RLock()
-	defer ri.mu.RUnlock()
-
-	for _, ps := range ri.players {
-		if ps.HasGrant(assets.PerkGrantLight, "") {
-			return true
-		}
-	}
-	for _, mi := range ri.mobiles {
-		if mi.HasGrant(assets.PerkGrantLight, "") {
-			return true
-		}
-	}
-	return false
-}
-
 // --- Exit operations ---
 
 // FindExit looks up an exit by direction key or closure name (case-insensitive).

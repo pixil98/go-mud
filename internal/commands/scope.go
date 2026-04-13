@@ -26,12 +26,12 @@ type playerOnlyFinder struct {
 func (f playerOnlyFinder) FindPlayer(name string) *game.CharacterInstance {
 	lower := strings.ToLower(name)
 	var found *game.CharacterInstance
-	f.ForEachPlayer(func(_ string, ps *game.CharacterInstance) {
-		if found != nil || ps == nil {
+	f.ForEachPlayer(func(_ string, ci *game.CharacterInstance) {
+		if found != nil || ci == nil {
 			return
 		}
-		if strings.ToLower(ps.Name()) == lower {
-			found = ps
+		if strings.ToLower(ci.Name()) == lower {
+			found = ci
 		}
 	})
 	return found
@@ -40,6 +40,16 @@ func (f playerOnlyFinder) FindPlayer(name string) *game.CharacterInstance {
 func (f playerOnlyFinder) FindObj(string) *game.ObjectInstance    { return nil }
 func (f playerOnlyFinder) FindMob(string) *game.MobileInstance    { return nil }
 func (f playerOnlyFinder) FindExit(string) (string, *game.ResolvedExit) { return "", nil }
+
+// darkRoomFinder wraps a room so that all room-scope target lookups fail in
+// the dark. Movement isn't affected because the move handler calls FindExit
+// directly on the room, bypassing target resolution.
+type darkRoomFinder struct{}
+
+func (darkRoomFinder) FindPlayer(string) *game.CharacterInstance      { return nil }
+func (darkRoomFinder) FindMob(string) *game.MobileInstance            { return nil }
+func (darkRoomFinder) FindObj(string) *game.ObjectInstance            { return nil }
+func (darkRoomFinder) FindExit(string) (string, *game.ResolvedExit)   { return "", nil }
 
 // WorldScopes translates scope flags into search spaces by navigating
 // from the actor's room pointer.
@@ -74,8 +84,12 @@ func (ws *WorldScopes) SpacesFor(s scope, actor shared.Actor) ([]SearchSpace, er
 	}
 	if s&scopeRoom != 0 {
 		room := actor.Room()
+		var finder TargetFinder = room
+		if !CanSee(actor) {
+			finder = darkRoomFinder{}
+		}
 		spaces = append(spaces, SearchSpace{
-			Finder:  room,
+			Finder:  finder,
 			Remover: room,
 		})
 	}

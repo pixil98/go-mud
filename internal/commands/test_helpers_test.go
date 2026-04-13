@@ -36,9 +36,9 @@ func newTestRoom(id, name, zoneId string) (*game.RoomInstance, error) {
 func newTestPlayer(charId, name string, room *game.RoomInstance) *game.CharacterInstance {
 	msgs := make(chan []byte, 10)
 	charRef := storage.NewResolvedSmartIdentifier(charId, &assets.Character{Name: name})
-	ps, _ := game.NewCharacterInstance(charRef, msgs, room)
-	room.AddPlayer(charId, ps)
-	return ps
+	ci, _ := game.NewCharacterInstance(charRef, msgs, room)
+	room.AddPlayer(charId, ci)
+	return ci
 }
 
 // mockActor is a common test double that satisfies shared.Actor,

@@ -21,9 +21,9 @@ type mockFinder struct {
 }
 
 func (f *mockFinder) FindPlayer(name string) *game.CharacterInstance {
-	for _, ps := range f.players {
-		if ps.Character.Get().MatchName(name) {
-			return ps
+	for _, ci := range f.players {
+		if ci.Character.Get().MatchName(name) {
+			return ci
 		}
 	}
 	return nil

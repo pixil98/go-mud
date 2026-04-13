@@ -119,7 +119,7 @@ AFFECT_GRANTS = {
     "DETECT_INVIS": "detect_invis",
     "SENSE_LIFE": "sense_life",
     "WATERWALK": "waterwalk",
-    "INFRAVISION": "infravision",
+    "INFRAVISION": "darkvision",
     "SNEAK": "sneak",
     "HIDE": "hide",
     "PROTECT_EVIL": "protect_evil",
@@ -1043,7 +1043,7 @@ def convert_object(parsed_obj, zone_slug, v2z, zones, known_obj_vnums):
     elif type_name == "LIGHT":
         burn_time = values[2]
         if burn_time != 0:
-            perks.append({"type": "grant", "key": "light"})
+            perks.append({"type": "grant", "key": "darkvision"})
         if burn_time > 0:
             unused["burn_time_hours"] = burn_time
 

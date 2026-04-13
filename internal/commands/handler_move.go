@@ -131,12 +131,17 @@ func announceArrive(actor interface {
 }
 
 // announceToRoom sends a message to all players in the room except the actor.
+// Players who can't see (dark room without darkvision) don't receive the message.
 func announceToRoom(room *game.RoomInstance, actor interface{ Name() string }, msg string) {
 	actorName := actor.Name()
-	room.ForEachPlayer(func(_ string, ps *game.CharacterInstance) {
-		if ps.Name() != actorName {
-			ps.Notify(msg)
+	room.ForEachPlayer(func(_ string, ci *game.CharacterInstance) {
+		if ci.Name() == actorName {
+			return
 		}
+		if !CanSee(ci) {
+			return
+		}
+		ci.Notify(msg)
 	})
 }
 

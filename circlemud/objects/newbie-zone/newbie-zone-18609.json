@@ -12,7 +12,7 @@
         "perks": [
             {
                 "type": "grant",
-                "key": "light"
+                "key": "darkvision"
             }
         ]
     },

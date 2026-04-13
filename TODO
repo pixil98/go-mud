@@ -7,15 +7,11 @@
   looks wrong. Decide on a proper death/respawn policy (e.g. respawn at 1 HP, or defer the
   heal until login) and update the test in character_test.go to match.
 ## Light and Darkness
-Current implementation: rooms grant `dark` perk to occupants. Two counters:
-- `infravision` — personal grant (race, spell, item). Only the holder can see.
-- `light` — equipment grant. Look handler scans all actors in the room; if anyone has it, darkness is negated for everyone.
+Current implementation: rooms grant `dark` perk to occupants; personal `darkvision` grant (race, spell, or equipped light source) counters it. Darkness blocks look, room-scope target resolution (combat, get, etc.), and movement announcements to observers who can't see.
 
-Only affects the look handler today. Still needed:
-- Darkness affecting target resolution beyond look (combat targeting, get, etc.)
+Still needed:
 - Light source objects with finite duration (burn time)
-- Intrinsic-light objects (glowing crystal on the ground lights the room without being equipped) — would need an object flag or a room-level perk from the object
-- Utility "light" spell: non-combat spell that adds a timed `light` grant to the room's PerkCache (e.g. 2 ticks). Uses existing timed-perk infrastructure. Requires distinguishing combat vs utility abilities so utility spells can auto-cast outside of combat.
+- Utility "light" spell: non-combat spell that adds a timed `darkvision` grant. Requires distinguishing combat vs utility abilities so utility spells can auto-cast outside of combat.
 
 ## Mobile Flags — Runtime Wiring Needed
 Wired up: sentinel (wandering), stay_zone (wandering), scavenger (item pickup).
@@ -30,10 +26,8 @@ Still need runtime behavior:
 - death — players entering should die/respawn (needs respawn system)
 
 ## Perk Grants — Runtime Wiring Needed
-Wired up: dark, infravision, light (visibility), sneak (movement announcements), peaceful (combat).
-Still need runtime behavior:
 - nomagic — prevent spell casting (needs spell system)
-- invisible / detect_invis — actor visibility (needs visibility system beyond dark/light)
+- invisible / detect_invis — actor visibility (needs visibility system beyond dark/darkvision)
 - sense_life / hide — hidden actor detection (needs stealth system)
 - waterwalk — water room traversal (needs water system)
 - nocharm / nosummon / nosleep / nobash / noblind — immunity to specific effects (needs those effects)
@@ -44,6 +38,7 @@ Still need runtime behavior:
 - Object vnum 12104 (key referenced by rome-12038) doesn't exist in the CircleMUD source data.
   Stubbed as rome-12104 for now. Investigate whether the original .wld file is broken or if the
   parser missed it.
+- I'm pretty sure this is incorrect, but I don't know what the new script does to handle it
 
 ## Combat Manager Refactor
 Now that mobs have a Commander that can execute commands, consider dissolving the combat

@@ -103,12 +103,12 @@ func (r *ActorRef) Actor() shared.Actor { return r.actor }
 // Inventory returns the actor's inventory.
 func (r *ActorRef) Inventory() *game.Inventory { return r.actor.Inventory() }
 
-func actorRefFromPlayer(ps *game.CharacterInstance) *ActorRef {
+func actorRefFromPlayer(ci *game.CharacterInstance) *ActorRef {
 	return &ActorRef{
-		actor:       ps,
-		CharId:      ps.Id(),
-		Name:        ps.Name(),
-		Description: ps.Character.Get().DetailedDesc,
+		actor:       ci,
+		CharId:      ci.Id(),
+		Name:        ci.Name(),
+		Description: ci.Character.Get().DetailedDesc,
 	}
 }
 
@@ -240,10 +240,10 @@ type SearchSpace struct {
 func FindTarget(name string, tt targetType, spaces []SearchSpace) (*TargetRef, error) {
 	for _, sp := range spaces {
 		if tt&targetTypePlayer != 0 {
-			if ps := sp.Finder.FindPlayer(name); ps != nil {
+			if ci := sp.Finder.FindPlayer(name); ci != nil {
 				return &TargetRef{
 					Type:  targetTypeActor,
-					Actor: actorRefFromPlayer(ps),
+					Actor: actorRefFromPlayer(ci),
 				}, nil
 			}
 		}

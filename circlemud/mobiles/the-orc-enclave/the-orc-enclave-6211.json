@@ -15,7 +15,7 @@
         "perks": [
             {
                 "type": "grant",
-                "key": "infravision"
+                "key": "darkvision"
             },
             {
                 "type": "modifier",

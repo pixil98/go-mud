@@ -142,13 +142,11 @@ const (
 	PerkGrantWearSlot = "wear_slot"
 	// PerkGrantDark makes the holder unable to see as if in a dark room.
 	// When granted by a room, all occupants are affected unless they have
-	// a countering effect (e.g. infravision, a light source).
+	// a countering darkvision effect.
 	PerkGrantDark = "dark"
-	// PerkGrantInfravision lets the holder see in dark rooms (personal).
-	PerkGrantInfravision = "infravision"
-	// PerkGrantLight provides light to the entire room. Checked by scanning
-	// all actors in the room — if anyone has it, darkness is negated for all.
-	PerkGrantLight = "light"
+	// PerkGrantDarkvision lets the holder see in dark rooms. Granted by
+	// racial traits, spells, or equipment like torches and lanterns.
+	PerkGrantDarkvision = "darkvision"
 	// PerkGrantNoMagic prevents the holder from casting spells.
 	PerkGrantNoMagic = "nomagic"
 )

@@ -3,8 +3,76 @@ package commands
 import (
 	"testing"
 
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/storage"
 )
+
+// newDarkTestRoom creates a room whose asset spec has the `dark` grant perk.
+func newDarkTestRoom(t *testing.T, id, name, zoneId string) *game.RoomInstance {
+	t.Helper()
+	zone := &assets.Zone{ResetMode: assets.ZoneResetNever}
+	room := &assets.Room{
+		Name:  name,
+		Zone:  storage.NewResolvedSmartIdentifier(zoneId, zone),
+		Perks: []assets.Perk{{Type: assets.PerkTypeGrant, Key: assets.PerkGrantDark}},
+	}
+	ri, err := game.NewRoomInstance(storage.NewResolvedSmartIdentifier(id, room))
+	if err != nil {
+		t.Fatalf("newDarkTestRoom: %v", err)
+	}
+	return ri
+}
+
+func TestAnnounceToRoomDarkness(t *testing.T) {
+	tests := map[string]struct {
+		observerDarkvision bool
+		expNotified        bool
+	}{
+		"observer without darkvision doesn't see":   {observerDarkvision: false, expNotified: false},
+		"observer with darkvision sees the message": {observerDarkvision: true, expNotified: true},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			room := newDarkTestRoom(t, "dark-room", "Dark Room", "test-zone")
+
+			actor := &mockActor{id: "actor", name: "Actor", room: room}
+
+			msgs := make(chan []byte, 10)
+			charRef := storage.NewResolvedSmartIdentifier("observer", &assets.Character{Name: "Observer"})
+			observer, err := game.NewCharacterInstance(charRef, msgs, room)
+			if err != nil {
+				t.Fatalf("NewCharacterInstance: %v", err)
+			}
+			room.AddPlayer("observer", observer)
+			observer.AddSource("room", room.Perks)
+			if tc.observerDarkvision {
+				dvCache := game.NewPerkCache(
+					[]assets.Perk{{Type: assets.PerkTypeGrant, Key: assets.PerkGrantDarkvision}},
+					nil,
+				)
+				observer.AddSource("darkvision", dvCache)
+			}
+
+			announceToRoom(room, actor, "Actor has arrived.")
+
+			var got []string
+			select {
+			case msg := <-msgs:
+				got = append(got, string(msg))
+			default:
+			}
+
+			if tc.expNotified && len(got) == 0 {
+				t.Errorf("expected observer to be notified, got nothing")
+			}
+			if !tc.expNotified && len(got) != 0 {
+				t.Errorf("expected observer not to be notified, got %v", got)
+			}
+		})
+	}
+}
 
 func TestMoveFollowers(t *testing.T) {
 	tests := map[string]struct {
