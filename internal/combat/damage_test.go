@@ -21,23 +21,26 @@ func TestDamageMessagesSorted(t *testing.T) {
 
 func TestDamageVerb(t *testing.T) {
 	tests := map[string]struct {
-		damage int
-		exp    string
+		damage  int
+		exp2nd  string
+		exp3rd  string
 	}{
-		"zero":           {damage: 0, exp: "misses"},
-		"low boundary":   {damage: 2, exp: "barely scratches"},
-		"above low":      {damage: 3, exp: "tickles"},
-		"mid":            {damage: 10, exp: "hits"},
-		"high boundary":  {damage: 80, exp: "annihilates"},
-		"above max":      {damage: 81, exp: "does UNSPEAKABLE things to"},
-		"well above max": {damage: 999, exp: "does UNSPEAKABLE things to"},
+		"zero":           {damage: 0, exp2nd: "miss", exp3rd: "misses"},
+		"low boundary":   {damage: 2, exp2nd: "barely scratch", exp3rd: "barely scratches"},
+		"above low":      {damage: 3, exp2nd: "tickle", exp3rd: "tickles"},
+		"mid":            {damage: 10, exp2nd: "hit", exp3rd: "hits"},
+		"high boundary":  {damage: 80, exp2nd: "annihilate", exp3rd: "annihilates"},
+		"above max":      {damage: 81, exp2nd: "do UNSPEAKABLE things to", exp3rd: "does UNSPEAKABLE things to"},
+		"well above max": {damage: 999, exp2nd: "do UNSPEAKABLE things to", exp3rd: "does UNSPEAKABLE things to"},
 	}
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			got := damageVerb(tt.damage)
-			if got != tt.exp {
-				t.Errorf("damageVerb(%d) = %q, want %q", tt.damage, got, tt.exp)
+			if got := damageVerb2nd(tt.damage); got != tt.exp2nd {
+				t.Errorf("damageVerb2nd(%d) = %q, want %q", tt.damage, got, tt.exp2nd)
+			}
+			if got := damageVerb3rd(tt.damage); got != tt.exp3rd {
+				t.Errorf("damageVerb3rd(%d) = %q, want %q", tt.damage, got, tt.exp3rd)
 			}
 		})
 	}
