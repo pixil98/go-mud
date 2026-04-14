@@ -46,6 +46,7 @@ type Actor interface {
 	IsFollowerGrouped(id string) bool
 	GroupedFollowers() []Actor
 	Move(from, to *RoomInstance)
+	ForEachResource(func(name string, current, maximum int))
 	EnsureThreat(enemyId string, enemy Actor)
 	AddThreatFrom(sourceId string, amount int)
 	SetThreatFrom(sourceId string, amount int)

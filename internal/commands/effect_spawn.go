@@ -37,14 +37,11 @@ func (e *spawnMobEffect) ValidateConfig(config map[string]string) error {
 
 func (e *spawnMobEffect) Create(_ string, config map[string]string, _ []assets.TargetSpec) EffectFunc {
 	mobId := config["mobile_id"]
+	followCaster := config["follow_caster"] == "true"
 
 	return func(actor game.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
 		si := storage.NewSmartIdentifier[*assets.Mobile](mobId)
 		if err := si.Resolve(e.mobiles); err != nil {
-			return fmt.Errorf("spawn_mob: %w", err)
-		}
-		mi, err := game.NewMobileInstance(si)
-		if err != nil {
 			return fmt.Errorf("spawn_mob: %w", err)
 		}
 
@@ -52,7 +49,15 @@ func (e *spawnMobEffect) Create(_ string, config map[string]string, _ []assets.T
 		if ri == nil {
 			return nil
 		}
-		ri.AddMob(mi)
+
+		var follow game.Actor
+		if followCaster {
+			follow = actor
+		}
+		world := ri.Zone().World()
+		if _, err := world.SpawnMob(si, ri, follow); err != nil {
+			return fmt.Errorf("spawn_mob: %w", err)
+		}
 		return nil
 	}
 }

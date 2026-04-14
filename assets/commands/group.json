@@ -9,7 +9,7 @@
         "targets": [
             {
                 "name": "target",
-                "types": ["player"],
+                "types": ["player", "mobile"],
                 "scopes": ["room"],
                 "input": "target",
                 "optional": true,

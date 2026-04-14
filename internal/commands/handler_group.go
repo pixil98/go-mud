@@ -91,43 +91,81 @@ func (f *GroupHandlerFactory) showGroup(char game.Actor) error {
 		return NewUserError("You are not in a group.")
 	}
 
-	type memberLine struct {
-		name   string
-		line   string
-		leader bool
+	type entry struct {
+		actor  game.Actor
+		label  string // role suffix like "(Leader)"
+		indent string // tree drawing prefix, e.g. "  │  └─ "
 	}
 
-	formatMember := func(ft game.Actor, isLeader bool) memberLine {
-		label := "[Member]"
-		if isLeader {
-			label = "[Leader]"
-		}
-		currentHP, maxHP := ft.Resource(assets.ResourceHp)
-		hp := fmt.Sprintf("%d/%d HP", currentHP, maxHP)
-		return memberLine{
-			name:   ft.Name(),
-			line:   fmt.Sprintf("%-8s %-20s %s", label, ft.Name(), hp),
-			leader: isLeader,
+	// Walk the tree depth-first, building display entries.
+	var entries []entry
+	var walk func(actor game.Actor, label, prefix, childPrefix string)
+	walk = func(actor game.Actor, label, prefix, childPrefix string) {
+		entries = append(entries, entry{actor: actor, label: label, indent: prefix})
+		followers := actor.GroupedFollowers()
+		for i, f := range followers {
+			isLast := i == len(followers)-1
+			var conn, nextChildPrefix string
+			if isLast {
+				conn = childPrefix + "└─ "
+				nextChildPrefix = childPrefix + "   "
+			} else {
+				conn = childPrefix + "├─ "
+				nextChildPrefix = childPrefix + "│  "
+			}
+			walk(f, "", conn, nextChildPrefix)
 		}
 	}
 
-	var members []memberLine
-	members = append(members, formatMember(leader, true))
+	entries = append(entries, entry{actor: leader, label: "(Leader)"})
 	for _, ft := range leader.GroupedFollowers() {
-		members = append(members, formatMember(ft, false))
+		walk(ft, "", "", "")
 	}
 
-	sort.Slice(members, func(i, j int) bool {
-		if members[i].leader != members[j].leader {
-			return members[i].leader
+	// Compute max display name width for padding.
+	maxNameWidth := 0
+	for _, e := range entries {
+		name := e.indent + e.actor.Name()
+		if e.label != "" {
+			name += " " + e.label
 		}
-		return members[i].name < members[j].name
-	})
+		if len(name) > maxNameWidth {
+			maxNameWidth = len(name)
+		}
+	}
 
-	lines := make([]string, 0, len(members)+1)
-	lines = append(lines, display.Colorize(display.Color.Cyan, "[ Group Members ]"))
-	for _, m := range members {
-		lines = append(lines, m.line)
+	// Format each line.
+	lines := []string{display.Colorize(display.Color.Cyan, "[ Group Members ]")}
+	for _, e := range entries {
+		name := e.indent + e.actor.Name()
+		if e.label != "" {
+			name += " " + e.label
+		}
+
+		type res struct {
+			name    string
+			current int
+			max     int
+		}
+		var resources []res
+		e.actor.ForEachResource(func(name string, current, maximum int) {
+			resources = append(resources, res{name, current, maximum})
+		})
+		sort.Slice(resources, func(i, j int) bool {
+			iHP := resources[i].name == assets.ResourceHp
+			jHP := resources[j].name == assets.ResourceHp
+			if iHP != jHP {
+				return iHP
+			}
+			return resources[i].name < resources[j].name
+		})
+		var resParts []string
+		for _, r := range resources {
+			resParts = append(resParts, fmt.Sprintf("%s: %d/%d", r.name, r.current, r.max))
+		}
+
+		line := fmt.Sprintf("%-*s  %s", maxNameWidth, name, strings.Join(resParts, " | "))
+		lines = append(lines, line)
 	}
 	char.Notify(strings.Join(lines, "\n"))
 	return nil
@@ -135,27 +173,14 @@ func (f *GroupHandlerFactory) showGroup(char game.Actor) error {
 
 func (f *GroupHandlerFactory) toggleMember(char game.Actor, target *TargetRef) error {
 	actorId := char.Id()
-	targetId := target.Actor.CharId
 	targetActor := target.Actor.Actor()
+	targetId := targetActor.Id()
 
-	// Toggle out: target is already grouped by actor.
 	if char.IsFollowerGrouped(targetId) {
-		char.SetFollowerGrouped(targetId, false)
-		targetActor.SetFollowing(nil)
-
-		targetActor.Notify(fmt.Sprintf("You have been removed from the group by %s.", char.Name()))
-		if err := f.pub.Publish(game.GroupPublishTarget(char), nil,
-			[]byte(fmt.Sprintf("%s has been removed from the group.", target.Actor.Name))); err != nil {
-			slog.Warn("failed to notify group of removal", "error", err)
-		}
-
-		if len(char.GroupedFollowers()) == 0 {
-			char.Notify("The group has been disbanded.")
-		}
-		return nil
+		return NewUserError(fmt.Sprintf("%s is already in your group.", target.Actor.Name))
 	}
 
-	// Toggle in: target must be following the actor and not already in a group.
+	// Add to group: target must be following the actor and not already in a group.
 	if targetId == actorId {
 		return NewUserError("You are already in your own group.")
 	}
@@ -169,15 +194,15 @@ func (f *GroupHandlerFactory) toggleMember(char game.Actor, target *TargetRef) e
 		return NewUserError(fmt.Sprintf("%s is already in a group.", target.Actor.Name))
 	}
 
-	if leader := groupLeader(char); leader != nil && leader.Id() != actorId {
-		return NewUserError("Only the group leader can add members.")
-	}
-
 	char.SetFollowerGrouped(targetId, true)
 
-	joinMsg := fmt.Sprintf("%s has joined the group.", target.Actor.Name)
-	if err := f.pub.Publish(game.GroupPublishTarget(char), []string{targetId}, []byte(joinMsg)); err != nil {
-		slog.Warn("failed to notify group of new member", "error", err)
+	// Announce to the wider group if the actor is part of one.
+	leader := groupLeader(char)
+	if leader != nil {
+		joinMsg := fmt.Sprintf("%s has joined the group.", target.Actor.Name)
+		if err := f.pub.Publish(game.GroupPublishTarget(leader), []string{targetId}, []byte(joinMsg)); err != nil {
+			slog.Warn("failed to notify group of new member", "error", err)
+		}
 	}
 	targetActor.Notify(fmt.Sprintf("You join %s's group.", char.Name()))
 
@@ -262,8 +287,8 @@ func (f *UngroupHandlerFactory) removeTarget(char game.Actor, target *TargetRef)
 		return NewUserError("Only the group leader can remove members.")
 	}
 
-	targetId := target.Actor.CharId
 	targetActor := target.Actor.Actor()
+	targetId := targetActor.Id()
 
 	// Targeting yourself disbands the whole group.
 	if targetId == char.Id() {

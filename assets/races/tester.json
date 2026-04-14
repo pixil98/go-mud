@@ -1,0 +1,42 @@
+{
+    "version": 1,
+    "id": "tester",
+    "spec": {
+        "name": "Tester",
+        "abbreviation": "Te",
+        "perks": [
+            { "type": "grant", "key": "wear_slot", "arg": "light" },
+            { "type": "grant", "key": "wear_slot", "arg": "head" },
+            { "type": "grant", "key": "wear_slot", "arg": "neck" },
+            { "type": "grant", "key": "wear_slot", "arg": "neck" },
+            { "type": "grant", "key": "wear_slot", "arg": "about" },
+            { "type": "grant", "key": "wear_slot", "arg": "body" },
+            { "type": "grant", "key": "wear_slot", "arg": "arms" },
+            { "type": "grant", "key": "wear_slot", "arg": "wrist" },
+            { "type": "grant", "key": "wear_slot", "arg": "wrist" },
+            { "type": "grant", "key": "wear_slot", "arg": "hands" },
+            { "type": "grant", "key": "wear_slot", "arg": "finger" },
+            { "type": "grant", "key": "wear_slot", "arg": "finger" },
+            { "type": "grant", "key": "wear_slot", "arg": "wield" },
+            { "type": "grant", "key": "wear_slot", "arg": "off_hand" },
+            { "type": "grant", "key": "wear_slot", "arg": "hold" },
+            { "type": "grant", "key": "wear_slot", "arg": "waist" },
+            { "type": "grant", "key": "wear_slot", "arg": "legs" },
+            { "type": "grant", "key": "wear_slot", "arg": "feet" },
+            { "type": "modifier", "key": "core.resource.hp.max", "value": 100 },
+            { "type": "modifier", "key": "core.resource.hp.per_level", "value": 10 },
+            { "type": "modifier", "key": "core.resource.hp.regen", "value": 5 },
+            { "type": "modifier", "key": "core.resource.mana.max", "value": 100 },
+            { "type": "modifier", "key": "core.resource.mana.per_level", "value": 10 },
+            { "type": "modifier", "key": "core.resource.mana.regen", "value": 5 },
+            { "type": "modifier", "key": "core.combat.ac.flat", "value": 10 },
+            { "type": "modifier", "key": "core.action_points.max", "value": 3 },
+            { "type": "grant", "key": "darkvision" },
+            { "type": "grant", "key": "unlock_ability", "arg": "attack" },
+            { "type": "grant", "key": "unlock_ability", "arg": "fireball" },
+            { "type": "grant", "key": "unlock_ability", "arg": "flame-ward" },
+            { "type": "grant", "key": "unlock_ability", "arg": "bash" },
+            { "type": "grant", "key": "unlock_ability", "arg": "summon-wolf" }
+        ]
+    }
+}

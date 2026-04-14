@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "id": "summon-wolf",
+    "spec": {
+        "effects": [
+            {
+                "type": "spawn_mob",
+                "config": {
+                    "mobile_id": "testing-wolf",
+                    "follow_caster": "true"
+                }
+            }
+        ],
+        "command": {
+            "category": "utility",
+            "priority": 3,
+            "aliases": ["summon"],
+            "description": "Summon a grey wolf to fight by your side.",
+            "config": {
+                "ap_cost": "1",
+                "message_actor": "You whistle sharply. A grey wolf appears and pads to your side!",
+                "message_room": "{{ .Actor.Name }} whistles sharply. A grey wolf appears and pads to their side!"
+            }
+        }
+    }
+}

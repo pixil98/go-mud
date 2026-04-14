@@ -127,7 +127,16 @@ func (ri *RoomInstance) Reset(cf CommanderFactory) error {
 	}
 
 	def := ri.Room.Get()
-	ri.mobiles = make(map[string]*MobileInstance)
+
+	// Preserve mobs that are following a player (e.g. summoned companions).
+	kept := make(map[string]*MobileInstance)
+	for id, mi := range ri.mobiles {
+		if f := mi.Following(); f != nil && f.IsCharacter() {
+			kept[id] = mi
+		}
+	}
+	ri.mobiles = kept
+
 	for _, mob := range def.MobSpawns {
 		mi, err := NewMobileInstance(mob)
 		if err != nil {

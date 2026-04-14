@@ -26,6 +26,23 @@ func (w *WorldState) SetCommanderFactory(f CommanderFactory) {
 	w.commanderFactory = f
 }
 
+// SpawnMob creates a new MobileInstance, wires its commander, places it in
+// the given room, and optionally sets it to follow a leader.
+func (w *WorldState) SpawnMob(mob storage.SmartIdentifier[*assets.Mobile], room *RoomInstance, follow Actor) (*MobileInstance, error) {
+	mi, err := NewMobileInstance(mob)
+	if err != nil {
+		return nil, err
+	}
+	if w.commanderFactory != nil {
+		mi.commander = w.commanderFactory(mi)
+	}
+	room.AddMob(mi)
+	if follow != nil {
+		mi.SetFollowing(follow)
+	}
+	return mi, nil
+}
+
 // ResetAll resets all zones, spawning mobs and objects.
 func (w *WorldState) ResetAll() error {
 	for _, zi := range w.zones {

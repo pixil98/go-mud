@@ -69,6 +69,12 @@ func (a *BaseActor) AdjustResource(name string, delta int, _ bool) {
 	}
 }
 
+func (a *BaseActor) ForEachResource(fn func(name string, current, maximum int)) {
+	for name, r := range a.Resources {
+		fn(name, r[0], r[1])
+	}
+}
+
 func (a *BaseActor) SpendAP(cost int) bool {
 	a.SpentAP = cost
 	return !a.SpendAPFails

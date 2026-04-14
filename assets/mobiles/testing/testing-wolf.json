@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "id": "testing-wolf",
+    "spec": {
+        "aliases": ["wolf", "grey"],
+        "short_desc": "a grey wolf",
+        "long_desc": "A grey wolf pads along silently, watching its surroundings.",
+        "detailed_desc": "A lean grey wolf with keen amber eyes. It moves with quiet purpose, staying close to its master.",
+        "level": 3,
+        "perks": [
+            { "type": "modifier", "key": "core.resource.hp.max", "value": 50 },
+            { "type": "grant", "key": "attack", "arg": "1d6+2" },
+            { "type": "grant", "key": "auto_use", "arg": "attack:1" }
+        ],
+        "flags": ["sentinel"]
+    }
+}
