@@ -6,7 +6,6 @@ import (
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/shared"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
@@ -76,14 +75,14 @@ func (c *mockCombatant) IsCharacter() bool                     { return false }
 func (c *mockCombatant) Notify(_ string)                       {}
 func (c *mockCombatant) Inventory() *game.Inventory            { return nil }
 func (c *mockCombatant) Equipment() *game.Equipment            { return nil }
-func (c *mockCombatant) Following() game.FollowTarget          { return nil }
-func (c *mockCombatant) SetFollowing(game.FollowTarget)        {}
-func (c *mockCombatant) Followers() []game.FollowTarget        { return nil }
-func (c *mockCombatant) AddFollower(game.FollowTarget)         {}
+func (c *mockCombatant) Following() game.Actor          { return nil }
+func (c *mockCombatant) SetFollowing(game.Actor)        {}
+func (c *mockCombatant) Followers() []game.Actor        { return nil }
+func (c *mockCombatant) AddFollower(game.Actor)         {}
 func (c *mockCombatant) RemoveFollower(string)                 {}
 func (c *mockCombatant) SetFollowerGrouped(string, bool)       {}
 func (c *mockCombatant) IsFollowerGrouped(string) bool         { return false }
-func (c *mockCombatant) GroupedFollowers() []game.FollowTarget { return nil }
+func (c *mockCombatant) GroupedFollowers() []game.Actor { return nil }
 func (c *mockCombatant) Move(_, _ *game.RoomInstance)          {}
 
 // combatTestRoom creates a room wired into a zone and world so that
@@ -349,7 +348,7 @@ type mockAbilityHandler struct {
 	calls []struct{ abilityId, actorId, targetId string }
 }
 
-func (h *mockAbilityHandler) ExecCombatAbility(abilityId string, actor, target shared.Actor) (CombatAbilityResult, error) {
+func (h *mockAbilityHandler) ExecCombatAbility(abilityId string, actor, target game.Actor) (CombatAbilityResult, error) {
 	h.calls = append(h.calls, struct{ abilityId, actorId, targetId string }{abilityId, actor.Id(), target.Id()})
 	return CombatAbilityResult{}, nil
 }

@@ -21,7 +21,7 @@ func TestGroupLeader(t *testing.T) {
 			setup: func() *mockActor {
 				a := &mockActor{id: "a", name: "A", groupedIds: map[string]bool{}}
 				b := &mockActor{id: "b", name: "B", following: a}
-				a.followers = []game.FollowTarget{b}
+				a.followers = []game.Actor{b}
 				a.groupedIds["b"] = true
 				return a
 			},
@@ -31,7 +31,7 @@ func TestGroupLeader(t *testing.T) {
 			setup: func() *mockActor {
 				a := &mockActor{id: "a", name: "A", groupedIds: map[string]bool{}}
 				b := &mockActor{id: "b", name: "B", following: a}
-				a.followers = []game.FollowTarget{b}
+				a.followers = []game.Actor{b}
 				a.groupedIds["b"] = true
 				return b
 			},
@@ -42,9 +42,9 @@ func TestGroupLeader(t *testing.T) {
 				a := &mockActor{id: "a", name: "A", groupedIds: map[string]bool{}}
 				b := &mockActor{id: "b", name: "B", following: a, groupedIds: map[string]bool{}}
 				c := &mockActor{id: "c", name: "C", following: b}
-				a.followers = []game.FollowTarget{b}
+				a.followers = []game.Actor{b}
 				a.groupedIds["b"] = true
-				b.followers = []game.FollowTarget{c}
+				b.followers = []game.Actor{c}
 				b.groupedIds["c"] = true
 				return c
 			},
@@ -55,9 +55,9 @@ func TestGroupLeader(t *testing.T) {
 				a := &mockActor{id: "a", name: "A", groupedIds: map[string]bool{}}
 				b := &mockActor{id: "b", name: "B", following: a, groupedIds: map[string]bool{}}
 				c := &mockActor{id: "c", name: "C", following: b}
-				a.followers = []game.FollowTarget{b}
+				a.followers = []game.Actor{b}
 				a.groupedIds["b"] = true
-				b.followers = []game.FollowTarget{c}
+				b.followers = []game.Actor{c}
 				b.groupedIds["c"] = true
 				return b
 			},
@@ -67,7 +67,7 @@ func TestGroupLeader(t *testing.T) {
 			setup: func() *mockActor {
 				a := &mockActor{id: "a", name: "A", groupedIds: map[string]bool{}}
 				b := &mockActor{id: "b", name: "B", following: a}
-				a.followers = []game.FollowTarget{b}
+				a.followers = []game.Actor{b}
 				// b is NOT grouped
 				return b
 			},

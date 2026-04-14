@@ -76,38 +76,38 @@ func TestAnnounceToRoomDarkness(t *testing.T) {
 
 func TestMoveFollowers(t *testing.T) {
 	tests := map[string]struct {
-		setup          func(fromRoom *game.RoomInstance) (leader game.FollowTarget, actors map[string]*mockActor)
+		setup          func(fromRoom *game.RoomInstance) (leader game.Actor, actors map[string]*mockActor)
 		expMoved       []string          // ids expected to have moved
 		expStayed      []string          // ids expected to have stayed
 		expMsgContains map[string]string // id -> expected message substring
 	}{
 		"follower moves with leader": {
-			setup: func(fromRoom *game.RoomInstance) (game.FollowTarget, map[string]*mockActor) {
+			setup: func(fromRoom *game.RoomInstance) (game.Actor, map[string]*mockActor) {
 				leader := &mockActor{id: "leader", name: "Leader", room: fromRoom}
 				follower := &mockActor{id: "follower", name: "Follower", room: fromRoom}
-				leader.followers = []game.FollowTarget{follower}
+				leader.followers = []game.Actor{follower}
 				return leader, map[string]*mockActor{"follower": follower}
 			},
 			expMoved:       []string{"follower"},
 			expMsgContains: map[string]string{"follower": "You follow Leader."},
 		},
 		"follower in combat stays behind": {
-			setup: func(fromRoom *game.RoomInstance) (game.FollowTarget, map[string]*mockActor) {
+			setup: func(fromRoom *game.RoomInstance) (game.Actor, map[string]*mockActor) {
 				leader := &mockActor{id: "leader", name: "Leader", room: fromRoom}
 				follower := &mockActor{id: "follower", name: "Follower", room: fromRoom, inCombat: true}
-				leader.followers = []game.FollowTarget{follower}
+				leader.followers = []game.Actor{follower}
 				return leader, map[string]*mockActor{"follower": follower}
 			},
 			expStayed:      []string{"follower"},
 			expMsgContains: map[string]string{"follower": "Leader leaves north without you."},
 		},
 		"recursive following": {
-			setup: func(fromRoom *game.RoomInstance) (game.FollowTarget, map[string]*mockActor) {
+			setup: func(fromRoom *game.RoomInstance) (game.Actor, map[string]*mockActor) {
 				leader := &mockActor{id: "leader", name: "Leader", room: fromRoom}
 				mid := &mockActor{id: "mid", name: "Mid", room: fromRoom}
 				tail := &mockActor{id: "tail", name: "Tail", room: fromRoom}
-				leader.followers = []game.FollowTarget{mid}
-				mid.followers = []game.FollowTarget{tail}
+				leader.followers = []game.Actor{mid}
+				mid.followers = []game.Actor{tail}
 				return leader, map[string]*mockActor{"mid": mid, "tail": tail}
 			},
 			expMoved: []string{"mid", "tail"},
@@ -117,21 +117,21 @@ func TestMoveFollowers(t *testing.T) {
 			},
 		},
 		"follower in different room is skipped": {
-			setup: func(fromRoom *game.RoomInstance) (game.FollowTarget, map[string]*mockActor) {
+			setup: func(fromRoom *game.RoomInstance) (game.Actor, map[string]*mockActor) {
 				leader := &mockActor{id: "leader", name: "Leader", room: fromRoom}
 				follower := &mockActor{id: "follower", name: "Follower"} // nil room != fromRoom
-				leader.followers = []game.FollowTarget{follower}
+				leader.followers = []game.Actor{follower}
 				return leader, map[string]*mockActor{"follower": follower}
 			},
 			expStayed: []string{"follower"},
 		},
 		"subtree pruned when follower in different room": {
-			setup: func(fromRoom *game.RoomInstance) (game.FollowTarget, map[string]*mockActor) {
+			setup: func(fromRoom *game.RoomInstance) (game.Actor, map[string]*mockActor) {
 				leader := &mockActor{id: "leader", name: "Leader", room: fromRoom}
 				mid := &mockActor{id: "mid", name: "Mid"} // nil room != fromRoom
 				tail := &mockActor{id: "tail", name: "Tail", room: fromRoom}
-				leader.followers = []game.FollowTarget{mid}
-				mid.followers = []game.FollowTarget{tail}
+				leader.followers = []game.Actor{mid}
+				mid.followers = []game.Actor{tail}
 				return leader, map[string]*mockActor{"mid": mid, "tail": tail}
 			},
 			expStayed: []string{"mid", "tail"},

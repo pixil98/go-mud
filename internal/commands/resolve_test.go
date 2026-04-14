@@ -6,7 +6,6 @@ import (
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/shared"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
@@ -70,7 +69,7 @@ type mockScopes struct {
 	spaces []SearchSpace
 }
 
-func (s *mockScopes) SpacesFor(scope, shared.Actor) ([]SearchSpace, error) {
+func (s *mockScopes) SpacesFor(scope, game.Actor) ([]SearchSpace, error) {
 	return s.spaces, nil
 }
 

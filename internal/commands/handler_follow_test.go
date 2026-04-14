@@ -186,18 +186,18 @@ func TestFollowHandler(t *testing.T) {
 
 func TestWouldCreateLoop(t *testing.T) {
 	tests := map[string]struct {
-		setup func() (followerId string, leader game.FollowTarget)
+		setup func() (followerId string, leader game.Actor)
 		exp   bool
 	}{
 		"no loop": {
-			setup: func() (string, game.FollowTarget) {
+			setup: func() (string, game.Actor) {
 				b := &mockActor{id: "b", name: "B"}
 				return "a", b
 			},
 			exp: false,
 		},
 		"direct loop": {
-			setup: func() (string, game.FollowTarget) {
+			setup: func() (string, game.Actor) {
 				a := &mockActor{id: "a", name: "A"}
 				b := &mockActor{id: "b", name: "B", following: a}
 				return "a", b
@@ -205,7 +205,7 @@ func TestWouldCreateLoop(t *testing.T) {
 			exp: true,
 		},
 		"indirect loop": {
-			setup: func() (string, game.FollowTarget) {
+			setup: func() (string, game.Actor) {
 				c := &mockActor{id: "c", name: "C"}
 				a := &mockActor{id: "a", name: "A", following: c}
 				b := &mockActor{id: "b", name: "B", following: a}
@@ -214,7 +214,7 @@ func TestWouldCreateLoop(t *testing.T) {
 			exp: true,
 		},
 		"leader not following anyone": {
-			setup: func() (string, game.FollowTarget) {
+			setup: func() (string, game.Actor) {
 				b := &mockActor{id: "b", name: "B"}
 				return "a", b
 			},

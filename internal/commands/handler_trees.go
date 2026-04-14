@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/assets"
+	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/display"
-	"github.com/pixil98/go-mud/internal/shared"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
@@ -46,7 +46,7 @@ func (f *TreesHandlerFactory) Create() (CommandFunc, error) {
 	}, nil
 }
 
-func (f *TreesHandlerFactory) listTrees(actor shared.Actor) error {
+func (f *TreesHandlerFactory) listTrees(actor game.Actor) error {
 	all := f.trees.GetAll()
 
 	ids := make([]string, 0, len(all))
@@ -65,7 +65,7 @@ func (f *TreesHandlerFactory) listTrees(actor shared.Actor) error {
 	return nil
 }
 
-func (f *TreesHandlerFactory) showTree(name string, actor shared.Actor) error {
+func (f *TreesHandlerFactory) showTree(name string, actor game.Actor) error {
 	tree := f.findTree(name)
 	if tree == nil {
 		return NewUserError(fmt.Sprintf("No skill tree named %q.", name))

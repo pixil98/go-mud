@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/assets"
-	"github.com/pixil98/go-mud/internal/shared"
+	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
@@ -72,7 +72,7 @@ func (f *HelpHandlerFactory) Create() (CommandFunc, error) {
 }
 
 // listCommands displays all commands grouped by category.
-func (f *HelpHandlerFactory) listCommands(actor shared.Actor) error {
+func (f *HelpHandlerFactory) listCommands(actor game.Actor) error {
 	groups := make(map[string][]string)
 	for name, h := range f.entries {
 		category, _ := h.HelpSummary()
@@ -101,7 +101,7 @@ func (f *HelpHandlerFactory) listCommands(actor shared.Actor) error {
 }
 
 // showCommand displays detailed help for a specific command.
-func (f *HelpHandlerFactory) showCommand(name string, actor shared.Actor) error {
+func (f *HelpHandlerFactory) showCommand(name string, actor game.Actor) error {
 	lower := strings.ToLower(name)
 
 	h, ok := f.entries[lower]

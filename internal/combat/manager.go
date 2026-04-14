@@ -10,7 +10,6 @@ import (
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // Manager runs the combat loop and tracks threat relationships between combatants.
@@ -22,7 +21,7 @@ type Manager struct {
 }
 
 type combatantState struct {
-	c        shared.Actor
+	c        game.Actor
 	threat   map[string]int   // enemy ID → accumulated threat
 	cooldown map[string][]int // auto_use arg → per-duplicate cooldown counters
 }
@@ -43,7 +42,7 @@ func (m *Manager) SetAbilityHandler(h AbilityHandler) {
 
 // StartCombat registers both combatants and initialises mutual threat.
 // It is idempotent: re-entering after flee preserves existing threat entries.
-func (m *Manager) StartCombat(attacker, target shared.Actor) error {
+func (m *Manager) StartCombat(attacker, target game.Actor) error {
 	if !attacker.IsAlive() {
 		return fmt.Errorf("%s is not alive", attacker.Name())
 	}
@@ -71,7 +70,7 @@ func (m *Manager) StartCombat(attacker, target shared.Actor) error {
 
 
 // AddThreat increases the threat that source has generated toward target.
-func (m *Manager) AddThreat(source, target shared.Actor, amount int) {
+func (m *Manager) AddThreat(source, target game.Actor, amount int) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 
@@ -82,7 +81,7 @@ func (m *Manager) AddThreat(source, target shared.Actor, amount int) {
 
 // SetThreat sets the threat that source has on target's threat table to an
 // absolute value, ignoring the threat modifier.
-func (m *Manager) SetThreat(source, target shared.Actor, amount int) {
+func (m *Manager) SetThreat(source, target game.Actor, amount int) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 
@@ -93,7 +92,7 @@ func (m *Manager) SetThreat(source, target shared.Actor, amount int) {
 
 // TopThreat sets source's threat on target to one more than the current
 // highest entry, guaranteeing source becomes the top-threat enemy.
-func (m *Manager) TopThreat(source, target shared.Actor) {
+func (m *Manager) TopThreat(source, target game.Actor) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 
@@ -111,7 +110,7 @@ func (m *Manager) TopThreat(source, target shared.Actor) {
 
 // NotifyHeal adds heal-generated threat from healer to every combatant whose
 // threat table contains target. Threat modifiers are applied via CalcThreat.
-func (m *Manager) NotifyHeal(healer, target shared.Actor, amount int) {
+func (m *Manager) NotifyHeal(healer, target game.Actor, amount int) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 
@@ -164,8 +163,8 @@ func (m *Manager) Tick(_ context.Context) error {
 	// to avoid deadlock (ability effects call StartCombat/AddThreat which also lock).
 	type autoUseTask struct {
 		abilityId string
-		actor     shared.Actor
-		target    shared.Actor
+		actor     game.Actor
+		target    game.Actor
 	}
 	var autoUses []autoUseTask
 	// roomPublish holds a per-attack room message with a per-target exclusion.
@@ -243,7 +242,7 @@ func (m *Manager) Tick(_ context.Context) error {
 
 	// Handle deaths.
 	type deadEntry struct {
-		c      shared.Actor
+		c      game.Actor
 		threat map[string]int // snapshot of threat table at time of death
 	}
 	var dead []deadEntry
@@ -336,14 +335,14 @@ func (m *Manager) Tick(_ context.Context) error {
 // resolveTarget picks the attack target for a combatant.
 // Prefers the combatant's stored target ID; falls back to highest-threat alive enemy.
 // Caller must hold m.mu.
-func (m *Manager) resolveTarget(state *combatantState) shared.Actor {
+func (m *Manager) resolveTarget(state *combatantState) game.Actor {
 	if tid := state.c.CombatTargetId(); tid != "" {
 		if ts, ok := m.combatants[tid]; ok && ts.c.IsAlive() {
 			return ts.c
 		}
 	}
 
-	var best shared.Actor
+	var best game.Actor
 	bestThreat := 0
 	for enemyId, threat := range state.threat {
 		if ts, ok := m.combatants[enemyId]; ok && ts.c.IsAlive() {
@@ -358,7 +357,7 @@ func (m *Manager) resolveTarget(state *combatantState) shared.Actor {
 
 // register ensures a combatant is in the combatants map, returning its state.
 // Caller must hold m.mu.
-func (m *Manager) register(c shared.Actor) *combatantState {
+func (m *Manager) register(c game.Actor) *combatantState {
 	if state, ok := m.combatants[c.Id()]; ok {
 		return state
 	}

@@ -6,7 +6,6 @@ import (
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/combat"
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // aoeHealEffect heals allies in the caster's room. Players heal players; mobs
@@ -38,13 +37,13 @@ func (e *aoeHealEffect) Create(_ string, config map[string]string, _ []assets.Ta
 	overheal := config["overheal"] == "true"
 	hitEnemies := config["hit_enemies"] == "true"
 
-	heal := func(actor shared.Actor, target shared.Actor) {
+	heal := func(actor game.Actor, target game.Actor) {
 		healAmount := dice.Roll()
 		target.AdjustResource(assets.ResourceHp, healAmount, overheal)
 		e.combat.NotifyHeal(actor, target, healAmount/2)
 	}
 
-	return func(actor shared.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
+	return func(actor game.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
 		ri := actor.Room()
 		if ri == nil {
 			return nil
@@ -113,7 +112,7 @@ func (e *healEffect) Create(_ string, config map[string]string, _ []assets.Targe
 	dice, _ := combat.ParseDice(config["amount"])
 	overheal := config["overheal"] == "true"
 
-	return func(actor shared.Actor, resolved map[string]*TargetRef, _ *AbilityResult) error {
+	return func(actor game.Actor, resolved map[string]*TargetRef, _ *AbilityResult) error {
 		ref := resolved["target"]
 		if ref == nil || ref.Actor == nil {
 			return nil

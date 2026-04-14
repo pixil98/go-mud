@@ -6,7 +6,6 @@ import (
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/shared"
 )
 
 func TestExecuteAbility_APGating(t *testing.T) {
@@ -738,7 +737,7 @@ func TestExecCombatAbility_PlayerTargetRouting(t *testing.T) {
 
 			// The effect appends to TargetLines but does not set TargetId,
 			// mimicking attackEffect behaviour.
-			targetLineEffect := EffectFunc(func(_ shared.Actor, _ map[string]*TargetRef, result *AbilityResult) error {
+			targetLineEffect := EffectFunc(func(_ game.Actor, _ map[string]*TargetRef, result *AbilityResult) error {
 				result.TargetLines = append(result.TargetLines, "Mob hits you!")
 				result.RoomLines = append(result.RoomLines, "Mob hits Target!")
 				return nil
@@ -747,7 +746,7 @@ func TestExecCombatAbility_PlayerTargetRouting(t *testing.T) {
 
 			h := &Handler{abilities: map[string]*compiledAbility{"attack": ca}}
 
-			var target shared.Actor
+			var target game.Actor
 			if tc.isCharacter {
 				target = newTestPlayer("player-1", "Target", room)
 			} else {

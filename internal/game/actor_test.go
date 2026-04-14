@@ -37,17 +37,17 @@ func newTestMI(id, name string) *MobileInstance {
 
 func TestSetFollowing_ManagesReverseLinks(t *testing.T) {
 	tests := map[string]struct {
-		setup  func() (follower FollowTarget, leader FollowTarget)
-		verify func(t *testing.T, follower, leader FollowTarget)
+		setup  func() (follower Actor, leader Actor)
+		verify func(t *testing.T, follower, leader Actor)
 	}{
 		"follow adds reverse link": {
-			setup: func() (FollowTarget, FollowTarget) {
+			setup: func() (Actor, Actor) {
 				a := newTestCI("a", "A")
 				b := newTestCI("b", "B")
 				a.SetFollowing(b)
 				return a, b
 			},
-			verify: func(t *testing.T, follower, leader FollowTarget) {
+			verify: func(t *testing.T, follower, leader Actor) {
 				if follower.Following() == nil || follower.Following().Id() != "b" {
 					t.Error("follower should be following leader")
 				}
@@ -58,14 +58,14 @@ func TestSetFollowing_ManagesReverseLinks(t *testing.T) {
 			},
 		},
 		"unfollow removes reverse link": {
-			setup: func() (FollowTarget, FollowTarget) {
+			setup: func() (Actor, Actor) {
 				a := newTestCI("a", "A")
 				b := newTestCI("b", "B")
 				a.SetFollowing(b)
 				a.SetFollowing(nil)
 				return a, b
 			},
-			verify: func(t *testing.T, follower, leader FollowTarget) {
+			verify: func(t *testing.T, follower, leader Actor) {
 				if follower.Following() != nil {
 					t.Error("follower should not be following anyone")
 				}
@@ -75,7 +75,7 @@ func TestSetFollowing_ManagesReverseLinks(t *testing.T) {
 			},
 		},
 		"switch leader moves reverse link": {
-			setup: func() (FollowTarget, FollowTarget) {
+			setup: func() (Actor, Actor) {
 				a := newTestCI("a", "A")
 				b := newTestCI("b", "B")
 				c := newTestCI("c", "C")
@@ -83,7 +83,7 @@ func TestSetFollowing_ManagesReverseLinks(t *testing.T) {
 				a.SetFollowing(c)
 				return a, b
 			},
-			verify: func(t *testing.T, follower, oldLeader FollowTarget) {
+			verify: func(t *testing.T, follower, oldLeader Actor) {
 				if follower.Following() == nil || follower.Following().Id() != "c" {
 					t.Error("follower should be following new leader")
 				}
@@ -93,13 +93,13 @@ func TestSetFollowing_ManagesReverseLinks(t *testing.T) {
 			},
 		},
 		"mob can follow character": {
-			setup: func() (FollowTarget, FollowTarget) {
+			setup: func() (Actor, Actor) {
 				mi := newTestMI("mob1", "Wolf")
 				ci := newTestCI("player1", "Hero")
 				mi.SetFollowing(ci)
 				return mi, ci
 			},
-			verify: func(t *testing.T, follower, leader FollowTarget) {
+			verify: func(t *testing.T, follower, leader Actor) {
 				if follower.Following() == nil || follower.Following().Id() != "player1" {
 					t.Error("mob should be following player")
 				}
@@ -121,11 +121,11 @@ func TestSetFollowing_ManagesReverseLinks(t *testing.T) {
 
 func TestGroupedFollowers(t *testing.T) {
 	tests := map[string]struct {
-		setup  func() FollowTarget
+		setup  func() Actor
 		expIds []string
 	}{
 		"no grouped followers": {
-			setup: func() FollowTarget {
+			setup: func() Actor {
 				a := newTestCI("a", "A")
 				b := newTestCI("b", "B")
 				b.SetFollowing(a)
@@ -134,7 +134,7 @@ func TestGroupedFollowers(t *testing.T) {
 			expIds: nil,
 		},
 		"one grouped follower": {
-			setup: func() FollowTarget {
+			setup: func() Actor {
 				a := newTestCI("a", "A")
 				b := newTestCI("b", "B")
 				b.SetFollowing(a)
@@ -144,7 +144,7 @@ func TestGroupedFollowers(t *testing.T) {
 			expIds: []string{"b"},
 		},
 		"mixed grouped and ungrouped": {
-			setup: func() FollowTarget {
+			setup: func() Actor {
 				a := newTestCI("a", "A")
 				b := newTestCI("b", "B")
 				c := newTestCI("c", "C")
@@ -156,7 +156,7 @@ func TestGroupedFollowers(t *testing.T) {
 			expIds: []string{"b"},
 		},
 		"ungrouping removes from grouped list": {
-			setup: func() FollowTarget {
+			setup: func() Actor {
 				a := newTestCI("a", "A")
 				b := newTestCI("b", "B")
 				b.SetFollowing(a)
@@ -167,7 +167,7 @@ func TestGroupedFollowers(t *testing.T) {
 			expIds: nil,
 		},
 		"nested: sub-leader's grouped followers are separate": {
-			setup: func() FollowTarget {
+			setup: func() Actor {
 				a := newTestCI("a", "A")
 				b := newTestCI("b", "B")
 				c := newTestCI("c", "C")
@@ -181,7 +181,7 @@ func TestGroupedFollowers(t *testing.T) {
 			expIds: []string{"b"},
 		},
 		"nested: sub-leader has own grouped followers": {
-			setup: func() FollowTarget {
+			setup: func() Actor {
 				a := newTestCI("a", "A")
 				b := newTestCI("b", "B")
 				c := newTestCI("c", "C")
@@ -219,11 +219,11 @@ func TestGroupedFollowers(t *testing.T) {
 
 func TestGroupPublishTarget(t *testing.T) {
 	tests := map[string]struct {
-		setup  func() FollowTarget
+		setup  func() Actor
 		expIds []string
 	}{
 		"leader with direct grouped followers": {
-			setup: func() FollowTarget {
+			setup: func() Actor {
 				a := newTestCI("a", "A")
 				b := newTestCI("b", "B")
 				b.SetFollowing(a)
@@ -233,7 +233,7 @@ func TestGroupPublishTarget(t *testing.T) {
 			expIds: []string{"a", "b"},
 		},
 		"subgroup: sub-leader grouped followers included": {
-			setup: func() FollowTarget {
+			setup: func() Actor {
 				a := newTestCI("a", "A")
 				b := newTestCI("b", "B")
 				c := newTestCI("c", "C")
@@ -246,7 +246,7 @@ func TestGroupPublishTarget(t *testing.T) {
 			expIds: []string{"a", "b", "c"},
 		},
 		"subgroup: ungrouped sub-follower excluded": {
-			setup: func() FollowTarget {
+			setup: func() Actor {
 				a := newTestCI("a", "A")
 				b := newTestCI("b", "B")
 				c := newTestCI("c", "C")
@@ -259,7 +259,7 @@ func TestGroupPublishTarget(t *testing.T) {
 			expIds: []string{"a", "b"},
 		},
 		"mob followers skipped in publish": {
-			setup: func() FollowTarget {
+			setup: func() Actor {
 				a := newTestCI("a", "A")
 				mi := newTestMI("mob1", "Wolf")
 				mi.SetFollowing(a)
@@ -269,7 +269,7 @@ func TestGroupPublishTarget(t *testing.T) {
 			expIds: []string{"a"},
 		},
 		"deep subgroup: three levels": {
-			setup: func() FollowTarget {
+			setup: func() Actor {
 				a := newTestCI("a", "A")
 				b := newTestCI("b", "B")
 				c := newTestCI("c", "C")
@@ -285,7 +285,7 @@ func TestGroupPublishTarget(t *testing.T) {
 			expIds: []string{"a", "b", "c", "d"},
 		},
 		"subgroup with mob pet: mob skipped, pet owner included": {
-			setup: func() FollowTarget {
+			setup: func() Actor {
 				a := newTestCI("a", "A")
 				b := newTestCI("b", "B")
 				pet := newTestMI("pet1", "Wolf")
@@ -299,7 +299,7 @@ func TestGroupPublishTarget(t *testing.T) {
 			expIds: []string{"a", "b"},
 		},
 		"two sub-leaders with own subgroups": {
-			setup: func() FollowTarget {
+			setup: func() Actor {
 				a := newTestCI("a", "A")
 				b := newTestCI("b", "B")
 				c := newTestCI("c", "C")
@@ -346,8 +346,8 @@ func TestGroupPublishTarget(t *testing.T) {
 	}
 }
 
-var _ FollowTarget = (*CharacterInstance)(nil)
-var _ FollowTarget = (*MobileInstance)(nil)
+var _ Actor = (*CharacterInstance)(nil)
+var _ Actor = (*MobileInstance)(nil)
 
 func TestActorInstance_SetResource(t *testing.T) {
 	const resourceMax = 20

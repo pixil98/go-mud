@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/assets"
-	"github.com/pixil98/go-mud/internal/shared"
+	"github.com/pixil98/go-mud/internal/game"
 )
 
 // parsePerkArg parses a grant arg string into a Perk.
@@ -34,7 +34,7 @@ func parsePerkArg(arg string) (assets.Perk, error) {
 
 // resolveGrantPerks reads the actor's grant args for the given key and parses
 // each into a Perk. Returns nil if the actor has no grants for the key.
-func resolveGrantPerks(actor shared.Actor, grantKey string) ([]assets.Perk, error) {
+func resolveGrantPerks(actor game.Actor, grantKey string) ([]assets.Perk, error) {
 	args := actor.GrantArgs(grantKey)
 	if len(args) == 0 {
 		return nil, nil
@@ -114,7 +114,7 @@ func (e *buffEffect) Create(id string, config map[string]string, targets []asset
 
 	grantKey := config["grant_key"]
 
-	return func(actor shared.Actor, resolved map[string]*TargetRef, _ *AbilityResult) error {
+	return func(actor game.Actor, resolved map[string]*TargetRef, _ *AbilityResult) error {
 		p := perks
 		if grantKey != "" {
 			var err error

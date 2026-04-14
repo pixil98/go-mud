@@ -7,7 +7,6 @@ import (
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // Threat effect mode constants for the "mode" config field.
@@ -64,7 +63,7 @@ func (e *aoeThreatEffect) Create(_ string, config map[string]string, _ []assets.
 	amount, _ := strconv.Atoi(config["amount"])
 	inCombatOnly := config["in_combat_only"] == "true"
 
-	applyThreat := func(actor shared.Actor, target shared.Actor) {
+	applyThreat := func(actor game.Actor, target game.Actor) {
 		if inCombatOnly && !target.IsInCombat() {
 			return
 		}
@@ -82,7 +81,7 @@ func (e *aoeThreatEffect) Create(_ string, config map[string]string, _ []assets.
 		}
 	}
 
-	return func(actor shared.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
+	return func(actor game.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
 		if actor.HasGrant(assets.PerkGrantPeaceful, "") {
 			return errPeacefulArea
 		}
@@ -126,7 +125,7 @@ func (e *threatEffect) Create(_ string, config map[string]string, targets []asse
 	mode := config["mode"]
 	amount, _ := strconv.Atoi(config["amount"])
 
-	return func(actor shared.Actor, resolved map[string]*TargetRef, _ *AbilityResult) error {
+	return func(actor game.Actor, resolved map[string]*TargetRef, _ *AbilityResult) error {
 		ref := resolved["target"]
 		if ref == nil || ref.Actor == nil {
 			return nil

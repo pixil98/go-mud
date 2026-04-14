@@ -11,13 +11,12 @@ import (
 	"github.com/pixil98/go-mud/internal/combat"
 	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/shared"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // CommandInput is what handlers receive after config processing.
 type CommandInput struct {
-	Actor   shared.Actor          // The actor executing the command
+	Actor   game.Actor          // The actor executing the command
 	Targets map[string]*TargetRef // Resolved targets by name
 	Config  map[string]string     // Expanded config values (all templates resolved)
 }
@@ -212,7 +211,7 @@ func (h *Handler) registerAbility(id string, ability *assets.Ability, pub game.P
 // target map from the provided actors, then delegates to the compiled ability.
 // Returns a CombatAbilityResult so the manager can route messages to the target
 // player and to the room separately.
-func (h *Handler) ExecCombatAbility(abilityId string, actor, target shared.Actor) (combat.CombatAbilityResult, error) {
+func (h *Handler) ExecCombatAbility(abilityId string, actor, target game.Actor) (combat.CombatAbilityResult, error) {
 	ca, ok := h.abilities[abilityId]
 	if !ok {
 		return combat.CombatAbilityResult{}, fmt.Errorf("unknown ability %q", abilityId)
@@ -414,7 +413,7 @@ func (h *Handler) resolve(input string) (*compiledCommand, error) {
 }
 
 // Exec executes a command with the given arguments.
-func (h *Handler) Exec(ctx context.Context, actor shared.Actor, cmdName string, rawArgs ...string) error {
+func (h *Handler) Exec(ctx context.Context, actor game.Actor, cmdName string, rawArgs ...string) error {
 	compiled, err := h.resolve(cmdName)
 	if err != nil {
 		return err
@@ -529,16 +528,16 @@ func parseValue(inputType string, raw string) (any, error) {
 }
 
 // templateContext holds data for template expansion.
-// Actor exposes Name() and other shared.Actor methods to templates via {{ .Actor.Name }}.
+// Actor exposes Name() and other game.Actor methods to templates via {{ .Actor.Name }}.
 type templateContext struct {
-	Actor   shared.Actor
+	Actor   game.Actor
 	Targets map[string]*TargetRef
 	Inputs  map[string]any
 	Color   *display.Palette
 }
 
 // expandConfig expands all template strings in config and returns map[string]string.
-func (h *Handler) expandConfig(config map[string]string, actor shared.Actor, targets map[string]*TargetRef, inputs map[string]any) (map[string]string, error) {
+func (h *Handler) expandConfig(config map[string]string, actor game.Actor, targets map[string]*TargetRef, inputs map[string]any) (map[string]string, error) {
 	if config == nil {
 		return make(map[string]string), nil
 	}

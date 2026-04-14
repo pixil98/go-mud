@@ -5,7 +5,6 @@ import (
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/shared"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
@@ -39,7 +38,7 @@ func (e *spawnMobEffect) ValidateConfig(config map[string]string) error {
 func (e *spawnMobEffect) Create(_ string, config map[string]string, _ []assets.TargetSpec) EffectFunc {
 	mobId := config["mobile_id"]
 
-	return func(actor shared.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
+	return func(actor game.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
 		si := storage.NewSmartIdentifier[*assets.Mobile](mobId)
 		if err := si.Resolve(e.mobiles); err != nil {
 			return fmt.Errorf("spawn_mob: %w", err)
@@ -91,7 +90,7 @@ func (e *spawnObjEffect) Create(_ string, config map[string]string, _ []assets.T
 		dest = SpawnDestRoom
 	}
 
-	return func(actor shared.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
+	return func(actor game.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
 		si := storage.NewSmartIdentifier[*assets.Object](objId)
 		if err := si.Resolve(e.objects); err != nil {
 			return fmt.Errorf("spawn_obj: %w", err)

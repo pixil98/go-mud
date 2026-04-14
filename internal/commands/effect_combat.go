@@ -7,7 +7,6 @@ import (
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/combat"
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // attackEffect reads the actor's attack grants and performs one attack roll per
@@ -27,7 +26,7 @@ func (e *attackEffect) Spec() *HandlerSpec {
 func (e *attackEffect) ValidateConfig(_ map[string]string) error { return nil }
 
 func (e *attackEffect) Create(_ string, _ map[string]string, targets []assets.TargetSpec) EffectFunc {
-	return func(actor shared.Actor, resolved map[string]*TargetRef, result *AbilityResult) error {
+	return func(actor game.Actor, resolved map[string]*TargetRef, result *AbilityResult) error {
 		if actor.HasGrant(assets.PerkGrantPeaceful, "") {
 			return errPeacefulArea
 		}
@@ -109,7 +108,7 @@ func (e *damageEffect) Create(_ string, config map[string]string, targets []asse
 		primaryType = damageTypes[0]
 	}
 
-	return func(actor shared.Actor, resolved map[string]*TargetRef, _ *AbilityResult) error {
+	return func(actor game.Actor, resolved map[string]*TargetRef, _ *AbilityResult) error {
 		if actor.HasGrant(assets.PerkGrantPeaceful, "") {
 			return errPeacefulArea
 		}
@@ -131,7 +130,7 @@ func (e *damageEffect) Create(_ string, config map[string]string, targets []asse
 
 // dealDamage applies raw damage of the given type to a target, handling CalcDamage,
 // reflected damage, combat initiation, and threat. Returns the final damage dealt.
-func dealDamage(cm CombatManager, actor shared.Actor, target shared.Actor, raw int, dmgType string) int {
+func dealDamage(cm CombatManager, actor game.Actor, target game.Actor, raw int, dmgType string) int {
 	damage, reflected := combat.CalcDamage(raw, dmgType, actor, target)
 	target.AdjustResource(assets.ResourceHp, -damage, false)
 	if reflected > 0 {
@@ -174,7 +173,7 @@ func (e *aoeDamageEffect) Create(_ string, config map[string]string, _ []assets.
 	}
 	hitAllies := config["hit_allies"] == "true"
 
-	return func(actor shared.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
+	return func(actor game.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
 		if actor.HasGrant(assets.PerkGrantPeaceful, "") {
 			return errPeacefulArea
 		}

@@ -148,7 +148,7 @@ func announceToRoom(room *game.RoomInstance, actor interface{ Name() string }, m
 // moveFollowers walks the leader's follower tree and moves each follower from
 // fromRoom to toRoom. Followers not in the same room or in combat are skipped
 // along with their entire subtree.
-func moveFollowers(leader game.FollowTarget, fromRoom, toRoom *game.RoomInstance, direction string) {
+func moveFollowers(leader game.Actor, fromRoom, toRoom *game.RoomInstance, direction string) {
 	for _, fl := range leader.Followers() {
 		if fl.Room() != fromRoom {
 			continue

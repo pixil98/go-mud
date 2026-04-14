@@ -9,13 +9,12 @@ import (
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // EffectFunc is a compiled effect closure with config baked in at registration time.
 // Effects may optionally set fields on the AbilityResult to override the
 // ability's template-based messages (e.g. attackEffect builds hit/miss lines).
-type EffectFunc func(actor shared.Actor, targets map[string]*TargetRef, result *AbilityResult) error
+type EffectFunc func(actor game.Actor, targets map[string]*TargetRef, result *AbilityResult) error
 
 // EffectHandler defines an ability effect (damage, healing, buff, etc.).
 // ValidateConfig checks config at registration time. Create returns a closure
@@ -110,7 +109,7 @@ func newCompiledAbility(id string, ability *assets.Ability, handlers map[string]
 // AbilityResult without publishing. This is the shared core used by both the
 // command handler (via abilityCommandWrapper.Create) and direct invocation
 // (via Handler.ExecAbility).
-func (ca *compiledAbility) exec(actor shared.Actor, targets map[string]*TargetRef, opts ExecAbilityOpts) (*AbilityResult, error) {
+func (ca *compiledAbility) exec(actor game.Actor, targets map[string]*TargetRef, opts ExecAbilityOpts) (*AbilityResult, error) {
 	// Check resource cost before spending any AP.
 	if ca.resourceCost > 0 {
 		cur, _ := actor.Resource(ca.resource)
@@ -230,7 +229,7 @@ func (w *abilityCommandWrapper) ValidateConfig(config map[string]string) error {
 // Create returns a compiled command function that checks unlock, executes the
 // ability via exec(), and publishes the result messages.
 func (w *abilityCommandWrapper) Create() (CommandFunc, error) {
-	return Adapt[shared.Actor](func(ctx context.Context, actor shared.Actor, in *CommandInput) error {
+	return Adapt[game.Actor](func(ctx context.Context, actor game.Actor, in *CommandInput) error {
 		if !actor.HasGrant(assets.PerkGrantUnlockAbility, w.id) {
 			return NewUserError("You don't know how to do that.")
 		}
@@ -244,7 +243,7 @@ func (w *abilityCommandWrapper) Create() (CommandFunc, error) {
 }
 
 // publishResult delivers an AbilityResult's messages to the appropriate audiences.
-func (w *abilityCommandWrapper) publishResult(result *AbilityResult, actor shared.Actor) error {
+func (w *abilityCommandWrapper) publishResult(result *AbilityResult, actor game.Actor) error {
 	if w.pub == nil {
 		return nil
 	}

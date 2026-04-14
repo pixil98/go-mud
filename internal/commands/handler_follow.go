@@ -12,8 +12,8 @@ type FollowActor interface {
 	Id() string
 	Name() string
 	Notify(msg string)
-	Following() game.FollowTarget
-	SetFollowing(game.FollowTarget)
+	Following() game.Actor
+	SetFollowing(game.Actor)
 }
 
 var _ FollowActor = (*game.CharacterInstance)(nil)
@@ -98,7 +98,7 @@ func (f *FollowHandlerFactory) unfollow(char FollowActor) error {
 
 // wouldCreateLoop returns true if making followerId follow leader would
 // create a circular follow chain.
-func wouldCreateLoop(followerId string, leader game.FollowTarget) bool {
+func wouldCreateLoop(followerId string, leader game.Actor) bool {
 	current := leader
 	for i := 0; i < 100; i++ {
 		next := current.Following()

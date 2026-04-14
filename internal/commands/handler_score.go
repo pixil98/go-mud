@@ -57,7 +57,7 @@ func (f *ScoreHandlerFactory) handle(ctx context.Context, char ScoreActor, in *C
 }
 
 // TODO: Remove StatSections from CharacterInstance/MobileInstance and build the
-// score display entirely from shared.Actor and perks.
+// score display entirely from game.Actor and perks.
 func (f *ScoreHandlerFactory) resolveSections(char ScoreActor, in *CommandInput) ([]game.StatSection, error) {
 	if target := in.Targets["target"]; target != nil {
 		if sv, ok := target.Actor.Actor().(interface{ StatSections() []game.StatSection }); ok {

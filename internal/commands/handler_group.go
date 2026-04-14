@@ -10,12 +10,11 @@ import (
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
-	"github.com/pixil98/go-mud/internal/shared"
 )
 
 // groupLeader returns the root group leader for actor, or nil if not in a group.
 // Walks up the follow tree through grouped links to find the top-most leader.
-func groupLeader(actor shared.Actor) game.FollowTarget {
+func groupLeader(actor game.Actor) game.Actor {
 	parent := actor.Following()
 	if parent == nil || !parent.IsFollowerGrouped(actor.Id()) {
 		if len(actor.GroupedFollowers()) > 0 {
@@ -35,7 +34,7 @@ func groupLeader(actor shared.Actor) game.FollowTarget {
 
 // disbandGroup removes all of the leader's direct grouped followers.
 // Sub-groups remain intact — a sub-leader keeps their own grouped followers.
-func disbandGroup(leader game.FollowTarget) {
+func disbandGroup(leader game.Actor) {
 	for _, ft := range leader.GroupedFollowers() {
 		leader.SetFollowerGrouped(ft.Id(), false)
 		ft.SetFollowing(nil)
@@ -86,7 +85,7 @@ func (f *GroupHandlerFactory) handle(ctx context.Context, in *CommandInput) erro
 	return f.toggleMember(in.Actor, target)
 }
 
-func (f *GroupHandlerFactory) showGroup(char shared.Actor) error {
+func (f *GroupHandlerFactory) showGroup(char game.Actor) error {
 	leader := groupLeader(char)
 	if leader == nil {
 		return NewUserError("You are not in a group.")
@@ -98,7 +97,7 @@ func (f *GroupHandlerFactory) showGroup(char shared.Actor) error {
 		leader bool
 	}
 
-	formatMember := func(ft game.FollowTarget, isLeader bool) memberLine {
+	formatMember := func(ft game.Actor, isLeader bool) memberLine {
 		label := "[Member]"
 		if isLeader {
 			label = "[Leader]"
@@ -134,7 +133,7 @@ func (f *GroupHandlerFactory) showGroup(char shared.Actor) error {
 	return nil
 }
 
-func (f *GroupHandlerFactory) toggleMember(char shared.Actor, target *TargetRef) error {
+func (f *GroupHandlerFactory) toggleMember(char game.Actor, target *TargetRef) error {
 	actorId := char.Id()
 	targetId := target.Actor.CharId
 	targetActor := target.Actor.Actor()
@@ -227,7 +226,7 @@ func (f *UngroupHandlerFactory) handle(ctx context.Context, in *CommandInput) er
 	return f.removeTarget(in.Actor, target)
 }
 
-func (f *UngroupHandlerFactory) disbandOrLeave(char shared.Actor) error {
+func (f *UngroupHandlerFactory) disbandOrLeave(char game.Actor) error {
 	leader := groupLeader(char)
 	if leader == nil {
 		return NewUserError("You are not in a group.")
@@ -254,7 +253,7 @@ func (f *UngroupHandlerFactory) disbandOrLeave(char shared.Actor) error {
 	return nil
 }
 
-func (f *UngroupHandlerFactory) removeTarget(char shared.Actor, target *TargetRef) error {
+func (f *UngroupHandlerFactory) removeTarget(char game.Actor, target *TargetRef) error {
 	leader := groupLeader(char)
 	if leader == nil {
 		return NewUserError("You are not in a group.")

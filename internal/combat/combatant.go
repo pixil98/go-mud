@@ -1,7 +1,7 @@
 package combat
 
 import (
-	"github.com/pixil98/go-mud/internal/shared"
+	"github.com/pixil98/go-mud/internal/game"
 )
 
 // CombatAbilityResult holds the messages produced by an auto-use combat ability.
@@ -15,5 +15,5 @@ type CombatAbilityResult struct {
 // the combat tick. The combat manager iterates auto_use grants and delegates
 // execution to this interface.
 type AbilityHandler interface {
-	ExecCombatAbility(abilityId string, actor, target shared.Actor) (CombatAbilityResult, error)
+	ExecCombatAbility(abilityId string, actor, target game.Actor) (CombatAbilityResult, error)
 }

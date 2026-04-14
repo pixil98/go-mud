@@ -8,6 +8,42 @@ import (
 	"github.com/pixil98/go-mud/internal/assets"
 )
 
+// Actor is the interface satisfied by both CharacterInstance and
+// MobileInstance. It provides everything the ability, combat, and command
+// systems need to interact with an entity without depending on concrete types.
+type Actor interface {
+	Id() string
+	Name() string
+	Room() *RoomInstance
+	IsInCombat() bool
+	IsAlive() bool
+	Level() int
+	Resource(name string) (current, max int)
+	AdjustResource(name string, delta int, overfill bool)
+	SpendAP(cost int) bool
+	HasGrant(key, arg string) bool
+	ModifierValue(key string) int
+	GrantArgs(key string) []string
+	AddTimedPerks(name string, perks []assets.Perk, ticks int)
+	SetInCombat(bool)
+	CombatTargetId() string
+	SetCombatTargetId(id string)
+	OnDeath() []*ObjectInstance
+	IsCharacter() bool
+	Inventory() *Inventory
+	Equipment() *Equipment
+	Notify(msg string)
+	Following() Actor
+	SetFollowing(Actor)
+	Followers() []Actor
+	AddFollower(Actor)
+	RemoveFollower(id string)
+	SetFollowerGrouped(id string, grouped bool)
+	IsFollowerGrouped(id string) bool
+	GroupedFollowers() []Actor
+	Move(from, to *RoomInstance)
+}
+
 // StatLine is a single line in a stat section.
 type StatLine struct {
 	Value  string
@@ -20,31 +56,9 @@ type StatSection struct {
 	Lines  []StatLine
 }
 
-// FollowTarget is the interface stored in the follow tree. Both
-// CharacterInstance and MobileInstance satisfy it.
-type FollowTarget interface {
-	Id() string
-	Name() string
-	Notify(msg string)
-	HasGrant(key, arg string) bool
-	IsInCombat() bool
-	Room() *RoomInstance
-	Move(from, to *RoomInstance)
-	Resource(name string) (current, maximum int)
-	IsCharacter() bool
-	Following() FollowTarget
-	SetFollowing(FollowTarget)
-	Followers() []FollowTarget
-	AddFollower(FollowTarget)
-	RemoveFollower(id string)
-	SetFollowerGrouped(id string, grouped bool)
-	IsFollowerGrouped(id string) bool
-	GroupedFollowers() []FollowTarget
-}
-
 // followerEntry pairs a follow-tree pointer with a group membership flag.
 type followerEntry struct {
-	target  FollowTarget
+	target  Actor
 	grouped bool
 }
 
@@ -52,7 +66,7 @@ type followerEntry struct {
 // between CharacterInstance and MobileInstance.
 type ActorInstance struct {
 	mu   sync.RWMutex
-	self FollowTarget // set by owning type during construction
+	self Actor // set by owning type during construction
 
 	InstanceId string
 	inventory  *Inventory
@@ -63,7 +77,7 @@ type ActorInstance struct {
 	room     *RoomInstance
 	inCombat bool
 
-	following FollowTarget
+	following Actor
 	followers map[string]*followerEntry
 
 	PerkCache
@@ -246,7 +260,7 @@ func (a *ActorInstance) ForEachResource(fn func(name string, current, maximum in
 // --- Follow tree ---
 
 // Following returns the actor this actor is following, or nil.
-func (a *ActorInstance) Following() FollowTarget {
+func (a *ActorInstance) Following() Actor {
 	a.mu.RLock()
 	defer a.mu.RUnlock()
 	return a.following
@@ -254,7 +268,7 @@ func (a *ActorInstance) Following() FollowTarget {
 
 // SetFollowing sets who this actor follows. Manages reverse links automatically:
 // removes self from the old leader's followers and adds self to the new leader's.
-func (a *ActorInstance) SetFollowing(target FollowTarget) {
+func (a *ActorInstance) SetFollowing(target Actor) {
 	a.mu.Lock()
 	old := a.following
 	a.following = target
@@ -269,10 +283,10 @@ func (a *ActorInstance) SetFollowing(target FollowTarget) {
 }
 
 // Followers returns a snapshot of all actors following this actor.
-func (a *ActorInstance) Followers() []FollowTarget {
+func (a *ActorInstance) Followers() []Actor {
 	a.mu.RLock()
 	defer a.mu.RUnlock()
-	out := make([]FollowTarget, 0, len(a.followers))
+	out := make([]Actor, 0, len(a.followers))
 	for _, entry := range a.followers {
 		out = append(out, entry.target)
 	}
@@ -280,7 +294,7 @@ func (a *ActorInstance) Followers() []FollowTarget {
 }
 
 // AddFollower adds an actor to this actor's follower list.
-func (a *ActorInstance) AddFollower(ft FollowTarget) {
+func (a *ActorInstance) AddFollower(ft Actor) {
 	a.mu.Lock()
 	defer a.mu.Unlock()
 	if a.followers == nil {
@@ -316,10 +330,10 @@ func (a *ActorInstance) IsFollowerGrouped(id string) bool {
 }
 
 // GroupedFollowers returns a snapshot of all followers with the grouped flag set.
-func (a *ActorInstance) GroupedFollowers() []FollowTarget {
+func (a *ActorInstance) GroupedFollowers() []Actor {
 	a.mu.RLock()
 	defer a.mu.RUnlock()
-	var out []FollowTarget
+	var out []Actor
 	for _, entry := range a.followers {
 		if entry.grouped {
 			out = append(out, entry.target)

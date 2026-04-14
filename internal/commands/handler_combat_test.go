@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/pixil98/go-mud/internal/shared"
+	"github.com/pixil98/go-mud/internal/game"
 )
 
 // mockCombatManager is a test double for CombatManager.
@@ -13,8 +13,8 @@ type mockCombatManager struct {
 	startedErr      error // error to return from StartCombat
 	started         bool
 	startCount      int
-	lastAttacker    shared.Actor
-	lastTarget      shared.Actor
+	lastAttacker    game.Actor
+	lastTarget      game.Actor
 	threatAdded     bool
 	threatAmount    int
 	threatCount     int
@@ -23,7 +23,7 @@ type mockCombatManager struct {
 	topThreatCalled bool
 }
 
-func (m *mockCombatManager) StartCombat(attacker, target shared.Actor) error {
+func (m *mockCombatManager) StartCombat(attacker, target game.Actor) error {
 	m.started = true
 	m.startCount++
 	m.lastAttacker = attacker
@@ -31,22 +31,22 @@ func (m *mockCombatManager) StartCombat(attacker, target shared.Actor) error {
 	return m.startedErr
 }
 
-func (m *mockCombatManager) AddThreat(_, _ shared.Actor, amount int) {
+func (m *mockCombatManager) AddThreat(_, _ game.Actor, amount int) {
 	m.threatAdded = true
 	m.threatCount++
 	m.threatAmount += amount
 }
 
-func (m *mockCombatManager) SetThreat(_, _ shared.Actor, amount int) {
+func (m *mockCombatManager) SetThreat(_, _ game.Actor, amount int) {
 	m.setThreatCalled = true
 	m.setThreatAmount = amount
 }
 
-func (m *mockCombatManager) TopThreat(_, _ shared.Actor) {
+func (m *mockCombatManager) TopThreat(_, _ game.Actor) {
 	m.topThreatCalled = true
 }
 
-func (m *mockCombatManager) NotifyHeal(_, _ shared.Actor, _ int) {}
+func (m *mockCombatManager) NotifyHeal(_, _ game.Actor, _ int) {}
 
 var _ AssistedPlayer = (*mockActor)(nil)
 
