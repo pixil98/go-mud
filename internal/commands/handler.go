@@ -204,6 +204,45 @@ func (h *Handler) registerAbility(id string, ability *assets.Ability, pub game.P
 	return h.compile(id, &cmd)
 }
 
+// ExecAbility executes a compiled ability with a pre-resolved target, bypassing
+// command dispatch and AP costs. Used by the combat tick for auto_use abilities.
+func (h *Handler) ExecAbility(abilityId string, actor, target game.Actor) error {
+	ca, ok := h.abilities[abilityId]
+	if !ok {
+		return fmt.Errorf("unknown ability %q", abilityId)
+	}
+	targets := map[string]*TargetRef{
+		"target": {Type: targetTypeActor, Actor: actorRefFromActor(target)},
+	}
+	result, err := ca.exec(actor, targets, ExecAbilityOpts{SkipAP: true})
+	if err != nil {
+		return err
+	}
+	publishAbilityResult(result, actor, target)
+	return nil
+}
+
+// publishAbilityResult delivers ability messages to actor, target, and room.
+func publishAbilityResult(result *AbilityResult, actor, target game.Actor) {
+	if len(result.ActorLines) > 0 {
+		actor.QueueTickMsg(strings.Join(result.ActorLines, "\n"))
+	}
+	if len(result.TargetLines) > 0 {
+		target.QueueTickMsg(strings.Join(result.TargetLines, "\n"))
+	}
+	if len(result.RoomLines) > 0 {
+		msg := strings.Join(result.RoomLines, "\n")
+		actorId := actor.Id()
+		targetId := target.Id()
+		actor.Room().ForEachPlayer(func(charId string, ci *game.CharacterInstance) {
+			if charId == actorId || charId == targetId {
+				return
+			}
+			ci.QueueTickMsg(msg)
+		})
+	}
+}
+
 // RegisterFactory registers a handler factory by name.
 // The name must match the "handler" field in command JSON definitions.
 func (h *Handler) RegisterFactory(name string, factory HandlerFactory) error {

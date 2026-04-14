@@ -22,6 +22,10 @@ func (c *boundCommander) ExecCommand(ctx context.Context, cmd string, args ...st
 	return c.handler.Exec(ctx, c.actor, cmd, args...)
 }
 
+func (c *boundCommander) ExecAbility(ctx context.Context, abilityId string, target game.Actor) error {
+	return c.handler.ExecAbility(abilityId, c.actor, target)
+}
+
 // BuildWorkers assembles and returns all service workers from the config.
 func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	cfg, ok := config.(*Config)

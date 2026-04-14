@@ -327,7 +327,7 @@ func (ci *CharacterInstance) combatTick(ctx context.Context) {
 		return
 	}
 
-	ci.autoUseTick(ctx, ci.GrantArgs(assets.PerkGrantAutoUse), target.Id())
+	ci.autoUseTick(ctx, ci.GrantArgs(assets.PerkGrantAutoUse), target)
 	ci.sweepDeadEnemies()
 }
 

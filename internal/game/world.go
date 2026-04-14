@@ -123,6 +123,7 @@ func (w *WorldState) AddPlayer(ci *CharacterInstance) error {
 	w.players[charId] = ci
 	room := ci.Room()
 	ci.AddSource("room", room.Perks)
+	ci.commander = w.commanderFactory(ci)
 	w.mu.Unlock()
 
 	room.AddPlayer(charId, ci)
@@ -193,19 +194,33 @@ func (w *WorldState) Tick(ctx context.Context) error {
 	}
 
 	w.perks.Tick()
-	w.ForEachPlayer(func(_ string, ps *CharacterInstance) {
-		ps.Tick(ctx)
-	})
+	players := w.snapshotPlayers()
+	for _, ci := range players {
+		ci.Tick(ctx)
+	}
 	for _, zi := range w.zones {
 		zi.Tick()
 	}
 	w.tickMobs(ctx)
 
-	w.ForEachPlayer(func(_ string, ci *CharacterInstance) {
+	for _, ci := range players {
 		ci.flushTickMessages()
-	})
+	}
 
 	return nil
+}
+
+// snapshotPlayers returns a slice of all current players, releasing the lock
+// before the caller iterates. Prevents deadlock when tick callbacks call back
+// into WorldState (e.g. processDeath → GetPlayer).
+func (w *WorldState) snapshotPlayers() []*CharacterInstance {
+	w.mu.RLock()
+	defer w.mu.RUnlock()
+	players := make([]*CharacterInstance, 0, len(w.players))
+	for _, ci := range w.players {
+		players = append(players, ci)
+	}
+	return players
 }
 
 // tickMobs snapshots all mobs in the world and ticks each one once.

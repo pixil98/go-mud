@@ -100,7 +100,7 @@ func (mi *MobileInstance) combatTick(ctx context.Context) {
 		return
 	}
 
-	mi.autoUseTick(ctx, mi.GrantArgs(assets.PerkGrantAutoUse), target.Id())
+	mi.autoUseTick(ctx, mi.GrantArgs(assets.PerkGrantAutoUse), target)
 	mi.sweepDeadEnemies()
 }
 

@@ -3,6 +3,7 @@ package game
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"strconv"
 	"strings"
 	"sync"
@@ -71,6 +72,7 @@ type StatSection struct {
 // receive one; it wraps Handler.Exec bound to the specific actor instance.
 type Commander interface {
 	ExecCommand(ctx context.Context, cmd string, args ...string) error
+	ExecAbility(ctx context.Context, abilityId string, target Actor) error
 }
 
 // CommanderFactory creates a per-actor Commander. Used during mob spawning
@@ -465,8 +467,12 @@ func (a *ActorInstance) ThreatEnemies() []Actor {
 
 // autoUseTick processes auto_use grants for one tick, executing each ready
 // ability via the commander. Manages per-grant cooldown counters.
-func (a *ActorInstance) autoUseTick(ctx context.Context, grants []string, targetId string) {
-	if len(grants) == 0 || a.commander == nil {
+func (a *ActorInstance) autoUseTick(ctx context.Context, grants []string, target Actor) {
+	if len(grants) == 0 {
+		return
+	}
+	if a.commander == nil {
+		slog.Error("autoUseTick called without commander", "actor", a.InstanceId)
 		return
 	}
 	a.mu.Lock()
@@ -474,8 +480,7 @@ func (a *ActorInstance) autoUseTick(ctx context.Context, grants []string, target
 		a.cooldown = make(map[string][]int)
 	}
 
-	type task struct{ abilityId, targetId string }
-	var tasks []task
+	var abilityIds []string
 	seen := make(map[string]int)
 
 	for _, arg := range grants {
@@ -501,12 +506,12 @@ func (a *ActorInstance) autoUseTick(ctx context.Context, grants []string, target
 			continue
 		}
 		a.cooldown[arg][dupIdx] = cooldownTicks - 1
-		tasks = append(tasks, task{abilityId: abilityId, targetId: targetId})
+		abilityIds = append(abilityIds, abilityId)
 	}
 	a.mu.Unlock()
 
-	for _, t := range tasks {
-		_ = a.commander.ExecCommand(ctx, t.abilityId, t.targetId)
+	for _, id := range abilityIds {
+		_ = a.commander.ExecAbility(ctx, id, target)
 	}
 }
 
