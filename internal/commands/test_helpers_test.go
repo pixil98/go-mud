@@ -6,16 +6,6 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
-func newTestMobInstance(instanceId, name string, perks []assets.Perk) *game.MobileInstance {
-	return &game.MobileInstance{
-		Mobile: storage.NewResolvedSmartIdentifier(instanceId+"-spec", &assets.Mobile{ShortDesc: name}),
-		ActorInstance: game.ActorInstance{
-			InstanceId: instanceId,
-			PerkCache:  *game.NewPerkCache(perks, nil),
-		},
-	}
-}
-
 func newTestZone(id string) (*game.ZoneInstance, error) {
 	zone := &assets.Zone{ResetMode: assets.ZoneResetNever}
 	return game.NewZoneInstance(storage.NewResolvedSmartIdentifier(id, zone), nil)
@@ -31,7 +21,6 @@ func newTestRoom(id, name, zoneId string) (*game.RoomInstance, error) {
 }
 
 // newTestPlayer creates a CharacterInstance and adds it to the given room.
-// Use only where concrete CharacterInstance is unavoidable (e.g. room infrastructure tests).
 func newTestPlayer(charId, name string, room *game.RoomInstance) *game.CharacterInstance {
 	msgs := make(chan []byte, 10)
 	charRef := storage.NewResolvedSmartIdentifier(charId, &assets.Character{Name: name})
@@ -40,95 +29,19 @@ func newTestPlayer(charId, name string, room *game.RoomInstance) *game.Character
 	return ci
 }
 
-// mockActor is a common test double that satisfies game.Actor,
-// game.Actor, and AssistedPlayer.
-type mockActor struct {
-	id             string
-	name           string
-	notified       []string
-	following      game.Actor
-	followers      []game.Actor
-	groupedIds     map[string]bool
-	inCombat       bool
-	combatTargetId string
-	grants         map[string]bool
-	room           *game.RoomInstance
-	zoneId         string
-	roomId         string
-	moved          bool
-	resources      map[string][2]int // name -> {current, max}
-	spendAPFails   bool              // when true, SpendAP returns false
-	spentAP        int               // records cost passed to last SpendAP call
-}
-
-var _ game.Actor = (*mockActor)(nil)
-var _ game.Actor = (*mockActor)(nil)
-var _ game.Actor = (*mockActor)(nil)
-
-func (m *mockActor) Id() string                 { return m.id }
-func (m *mockActor) Name() string               { return m.name }
-func (m *mockActor) Notify(msg string)          { m.notified = append(m.notified, msg) }
-func (m *mockActor) Room() *game.RoomInstance   { return m.room }
-func (m *mockActor) Location() (string, string) { return m.zoneId, m.roomId }
-func (m *mockActor) IsInCombat() bool           { return m.inCombat }
-func (m *mockActor) IsAlive() bool              { return true }
-func (m *mockActor) Level() int                 { return 1 }
-func (m *mockActor) Resource(name string) (int, int) {
-	if r, ok := m.resources[name]; ok {
-		return r[0], r[1]
+// newCombatMob creates a mob with enough HP to be alive for combat tests.
+// Use when code calls room.GetMob() or needs a real MobileInstance.
+func newCombatMob(instanceId, name string) *game.MobileInstance {
+	hpPerks := []assets.Perk{
+		{Type: assets.PerkTypeModifier, Key: assets.BuildKey(assets.ResourcePrefix, assets.ResourceHp, assets.ResourceAspectMax), Value: 100},
 	}
-	return 0, 0
-}
-func (m *mockActor) AdjustResource(name string, delta int, _ bool) {
-	if r, ok := m.resources[name]; ok {
-		r[0] += delta
-		m.resources[name] = r
+	mi := &game.MobileInstance{
+		Mobile: storage.NewResolvedSmartIdentifier(instanceId+"-spec", &assets.Mobile{ShortDesc: name}),
+		ActorInstance: game.ActorInstance{
+			InstanceId: instanceId,
+			PerkCache:  *game.NewPerkCache(hpPerks, nil),
+		},
 	}
-}
-func (m *mockActor) SpendAP(cost int) bool                    { m.spentAP = cost; return !m.spendAPFails }
-func (m *mockActor) HasGrant(key, _ string) bool              { return m.grants[key] }
-func (m *mockActor) ModifierValue(string) int                 { return 0 }
-func (m *mockActor) GrantArgs(string) []string                { return nil }
-func (m *mockActor) AddTimedPerks(string, []assets.Perk, int) {}
-func (m *mockActor) SetInCombat(bool)                         {}
-func (m *mockActor) CombatTargetId() string                   { return m.combatTargetId }
-func (m *mockActor) SetCombatTargetId(string)                 {}
-func (m *mockActor) OnDeath() []*game.ObjectInstance          { return nil }
-func (m *mockActor) IsCharacter() bool                        { return true }
-func (m *mockActor) Inventory() *game.Inventory               { return nil }
-func (m *mockActor) Following() game.Actor                    { return m.following }
-func (m *mockActor) SetFollowing(ft game.Actor)               { m.following = ft }
-func (m *mockActor) Followers() []game.Actor                  { return m.followers }
-func (m *mockActor) AddFollower(ft game.Actor)                { m.followers = append(m.followers, ft) }
-func (m *mockActor) RemoveFollower(string)                    {}
-func (m *mockActor) Equipment() *game.Equipment               { return nil }
-
-func (m *mockActor) SetFollowerGrouped(id string, grouped bool) {
-	if m.groupedIds == nil {
-		m.groupedIds = make(map[string]bool)
-	}
-	if grouped {
-		m.groupedIds[id] = true
-	} else {
-		delete(m.groupedIds, id)
-	}
-}
-
-func (m *mockActor) IsFollowerGrouped(id string) bool {
-	return m.groupedIds[id]
-}
-
-func (m *mockActor) GroupedFollowers() []game.Actor {
-	var out []game.Actor
-	for _, ft := range m.followers {
-		if m.groupedIds[ft.Id()] {
-			out = append(out, ft)
-		}
-	}
-	return out
-}
-
-func (m *mockActor) Move(_, to *game.RoomInstance) {
-	m.moved = true
-	m.roomId = to.Room.Id()
+	mi.SetResource(assets.ResourceHp, 100)
+	return mi
 }

@@ -1,6 +1,7 @@
 package game
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"strings"
@@ -302,16 +303,64 @@ func (ci *CharacterInstance) MarkActive() {
 
 // Tick advances one game tick: expires timed perks, resets action points,
 // and regenerates resources when out of combat.
-func (ci *CharacterInstance) Tick() {
-	ci.PerkCache.Tick()
+func (ci *CharacterInstance) Tick(ctx context.Context) {
 	ci.inventory.Tick()
 	ci.equipment.Tick()
+	ci.PerkCache.Tick()
 	ci.ResetAP()
-	if !ci.IsInCombat() {
+
+	if ci.IsInCombat() {
+		ci.combatTick(ctx)
+	} else {
 		ci.mu.Lock()
 		ci.regenTick()
 		ci.mu.Unlock()
 	}
+}
+
+// combatTick processes one round of combat for this player.
+func (ci *CharacterInstance) combatTick(ctx context.Context) {
+	target := ci.ResolveCombatTarget(ci.CombatTargetId())
+	if target == nil {
+		ci.SetInCombat(false)
+		ci.ClearThreatTable()
+		return
+	}
+
+	ci.autoUseTick(ctx, ci.GrantArgs(assets.PerkGrantAutoUse), target.Id())
+	ci.sweepDeadEnemies()
+}
+
+// sweepDeadEnemies removes dead enemies from the threat table and
+// processes death for each one (exactly once via ClaimDeath).
+func (ci *CharacterInstance) sweepDeadEnemies() {
+	enemies := ci.ThreatEnemies()
+	for _, enemy := range enemies {
+		if enemy.IsAlive() {
+			continue
+		}
+		if enemy.ClaimDeath() {
+			processDeath(enemy, ci.Room())
+		}
+		ci.RemoveThreatEntry(enemy.Id())
+	}
+	if !ci.HasThreatEntries() {
+		ci.SetInCombat(false)
+	}
+}
+
+// flushTickMessages sends all queued tick messages as a single chunk and
+// clears the buffer. Called at the end of each world tick.
+func (ci *CharacterInstance) flushTickMessages() {
+	ci.mu.Lock()
+	buf := ci.tickMsgBuf
+	ci.tickMsgBuf = nil
+	ci.mu.Unlock()
+
+	if len(buf) == 0 {
+		return
+	}
+	ci.Notify(strings.Join(buf, "\n"))
 }
 
 // Flags returns display labels for the player's current state.

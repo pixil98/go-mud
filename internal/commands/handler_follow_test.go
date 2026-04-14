@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/gametest"
 )
 
 // recordingPublisher captures messages sent via Publish for test assertions.
@@ -37,7 +38,7 @@ func (p *recordingPublisher) messagesTo(charId string) []string {
 
 func TestFollowHandler(t *testing.T) {
 	tests := map[string]struct {
-		setup       func(alice, bob *mockActor, charlie *mockActor)
+		setup       func(alice, bob *gametest.BaseActor, charlie *gametest.BaseActor)
 		target      *TargetRef // nil means unfollow path
 		expErr      string
 		expFollow   string // expected Id() of who alice follows after handler, "" means nil
@@ -61,8 +62,8 @@ func TestFollowHandler(t *testing.T) {
 			expErr: "You can't follow yourself.",
 		},
 		"already following target": {
-			setup: func(alice, bob, charlie *mockActor) {
-				alice.following = bob
+			setup: func(alice, bob, charlie *gametest.BaseActor) {
+				alice.ActorFollowing = bob
 			},
 			target: &TargetRef{
 				Type:  targetTypeActor,
@@ -71,8 +72,8 @@ func TestFollowHandler(t *testing.T) {
 			expErr: "You are already following Bob.",
 		},
 		"circular follow": {
-			setup: func(alice, bob, charlie *mockActor) {
-				bob.following = alice
+			setup: func(alice, bob, charlie *gametest.BaseActor) {
+				bob.ActorFollowing = alice
 			},
 			target: &TargetRef{
 				Type:  targetTypeActor,
@@ -81,8 +82,8 @@ func TestFollowHandler(t *testing.T) {
 			expErr: "Sorry, following in loops is not allowed.",
 		},
 		"switch leader": {
-			setup: func(alice, bob, charlie *mockActor) {
-				alice.following = bob
+			setup: func(alice, bob, charlie *gametest.BaseActor) {
+				alice.ActorFollowing = bob
 			},
 			target: &TargetRef{
 				Type:  targetTypeActor,
@@ -92,8 +93,8 @@ func TestFollowHandler(t *testing.T) {
 			expMsgAlice: "You now follow Charlie.",
 		},
 		"unfollow when following": {
-			setup: func(alice, bob, charlie *mockActor) {
-				alice.following = bob
+			setup: func(alice, bob, charlie *gametest.BaseActor) {
+				alice.ActorFollowing = bob
 			},
 			target:      nil,
 			expFollow:   "",
@@ -108,9 +109,9 @@ func TestFollowHandler(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			alice := &mockActor{id: "alice", name: "Alice"}
-			bob := &mockActor{id: "bob", name: "Bob"}
-			charlie := &mockActor{id: "charlie", name: "Charlie"}
+			alice := &gametest.BaseActor{ActorId: "alice", ActorName: "Alice"}
+			bob := &gametest.BaseActor{ActorId: "bob", ActorName: "Bob"}
+			charlie := &gametest.BaseActor{ActorId: "charlie", ActorName: "Charlie"}
 
 			if tt.setup != nil {
 				tt.setup(alice, bob, charlie)
@@ -158,26 +159,26 @@ func TestFollowHandler(t *testing.T) {
 			}
 
 			if tt.expFollow == "" {
-				if alice.following != nil {
-					t.Errorf("expected following to be nil, got %q", alice.following.Id())
+				if alice.ActorFollowing != nil {
+					t.Errorf("expected following to be nil, got %q", alice.ActorFollowing.Id())
 				}
 			} else {
-				if alice.following == nil {
+				if alice.ActorFollowing == nil {
 					t.Errorf("expected following %q, got nil", tt.expFollow)
-				} else if alice.following.Id() != tt.expFollow {
-					t.Errorf("following = %q, expected %q", alice.following.Id(), tt.expFollow)
+				} else if alice.ActorFollowing.Id() != tt.expFollow {
+					t.Errorf("following = %q, expected %q", alice.ActorFollowing.Id(), tt.expFollow)
 				}
 			}
 
 			if tt.expMsgAlice != "" {
-				if !containsSubstring(alice.notified, tt.expMsgAlice) {
-					t.Errorf("expected Notify to alice containing %q, got %v", tt.expMsgAlice, alice.notified)
+				if !containsSubstring(alice.Notified, tt.expMsgAlice) {
+					t.Errorf("expected Notify to alice containing %q, got %v", tt.expMsgAlice, alice.Notified)
 				}
 			}
 
 			if tt.expMsgBob != "" {
-				if !containsSubstring(bob.notified, tt.expMsgBob) {
-					t.Errorf("expected Notify to bob containing %q, got %v", tt.expMsgBob, bob.notified)
+				if !containsSubstring(bob.Notified, tt.expMsgBob) {
+					t.Errorf("expected Notify to bob containing %q, got %v", tt.expMsgBob, bob.Notified)
 				}
 			}
 		})
@@ -191,31 +192,31 @@ func TestWouldCreateLoop(t *testing.T) {
 	}{
 		"no loop": {
 			setup: func() (string, game.Actor) {
-				b := &mockActor{id: "b", name: "B"}
+				b := &gametest.BaseActor{ActorId: "b", ActorName: "B"}
 				return "a", b
 			},
 			exp: false,
 		},
 		"direct loop": {
 			setup: func() (string, game.Actor) {
-				a := &mockActor{id: "a", name: "A"}
-				b := &mockActor{id: "b", name: "B", following: a}
+				a := &gametest.BaseActor{ActorId: "a", ActorName: "A"}
+				b := &gametest.BaseActor{ActorId: "b", ActorName: "B", ActorFollowing: a}
 				return "a", b
 			},
 			exp: true,
 		},
 		"indirect loop": {
 			setup: func() (string, game.Actor) {
-				c := &mockActor{id: "c", name: "C"}
-				a := &mockActor{id: "a", name: "A", following: c}
-				b := &mockActor{id: "b", name: "B", following: a}
+				c := &gametest.BaseActor{ActorId: "c", ActorName: "C"}
+				a := &gametest.BaseActor{ActorId: "a", ActorName: "A", ActorFollowing: c}
+				b := &gametest.BaseActor{ActorId: "b", ActorName: "B", ActorFollowing: a}
 				return "c", b
 			},
 			exp: true,
 		},
 		"leader not following anyone": {
 			setup: func() (string, game.Actor) {
-				b := &mockActor{id: "b", name: "B"}
+				b := &gametest.BaseActor{ActorId: "b", ActorName: "B"}
 				return "a", b
 			},
 			exp: false,

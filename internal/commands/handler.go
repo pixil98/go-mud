@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/assets"
-	"github.com/pixil98/go-mud/internal/combat"
 	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
@@ -107,31 +106,29 @@ type Handler struct {
 	compiled  map[string]*compiledCommand
 	abilities map[string]*compiledAbility
 	effects   map[string]EffectHandler
-	combat    CombatManager
 }
 
 // NewHandler creates a Handler, registers all built-in command factories, and compiles every command from the store.
-func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, publisher game.Publisher, world PlayerLookup, combat CombatManager) (*Handler, error) {
+func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, publisher game.Publisher, world PlayerLookup) (*Handler, error) {
 	h := &Handler{
 		factories: make(map[string]HandlerFactory),
 		compiled:  make(map[string]*compiledCommand),
 		abilities: make(map[string]*compiledAbility),
 		effects:   make(map[string]EffectHandler),
-		combat:    combat,
 	}
 
 	// Register effect handlers
-	h.effects["attack"] = &attackEffect{combat: combat}
-	h.effects["damage"] = &damageEffect{combat: combat}
-	h.effects["aoe_damage"] = &aoeDamageEffect{combat: combat}
+	h.effects["attack"] = &attackEffect{}
+	h.effects["damage"] = &damageEffect{}
+	h.effects["aoe_damage"] = &aoeDamageEffect{}
 	h.effects["actor_buff"] = &buffEffect{scope: buffScopeActor}
 	h.effects["room_buff"] = &buffEffect{scope: buffScopeRoom}
 	h.effects["zone_buff"] = &buffEffect{scope: buffScopeZone}
 	h.effects["world_buff"] = &buffEffect{scope: buffScopeWorld}
-	h.effects["threat"] = &threatEffect{combat: combat}
-	h.effects["aoe_threat"] = &aoeThreatEffect{combat: combat}
-	h.effects["heal"] = &healEffect{combat: combat}
-	h.effects["aoe_heal"] = &aoeHealEffect{combat: combat}
+	h.effects["threat"] = &threatEffect{}
+	h.effects["aoe_threat"] = &aoeThreatEffect{}
+	h.effects["heal"] = &healEffect{}
+	h.effects["aoe_heal"] = &aoeHealEffect{}
 	h.effects["spawn_obj"] = &spawnObjEffect{objects: dict.Objects}
 	h.effects["spawn_mob"] = &spawnMobEffect{mobiles: dict.Mobiles}
 
@@ -140,7 +137,7 @@ func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, pub
 		name    string
 		factory HandlerFactory
 	}{
-		{"assist", NewAssistHandlerFactory(combat, world, publisher)},
+		{"assist", NewAssistHandlerFactory(world, publisher)},
 		{"closure", NewClosureHandlerFactory(publisher)},
 		{"equipment", NewEquipmentHandlerFactory()},
 		{"follow", NewFollowHandlerFactory()},
@@ -205,36 +202,6 @@ func (h *Handler) registerAbility(id string, ability *assets.Ability, pub game.P
 	}
 	cmd.Config["ability_id"] = id
 	return h.compile(id, &cmd)
-}
-
-// ExecCombatAbility executes an ability during the combat tick. Builds the
-// target map from the provided actors, then delegates to the compiled ability.
-// Returns a CombatAbilityResult so the manager can route messages to the target
-// player and to the room separately.
-func (h *Handler) ExecCombatAbility(abilityId string, actor, target game.Actor) (combat.CombatAbilityResult, error) {
-	ca, ok := h.abilities[abilityId]
-	if !ok {
-		return combat.CombatAbilityResult{}, fmt.Errorf("unknown ability %q", abilityId)
-	}
-	targets := map[string]*TargetRef{
-		"target": {Type: targetTypeActor, Actor: actorRefFromActor(target)},
-	}
-	result, err := ca.exec(actor, targets, ExecAbilityOpts{SkipAP: true})
-	if err != nil {
-		return combat.CombatAbilityResult{}, err
-	}
-	// result.TargetId is only set when the ability has a message_target config.
-	// For effects like attackEffect that append TargetLines directly, derive the
-	// target player ID from the known target instead.
-	targetId := result.TargetId
-	if targetId == "" && target.IsCharacter() && len(result.TargetLines) > 0 {
-		targetId = target.Id()
-	}
-	return combat.CombatAbilityResult{
-		RoomMsg:   strings.Join(result.RoomLines, "\n"),
-		TargetMsg: strings.Join(result.TargetLines, "\n"),
-		TargetId:  targetId,
-	}, nil
 }
 
 // RegisterFactory registers a handler factory by name.

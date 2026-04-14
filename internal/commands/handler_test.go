@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/pixil98/go-mud/internal/assets"
+	"github.com/pixil98/go-mud/internal/gametest"
 )
 
 func TestHandler_parseValue(t *testing.T) {
@@ -565,7 +566,7 @@ func TestHandler_expandConfig(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			h := &Handler{}
 
-			actor := &mockActor{id: "alice", name: tt.actor.Name}
+			actor := &gametest.BaseActor{ActorId: "alice", ActorName: tt.actor.Name}
 
 			expandedConfig, err := h.expandConfig(tt.config, actor, tt.targets, tt.inputs)
 

@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/pixil98/go-mud/internal/assets"
+	"github.com/pixil98/go-mud/internal/combat"
 	"github.com/pixil98/go-mud/internal/game"
 )
 
@@ -42,9 +43,7 @@ func validateThreatConfig(config map[string]string) error {
 //   - "amount" (int string): threat delta for "add", absolute value for "set_to_value".
 //     Required for "add" and "set_to_value" modes; ignored by "set_to_top".
 //   - "in_combat_only" ("true"/"false", optional): only affect mobs already in combat. Default false.
-type aoeThreatEffect struct {
-	combat CombatManager
-}
+type aoeThreatEffect struct{}
 
 func (e *aoeThreatEffect) Spec() *HandlerSpec { return nil }
 
@@ -67,17 +66,17 @@ func (e *aoeThreatEffect) Create(_ string, config map[string]string, _ []assets.
 		if inCombatOnly && !target.IsInCombat() {
 			return
 		}
-		if err := e.combat.StartCombat(actor, target); err != nil {
+		if err := combat.StartCombat(actor, target); err != nil {
 			slog.Warn("aoe_threat: StartCombat failed", "target", target.Id(), "error", err)
 			return
 		}
 		switch mode {
 		case ThreatModeAdd:
-			e.combat.AddThreat(actor, target, amount)
+			combat.AddThreat(actor, target, amount)
 		case ThreatModeSetToTop:
-			e.combat.TopThreat(actor, target)
+			combat.TopThreat(actor, target)
 		case ThreatModeSetToValue:
-			e.combat.SetThreat(actor, target, amount)
+			combat.SetThreat(actor, target, amount)
 		}
 	}
 
@@ -105,9 +104,7 @@ func (e *aoeThreatEffect) Create(_ string, config map[string]string, _ []assets.
 //   - "mode" (string, required): one of "add", "set_to_top", "set_to_value".
 //   - "amount" (int string): threat delta for "add", absolute value for "set_to_value".
 //     Required for "add" and "set_to_value" modes; ignored by "set_to_top".
-type threatEffect struct {
-	combat CombatManager
-}
+type threatEffect struct{}
 
 func (e *threatEffect) Spec() *HandlerSpec {
 	return &HandlerSpec{
@@ -133,17 +130,17 @@ func (e *threatEffect) Create(_ string, config map[string]string, targets []asse
 		target := ref.Actor.Actor()
 
 		// Ensure the caster is in combat with the target.
-		if err := e.combat.StartCombat(actor, target); err != nil {
+		if err := combat.StartCombat(actor, target); err != nil {
 			return NewUserError(err.Error())
 		}
 
 		switch mode {
 		case ThreatModeAdd:
-			e.combat.AddThreat(actor, target, amount)
+			combat.AddThreat(actor, target, amount)
 		case ThreatModeSetToTop:
-			e.combat.TopThreat(actor, target)
+			combat.TopThreat(actor, target)
 		case ThreatModeSetToValue:
-			e.combat.SetThreat(actor, target, amount)
+			combat.SetThreat(actor, target, amount)
 		}
 
 		return nil

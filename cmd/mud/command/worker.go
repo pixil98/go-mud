@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/pixil98/go-mud/internal/combat"
 	"github.com/pixil98/go-mud/internal/commands"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/listener"
@@ -13,13 +12,14 @@ import (
 	"github.com/pixil98/go-service"
 )
 
-// mobCommandAdapter wraps a command handler to satisfy game.MobCommander.
-type mobCommandAdapter struct {
+// boundCommander wraps a command handler bound to a specific actor.
+type boundCommander struct {
 	handler *commands.Handler
+	actor   game.Actor
 }
 
-func (a *mobCommandAdapter) ExecMobCommand(ctx context.Context, mob *game.MobileInstance, cmd string, args ...string) error {
-	return a.handler.Exec(ctx, mob, cmd, args...)
+func (c *boundCommander) ExecCommand(ctx context.Context, cmd string, args ...string) error {
+	return c.handler.Exec(ctx, c.actor, cmd, args...)
 }
 
 // BuildWorkers assembles and returns all service workers from the config.
@@ -56,18 +56,16 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	// Create publisher for command handlers
 	publisher := messaging.NewNatsPublisher(natsServer)
 
-	// Create combat manager
-	combatManager := combat.NewManager(publisher)
-
 	// Create command handler and compile all commands
-	cmdHandler, err := commands.NewHandler(storeCmds, dict, publisher, world, combatManager)
+	cmdHandler, err := commands.NewHandler(storeCmds, dict, publisher, world)
 	if err != nil {
 		return nil, fmt.Errorf("compiling commands: %w", err)
 	}
-	combatManager.SetAbilityHandler(cmdHandler)
 
-	// Wire mob commander and spawn initial mobiles/objects
-	world.SetMobCommander(&mobCommandAdapter{handler: cmdHandler})
+	// Wire commander factory and spawn initial mobiles/objects
+	world.SetCommanderFactory(func(actor game.Actor) game.Commander {
+		return &boundCommander{handler: cmdHandler, actor: actor}
+	})
 	if err := world.ResetAll(); err != nil {
 		return nil, err
 	}
@@ -100,7 +98,7 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 		}
 		opts = append(opts, game.WithTickLength(l))
 	}
-	driver := game.NewMudDriver([]game.Ticker{world, playerManager, combatManager}, opts...)
+	driver := game.NewMudDriver([]game.Ticker{world, playerManager}, opts...)
 
 	// Create a worker list
 	return service.WorkerList{

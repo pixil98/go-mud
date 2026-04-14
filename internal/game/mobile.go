@@ -18,16 +18,10 @@ const (
 	scavengeChance = 10
 )
 
-// MobCommander executes a command on behalf of a mob.
-type MobCommander interface {
-	ExecMobCommand(ctx context.Context, mob *MobileInstance, cmd string, args ...string) error
-}
-
 // MobileInstance represents a single spawned instance of a Mobile definition.
 // Location is set at spawn time and tracks which zone/room contains this mob.
 type MobileInstance struct {
-	Mobile    storage.SmartIdentifier[*assets.Mobile]
-	Commander MobCommander // if set, the mob executes commands autonomously on tick
+	Mobile storage.SmartIdentifier[*assets.Mobile]
 
 	ActorInstance
 }
@@ -76,31 +70,60 @@ func (mi *MobileInstance) Name() string {
 
 // Tick advances one game tick: expires timed perks, regenerates resources,
 // and runs autonomous behavior (wandering, scavenging) when not in combat.
-func (mi *MobileInstance) Tick() {
-	if mi.Commander == nil {
+func (mi *MobileInstance) Tick(ctx context.Context) {
+	if mi.commander == nil {
 		slog.Error("mob ticking without commander", "mob", mi.Mobile.Id())
 		return
 	}
 
-	mi.PerkCache.Tick()
 	mi.inventory.Tick()
 	mi.equipment.Tick()
-	if !mi.IsInCombat() {
+	mi.PerkCache.Tick()
+
+	if mi.IsInCombat() {
+		mi.combatTick(ctx)
+	} else {
 		mi.mu.Lock()
 		mi.regenTick()
 		mi.mu.Unlock()
+		mi.tryWander(ctx)
+		mi.tryScavenge(ctx)
 	}
+}
 
-	// Autonomous behavior requires no combat.
-	if mi.IsInCombat() {
+// combatTick processes one round of combat for this mob.
+func (mi *MobileInstance) combatTick(ctx context.Context) {
+	target := mi.ResolveCombatTarget("")
+	if target == nil {
+		mi.SetInCombat(false)
+		mi.ClearThreatTable()
 		return
 	}
-	mi.tryWander()
-	mi.tryScavenge()
+
+	mi.autoUseTick(ctx, mi.GrantArgs(assets.PerkGrantAutoUse), target.Id())
+	mi.sweepDeadEnemies()
+}
+
+// sweepDeadEnemies removes dead enemies from the threat table and
+// processes death for each one (exactly once via ClaimDeath).
+func (mi *MobileInstance) sweepDeadEnemies() {
+	enemies := mi.ThreatEnemies()
+	for _, enemy := range enemies {
+		if enemy.IsAlive() {
+			continue
+		}
+		if enemy.ClaimDeath() {
+			processDeath(enemy, mi.Room())
+		}
+		mi.RemoveThreatEntry(enemy.Id())
+	}
+	if !mi.HasThreatEntries() {
+		mi.SetInCombat(false)
+	}
 }
 
 // tryWander gives the mob a chance to move to a random adjacent room.
-func (mi *MobileInstance) tryWander() {
+func (mi *MobileInstance) tryWander(ctx context.Context) {
 	if mi.Mobile.Get().HasFlag(assets.MobileFlagSentinel) {
 		return
 	}
@@ -135,13 +158,13 @@ func (mi *MobileInstance) tryWander() {
 	}
 
 	dir := directions[rand.IntN(len(directions))]
-	if err := mi.Commander.ExecMobCommand(context.Background(), mi, dir); err != nil {
+	if err := mi.commander.ExecCommand(ctx, dir); err != nil {
 		slog.Debug("mob wander failed", "mob", mi.Mobile.Id(), "direction", dir, "error", err)
 	}
 }
 
 // tryScavenge gives a scavenger mob a chance to pick up an item from its room.
-func (mi *MobileInstance) tryScavenge() {
+func (mi *MobileInstance) tryScavenge(ctx context.Context) {
 	if !mi.Mobile.Get().HasFlag(assets.MobileFlagScavenger) {
 		return
 	}
@@ -170,7 +193,7 @@ func (mi *MobileInstance) tryScavenge() {
 	if alias == "" {
 		return
 	}
-	if err := mi.Commander.ExecMobCommand(context.Background(), mi, "get", alias); err != nil {
+	if err := mi.commander.ExecCommand(ctx, "get", alias); err != nil {
 		slog.Debug("mob scavenge failed", "mob", mi.Mobile.Id(), "item", alias, "error", err)
 	}
 }
@@ -203,6 +226,9 @@ func (mi *MobileInstance) IsCharacter() bool { return false }
 
 // Notify is a no-op for mobs since they have no client connection.
 func (mi *MobileInstance) Notify(_ string) {}
+
+// QueueTickMsg is a no-op for mobs since they have no client connection.
+func (mi *MobileInstance) QueueTickMsg(_ string) {}
 
 // newCorpse creates a container ObjectInstance holding all of the mob's loot.
 func newCorpse(mi *MobileInstance) *ObjectInstance {

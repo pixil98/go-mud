@@ -106,7 +106,7 @@ func (ri *RoomInstance) Zone() *ZoneInstance {
 // Reset clears all mobs and objects and respawns them from the room definition.
 // Players are preserved. Exit closure state is restored to definition defaults.
 // Cross-zone door state is also synchronized via resolved exit pointers.
-func (ri *RoomInstance) Reset(mc MobCommander) error {
+func (ri *RoomInstance) Reset(cf CommanderFactory) error {
 	ri.mu.Lock()
 	ri.initExitClosures()
 
@@ -134,7 +134,9 @@ func (ri *RoomInstance) Reset(mc MobCommander) error {
 			slog.Error("respawning mob", "mob", mob.Id(), "room", ri.Room.Id(), "error", err)
 			continue
 		}
-		mi.Commander = mc
+		if cf != nil {
+			mi.commander = cf(mi)
+		}
 		ri.addMob(mi)
 	}
 	ri.mu.Unlock()

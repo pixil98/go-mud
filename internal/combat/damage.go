@@ -2,9 +2,19 @@ package combat
 
 import (
 	"math/rand/v2"
+	"strings"
 
 	"github.com/pixil98/go-mud/internal/assets"
 )
+
+// ParseAttackArg extracts the damage type and dice expression from an attack grant arg.
+// Supports "<type>:<dice>" (e.g. "fire:2d6+3") or plain "<dice>" (defaults to "untyped").
+func ParseAttackArg(arg string) (dmgType, diceExpr string) {
+	if i := strings.IndexByte(arg, ':'); i >= 0 {
+		return arg[:i], arg[i+1:]
+	}
+	return assets.DamageTypeUntyped, arg
+}
 
 // RollAttack rolls a d20 and adds the attack modifier.
 func RollAttack(attackMod int) int {

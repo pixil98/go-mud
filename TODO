@@ -62,4 +62,6 @@ manager into per-actor tick behavior:
 - Should overhealing generate threat? Currently heal threat is based on the full heal amount, even if the target is already at max HP.
 - Make threat multiplier configurable per effect. Currently damage generates 1:1 threat and heal generates 0.5x threat, both hardcoded. A config field (e.g. "threat_multiplier") would allow tuning per ability.
 - TimedPerkCaches in world/zone/room currently apply to all players and no mobs
+- AoE heal effects use a player/mob split for ally detection instead of the follow/group system. Should heal grouped allies regardless of actor type.
+- AoE effects iterate rooms via ForEachMob/ForEachPlayer (concrete types). Consider yielding Actor instead so tests can use gametest.BaseActor and ally detection doesn't depend on actor type.
 

@@ -2,6 +2,8 @@ package commands
 
 import (
 	"testing"
+
+	"github.com/pixil98/go-mud/internal/gametest"
 )
 
 func TestExpandTemplate(t *testing.T) {
@@ -19,14 +21,14 @@ func TestExpandTemplate(t *testing.T) {
 		"expand actor name": {
 			tmplStr: "{{ .Actor.Name }} says hello",
 			data: &templateContext{
-				Actor: &mockActor{id: "test-actor", name: "test-actor"},
+				Actor: &gametest.BaseActor{ActorId: "test-actor", ActorName: "test-actor"},
 			},
 			exp: "test-actor says hello",
 		},
 		"expand input value": {
 			tmplStr: "player-{{ .Inputs.target }}",
 			data: &templateContext{
-				Actor:  &mockActor{id: "a", name: "a"},
+				Actor:  &gametest.BaseActor{ActorId: "a", ActorName: "a"},
 				Inputs: map[string]any{"target": "test-target"},
 			},
 			exp: "player-test-target",
@@ -34,7 +36,7 @@ func TestExpandTemplate(t *testing.T) {
 		"expand multiple values": {
 			tmplStr: "{{ .Actor.Name }} targets {{ .Targets.target.Actor.Name }}",
 			data: &templateContext{
-				Actor: &mockActor{id: "test-actor", name: "test-actor"},
+				Actor: &gametest.BaseActor{ActorId: "test-actor", ActorName: "test-actor"},
 				Targets: map[string]*TargetRef{
 					"target": {Type: targetTypeActor, Actor: &ActorRef{Name: "test-target"}},
 				},

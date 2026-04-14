@@ -6,17 +6,9 @@ import (
 	"log/slog"
 
 	"github.com/pixil98/go-mud/internal/assets"
+	"github.com/pixil98/go-mud/internal/combat"
 	"github.com/pixil98/go-mud/internal/game"
 )
-
-// CombatManager provides combat operations needed by command handlers.
-type CombatManager interface {
-	StartCombat(attacker, target game.Actor) error
-	AddThreat(source, target game.Actor, amount int)
-	SetThreat(source, target game.Actor, amount int)
-	TopThreat(source, target game.Actor)
-	NotifyHeal(healer, target game.Actor, amount int)
-}
 
 // AssistedPlayer provides the state the assist handler reads from the player
 // being assisted. This narrow interface lets tests mock the assisted player
@@ -51,14 +43,13 @@ func (a *assistPlayerAdapter) GetPlayer(charId string) AssistedPlayer {
 // When a target player is resolved, the actor joins that player's fight.
 // When no target is given, the actor assists their follow leader.
 type AssistHandlerFactory struct {
-	combat  CombatManager
 	players AssistPlayerLookup
 	pub     game.Publisher
 }
 
 // NewAssistHandlerFactory creates a handler factory for the assist command.
-func NewAssistHandlerFactory(combat CombatManager, players PlayerLookup, pub game.Publisher) *AssistHandlerFactory {
-	return &AssistHandlerFactory{combat: combat, players: &assistPlayerAdapter{inner: players}, pub: pub}
+func NewAssistHandlerFactory(players PlayerLookup, pub game.Publisher) *AssistHandlerFactory {
+	return &AssistHandlerFactory{players: &assistPlayerAdapter{inner: players}, pub: pub}
 }
 
 // Spec returns the optional target player requirement for the assist handler.
@@ -105,7 +96,7 @@ func (f *AssistHandlerFactory) handle(ctx context.Context, in *CommandInput) err
 	}
 
 	targetMob := assisted.Room().GetMob(targetMobId)
-	if err := f.combat.StartCombat(char, targetMob); err != nil {
+	if err := combat.StartCombat(char, targetMob); err != nil {
 		return NewUserError(fmt.Sprintf("%s isn't fighting anything you can assist with.", assistedName))
 	}
 

@@ -11,9 +11,7 @@ import (
 
 // attackEffect reads the actor's attack grants and performs one attack roll per
 // grant. Each hit delegates to dealDamage for damage application and threat.
-type attackEffect struct {
-	combat CombatManager
-}
+type attackEffect struct{}
 
 func (e *attackEffect) Spec() *HandlerSpec {
 	return &HandlerSpec{
@@ -36,7 +34,7 @@ func (e *attackEffect) Create(_ string, _ map[string]string, targets []assets.Ta
 				continue
 			}
 			target := ref.Actor.Actor()
-			if err := e.combat.StartCombat(actor, target); err != nil {
+			if err := combat.StartCombat(actor, target); err != nil {
 				return NewUserError(err.Error())
 			}
 			actorName := actor.Name()
@@ -56,7 +54,7 @@ func (e *attackEffect) Create(_ string, _ map[string]string, targets []assets.Ta
 					if err != nil {
 						dice = combat.DiceRoll{Count: 1, Sides: 4}
 					}
-					damage = dealDamage(e.combat, actor, target, dice.Roll(), dmgType)
+					damage = dealDamage(actor, target, dice.Roll(), dmgType)
 				}
 				result.ActorLines = append(result.ActorLines, combat.HitMsgActor(targetName, damage))
 				result.TargetLines = append(result.TargetLines, combat.HitMsgTarget(actorName, damage))
@@ -73,9 +71,7 @@ func (e *attackEffect) Create(_ string, _ map[string]string, targets []assets.Ta
 // Config fields:
 //   - "amount" (string, required): flat integer or dice expression (e.g. "25", "2d6+3").
 //   - "damage_types" (comma-separated string, optional): damage type tags (e.g. "fire,ice").
-type damageEffect struct {
-	combat CombatManager
-}
+type damageEffect struct{}
 
 func (e *damageEffect) Spec() *HandlerSpec {
 	return &HandlerSpec{
@@ -120,7 +116,7 @@ func (e *damageEffect) Create(_ string, config map[string]string, targets []asse
 			if ref == nil {
 				continue
 			}
-			dealDamage(e.combat, actor, ref.Actor.Actor(), raw, primaryType)
+			dealDamage(actor, ref.Actor.Actor(), raw, primaryType)
 			return nil
 		}
 
@@ -130,14 +126,14 @@ func (e *damageEffect) Create(_ string, config map[string]string, targets []asse
 
 // dealDamage applies raw damage of the given type to a target, handling CalcDamage,
 // reflected damage, combat initiation, and threat. Returns the final damage dealt.
-func dealDamage(cm CombatManager, actor game.Actor, target game.Actor, raw int, dmgType string) int {
+func dealDamage(actor, target game.Actor, raw int, dmgType string) int {
 	damage, reflected := combat.CalcDamage(raw, dmgType, actor, target)
 	target.AdjustResource(assets.ResourceHp, -damage, false)
 	if reflected > 0 {
 		actor.AdjustResource(assets.ResourceHp, -reflected, false)
 	}
-	_ = cm.StartCombat(actor, target)
-	cm.AddThreat(actor, target, damage)
+	_ = combat.StartCombat(actor, target)
+	combat.AddThreat(actor, target, damage)
 	return damage
 }
 
@@ -148,9 +144,7 @@ func dealDamage(cm CombatManager, actor game.Actor, target game.Actor, raw int, 
 //   - "amount" (string, required): flat integer or dice expression before modifiers.
 //   - "damage_type" (string, optional): damage type tag. Defaults to untyped.
 //   - "hit_allies" ("true"/"false", optional): also damage same-side targets. Default false.
-type aoeDamageEffect struct {
-	combat CombatManager
-}
+type aoeDamageEffect struct{}
 
 func (e *aoeDamageEffect) Spec() *HandlerSpec { return nil }
 
@@ -189,11 +183,11 @@ func (e *aoeDamageEffect) Create(_ string, config map[string]string, _ []assets.
 		// Hit enemies: players hit mobs, mobs hit players.
 		if isChar {
 			ri.ForEachMob(func(mi *game.MobileInstance) {
-				dealDamage(e.combat, actor, mi, dice.Roll(), dmgType)
+				dealDamage(actor, mi, dice.Roll(), dmgType)
 			})
 		} else {
 			ri.ForEachPlayer(func(charId string, ci *game.CharacterInstance) {
-				dealDamage(e.combat, actor, ci, dice.Roll(), dmgType)
+				dealDamage(actor, ci, dice.Roll(), dmgType)
 			})
 		}
 
@@ -204,14 +198,14 @@ func (e *aoeDamageEffect) Create(_ string, config map[string]string, _ []assets.
 					if charId == actorId {
 						return
 					}
-					dealDamage(e.combat, actor, ci, dice.Roll(), dmgType)
+					dealDamage(actor, ci, dice.Roll(), dmgType)
 				})
 			} else {
 				ri.ForEachMob(func(mi *game.MobileInstance) {
 					if mi.Id() == actorId {
 						return
 					}
-					dealDamage(e.combat, actor, mi, dice.Roll(), dmgType)
+					dealDamage(actor, mi, dice.Roll(), dmgType)
 				})
 			}
 		}

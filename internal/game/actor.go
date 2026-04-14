@@ -1,9 +1,12 @@
 package game
 
 import (
+	"context"
 	"fmt"
+	"strconv"
 	"strings"
 	"sync"
+	"sync/atomic"
 
 	"github.com/pixil98/go-mud/internal/assets"
 )
@@ -42,6 +45,14 @@ type Actor interface {
 	IsFollowerGrouped(id string) bool
 	GroupedFollowers() []Actor
 	Move(from, to *RoomInstance)
+	EnsureThreat(enemyId string, enemy Actor)
+	AddThreatFrom(sourceId string, amount int)
+	SetThreatFrom(sourceId string, amount int)
+	TopThreatFrom(sourceId string)
+	HasThreatFrom(enemyId string) bool
+	ThreatSnapshot() map[string]int
+	ClaimDeath() bool
+	QueueTickMsg(msg string)
 }
 
 // StatLine is a single line in a stat section.
@@ -55,6 +66,16 @@ type StatSection struct {
 	Header string
 	Lines  []StatLine
 }
+
+// Commander executes commands on behalf of an actor. Both mobs and players
+// receive one; it wraps Handler.Exec bound to the specific actor instance.
+type Commander interface {
+	ExecCommand(ctx context.Context, cmd string, args ...string) error
+}
+
+// CommanderFactory creates a per-actor Commander. Used during mob spawning
+// and player login to bind the command handler to each actor.
+type CommanderFactory func(Actor) Commander
 
 // followerEntry pairs a follow-tree pointer with a group membership flag.
 type followerEntry struct {
@@ -74,8 +95,14 @@ type ActorInstance struct {
 	resources  map[string]int // current values only; max derived from PerkCache
 	level      int
 
-	room     *RoomInstance
-	inCombat bool
+	room           *RoomInstance
+	inCombat       bool
+	deathProcessed atomic.Bool
+	threatTable    ThreatTable
+	cooldown       map[string][]int // auto_use arg → per-duplicate cooldown counters
+	commander      Commander
+
+	tickMsgBuf []string // per-tick message buffer, flushed at end of world tick
 
 	following Actor
 	followers map[string]*followerEntry
@@ -340,6 +367,165 @@ func (a *ActorInstance) GroupedFollowers() []Actor {
 		}
 	}
 	return out
+}
+
+// --- Commander ---
+
+// SetCommander sets the actor's command executor.
+func (a *ActorInstance) SetCommander(c Commander) {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+	a.commander = c
+}
+
+// --- Threat table ---
+
+// EnsureThreat idempotently adds an enemy with an initial threat of 1.
+func (a *ActorInstance) EnsureThreat(enemyId string, enemy Actor) {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+	a.threatTable.ensureEntry(enemyId, enemy)
+}
+
+// AddThreatFrom increments the threat that sourceId has generated on this actor.
+func (a *ActorInstance) AddThreatFrom(sourceId string, amount int) {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+	a.threatTable.addThreat(sourceId, amount)
+}
+
+// SetThreatFrom sets the threat that sourceId has on this actor to an absolute value.
+func (a *ActorInstance) SetThreatFrom(sourceId string, amount int) {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+	a.threatTable.setThreat(sourceId, amount)
+}
+
+// TopThreatFrom sets sourceId's threat to one more than the current highest,
+// guaranteeing sourceId becomes the top-threat enemy.
+func (a *ActorInstance) TopThreatFrom(sourceId string) {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+	a.threatTable.topThreat(sourceId)
+}
+
+// HasThreatFrom reports whether enemyId is on this actor's threat table.
+func (a *ActorInstance) HasThreatFrom(enemyId string) bool {
+	a.mu.RLock()
+	defer a.mu.RUnlock()
+	return a.threatTable.hasEntry(enemyId)
+}
+
+// HasThreatEntries reports whether the threat table has any entries.
+func (a *ActorInstance) HasThreatEntries() bool {
+	a.mu.RLock()
+	defer a.mu.RUnlock()
+	return a.threatTable.hasEntries()
+}
+
+// RemoveThreatEntry removes an enemy from the threat table.
+func (a *ActorInstance) RemoveThreatEntry(enemyId string) {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+	a.threatTable.removeEntry(enemyId)
+}
+
+// ThreatSnapshot returns a copy of the threat table for safe iteration outside
+// the lock (e.g. XP distribution after death).
+func (a *ActorInstance) ThreatSnapshot() map[string]int {
+	a.mu.RLock()
+	defer a.mu.RUnlock()
+	return a.threatTable.snapshot()
+}
+
+// ClearThreatTable removes all threat entries and cooldowns.
+func (a *ActorInstance) ClearThreatTable() {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+	a.threatTable.clear()
+	clear(a.cooldown)
+}
+
+// ResolveCombatTarget returns the best target from the threat table.
+// preferredId is checked first; falls back to highest threat.
+// Returns nil if the table is empty.
+func (a *ActorInstance) ResolveCombatTarget(preferredId string) Actor {
+	a.mu.RLock()
+	defer a.mu.RUnlock()
+	return a.threatTable.resolveTarget(preferredId)
+}
+
+// ThreatEnemies returns a snapshot of all enemy Actor references from the
+// threat table. Safe to iterate outside the lock.
+func (a *ActorInstance) ThreatEnemies() []Actor {
+	a.mu.RLock()
+	defer a.mu.RUnlock()
+	return a.threatTable.enemies()
+}
+
+// autoUseTick processes auto_use grants for one tick, executing each ready
+// ability via the commander. Manages per-grant cooldown counters.
+func (a *ActorInstance) autoUseTick(ctx context.Context, grants []string, targetId string) {
+	if len(grants) == 0 || a.commander == nil {
+		return
+	}
+	a.mu.Lock()
+	if a.cooldown == nil {
+		a.cooldown = make(map[string][]int)
+	}
+
+	type task struct{ abilityId, targetId string }
+	var tasks []task
+	seen := make(map[string]int)
+
+	for _, arg := range grants {
+		abilityId := arg
+		cooldownTicks := 1
+		if i := strings.IndexByte(arg, ':'); i >= 0 {
+			abilityId = arg[:i]
+			if n, err := strconv.Atoi(arg[i+1:]); err == nil && n > 0 {
+				cooldownTicks = n
+			}
+		}
+
+		dupIdx := seen[arg]
+		seen[arg]++
+
+		for len(a.cooldown[arg]) <= dupIdx {
+			a.cooldown[arg] = append(a.cooldown[arg], 0)
+		}
+
+		remaining := a.cooldown[arg][dupIdx]
+		if remaining > 0 {
+			a.cooldown[arg][dupIdx] = remaining - 1
+			continue
+		}
+		a.cooldown[arg][dupIdx] = cooldownTicks - 1
+		tasks = append(tasks, task{abilityId: abilityId, targetId: targetId})
+	}
+	a.mu.Unlock()
+
+	for _, t := range tasks {
+		_ = a.commander.ExecCommand(ctx, t.abilityId, t.targetId)
+	}
+}
+
+// --- Death ---
+
+// ClaimDeath atomically marks the actor's death as processed. Returns true
+// if this caller is the first to claim it; subsequent calls return false.
+func (a *ActorInstance) ClaimDeath() bool {
+	return a.deathProcessed.CompareAndSwap(false, true)
+}
+
+// --- Tick message buffer ---
+
+// QueueTickMsg appends a message to the per-tick buffer. Messages are flushed
+// as a single chunk at the end of the world tick.
+func (a *ActorInstance) QueueTickMsg(msg string) {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+	a.tickMsgBuf = append(a.tickMsgBuf, msg)
 }
 
 // ResourceLine returns a formatted display line for a resource (e.g. "HP: 45/50").

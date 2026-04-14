@@ -15,20 +15,21 @@ type WorldState struct {
 	subscriber Subscriber
 	players    map[string]*CharacterInstance
 
-	zones        map[string]*ZoneInstance
-	perks        *PerkCache
-	mobCommander MobCommander
+	zones            map[string]*ZoneInstance
+	perks            *PerkCache
+	commanderFactory CommanderFactory
 }
 
-// SetMobCommander sets the commander assigned to mobs at spawn time.
-func (w *WorldState) SetMobCommander(mc MobCommander) {
-	w.mobCommander = mc
+// SetCommanderFactory sets the factory used to create per-actor Commanders
+// at spawn time and when players join.
+func (w *WorldState) SetCommanderFactory(f CommanderFactory) {
+	w.commanderFactory = f
 }
 
 // ResetAll resets all zones, spawning mobs and objects.
 func (w *WorldState) ResetAll() error {
 	for _, zi := range w.zones {
-		if err := zi.Reset(true, w.mobCommander); err != nil {
+		if err := zi.Reset(true, w.commanderFactory); err != nil {
 			return err
 		}
 	}
@@ -184,21 +185,25 @@ type Subscriber interface {
 
 // Tick processes zone resets and ticks the full hierarchy:
 // world perks → players → zones → rooms → mobs.
-func (w *WorldState) Tick(_ context.Context) error {
+func (w *WorldState) Tick(ctx context.Context) error {
 	for _, zi := range w.zones {
-		if err := zi.Reset(false, w.mobCommander); err != nil {
+		if err := zi.Reset(false, w.commanderFactory); err != nil {
 			return err
 		}
 	}
 
 	w.perks.Tick()
 	w.ForEachPlayer(func(_ string, ps *CharacterInstance) {
-		ps.Tick()
+		ps.Tick(ctx)
 	})
 	for _, zi := range w.zones {
 		zi.Tick()
 	}
-	w.tickMobs()
+	w.tickMobs(ctx)
+
+	w.ForEachPlayer(func(_ string, ci *CharacterInstance) {
+		ci.flushTickMessages()
+	})
 
 	return nil
 }
@@ -206,7 +211,7 @@ func (w *WorldState) Tick(_ context.Context) error {
 // tickMobs snapshots all mobs in the world and ticks each one once.
 // A world-level snapshot prevents double-ticking when mobs wander across
 // rooms or zones during their tick.
-func (w *WorldState) tickMobs() {
+func (w *WorldState) tickMobs(ctx context.Context) {
 	var mobs []*MobileInstance
 	for _, zi := range w.zones {
 		zi.ForEachRoom(func(_ string, ri *RoomInstance) {
@@ -216,6 +221,6 @@ func (w *WorldState) tickMobs() {
 		})
 	}
 	for _, mi := range mobs {
-		mi.Tick()
+		mi.Tick(ctx)
 	}
 }

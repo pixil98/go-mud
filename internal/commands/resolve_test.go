@@ -6,6 +6,7 @@ import (
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/gametest"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
@@ -547,7 +548,7 @@ func TestResolveSpecs(t *testing.T) {
 		},
 	}
 
-	session := &mockActor{id: "actor", name: "Actor"}
+	session := &gametest.BaseActor{ActorId: "actor", ActorName: "Actor"}
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
@@ -668,7 +669,7 @@ func TestResolveSpecs_ScopeTarget(t *testing.T) {
 		},
 	}
 
-	session := &mockActor{id: "actor", name: "Actor"}
+	session := &gametest.BaseActor{ActorId: "actor", ActorName: "Actor"}
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {

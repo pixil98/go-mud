@@ -5,6 +5,7 @@ import (
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
+	"github.com/pixil98/go-mud/internal/gametest"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
@@ -67,11 +68,11 @@ func TestSpacesForDarkRoom(t *testing.T) {
 			objInRoom(t, room, "obj-1", "sword")
 			newTestPlayer("player-1", "Alice", room)
 
-			actor := &mockActor{
-				id:     "actor",
-				name:   "Actor",
-				room:   room,
-				grants: tc.grants,
+			actor := &gametest.BaseActor{
+				ActorId:   "actor",
+				ActorName: "Actor",
+				ActorRoom: room,
+				Grants:    tc.grants,
 			}
 
 			ws := NewWorldScopes()

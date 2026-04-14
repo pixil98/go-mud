@@ -60,7 +60,7 @@ func (z *ZoneInstance) AddRoom(ri *RoomInstance) {
 
 // Reset checks reset conditions and respawns mobs/objects if appropriate.
 // If force is true, bypasses time/occupancy checks.
-func (z *ZoneInstance) Reset(force bool, mc MobCommander) error {
+func (z *ZoneInstance) Reset(force bool, cf CommanderFactory) error {
 	now := time.Now()
 
 	if !force {
@@ -76,7 +76,7 @@ func (z *ZoneInstance) Reset(force bool, mc MobCommander) error {
 	}
 
 	for _, ri := range z.rooms {
-		err := ri.Reset(mc)
+		err := ri.Reset(cf)
 		if err != nil {
 			return fmt.Errorf("resetting zone %q: %w", z.Zone.Id(), err)
 		}
