@@ -131,14 +131,6 @@ func TestExecuteAbility_CostCheckOrdering(t *testing.T) {
 	}
 }
 
-// setPlayerAP primes the player's AP to the given value via the perk system.
-func setPlayerAP(player *game.CharacterInstance, ap int) {
-	player.SetOwn([]assets.Perk{
-		{Type: assets.PerkTypeModifier, Key: assets.PerkKeyActionPointsMax, Value: ap},
-	})
-	player.ResetAP()
-}
-
 // setCombatReady gives the player AP and HP so combat effects can function.
 func setCombatReady(player *game.CharacterInstance) {
 	player.SetOwn([]assets.Perk{
