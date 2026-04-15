@@ -62,10 +62,14 @@ func (f *GroupHandlerFactory) handle(ctx context.Context, in *CommandInput) erro
 	if len(targets) == 0 {
 		return f.showGroup(in.Actor)
 	}
+	var errs []string
 	for _, target := range targets {
 		if err := f.toggleMember(in.Actor, target); err != nil {
-			return err
+			errs = append(errs, err.Error())
 		}
+	}
+	if len(errs) > 0 {
+		return NewUserError(strings.Join(errs, "\n"))
 	}
 	return nil
 }
@@ -233,10 +237,14 @@ func (f *UngroupHandlerFactory) handle(ctx context.Context, in *CommandInput) er
 	if len(targets) == 0 {
 		return f.disbandOrLeave(in.Actor)
 	}
+	var errs []string
 	for _, target := range targets {
 		if err := f.removeTarget(in.Actor, target); err != nil {
-			return err
+			errs = append(errs, err.Error())
 		}
+	}
+	if len(errs) > 0 {
+		return NewUserError(strings.Join(errs, "\n"))
 	}
 	return nil
 }
@@ -284,10 +292,6 @@ func (f *UngroupHandlerFactory) removeTarget(char game.Actor, target *TargetRef)
 	if targetId == char.Id() {
 		disbandGroup(leader)
 		return nil
-	}
-
-	if !char.IsFollowerGrouped(targetId) {
-		return NewUserError(fmt.Sprintf("%s is not in your group.", target.Actor.Name))
 	}
 
 	char.SetFollowerGrouped(targetId, false)

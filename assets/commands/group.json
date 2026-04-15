@@ -10,10 +10,10 @@
             {
                 "name": "target",
                 "types": ["player", "mobile"],
-                "scopes": ["room"],
+                "scopes": ["followers"],
                 "input": "target",
                 "optional": true,
-                "not_found": "You don't see '{{ .Inputs.target }}' here.",
+                "not_found": "{{ .Inputs.target }} isn't following you.",
                 "allow_all": true
             }
         ],

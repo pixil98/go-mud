@@ -76,6 +76,8 @@ const (
 	scopeEquipment
 	scopeContents
 	scopeGroup
+	scopeFollowers
+	scopeGroupedFollowers
 )
 
 // parseScope converts string scope names to a scope bitmask.
@@ -97,6 +99,10 @@ func parseScope(scopes []string) scope {
 			result |= scopeContents
 		case assets.ScopeGroup:
 			result |= scopeGroup
+		case assets.ScopeFollowers:
+			result |= scopeFollowers
+		case assets.ScopeGroupedFollowers:
+			result |= scopeGroupedFollowers
 		}
 	}
 	return result

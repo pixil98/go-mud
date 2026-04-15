@@ -31,19 +31,21 @@ const (
 
 // Scope constants.
 const (
-	ScopeRoom      = "room"
-	ScopeInventory = "inventory"
-	ScopeEquipment = "equipment"
-	ScopeWorld     = "world"
-	ScopeZone      = "zone"
-	ScopeContents  = "contents"
-	ScopeGroup     = "group"
+	ScopeRoom             = "room"
+	ScopeInventory        = "inventory"
+	ScopeEquipment        = "equipment"
+	ScopeWorld            = "world"
+	ScopeZone             = "zone"
+	ScopeContents         = "contents"
+	ScopeGroup            = "group"
+	ScopeFollowers        = "followers"
+	ScopeGroupedFollowers = "grouped_followers"
 )
 
 var (
 	validInputTypes  = []string{InputTypeString, InputTypeNumber}
 	validTargetTypes = []string{TargetPlayer, TargetMobile, TargetObject, TargetExit}
-	validScopes      = []string{ScopeRoom, ScopeInventory, ScopeEquipment, ScopeWorld, ScopeZone, ScopeContents, ScopeGroup}
+	validScopes      = []string{ScopeRoom, ScopeInventory, ScopeEquipment, ScopeWorld, ScopeZone, ScopeContents, ScopeGroup, ScopeFollowers, ScopeGroupedFollowers}
 )
 
 // InputSpec defines an input parameter that a command accepts from user input.
@@ -60,13 +62,13 @@ type InputSpec struct {
 // array so it is resolved first. If the referenced target resolved to an object with
 // contents, this target is resolved exclusively from those contents.
 type TargetSpec struct {
-	Name        string   `json:"name"`                   // Name to access in templates (e.g., "target" -> .Targets.target)
-	Types       []string `json:"types"`                  // Entity types: player, mobile, object, exit
-	Scopes      []string `json:"scopes,omitempty"`       // Resolution scopes: room, world, zone, inventory, equipment, contents, group
-	Input       string   `json:"input"`                  // Which input provides the name to resolve
-	Optional    bool     `json:"optional,omitempty"`     // If true, missing input -> nil (no error)
-	Default     string   `json:"default,omitempty"`      // Default value when input is empty; "combat_target" resolves to actor's combat target
-	ScopeTarget string   `json:"scope_target,omitempty"` // Resolve inside this target's contents when present; falls back to normal scopes
+	Name            string   `json:"name"`                       // Name to access in templates (e.g., "target" -> .Targets.target)
+	Types           []string `json:"types"`                      // Entity types: player, mobile, object, exit
+	Scopes          []string `json:"scopes,omitempty"`           // Resolution scopes: room, world, zone, inventory, equipment, contents, group
+	Input           string   `json:"input"`                      // Which input provides the name to resolve
+	Optional        bool     `json:"optional,omitempty"`         // If true, missing input -> nil (no error)
+	Default         string   `json:"default,omitempty"`          // Default value when input is empty; "combat_target" resolves to actor's combat target
+	ScopeTarget     string   `json:"scope_target,omitempty"`     // Resolve inside this target's contents when present; falls back to normal scopes
 	NotFound        string   `json:"not_found,omitempty"`        // Custom template for "not found" error; supports {{ .Input }}
 	AllowUnresolved bool     `json:"allow_unresolved,omitempty"` // If true, unresolved optional target is nil (not an error); requires Optional
 	AllowAll        bool     `json:"allow_all,omitempty"`        // If true, "all.keyword" and "all" select multiple targets

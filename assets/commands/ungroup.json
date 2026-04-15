@@ -8,8 +8,8 @@
         "targets": [
             {
                 "name": "target",
-                "types": ["player"],
-                "scopes": ["group"],
+                "types": ["player", "mobile"],
+                "scopes": ["grouped_followers"],
                 "input": "target",
                 "optional": true,
                 "not_found": "'{{ .Inputs.target }}' is not in your group.",

@@ -332,7 +332,7 @@ func FindTarget(raw string, tt targetType, spaces []SearchSpace) ([]*TargetRef, 
 			}
 		}
 
-		if !all && len(refs) > 0 {
+		if !all && len(refs) >= index {
 			break
 		}
 	}

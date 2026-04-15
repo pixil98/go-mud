@@ -50,6 +50,44 @@ func (darkRoomFinder) FindMobs(func(*game.MobileInstance) bool) []*game.MobileIn
 func (darkRoomFinder) FindObjs(func(*game.ObjectInstance) bool) []*game.ObjectInstance { return nil }
 func (darkRoomFinder) FindExit(string) (string, *game.ResolvedExit)                    { return "", nil }
 
+// followerFinder searches the actor's followers list. When groupedOnly is
+// true, only grouped followers are included. Satisfies TargetFinder by
+// checking each follower's type (player or mob) against the matcher.
+type followerFinder struct {
+	actor       game.Actor
+	groupedOnly bool
+}
+
+func (f followerFinder) followers() []game.Actor {
+	if f.groupedOnly {
+		return f.actor.GroupedFollowers()
+	}
+	return f.actor.Followers()
+}
+
+func (f followerFinder) FindPlayers(match func(*game.CharacterInstance) bool) []*game.CharacterInstance {
+	var out []*game.CharacterInstance
+	for _, ft := range f.followers() {
+		if ci, ok := ft.(*game.CharacterInstance); ok && match(ci) {
+			out = append(out, ci)
+		}
+	}
+	return out
+}
+
+func (f followerFinder) FindMobs(match func(*game.MobileInstance) bool) []*game.MobileInstance {
+	var out []*game.MobileInstance
+	for _, ft := range f.followers() {
+		if mi, ok := ft.(*game.MobileInstance); ok && match(mi) {
+			out = append(out, mi)
+		}
+	}
+	return out
+}
+
+func (f followerFinder) FindObjs(func(*game.ObjectInstance) bool) []*game.ObjectInstance { return nil }
+func (f followerFinder) FindExit(string) (string, *game.ResolvedExit)                    { return "", nil }
+
 // WorldScopes translates scope flags into search spaces by navigating
 // from the actor's room pointer.
 type WorldScopes struct{}
@@ -90,6 +128,16 @@ func (ws *WorldScopes) SpacesFor(s scope, actor game.Actor) ([]SearchSpace, erro
 		spaces = append(spaces, SearchSpace{
 			Finder:  finder,
 			Remover: room,
+		})
+	}
+	if s&scopeFollowers != 0 {
+		spaces = append(spaces, SearchSpace{
+			Finder: followerFinder{actor: actor},
+		})
+	}
+	if s&scopeGroupedFollowers != 0 {
+		spaces = append(spaces, SearchSpace{
+			Finder: followerFinder{actor: actor, groupedOnly: true},
 		})
 	}
 	if s&scopeGroup != 0 {

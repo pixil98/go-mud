@@ -79,496 +79,19 @@ func (s *mockScopes) SpacesFor(scope, game.Actor) ([]SearchSpace, error) {
 
 // --- FindTarget tests ---
 
-func TestFindTarget_Player(t *testing.T) {
+func TestFindTarget(t *testing.T) {
 	bob := &game.CharacterInstance{
 		Character: storage.NewResolvedSmartIdentifier("bob", &assets.Character{Name: "Bob"}),
 	}
-
-	tests := map[string]struct {
-		spaces        []SearchSpace
-		name          string
-		expPlayerName string
-		expErr        string
-	}{
-		"finds player": {
-			spaces: []SearchSpace{{Finder: &mockFinder{
-				players: map[string]*game.CharacterInstance{"bob": bob},
-			}}},
-			name:          "bob",
-			expPlayerName: "Bob",
-		},
-		"case insensitive": {
-			spaces: []SearchSpace{{Finder: &mockFinder{
-				players: map[string]*game.CharacterInstance{"bob": bob},
-			}}},
-			name:          "BOB",
-			expPlayerName: "Bob",
-		},
-		"not found": {
-			spaces: []SearchSpace{{Finder: &mockFinder{}}},
-			name:   "nobody",
-			expErr: `Player "nobody" not found.`,
-		},
-		"empty spaces": {
-			spaces: []SearchSpace{},
-			name:   "bob",
-			expErr: `Player "bob" not found.`,
-		},
-		"searches spaces in order": {
-			spaces: []SearchSpace{
-				{Finder: &mockFinder{}}, // empty
-				{Finder: &mockFinder{players: map[string]*game.CharacterInstance{"bob": bob}}},
-			},
-			name:          "bob",
-			expPlayerName: "Bob",
-		},
-		"first space match wins": {
-			spaces: []SearchSpace{
-				{Finder: &mockFinder{players: map[string]*game.CharacterInstance{"bob": bob}}},
-				{Finder: &mockFinder{players: map[string]*game.CharacterInstance{
-					"bob2": {Character: storage.NewResolvedSmartIdentifier("bob2", &assets.Character{Name: "Bob2"})},
-				}}},
-			},
-			name:          "bob",
-			expPlayerName: "Bob",
-		},
-	}
-
-	for name, tt := range tests {
-		t.Run(name, func(t *testing.T) {
-			results, err := FindTarget(tt.name, targetTypePlayer, tt.spaces)
-
-			if tt.expErr != "" {
-				if err == nil {
-					t.Fatalf("expected error %q, got nil", tt.expErr)
-				}
-				if !strings.Contains(err.Error(), tt.expErr) {
-					t.Errorf("error %q does not contain %q", err.Error(), tt.expErr)
-				}
-				return
-			}
-
-			if err != nil {
-				t.Fatalf("unexpected error: %v", err)
-			}
-			if len(results) == 0 {
-				t.Fatal("expected at least one result")
-			}
-			result := results[0]
-			if result.Type != targetTypeActor {
-				t.Errorf("Type = %q, expected %q", result.Type.String(), targetTypeActor.String())
-			}
-			if result.Actor.Name != tt.expPlayerName {
-				t.Errorf("Name = %q, expected %q", result.Actor.Name, tt.expPlayerName)
-			}
-		})
-	}
-}
-
-func TestFindTarget_Mobile(t *testing.T) {
 	guard := &game.MobileInstance{
 		Mobile:        storage.NewResolvedSmartIdentifier("guard", &assets.Mobile{Aliases: []string{"guard", "soldier"}, ShortDesc: "a burly guard"}),
 		ActorInstance: game.ActorInstance{InstanceId: "guard-1"},
 	}
-
-	tests := map[string]struct {
-		spaces     []SearchSpace
-		name       string
-		expMobName string
-		expErr     string
-	}{
-		"finds mob": {
-			spaces: []SearchSpace{{Finder: &mockFinder{
-				mobs: map[string]*game.MobileInstance{"guard-1": guard},
-			}}},
-			name:       "guard",
-			expMobName: "a burly guard",
-		},
-		"matches by alias": {
-			spaces: []SearchSpace{{Finder: &mockFinder{
-				mobs: map[string]*game.MobileInstance{"guard-1": guard},
-			}}},
-			name:       "soldier",
-			expMobName: "a burly guard",
-		},
-		"not found": {
-			spaces: []SearchSpace{{Finder: &mockFinder{}}},
-			name:   "nobody",
-			expErr: `Mobile "nobody" not found.`,
-		},
-	}
-
-	for name, tt := range tests {
-		t.Run(name, func(t *testing.T) {
-			results, err := FindTarget(tt.name, targetTypeMobile, tt.spaces)
-
-			if tt.expErr != "" {
-				if err == nil {
-					t.Fatalf("expected error %q, got nil", tt.expErr)
-				}
-				if !strings.Contains(err.Error(), tt.expErr) {
-					t.Errorf("error %q does not contain %q", err.Error(), tt.expErr)
-				}
-				return
-			}
-
-			if err != nil {
-				t.Fatalf("unexpected error: %v", err)
-			}
-			if len(results) == 0 {
-				t.Fatal("expected at least one result")
-			}
-			result := results[0]
-			if result.Type != targetTypeActor {
-				t.Errorf("Type = %q, expected %q", result.Type.String(), targetTypeActor.String())
-			}
-			if result.Actor.Name != tt.expMobName {
-				t.Errorf("Name = %q, expected %q", result.Actor.Name, tt.expMobName)
-			}
-		})
-	}
-}
-
-func TestFindTarget_Object(t *testing.T) {
-	sword := &game.ObjectInstance{
-		InstanceId: "sword-1",
-		Object:     storage.NewResolvedSmartIdentifier("sword", &assets.Object{Aliases: []string{"sword"}, ShortDesc: "a rusty sword"}),
-	}
-
-	tests := map[string]struct {
-		spaces     []SearchSpace
-		name       string
-		expObjName string
-		expSource  bool // true if Source should be non-nil
-		expErr     string
-	}{
-		"finds object": {
-			spaces: []SearchSpace{{Finder: &mockFinder{
-				objects: map[string]*game.ObjectInstance{"sword-1": sword},
-			}}},
-			name:       "sword",
-			expObjName: "a rusty sword",
-		},
-		"nil remover sets nil source": {
-			spaces: []SearchSpace{{
-				Finder: &mockFinder{
-					objects: map[string]*game.ObjectInstance{"sword-1": sword},
-				},
-			}},
-			name:       "sword",
-			expObjName: "a rusty sword",
-		},
-		"remover is set as source": {
-			spaces: []SearchSpace{{
-				Finder: &mockFinder{
-					objects: map[string]*game.ObjectInstance{"sword-1": sword},
-				},
-				Remover: &mockRemover{},
-			}},
-			name:       "sword",
-			expObjName: "a rusty sword",
-			expSource:  true,
-		},
-		"not found": {
-			spaces: []SearchSpace{{Finder: &mockFinder{}}},
-			name:   "nothing",
-			expErr: `Object "nothing" not found.`,
-		},
-	}
-
-	for name, tt := range tests {
-		t.Run(name, func(t *testing.T) {
-			results, err := FindTarget(tt.name, targetTypeObject, tt.spaces)
-
-			if tt.expErr != "" {
-				if err == nil {
-					t.Fatalf("expected error %q, got nil", tt.expErr)
-				}
-				if !strings.Contains(err.Error(), tt.expErr) {
-					t.Errorf("error %q does not contain %q", err.Error(), tt.expErr)
-				}
-				return
-			}
-
-			if err != nil {
-				t.Fatalf("unexpected error: %v", err)
-			}
-			if len(results) == 0 {
-				t.Fatal("expected at least one result")
-			}
-			result := results[0]
-			if result.Type != targetTypeObject {
-				t.Errorf("Type = %q, expected %q", result.Type, "object")
-			}
-			if result.Obj.Name != tt.expObjName {
-				t.Errorf("Name = %q, expected %q", result.Obj.Name, tt.expObjName)
-			}
-			if tt.expSource && result.Obj.source == nil {
-				t.Error("Source is nil, expected non-nil")
-			}
-			if !tt.expSource && result.Obj.source != nil {
-				t.Error("Source is non-nil, expected nil")
-			}
-		})
-	}
-}
-
-func TestFindTarget_Combined(t *testing.T) {
-	bob := &game.CharacterInstance{
-		Character: storage.NewResolvedSmartIdentifier("bob", &assets.Character{Name: "Bob"}),
-	}
-	guard := &game.MobileInstance{
-		Mobile:        storage.NewResolvedSmartIdentifier("guard", &assets.Mobile{Aliases: []string{"guard"}, ShortDesc: "a burly guard"}),
-		ActorInstance: game.ActorInstance{InstanceId: "guard-1"},
-	}
-
-	tests := map[string]struct {
-		spaces  []SearchSpace
-		name    string
-		expType targetType
-		expErr  string
-	}{
-		"prefers player over mob": {
-			spaces: []SearchSpace{{Finder: &mockFinder{
-				players: map[string]*game.CharacterInstance{"bob": bob},
-				mobs:    map[string]*game.MobileInstance{"guard-1": guard},
-			}}},
-			name:    "bob",
-			expType: targetTypeActor,
-		},
-		"falls through to mob when no player": {
-			spaces: []SearchSpace{{Finder: &mockFinder{
-				mobs: map[string]*game.MobileInstance{"guard-1": guard},
-			}}},
-			name:    "guard",
-			expType: targetTypeActor,
-		},
-		"not found returns generic label": {
-			spaces: []SearchSpace{{Finder: &mockFinder{}}},
-			name:   "nobody",
-			expErr: `Target "nobody" not found.`,
-		},
-	}
-
-	for name, tt := range tests {
-		t.Run(name, func(t *testing.T) {
-			results, err := FindTarget(tt.name, targetTypePlayer|targetTypeMobile|targetTypeObject, tt.spaces)
-
-			if tt.expErr != "" {
-				if err == nil {
-					t.Fatalf("expected error %q, got nil", tt.expErr)
-				}
-				if !strings.Contains(err.Error(), tt.expErr) {
-					t.Errorf("error %q does not contain %q", err.Error(), tt.expErr)
-				}
-				return
-			}
-
-			if err != nil {
-				t.Fatalf("unexpected error: %v", err)
-			}
-			if len(results) == 0 {
-				t.Fatal("expected at least one result")
-			}
-			result := results[0]
-			if result.Type != tt.expType {
-				t.Errorf("Type = %q, expected %q", result.Type, tt.expType)
-			}
-		})
-	}
-}
-
-func TestFindTarget_Exit(t *testing.T) {
-	tests := map[string]struct {
-		spaces       []SearchSpace
-		name         string
-		expDirection string
-		expErr       string
-	}{
-		"finds exit": {
-			spaces: []SearchSpace{{Finder: &mockFinder{
-				exits: map[string]*game.ResolvedExit{"north": {}},
-			}}},
-			name:         "north",
-			expDirection: "north",
-		},
-		"case insensitive": {
-			spaces: []SearchSpace{{Finder: &mockFinder{
-				exits: map[string]*game.ResolvedExit{"north": {}},
-			}}},
-			name:         "NORTH",
-			expDirection: "north",
-		},
-		"not found": {
-			spaces: []SearchSpace{{Finder: &mockFinder{}}},
-			name:   "north",
-			expErr: `Exit "north" not found.`,
-		},
-		"prefers object over exit": {
-			spaces: []SearchSpace{{Finder: &mockFinder{
-				objects: map[string]*game.ObjectInstance{
-					"door-1": {InstanceId: "door-1", Object: storage.NewResolvedSmartIdentifier("door", &assets.Object{Aliases: []string{"north"}, ShortDesc: "a door"})},
-				},
-				exits: map[string]*game.ResolvedExit{"north": {}},
-			}}},
-			name:         "north",
-			expDirection: "",
-		},
-	}
-
-	for name, tt := range tests {
-		t.Run(name, func(t *testing.T) {
-			targetType := targetTypeExit
-			if tt.expDirection == "" && tt.expErr == "" {
-				// "prefers object over exit" case
-				targetType = targetTypeObject | targetTypeExit
-			}
-			results, err := FindTarget(tt.name, targetType, tt.spaces)
-
-			if tt.expErr != "" {
-				if err == nil {
-					t.Fatalf("expected error %q, got nil", tt.expErr)
-				}
-				if !strings.Contains(err.Error(), tt.expErr) {
-					t.Errorf("error %q does not contain %q", err.Error(), tt.expErr)
-				}
-				return
-			}
-
-			if err != nil {
-				t.Fatalf("unexpected error: %v", err)
-			}
-			if len(results) == 0 {
-				t.Fatal("expected at least one result")
-			}
-			result := results[0]
-
-			if tt.expDirection != "" {
-				if result.Type != targetTypeExit {
-					t.Errorf("Type = %q, expected %q", result.Type.String(), targetTypeExit.String())
-				}
-				if result.Exit.Direction != tt.expDirection {
-					t.Errorf("Direction = %q, expected %q", result.Exit.Direction, tt.expDirection)
-				}
-			} else {
-				// "prefers object over exit" — should resolve as object
-				if result.Type != targetTypeObject {
-					t.Errorf("Type = %q, expected %q", result.Type.String(), targetTypeObject.String())
-				}
-			}
-		})
-	}
-}
-
-func TestFindTarget_TypeFiltering(t *testing.T) {
-	finder := &mockFinder{
-		players: map[string]*game.CharacterInstance{
-			"bob": {Character: storage.NewResolvedSmartIdentifier("bob", &assets.Character{Name: "Bob"})},
-		},
-		mobs: map[string]*game.MobileInstance{
-			"bob-1": {Mobile: storage.NewResolvedSmartIdentifier("bob", &assets.Mobile{Aliases: []string{"bob"}, ShortDesc: "a mob named bob"}), ActorInstance: game.ActorInstance{InstanceId: "bob-1"}},
-		},
-	}
-	spaces := []SearchSpace{{Finder: finder}}
-
-	// When only mobile type is requested, player "bob" should be skipped
-	results, err := FindTarget("bob", targetTypeMobile, spaces)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	if len(results) == 0 {
-		t.Fatal("expected at least one result")
-	}
-	result := results[0]
-	if result.Type != targetTypeActor {
-		t.Errorf("Type = %q, expected %q", result.Type.String(), targetTypeActor.String())
-	}
-}
-
-// --- Prefix parsing tests ---
-
-func TestParseTargetPrefix(t *testing.T) {
-	tests := map[string]struct {
-		raw       string
-		wantName  string
-		wantIndex int
-		wantAll   bool
-	}{
-		"bare name":                       {raw: "wolf", wantName: "wolf", wantIndex: 1},
-		"indexed":                         {raw: "2.wolf", wantName: "wolf", wantIndex: 2},
-		"all with name":                   {raw: "all.wolf", wantName: "wolf", wantAll: true},
-		"bare all":                        {raw: "all", wantAll: true},
-		"all case insensitive":            {raw: "ALL.sword", wantName: "sword", wantAll: true},
-		"non-numeric prefix stays as name": {raw: "mr.smith", wantName: "mr.smith", wantIndex: 1},
-		"zero index treated as name":      {raw: "0.wolf", wantName: "0.wolf", wantIndex: 1},
-		"negative index treated as name":  {raw: "-1.wolf", wantName: "-1.wolf", wantIndex: 1},
-		"large index":                     {raw: "99.wolf", wantName: "wolf", wantIndex: 99},
-	}
-
-	for name, tc := range tests {
-		t.Run(name, func(t *testing.T) {
-			gotName, gotIndex, gotAll := parseTargetPrefix(tc.raw)
-			if gotName != tc.wantName {
-				t.Errorf("name = %q, want %q", gotName, tc.wantName)
-			}
-			if gotIndex != tc.wantIndex {
-				t.Errorf("index = %d, want %d", gotIndex, tc.wantIndex)
-			}
-			if gotAll != tc.wantAll {
-				t.Errorf("all = %v, want %v", gotAll, tc.wantAll)
-			}
-		})
-	}
-}
-
-func TestFindTarget_IndexedPrefix(t *testing.T) {
-	mob1 := &game.MobileInstance{
+	wolf1 := &game.MobileInstance{
 		Mobile:        storage.NewResolvedSmartIdentifier("wolf-a", &assets.Mobile{Aliases: []string{"wolf"}, ShortDesc: "a grey wolf"}),
 		ActorInstance: game.ActorInstance{InstanceId: "wolf-1"},
 	}
-	mob2 := &game.MobileInstance{
-		Mobile:        storage.NewResolvedSmartIdentifier("wolf-b", &assets.Mobile{Aliases: []string{"wolf"}, ShortDesc: "a black wolf"}),
-		ActorInstance: game.ActorInstance{InstanceId: "wolf-2"},
-	}
-	finder := &mockFinder{
-		mobs: map[string]*game.MobileInstance{"wolf-1": mob1, "wolf-2": mob2},
-	}
-	spaces := []SearchSpace{{Finder: finder}}
-
-	t.Run("bare name returns one", func(t *testing.T) {
-		results, err := FindTarget("wolf", targetTypeMobile, spaces)
-		if err != nil {
-			t.Fatalf("unexpected error: %v", err)
-		}
-		if len(results) != 1 {
-			t.Fatalf("expected 1 result, got %d", len(results))
-		}
-	})
-
-	t.Run("2.wolf returns one", func(t *testing.T) {
-		results, err := FindTarget("2.wolf", targetTypeMobile, spaces)
-		if err != nil {
-			t.Fatalf("unexpected error: %v", err)
-		}
-		if len(results) != 1 {
-			t.Fatalf("expected 1 result, got %d", len(results))
-		}
-	})
-
-	t.Run("3.wolf not found", func(t *testing.T) {
-		_, err := FindTarget("3.wolf", targetTypeMobile, spaces)
-		if err == nil {
-			t.Fatal("expected error for 3.wolf with only 2 wolves")
-		}
-	})
-}
-
-func TestFindTarget_AllPrefix(t *testing.T) {
-	mob1 := &game.MobileInstance{
-		Mobile:        storage.NewResolvedSmartIdentifier("wolf-a", &assets.Mobile{Aliases: []string{"wolf"}, ShortDesc: "a grey wolf"}),
-		ActorInstance: game.ActorInstance{InstanceId: "wolf-1"},
-	}
-	mob2 := &game.MobileInstance{
+	wolf2 := &game.MobileInstance{
 		Mobile:        storage.NewResolvedSmartIdentifier("wolf-b", &assets.Mobile{Aliases: []string{"wolf"}, ShortDesc: "a black wolf"}),
 		ActorInstance: game.ActorInstance{InstanceId: "wolf-2"},
 	}
@@ -576,37 +99,199 @@ func TestFindTarget_AllPrefix(t *testing.T) {
 		Mobile:        storage.NewResolvedSmartIdentifier("goblin-a", &assets.Mobile{Aliases: []string{"goblin"}, ShortDesc: "a goblin"}),
 		ActorInstance: game.ActorInstance{InstanceId: "goblin-1"},
 	}
-	finder := &mockFinder{
-		mobs: map[string]*game.MobileInstance{"wolf-1": mob1, "wolf-2": mob2, "goblin-1": goblin},
+	sword := &game.ObjectInstance{
+		InstanceId: "sword-1",
+		Object:     storage.NewResolvedSmartIdentifier("sword", &assets.Object{Aliases: []string{"sword"}, ShortDesc: "a rusty sword"}),
 	}
-	spaces := []SearchSpace{{Finder: finder}}
 
-	t.Run("all.wolf returns both wolves", func(t *testing.T) {
-		results, err := FindTarget("all.wolf", targetTypeMobile, spaces)
-		if err != nil {
-			t.Fatalf("unexpected error: %v", err)
-		}
-		if len(results) != 2 {
-			t.Fatalf("expected 2 results, got %d", len(results))
-		}
-	})
+	tests := map[string]struct {
+		raw       string
+		tt        targetType
+		spaces    []SearchSpace
+		expCount  int
+		expType   targetType
+		expName   string  // first result name (Actor.Name or Obj.Name)
+		expId     string  // first result actor ID (for cross-space tests)
+		expSource bool    // object source non-nil
+		expDir    string  // exit direction
+		expErr    string
+	}{
+		// --- Basic name resolution ---
+		"player by name": {
+			raw:     "bob",
+			tt:      targetTypePlayer,
+			spaces:  []SearchSpace{{Finder: &mockFinder{players: map[string]*game.CharacterInstance{"bob": bob}}}},
+			expType: targetTypeActor, expName: "Bob", expCount: 1,
+		},
+		"player case insensitive": {
+			raw:     "BOB",
+			tt:      targetTypePlayer,
+			spaces:  []SearchSpace{{Finder: &mockFinder{players: map[string]*game.CharacterInstance{"bob": bob}}}},
+			expType: targetTypeActor, expName: "Bob", expCount: 1,
+		},
+		"mob by alias": {
+			raw:     "soldier",
+			tt:      targetTypeMobile,
+			spaces:  []SearchSpace{{Finder: &mockFinder{mobs: map[string]*game.MobileInstance{"guard-1": guard}}}},
+			expType: targetTypeActor, expName: "a burly guard", expCount: 1,
+		},
+		"object with source": {
+			raw:     "sword",
+			tt:      targetTypeObject,
+			spaces:  []SearchSpace{{Finder: &mockFinder{objects: map[string]*game.ObjectInstance{"sword-1": sword}}, Remover: &mockRemover{}}},
+			expType: targetTypeObject, expName: "a rusty sword", expSource: true, expCount: 1,
+		},
+		"exit by direction": {
+			raw:     "north",
+			tt:      targetTypeExit,
+			spaces:  []SearchSpace{{Finder: &mockFinder{exits: map[string]*game.ResolvedExit{"north": {}}}}},
+			expType: targetTypeExit, expDir: "north", expCount: 1,
+		},
+		"exit case insensitive": {
+			raw:     "NORTH",
+			tt:      targetTypeExit,
+			spaces:  []SearchSpace{{Finder: &mockFinder{exits: map[string]*game.ResolvedExit{"north": {}}}}},
+			expType: targetTypeExit, expDir: "north", expCount: 1,
+		},
 
-	t.Run("bare all returns everything", func(t *testing.T) {
-		results, err := FindTarget("all", targetTypeMobile, spaces)
-		if err != nil {
-			t.Fatalf("unexpected error: %v", err)
-		}
-		if len(results) != 3 {
-			t.Fatalf("expected 3 results, got %d", len(results))
-		}
-	})
+		// --- Not found ---
+		"player not found":  {raw: "nobody", tt: targetTypePlayer, spaces: []SearchSpace{{Finder: &mockFinder{}}}, expErr: "not found"},
+		"mob not found":     {raw: "nobody", tt: targetTypeMobile, spaces: []SearchSpace{{Finder: &mockFinder{}}}, expErr: "not found"},
+		"object not found":  {raw: "nothing", tt: targetTypeObject, spaces: []SearchSpace{{Finder: &mockFinder{}}}, expErr: "not found"},
+		"empty spaces":      {raw: "bob", tt: targetTypePlayer, spaces: []SearchSpace{}, expErr: "not found"},
 
-	t.Run("all.dragon not found", func(t *testing.T) {
-		_, err := FindTarget("all.dragon", targetTypeMobile, spaces)
-		if err == nil {
-			t.Fatal("expected error for all.dragon with no dragons")
-		}
-	})
+		// --- Type filtering ---
+		"type filter skips player when only mob requested": {
+			raw: "bob",
+			tt:  targetTypeMobile,
+			spaces: []SearchSpace{{Finder: &mockFinder{
+				players: map[string]*game.CharacterInstance{"bob": bob},
+				mobs:    map[string]*game.MobileInstance{"bob-1": {Mobile: storage.NewResolvedSmartIdentifier("bob-m", &assets.Mobile{Aliases: []string{"bob"}, ShortDesc: "a mob bob"}), ActorInstance: game.ActorInstance{InstanceId: "bob-1"}}},
+			}}},
+			expType: targetTypeActor, expCount: 1,
+		},
+		"object preferred over exit": {
+			raw: "north",
+			tt:  targetTypeObject | targetTypeExit,
+			spaces: []SearchSpace{{Finder: &mockFinder{
+				objects: map[string]*game.ObjectInstance{"door-1": {InstanceId: "door-1", Object: storage.NewResolvedSmartIdentifier("door", &assets.Object{Aliases: []string{"north"}, ShortDesc: "a door"})}},
+				exits:   map[string]*game.ResolvedExit{"north": {}},
+			}}},
+			expType: targetTypeObject, expCount: 1,
+		},
+
+		// --- Space ordering ---
+		"searches spaces in order": {
+			raw: "bob",
+			tt:  targetTypePlayer,
+			spaces: []SearchSpace{
+				{Finder: &mockFinder{}},
+				{Finder: &mockFinder{players: map[string]*game.CharacterInstance{"bob": bob}}},
+			},
+			expType: targetTypeActor, expName: "Bob", expCount: 1,
+		},
+		"bare name stops at first space with match": {
+			raw: "wolf",
+			tt:  targetTypeMobile,
+			spaces: []SearchSpace{
+				{Finder: &mockFinder{mobs: map[string]*game.MobileInstance{"wolf-1": wolf1}}},
+				{Finder: &mockFinder{mobs: map[string]*game.MobileInstance{"wolf-2": wolf2}}},
+			},
+			expType: targetTypeActor, expId: "wolf-1", expCount: 1,
+		},
+
+		// --- N.keyword indexing ---
+		"2.wolf selects second match": {
+			raw:     "2.wolf",
+			tt:      targetTypeMobile,
+			spaces:  []SearchSpace{{Finder: &mockFinder{mobs: map[string]*game.MobileInstance{"wolf-1": wolf1, "wolf-2": wolf2}}}},
+			expType: targetTypeActor, expCount: 1,
+		},
+		"3.wolf not found with only 2": {
+			raw:    "3.wolf",
+			tt:     targetTypeMobile,
+			spaces: []SearchSpace{{Finder: &mockFinder{mobs: map[string]*game.MobileInstance{"wolf-1": wolf1, "wolf-2": wolf2}}}},
+			expErr: "not found",
+		},
+		"2.wolf across spaces": {
+			raw: "2.wolf",
+			tt:  targetTypeMobile,
+			spaces: []SearchSpace{
+				{Finder: &mockFinder{mobs: map[string]*game.MobileInstance{"wolf-1": wolf1}}},
+				{Finder: &mockFinder{mobs: map[string]*game.MobileInstance{"wolf-2": wolf2}}},
+			},
+			expType: targetTypeActor, expId: "wolf-2", expCount: 1,
+		},
+
+		// --- all.keyword ---
+		"all.wolf returns all wolves": {
+			raw:     "all.wolf",
+			tt:      targetTypeMobile,
+			spaces:  []SearchSpace{{Finder: &mockFinder{mobs: map[string]*game.MobileInstance{"wolf-1": wolf1, "wolf-2": wolf2, "goblin-1": goblin}}}},
+			expCount: 2,
+		},
+		"bare all returns everything": {
+			raw:      "all",
+			tt:       targetTypeMobile,
+			spaces:   []SearchSpace{{Finder: &mockFinder{mobs: map[string]*game.MobileInstance{"wolf-1": wolf1, "wolf-2": wolf2, "goblin-1": goblin}}}},
+			expCount: 3,
+		},
+		"all.dragon not found": {
+			raw:    "all.dragon",
+			tt:     targetTypeMobile,
+			spaces: []SearchSpace{{Finder: &mockFinder{mobs: map[string]*game.MobileInstance{"wolf-1": wolf1}}}},
+			expErr: "not found",
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			results, err := FindTarget(tc.raw, tc.tt, tc.spaces)
+
+			if tc.expErr != "" {
+				if err == nil {
+					t.Fatalf("expected error containing %q, got nil", tc.expErr)
+				}
+				if !strings.Contains(err.Error(), tc.expErr) {
+					t.Errorf("error %q does not contain %q", err.Error(), tc.expErr)
+				}
+				return
+			}
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			if len(results) != tc.expCount {
+				t.Fatalf("expected %d results, got %d", tc.expCount, len(results))
+			}
+			if tc.expCount == 0 {
+				return
+			}
+			r := results[0]
+			if tc.expType != 0 && r.Type != tc.expType {
+				t.Errorf("Type = %q, want %q", r.Type, tc.expType)
+			}
+			if tc.expName != "" {
+				got := ""
+				if r.Actor != nil {
+					got = r.Actor.Name
+				} else if r.Obj != nil {
+					got = r.Obj.Name
+				}
+				if got != tc.expName {
+					t.Errorf("Name = %q, want %q", got, tc.expName)
+				}
+			}
+			if tc.expId != "" && r.Actor != nil && r.Actor.actor.Id() != tc.expId {
+				t.Errorf("Id = %q, want %q", r.Actor.actor.Id(), tc.expId)
+			}
+			if tc.expSource && r.Obj != nil && r.Obj.source == nil {
+				t.Error("source is nil, want non-nil")
+			}
+			if tc.expDir != "" && r.Exit != nil && r.Exit.Direction != tc.expDir {
+				t.Errorf("Direction = %q, want %q", r.Exit.Direction, tc.expDir)
+			}
+		})
+	}
 }
 
 // --- ResolveSpecs tests ---
@@ -694,6 +379,22 @@ func TestResolveSpecs(t *testing.T) {
 				{Name: "target", Types: []string{"player"}, Scopes: []string{"world"}, Input: "who", Optional: true, AllowUnresolved: true},
 			},
 			inputs:     map[string]any{"who": "bob"},
+			spaces:     []SearchSpace{{Finder: finder}},
+			expTargets: map[string]targetType{"target": targetTypeActor},
+		},
+		"all rejected without allow_all": {
+			specs: []assets.TargetSpec{
+				{Name: "target", Types: []string{"player"}, Scopes: []string{"world"}, Input: "who"},
+			},
+			inputs: map[string]any{"who": "all.bob"},
+			spaces: []SearchSpace{{Finder: finder}},
+			expErr: "multiple",
+		},
+		"all permitted with allow_all": {
+			specs: []assets.TargetSpec{
+				{Name: "target", Types: []string{"player"}, Scopes: []string{"world"}, Input: "who", AllowAll: true},
+			},
+			inputs:     map[string]any{"who": "all.bob"},
 			spaces:     []SearchSpace{{Finder: finder}},
 			expTargets: map[string]targetType{"target": targetTypeActor},
 		},
@@ -868,3 +569,4 @@ func TestResolveSpecs_ScopeTarget(t *testing.T) {
 		})
 	}
 }
+
