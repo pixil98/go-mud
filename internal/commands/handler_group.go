@@ -12,26 +12,6 @@ import (
 	"github.com/pixil98/go-mud/internal/game"
 )
 
-// groupLeader returns the root group leader for actor, or nil if not in a group.
-// Walks up the follow tree through grouped links to find the top-most leader.
-func groupLeader(actor game.Actor) game.Actor {
-	parent := actor.Following()
-	if parent == nil || !parent.IsFollowerGrouped(actor.Id()) {
-		if len(actor.GroupedFollowers()) > 0 {
-			return actor
-		}
-		return nil
-	}
-	for i := 0; i < 100; i++ {
-		next := parent.Following()
-		if next == nil || !next.IsFollowerGrouped(parent.Id()) {
-			return parent
-		}
-		parent = next
-	}
-	return parent
-}
-
 // disbandGroup removes all of the leader's direct grouped followers.
 // Sub-groups remain intact — a sub-leader keeps their own grouped followers.
 func disbandGroup(leader game.Actor) {
@@ -86,7 +66,7 @@ func (f *GroupHandlerFactory) handle(ctx context.Context, in *CommandInput) erro
 }
 
 func (f *GroupHandlerFactory) showGroup(char game.Actor) error {
-	leader := groupLeader(char)
+	leader := game.GroupLeader(char)
 	if leader == nil {
 		return NewUserError("You are not in a group.")
 	}
@@ -190,14 +170,14 @@ func (f *GroupHandlerFactory) toggleMember(char game.Actor, target *TargetRef) e
 		return NewUserError(fmt.Sprintf("%s is not following you.", target.Actor.Name))
 	}
 
-	if groupLeader(targetActor) != nil {
+	if game.GroupLeader(targetActor) != nil {
 		return NewUserError(fmt.Sprintf("%s is already in a group.", target.Actor.Name))
 	}
 
 	char.SetFollowerGrouped(targetId, true)
 
 	// Announce to the wider group if the actor is part of one.
-	leader := groupLeader(char)
+	leader := game.GroupLeader(char)
 	if leader != nil {
 		joinMsg := fmt.Sprintf("%s has joined the group.", target.Actor.Name)
 		if err := f.pub.Publish(game.GroupPublishTarget(leader), []string{targetId}, []byte(joinMsg)); err != nil {
@@ -252,7 +232,7 @@ func (f *UngroupHandlerFactory) handle(ctx context.Context, in *CommandInput) er
 }
 
 func (f *UngroupHandlerFactory) disbandOrLeave(char game.Actor) error {
-	leader := groupLeader(char)
+	leader := game.GroupLeader(char)
 	if leader == nil {
 		return NewUserError("You are not in a group.")
 	}
@@ -279,7 +259,7 @@ func (f *UngroupHandlerFactory) disbandOrLeave(char game.Actor) error {
 }
 
 func (f *UngroupHandlerFactory) removeTarget(char game.Actor, target *TargetRef) error {
-	leader := groupLeader(char)
+	leader := game.GroupLeader(char)
 	if leader == nil {
 		return NewUserError("You are not in a group.")
 	}

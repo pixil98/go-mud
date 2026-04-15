@@ -79,7 +79,7 @@ func TestGroupLeader(t *testing.T) {
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
 			actor := tt.setup()
-			leader := groupLeader(actor)
+			leader := game.GroupLeader(actor)
 
 			if tt.expLeader == "" {
 				if leader != nil {

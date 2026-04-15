@@ -88,7 +88,7 @@ func (f *MessageHandlerFactory) handle(ctx context.Context, in *CommandInput) er
 		return f.pub.Publish(game.SinglePlayer(target.Actor.CharId), nil, []byte(recipientMessage))
 
 	case "group":
-		leader := groupLeader(actor)
+		leader := game.GroupLeader(actor)
 		if leader == nil {
 			return NewUserError("You are not in a group.")
 		}

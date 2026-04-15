@@ -1,7 +1,6 @@
 package commands
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/pixil98/go-mud/internal/assets"
@@ -123,77 +122,124 @@ func TestDamageEffect_InitiatesCombat(t *testing.T) {
 }
 
 func TestAoeDamageEffect(t *testing.T) {
-	hpPerks := []assets.Perk{
-		{Type: assets.PerkTypeModifier, Key: assets.BuildKey(assets.ResourcePrefix, assets.ResourceHp, assets.ResourceAspectMax), Value: 100},
+	// Each test sets up a room with player, other (another player), wildMob,
+	// and petMob all present. casterRole picks who casts the AoE. setup can
+	// wire up follow relationships. expHit lists roles that should take
+	// damage; all other non-caster roles must be unchanged. The caster is
+	// never hit by its own AoE.
+	type fixture struct {
+		player  *game.CharacterInstance
+		other   *game.CharacterInstance
+		wildMob *game.MobileInstance
+		petMob  *game.MobileInstance
 	}
 
 	tests := map[string]struct {
-		mobCount   int
-		hitAllies  bool
-		wantHPDrop bool // whether mobs should take damage
-		wantPlayer bool // whether other player should take damage
+		casterRole string // "player" or "wildMob"
+		setup      func(f *fixture)
+		expHit     []string
 	}{
-		"hits all mobs": {
-			mobCount:   3,
-			wantHPDrop: true,
+		"player caster hits all wild mobs": {
+			casterRole: "player",
+			expHit:     []string{"wildMob", "petMob"},
 		},
-		"empty room": {
-			mobCount: 0,
+		"player caster spares own pet": {
+			casterRole: "player",
+			setup: func(f *fixture) {
+				f.petMob.SetFollowing(f.player)
+			},
+			expHit: []string{"wildMob"},
 		},
-		"does not hit allies by default": {
-			mobCount:   1,
-			hitAllies:  false,
-			wantHPDrop: true,
-			wantPlayer: false,
+		"player caster spares another player's pet": {
+			casterRole: "player",
+			setup: func(f *fixture) {
+				f.petMob.SetFollowing(f.other)
+			},
+			expHit: []string{"wildMob"},
 		},
-		"hits allies when configured": {
-			mobCount:   0,
-			hitAllies:  true,
-			wantPlayer: true,
+		"mob caster hits all players": {
+			casterRole: "wildMob",
+			expHit:     []string{"player", "other"},
+		},
+		"mob caster hits players' pets": {
+			casterRole: "wildMob",
+			setup: func(f *fixture) {
+				f.petMob.SetFollowing(f.other)
+			},
+			expHit: []string{"player", "other", "petMob"},
+		},
+		"mob caster spares other wild mobs": {
+			casterRole: "wildMob",
+			// petMob stays wild (no follow)
+			expHit: []string{"player", "other"},
 		},
 	}
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
 			room, _ := newTestRoomInZone("r", "Room", "z")
+
 			player := newTestPlayer("player", "Player", room)
 			setCombatReady(player)
 
 			other := newTestPlayer("other", "Other", room)
-			other.SetOwn(hpPerks)
-			other.SetResource(assets.ResourceHp, 100)
+			setCombatReady(other)
 
-			var mobs []*game.MobileInstance
-			for i := range tc.mobCount {
-				mi := newCombatMob(fmt.Sprintf("mob-%d", i), "mob")
-				room.AddMob(mi)
-				mobs = append(mobs, mi)
+			wildMob := newCombatMob("wild", "wild")
+			room.AddMob(wildMob)
+
+			petMob := newCombatMob("pet", "pet")
+			room.AddMob(petMob)
+
+			f := &fixture{player: player, other: other, wildMob: wildMob, petMob: petMob}
+			if tc.setup != nil {
+				tc.setup(f)
+			}
+
+			var caster game.Actor
+			switch tc.casterRole {
+			case "player":
+				caster = player
+			case "wildMob":
+				caster = wildMob
+			default:
+				t.Fatalf("unknown casterRole %q", tc.casterRole)
 			}
 
 			effect := &aoeDamageEffect{}
-			config := map[string]string{"amount": "10"}
-			if tc.hitAllies {
-				config["hit_allies"] = "true"
-			}
-
-			fn := effect.Create("test:0", config, nil)
-			if err := fn(player, nil, &AbilityResult{}); err != nil {
+			fn := effect.Create("test:0", map[string]string{"amount": "10"}, nil)
+			if err := fn(caster, nil, &AbilityResult{}); err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
 
-			for _, mi := range mobs {
-				cur, _ := mi.Resource(assets.ResourceHp)
-				if tc.wantHPDrop && cur >= 100 {
-					t.Errorf("mob %s HP should have dropped, got %d", mi.Id(), cur)
-				}
+			roles := map[string]game.Actor{
+				"player":  player,
+				"other":   other,
+				"wildMob": wildMob,
+				"petMob":  petMob,
+			}
+			wantHit := make(map[string]bool, len(tc.expHit))
+			for _, r := range tc.expHit {
+				wantHit[r] = true
 			}
 
-			otherHP, _ := other.Resource(assets.ResourceHp)
-			if tc.wantPlayer && otherHP >= 100 {
-				t.Error("other player HP should have dropped")
-			}
-			if !tc.wantPlayer && otherHP != 100 {
-				t.Errorf("other player HP should be unchanged, got %d", otherHP)
+			for role, a := range roles {
+				cur, _ := a.Resource(assets.ResourceHp)
+				if a == caster {
+					if cur != 100 {
+						t.Errorf("caster %q should not damage itself, HP=%d", role, cur)
+					}
+					continue
+				}
+				if wantHit[role] {
+					if cur >= 100 {
+						t.Errorf("role %q should have taken damage, HP=%d", role, cur)
+					}
+				} else {
+					if cur != 100 {
+						t.Errorf("role %q should be unchanged, HP=%d", role, cur)
+					}
+				}
 			}
 		})
 	}

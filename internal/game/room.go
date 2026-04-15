@@ -316,6 +316,19 @@ func (ri *RoomInstance) ForEachMob(fn func(*MobileInstance)) {
 	}
 }
 
+// ForEachActor calls fn for every actor in the room (mobs and players) while
+// holding the lock. Use this when the operation doesn't care about actor type.
+func (ri *RoomInstance) ForEachActor(fn func(Actor)) {
+	ri.mu.Lock()
+	defer ri.mu.Unlock()
+	for _, mi := range ri.mobiles {
+		fn(mi)
+	}
+	for _, ci := range ri.players {
+		fn(ci)
+	}
+}
+
 // addMob inserts a mob and sets its location. Caller must hold the write lock.
 func (ri *RoomInstance) addMob(mi *MobileInstance) {
 	mi.room = ri

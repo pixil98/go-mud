@@ -35,13 +35,15 @@ func newCombatMob(instanceId, name string) *game.MobileInstance {
 	hpPerks := []assets.Perk{
 		{Type: assets.PerkTypeModifier, Key: assets.BuildKey(assets.ResourcePrefix, assets.ResourceHp, assets.ResourceAspectMax), Value: 100},
 	}
-	mi := &game.MobileInstance{
-		Mobile: storage.NewResolvedSmartIdentifier(instanceId+"-spec", &assets.Mobile{ShortDesc: name}),
-		ActorInstance: game.ActorInstance{
-			InstanceId: instanceId,
-			PerkCache:  *game.NewPerkCache(hpPerks, nil),
-		},
+	mobRef := storage.NewResolvedSmartIdentifier(instanceId+"-spec", &assets.Mobile{
+		ShortDesc: name,
+		Perks:     hpPerks,
+	})
+	mi, err := game.NewMobileInstance(mobRef)
+	if err != nil {
+		panic(err)
 	}
+	mi.InstanceId = instanceId
 	mi.SetResource(assets.ResourceHp, 100)
 	return mi
 }
