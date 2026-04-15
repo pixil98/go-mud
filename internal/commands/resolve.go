@@ -398,6 +398,12 @@ func (r *TargetResolver) ResolveSpecs(specs []assets.TargetSpec, inputs map[stri
 					Actor: actorRefFromActor(actor),
 				}}
 				continue
+			case assets.DefaultRoomEnemies:
+				targets[spec.Name] = resolveRoomEnemies(actor)
+				continue
+			case assets.DefaultGroupInRoom:
+				targets[spec.Name] = resolveGroupInRoom(actor)
+				continue
 			}
 		}
 		if name == "" {
@@ -451,6 +457,56 @@ func findWithNotFound(name string, spec assets.TargetSpec, spaces []SearchSpace,
 		return nil, NewUserError(msg)
 	}
 	return refs, err
+}
+
+// resolveRoomEnemies returns all actors in the room on the opposite side of the
+// caster, excluding the caster. Side is determined by game.IsPlayerSide.
+func resolveRoomEnemies(actor game.Actor) []*TargetRef {
+	ri := actor.Room()
+	if ri == nil {
+		return nil
+	}
+	actorId := actor.Id()
+	casterPlayerSide := game.IsPlayerSide(actor)
+
+	var refs []*TargetRef
+	ri.ForEachActor(func(a game.Actor) {
+		if a.Id() == actorId {
+			return
+		}
+		if game.IsPlayerSide(a) == casterPlayerSide {
+			return
+		}
+		refs = append(refs, &TargetRef{
+			Type:  targetTypeActor,
+			Actor: actorRefFromActor(a),
+		})
+	})
+	return refs
+}
+
+// resolveGroupInRoom returns all group members present in the actor's room,
+// including the actor. A solo actor (not in a group) returns only themselves.
+func resolveGroupInRoom(actor game.Actor) []*TargetRef {
+	ri := actor.Room()
+	if ri == nil {
+		return nil
+	}
+	root := game.GroupLeader(actor)
+	if root == nil {
+		root = actor
+	}
+
+	var refs []*TargetRef
+	game.WalkGroup(root, func(member game.Actor) {
+		if member.Room() == ri {
+			refs = append(refs, &TargetRef{
+				Type:  targetTypeActor,
+				Actor: actorRefFromActor(member),
+			})
+		}
+	})
+	return refs
 }
 
 // containerSpaces checks if a spec has a scope_target and returns container-only

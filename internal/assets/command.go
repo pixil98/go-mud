@@ -27,6 +27,8 @@ const (
 const (
 	DefaultCombatTarget = "combat_target" // Resolve to the actor's current combat target
 	DefaultSelf         = "self"          // Resolve to the actor themselves
+	DefaultRoomEnemies  = "room_enemies"  // All enemies in room (opposite side, excluding self)
+	DefaultGroupInRoom  = "group_in_room" // Group members present in the actor's room
 )
 
 // Scope constants.

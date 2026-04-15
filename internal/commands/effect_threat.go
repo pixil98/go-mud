@@ -2,7 +2,6 @@ package commands
 
 import (
 	"fmt"
-	"log/slog"
 	"strconv"
 
 	"github.com/pixil98/go-mud/internal/assets"
@@ -36,68 +35,6 @@ func validateThreatConfig(config map[string]string) error {
 	return nil
 }
 
-// aoeThreatEffect modifies threat tables on all mobs in the caster's room.
-//
-// Config fields:
-//   - "mode" (string, required): one of "add", "set_to_top", "set_to_value".
-//   - "amount" (int string): threat delta for "add", absolute value for "set_to_value".
-//     Required for "add" and "set_to_value" modes; ignored by "set_to_top".
-//   - "in_combat_only" ("true"/"false", optional): only affect mobs already in combat. Default false.
-type aoeThreatEffect struct{}
-
-func (e *aoeThreatEffect) Spec() *HandlerSpec { return nil }
-
-func (e *aoeThreatEffect) ValidateConfig(config map[string]string) error {
-	if err := validateThreatConfig(config); err != nil {
-		return err
-	}
-	if v := config["in_combat_only"]; v != "" && v != "true" && v != "false" {
-		return fmt.Errorf("in_combat_only must be \"true\" or \"false\", got %q", v)
-	}
-	return nil
-}
-
-func (e *aoeThreatEffect) Create(_ string, config map[string]string, _ []assets.TargetSpec) EffectFunc {
-	mode := config["mode"]
-	amount, _ := strconv.Atoi(config["amount"])
-	inCombatOnly := config["in_combat_only"] == "true"
-
-	applyThreat := func(actor game.Actor, target game.Actor) {
-		if inCombatOnly && !target.IsInCombat() {
-			return
-		}
-		if err := combat.StartCombat(actor, target); err != nil {
-			slog.Warn("aoe_threat: StartCombat failed", "target", target.Id(), "error", err)
-			return
-		}
-		switch mode {
-		case ThreatModeAdd:
-			combat.AddThreat(actor, target, amount)
-		case ThreatModeSetToTop:
-			combat.TopThreat(actor, target)
-		case ThreatModeSetToValue:
-			combat.SetThreat(actor, target, amount)
-		}
-	}
-
-	return func(actor game.Actor, _ map[string][]*TargetRef, _ *AbilityResult) error {
-		if actor.HasGrant(assets.PerkGrantPeaceful, "") {
-			return errPeacefulArea
-		}
-
-		ri := actor.Room()
-		if ri == nil {
-			return nil
-		}
-
-		ri.ForEachMob(func(mi *game.MobileInstance) {
-			applyThreat(actor, mi)
-		})
-
-		return nil
-	}
-}
-
 // threatEffect modifies threat tables on combat targets.
 //
 // Config fields:
@@ -121,6 +58,7 @@ func (e *threatEffect) ValidateConfig(config map[string]string) error {
 func (e *threatEffect) Create(_ string, config map[string]string, targets []assets.TargetSpec) EffectFunc {
 	mode := config["mode"]
 	amount, _ := strconv.Atoi(config["amount"])
+	inCombatOnly := config["in_combat_only"] == "true"
 
 	return func(actor game.Actor, resolved map[string][]*TargetRef, _ *AbilityResult) error {
 		for _, ref := range resolved["target"] {
@@ -128,6 +66,10 @@ func (e *threatEffect) Create(_ string, config map[string]string, targets []asse
 				continue
 			}
 			target := ref.Actor.Actor()
+
+			if inCombatOnly && !target.IsInCombat() {
+				continue
+			}
 
 			if err := combat.StartCombat(actor, target); err != nil {
 				continue

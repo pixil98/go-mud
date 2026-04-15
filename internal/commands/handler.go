@@ -128,15 +128,12 @@ func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, pub
 	// Register effect handlers
 	h.effects["attack"] = &attackEffect{}
 	h.effects["damage"] = &damageEffect{}
-	h.effects["aoe_damage"] = &aoeDamageEffect{}
 	h.effects["actor_buff"] = &buffEffect{scope: buffScopeActor}
 	h.effects["room_buff"] = &buffEffect{scope: buffScopeRoom}
 	h.effects["zone_buff"] = &buffEffect{scope: buffScopeZone}
 	h.effects["world_buff"] = &buffEffect{scope: buffScopeWorld}
 	h.effects["threat"] = &threatEffect{}
-	h.effects["aoe_threat"] = &aoeThreatEffect{}
 	h.effects["heal"] = &healEffect{}
-	h.effects["group_heal"] = &groupHealEffect{}
 	h.effects["spawn_obj"] = &spawnObjEffect{objects: dict.Objects}
 	h.effects["spawn_mob"] = &spawnMobEffect{mobiles: dict.Mobiles}
 

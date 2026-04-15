@@ -4,7 +4,7 @@
   "spec": {
     "effects": [
       {
-        "type": "aoe_threat",
+        "type": "threat",
         "config": {
           "mode": "add",
           "amount": "35",
@@ -23,7 +23,9 @@
         "message_room": "{{ .Actor.Name }} issues a challenge!"
       },
       "inputs": [],
-      "targets": []
+      "targets": [
+        {"name": "target", "types": ["mobile"], "default": "room_enemies"}
+      ]
     }
   }
 }

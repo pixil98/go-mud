@@ -4,10 +4,10 @@
   "spec": {
     "effects": [
       {
-        "type": "aoe_damage",
+        "type": "damage",
         "config": {
           "amount": "1d4+1",
-          "damage_type": "physical"
+          "damage_types": "physical"
         }
       }
     ],
@@ -22,7 +22,9 @@
         "message_room": "{{ .Actor.Name }} cleaves through the crowd!"
       },
       "inputs": [],
-      "targets": []
+      "targets": [
+        {"name": "target", "types": ["player", "mobile"], "default": "room_enemies"}
+      ]
     }
   }
 }
