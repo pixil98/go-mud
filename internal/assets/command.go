@@ -114,6 +114,24 @@ func (c *Command) Help(name string) string {
 		lines = append(lines, fmt.Sprintf("Usage: %s", strings.Join(parts, " ")))
 	}
 
+	for _, t := range c.Targets {
+		if t.AllowAll {
+			lines = append(lines, fmt.Sprintf("Supports \"all\" (e.g. %s all, %s all.%s)", name, name, t.Types[0]))
+			break
+		}
+	}
+
+	defaultDescriptions := map[string]string{
+		DefaultRoomEnemies: "Targets all enemies in the room.",
+		DefaultGroupInRoom: "Targets group members in the room.",
+		DefaultCombatTarget: "Defaults to your current combat target.",
+	}
+	for _, t := range c.Targets {
+		if desc, ok := defaultDescriptions[t.Default]; ok {
+			lines = append(lines, desc)
+		}
+	}
+
 	return strings.Join(lines, "\n")
 }
 
@@ -165,10 +183,10 @@ func (c *Command) ValidateInputsTargets() error {
 				return fmt.Errorf("target %q: unknown type %q", target.Name, t)
 			}
 		}
-		if target.Input == "" {
-			return fmt.Errorf("target %q: input is required", target.Name)
+		if target.Input == "" && target.Default == "" {
+			return fmt.Errorf("target %q: input or default is required", target.Name)
 		}
-		if !validInputs[target.Input] {
+		if target.Input != "" && !validInputs[target.Input] {
 			return fmt.Errorf("target %q: input %q does not exist in inputs", target.Name, target.Input)
 		}
 		for _, s := range target.Scopes {

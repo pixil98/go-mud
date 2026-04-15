@@ -144,7 +144,7 @@ func TestCommand_Validate(t *testing.T) {
 				Targets: []TargetSpec{{Name: "test-target", Types: []string{TargetPlayer}}},
 				Inputs:  []InputSpec{{Name: "test-target", Type: InputTypeString}},
 			},
-			expErr: `target "test-target": input is required`,
+			expErr: `target "test-target": input or default is required`,
 		},
 		"target input does not exist": {
 			cmd: Command{
@@ -276,6 +276,40 @@ func TestCommand_Validate(t *testing.T) {
 				Handler: "test-handler",
 				Targets: []TargetSpec{{Name: "test-target", Types: []string{TargetPlayer}, Scopes: []string{ScopeRoom}, Input: "test-who", Optional: true, AllowUnresolved: true}},
 				Inputs:  []InputSpec{{Name: "test-who", Type: InputTypeString}},
+			},
+		},
+		"valid target with default and no input": {
+			cmd: Command{
+				Handler: "test-handler",
+				Targets: []TargetSpec{{Name: "test-target", Types: []string{TargetMobile}, Default: DefaultRoomEnemies}},
+			},
+		},
+		"valid target with default and input": {
+			cmd: Command{
+				Handler: "test-handler",
+				Targets: []TargetSpec{{Name: "test-target", Types: []string{TargetMobile}, Default: DefaultRoomEnemies, Input: "test-who"}},
+				Inputs:  []InputSpec{{Name: "test-who", Type: InputTypeString}},
+			},
+		},
+		"valid followers scope": {
+			cmd: Command{
+				Handler: "test-handler",
+				Targets: []TargetSpec{{Name: "test-target", Types: []string{TargetPlayer, TargetMobile}, Scopes: []string{ScopeFollowers}, Input: "test-who"}},
+				Inputs:  []InputSpec{{Name: "test-who", Type: InputTypeString}},
+			},
+		},
+		"valid grouped_followers scope": {
+			cmd: Command{
+				Handler: "test-handler",
+				Targets: []TargetSpec{{Name: "test-target", Types: []string{TargetPlayer, TargetMobile}, Scopes: []string{ScopeGroupedFollowers}, Input: "test-who"}},
+				Inputs:  []InputSpec{{Name: "test-who", Type: InputTypeString}},
+			},
+		},
+		"valid allow_all": {
+			cmd: Command{
+				Handler: "test-handler",
+				Targets: []TargetSpec{{Name: "test-target", Types: []string{TargetObject}, Scopes: []string{ScopeInventory}, Input: "test-item", AllowAll: true}},
+				Inputs:  []InputSpec{{Name: "test-item", Type: InputTypeString}},
 			},
 		},
 	}
