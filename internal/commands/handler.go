@@ -128,7 +128,7 @@ func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, pub
 	h.effects["threat"] = &threatEffect{}
 	h.effects["aoe_threat"] = &aoeThreatEffect{}
 	h.effects["heal"] = &healEffect{}
-	h.effects["aoe_heal"] = &aoeHealEffect{}
+	h.effects["group_heal"] = &groupHealEffect{}
 	h.effects["spawn_obj"] = &spawnObjEffect{objects: dict.Objects}
 	h.effects["spawn_mob"] = &spawnMobEffect{mobiles: dict.Mobiles}
 

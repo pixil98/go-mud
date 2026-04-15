@@ -137,13 +137,18 @@ func dealDamage(actor, target game.Actor, raw int, dmgType string) int {
 	return damage
 }
 
-// aoeDamageEffect applies damage to enemies in the caster's room. Players hit
-// mobs; mobs hit players. The "hit_allies" config extends targeting to same-side.
+// aoeDamageEffect applies damage to every opposing actor in the caster's room.
+// Sides are determined by game.IsPlayerSide: a player-cast AoE hits mob-side
+// actors (wild mobs not following any player), and a mob-cast AoE hits
+// player-side actors (players and their pets/charms/escorts). The caster is
+// never hit by their own AoE.
+//
+// TODO: when a PvP system is added, a player caster should be able to damage
+// other opted-in players.
 //
 // Config fields:
 //   - "amount" (string, required): flat integer or dice expression before modifiers.
 //   - "damage_type" (string, optional): damage type tag. Defaults to untyped.
-//   - "hit_allies" ("true"/"false", optional): also damage same-side targets. Default false.
 type aoeDamageEffect struct{}
 
 func (e *aoeDamageEffect) Spec() *HandlerSpec { return nil }
@@ -165,7 +170,6 @@ func (e *aoeDamageEffect) Create(_ string, config map[string]string, _ []assets.
 	if dmgType == "" {
 		dmgType = assets.DamageTypeUntyped
 	}
-	hitAllies := config["hit_allies"] == "true"
 
 	return func(actor game.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
 		if actor.HasGrant(assets.PerkGrantPeaceful, "") {
@@ -178,38 +182,17 @@ func (e *aoeDamageEffect) Create(_ string, config map[string]string, _ []assets.
 		}
 
 		actorId := actor.Id()
-		isChar := actor.IsCharacter()
+		casterPlayerSide := game.IsPlayerSide(actor)
 
-		// Hit enemies: players hit mobs, mobs hit players.
-		if isChar {
-			ri.ForEachMob(func(mi *game.MobileInstance) {
-				dealDamage(actor, mi, dice.Roll(), dmgType)
-			})
-		} else {
-			ri.ForEachPlayer(func(charId string, ci *game.CharacterInstance) {
-				dealDamage(actor, ci, dice.Roll(), dmgType)
-			})
-		}
-
-		// Optionally hit allies (skip self).
-		if hitAllies {
-			if isChar {
-				ri.ForEachPlayer(func(charId string, ci *game.CharacterInstance) {
-					if charId == actorId {
-						return
-					}
-					dealDamage(actor, ci, dice.Roll(), dmgType)
-				})
-			} else {
-				ri.ForEachMob(func(mi *game.MobileInstance) {
-					if mi.Id() == actorId {
-						return
-					}
-					dealDamage(actor, mi, dice.Roll(), dmgType)
-				})
+		ri.ForEachActor(func(a game.Actor) {
+			if a.Id() == actorId {
+				return
 			}
-		}
-
+			if game.IsPlayerSide(a) == casterPlayerSide {
+				return
+			}
+			dealDamage(actor, a, dice.Roll(), dmgType)
+		})
 		return nil
 	}
 }
