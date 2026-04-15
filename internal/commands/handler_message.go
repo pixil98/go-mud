@@ -81,7 +81,7 @@ func (f *MessageHandlerFactory) handle(ctx context.Context, in *CommandInput) er
 		return f.pub.Publish(actor.Room().Zone().World(), exclude, []byte(recipientMessage))
 
 	case "player":
-		target := in.Targets["target"]
+		target := in.FirstTarget("target")
 		if target == nil || target.Actor == nil {
 			return NewUserError("They're not here.")
 		}

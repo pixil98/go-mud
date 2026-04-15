@@ -65,7 +65,7 @@ func (f *ClosureHandlerFactory) Create() (CommandFunc, error) {
 
 func (f *ClosureHandlerFactory) handle(ctx context.Context, char ClosureActor, in *CommandInput) error {
 	action := in.Config["action"]
-	target := in.Targets["target"]
+	target := in.FirstTarget("target")
 
 	switch target.Type {
 	case targetTypeExit:

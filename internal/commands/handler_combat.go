@@ -118,7 +118,7 @@ func (f *AssistHandlerFactory) handle(ctx context.Context, in *CommandInput) err
 // Returns the assisted player's charId and display name, or empty strings if
 // no target could be resolved.
 func (f *AssistHandlerFactory) resolveAssisted(char game.Actor, in *CommandInput) (string, string) {
-	if target := in.Targets["target"]; target != nil {
+	if target := in.FirstTarget("target"); target != nil {
 		return target.Actor.CharId, target.Actor.Name
 	}
 

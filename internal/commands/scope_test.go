@@ -85,28 +85,28 @@ func TestSpacesForDarkRoom(t *testing.T) {
 			}
 			finder := spaces[0].Finder
 
-			gotMob := finder.FindMob("goblin")
-			gotObj := finder.FindObj("sword")
-			gotPlayer := finder.FindPlayer("Alice")
+			gotMobs := finder.FindMobs(mobNameMatcher("goblin"))
+			gotObjs := finder.FindObjs(objNameMatcher("sword"))
+			gotPlayers := finder.FindPlayers(playerNameMatcher("Alice"))
 
 			if tc.expBlocks {
-				if gotMob != nil {
-					t.Errorf("expected FindMob blocked in dark, got %v", gotMob)
+				if len(gotMobs) != 0 {
+					t.Errorf("expected FindMobs blocked in dark, got %v", gotMobs)
 				}
-				if gotObj != nil {
-					t.Errorf("expected FindObj blocked in dark, got %v", gotObj)
+				if len(gotObjs) != 0 {
+					t.Errorf("expected FindObjs blocked in dark, got %v", gotObjs)
 				}
-				if gotPlayer != nil {
-					t.Errorf("expected FindPlayer blocked in dark, got %v", gotPlayer)
+				if len(gotPlayers) != 0 {
+					t.Errorf("expected FindPlayers blocked in dark, got %v", gotPlayers)
 				}
 			} else {
-				if gotMob == nil {
-					t.Errorf("expected FindMob to succeed, got nil")
+				if len(gotMobs) == 0 {
+					t.Errorf("expected FindMobs to succeed, got empty")
 				}
-				if gotObj == nil {
-					t.Errorf("expected FindObj to succeed, got nil")
+				if len(gotObjs) == 0 {
+					t.Errorf("expected FindObjs to succeed, got empty")
 				}
-				if gotPlayer == nil {
+				if len(gotPlayers) == 0 {
 					t.Errorf("expected FindPlayer to succeed, got nil")
 				}
 			}

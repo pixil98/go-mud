@@ -2,6 +2,7 @@ package commands
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/assets"
@@ -11,19 +12,19 @@ import (
 
 // --- Finder interfaces ---
 
-// PlayerFinder finds a player by name within a search scope.
+// PlayerFinder finds players accepted by a matcher within a search scope.
 type PlayerFinder interface {
-	FindPlayer(string) *game.CharacterInstance
+	FindPlayers(func(*game.CharacterInstance) bool) []*game.CharacterInstance
 }
 
-// ObjectFinder finds an object by name within a search scope.
+// ObjectFinder finds objects accepted by a matcher within a search scope.
 type ObjectFinder interface {
-	FindObj(string) *game.ObjectInstance
+	FindObjs(func(*game.ObjectInstance) bool) []*game.ObjectInstance
 }
 
-// MobileFinder finds a mobile by name within a search scope.
+// MobileFinder finds mobiles accepted by a matcher within a search scope.
 type MobileFinder interface {
-	FindMob(string) *game.MobileInstance
+	FindMobs(func(*game.MobileInstance) bool) []*game.MobileInstance
 }
 
 // ExitFinder finds an exit by direction name within a search scope.
@@ -38,6 +39,53 @@ type TargetFinder interface {
 	ObjectFinder
 	MobileFinder
 	ExitFinder
+}
+
+// --- Matchers ---
+
+// matchAll accepts any entity. Used for bare "all" targeting.
+func matchAll[T any](_ T) bool { return true }
+
+func mobNameMatcher(name string) func(*game.MobileInstance) bool {
+	return func(mi *game.MobileInstance) bool {
+		return mi.Mobile.Get().MatchName(name)
+	}
+}
+
+func playerNameMatcher(name string) func(*game.CharacterInstance) bool {
+	return func(ci *game.CharacterInstance) bool {
+		return ci.Character.Get().MatchName(name)
+	}
+}
+
+func objNameMatcher(name string) func(*game.ObjectInstance) bool {
+	return func(oi *game.ObjectInstance) bool {
+		return oi.Object.Get().MatchName(name)
+	}
+}
+
+// --- Target prefix parsing ---
+
+// parseTargetPrefix extracts N. or all. prefixes from a raw target string.
+// Returns the clean name, the 1-based index (0 when all), and whether all
+// matches are requested.
+func parseTargetPrefix(raw string) (name string, index int, all bool) {
+	if strings.EqualFold(raw, "all") {
+		return "", 0, true
+	}
+	dot := strings.IndexByte(raw, '.')
+	if dot < 1 {
+		return raw, 1, false
+	}
+	prefix := raw[:dot]
+	rest := raw[dot+1:]
+	if strings.EqualFold(prefix, "all") {
+		return rest, 0, true
+	}
+	if n, err := strconv.Atoi(prefix); err == nil && n > 0 {
+		return rest, n, false
+	}
+	return raw, 1, false
 }
 
 // --- Source interfaces ---
@@ -233,45 +281,72 @@ type SearchSpace struct {
 	Remover ObjectRemover // optional, used for ObjectRef.Source
 }
 
-// FindTarget searches spaces in order for the first matching target.
-// It checks player, then mobile, then object, then exit within each space,
-// filtering by the allowed target types. Returns the first match.
-func FindTarget(name string, tt targetType, spaces []SearchSpace) (*TargetRef, error) {
+// FindTarget searches spaces for matching targets. It parses N. and all.
+// prefixes: "wolf" returns the first match, "2.wolf" the second, "all.wolf"
+// all matches, and bare "all" every entity of the allowed types.
+func FindTarget(raw string, tt targetType, spaces []SearchSpace) ([]*TargetRef, error) {
+	name, index, all := parseTargetPrefix(raw)
+
+	// Build matchers based on whether this is an "all" (no name) or name-based search.
+	mobMatch := mobNameMatcher(name)
+	playerMatch := playerNameMatcher(name)
+	objMatch := objNameMatcher(name)
+	if all && name == "" {
+		mobMatch = matchAll[*game.MobileInstance]
+		playerMatch = matchAll[*game.CharacterInstance]
+		objMatch = matchAll[*game.ObjectInstance]
+	}
+
+	var refs []*TargetRef
 	for _, sp := range spaces {
 		if tt&targetTypePlayer != 0 {
-			if ci := sp.Finder.FindPlayer(name); ci != nil {
-				return &TargetRef{
+			for _, ci := range sp.Finder.FindPlayers(playerMatch) {
+				refs = append(refs, &TargetRef{
 					Type:  targetTypeActor,
 					Actor: actorRefFromPlayer(ci),
-				}, nil
+				})
 			}
 		}
 		if tt&targetTypeMobile != 0 {
-			if mi := sp.Finder.FindMob(name); mi != nil {
-				return &TargetRef{
+			for _, mi := range sp.Finder.FindMobs(mobMatch) {
+				refs = append(refs, &TargetRef{
 					Type:  targetTypeActor,
 					Actor: actorRefFromMob(mi),
-				}, nil
+				})
 			}
 		}
 		if tt&targetTypeObject != 0 {
-			if oi := sp.Finder.FindObj(name); oi != nil {
-				return &TargetRef{
+			for _, oi := range sp.Finder.FindObjs(objMatch) {
+				refs = append(refs, &TargetRef{
 					Type: targetTypeObject,
 					Obj:  objRefFromInstance(oi, sp.Remover),
-				}, nil
+				})
 			}
 		}
-		if tt&targetTypeExit != 0 {
+		if tt&targetTypeExit != 0 && !all {
 			if dir, exit := sp.Finder.FindExit(name); exit != nil {
-				return &TargetRef{
+				refs = append(refs, &TargetRef{
 					Type: targetTypeExit,
 					Exit: exitRefFrom(dir, exit),
-				}, nil
+				})
 			}
 		}
+
+		if !all && len(refs) > 0 {
+			break
+		}
 	}
-	return nil, NewUserError(fmt.Sprintf("%s %q not found.", tt.Label(), name))
+
+	if len(refs) == 0 {
+		return nil, NewUserError(fmt.Sprintf("%s %q not found.", tt.Label(), raw))
+	}
+	if all {
+		return refs, nil
+	}
+	if index > len(refs) {
+		return nil, NewUserError(fmt.Sprintf("%s %q not found.", tt.Label(), raw))
+	}
+	return refs[index-1 : index], nil
 }
 
 // --- TargetScopes ---
@@ -303,12 +378,12 @@ type notFoundContext struct {
 // ResolveSpecs resolves all targets from the command's targets section.
 // Specs are processed in order so that scope_target references to earlier
 // targets work correctly. Inputs are assumed to have been validated by parseInputs.
-func (r *TargetResolver) ResolveSpecs(specs []assets.TargetSpec, inputs map[string]any, actor game.Actor) (map[string]*TargetRef, error) {
+func (r *TargetResolver) ResolveSpecs(specs []assets.TargetSpec, inputs map[string]any, actor game.Actor) (map[string][]*TargetRef, error) {
 	if len(specs) == 0 {
-		return make(map[string]*TargetRef), nil
+		return make(map[string][]*TargetRef), nil
 	}
 
-	targets := make(map[string]*TargetRef, len(specs))
+	targets := make(map[string][]*TargetRef, len(specs))
 
 	for _, spec := range specs {
 		// Get the input value; inputs were already parsed and validated.
@@ -318,16 +393,15 @@ func (r *TargetResolver) ResolveSpecs(specs []assets.TargetSpec, inputs map[stri
 			case assets.DefaultCombatTarget:
 				name = actor.CombatTargetId()
 			case assets.DefaultSelf:
-				targets[spec.Name] = &TargetRef{
+				targets[spec.Name] = []*TargetRef{{
 					Type:  targetTypeActor,
 					Actor: actorRefFromActor(actor),
-				}
+				}}
 				continue
 			}
 		}
 		if name == "" {
 			if spec.Optional {
-				targets[spec.Name] = nil
 				continue
 			}
 			return nil, NewUserError(fmt.Sprintf("Input %q is required.", spec.Input))
@@ -347,15 +421,14 @@ func (r *TargetResolver) ResolveSpecs(specs []assets.TargetSpec, inputs map[stri
 			}
 		}
 
-		ref, err := findWithNotFound(name, spec, spaces, inputs)
+		refs, err := findWithNotFound(name, spec, spaces, inputs)
 		if err != nil {
 			if spec.AllowUnresolved {
-				targets[spec.Name] = nil
 				continue
 			}
 			return nil, err
 		}
-		targets[spec.Name] = ref
+		targets[spec.Name] = refs
 	}
 
 	return targets, nil
@@ -363,8 +436,8 @@ func (r *TargetResolver) ResolveSpecs(specs []assets.TargetSpec, inputs map[stri
 
 // findWithNotFound wraps FindTarget and replaces the default error with the
 // spec's NotFound template when one is configured.
-func findWithNotFound(name string, spec assets.TargetSpec, spaces []SearchSpace, inputs map[string]any) (*TargetRef, error) {
-	ref, err := FindTarget(name, parseTargetType(spec.Types), spaces)
+func findWithNotFound(name string, spec assets.TargetSpec, spaces []SearchSpace, inputs map[string]any) ([]*TargetRef, error) {
+	refs, err := FindTarget(name, parseTargetType(spec.Types), spaces)
 	if err != nil && spec.NotFound != "" {
 		msg, tmplErr := ExpandTemplate(spec.NotFound, &notFoundContext{Inputs: inputs})
 		if tmplErr != nil {
@@ -372,19 +445,23 @@ func findWithNotFound(name string, spec assets.TargetSpec, spaces []SearchSpace,
 		}
 		return nil, NewUserError(msg)
 	}
-	return ref, err
+	return refs, err
 }
 
 // containerSpaces checks if a spec has a scope_target and returns container-only
 // search spaces if the referenced target resolved to a container object.
 // Returns (spaces, handled, error) where handled=true means container scoping applies.
-func containerSpaces(spec assets.TargetSpec, targets map[string]*TargetRef) ([]SearchSpace, bool, error) {
+func containerSpaces(spec assets.TargetSpec, targets map[string][]*TargetRef) ([]SearchSpace, bool, error) {
 	if spec.ScopeTarget == "" {
 		return nil, false, nil
 	}
 
-	scopeRef := targets[spec.ScopeTarget]
-	if scopeRef == nil || scopeRef.Obj == nil || scopeRef.Obj.instance == nil {
+	scopeRefs := targets[spec.ScopeTarget]
+	if len(scopeRefs) == 0 {
+		return nil, false, nil
+	}
+	scopeRef := scopeRefs[0]
+	if scopeRef.Obj == nil || scopeRef.Obj.instance == nil {
 		// Scope target not resolved (likely optional) — fall through to normal scopes
 		return nil, false, nil
 	}

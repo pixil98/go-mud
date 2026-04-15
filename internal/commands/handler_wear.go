@@ -53,7 +53,7 @@ func (f *WearHandlerFactory) Create() (CommandFunc, error) {
 }
 
 func (f *WearHandlerFactory) handle(ctx context.Context, actor WearActor, in *CommandInput) error {
-	target := in.Targets["target"]
+	target := in.FirstTarget("target")
 	if target == nil || target.Obj == nil {
 		return NewUserError("Wear what?")
 	}

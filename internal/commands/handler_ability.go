@@ -14,7 +14,7 @@ import (
 // EffectFunc is a compiled effect closure with config baked in at registration time.
 // Effects may optionally set fields on the AbilityResult to override the
 // ability's template-based messages (e.g. attackEffect builds hit/miss lines).
-type EffectFunc func(actor game.Actor, targets map[string]*TargetRef, result *AbilityResult) error
+type EffectFunc func(actor game.Actor, targets map[string][]*TargetRef, result *AbilityResult) error
 
 // EffectHandler defines an ability effect (damage, healing, buff, etc.).
 // ValidateConfig checks config at registration time. Create returns a closure
@@ -109,7 +109,7 @@ func newCompiledAbility(id string, ability *assets.Ability, handlers map[string]
 // AbilityResult without publishing. This is the shared core used by both the
 // command handler (via abilityCommandWrapper.Create) and direct invocation
 // (via Handler.ExecAbility).
-func (ca *compiledAbility) exec(actor game.Actor, targets map[string]*TargetRef, opts ExecAbilityOpts) (*AbilityResult, error) {
+func (ca *compiledAbility) exec(actor game.Actor, targets map[string][]*TargetRef, opts ExecAbilityOpts) (*AbilityResult, error) {
 	// Check resource cost before spending any AP.
 	if ca.resourceCost > 0 {
 		cur, _ := actor.Resource(ca.resource)
@@ -136,9 +136,15 @@ func (ca *compiledAbility) exec(actor game.Actor, targets map[string]*TargetRef,
 
 	// Expand message templates first so effects can append detail lines.
 	result := &AbilityResult{}
+	tmplTargets := make(map[string]*TargetRef, len(targets))
+	for k, refs := range targets {
+		if len(refs) > 0 {
+			tmplTargets[k] = refs[0]
+		}
+	}
 	tmplCtx := &templateContext{
 		Actor:   actor,
-		Targets: targets,
+		Targets: tmplTargets,
 		Color:   display.Color,
 	}
 
@@ -159,7 +165,7 @@ func (ca *compiledAbility) exec(actor game.Actor, targets map[string]*TargetRef,
 		if msg != "" {
 			result.TargetLines = append(result.TargetLines, msg)
 		}
-		for _, ref := range targets {
+		for _, ref := range tmplTargets {
 			if ref != nil && ref.Actor != nil && ref.Actor.CharId != "" {
 				result.TargetId = ref.Actor.CharId
 				break

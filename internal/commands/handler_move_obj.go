@@ -72,7 +72,7 @@ func (f *MoveObjHandlerFactory) Create() (CommandFunc, error) {
 }
 
 func (f *MoveObjHandlerFactory) handle(ctx context.Context, char MoveObjActor, in *CommandInput) error {
-	item := in.Targets["item"]
+	item := in.FirstTarget("item")
 	if item == nil || item.Obj == nil {
 		return NewUserError("Move what?")
 	}
@@ -84,7 +84,7 @@ func (f *MoveObjHandlerFactory) handle(ctx context.Context, char MoveObjActor, i
 
 	// Check self-targeting if configured
 	if noSelf := in.Config["no_self_target"]; noSelf != "" {
-		ref := in.Targets[noSelf]
+		ref := in.FirstTarget(noSelf)
 		if ref != nil && ref.Actor != nil && ref.Actor.CharId == char.Id() {
 			return NewUserError("You can't give something to yourself.")
 		}
@@ -114,7 +114,7 @@ func (f *MoveObjHandlerFactory) handle(ctx context.Context, char MoveObjActor, i
 		exclude := []string{char.Id()}
 
 		if targetMsg := in.Config["target_message"]; targetMsg != "" {
-			if ref := in.Targets[in.Config["destination"]]; ref != nil && ref.Actor != nil && ref.Actor.CharId != "" {
+			if ref := in.FirstTarget(in.Config["destination"]); ref != nil && ref.Actor != nil && ref.Actor.CharId != "" {
 				if err := f.pub.Publish(game.SinglePlayer(ref.Actor.CharId), nil, []byte(targetMsg)); err != nil {
 					slog.Warn("failed to publish target message", "error", err)
 				}
@@ -144,7 +144,7 @@ func (f *MoveObjHandlerFactory) resolveDestination(char MoveObjActor, in *Comman
 		return char.Room(), nil
 
 	default:
-		return f.holderForTarget(in.Targets[dest])
+		return f.holderForTarget(in.FirstTarget(dest))
 	}
 }
 

@@ -33,7 +33,7 @@ func (e *groupHealEffect) Create(_ string, config map[string]string, _ []assets.
 	dice, _ := combat.ParseDice(config["amount"])
 	overheal := config["overheal"] == "true"
 
-	return func(actor game.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
+	return func(actor game.Actor, _ map[string][]*TargetRef, _ *AbilityResult) error {
 		ri := actor.Room()
 		if ri == nil {
 			return nil
@@ -92,20 +92,20 @@ func (e *healEffect) Create(_ string, config map[string]string, _ []assets.Targe
 	dice, _ := combat.ParseDice(config["amount"])
 	overheal := config["overheal"] == "true"
 
-	return func(actor game.Actor, resolved map[string]*TargetRef, _ *AbilityResult) error {
-		ref := resolved["target"]
-		if ref == nil || ref.Actor == nil {
-			return nil
-		}
-		target := ref.Actor.Actor()
-		healAmount := dice.Roll()
-		target.AdjustResource(assets.ResourceHp, healAmount, overheal)
-
+	return func(actor game.Actor, resolved map[string][]*TargetRef, _ *AbilityResult) error {
 		var occupants []game.Actor
 		if ri := actor.Room(); ri != nil {
 			ri.ForEachActor(func(a game.Actor) { occupants = append(occupants, a) })
 		}
-		combat.NotifyHeal(actor, target, healAmount/2, occupants)
+		for _, ref := range resolved["target"] {
+			if ref.Actor == nil {
+				continue
+			}
+			target := ref.Actor.Actor()
+			healAmount := dice.Roll()
+			target.AdjustResource(assets.ResourceHp, healAmount, overheal)
+			combat.NotifyHeal(actor, target, healAmount/2, occupants)
+		}
 		return nil
 	}
 }

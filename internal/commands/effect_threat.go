@@ -80,7 +80,7 @@ func (e *aoeThreatEffect) Create(_ string, config map[string]string, _ []assets.
 		}
 	}
 
-	return func(actor game.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
+	return func(actor game.Actor, _ map[string][]*TargetRef, _ *AbilityResult) error {
 		if actor.HasGrant(assets.PerkGrantPeaceful, "") {
 			return errPeacefulArea
 		}
@@ -122,27 +122,26 @@ func (e *threatEffect) Create(_ string, config map[string]string, targets []asse
 	mode := config["mode"]
 	amount, _ := strconv.Atoi(config["amount"])
 
-	return func(actor game.Actor, resolved map[string]*TargetRef, _ *AbilityResult) error {
-		ref := resolved["target"]
-		if ref == nil || ref.Actor == nil {
-			return nil
-		}
-		target := ref.Actor.Actor()
+	return func(actor game.Actor, resolved map[string][]*TargetRef, _ *AbilityResult) error {
+		for _, ref := range resolved["target"] {
+			if ref.Actor == nil {
+				continue
+			}
+			target := ref.Actor.Actor()
 
-		// Ensure the caster is in combat with the target.
-		if err := combat.StartCombat(actor, target); err != nil {
-			return NewUserError(err.Error())
-		}
+			if err := combat.StartCombat(actor, target); err != nil {
+				continue
+			}
 
-		switch mode {
-		case ThreatModeAdd:
-			combat.AddThreat(actor, target, amount)
-		case ThreatModeSetToTop:
-			combat.TopThreat(actor, target)
-		case ThreatModeSetToValue:
-			combat.SetThreat(actor, target, amount)
+			switch mode {
+			case ThreatModeAdd:
+				combat.AddThreat(actor, target, amount)
+			case ThreatModeSetToTop:
+				combat.TopThreat(actor, target)
+			case ThreatModeSetToValue:
+				combat.SetThreat(actor, target, amount)
+			}
 		}
-
 		return nil
 	}
 }

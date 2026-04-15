@@ -128,38 +128,31 @@ func (z *ZoneInstance) GetRoom(roomId string) *RoomInstance {
 	return z.rooms[roomId]
 }
 
-// FindPlayer searches all rooms in the zone for a player whose character name matches.
-func (z *ZoneInstance) FindPlayer(name string) *CharacterInstance {
+// FindPlayers searches all rooms in the zone for players accepted by the matcher.
+func (z *ZoneInstance) FindPlayers(match func(*CharacterInstance) bool) []*CharacterInstance {
+	var out []*CharacterInstance
 	for _, r := range z.rooms {
-		ps := r.FindPlayer(name)
-		if ps != nil {
-			return ps
-		}
+		out = append(out, r.FindPlayers(match)...)
 	}
-	return nil
+	return out
 }
 
-// FindMob searches room mobs for one whose definition matches the given name.
-func (z *ZoneInstance) FindMob(name string) *MobileInstance {
+// FindMobs searches all rooms in the zone for mobs accepted by the matcher.
+func (z *ZoneInstance) FindMobs(match func(*MobileInstance) bool) []*MobileInstance {
+	var out []*MobileInstance
 	for _, r := range z.rooms {
-		mi := r.FindMob(name)
-		if mi != nil {
-			return mi
-		}
+		out = append(out, r.FindMobs(match)...)
 	}
-
-	return nil
+	return out
 }
 
-// FindObj searches room objects for one whose definition matches the given name.
-func (z *ZoneInstance) FindObj(name string) *ObjectInstance {
+// FindObjs searches all rooms in the zone for objects accepted by the matcher.
+func (z *ZoneInstance) FindObjs(match func(*ObjectInstance) bool) []*ObjectInstance {
+	var out []*ObjectInstance
 	for _, r := range z.rooms {
-		oi := r.FindObj(name)
-		if oi != nil {
-			return oi
-		}
+		out = append(out, r.FindObjs(match)...)
 	}
-	return nil
+	return out
 }
 
 // FindExit always returns ("", nil) — exits are only meaningful in room scope.

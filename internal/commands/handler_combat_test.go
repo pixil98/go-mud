@@ -56,8 +56,8 @@ func TestAssistHandler(t *testing.T) {
 
 				cmdCtx := &CommandInput{
 					Actor: actor,
-					Targets: map[string]*TargetRef{
-						"target": {Type: targetTypeActor, Actor: &ActorRef{CharId: "bob", Name: "Bob"}},
+					Targets: map[string][]*TargetRef{
+						"target": {{Type: targetTypeActor, Actor: &ActorRef{CharId: "bob", Name: "Bob"}}},
 					},
 					Config: make(map[string]string),
 				}
@@ -94,7 +94,7 @@ func TestAssistHandler(t *testing.T) {
 
 				cmdCtx := &CommandInput{
 					Actor:   actor,
-					Targets: map[string]*TargetRef{},
+					Targets: map[string][]*TargetRef{},
 					Config:  make(map[string]string),
 				}
 				return f, cmdCtx, actor
@@ -108,7 +108,7 @@ func TestAssistHandler(t *testing.T) {
 				actor := &gametest.BaseActor{ActorId: "alice", ActorName: "Alice", InCombat: true}
 				cmdCtx := &CommandInput{
 					Actor:   actor,
-					Targets: map[string]*TargetRef{},
+					Targets: map[string][]*TargetRef{},
 					Config:  make(map[string]string),
 				}
 				return f, cmdCtx, actor
@@ -121,7 +121,7 @@ func TestAssistHandler(t *testing.T) {
 				actor := &gametest.BaseActor{ActorId: "alice", ActorName: "Alice"}
 				cmdCtx := &CommandInput{
 					Actor:   actor,
-					Targets: map[string]*TargetRef{},
+					Targets: map[string][]*TargetRef{},
 					Config:  make(map[string]string),
 				}
 				return f, cmdCtx, actor
@@ -135,8 +135,8 @@ func TestAssistHandler(t *testing.T) {
 				actor := &gametest.BaseActor{ActorId: "alice", ActorName: "Alice"}
 				cmdCtx := &CommandInput{
 					Actor: actor,
-					Targets: map[string]*TargetRef{
-						"target": {Type: targetTypeActor, Actor: &ActorRef{CharId: "bob", Name: "Bob"}},
+					Targets: map[string][]*TargetRef{
+						"target": {{Type: targetTypeActor, Actor: &ActorRef{CharId: "bob", Name: "Bob"}}},
 					},
 					Config: make(map[string]string),
 				}
@@ -175,8 +175,8 @@ func TestAssistHandler(t *testing.T) {
 			}
 			if tt.expMsgAssisted != "" {
 				var assistedId string
-				if ref := cmdCtx.Targets["target"]; ref != nil {
-					assistedId = ref.Actor.CharId
+				if refs := cmdCtx.Targets["target"]; len(refs) > 0 {
+					assistedId = refs[0].Actor.CharId
 				} else if leader := actor.Following(); leader != nil {
 					assistedId = leader.Id()
 				}

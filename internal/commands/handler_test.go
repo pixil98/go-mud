@@ -490,7 +490,7 @@ func TestHandler_expandConfig(t *testing.T) {
 	tests := map[string]struct {
 		config    map[string]string
 		actor     *assets.Character
-		targets   map[string]*TargetRef
+		targets   map[string][]*TargetRef
 		inputs    map[string]any
 		expConfig map[string]string
 		expErr    string
@@ -500,7 +500,7 @@ func TestHandler_expandConfig(t *testing.T) {
 				"message": "{{ .Actor.Name }} says, \"{{ .Inputs.text }}\"",
 			},
 			actor:   &assets.Character{Name: "Alice"},
-			targets: map[string]*TargetRef{},
+			targets: map[string][]*TargetRef{},
 			inputs: map[string]any{
 				"text": "hello world",
 			},
@@ -514,8 +514,8 @@ func TestHandler_expandConfig(t *testing.T) {
 				"message": "Hello {{ .Targets.target.Actor.Name }}!",
 			},
 			actor: &assets.Character{Name: "Alice"},
-			targets: map[string]*TargetRef{
-				"target": {Type: targetTypeActor, Actor: &ActorRef{Name: "Bob"}},
+			targets: map[string][]*TargetRef{
+				"target": {{Type: targetTypeActor, Actor: &ActorRef{Name: "Bob"}}},
 			},
 			inputs: map[string]any{},
 			expConfig: map[string]string{
@@ -528,8 +528,8 @@ func TestHandler_expandConfig(t *testing.T) {
 				"message": "{{ .Actor.Name }} tells {{ .Targets.target.Actor.Name }}, \"{{ .Inputs.text }}\"",
 			},
 			actor: &assets.Character{Name: "Alice"},
-			targets: map[string]*TargetRef{
-				"target": {Type: targetTypeActor, Actor: &ActorRef{Name: "Bob"}},
+			targets: map[string][]*TargetRef{
+				"target": {{Type: targetTypeActor, Actor: &ActorRef{Name: "Bob"}}},
 			},
 			inputs: map[string]any{
 				"text": "hello there",
@@ -543,7 +543,7 @@ func TestHandler_expandConfig(t *testing.T) {
 				"direction": "north",
 			},
 			actor:   &assets.Character{Name: "Alice"},
-			targets: map[string]*TargetRef{},
+			targets: map[string][]*TargetRef{},
 			inputs:  map[string]any{},
 			expConfig: map[string]string{
 				"direction": "north",
@@ -554,7 +554,7 @@ func TestHandler_expandConfig(t *testing.T) {
 				"message": "{{ .Color.Red }}hello{{ .Color.Reset }}",
 			},
 			actor:   &assets.Character{},
-			targets: map[string]*TargetRef{},
+			targets: map[string][]*TargetRef{},
 			inputs:  map[string]any{},
 			expConfig: map[string]string{
 				"message": "\033[31mhello\033[0m",

@@ -39,7 +39,7 @@ func (e *spawnMobEffect) Create(_ string, config map[string]string, _ []assets.T
 	mobId := config["mobile_id"]
 	followCaster := config["follow_caster"] == "true"
 
-	return func(actor game.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
+	return func(actor game.Actor, _ map[string][]*TargetRef, _ *AbilityResult) error {
 		si := storage.NewSmartIdentifier[*assets.Mobile](mobId)
 		if err := si.Resolve(e.mobiles); err != nil {
 			return fmt.Errorf("spawn_mob: %w", err)
@@ -95,7 +95,7 @@ func (e *spawnObjEffect) Create(_ string, config map[string]string, _ []assets.T
 		dest = SpawnDestRoom
 	}
 
-	return func(actor game.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
+	return func(actor game.Actor, _ map[string][]*TargetRef, _ *AbilityResult) error {
 		si := storage.NewSmartIdentifier[*assets.Object](objId)
 		if err := si.Resolve(e.objects); err != nil {
 			return fmt.Errorf("spawn_obj: %w", err)

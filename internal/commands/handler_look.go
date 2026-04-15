@@ -83,7 +83,7 @@ func (f *LookHandlerFactory) handle(ctx context.Context, actor LookActor, in *Co
 		return nil
 	}
 
-	if target := in.Targets["target"]; target != nil {
+	if target := in.FirstTarget("target"); target != nil {
 		return f.showTarget(actor, target)
 	}
 

@@ -58,7 +58,7 @@ func (f *GroupHandlerFactory) Create() (CommandFunc, error) {
 }
 
 func (f *GroupHandlerFactory) handle(ctx context.Context, in *CommandInput) error {
-	target := in.Targets["target"]
+	target := in.FirstTarget("target")
 	if target == nil {
 		return f.showGroup(in.Actor)
 	}
@@ -224,7 +224,7 @@ func (f *UngroupHandlerFactory) Create() (CommandFunc, error) {
 }
 
 func (f *UngroupHandlerFactory) handle(ctx context.Context, in *CommandInput) error {
-	target := in.Targets["target"]
+	target := in.FirstTarget("target")
 	if target == nil {
 		return f.disbandOrLeave(in.Actor)
 	}

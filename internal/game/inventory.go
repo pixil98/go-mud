@@ -40,18 +40,18 @@ func (inv *Inventory) RemoveObj(instanceId string) *ObjectInstance {
 	return nil
 }
 
-// FindObj searches inventory items for one whose definition matches the given alias.
-// Returns nil if not found.
-func (inv *Inventory) FindObj(name string) *ObjectInstance {
+// FindObjs returns all inventory items accepted by the matcher.
+func (inv *Inventory) FindObjs(match func(*ObjectInstance) bool) []*ObjectInstance {
 	inv.mu.RLock()
 	defer inv.mu.RUnlock()
 
+	var out []*ObjectInstance
 	for _, oi := range inv.objs {
-		if oi.Object.Get().MatchName(name) {
-			return oi
+		if match(oi) {
+			out = append(out, oi)
 		}
 	}
-	return nil
+	return out
 }
 
 // FindObjByDef searches for an object whose definition ID matches defId.

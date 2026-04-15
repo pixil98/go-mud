@@ -15,9 +15,17 @@ import (
 
 // CommandInput is what handlers receive after config processing.
 type CommandInput struct {
-	Actor   game.Actor          // The actor executing the command
-	Targets map[string]*TargetRef // Resolved targets by name
-	Config  map[string]string     // Expanded config values (all templates resolved)
+	Actor   game.Actor              // The actor executing the command
+	Targets map[string][]*TargetRef // Resolved targets by name
+	Config  map[string]string       // Expanded config values (all templates resolved)
+}
+
+// FirstTarget returns the first resolved target for the given spec name, or nil.
+func (in *CommandInput) FirstTarget(name string) *TargetRef {
+	if refs := in.Targets[name]; len(refs) > 0 {
+		return refs[0]
+	}
+	return nil
 }
 
 // CommandFunc is the signature for compiled command functions.
@@ -211,8 +219,8 @@ func (h *Handler) ExecAbility(abilityId string, actor, target game.Actor) error 
 	if !ok {
 		return fmt.Errorf("unknown ability %q", abilityId)
 	}
-	targets := map[string]*TargetRef{
-		"target": {Type: targetTypeActor, Actor: actorRefFromActor(target)},
+	targets := map[string][]*TargetRef{
+		"target": {{Type: targetTypeActor, Actor: actorRefFromActor(target)}},
 	}
 	result, err := ca.exec(actor, targets, ExecAbilityOpts{SkipAP: true})
 	if err != nil {
@@ -535,6 +543,8 @@ func parseValue(inputType string, raw string) (any, error) {
 
 // templateContext holds data for template expansion.
 // Actor exposes Name() and other game.Actor methods to templates via {{ .Actor.Name }}.
+// Targets is a single-ref map (first element of each slice) so templates can
+// use {{ .Targets.target.Name }} without indexing.
 type templateContext struct {
 	Actor   game.Actor
 	Targets map[string]*TargetRef
@@ -543,14 +553,21 @@ type templateContext struct {
 }
 
 // expandConfig expands all template strings in config and returns map[string]string.
-func (h *Handler) expandConfig(config map[string]string, actor game.Actor, targets map[string]*TargetRef, inputs map[string]any) (map[string]string, error) {
+func (h *Handler) expandConfig(config map[string]string, actor game.Actor, targets map[string][]*TargetRef, inputs map[string]any) (map[string]string, error) {
 	if config == nil {
 		return make(map[string]string), nil
 	}
 
+	tmplTargets := make(map[string]*TargetRef, len(targets))
+	for k, refs := range targets {
+		if len(refs) > 0 {
+			tmplTargets[k] = refs[0]
+		}
+	}
+
 	tmplCtx := &templateContext{
 		Actor:   actor,
-		Targets: targets,
+		Targets: tmplTargets,
 		Inputs:  inputs,
 		Color:   display.Color,
 	}

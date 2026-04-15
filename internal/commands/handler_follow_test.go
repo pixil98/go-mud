@@ -131,9 +131,9 @@ func TestFollowHandler(t *testing.T) {
 
 			factory := &FollowHandlerFactory{}
 
-			targets := make(map[string]*TargetRef)
+			targets := make(map[string][]*TargetRef)
 			if tt.target != nil {
-				targets["target"] = tt.target
+				targets["target"] = []*TargetRef{tt.target}
 			}
 
 			in := &CommandInput{

@@ -24,43 +24,43 @@ func (e *attackEffect) Spec() *HandlerSpec {
 func (e *attackEffect) ValidateConfig(_ map[string]string) error { return nil }
 
 func (e *attackEffect) Create(_ string, _ map[string]string, targets []assets.TargetSpec) EffectFunc {
-	return func(actor game.Actor, resolved map[string]*TargetRef, result *AbilityResult) error {
+	return func(actor game.Actor, resolved map[string][]*TargetRef, result *AbilityResult) error {
 		if actor.HasGrant(assets.PerkGrantPeaceful, "") {
 			return errPeacefulArea
 		}
 		for _, spec := range targets {
-			ref := resolved[spec.Name]
-			if ref == nil || ref.Actor == nil {
-				continue
-			}
-			target := ref.Actor.Actor()
-			if err := combat.StartCombat(actor, target); err != nil {
-				return NewUserError(err.Error())
-			}
-			actorName := actor.Name()
-			targetName := ref.Actor.Name
-			attackArgs := actor.GrantArgs(assets.PerkGrantAttack)
-			if len(attackArgs) == 0 {
-				attackArgs = []string{"1d4"}
-			}
-			for _, arg := range attackArgs {
-				dmgType, diceExpr := combat.ParseAttackArg(arg)
-				attackBonus := assets.ApplyModifiers(0, 0, actor, assets.CombatAttackPrefix)
-				roll := combat.RollAttack(attackBonus)
-				ac := assets.ApplyModifiers(0, 0, target, assets.CombatACPrefix)
-				var damage int
-				if roll >= ac {
-					dice, err := combat.ParseDice(diceExpr)
-					if err != nil {
-						dice = combat.DiceRoll{Count: 1, Sides: 4}
-					}
-					damage = dealDamage(actor, target, dice.Roll(), dmgType)
+			for _, ref := range resolved[spec.Name] {
+				if ref.Actor == nil {
+					continue
 				}
-				result.ActorLines = append(result.ActorLines, combat.HitMsgActor(targetName, damage))
-				result.TargetLines = append(result.TargetLines, combat.HitMsgTarget(actorName, damage))
-				result.RoomLines = append(result.RoomLines, combat.HitMsgRoom(actorName, targetName, damage))
+				target := ref.Actor.Actor()
+				if err := combat.StartCombat(actor, target); err != nil {
+					return NewUserError(err.Error())
+				}
+				actorName := actor.Name()
+				targetName := ref.Actor.Name
+				attackArgs := actor.GrantArgs(assets.PerkGrantAttack)
+				if len(attackArgs) == 0 {
+					attackArgs = []string{"1d4"}
+				}
+				for _, arg := range attackArgs {
+					dmgType, diceExpr := combat.ParseAttackArg(arg)
+					attackBonus := assets.ApplyModifiers(0, 0, actor, assets.CombatAttackPrefix)
+					roll := combat.RollAttack(attackBonus)
+					ac := assets.ApplyModifiers(0, 0, target, assets.CombatACPrefix)
+					var damage int
+					if roll >= ac {
+						dice, err := combat.ParseDice(diceExpr)
+						if err != nil {
+							dice = combat.DiceRoll{Count: 1, Sides: 4}
+						}
+						damage = dealDamage(actor, target, dice.Roll(), dmgType)
+					}
+					result.ActorLines = append(result.ActorLines, combat.HitMsgActor(targetName, damage))
+					result.TargetLines = append(result.TargetLines, combat.HitMsgTarget(actorName, damage))
+					result.RoomLines = append(result.RoomLines, combat.HitMsgRoom(actorName, targetName, damage))
+				}
 			}
-			return nil
 		}
 		return nil
 	}
@@ -104,22 +104,19 @@ func (e *damageEffect) Create(_ string, config map[string]string, targets []asse
 		primaryType = damageTypes[0]
 	}
 
-	return func(actor game.Actor, resolved map[string]*TargetRef, _ *AbilityResult) error {
+	return func(actor game.Actor, resolved map[string][]*TargetRef, _ *AbilityResult) error {
 		if actor.HasGrant(assets.PerkGrantPeaceful, "") {
 			return errPeacefulArea
 		}
 
-		raw := dice.Roll()
-
 		for _, spec := range targets {
-			ref := resolved[spec.Name]
-			if ref == nil {
-				continue
+			for _, ref := range resolved[spec.Name] {
+				if ref.Actor == nil {
+					continue
+				}
+				dealDamage(actor, ref.Actor.Actor(), dice.Roll(), primaryType)
 			}
-			dealDamage(actor, ref.Actor.Actor(), raw, primaryType)
-			return nil
 		}
-
 		return nil
 	}
 }
@@ -171,7 +168,7 @@ func (e *aoeDamageEffect) Create(_ string, config map[string]string, _ []assets.
 		dmgType = assets.DamageTypeUntyped
 	}
 
-	return func(actor game.Actor, _ map[string]*TargetRef, _ *AbilityResult) error {
+	return func(actor game.Actor, _ map[string][]*TargetRef, _ *AbilityResult) error {
 		if actor.HasGrant(assets.PerkGrantPeaceful, "") {
 			return errPeacefulArea
 		}

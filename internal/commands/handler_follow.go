@@ -48,7 +48,7 @@ func (f *FollowHandlerFactory) Create() (CommandFunc, error) {
 }
 
 func (f *FollowHandlerFactory) handle(ctx context.Context, char FollowActor, in *CommandInput) error {
-	target := in.Targets["target"]
+	target := in.FirstTarget("target")
 	if target == nil {
 		return f.unfollow(char)
 	}

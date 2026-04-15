@@ -105,20 +105,21 @@ func (eq *Equipment) SlotCount(slot string) int {
 	return eq.slotCount(slot)
 }
 
-// FindObj searches equipped items for one whose definition matches the given alias.
-func (eq *Equipment) FindObj(name string) *ObjectInstance {
+// FindObjs returns all equipped items accepted by the matcher.
+func (eq *Equipment) FindObjs(match func(*ObjectInstance) bool) []*ObjectInstance {
 	eq.mu.RLock()
 	defer eq.mu.RUnlock()
 
+	var out []*ObjectInstance
 	for _, slot := range eq.objs {
 		if slot.Obj == nil {
 			continue
 		}
-		if slot.Obj.Object.Get().MatchName(name) {
-			return slot.Obj
+		if match(slot.Obj) {
+			out = append(out, slot.Obj)
 		}
 	}
-	return nil
+	return out
 }
 
 // ForEachSlot calls fn for each equipment slot while holding the read lock.

@@ -10,22 +10,22 @@ import (
 
 func TestAttackEffect(t *testing.T) {
 	tests := map[string]struct {
-		targets   map[string]*TargetRef
+		targets   map[string][]*TargetRef
 		wantErr   string
 	}{
 		"mob target: starts combat and deals damage": {
-			targets: map[string]*TargetRef{
-				"target": {Type: targetTypeActor, Actor: &ActorRef{
+			targets: map[string][]*TargetRef{
+				"target": {{Type: targetTypeActor, Actor: &ActorRef{
 					Name:  "Goblin",
 					actor: &gametest.BaseActor{ActorId: "mob-1", ActorName: "Goblin", Alive: true},
-				}},
+				}}},
 			},
 		},
 		"no targets: no-op": {
-			targets: map[string]*TargetRef{},
+			targets: map[string][]*TargetRef{},
 		},
 		"nil target ref: skipped": {
-			targets: map[string]*TargetRef{"target": nil},
+			targets: map[string][]*TargetRef{"target": nil},
 		},
 	}
 
@@ -69,10 +69,10 @@ func TestAttackEffect_PeacefulArea(t *testing.T) {
 
 	effect := &attackEffect{}
 	targetSpecs := []assets.TargetSpec{{Name: "target"}}
-	targets := map[string]*TargetRef{
-		"target": {Type: targetTypeActor, Actor: &ActorRef{
+	targets := map[string][]*TargetRef{
+		"target": {{Type: targetTypeActor, Actor: &ActorRef{
 			actor: &gametest.BaseActor{ActorId: "mob-1", ActorName: "Goblin", Alive: true},
-		}},
+		}}},
 	}
 
 	fn := effect.Create("test:0", nil, targetSpecs)
@@ -100,11 +100,11 @@ func TestDamageEffect_InitiatesCombat(t *testing.T) {
 	effect := &damageEffect{}
 	config := map[string]string{"amount": "10"}
 	targetSpecs := []assets.TargetSpec{{Name: "target"}}
-	targets := map[string]*TargetRef{
-		"target": {Type: targetTypeActor, Actor: &ActorRef{
+	targets := map[string][]*TargetRef{
+		"target": {{Type: targetTypeActor, Actor: &ActorRef{
 			Name:  "Goblin",
 			actor: mob,
-		}},
+		}}},
 	}
 
 	fn := effect.Create("test:0", config, targetSpecs)

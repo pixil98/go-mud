@@ -20,31 +20,34 @@ type mockFinder struct {
 	exits   map[string]*game.ResolvedExit
 }
 
-func (f *mockFinder) FindPlayer(name string) *game.CharacterInstance {
+func (f *mockFinder) FindPlayers(match func(*game.CharacterInstance) bool) []*game.CharacterInstance {
+	var out []*game.CharacterInstance
 	for _, ci := range f.players {
-		if ci.Character.Get().MatchName(name) {
-			return ci
+		if match(ci) {
+			out = append(out, ci)
 		}
 	}
-	return nil
+	return out
 }
 
-func (f *mockFinder) FindMob(name string) *game.MobileInstance {
+func (f *mockFinder) FindMobs(match func(*game.MobileInstance) bool) []*game.MobileInstance {
+	var out []*game.MobileInstance
 	for _, mi := range f.mobs {
-		if mi.Mobile.Get() != nil && mi.Mobile.Get().MatchName(name) {
-			return mi
+		if match(mi) {
+			out = append(out, mi)
 		}
 	}
-	return nil
+	return out
 }
 
-func (f *mockFinder) FindObj(name string) *game.ObjectInstance {
+func (f *mockFinder) FindObjs(match func(*game.ObjectInstance) bool) []*game.ObjectInstance {
+	var out []*game.ObjectInstance
 	for _, oi := range f.objects {
-		if oi.Object.Get() != nil && oi.Object.Get().MatchName(name) {
-			return oi
+		if match(oi) {
+			out = append(out, oi)
 		}
 	}
-	return nil
+	return out
 }
 
 func (f *mockFinder) FindExit(name string) (string, *game.ResolvedExit) {
@@ -133,7 +136,7 @@ func TestFindTarget_Player(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			result, err := FindTarget(tt.name, targetTypePlayer, tt.spaces)
+			results, err := FindTarget(tt.name, targetTypePlayer, tt.spaces)
 
 			if tt.expErr != "" {
 				if err == nil {
@@ -148,6 +151,10 @@ func TestFindTarget_Player(t *testing.T) {
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
+			if len(results) == 0 {
+				t.Fatal("expected at least one result")
+			}
+			result := results[0]
 			if result.Type != targetTypeActor {
 				t.Errorf("Type = %q, expected %q", result.Type.String(), targetTypeActor.String())
 			}
@@ -193,7 +200,7 @@ func TestFindTarget_Mobile(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			result, err := FindTarget(tt.name, targetTypeMobile, tt.spaces)
+			results, err := FindTarget(tt.name, targetTypeMobile, tt.spaces)
 
 			if tt.expErr != "" {
 				if err == nil {
@@ -208,6 +215,10 @@ func TestFindTarget_Mobile(t *testing.T) {
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
+			if len(results) == 0 {
+				t.Fatal("expected at least one result")
+			}
+			result := results[0]
 			if result.Type != targetTypeActor {
 				t.Errorf("Type = %q, expected %q", result.Type.String(), targetTypeActor.String())
 			}
@@ -267,7 +278,7 @@ func TestFindTarget_Object(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			result, err := FindTarget(tt.name, targetTypeObject, tt.spaces)
+			results, err := FindTarget(tt.name, targetTypeObject, tt.spaces)
 
 			if tt.expErr != "" {
 				if err == nil {
@@ -282,6 +293,10 @@ func TestFindTarget_Object(t *testing.T) {
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
+			if len(results) == 0 {
+				t.Fatal("expected at least one result")
+			}
+			result := results[0]
 			if result.Type != targetTypeObject {
 				t.Errorf("Type = %q, expected %q", result.Type, "object")
 			}
@@ -337,7 +352,7 @@ func TestFindTarget_Combined(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			result, err := FindTarget(tt.name, targetTypePlayer|targetTypeMobile|targetTypeObject, tt.spaces)
+			results, err := FindTarget(tt.name, targetTypePlayer|targetTypeMobile|targetTypeObject, tt.spaces)
 
 			if tt.expErr != "" {
 				if err == nil {
@@ -352,6 +367,10 @@ func TestFindTarget_Combined(t *testing.T) {
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
+			if len(results) == 0 {
+				t.Fatal("expected at least one result")
+			}
+			result := results[0]
 			if result.Type != tt.expType {
 				t.Errorf("Type = %q, expected %q", result.Type, tt.expType)
 			}
@@ -404,7 +423,7 @@ func TestFindTarget_Exit(t *testing.T) {
 				// "prefers object over exit" case
 				targetType = targetTypeObject | targetTypeExit
 			}
-			result, err := FindTarget(tt.name, targetType, tt.spaces)
+			results, err := FindTarget(tt.name, targetType, tt.spaces)
 
 			if tt.expErr != "" {
 				if err == nil {
@@ -419,6 +438,10 @@ func TestFindTarget_Exit(t *testing.T) {
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
+			if len(results) == 0 {
+				t.Fatal("expected at least one result")
+			}
+			result := results[0]
 
 			if tt.expDirection != "" {
 				if result.Type != targetTypeExit {
@@ -449,13 +472,141 @@ func TestFindTarget_TypeFiltering(t *testing.T) {
 	spaces := []SearchSpace{{Finder: finder}}
 
 	// When only mobile type is requested, player "bob" should be skipped
-	result, err := FindTarget("bob", targetTypeMobile, spaces)
+	results, err := FindTarget("bob", targetTypeMobile, spaces)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
+	if len(results) == 0 {
+		t.Fatal("expected at least one result")
+	}
+	result := results[0]
 	if result.Type != targetTypeActor {
 		t.Errorf("Type = %q, expected %q", result.Type.String(), targetTypeActor.String())
 	}
+}
+
+// --- Prefix parsing tests ---
+
+func TestParseTargetPrefix(t *testing.T) {
+	tests := map[string]struct {
+		raw       string
+		wantName  string
+		wantIndex int
+		wantAll   bool
+	}{
+		"bare name":                       {raw: "wolf", wantName: "wolf", wantIndex: 1},
+		"indexed":                         {raw: "2.wolf", wantName: "wolf", wantIndex: 2},
+		"all with name":                   {raw: "all.wolf", wantName: "wolf", wantAll: true},
+		"bare all":                        {raw: "all", wantAll: true},
+		"all case insensitive":            {raw: "ALL.sword", wantName: "sword", wantAll: true},
+		"non-numeric prefix stays as name": {raw: "mr.smith", wantName: "mr.smith", wantIndex: 1},
+		"zero index treated as name":      {raw: "0.wolf", wantName: "0.wolf", wantIndex: 1},
+		"negative index treated as name":  {raw: "-1.wolf", wantName: "-1.wolf", wantIndex: 1},
+		"large index":                     {raw: "99.wolf", wantName: "wolf", wantIndex: 99},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			gotName, gotIndex, gotAll := parseTargetPrefix(tc.raw)
+			if gotName != tc.wantName {
+				t.Errorf("name = %q, want %q", gotName, tc.wantName)
+			}
+			if gotIndex != tc.wantIndex {
+				t.Errorf("index = %d, want %d", gotIndex, tc.wantIndex)
+			}
+			if gotAll != tc.wantAll {
+				t.Errorf("all = %v, want %v", gotAll, tc.wantAll)
+			}
+		})
+	}
+}
+
+func TestFindTarget_IndexedPrefix(t *testing.T) {
+	mob1 := &game.MobileInstance{
+		Mobile:        storage.NewResolvedSmartIdentifier("wolf-a", &assets.Mobile{Aliases: []string{"wolf"}, ShortDesc: "a grey wolf"}),
+		ActorInstance: game.ActorInstance{InstanceId: "wolf-1"},
+	}
+	mob2 := &game.MobileInstance{
+		Mobile:        storage.NewResolvedSmartIdentifier("wolf-b", &assets.Mobile{Aliases: []string{"wolf"}, ShortDesc: "a black wolf"}),
+		ActorInstance: game.ActorInstance{InstanceId: "wolf-2"},
+	}
+	finder := &mockFinder{
+		mobs: map[string]*game.MobileInstance{"wolf-1": mob1, "wolf-2": mob2},
+	}
+	spaces := []SearchSpace{{Finder: finder}}
+
+	t.Run("bare name returns one", func(t *testing.T) {
+		results, err := FindTarget("wolf", targetTypeMobile, spaces)
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+		if len(results) != 1 {
+			t.Fatalf("expected 1 result, got %d", len(results))
+		}
+	})
+
+	t.Run("2.wolf returns one", func(t *testing.T) {
+		results, err := FindTarget("2.wolf", targetTypeMobile, spaces)
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+		if len(results) != 1 {
+			t.Fatalf("expected 1 result, got %d", len(results))
+		}
+	})
+
+	t.Run("3.wolf not found", func(t *testing.T) {
+		_, err := FindTarget("3.wolf", targetTypeMobile, spaces)
+		if err == nil {
+			t.Fatal("expected error for 3.wolf with only 2 wolves")
+		}
+	})
+}
+
+func TestFindTarget_AllPrefix(t *testing.T) {
+	mob1 := &game.MobileInstance{
+		Mobile:        storage.NewResolvedSmartIdentifier("wolf-a", &assets.Mobile{Aliases: []string{"wolf"}, ShortDesc: "a grey wolf"}),
+		ActorInstance: game.ActorInstance{InstanceId: "wolf-1"},
+	}
+	mob2 := &game.MobileInstance{
+		Mobile:        storage.NewResolvedSmartIdentifier("wolf-b", &assets.Mobile{Aliases: []string{"wolf"}, ShortDesc: "a black wolf"}),
+		ActorInstance: game.ActorInstance{InstanceId: "wolf-2"},
+	}
+	goblin := &game.MobileInstance{
+		Mobile:        storage.NewResolvedSmartIdentifier("goblin-a", &assets.Mobile{Aliases: []string{"goblin"}, ShortDesc: "a goblin"}),
+		ActorInstance: game.ActorInstance{InstanceId: "goblin-1"},
+	}
+	finder := &mockFinder{
+		mobs: map[string]*game.MobileInstance{"wolf-1": mob1, "wolf-2": mob2, "goblin-1": goblin},
+	}
+	spaces := []SearchSpace{{Finder: finder}}
+
+	t.Run("all.wolf returns both wolves", func(t *testing.T) {
+		results, err := FindTarget("all.wolf", targetTypeMobile, spaces)
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+		if len(results) != 2 {
+			t.Fatalf("expected 2 results, got %d", len(results))
+		}
+	})
+
+	t.Run("bare all returns everything", func(t *testing.T) {
+		results, err := FindTarget("all", targetTypeMobile, spaces)
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+		if len(results) != 3 {
+			t.Fatalf("expected 3 results, got %d", len(results))
+		}
+	})
+
+	t.Run("all.dragon not found", func(t *testing.T) {
+		_, err := FindTarget("all.dragon", targetTypeMobile, spaces)
+		if err == nil {
+			t.Fatal("expected error for all.dragon with no dragons")
+		}
+	})
 }
 
 // --- ResolveSpecs tests ---
@@ -570,19 +721,19 @@ func TestResolveSpecs(t *testing.T) {
 			}
 
 			for tgtName, expType := range tt.expTargets {
-				tgt := targets[tgtName]
-				if tgt == nil {
-					t.Errorf("target[%q] is nil, expected type %q", tgtName, expType)
+				refs := targets[tgtName]
+				if len(refs) == 0 {
+					t.Errorf("target[%q] is empty, expected type %q", tgtName, expType)
 					continue
 				}
-				if tgt.Type != expType {
-					t.Errorf("target[%q].Type = %q, expected %q", tgtName, tgt.Type, expType)
+				if refs[0].Type != expType {
+					t.Errorf("target[%q].Type = %q, expected %q", tgtName, refs[0].Type, expType)
 				}
 			}
 
 			for _, nilName := range tt.expNil {
-				if targets[nilName] != nil {
-					t.Errorf("target[%q] should be nil", nilName)
+				if len(targets[nilName]) != 0 {
+					t.Errorf("target[%q] should be empty", nilName)
 				}
 			}
 		})
@@ -699,19 +850,19 @@ func TestResolveSpecs_ScopeTarget(t *testing.T) {
 			}
 
 			for tgtName, expType := range tt.expTargets {
-				tgt := targets[tgtName]
-				if tgt == nil {
-					t.Errorf("target[%q] is nil, expected type %q", tgtName, expType)
+				refs := targets[tgtName]
+				if len(refs) == 0 {
+					t.Errorf("target[%q] is empty, expected type %q", tgtName, expType)
 					continue
 				}
-				if tgt.Type != expType {
-					t.Errorf("target[%q].Type = %q, expected %q", tgtName, tgt.Type, expType)
+				if refs[0].Type != expType {
+					t.Errorf("target[%q].Type = %q, expected %q", tgtName, refs[0].Type, expType)
 				}
 			}
 
 			for _, nilName := range tt.expNil {
-				if targets[nilName] != nil {
-					t.Errorf("target[%q] should be nil", nilName)
+				if len(targets[nilName]) != 0 {
+					t.Errorf("target[%q] should be empty", nilName)
 				}
 			}
 		})

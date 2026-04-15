@@ -114,7 +114,7 @@ func (e *buffEffect) Create(id string, config map[string]string, targets []asset
 
 	grantKey := config["grant_key"]
 
-	return func(actor game.Actor, resolved map[string]*TargetRef, _ *AbilityResult) error {
+	return func(actor game.Actor, resolved map[string][]*TargetRef, _ *AbilityResult) error {
 		p := perks
 		if grantKey != "" {
 			var err error
@@ -128,13 +128,15 @@ func (e *buffEffect) Create(id string, config map[string]string, targets []asset
 
 		switch e.scope {
 		case buffScopeActor:
+			// TODO: actor-scope buffs should use default:"self" in target spec
+			// instead of this fallback. See TODO file.
 			for _, spec := range targets {
-				ref := resolved[spec.Name]
-				if ref == nil || ref.Actor == nil {
-					continue
+				for _, ref := range resolved[spec.Name] {
+					if ref.Actor != nil {
+						ref.Actor.Actor().AddTimedPerks(name, p, dur)
+						return nil
+					}
 				}
-				ref.Actor.Actor().AddTimedPerks(name, p, dur)
-				return nil
 			}
 			actor.AddTimedPerks(name, p, dur)
 		case buffScopeRoom:

@@ -266,18 +266,18 @@ func (ri *RoomInstance) initExitClosures() {
 
 // --- Mob operations ---
 
-// FindMob searches room mobs for one whose definition matches the given name.
-// Falls back to matching by instance ID if no name match is found.
-func (ri *RoomInstance) FindMob(name string) *MobileInstance {
+// FindMobs returns all mobs in the room accepted by the matcher.
+func (ri *RoomInstance) FindMobs(match func(*MobileInstance) bool) []*MobileInstance {
 	ri.mu.RLock()
 	defer ri.mu.RUnlock()
 
+	var out []*MobileInstance
 	for _, mi := range ri.mobiles {
-		if mi.Mobile.Get().MatchName(name) {
-			return mi
+		if match(mi) {
+			out = append(out, mi)
 		}
 	}
-	return ri.mobiles[name]
+	return out
 }
 
 // GetMob returns the MobileInstance with the given instanceId, or nil if not found.
@@ -337,9 +337,9 @@ func (ri *RoomInstance) addMob(mi *MobileInstance) {
 
 // --- Object operations ---
 
-// FindObj searches room objects for one whose definition matches the given name.
-func (ri *RoomInstance) FindObj(name string) *ObjectInstance {
-	return ri.objects.FindObj(name)
+// FindObjs returns all objects in the room accepted by the matcher.
+func (ri *RoomInstance) FindObjs(match func(*ObjectInstance) bool) []*ObjectInstance {
+	return ri.objects.FindObjs(match)
 }
 
 // AddObj places an object instance in this room.
@@ -354,17 +354,18 @@ func (ri *RoomInstance) RemoveObj(instanceId string) *ObjectInstance {
 
 // --- Player operations ---
 
-// FindPlayer searches room players for one whose character name matches the given name.
-func (ri *RoomInstance) FindPlayer(name string) *CharacterInstance {
+// FindPlayers returns all players in the room accepted by the matcher.
+func (ri *RoomInstance) FindPlayers(match func(*CharacterInstance) bool) []*CharacterInstance {
 	ri.mu.RLock()
 	defer ri.mu.RUnlock()
 
+	var out []*CharacterInstance
 	for _, ps := range ri.players {
-		if ps.Character.Get().MatchName(name) {
-			return ps
+		if match(ps) {
+			out = append(out, ps)
 		}
 	}
-	return nil
+	return out
 }
 
 // AddPlayer adds a player to the room.

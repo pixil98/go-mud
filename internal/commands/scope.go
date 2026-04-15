@@ -1,54 +1,54 @@
 package commands
 
 import (
-	"strings"
-
 	"github.com/pixil98/go-mud/internal/game"
 )
 
 // objectOnlyFinder wraps an ObjectFinder (like Inventory or Equipment)
-// into a full TargetFinder. FindPlayer and FindMob always return nil.
+// into a full TargetFinder. Players and mobs always return empty.
 type objectOnlyFinder struct {
 	ObjectFinder
 }
 
-func (f objectOnlyFinder) FindPlayer(string) *game.CharacterInstance { return nil }
-func (f objectOnlyFinder) FindMob(string) *game.MobileInstance       { return nil }
+func (f objectOnlyFinder) FindPlayers(func(*game.CharacterInstance) bool) []*game.CharacterInstance {
+	return nil
+}
+func (f objectOnlyFinder) FindMobs(func(*game.MobileInstance) bool) []*game.MobileInstance {
+	return nil
+}
 func (f objectOnlyFinder) FindExit(string) (string, *game.ResolvedExit) { return "", nil }
 
 // playerOnlyFinder wraps a PlayerGroup into a full TargetFinder.
-// FindPlayer searches members by name; mobs, objects, and exits always return nil.
+// FindPlayers searches members via the matcher; mobs, objects, and exits always return empty.
 type playerOnlyFinder struct {
 	game.PlayerGroup
 }
 
-func (f playerOnlyFinder) FindPlayer(name string) *game.CharacterInstance {
-	lower := strings.ToLower(name)
-	var found *game.CharacterInstance
+func (f playerOnlyFinder) FindPlayers(match func(*game.CharacterInstance) bool) []*game.CharacterInstance {
+	var out []*game.CharacterInstance
 	f.ForEachPlayer(func(_ string, ci *game.CharacterInstance) {
-		if found != nil || ci == nil {
-			return
-		}
-		if strings.ToLower(ci.Name()) == lower {
-			found = ci
+		if ci != nil && match(ci) {
+			out = append(out, ci)
 		}
 	})
-	return found
+	return out
 }
 
-func (f playerOnlyFinder) FindObj(string) *game.ObjectInstance    { return nil }
-func (f playerOnlyFinder) FindMob(string) *game.MobileInstance    { return nil }
-func (f playerOnlyFinder) FindExit(string) (string, *game.ResolvedExit) { return "", nil }
+func (f playerOnlyFinder) FindObjs(func(*game.ObjectInstance) bool) []*game.ObjectInstance { return nil }
+func (f playerOnlyFinder) FindMobs(func(*game.MobileInstance) bool) []*game.MobileInstance { return nil }
+func (f playerOnlyFinder) FindExit(string) (string, *game.ResolvedExit)                    { return "", nil }
 
 // darkRoomFinder wraps a room so that all room-scope target lookups fail in
 // the dark. Movement isn't affected because the move handler calls FindExit
 // directly on the room, bypassing target resolution.
 type darkRoomFinder struct{}
 
-func (darkRoomFinder) FindPlayer(string) *game.CharacterInstance      { return nil }
-func (darkRoomFinder) FindMob(string) *game.MobileInstance            { return nil }
-func (darkRoomFinder) FindObj(string) *game.ObjectInstance            { return nil }
-func (darkRoomFinder) FindExit(string) (string, *game.ResolvedExit)   { return "", nil }
+func (darkRoomFinder) FindPlayers(func(*game.CharacterInstance) bool) []*game.CharacterInstance {
+	return nil
+}
+func (darkRoomFinder) FindMobs(func(*game.MobileInstance) bool) []*game.MobileInstance { return nil }
+func (darkRoomFinder) FindObjs(func(*game.ObjectInstance) bool) []*game.ObjectInstance { return nil }
+func (darkRoomFinder) FindExit(string) (string, *game.ResolvedExit)                    { return "", nil }
 
 // WorldScopes translates scope flags into search spaces by navigating
 // from the actor's room pointer.
