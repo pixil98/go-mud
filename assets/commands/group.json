@@ -13,7 +13,8 @@
                 "scopes": ["room"],
                 "input": "target",
                 "optional": true,
-                "not_found": "You don't see '{{ .Inputs.target }}' here."
+                "not_found": "You don't see '{{ .Inputs.target }}' here.",
+                "allow_all": true
             }
         ],
         "inputs": [

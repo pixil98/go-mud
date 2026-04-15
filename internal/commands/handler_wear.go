@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
@@ -53,26 +54,35 @@ func (f *WearHandlerFactory) Create() (CommandFunc, error) {
 }
 
 func (f *WearHandlerFactory) handle(ctx context.Context, actor WearActor, in *CommandInput) error {
-	target := in.FirstTarget("target")
-	if target == nil || target.Obj == nil {
+	targets := in.Targets["target"]
+	if len(targets) == 0 {
 		return NewUserError("Wear what?")
 	}
 
-	// Use resolved object definition
+	var errs []string
+	for _, target := range targets {
+		if err := f.wearOne(actor, target); err != nil {
+			errs = append(errs, err.Error())
+		}
+	}
+	if len(errs) > 0 {
+		return NewUserError(strings.Join(errs, "\n"))
+	}
+	return nil
+}
+
+func (f *WearHandlerFactory) wearOne(actor WearActor, target *TargetRef) error {
 	obj := target.Obj.instance.Object.Get()
 
-	// Check if the item is wearable
 	if !obj.HasFlag(assets.ObjectFlagWearable) {
 		return NewUserError(fmt.Sprintf("You can't wear %s.", obj.ShortDesc))
 	}
 
-	// Remove from source
 	oi := target.Obj.source.RemoveObj(target.Obj.InstanceId)
 	if oi == nil {
 		return NewUserError(fmt.Sprintf("You're not carrying %s.", target.Obj.Name))
 	}
 
-	// Try each slot the item supports until one succeeds
 	var slot string
 	var slotFull bool
 	for _, s := range obj.WearSlots {
@@ -93,10 +103,8 @@ func (f *WearHandlerFactory) handle(ctx context.Context, actor WearActor, in *Co
 		return NewUserError(fmt.Sprintf("You have nowhere to wear %s.", obj.ShortDesc))
 	}
 
-	// Send self message
 	actor.Notify(fmt.Sprintf("You wear %s.", obj.ShortDesc))
-
-	// Broadcast to room
 	roomMsg := fmt.Sprintf("%s wears %s.", actor.Asset().Name, obj.ShortDesc)
-	return f.pub.Publish(actor.Room(), []string{actor.Id()}, []byte(roomMsg))
+	_ = f.pub.Publish(actor.Room(), []string{actor.Id()}, []byte(roomMsg))
+	return nil
 }

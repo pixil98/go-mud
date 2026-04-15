@@ -12,7 +12,8 @@
                 "scopes": ["group"],
                 "input": "target",
                 "optional": true,
-                "not_found": "'{{ .Inputs.target }}' is not in your group."
+                "not_found": "'{{ .Inputs.target }}' is not in your group.",
+                "allow_all": true
             }
         ],
         "inputs": [

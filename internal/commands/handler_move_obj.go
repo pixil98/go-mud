@@ -91,6 +91,7 @@ func (f *MoveObjHandlerFactory) handle(ctx context.Context, char MoveObjActor, i
 		return err
 	}
 
+	var moved int
 	for _, item := range items {
 		if item.Obj.instance.Object.Get().HasFlag(assets.ObjectFlagImmobile) {
 			char.Notify(fmt.Sprintf("You can't seem to move %s.", item.Obj.Name))
@@ -103,11 +104,18 @@ func (f *MoveObjHandlerFactory) handle(ctx context.Context, char MoveObjActor, i
 		}
 		oi.ActivateDecay()
 		dest.AddObj(oi)
+		moved++
+	}
+
+	if moved == 0 {
+		return nil
 	}
 
 	if selfMsg := in.Config["self_message"]; selfMsg != "" {
 		char.Notify(selfMsg)
 	}
+	// For multi-item moves, the template only names the first item.
+	// TODO: build per-item or summary messages for all. targeting.
 
 	if f.pub != nil {
 		exclude := []string{char.Id()}
@@ -121,8 +129,10 @@ func (f *MoveObjHandlerFactory) handle(ctx context.Context, char MoveObjActor, i
 			}
 		}
 
-		if err := f.pub.Publish(char.Room(), exclude, []byte(in.Config["room_message"])); err != nil {
-			slog.Warn("failed to publish room message", "error", err)
+		if roomMsg := in.Config["room_message"]; roomMsg != "" {
+			if err := f.pub.Publish(char.Room(), exclude, []byte(roomMsg)); err != nil {
+				slog.Warn("failed to publish room message", "error", err)
+			}
 		}
 	}
 

@@ -58,11 +58,16 @@ func (f *GroupHandlerFactory) Create() (CommandFunc, error) {
 }
 
 func (f *GroupHandlerFactory) handle(ctx context.Context, in *CommandInput) error {
-	target := in.FirstTarget("target")
-	if target == nil {
+	targets := in.Targets["target"]
+	if len(targets) == 0 {
 		return f.showGroup(in.Actor)
 	}
-	return f.toggleMember(in.Actor, target)
+	for _, target := range targets {
+		if err := f.toggleMember(in.Actor, target); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (f *GroupHandlerFactory) showGroup(char game.Actor) error {
@@ -224,11 +229,16 @@ func (f *UngroupHandlerFactory) Create() (CommandFunc, error) {
 }
 
 func (f *UngroupHandlerFactory) handle(ctx context.Context, in *CommandInput) error {
-	target := in.FirstTarget("target")
-	if target == nil {
+	targets := in.Targets["target"]
+	if len(targets) == 0 {
 		return f.disbandOrLeave(in.Actor)
 	}
-	return f.removeTarget(in.Actor, target)
+	for _, target := range targets {
+		if err := f.removeTarget(in.Actor, target); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (f *UngroupHandlerFactory) disbandOrLeave(char game.Actor) error {
