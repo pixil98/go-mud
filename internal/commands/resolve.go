@@ -421,6 +421,11 @@ func (r *TargetResolver) ResolveSpecs(specs []assets.TargetSpec, inputs map[stri
 			}
 		}
 
+		_, _, isAll := parseTargetPrefix(name)
+		if isAll && !spec.AllowAll {
+			return nil, NewUserError("You can't do that to multiple things at once.")
+		}
+
 		refs, err := findWithNotFound(name, spec, spaces, inputs)
 		if err != nil {
 			if spec.AllowUnresolved {

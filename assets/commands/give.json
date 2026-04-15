@@ -13,7 +13,7 @@
             "no_self_target": "destination"
         },
         "targets": [
-            {"name": "item", "types": ["object"], "scopes": ["inventory"], "input": "item", "not_found": "You aren't carrying anything called '{{ .Inputs.item }}'."},
+            {"name": "item", "types": ["object"], "scopes": ["inventory"], "input": "item", "not_found": "You aren't carrying anything called '{{ .Inputs.item }}'.", "allow_all": true},
             {"name": "destination", "types": ["player", "mobile"], "scopes": ["room"], "input": "recipient", "not_found": "You don't see '{{ .Inputs.recipient }}' here."}
         ],
         "inputs": [

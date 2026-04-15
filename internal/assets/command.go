@@ -69,6 +69,7 @@ type TargetSpec struct {
 	ScopeTarget string   `json:"scope_target,omitempty"` // Resolve inside this target's contents when present; falls back to normal scopes
 	NotFound        string   `json:"not_found,omitempty"`        // Custom template for "not found" error; supports {{ .Input }}
 	AllowUnresolved bool     `json:"allow_unresolved,omitempty"` // If true, unresolved optional target is nil (not an error); requires Optional
+	AllowAll        bool     `json:"allow_all,omitempty"`        // If true, "all.keyword" and "all" select multiple targets
 }
 
 // Command defines a command loaded from JSON.

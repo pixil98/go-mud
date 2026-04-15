@@ -72,14 +72,9 @@ func (f *MoveObjHandlerFactory) Create() (CommandFunc, error) {
 }
 
 func (f *MoveObjHandlerFactory) handle(ctx context.Context, char MoveObjActor, in *CommandInput) error {
-	item := in.FirstTarget("item")
-	if item == nil || item.Obj == nil {
+	items := in.Targets["item"]
+	if len(items) == 0 {
 		return NewUserError("Move what?")
-	}
-
-	// Check immobile flag
-	if item.Obj.instance.Object.Get().HasFlag(assets.ObjectFlagImmobile) {
-		return NewUserError(fmt.Sprintf("You can't seem to move %s.", item.Obj.Name))
 	}
 
 	// Check self-targeting if configured
@@ -96,15 +91,19 @@ func (f *MoveObjHandlerFactory) handle(ctx context.Context, char MoveObjActor, i
 		return err
 	}
 
-	// Remove from source
-	oi := item.Obj.source.RemoveObj(item.Obj.InstanceId)
-	if oi == nil {
-		return NewUserError(fmt.Sprintf("You don't have %s.", item.Obj.Name))
-	}
+	for _, item := range items {
+		if item.Obj.instance.Object.Get().HasFlag(assets.ObjectFlagImmobile) {
+			char.Notify(fmt.Sprintf("You can't seem to move %s.", item.Obj.Name))
+			continue
+		}
 
-	// Start the decay timer on first player interaction.
-	oi.ActivateDecay()
-	dest.AddObj(oi)
+		oi := item.Obj.source.RemoveObj(item.Obj.InstanceId)
+		if oi == nil {
+			continue
+		}
+		oi.ActivateDecay()
+		dest.AddObj(oi)
+	}
 
 	if selfMsg := in.Config["self_message"]; selfMsg != "" {
 		char.Notify(selfMsg)

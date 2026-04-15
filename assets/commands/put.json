@@ -11,7 +11,7 @@
             "room_message": "{{ .Actor.Name }} puts {{ .Targets.item.Obj.Name }} in {{ .Targets.destination.Name }}."
         },
         "targets": [
-            {"name": "item", "types": ["object"], "scopes": ["inventory"], "input": "item", "not_found": "You aren't carrying anything called '{{ .Inputs.item }}'."},
+            {"name": "item", "types": ["object"], "scopes": ["inventory"], "input": "item", "not_found": "You aren't carrying anything called '{{ .Inputs.item }}'.", "allow_all": true},
             {"name": "destination", "types": ["object"], "scopes": ["room","inventory","equipment"], "input": "container", "not_found": "You don't see '{{ .Inputs.container }}' here."}
         ],
         "inputs": [
