@@ -3,11 +3,11 @@ package command
 import (
 	"crypto/ed25519"
 	"crypto/rand"
+	"errors"
 	"fmt"
 	"log/slog"
 	"os"
 
-	"github.com/pixil98/go-errors"
 	"github.com/pixil98/go-mud/internal/listener"
 	"github.com/pixil98/go-service"
 	"golang.org/x/crypto/ssh"
@@ -43,13 +43,13 @@ type ListenerConfig struct {
 }
 
 func (cl *ListenerConfig) validate() error {
-	el := errors.NewErrorList()
+	var errs []error
 
 	if cl.Port == 0 {
-		el.Add(fmt.Errorf("port must be set to a positive integer"))
+		errs = append(errs, fmt.Errorf("port must be set to a positive integer"))
 	}
 
-	return el.Err()
+	return errors.Join(errs...)
 }
 
 // BuildListener creates the appropriate service.Worker for this listener's protocol.

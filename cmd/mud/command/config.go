@@ -1,10 +1,9 @@
 package command
 
 import (
+	"errors"
 	"fmt"
 	"time"
-
-	"github.com/pixil98/go-errors"
 )
 
 // Config holds the top-level server configuration.
@@ -18,25 +17,25 @@ type Config struct {
 
 // Validate checks all sub-configs and ensures tick_interval is a valid duration of at least one second.
 func (c *Config) Validate() error {
-	el := errors.NewErrorList()
+	var errs []error
 
 	d, err := time.ParseDuration(c.TickInterval)
 	if err != nil {
-		el.Add(fmt.Errorf("parsing tick_interval: %w", err))
+		errs = append(errs, fmt.Errorf("parsing tick_interval: %w", err))
 	} else if d < time.Second {
-		el.Add(fmt.Errorf("tick_interval must be at least 1 second"))
+		errs = append(errs, fmt.Errorf("tick_interval must be at least 1 second"))
 	}
 
 	for i, l := range c.Listeners {
 		err := l.validate()
 		if err != nil {
-			el.Add(fmt.Errorf("listener %d: %w", i, err))
+			errs = append(errs, fmt.Errorf("listener %d: %w", i, err))
 		}
 	}
 
-	el.Add(c.Storage.validate())
-	el.Add(c.Nats.validate())
-	el.Add(c.PlayerManager.validate())
+	errs = append(errs, c.Storage.validate())
+	errs = append(errs, c.Nats.validate())
+	errs = append(errs, c.PlayerManager.validate())
 
-	return el.Err()
+	return errors.Join(errs...)
 }

@@ -1,10 +1,9 @@
 package assets
 
 import (
+	"errors"
 	"fmt"
 	"time"
-
-	"github.com/pixil98/go-errors"
 )
 
 // Zone reset mode constants.
@@ -23,33 +22,33 @@ type Zone struct {
 
 // Validate satisfies storage.ValidatingSpec.
 func (z *Zone) Validate() error {
-	el := errors.NewErrorList()
+	var errs []error
 
 	// Validate reset mode is specified and valid
 	switch z.ResetMode {
 	case ZoneResetNever, ZoneResetLifespan, ZoneResetEmpty:
 		// valid
 	case "":
-		el.Add(fmt.Errorf("reset_mode is required (must be %s, %s, or %s)",
+		errs = append(errs, fmt.Errorf("reset_mode is required (must be %s, %s, or %s)",
 			ZoneResetNever, ZoneResetLifespan, ZoneResetEmpty))
 	default:
-		el.Add(fmt.Errorf("invalid reset_mode: %s (must be %s, %s, or %s)",
+		errs = append(errs, fmt.Errorf("invalid reset_mode: %s (must be %s, %s, or %s)",
 			z.ResetMode, ZoneResetNever, ZoneResetLifespan, ZoneResetEmpty))
 	}
 
 	// Parse and validate lifespan for time-based reset modes
 	if z.ResetMode == ZoneResetLifespan || z.ResetMode == ZoneResetEmpty {
 		if z.Lifespan == "" {
-			el.Add(fmt.Errorf("lifespan is required for reset_mode %s", z.ResetMode))
+			errs = append(errs, fmt.Errorf("lifespan is required for reset_mode %s", z.ResetMode))
 		} else {
 			d, err := time.ParseDuration(z.Lifespan)
 			if err != nil {
-				el.Add(fmt.Errorf("invalid lifespan %q: %w", z.Lifespan, err))
+				errs = append(errs, fmt.Errorf("invalid lifespan %q: %w", z.Lifespan, err))
 			} else if d <= 0 {
-				el.Add(fmt.Errorf("lifespan must be positive for reset_mode %s", z.ResetMode))
+				errs = append(errs, fmt.Errorf("lifespan must be positive for reset_mode %s", z.ResetMode))
 			}
 		}
 	}
 
-	return el.Err()
+	return errors.Join(errs...)
 }

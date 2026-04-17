@@ -1,10 +1,10 @@
 package command
 
 import (
+	"errors"
 	"fmt"
 	"os"
 
-	"github.com/pixil98/go-errors"
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
@@ -84,18 +84,18 @@ func (c *StorageConfig) BuildDictionary() (*game.Dictionary, error) {
 }
 
 func (c *StorageConfig) validate() error {
-	el := errors.NewErrorList()
-	el.Add(c.Characters.Validate("characters"))
-	el.Add(c.Commands.Validate("commands"))
-	el.Add(c.Zones.Validate("zones"))
-	el.Add(c.Rooms.Validate("rooms"))
-	el.Add(c.Mobiles.Validate("mobiles"))
-	el.Add(c.Objects.Validate("objects"))
-	el.Add(c.Pronouns.Validate("pronouns"))
-	el.Add(c.Races.Validate("races"))
-	el.Add(c.Trees.Validate("trees"))
-	el.Add(c.Abilities.Validate("abilities"))
-	return el.Err()
+	var errs []error
+	errs = append(errs, c.Characters.Validate("characters"))
+	errs = append(errs, c.Commands.Validate("commands"))
+	errs = append(errs, c.Zones.Validate("zones"))
+	errs = append(errs, c.Rooms.Validate("rooms"))
+	errs = append(errs, c.Mobiles.Validate("mobiles"))
+	errs = append(errs, c.Objects.Validate("objects"))
+	errs = append(errs, c.Pronouns.Validate("pronouns"))
+	errs = append(errs, c.Races.Validate("races"))
+	errs = append(errs, c.Trees.Validate("trees"))
+	errs = append(errs, c.Abilities.Validate("abilities"))
+	return errors.Join(errs...)
 }
 
 // AssetConfig holds the file path for a single asset type.

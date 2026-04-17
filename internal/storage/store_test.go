@@ -274,9 +274,9 @@ func TestFileStore_GetAll(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			tmpDir := t.TempDir()
 			store, err := NewFileStore[*mockStoreSpec](tmpDir)
-	if err != nil {
-		t.Fatalf("unexpected error creating store: %v", err)
-	}
+			if err != nil {
+				t.Fatalf("unexpected error creating store: %v", err)
+			}
 			store.records = tt.records
 
 			result := store.GetAll()

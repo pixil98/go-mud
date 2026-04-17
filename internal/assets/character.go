@@ -30,15 +30,15 @@ type Character struct {
 	Pronoun storage.SmartIdentifier[*Pronoun] `json:"pronoun,omitempty"`
 	Race    storage.SmartIdentifier[*Race]    `json:"race,omitempty"`
 
-	Level      int            `json:"level,omitempty"`
+	Level      int             `json:"level,omitempty"`
 	BaseStats  map[StatKey]int `json:"base_stats,omitempty"`
-	Experience int            `json:"experience,omitempty"`
+	Experience int             `json:"experience,omitempty"`
 
 	// Persisted resource current values (max is always computed from perks).
 	Resources map[string]int `json:"resources,omitempty"`
 
 	// Inventory and equipment stored as spawn specs so objects are re-materialized on login
-	Inventory []ObjectSpawn   `json:"inventory,omitempty"`
+	Inventory []ObjectSpawn    `json:"inventory,omitempty"`
 	Equipment []EquipmentSpawn `json:"equipment,omitempty"`
 }
 

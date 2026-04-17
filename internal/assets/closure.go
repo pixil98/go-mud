@@ -1,10 +1,10 @@
 package assets
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
-	"github.com/pixil98/go-errors"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
@@ -25,17 +25,17 @@ type Closure struct {
 
 // Validate checks that any lock is valid and consistent with the closure state.
 func (c *Closure) Validate() error {
-	el := errors.NewErrorList()
+	var errs []error
 	if c.Name != "" && strings.Contains(c.Name, " ") {
-		el.Add(fmt.Errorf("closure name %q must be a single word", c.Name))
+		errs = append(errs, fmt.Errorf("closure name %q must be a single word", c.Name))
 	}
 	if c.Lock != nil {
-		el.Add(c.Lock.Validate())
+		errs = append(errs, c.Lock.Validate())
 		if c.Lock.Locked && !c.Closed {
-			el.Add(fmt.Errorf("locked closure must also be closed"))
+			errs = append(errs, fmt.Errorf("locked closure must also be closed"))
 		}
 	}
-	return el.Err()
+	return errors.Join(errs...)
 }
 
 // Resolve resolves the lock's key reference if present.

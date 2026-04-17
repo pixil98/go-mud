@@ -1,9 +1,8 @@
 package assets
 
 import (
+	"errors"
 	"fmt"
-
-	"github.com/pixil98/go-errors"
 )
 
 // Race defines a playable race loaded from asset files.
@@ -15,15 +14,15 @@ type Race struct {
 
 // Validate checks that all perks on the race are valid.
 func (r *Race) Validate() error {
-	el := errors.NewErrorList()
+	var errs []error
 
 	for i, p := range r.Perks {
 		if err := p.validate(); err != nil {
-			el.Add(fmt.Errorf("perks[%d]: %w", i, err))
+			errs = append(errs, fmt.Errorf("perks[%d]: %w", i, err))
 		}
 	}
 
-	return el.Err()
+	return errors.Join(errs...)
 }
 
 // Selector returns the race name for use in interactive selection prompts.

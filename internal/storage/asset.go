@@ -2,11 +2,10 @@ package storage
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"reflect"
 	"regexp"
-
-	"github.com/pixil98/go-errors"
 )
 
 var identifierPattern = regexp.MustCompile(`^[a-zA-Z0-9-]*$`)
@@ -28,23 +27,23 @@ func (a *Asset[T]) Id() string {
 }
 
 func (a *Asset[T]) Validate() error {
-	el := errors.NewErrorList()
+	var errs []error
 
 	if a.Version == 0 {
-		el.Add(fmt.Errorf("version must be set"))
+		errs = append(errs, fmt.Errorf("version must be set"))
 	}
 
 	if a.Identifier == "" {
-		el.Add(fmt.Errorf("id must be set"))
+		errs = append(errs, fmt.Errorf("id must be set"))
 	}
 
 	if !identifierPattern.MatchString(a.Identifier) {
-		el.Add(fmt.Errorf("id must be alphanumeric"))
+		errs = append(errs, fmt.Errorf("id must be alphanumeric"))
 	}
 
-	el.Add(a.Spec.Validate())
+	errs = append(errs, a.Spec.Validate())
 
-	return el.Err()
+	return errors.Join(errs...)
 }
 
 // SmartIdentifier holds an asset key and its resolved value, supporting lazy resolution from a Storer.

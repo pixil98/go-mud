@@ -122,8 +122,8 @@ func (c *Command) Help(name string) string {
 	}
 
 	defaultDescriptions := map[string]string{
-		DefaultRoomEnemies: "Targets all enemies in the room.",
-		DefaultGroupInRoom: "Targets group members in the room.",
+		DefaultRoomEnemies:  "Targets all enemies in the room.",
+		DefaultGroupInRoom:  "Targets group members in the room.",
 		DefaultCombatTarget: "Defaults to your current combat target.",
 	}
 	for _, t := range c.Targets {

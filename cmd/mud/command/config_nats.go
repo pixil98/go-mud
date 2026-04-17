@@ -1,10 +1,10 @@
 package command
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
-	"github.com/pixil98/go-errors"
 	"github.com/pixil98/go-mud/internal/messaging"
 )
 
@@ -16,16 +16,16 @@ type NatsConfig struct {
 }
 
 func (n *NatsConfig) validate() error {
-	el := errors.NewErrorList()
+	var errs []error
 
 	if n.StartTimeout != "" {
 		_, err := time.ParseDuration(n.StartTimeout)
 		if err != nil {
-			el.Add(fmt.Errorf("parsing start_timeout: %w", err))
+			errs = append(errs, fmt.Errorf("parsing start_timeout: %w", err))
 		}
 	}
 
-	return el.Err()
+	return errors.Join(errs...)
 }
 
 func (n *NatsConfig) buildNatsServer() (*messaging.NatsServer, error) {

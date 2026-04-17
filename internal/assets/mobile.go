@@ -1,10 +1,10 @@
 package assets
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
-	"github.com/pixil98/go-errors"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
@@ -18,14 +18,14 @@ type MobileFlag int
 // MobileFlag values.
 const (
 	MobileFlagUnknown    MobileFlag = iota
-	MobileFlagSentinel               // Doesn't wander from spawn room
-	MobileFlagAggressive             // Attacks players on sight
-	MobileFlagWimpy                  // Flees at low HP
-	MobileFlagHelper                 // Assists other mobs being attacked in same room
-	MobileFlagStayZone               // Won't wander outside its zone
-	MobileFlagScavenger              // Picks up valuables from the ground
-	MobileFlagMemory                 // Remembers and retaliates against attackers
-	MobileFlagAware                  // Cannot be backstabbed
+	MobileFlagSentinel              // Doesn't wander from spawn room
+	MobileFlagAggressive            // Attacks players on sight
+	MobileFlagWimpy                 // Flees at low HP
+	MobileFlagHelper                // Assists other mobs being attacked in same room
+	MobileFlagStayZone              // Won't wander outside its zone
+	MobileFlagScavenger             // Picks up valuables from the ground
+	MobileFlagMemory                // Remembers and retaliates against attackers
+	MobileFlagAware                 // Cannot be backstabbed
 )
 
 func parseMobileFlag(s string) MobileFlag {
@@ -114,34 +114,34 @@ func (m *Mobile) MatchName(name string) bool {
 
 // Validate returns an error if the mobile definition is invalid.
 func (m *Mobile) Validate() error {
-	el := errors.NewErrorList()
+	var errs []error
 	if len(m.Aliases) < 1 {
-		el.Add(fmt.Errorf("mobile alias is required"))
+		errs = append(errs, fmt.Errorf("mobile alias is required"))
 	}
 	if m.ShortDesc == "" {
-		el.Add(fmt.Errorf("mobile short description is required"))
+		errs = append(errs, fmt.Errorf("mobile short description is required"))
 	}
 	for i := range m.Perks {
 		if err := m.Perks[i].validate(); err != nil {
-			el.Add(fmt.Errorf("perk[%d]: %w", i, err))
+			errs = append(errs, fmt.Errorf("perk[%d]: %w", i, err))
 		}
 	}
 	for _, f := range m.Flags {
 		if parseMobileFlag(f) == MobileFlagUnknown {
-			el.Add(fmt.Errorf("unknown flag %q", f))
+			errs = append(errs, fmt.Errorf("unknown flag %q", f))
 		}
 	}
-	return el.Err()
+	return errors.Join(errs...)
 }
 
 // Resolve resolves foreign key references on the mobile definition.
 func (m *Mobile) Resolve(objs storage.Storer[*Object]) error {
-	el := errors.NewErrorList()
+	var errs []error
 	for i := range m.Inventory {
-		el.Add(m.Inventory[i].Resolve(objs))
+		errs = append(errs, m.Inventory[i].Resolve(objs))
 	}
 	for i := range m.Equipment {
-		el.Add(m.Equipment[i].Resolve(objs))
+		errs = append(errs, m.Equipment[i].Resolve(objs))
 	}
-	return el.Err()
+	return errors.Join(errs...)
 }

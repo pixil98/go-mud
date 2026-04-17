@@ -1,10 +1,9 @@
 package assets
 
 import (
+	"errors"
 	"fmt"
 	"strings"
-
-	"github.com/pixil98/go-errors"
 )
 
 // EffectSpec pairs an effect type with its config in the ability JSON.
@@ -23,24 +22,24 @@ type Ability struct {
 
 // Validate checks that the ability has at least one effect and valid command inputs.
 func (a *Ability) Validate() error {
-	el := errors.NewErrorList()
+	var errs []error
 
 	if len(a.Effects) == 0 {
-		el.Add(fmt.Errorf("at least one effect is required"))
+		errs = append(errs, fmt.Errorf("at least one effect is required"))
 	}
 	for i, e := range a.Effects {
 		if e.Type == "" {
-			el.Add(fmt.Errorf("effect %d: type is required", i))
+			errs = append(errs, fmt.Errorf("effect %d: type is required", i))
 		}
 	}
 
 	// Validate embedded command. The handler is set by registerAbility at
 	// compile time, so we use ValidateInputsTargets to skip the handler check.
 	if err := a.Command.ValidateInputsTargets(); err != nil {
-		el.Add(fmt.Errorf("command: %w", err))
+		errs = append(errs, fmt.Errorf("command: %w", err))
 	}
 
-	return el.Err()
+	return errors.Join(errs...)
 }
 
 // Help returns a formatted help string including ability-specific cost info.

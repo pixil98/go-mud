@@ -1,10 +1,10 @@
 package command
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
-	"github.com/pixil98/go-errors"
 	"github.com/pixil98/go-mud/internal/commands"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/player"
@@ -19,16 +19,16 @@ type PlayerManagerConfig struct {
 }
 
 func (c *PlayerManagerConfig) validate() error {
-	el := errors.NewErrorList()
+	var errs []error
 
 	if c.DefaultZone == "" {
-		el.Add(fmt.Errorf("default_zone is required"))
+		errs = append(errs, fmt.Errorf("default_zone is required"))
 	}
 	if c.DefaultRoom == "" {
-		el.Add(fmt.Errorf("default_room is required"))
+		errs = append(errs, fmt.Errorf("default_room is required"))
 	}
 
-	return el.Err()
+	return errors.Join(errs...)
 }
 
 // BuildPlayerManager creates a PlayerManager from this configuration.

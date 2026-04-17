@@ -1,10 +1,10 @@
 package assets
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
-	"github.com/pixil98/go-errors"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
@@ -106,44 +106,44 @@ func (o *Object) HasFlag(flag ObjectFlag) bool {
 
 // Validate satisfies storage.ValidatingSpec
 func (o *Object) Validate() error {
-	el := errors.NewErrorList()
+	var errs []error
 	if len(o.Aliases) < 1 {
-		el.Add(fmt.Errorf("object alias is required"))
+		errs = append(errs, fmt.Errorf("object alias is required"))
 	}
 	if o.ShortDesc == "" {
-		el.Add(fmt.Errorf("object short description is required"))
+		errs = append(errs, fmt.Errorf("object short description is required"))
 	}
 	for _, f := range o.Flags {
 		if parseObjectFlag(f) == ObjectFlagUnknown {
-			el.Add(fmt.Errorf("unknown flag %q", f))
+			errs = append(errs, fmt.Errorf("unknown flag %q", f))
 		}
 	}
 	if o.HasFlag(ObjectFlagWearable) && len(o.WearSlots) == 0 {
-		el.Add(fmt.Errorf("wearable items must have at least one wear_slot"))
+		errs = append(errs, fmt.Errorf("wearable items must have at least one wear_slot"))
 	}
 	if !o.HasFlag(ObjectFlagWearable) && len(o.WearSlots) > 0 {
-		el.Add(fmt.Errorf("wear_slots requires the wearable flag"))
+		errs = append(errs, fmt.Errorf("wear_slots requires the wearable flag"))
 	}
 	for i := range o.Perks {
 		if err := o.Perks[i].validate(); err != nil {
-			el.Add(fmt.Errorf("perk[%d]: %w", i, err))
+			errs = append(errs, fmt.Errorf("perk[%d]: %w", i, err))
 		}
 	}
 	if o.Closure != nil {
 		if !o.HasFlag(ObjectFlagContainer) {
-			el.Add(fmt.Errorf("closure requires the container flag"))
+			errs = append(errs, fmt.Errorf("closure requires the container flag"))
 		}
-		el.Add(o.Closure.Validate())
+		errs = append(errs, o.Closure.Validate())
 	}
 	for i, ed := range o.ExtraDescs {
 		if len(ed.Keywords) == 0 {
-			el.Add(fmt.Errorf("extra_descs[%d]: at least one keyword is required", i))
+			errs = append(errs, fmt.Errorf("extra_descs[%d]: at least one keyword is required", i))
 		}
 		if ed.Description == "" {
-			el.Add(fmt.Errorf("extra_descs[%d]: description is required", i))
+			errs = append(errs, fmt.Errorf("extra_descs[%d]: description is required", i))
 		}
 	}
-	return el.Err()
+	return errors.Join(errs...)
 }
 
 // Resolve resolves foreign key references on the object definition.
@@ -164,12 +164,12 @@ type ObjectSpawn struct {
 
 // Resolve resolves foreign key references in the spawn spec.
 func (s *ObjectSpawn) Resolve(objs storage.Storer[*Object]) error {
-	el := errors.NewErrorList()
-	el.Add(s.Object.Resolve(objs))
+	var errs []error
+	errs = append(errs, s.Object.Resolve(objs))
 	for i := range s.Contents {
-		el.Add(s.Contents[i].Resolve(objs))
+		errs = append(errs, s.Contents[i].Resolve(objs))
 	}
-	return el.Err()
+	return errors.Join(errs...)
 }
 
 // EquipmentSpawn pairs a slot name with an object spawn for equipment persistence.

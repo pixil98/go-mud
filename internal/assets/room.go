@@ -1,10 +1,10 @@
 package assets
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
-	"github.com/pixil98/go-errors"
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
@@ -18,9 +18,9 @@ type RoomFlag int
 // RoomFlag values.
 const (
 	RoomFlagUnknown        RoomFlag = iota
-	RoomFlagDeath                    // Death trap; character dies on entry
-	RoomFlagNoMob                    // Mobs cannot wander in
-	RoomFlagSingleOccupant           // Only one player allowed at a time
+	RoomFlagDeath                   // Death trap; character dies on entry
+	RoomFlagNoMob                   // Mobs cannot wander in
+	RoomFlagSingleOccupant          // Only one player allowed at a time
 )
 
 func parseRoomFlag(s string) RoomFlag {
@@ -53,7 +53,7 @@ type ExtraDesc struct {
 
 // Exit defines a destination for movement from a room.
 type Exit struct {
-	Zone        storage.SmartIdentifier[*Zone] `json:"zone_id"`               // Optional; defaults to current zone
+	Zone        storage.SmartIdentifier[*Zone] `json:"zone_id"` // Optional; defaults to current zone
 	Room        storage.SmartIdentifier[*Room] `json:"room_id"`
 	Closure     *Closure                       `json:"closure,omitempty"`     // Optional open/close/lock barrier
 	Description string                         `json:"description,omitempty"` // Shown when player looks in this direction
@@ -88,65 +88,65 @@ func (r *Room) HasFlag(flag RoomFlag) bool {
 
 // Validate returns an error if the room definition is invalid.
 func (r *Room) Validate() error {
-	el := errors.NewErrorList()
+	var errs []error
 
 	if r.Name == "" {
-		el.Add(fmt.Errorf("room name is required"))
+		errs = append(errs, fmt.Errorf("room name is required"))
 	}
-	el.Add(r.Zone.Validate())
+	errs = append(errs, r.Zone.Validate())
 
 	for dir, exit := range r.Exits {
 		if err := exit.Room.Validate(); err != nil {
-			el.Add(fmt.Errorf("exit %s: %w", dir, err))
+			errs = append(errs, fmt.Errorf("exit %s: %w", dir, err))
 		}
 		if exit.Closure != nil {
 			if exit.Closure.Name == "" {
-				el.Add(fmt.Errorf("exit %s closure: name is required", dir))
+				errs = append(errs, fmt.Errorf("exit %s closure: name is required", dir))
 			}
 			if err := exit.Closure.Validate(); err != nil {
-				el.Add(fmt.Errorf("exit %s closure: %w", dir, err))
+				errs = append(errs, fmt.Errorf("exit %s closure: %w", dir, err))
 			}
 		}
 	}
 
 	for _, f := range r.Flags {
 		if parseRoomFlag(f) == RoomFlagUnknown {
-			el.Add(fmt.Errorf("unknown flag %q", f))
+			errs = append(errs, fmt.Errorf("unknown flag %q", f))
 		}
 	}
 
 	for i, ed := range r.ExtraDescs {
 		if len(ed.Keywords) == 0 {
-			el.Add(fmt.Errorf("extra_descs[%d]: at least one keyword is required", i))
+			errs = append(errs, fmt.Errorf("extra_descs[%d]: at least one keyword is required", i))
 		}
 		if ed.Description == "" {
-			el.Add(fmt.Errorf("extra_descs[%d]: description is required", i))
+			errs = append(errs, fmt.Errorf("extra_descs[%d]: description is required", i))
 		}
 	}
 
-	return el.Err()
+	return errors.Join(errs...)
 }
 
 // Resolve resolves foreign key references on the room definition.
 func (r *Room) Resolve(zones storage.Storer[*Zone], rooms storage.Storer[*Room], mobiles storage.Storer[*Mobile], objects storage.Storer[*Object]) error {
-	el := errors.NewErrorList()
-	el.Add(r.Zone.Resolve(zones))
+	var errs []error
+	errs = append(errs, r.Zone.Resolve(zones))
 	for dir, exit := range r.Exits {
-		el.Add(exit.Room.Resolve(rooms))
+		errs = append(errs, exit.Room.Resolve(rooms))
 		if exit.Zone.Id() != "" {
-			el.Add(exit.Zone.Resolve(zones))
+			errs = append(errs, exit.Zone.Resolve(zones))
 		}
 		if exit.Closure != nil {
-			el.Add(exit.Closure.Resolve(objects))
+			errs = append(errs, exit.Closure.Resolve(objects))
 		}
 		r.Exits[dir] = exit
 	}
 
 	for i := range r.MobSpawns {
-		el.Add(r.MobSpawns[i].Resolve(mobiles))
+		errs = append(errs, r.MobSpawns[i].Resolve(mobiles))
 	}
 	for i := range r.ObjSpawns {
-		el.Add(r.ObjSpawns[i].Resolve(objects))
+		errs = append(errs, r.ObjSpawns[i].Resolve(objects))
 	}
-	return el.Err()
+	return errors.Join(errs...)
 }

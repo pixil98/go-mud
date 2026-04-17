@@ -1,9 +1,8 @@
 package assets
 
 import (
+	"errors"
 	"fmt"
-
-	goerrors "github.com/pixil98/go-errors"
 )
 
 // Tree defines a skill/spell progression tree. Players spend major points to
@@ -23,13 +22,13 @@ type Tree struct {
 
 // Validate checks that the tree has a name, description, and all nodes are valid with no duplicate IDs.
 func (t *Tree) Validate() error {
-	el := goerrors.NewErrorList()
+	var errs []error
 
 	if t.Name == "" {
-		el.Add(fmt.Errorf("name is required"))
+		errs = append(errs, fmt.Errorf("name is required"))
 	}
 	if t.Description == "" {
-		el.Add(fmt.Errorf("description is required"))
+		errs = append(errs, fmt.Errorf("description is required"))
 	}
 
 	// Build the full set of node IDs before validating individual nodes so
@@ -41,7 +40,7 @@ func (t *Tree) Validate() error {
 			continue
 		}
 		if allIds[n.Id] {
-			el.Add(fmt.Errorf("spine[%d]: duplicate id %q", i, n.Id))
+			errs = append(errs, fmt.Errorf("spine[%d]: duplicate id %q", i, n.Id))
 		}
 		allIds[n.Id] = true
 	}
@@ -50,7 +49,7 @@ func (t *Tree) Validate() error {
 			continue
 		}
 		if allIds[n.Id] {
-			el.Add(fmt.Errorf("nodes[%d]: duplicate id %q", i, n.Id))
+			errs = append(errs, fmt.Errorf("nodes[%d]: duplicate id %q", i, n.Id))
 		}
 		allIds[n.Id] = true
 	}
@@ -59,28 +58,28 @@ func (t *Tree) Validate() error {
 			continue
 		}
 		if allIds[n.Id] {
-			el.Add(fmt.Errorf("capstones[%d]: duplicate id %q", i, n.Id))
+			errs = append(errs, fmt.Errorf("capstones[%d]: duplicate id %q", i, n.Id))
 		}
 		allIds[n.Id] = true
 	}
 
 	for i, n := range t.Spine {
 		if err := n.validate(allIds); err != nil {
-			el.Add(fmt.Errorf("spine[%d]: %w", i, err))
+			errs = append(errs, fmt.Errorf("spine[%d]: %w", i, err))
 		}
 	}
 	for i, n := range t.Nodes {
 		if err := n.validate(allIds); err != nil {
-			el.Add(fmt.Errorf("nodes[%d]: %w", i, err))
+			errs = append(errs, fmt.Errorf("nodes[%d]: %w", i, err))
 		}
 	}
 	for i, n := range t.Capstones {
 		if err := n.validate(allIds); err != nil {
-			el.Add(fmt.Errorf("capstones[%d]: %w", i, err))
+			errs = append(errs, fmt.Errorf("capstones[%d]: %w", i, err))
 		}
 	}
 
-	return el.Err()
+	return errors.Join(errs...)
 }
 
 // Node is a single unlockable in a tree. Its position in the tree (Spine,
@@ -106,32 +105,32 @@ func (n *Node) Rank() int {
 }
 
 func (n *Node) validate(allIds map[string]bool) error {
-	el := goerrors.NewErrorList()
+	var errs []error
 
 	if n.Id == "" {
-		el.Add(fmt.Errorf("id is required"))
+		errs = append(errs, fmt.Errorf("id is required"))
 	}
 	if n.Name == "" {
-		el.Add(fmt.Errorf("name is required"))
+		errs = append(errs, fmt.Errorf("name is required"))
 	}
 	if len(n.Perks) == 0 {
-		el.Add(fmt.Errorf("at least one perk is required"))
+		errs = append(errs, fmt.Errorf("at least one perk is required"))
 	}
 	if n.MaxRank < 0 {
-		el.Add(fmt.Errorf("max_rank cannot be negative"))
+		errs = append(errs, fmt.Errorf("max_rank cannot be negative"))
 	}
 	if n.Prereqs != nil {
 		if err := n.Prereqs.validate(allIds); err != nil {
-			el.Add(fmt.Errorf("prereqs: %w", err))
+			errs = append(errs, fmt.Errorf("prereqs: %w", err))
 		}
 	}
 	for i, p := range n.Perks {
 		if err := p.validate(); err != nil {
-			el.Add(fmt.Errorf("perks[%d]: %w", i, err))
+			errs = append(errs, fmt.Errorf("perks[%d]: %w", i, err))
 		}
 	}
 
-	return el.Err()
+	return errors.Join(errs...)
 }
 
 // Prereq describes the conditions that must be met before a node can be unlocked.
@@ -161,7 +160,7 @@ type Term struct {
 }
 
 func (p *Prereq) validate(allIds map[string]bool) error {
-	el := goerrors.NewErrorList()
+	var errs []error
 
 	typ := p.Type
 	if typ == "" {
@@ -171,8 +170,8 @@ func (p *Prereq) validate(allIds map[string]bool) error {
 	// If prereqs exists (non-nil), require at least one term.
 	// Use `Prereqs: nil` / omit prereqs for "no prerequisites".
 	if len(p.Terms) == 0 {
-		el.Add(fmt.Errorf("empty prereq group: omit prereqs entirely for no requirements"))
-		return el.Err()
+		errs = append(errs, fmt.Errorf("empty prereq group: omit prereqs entirely for no requirements"))
+		return errors.Join(errs...)
 	}
 
 	switch typ {
@@ -181,19 +180,19 @@ func (p *Prereq) validate(allIds map[string]bool) error {
 	case "not":
 		// N is not meaningful for NOT; NOT is always "none of the terms satisfied".
 		if p.N != 0 {
-			el.Add(fmt.Errorf("n has no effect for type %q; must be 0/omitted", typ))
+			errs = append(errs, fmt.Errorf("n has no effect for type %q; must be 0/omitted", typ))
 		}
 	default:
-		el.Add(fmt.Errorf("type must be \"and\", \"or\", or \"not\", got %q", p.Type))
+		errs = append(errs, fmt.Errorf("type must be \"and\", \"or\", or \"not\", got %q", p.Type))
 	}
 
 	if p.N < 0 {
-		el.Add(fmt.Errorf("n cannot be negative"))
+		errs = append(errs, fmt.Errorf("n cannot be negative"))
 	}
 
 	// For "and"/"or", N (if set) cannot exceed number of terms.
 	if (typ == "and" || typ == "or") && p.N > len(p.Terms) {
-		el.Add(fmt.Errorf("n (%d) cannot exceed the number of terms (%d)", p.N, len(p.Terms)))
+		errs = append(errs, fmt.Errorf("n (%d) cannot exceed the number of terms (%d)", p.N, len(p.Terms)))
 	}
 
 	// Validate terms and detect duplicates for leaf node references.
@@ -204,25 +203,25 @@ func (p *Prereq) validate(allIds map[string]bool) error {
 
 		if hasNode == hasGroup {
 			// Either both set or neither set.
-			el.Add(fmt.Errorf("terms[%d]: exactly one of node or group must be set", i))
+			errs = append(errs, fmt.Errorf("terms[%d]: exactly one of node or group must be set", i))
 			continue
 		}
 
 		if hasNode {
 			if _, dup := seenNodes[t.Node]; dup {
-				el.Add(fmt.Errorf("terms[%d]: duplicate node id %q", i, t.Node))
+				errs = append(errs, fmt.Errorf("terms[%d]: duplicate node id %q", i, t.Node))
 			} else {
 				seenNodes[t.Node] = struct{}{}
 			}
 			if !allIds[t.Node] {
-				el.Add(fmt.Errorf("terms[%d]: node %q not found", i, t.Node))
+				errs = append(errs, fmt.Errorf("terms[%d]: node %q not found", i, t.Node))
 			}
 			continue
 		}
 
 		// hasGroup
 		if err := t.Group.validate(allIds); err != nil {
-			el.Add(fmt.Errorf("terms[%d].group: %w", i, err))
+			errs = append(errs, fmt.Errorf("terms[%d].group: %w", i, err))
 		}
 	}
 
@@ -230,5 +229,5 @@ func (p *Prereq) validate(allIds map[string]bool) error {
 	// NOT is defined as NOT(OR(terms)), so it's meaningful only with terms present.
 	// (Nothing else required here.)
 
-	return el.Err()
+	return errors.Join(errs...)
 }
