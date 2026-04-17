@@ -27,11 +27,11 @@ var _ ClosureActor = (*game.CharacterInstance)(nil)
 // Targets:
 //   - target (required): an exit or container object resolved by the command system
 type ClosureHandlerFactory struct {
-	pub game.Publisher
+	pub Publisher
 }
 
 // NewClosureHandlerFactory creates a handler factory for open/close/lock/unlock commands.
-func NewClosureHandlerFactory(pub game.Publisher) *ClosureHandlerFactory {
+func NewClosureHandlerFactory(pub Publisher) *ClosureHandlerFactory {
 	return &ClosureHandlerFactory{pub: pub}
 }
 

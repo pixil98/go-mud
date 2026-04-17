@@ -32,11 +32,11 @@ type ObjectHolder interface {
 //   - message (required): Go template for room broadcast
 //   - no_self_target (optional): target name to prevent self-targeting
 type MoveObjHandlerFactory struct {
-	pub game.Publisher
+	pub Publisher
 }
 
 // NewMoveObjHandlerFactory creates a handler factory for object movement commands.
-func NewMoveObjHandlerFactory(pub game.Publisher) *MoveObjHandlerFactory {
+func NewMoveObjHandlerFactory(pub Publisher) *MoveObjHandlerFactory {
 	return &MoveObjHandlerFactory{pub: pub}
 }
 

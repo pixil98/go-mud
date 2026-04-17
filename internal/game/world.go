@@ -187,10 +187,10 @@ func (w *WorldState) MarkPlayerActive(charId string) {
 	}
 }
 
-// ForEachPlayer calls fn for each player in the world while holding the lock.
+// ForEachPlayer calls fn for each player in the world while holding the read lock.
 func (w *WorldState) ForEachPlayer(fn func(string, *CharacterInstance)) {
-	w.mu.Lock()
-	defer w.mu.Unlock()
+	w.mu.RLock()
+	defer w.mu.RUnlock()
 	for id, ps := range w.players {
 		fn(id, ps)
 	}

@@ -18,7 +18,3 @@ func SinglePlayer(charId string) PlayerGroup {
 	return singlePlayer(charId)
 }
 
-// Publisher sends messages to groups of players.
-type Publisher interface {
-	Publish(targets PlayerGroup, exclude []string, data []byte) error
-}

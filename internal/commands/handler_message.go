@@ -13,11 +13,11 @@ import (
 //   - recipient_message (required): template for message sent to scope targets
 //   - sender_message (optional): template for 2nd-person message sent to actor
 type MessageHandlerFactory struct {
-	pub game.Publisher
+	pub Publisher
 }
 
 // NewMessageHandlerFactory creates a new MessageHandlerFactory with a publisher.
-func NewMessageHandlerFactory(pub game.Publisher) *MessageHandlerFactory {
+func NewMessageHandlerFactory(pub Publisher) *MessageHandlerFactory {
 	return &MessageHandlerFactory{pub: pub}
 }
 

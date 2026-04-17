@@ -32,11 +32,11 @@ func disbandGroup(leader game.Actor) {
 // With a target: toggles membership — adds a following player who is not yet
 // in the group, or removes one who already is.
 type GroupHandlerFactory struct {
-	pub game.Publisher
+	pub Publisher
 }
 
 // NewGroupHandlerFactory creates a handler factory for group management commands.
-func NewGroupHandlerFactory(pub game.Publisher) *GroupHandlerFactory {
+func NewGroupHandlerFactory(pub Publisher) *GroupHandlerFactory {
 	return &GroupHandlerFactory{pub: pub}
 }
 
@@ -207,11 +207,11 @@ func (f *GroupHandlerFactory) toggleMember(char game.Actor, target *TargetRef) e
 // With a target: the leader removes a specific member.
 // Targeting yourself disbands the group if you are the leader.
 type UngroupHandlerFactory struct {
-	pub game.Publisher
+	pub Publisher
 }
 
 // NewUngroupHandlerFactory creates a handler factory for ungroup commands.
-func NewUngroupHandlerFactory(pub game.Publisher) *UngroupHandlerFactory {
+func NewUngroupHandlerFactory(pub Publisher) *UngroupHandlerFactory {
 	return &UngroupHandlerFactory{pub: pub}
 }
 

@@ -52,7 +52,7 @@ type CharacterInstance struct {
 // materializing inventory and equipment into runtime instances.
 func NewCharacterInstance(char storage.SmartIdentifier[*assets.Character], msgs chan []byte, room *RoomInstance) (*CharacterInstance, error) {
 	c := char.Get()
-	inv, eq, err := materializeInventoryEquipment(c)
+	inv, eq, err := materializeInventoryEquipment(c.Inventory, c.Equipment)
 	if err != nil {
 		return nil, fmt.Errorf("materializing inventory for %q: %w", char.Id(), err)
 	}
@@ -92,29 +92,6 @@ func NewCharacterInstance(char storage.SmartIdentifier[*assets.Character], msgs 
 	return ci, nil
 }
 
-// materializeInventoryEquipment converts persistent spawn specs into runtime instances.
-func materializeInventoryEquipment(c *assets.Character) (*Inventory, *Equipment, error) {
-	inv := NewInventory()
-	for _, spawn := range c.Inventory {
-		oi, err := SpawnObject(spawn)
-		if err != nil {
-			return nil, nil, err
-		}
-		inv.AddObj(oi)
-	}
-
-	eq := NewEquipment()
-	for _, es := range c.Equipment {
-		oi, err := SpawnObject(es.ObjectSpawn)
-		if err != nil {
-			return nil, nil, err
-		}
-		eq.equip(es.Slot, oi)
-	}
-
-	return inv, eq, nil
-}
-
 // --- Connection lifecycle ---
 
 // Done returns the channel that is closed when this session is evicted by a reconnection.
@@ -122,21 +99,21 @@ func (ci *CharacterInstance) Done() <-chan struct{} {
 	return ci.done
 }
 
-// Subscribe adds a new subscription.
+// Subscribe adds a new subscription, replacing any existing subscription on
+// the same subject.
 func (ci *CharacterInstance) Subscribe(subject string) error {
 	if ci.subscriber == nil {
-		return fmt.Errorf("subscriber is nil")
+		return errors.New("subscriber is nil")
+	}
+
+	if old, ok := ci.subs[subject]; ok {
+		old()
+		delete(ci.subs, subject)
 	}
 
 	unsub, err := ci.subscriber.Subscribe(subject, func(data []byte) {
 		ci.msgs <- data
 	})
-
-	// If we somehow are subscribing to a channel we already have, unsubscribe the old one.
-	if unsub, ok := ci.subs[subject]; ok {
-		unsub()
-	}
-
 	if err != nil {
 		return fmt.Errorf("subscribing to channel '%s': %w", subject, err)
 	}
@@ -315,37 +292,6 @@ func (ci *CharacterInstance) Tick(ctx context.Context) {
 		ci.mu.Lock()
 		ci.regenTick()
 		ci.mu.Unlock()
-	}
-}
-
-// combatTick processes one round of combat for this player.
-func (ci *CharacterInstance) combatTick(ctx context.Context) {
-	target := ci.ResolveCombatTarget(ci.CombatTargetId())
-	if target == nil {
-		ci.SetInCombat(false)
-		ci.ClearThreatTable()
-		return
-	}
-
-	ci.autoUseTick(ctx, ci.GrantArgs(assets.PerkGrantAutoUse), target)
-	ci.sweepDeadEnemies()
-}
-
-// sweepDeadEnemies removes dead enemies from the threat table and
-// processes death for each one (exactly once via ClaimDeath).
-func (ci *CharacterInstance) sweepDeadEnemies() {
-	enemies := ci.ThreatEnemies()
-	for _, enemy := range enemies {
-		if enemy.IsAlive() {
-			continue
-		}
-		if enemy.ClaimDeath() {
-			processDeath(enemy, ci.Room())
-		}
-		ci.RemoveThreatEntry(enemy.Id())
-	}
-	if !ci.HasThreatEntries() {
-		ci.SetInCombat(false)
 	}
 }
 

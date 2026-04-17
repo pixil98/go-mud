@@ -307,20 +307,20 @@ func (ri *RoomInstance) RemoveMob(instanceId string) *MobileInstance {
 	return nil
 }
 
-// ForEachMob calls fn for each mob in the room while holding the lock.
+// ForEachMob calls fn for each mob in the room while holding the read lock.
 func (ri *RoomInstance) ForEachMob(fn func(*MobileInstance)) {
-	ri.mu.Lock()
-	defer ri.mu.Unlock()
+	ri.mu.RLock()
+	defer ri.mu.RUnlock()
 	for _, mi := range ri.mobiles {
 		fn(mi)
 	}
 }
 
 // ForEachActor calls fn for every actor in the room (mobs and players) while
-// holding the lock. Use this when the operation doesn't care about actor type.
+// holding the read lock. Use this when the operation doesn't care about actor type.
 func (ri *RoomInstance) ForEachActor(fn func(Actor)) {
-	ri.mu.Lock()
-	defer ri.mu.Unlock()
+	ri.mu.RLock()
+	defer ri.mu.RUnlock()
 	for _, mi := range ri.mobiles {
 		fn(mi)
 	}
@@ -384,10 +384,10 @@ func (ri *RoomInstance) RemovePlayer(charId string) {
 	delete(ri.players, charId)
 }
 
-// ForEachPlayer calls fn for each player in the room while holding the lock.
+// ForEachPlayer calls fn for each player in the room while holding the read lock.
 func (ri *RoomInstance) ForEachPlayer(fn func(string, *CharacterInstance)) {
-	ri.mu.Lock()
-	defer ri.mu.Unlock()
+	ri.mu.RLock()
+	defer ri.mu.RUnlock()
 	for id, ps := range ri.players {
 		fn(id, ps)
 	}

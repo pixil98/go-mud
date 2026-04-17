@@ -71,6 +71,12 @@ type PlayerLookup interface {
 	game.PlayerGroup
 }
 
+// Publisher sends messages to groups of players. Implemented by
+// messaging.NatsPublisher in production and by test doubles in tests.
+type Publisher interface {
+	Publish(targets game.PlayerGroup, exclude []string, data []byte) error
+}
+
 // HandlerFactory creates CommandFuncs from command configurations.
 // Implementations should expose their expected config structure.
 // Factories that need a Publisher should accept it in their constructor.
@@ -117,7 +123,7 @@ type Handler struct {
 }
 
 // NewHandler creates a Handler, registers all built-in command factories, and compiles every command from the store.
-func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, publisher game.Publisher, world PlayerLookup) (*Handler, error) {
+func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, publisher Publisher, world PlayerLookup) (*Handler, error) {
 	h := &Handler{
 		factories: make(map[string]HandlerFactory),
 		compiled:  make(map[string]*compiledCommand),
@@ -187,7 +193,7 @@ func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, pub
 
 // registerAbility compiles the ability's effects, stores the compiledAbility
 // for direct execution, and registers a command wrapper for dispatch.
-func (h *Handler) registerAbility(id string, ability *assets.Ability, pub game.Publisher) error {
+func (h *Handler) registerAbility(id string, ability *assets.Ability, pub Publisher) error {
 	ca, err := newCompiledAbility(id, ability, h.effects)
 	if err != nil {
 		return err

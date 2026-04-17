@@ -466,6 +466,38 @@ func (a *ActorInstance) ThreatEnemies() []Actor {
 	return a.threatTable.enemies()
 }
 
+// combatTick processes one round of combat. Resolves a target from the threat
+// table (preferring self.CombatTargetId for players), fires auto_use abilities,
+// and sweeps dead enemies. Exits combat if no target remains.
+func (a *ActorInstance) combatTick(ctx context.Context) {
+	target := a.ResolveCombatTarget(a.self.CombatTargetId())
+	if target == nil {
+		a.self.SetInCombat(false)
+		a.ClearThreatTable()
+		return
+	}
+
+	a.autoUseTick(ctx, a.GrantArgs(assets.PerkGrantAutoUse), target)
+	a.sweepDeadEnemies()
+}
+
+// sweepDeadEnemies removes dead enemies from the threat table and processes
+// their death exactly once via ClaimDeath.
+func (a *ActorInstance) sweepDeadEnemies() {
+	for _, enemy := range a.ThreatEnemies() {
+		if enemy.IsAlive() {
+			continue
+		}
+		if enemy.ClaimDeath() {
+			processDeath(enemy, a.self.Room())
+		}
+		a.RemoveThreatEntry(enemy.Id())
+	}
+	if !a.HasThreatEntries() {
+		a.self.SetInCombat(false)
+	}
+}
+
 // autoUseTick processes auto_use grants for one tick, executing each ready
 // ability via the commander. Manages per-grant cooldown counters.
 func (a *ActorInstance) autoUseTick(ctx context.Context, grants []string, target Actor) {

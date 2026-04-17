@@ -3,6 +3,7 @@ package game
 import (
 	"slices"
 	"sync"
+	"sync/atomic"
 
 	"github.com/pixil98/go-mud/internal/assets"
 )
@@ -45,10 +46,13 @@ func (r *ResolvedPerks) merge(other *ResolvedPerks) {
 }
 
 // PerkSource provides pre-resolved perks for composition into a PerkCache.
-// Snapshot returns the resolved perks and a version counter atomically.
-// The version must increment whenever the perks change.
+// Snapshot returns the resolved perks and a version counter atomically; the
+// version must increment whenever the perks change. Version is a cheap
+// standalone read (typically backed by an atomic) used by consumers to detect
+// changes without paying for a full Snapshot.
 type PerkSource interface {
 	Snapshot() (resolved *ResolvedPerks, version uint64)
+	Version() uint64
 }
 
 // timedPerk is a named set of perks with a remaining tick count.
@@ -69,7 +73,7 @@ type PerkCache struct {
 	timedEntries   map[string]*timedPerk
 	sources        map[string]PerkSource
 	sourceVersions map[string]uint64
-	version        uint64
+	version        *atomic.Uint64 // pointer: copying the struct must not copy the counter
 	resolved       *ResolvedPerks
 }
 
@@ -84,7 +88,15 @@ func NewPerkCache(own []assets.Perk, sources map[string]PerkSource) *PerkCache {
 		timedEntries:   make(map[string]*timedPerk),
 		sources:        sources,
 		sourceVersions: make(map[string]uint64),
+		version:        &atomic.Uint64{},
 	}
+}
+
+// Version returns the cache's current version. It increments on every
+// invalidation (SetOwn, AddSource, RemoveSource, AddTimedPerks, or expiry via
+// Tick). Cheap: backed by an atomic counter with no mutex acquisition.
+func (pc *PerkCache) Version() uint64 {
+	return pc.version.Load()
 }
 
 // SetOwn replaces the cache's own perks and invalidates the resolved state.
@@ -147,7 +159,7 @@ func (pc *PerkCache) Tick() bool {
 // Caller must hold pc.mu.
 func (pc *PerkCache) invalidate() {
 	pc.resolved = nil
-	pc.version++
+	pc.version.Add(1)
 }
 
 // isDirty returns true if the cache needs re-resolution.
@@ -157,8 +169,7 @@ func (pc *PerkCache) isDirty() bool {
 		return true
 	}
 	for name, s := range pc.sources {
-		_, v := s.Snapshot()
-		if v != pc.sourceVersions[name] {
+		if s.Version() != pc.sourceVersions[name] {
 			return true
 		}
 	}
@@ -190,10 +201,9 @@ func (pc *PerkCache) Snapshot() (*ResolvedPerks, uint64) {
 	pc.mu.Lock()
 	defer pc.mu.Unlock()
 	resolved := pc.resolve()
-	v := pc.version
+	v := pc.version.Load()
 	for _, s := range pc.sources {
-		_, sv := s.Snapshot()
-		v += sv
+		v += s.Version()
 	}
 	return resolved, v
 }

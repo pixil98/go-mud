@@ -198,7 +198,7 @@ func (ca *compiledAbility) exec(actor game.Actor, targets map[string][]*TargetRe
 type abilityCommandWrapper struct {
 	id  string
 	ca  *compiledAbility
-	pub game.Publisher
+	pub Publisher
 }
 
 // Spec returns the compiled spec from the underlying compiledAbility.

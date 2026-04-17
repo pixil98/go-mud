@@ -44,11 +44,11 @@ func (a *assistPlayerAdapter) GetPlayer(charId string) AssistedPlayer {
 // When no target is given, the actor assists their follow leader.
 type AssistHandlerFactory struct {
 	players AssistPlayerLookup
-	pub     game.Publisher
+	pub     Publisher
 }
 
 // NewAssistHandlerFactory creates a handler factory for the assist command.
-func NewAssistHandlerFactory(players PlayerLookup, pub game.Publisher) *AssistHandlerFactory {
+func NewAssistHandlerFactory(players PlayerLookup, pub Publisher) *AssistHandlerFactory {
 	return &AssistHandlerFactory{players: &assistPlayerAdapter{inner: players}, pub: pub}
 }
 

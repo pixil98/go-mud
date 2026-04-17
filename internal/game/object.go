@@ -107,3 +107,27 @@ func SpawnObject(spec assets.ObjectSpawn) (*ObjectInstance, error) {
 	}
 	return oi, nil
 }
+
+// materializeInventoryEquipment batch-spawns a set of inventory and equipment
+// specs into runtime containers. Shared by character and mobile construction.
+func materializeInventoryEquipment(invSpawns []assets.ObjectSpawn, eqSpawns []assets.EquipmentSpawn) (*Inventory, *Equipment, error) {
+	inv := NewInventory()
+	for _, spawn := range invSpawns {
+		oi, err := SpawnObject(spawn)
+		if err != nil {
+			return nil, nil, err
+		}
+		inv.AddObj(oi)
+	}
+
+	eq := NewEquipment()
+	for _, es := range eqSpawns {
+		oi, err := SpawnObject(es.ObjectSpawn)
+		if err != nil {
+			return nil, nil, err
+		}
+		eq.equip(es.Slot, oi)
+	}
+
+	return inv, eq, nil
+}

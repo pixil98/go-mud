@@ -1,6 +1,7 @@
 package game
 
 import (
+	"slices"
 	"sync"
 
 	"github.com/pixil98/go-mud/internal/assets"
@@ -48,7 +49,7 @@ func (eq *Equipment) RemoveObj(instanceId string) *ObjectInstance {
 
 	for i, item := range eq.objs {
 		if item.Obj.InstanceId == instanceId {
-			eq.objs = append(eq.objs[:i], eq.objs[i+1:]...)
+			eq.objs = slices.Delete(eq.objs, i, i+1)
 			eq.rebuildPerks()
 			return item.Obj
 		}

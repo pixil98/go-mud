@@ -30,34 +30,22 @@ type MobileInstance struct {
 // definition. The caller is responsible for placing it in a room via RoomInstance.AddMob.
 func NewMobileInstance(mob storage.SmartIdentifier[*assets.Mobile]) (*MobileInstance, error) {
 	def := mob.Get()
-	eq := NewEquipment()
+	inv, eq, err := materializeInventoryEquipment(def.Inventory, def.Equipment)
+	if err != nil {
+		return nil, fmt.Errorf("materializing inventory for %q: %w", mob.Id(), err)
+	}
 	mi := &MobileInstance{
 		Mobile: mob,
 		ActorInstance: ActorInstance{
 			InstanceId: uuid.New().String(),
-			inventory:  NewInventory(),
-			equipment: eq,
-			level:     def.Level,
-			PerkCache: *NewPerkCache(def.Perks, map[string]PerkSource{"equipment": eq}),
+			inventory:  inv,
+			equipment:  eq,
+			level:      def.Level,
+			PerkCache:  *NewPerkCache(def.Perks, map[string]PerkSource{"equipment": eq}),
 		},
 	}
 	mi.self = mi
-
 	mi.initResources()
-	for _, spawn := range def.Inventory {
-		oi, err := SpawnObject(spawn)
-		if err != nil {
-			return nil, fmt.Errorf("spawning inventory for %q: %w", mob.Id(), err)
-		}
-		mi.inventory.AddObj(oi)
-	}
-	for _, es := range def.Equipment {
-		oi, err := SpawnObject(es.ObjectSpawn)
-		if err != nil {
-			return nil, fmt.Errorf("spawning equipment for %q: %w", mob.Id(), err)
-		}
-		mi.equipment.equip(es.Slot, oi)
-	}
 	return mi, nil
 }
 
@@ -88,37 +76,6 @@ func (mi *MobileInstance) Tick(ctx context.Context) {
 		mi.mu.Unlock()
 		mi.tryWander(ctx)
 		mi.tryScavenge(ctx)
-	}
-}
-
-// combatTick processes one round of combat for this mob.
-func (mi *MobileInstance) combatTick(ctx context.Context) {
-	target := mi.ResolveCombatTarget("")
-	if target == nil {
-		mi.SetInCombat(false)
-		mi.ClearThreatTable()
-		return
-	}
-
-	mi.autoUseTick(ctx, mi.GrantArgs(assets.PerkGrantAutoUse), target)
-	mi.sweepDeadEnemies()
-}
-
-// sweepDeadEnemies removes dead enemies from the threat table and
-// processes death for each one (exactly once via ClaimDeath).
-func (mi *MobileInstance) sweepDeadEnemies() {
-	enemies := mi.ThreatEnemies()
-	for _, enemy := range enemies {
-		if enemy.IsAlive() {
-			continue
-		}
-		if enemy.ClaimDeath() {
-			processDeath(enemy, mi.Room())
-		}
-		mi.RemoveThreatEntry(enemy.Id())
-	}
-	if !mi.HasThreatEntries() {
-		mi.SetInCombat(false)
 	}
 }
 
@@ -264,12 +221,6 @@ func (mi *MobileInstance) CombatTargetId() string {
 
 // SetCombatTargetId is a no-op for mobs; their target is resolved from the threat table.
 func (mi *MobileInstance) SetCombatTargetId(_ string) {}
-
-// Asset returns a synthetic Character for template expansion in the ability system.
-// Mobs don't have a full Character spec, so only the name is populated.
-func (mi *MobileInstance) Asset() *assets.Character {
-	return &assets.Character{Name: mi.Name()}
-}
 
 // SpendAP always succeeds for mobs — they have no action point budget.
 func (mi *MobileInstance) SpendAP(_ int) bool { return true }

@@ -13,11 +13,11 @@ import (
 // WearActor provides the character state needed by the wear handler.
 type WearActor interface {
 	Id() string
+	Name() string
 	Notify(msg string)
 	Room() *game.RoomInstance
 	Inventory() *game.Inventory
 	Equip(slot string, obj *game.ObjectInstance) error
-	Asset() *assets.Character
 }
 
 var _ WearActor = (*game.CharacterInstance)(nil)
@@ -26,11 +26,11 @@ var _ WearActor = (*game.CharacterInstance)(nil)
 // Targets:
 //   - target (required): the object to wear
 type WearHandlerFactory struct {
-	pub game.Publisher
+	pub Publisher
 }
 
 // NewWearHandlerFactory creates a handler factory for equipping wearable item commands.
-func NewWearHandlerFactory(pub game.Publisher) *WearHandlerFactory {
+func NewWearHandlerFactory(pub Publisher) *WearHandlerFactory {
 	return &WearHandlerFactory{pub: pub}
 }
 
@@ -104,7 +104,7 @@ func (f *WearHandlerFactory) wearOne(actor WearActor, target *TargetRef) error {
 	}
 
 	actor.Notify(fmt.Sprintf("You wear %s.", obj.ShortDesc))
-	roomMsg := fmt.Sprintf("%s wears %s.", actor.Asset().Name, obj.ShortDesc)
+	roomMsg := fmt.Sprintf("%s wears %s.", actor.Name(), obj.ShortDesc)
 	_ = f.pub.Publish(actor.Room(), []string{actor.Id()}, []byte(roomMsg))
 	return nil
 }
