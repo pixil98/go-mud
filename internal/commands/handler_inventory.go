@@ -11,7 +11,7 @@ import (
 // InventoryActor provides the character state needed by the inventory handler.
 type InventoryActor interface {
 	Id() string
-Notify(msg string)
+	Notify(msg string)
 	Inventory() *game.Inventory
 }
 

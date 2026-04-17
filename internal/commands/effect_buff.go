@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -80,16 +81,16 @@ func (e *buffEffect) Spec() *HandlerSpec {
 func (e *buffEffect) ValidateConfig(config map[string]string) error {
 	dur, err := strconv.Atoi(config["duration"])
 	if err != nil || dur <= 0 {
-		return fmt.Errorf("positive duration config required")
+		return errors.New("positive duration config required")
 	}
 	if config["grant_key"] != "" {
 		return nil
 	}
 	if config["perk_type"] == "" {
-		return fmt.Errorf("perk_type or grant_key config required")
+		return errors.New("perk_type or grant_key config required")
 	}
 	if config["perk_key"] == "" {
-		return fmt.Errorf("perk_key config required")
+		return errors.New("perk_key config required")
 	}
 	return nil
 }

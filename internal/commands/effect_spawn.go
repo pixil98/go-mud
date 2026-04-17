@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/pixil98/go-mud/internal/assets"
@@ -27,7 +28,7 @@ func (e *spawnMobEffect) Spec() *HandlerSpec { return nil }
 func (e *spawnMobEffect) ValidateConfig(config map[string]string) error {
 	mobId := config["mobile_id"]
 	if mobId == "" {
-		return fmt.Errorf("mobile_id config required")
+		return errors.New("mobile_id config required")
 	}
 	if e.mobiles.Get(mobId) == nil {
 		return fmt.Errorf("mobile %q not found", mobId)
@@ -76,7 +77,7 @@ func (e *spawnObjEffect) Spec() *HandlerSpec { return nil }
 func (e *spawnObjEffect) ValidateConfig(config map[string]string) error {
 	objId := config["object_id"]
 	if objId == "" {
-		return fmt.Errorf("object_id config required")
+		return errors.New("object_id config required")
 	}
 	if e.objects.Get(objId) == nil {
 		return fmt.Errorf("object %q not found", objId)

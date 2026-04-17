@@ -2,6 +2,7 @@ package commands
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -33,7 +34,7 @@ func (f *MoveHandlerFactory) Spec() *HandlerSpec {
 func (f *MoveHandlerFactory) ValidateConfig(config map[string]string) error {
 	direction := config["direction"]
 	if direction == "" {
-		return fmt.Errorf("direction is required")
+		return errors.New("direction is required")
 	}
 
 	return nil
@@ -53,7 +54,7 @@ func (f *MoveHandlerFactory) handle(ctx context.Context, in *CommandInput) error
 	// Read direction from expanded config
 	direction := strings.ToLower(in.Config["direction"])
 	if direction == "" {
-		return fmt.Errorf("direction not set in config")
+		return errors.New("direction not set in config")
 	}
 
 	// Look up current room instance

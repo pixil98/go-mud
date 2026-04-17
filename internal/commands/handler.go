@@ -2,6 +2,7 @@ package commands
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"sort"
 	"strconv"
@@ -258,10 +259,10 @@ func publishAbilityResult(result *AbilityResult, actor, target game.Actor) {
 // The name must match the "handler" field in command JSON definitions.
 func (h *Handler) RegisterFactory(name string, factory HandlerFactory) error {
 	if name == "" {
-		return fmt.Errorf("handler name cannot be empty")
+		return errors.New("handler name cannot be empty")
 	}
 	if factory == nil {
-		return fmt.Errorf("handler factory cannot be nil")
+		return errors.New("handler factory cannot be nil")
 	}
 	if _, exists := h.factories[name]; exists {
 		return fmt.Errorf("handler factory %q already registered", name)

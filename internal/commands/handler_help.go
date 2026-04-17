@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/assets"
+	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/storage"
 )
@@ -92,7 +93,7 @@ func (f *HelpHandlerFactory) listCommands(actor game.Actor) error {
 	for _, cat := range categories {
 		cmds := groups[cat]
 		sort.Strings(cmds)
-		label := strings.ToUpper(cat[:1]) + cat[1:]
+		label := display.Capitalize(cat)
 		lines = append(lines, fmt.Sprintf("  %s: %s", label, strings.Join(cmds, ", ")))
 	}
 

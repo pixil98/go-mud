@@ -2,10 +2,11 @@ package commands
 
 import (
 	"context"
+	"errors"
 	"fmt"
-	"strings"
 
 	"github.com/pixil98/go-mud/internal/assets"
+	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
 )
 
@@ -54,7 +55,7 @@ func (f *ClosureHandlerFactory) ValidateConfig(config map[string]string) error {
 	case "open", "close", "lock", "unlock":
 		return nil
 	default:
-		return fmt.Errorf("action must be open, close, lock, or unlock")
+		return errors.New("action must be open, close, lock, or unlock")
 	}
 }
 
@@ -160,7 +161,7 @@ func (f *ClosureHandlerFactory) handleContainer(action string, oi *game.ObjectIn
 	if name == "" {
 		name = oi.Object.Get().ShortDesc
 	}
-	capName := strings.ToUpper(name[:1]) + name[1:]
+	capName := display.Capitalize(name)
 
 	switch action {
 	case "open":

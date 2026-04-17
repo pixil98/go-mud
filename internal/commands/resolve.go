@@ -217,7 +217,7 @@ func (r *ObjectRef) ClosureName() string {
 	if def.Closure != nil && def.Closure.Name != "" {
 		name = def.Closure.Name
 	}
-	return strings.ToUpper(name[:1]) + name[1:]
+	return display.Capitalize(name)
 }
 
 // Describe returns a detailed description of the object, including container contents.
@@ -529,8 +529,7 @@ func containerSpaces(spec assets.TargetSpec, targets map[string][]*TargetRef) ([
 
 	// Validate it's a container
 	if !scopeRef.Obj.instance.Object.Get().HasFlag(assets.ObjectFlagContainer) {
-		capName := strings.ToUpper(scopeRef.Obj.Name[:1]) + scopeRef.Obj.Name[1:]
-		return nil, false, NewUserError(fmt.Sprintf("%s is not a container.", capName))
+		return nil, false, NewUserError(fmt.Sprintf("%s is not a container.", display.Capitalize(scopeRef.Obj.Name)))
 	}
 
 	// Check closure state

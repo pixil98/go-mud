@@ -2,11 +2,12 @@ package commands
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log/slog"
-	"strings"
 
 	"github.com/pixil98/go-mud/internal/assets"
+	"github.com/pixil98/go-mud/internal/display"
 	"github.com/pixil98/go-mud/internal/game"
 )
 
@@ -61,7 +62,7 @@ func (f *MoveObjHandlerFactory) Spec() *HandlerSpec {
 func (f *MoveObjHandlerFactory) ValidateConfig(config map[string]string) error {
 	dest := config["destination"]
 	if dest == "" {
-		return fmt.Errorf("destination is required")
+		return errors.New("destination is required")
 	}
 	return nil
 }
@@ -167,8 +168,7 @@ func (f *MoveObjHandlerFactory) holderForTarget(ref *TargetRef) (ObjectHolder, e
 
 	if ref.Obj != nil {
 		if !ref.Obj.instance.Object.Get().HasFlag(assets.ObjectFlagContainer) {
-			name := strings.ToUpper(ref.Obj.Name[:1]) + ref.Obj.Name[1:]
-			return nil, NewUserError(fmt.Sprintf("%s is not a container.", name))
+			return nil, NewUserError(fmt.Sprintf("%s is not a container.", display.Capitalize(ref.Obj.Name)))
 		}
 		if ref.Obj.instance.Locked {
 			return nil, NewUserError(fmt.Sprintf("%s is locked.", ref.Obj.ClosureName()))
@@ -179,5 +179,5 @@ func (f *MoveObjHandlerFactory) holderForTarget(ref *TargetRef) (ObjectHolder, e
 		return ref.Obj.instance.Contents, nil
 	}
 
-	return nil, fmt.Errorf("target has no actor or object")
+	return nil, errors.New("target has no actor or object")
 }

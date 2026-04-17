@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
@@ -84,7 +85,7 @@ func (e *damageEffect) Spec() *HandlerSpec {
 func (e *damageEffect) ValidateConfig(config map[string]string) error {
 	amount := config["amount"]
 	if amount == "" {
-		return fmt.Errorf("amount config required")
+		return errors.New("amount config required")
 	}
 	if _, err := combat.ParseDice(amount); err != nil {
 		return fmt.Errorf("amount must be an integer or dice expression: %w", err)

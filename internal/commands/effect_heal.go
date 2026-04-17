@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/pixil98/go-mud/internal/assets"
@@ -27,7 +28,7 @@ func (e *healEffect) Spec() *HandlerSpec {
 func (e *healEffect) ValidateConfig(config map[string]string) error {
 	amount := config["amount"]
 	if amount == "" {
-		return fmt.Errorf("amount config required")
+		return errors.New("amount config required")
 	}
 	if _, err := combat.ParseDice(amount); err != nil {
 		return fmt.Errorf("amount must be an integer or dice expression: %w", err)

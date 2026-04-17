@@ -2,6 +2,7 @@ package commands
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -214,10 +215,10 @@ func (w *abilityCommandWrapper) ValidateConfig(config map[string]string) error {
 			return fmt.Errorf("resource_cost: %w", err)
 		}
 		if n < 0 {
-			return fmt.Errorf("resource_cost must not be negative")
+			return errors.New("resource_cost must not be negative")
 		}
 		if n > 0 && config["resource"] == "" {
-			return fmt.Errorf("resource_cost requires resource")
+			return errors.New("resource_cost requires resource")
 		}
 	}
 	if cost := config["ap_cost"]; cost != "" {
@@ -226,7 +227,7 @@ func (w *abilityCommandWrapper) ValidateConfig(config map[string]string) error {
 			return fmt.Errorf("ap_cost: %w", err)
 		}
 		if n < 0 {
-			return fmt.Errorf("ap_cost must not be negative")
+			return errors.New("ap_cost must not be negative")
 		}
 	}
 	return nil
