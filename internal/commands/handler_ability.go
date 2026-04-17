@@ -41,9 +41,9 @@ type compiledAbility struct {
 	resource     string
 	resourceCost int
 	apCost       int
-	msgActor     string
-	msgTarget    string
-	msgRoom      string
+	msgActor     *CompiledTemplate
+	msgTarget    *CompiledTemplate
+	msgRoom      *CompiledTemplate
 }
 
 // newCompiledAbility resolves the ability's effect specs against the provided
@@ -94,15 +94,28 @@ func newCompiledAbility(id string, ability *assets.Ability, handlers map[string]
 	resourceCost, _ := strconv.Atoi(config["resource_cost"])
 	apCost, _ := strconv.Atoi(config["ap_cost"])
 
+	msgActor, err := CompileTemplate(config["message_actor"])
+	if err != nil {
+		return nil, fmt.Errorf("message_actor: %w", err)
+	}
+	msgTarget, err := CompileTemplate(config["message_target"])
+	if err != nil {
+		return nil, fmt.Errorf("message_target: %w", err)
+	}
+	msgRoom, err := CompileTemplate(config["message_room"])
+	if err != nil {
+		return nil, fmt.Errorf("message_room: %w", err)
+	}
+
 	return &compiledAbility{
 		effectFuncs:  effectFuncs,
 		spec:         spec,
 		resource:     config["resource"],
 		resourceCost: resourceCost,
 		apCost:       apCost,
-		msgActor:     config["message_actor"],
-		msgTarget:    config["message_target"],
-		msgRoom:      config["message_room"],
+		msgActor:     msgActor,
+		msgTarget:    msgTarget,
+		msgRoom:      msgRoom,
 	}, nil
 }
 
@@ -137,20 +150,27 @@ func (ca *compiledAbility) exec(actor game.Actor, targets map[string][]*TargetRe
 
 	// Expand message templates first so effects can append detail lines.
 	result := &AbilityResult{}
-	tmplTargets := make(map[string]*TargetRef, len(targets))
-	for k, refs := range targets {
-		if len(refs) > 0 {
-			tmplTargets[k] = refs[0]
+	var tmplCtx *templateContext
+	buildCtx := func() *templateContext {
+		if tmplCtx != nil {
+			return tmplCtx
 		}
-	}
-	tmplCtx := &templateContext{
-		Actor:   actor,
-		Targets: tmplTargets,
-		Color:   display.Color,
+		tmplTargets := make(map[string]*TargetRef, len(targets))
+		for k, refs := range targets {
+			if len(refs) > 0 {
+				tmplTargets[k] = refs[0]
+			}
+		}
+		tmplCtx = &templateContext{
+			Actor:   actor,
+			Targets: tmplTargets,
+			Color:   display.Color,
+		}
+		return tmplCtx
 	}
 
-	if ca.msgActor != "" {
-		msg, err := ExpandTemplate(ca.msgActor, tmplCtx)
+	if ca.msgActor != nil {
+		msg, err := ca.msgActor.Execute(buildCtx())
 		if err != nil {
 			return nil, fmt.Errorf("expanding actor message: %w", err)
 		}
@@ -158,23 +178,23 @@ func (ca *compiledAbility) exec(actor game.Actor, targets map[string][]*TargetRe
 			result.ActorLines = append(result.ActorLines, msg)
 		}
 	}
-	if ca.msgTarget != "" {
-		msg, err := ExpandTemplate(ca.msgTarget, tmplCtx)
+	if ca.msgTarget != nil {
+		msg, err := ca.msgTarget.Execute(buildCtx())
 		if err != nil {
 			return nil, fmt.Errorf("expanding target message: %w", err)
 		}
 		if msg != "" {
 			result.TargetLines = append(result.TargetLines, msg)
 		}
-		for _, ref := range tmplTargets {
+		for _, ref := range buildCtx().Targets {
 			if ref != nil && ref.Actor != nil && ref.Actor.CharId != "" {
 				result.TargetId = ref.Actor.CharId
 				break
 			}
 		}
 	}
-	if ca.msgRoom != "" {
-		msg, err := ExpandTemplate(ca.msgRoom, tmplCtx)
+	if ca.msgRoom != nil {
+		msg, err := ca.msgRoom.Execute(buildCtx())
 		if err != nil {
 			return nil, fmt.Errorf("expanding room message: %w", err)
 		}

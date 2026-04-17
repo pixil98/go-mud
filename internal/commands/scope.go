@@ -66,8 +66,9 @@ func (f followerFinder) followers() []game.Actor {
 }
 
 func (f followerFinder) FindPlayers(match func(*game.CharacterInstance) bool) []*game.CharacterInstance {
-	var out []*game.CharacterInstance
-	for _, ft := range f.followers() {
+	followers := f.followers()
+	out := make([]*game.CharacterInstance, 0, len(followers))
+	for _, ft := range followers {
 		if ci, ok := ft.(*game.CharacterInstance); ok && match(ci) {
 			out = append(out, ci)
 		}
@@ -76,8 +77,9 @@ func (f followerFinder) FindPlayers(match func(*game.CharacterInstance) bool) []
 }
 
 func (f followerFinder) FindMobs(match func(*game.MobileInstance) bool) []*game.MobileInstance {
-	var out []*game.MobileInstance
-	for _, ft := range f.followers() {
+	followers := f.followers()
+	out := make([]*game.MobileInstance, 0, len(followers))
+	for _, ft := range followers {
 		if mi, ok := ft.(*game.MobileInstance); ok && match(mi) {
 			out = append(out, mi)
 		}

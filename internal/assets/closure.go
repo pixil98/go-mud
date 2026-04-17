@@ -8,6 +8,15 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
+// ClosureAction values drive the closure command handler's dispatch.
+// Commands declare one of these as the `action` config field.
+const (
+	ClosureActionOpen   = "open"
+	ClosureActionClose  = "close"
+	ClosureActionLock   = "lock"
+	ClosureActionUnlock = "unlock"
+)
+
 // Closure defines an openable/closeable barrier on an exit or container.
 // A Closure without a Lock is closeable but not lockable.
 // Name is required for exit closures but optional for container closures,

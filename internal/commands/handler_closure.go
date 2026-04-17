@@ -50,9 +50,8 @@ func (f *ClosureHandlerFactory) Spec() *HandlerSpec {
 
 // ValidateConfig checks that action is one of open, close, lock, or unlock.
 func (f *ClosureHandlerFactory) ValidateConfig(config map[string]string) error {
-	action := config["action"]
-	switch action {
-	case "open", "close", "lock", "unlock":
+	switch config["action"] {
+	case assets.ClosureActionOpen, assets.ClosureActionClose, assets.ClosureActionLock, assets.ClosureActionUnlock:
 		return nil
 	default:
 		return errors.New("action must be open, close, lock, or unlock")
@@ -93,7 +92,7 @@ func (f *ClosureHandlerFactory) handleExit(action, direction string, re *game.Re
 	name := closure.Name
 
 	switch action {
-	case "open":
+	case assets.ClosureActionOpen:
 		if re.IsLocked() {
 			return NewUserError(fmt.Sprintf("The %s is locked.", name))
 		}
@@ -101,12 +100,12 @@ func (f *ClosureHandlerFactory) handleExit(action, direction string, re *game.Re
 			return NewUserError(fmt.Sprintf("The %s is already open.", name))
 		}
 
-	case "close":
+	case assets.ClosureActionClose:
 		if re.IsClosed() {
 			return NewUserError(fmt.Sprintf("The %s is already closed.", name))
 		}
 
-	case "lock":
+	case assets.ClosureActionLock:
 		if !re.IsClosed() {
 			return NewUserError(fmt.Sprintf("You need to close the %s first.", name))
 		}
@@ -120,7 +119,7 @@ func (f *ClosureHandlerFactory) handleExit(action, direction string, re *game.Re
 			return err
 		}
 
-	case "unlock":
+	case assets.ClosureActionUnlock:
 		if !re.IsLocked() {
 			return NewUserError(fmt.Sprintf("The %s is not locked.", name))
 		}
@@ -144,13 +143,13 @@ func (f *ClosureHandlerFactory) handleExit(action, direction string, re *game.Re
 // applyExitAction applies a closure state change to a resolved exit.
 func applyExitAction(action string, re *game.ResolvedExit) {
 	switch action {
-	case "open":
+	case assets.ClosureActionOpen:
 		re.SetClosed(false)
-	case "close":
+	case assets.ClosureActionClose:
 		re.SetClosed(true)
-	case "lock":
+	case assets.ClosureActionLock:
 		re.SetLocked(true)
-	case "unlock":
+	case assets.ClosureActionUnlock:
 		re.SetLocked(false)
 	}
 }
@@ -164,7 +163,7 @@ func (f *ClosureHandlerFactory) handleContainer(action string, oi *game.ObjectIn
 	capName := display.Capitalize(name)
 
 	switch action {
-	case "open":
+	case assets.ClosureActionOpen:
 		if oi.Locked {
 			return NewUserError(fmt.Sprintf("%s is locked.", capName))
 		}
@@ -174,14 +173,14 @@ func (f *ClosureHandlerFactory) handleContainer(action string, oi *game.ObjectIn
 		oi.Closed = false
 		return f.publish(char, fmt.Sprintf("You open %s.", name), fmt.Sprintf("%s opens %s.", char.Name(), name))
 
-	case "close":
+	case assets.ClosureActionClose:
 		if oi.Closed {
 			return NewUserError(fmt.Sprintf("%s is already closed.", capName))
 		}
 		oi.Closed = true
 		return f.publish(char, fmt.Sprintf("You close %s.", name), fmt.Sprintf("%s closes %s.", char.Name(), name))
 
-	case "lock":
+	case assets.ClosureActionLock:
 		if !oi.Closed {
 			return NewUserError(fmt.Sprintf("You need to close %s first.", name))
 		}
@@ -197,7 +196,7 @@ func (f *ClosureHandlerFactory) handleContainer(action string, oi *game.ObjectIn
 		oi.Locked = true
 		return f.publish(char, fmt.Sprintf("You lock %s.", name), fmt.Sprintf("%s locks %s.", char.Name(), name))
 
-	case "unlock":
+	case assets.ClosureActionUnlock:
 		if !oi.Locked {
 			return NewUserError(fmt.Sprintf("%s is not locked.", capName))
 		}

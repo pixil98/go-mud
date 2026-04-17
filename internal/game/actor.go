@@ -55,6 +55,7 @@ type Actor interface {
 	ThreatSnapshot() map[string]int
 	ClaimDeath() bool
 	QueueTickMsg(msg string)
+	StatSections() []StatSection
 }
 
 // StatLine is a single line in a stat section.

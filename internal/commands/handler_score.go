@@ -60,11 +60,8 @@ func (f *ScoreHandlerFactory) handle(ctx context.Context, char ScoreActor, in *C
 // score display entirely from game.Actor and perks.
 func (f *ScoreHandlerFactory) resolveSections(char ScoreActor, in *CommandInput) ([]game.StatSection, error) {
 	if target := in.FirstTarget("target"); target != nil {
-		if sv, ok := target.Actor.Actor().(interface{ StatSections() []game.StatSection }); ok {
-			return sv.StatSections(), nil
-		}
+		return target.Actor.Actor().StatSections(), nil
 	}
-
 	return char.StatSections(), nil
 }
 

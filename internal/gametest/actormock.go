@@ -144,3 +144,4 @@ func (a *BaseActor) HasThreatFrom(string) bool        { return false }
 func (a *BaseActor) ThreatSnapshot() map[string]int   { return nil }
 func (a *BaseActor) ClaimDeath() bool                  { return true }
 func (a *BaseActor) QueueTickMsg(msg string)          { a.Notified = append(a.Notified, msg) }
+func (a *BaseActor) StatSections() []game.StatSection  { return nil }

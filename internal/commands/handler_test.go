@@ -568,7 +568,16 @@ func TestHandler_expandConfig(t *testing.T) {
 
 			actor := &gametest.BaseActor{ActorId: "alice", ActorName: tt.actor.Name}
 
-			expandedConfig, err := h.expandConfig(tt.config, actor, tt.targets, tt.inputs)
+			compiledConfig := make(map[string]*CompiledTemplate, len(tt.config))
+			for k, v := range tt.config {
+				ct, compileErr := CompileTemplate(v)
+				if compileErr != nil {
+					t.Fatalf("compile %q: %v", k, compileErr)
+				}
+				compiledConfig[k] = ct
+			}
+
+			expandedConfig, err := h.expandConfig(compiledConfig, actor, tt.targets, tt.inputs)
 
 			if tt.expErr != "" {
 				if err == nil {
