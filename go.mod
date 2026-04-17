@@ -9,7 +9,7 @@ require (
 	github.com/iammegalith/telnet v0.0.0-20230201230822-b5765a6db0cf
 	github.com/muesli/reflow v0.3.0
 	github.com/nats-io/nats-server/v2 v2.12.6
-	github.com/nats-io/nats.go v1.50.0
+	github.com/nats-io/nats.go v1.51.0
 	github.com/pixil98/go-service v0.0.0-20260417183655-e748a89d22a0
 	github.com/pixil98/go-testutil v0.0.0-20260123222118-fa427b8db36a
 	golang.org/x/crypto v0.49.0
