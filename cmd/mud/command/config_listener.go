@@ -46,7 +46,7 @@ func (cl *ListenerConfig) validate() error {
 	var errs []error
 
 	if cl.Port == 0 {
-		errs = append(errs, fmt.Errorf("port must be set to a positive integer"))
+		errs = append(errs, errors.New("port must be set to a positive integer"))
 	}
 
 	return errors.Join(errs...)

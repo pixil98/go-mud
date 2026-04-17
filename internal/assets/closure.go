@@ -41,7 +41,7 @@ func (c *Closure) Validate() error {
 	if c.Lock != nil {
 		errs = append(errs, c.Lock.Validate())
 		if c.Lock.Locked && !c.Closed {
-			errs = append(errs, fmt.Errorf("locked closure must also be closed"))
+			errs = append(errs, errors.New("locked closure must also be closed"))
 		}
 	}
 	return errors.Join(errs...)

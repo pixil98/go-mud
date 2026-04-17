@@ -22,10 +22,10 @@ func (c *PlayerManagerConfig) validate() error {
 	var errs []error
 
 	if c.DefaultZone == "" {
-		errs = append(errs, fmt.Errorf("default_zone is required"))
+		errs = append(errs, errors.New("default_zone is required"))
 	}
 	if c.DefaultRoom == "" {
-		errs = append(errs, fmt.Errorf("default_room is required"))
+		errs = append(errs, errors.New("default_room is required"))
 	}
 
 	return errors.Join(errs...)

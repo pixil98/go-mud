@@ -129,9 +129,9 @@ func buildNameMap(tree *assets.Tree) map[string]string {
 func positivePrereqIDs(p *assets.Prereq) []string {
 	typ := p.Type
 	if typ == "" {
-		typ = "and"
+		typ = assets.PrereqAnd
 	}
-	if typ == "not" {
+	if typ == assets.PrereqNot {
 		return nil
 	}
 

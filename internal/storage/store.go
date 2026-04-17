@@ -3,7 +3,7 @@ package storage
 import (
 	"encoding/json"
 	"fmt"
-	"io"
+	"io/fs"
 	"log/slog"
 	"os"
 	"path/filepath"
@@ -47,13 +47,13 @@ func (s *FileStore[T]) load() error {
 	// Clear existing records when loading
 	s.records = map[string]T{}
 
-	err := filepath.Walk(s.path, func(path string, info os.FileInfo, walkErr error) error {
+	err := filepath.WalkDir(s.path, func(path string, d fs.DirEntry, walkErr error) error {
 		if walkErr != nil {
 			return walkErr
 		}
 
 		// Load all json files in the assets path
-		if !info.IsDir() && filepath.Ext(path) == ".json" {
+		if !d.IsDir() && filepath.Ext(path) == ".json" {
 			asset, err := s.loadAsset(path)
 			if err != nil {
 				return err
@@ -161,18 +161,12 @@ func (s *FileStore[T]) loadAsset(path string) (*Asset[T], error) {
 	// Ignoring close error - file is read-only, error is not actionable
 	defer func() { _ = file.Close() }()
 
-	jsonData, err := io.ReadAll(file)
-	if err != nil {
-		return nil, fmt.Errorf("reading file: %w", err)
-	}
-
 	var spec T
 	asset := &Asset[T]{
 		Spec: spec,
 	}
-	err = json.Unmarshal(jsonData, asset)
-	if err != nil {
-		return nil, fmt.Errorf("unmarshalling asset: %w", err)
+	if err := json.NewDecoder(file).Decode(asset); err != nil {
+		return nil, fmt.Errorf("decoding asset: %w", err)
 	}
 
 	return asset, nil

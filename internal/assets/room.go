@@ -47,6 +47,18 @@ type ExtraDesc struct {
 	Description string   `json:"description"`
 }
 
+// Validate checks that the extra description has at least one keyword and a non-empty body.
+func (ed *ExtraDesc) Validate() error {
+	var errs []error
+	if len(ed.Keywords) == 0 {
+		errs = append(errs, errors.New("at least one keyword is required"))
+	}
+	if ed.Description == "" {
+		errs = append(errs, errors.New("description is required"))
+	}
+	return errors.Join(errs...)
+}
+
 // ---------------------------------------------------------------------------
 // Exit
 // ---------------------------------------------------------------------------
@@ -91,7 +103,7 @@ func (r *Room) Validate() error {
 	var errs []error
 
 	if r.Name == "" {
-		errs = append(errs, fmt.Errorf("room name is required"))
+		errs = append(errs, errors.New("room name is required"))
 	}
 	errs = append(errs, r.Zone.Validate())
 
@@ -115,12 +127,9 @@ func (r *Room) Validate() error {
 		}
 	}
 
-	for i, ed := range r.ExtraDescs {
-		if len(ed.Keywords) == 0 {
-			errs = append(errs, fmt.Errorf("extra_descs[%d]: at least one keyword is required", i))
-		}
-		if ed.Description == "" {
-			errs = append(errs, fmt.Errorf("extra_descs[%d]: description is required", i))
+	for i := range r.ExtraDescs {
+		if err := r.ExtraDescs[i].Validate(); err != nil {
+			errs = append(errs, fmt.Errorf("extra_descs[%d]: %w", i, err))
 		}
 	}
 

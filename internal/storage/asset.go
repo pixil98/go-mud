@@ -30,15 +30,15 @@ func (a *Asset[T]) Validate() error {
 	var errs []error
 
 	if a.Version == 0 {
-		errs = append(errs, fmt.Errorf("version must be set"))
+		errs = append(errs, errors.New("version must be set"))
 	}
 
 	if a.Identifier == "" {
-		errs = append(errs, fmt.Errorf("id must be set"))
+		errs = append(errs, errors.New("id must be set"))
 	}
 
 	if !identifierPattern.MatchString(a.Identifier) {
-		errs = append(errs, fmt.Errorf("id must be alphanumeric"))
+		errs = append(errs, errors.New("id must be alphanumeric"))
 	}
 
 	errs = append(errs, a.Spec.Validate())

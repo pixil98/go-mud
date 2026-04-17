@@ -25,10 +25,10 @@ func (t *Tree) Validate() error {
 	var errs []error
 
 	if t.Name == "" {
-		errs = append(errs, fmt.Errorf("name is required"))
+		errs = append(errs, errors.New("name is required"))
 	}
 	if t.Description == "" {
-		errs = append(errs, fmt.Errorf("description is required"))
+		errs = append(errs, errors.New("description is required"))
 	}
 
 	// Build the full set of node IDs before validating individual nodes so
@@ -108,26 +108,24 @@ func (n *Node) validate(allIds map[string]bool) error {
 	var errs []error
 
 	if n.Id == "" {
-		errs = append(errs, fmt.Errorf("id is required"))
+		errs = append(errs, errors.New("id is required"))
 	}
 	if n.Name == "" {
-		errs = append(errs, fmt.Errorf("name is required"))
+		errs = append(errs, errors.New("name is required"))
 	}
 	if len(n.Perks) == 0 {
-		errs = append(errs, fmt.Errorf("at least one perk is required"))
+		errs = append(errs, errors.New("at least one perk is required"))
 	}
 	if n.MaxRank < 0 {
-		errs = append(errs, fmt.Errorf("max_rank cannot be negative"))
+		errs = append(errs, errors.New("max_rank cannot be negative"))
 	}
 	if n.Prereqs != nil {
 		if err := n.Prereqs.validate(allIds); err != nil {
 			errs = append(errs, fmt.Errorf("prereqs: %w", err))
 		}
 	}
-	for i, p := range n.Perks {
-		if err := p.validate(); err != nil {
-			errs = append(errs, fmt.Errorf("perks[%d]: %w", i, err))
-		}
+	if err := validatePerks(n.Perks); err != nil {
+		errs = append(errs, err)
 	}
 
 	return errors.Join(errs...)
@@ -153,6 +151,13 @@ type Prereq struct {
 	Terms []Term `json:"terms,omitempty"`
 }
 
+// Prereq combinator types.
+const (
+	PrereqAnd = "and"
+	PrereqOr  = "or"
+	PrereqNot = "not"
+)
+
 // Term is a single prerequisite condition. Exactly one of Node or Group must be set.
 type Term struct {
 	Node  string  `json:"node,omitempty"`  // leaf node id
@@ -164,20 +169,20 @@ func (p *Prereq) validate(allIds map[string]bool) error {
 
 	typ := p.Type
 	if typ == "" {
-		typ = "and"
+		typ = PrereqAnd
 	}
 
 	// If prereqs exists (non-nil), require at least one term.
 	// Use `Prereqs: nil` / omit prereqs for "no prerequisites".
 	if len(p.Terms) == 0 {
-		errs = append(errs, fmt.Errorf("empty prereq group: omit prereqs entirely for no requirements"))
+		errs = append(errs, errors.New("empty prereq group: omit prereqs entirely for no requirements"))
 		return errors.Join(errs...)
 	}
 
 	switch typ {
-	case "and", "or":
+	case PrereqAnd, PrereqOr:
 		// ok
-	case "not":
+	case PrereqNot:
 		// N is not meaningful for NOT; NOT is always "none of the terms satisfied".
 		if p.N != 0 {
 			errs = append(errs, fmt.Errorf("n has no effect for type %q; must be 0/omitted", typ))
@@ -187,11 +192,11 @@ func (p *Prereq) validate(allIds map[string]bool) error {
 	}
 
 	if p.N < 0 {
-		errs = append(errs, fmt.Errorf("n cannot be negative"))
+		errs = append(errs, errors.New("n cannot be negative"))
 	}
 
 	// For "and"/"or", N (if set) cannot exceed number of terms.
-	if (typ == "and" || typ == "or") && p.N > len(p.Terms) {
+	if (typ == PrereqAnd || typ == PrereqOr) && p.N > len(p.Terms) {
 		errs = append(errs, fmt.Errorf("n (%d) cannot exceed the number of terms (%d)", p.N, len(p.Terms)))
 	}
 

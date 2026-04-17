@@ -1,6 +1,10 @@
 package assets
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+	"strings"
+)
 
 // ---------------------------------------------------------------------------
 // Perk types
@@ -73,14 +77,7 @@ const (
 // BuildKey joins the parts with "." to form a perk key.
 // (e.g. BuildKey(DamagePrefix, "fire", ModSuffixPct) -> "core.damage.fire.pct").
 func BuildKey(parts ...string) string {
-	if len(parts) == 0 {
-		return ""
-	}
-	key := parts[0]
-	for _, p := range parts[1:] {
-		key += "." + p
-	}
-	return key
+	return strings.Join(parts, ".")
 }
 
 // ---------------------------------------------------------------------------
@@ -188,22 +185,34 @@ type Perk struct {
 	Arg   string `json:"arg,omitempty"`   // grant: optional argument (e.g. ability id, dice expression)
 }
 
+// validatePerks runs Perk.validate on each element and joins any errors, prefixing
+// each with its index. Shared by the various asset types that embed perk lists.
+func validatePerks(perks []Perk) error {
+	var errs []error
+	for i := range perks {
+		if err := perks[i].validate(); err != nil {
+			errs = append(errs, fmt.Errorf("perks[%d]: %w", i, err))
+		}
+	}
+	return errors.Join(errs...)
+}
+
 // Validate checks a perk's fields for correctness.
 func (p *Perk) validate() error {
 	if p.Type == "" {
-		return fmt.Errorf("type is required")
+		return errors.New("type is required")
 	}
 	switch p.Type {
 	case PerkTypeModifier:
 		if p.Key == "" {
-			return fmt.Errorf("modifier perk requires key")
+			return errors.New("modifier perk requires key")
 		}
 		if p.Value == 0 {
-			return fmt.Errorf("modifier perk requires non-zero value")
+			return errors.New("modifier perk requires non-zero value")
 		}
 	case PerkTypeGrant:
 		if p.Key == "" {
-			return fmt.Errorf("grant perk requires key")
+			return errors.New("grant perk requires key")
 		}
 	default:
 		return fmt.Errorf("unknown perk type: %q", p.Type)

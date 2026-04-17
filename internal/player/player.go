@@ -29,7 +29,7 @@ type Player struct {
 
 // Id returns the player's unique identifier (lowercase character name)
 func (p *Player) Id() string {
-	return string(p.charId)
+	return p.charId
 }
 
 // Play runs the player's input/output loop until the connection closes, the player quits, or ctx is canceled.

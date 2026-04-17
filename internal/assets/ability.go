@@ -25,7 +25,7 @@ func (a *Ability) Validate() error {
 	var errs []error
 
 	if len(a.Effects) == 0 {
-		errs = append(errs, fmt.Errorf("at least one effect is required"))
+		errs = append(errs, errors.New("at least one effect is required"))
 	}
 	for i, e := range a.Effects {
 		if e.Type == "" {

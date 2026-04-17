@@ -3,6 +3,7 @@ package assets
 import (
 	"errors"
 	"fmt"
+	"slices"
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/storage"
@@ -85,13 +86,9 @@ type Object struct {
 
 // MatchName returns true if name matches any of this object's aliases (case-insensitive).
 func (o *Object) MatchName(name string) bool {
-	nameLower := strings.ToLower(name)
-	for _, alias := range o.Aliases {
-		if strings.ToLower(alias) == nameLower {
-			return true
-		}
-	}
-	return false
+	return slices.ContainsFunc(o.Aliases, func(a string) bool {
+		return strings.EqualFold(a, name)
+	})
 }
 
 // HasFlag returns true if the object has the given flag.
@@ -108,10 +105,10 @@ func (o *Object) HasFlag(flag ObjectFlag) bool {
 func (o *Object) Validate() error {
 	var errs []error
 	if len(o.Aliases) < 1 {
-		errs = append(errs, fmt.Errorf("object alias is required"))
+		errs = append(errs, errors.New("object alias is required"))
 	}
 	if o.ShortDesc == "" {
-		errs = append(errs, fmt.Errorf("object short description is required"))
+		errs = append(errs, errors.New("object short description is required"))
 	}
 	for _, f := range o.Flags {
 		if parseObjectFlag(f) == ObjectFlagUnknown {
@@ -119,28 +116,23 @@ func (o *Object) Validate() error {
 		}
 	}
 	if o.HasFlag(ObjectFlagWearable) && len(o.WearSlots) == 0 {
-		errs = append(errs, fmt.Errorf("wearable items must have at least one wear_slot"))
+		errs = append(errs, errors.New("wearable items must have at least one wear_slot"))
 	}
 	if !o.HasFlag(ObjectFlagWearable) && len(o.WearSlots) > 0 {
-		errs = append(errs, fmt.Errorf("wear_slots requires the wearable flag"))
+		errs = append(errs, errors.New("wear_slots requires the wearable flag"))
 	}
-	for i := range o.Perks {
-		if err := o.Perks[i].validate(); err != nil {
-			errs = append(errs, fmt.Errorf("perk[%d]: %w", i, err))
-		}
+	if err := validatePerks(o.Perks); err != nil {
+		errs = append(errs, err)
 	}
 	if o.Closure != nil {
 		if !o.HasFlag(ObjectFlagContainer) {
-			errs = append(errs, fmt.Errorf("closure requires the container flag"))
+			errs = append(errs, errors.New("closure requires the container flag"))
 		}
 		errs = append(errs, o.Closure.Validate())
 	}
-	for i, ed := range o.ExtraDescs {
-		if len(ed.Keywords) == 0 {
-			errs = append(errs, fmt.Errorf("extra_descs[%d]: at least one keyword is required", i))
-		}
-		if ed.Description == "" {
-			errs = append(errs, fmt.Errorf("extra_descs[%d]: description is required", i))
+	for i := range o.ExtraDescs {
+		if err := o.ExtraDescs[i].Validate(); err != nil {
+			errs = append(errs, fmt.Errorf("extra_descs[%d]: %w", i, err))
 		}
 	}
 	return errors.Join(errs...)
@@ -173,12 +165,9 @@ func (s *ObjectSpawn) Resolve(objs storage.Storer[*Object]) error {
 }
 
 // EquipmentSpawn pairs a slot name with an object spawn for equipment persistence.
+// The embedded ObjectSpawn promotes its Resolve method, so callers don't need a
+// separate wrapper here.
 type EquipmentSpawn struct {
 	Slot string `json:"slot"`
 	ObjectSpawn
-}
-
-// Resolve resolves the embedded ObjectSpawn's foreign key references.
-func (es *EquipmentSpawn) Resolve(objs storage.Storer[*Object]) error {
-	return es.ObjectSpawn.Resolve(objs)
 }

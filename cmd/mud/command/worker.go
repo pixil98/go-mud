@@ -2,6 +2,7 @@ package command
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -30,7 +31,7 @@ func (c *boundCommander) ExecAbility(ctx context.Context, abilityId string, targ
 func BuildWorkers(config interface{}) (service.WorkerList, error) {
 	cfg, ok := config.(*Config)
 	if !ok {
-		return nil, fmt.Errorf("unable to cast config")
+		return nil, errors.New("unable to cast config")
 	}
 
 	// Build dictionary of all game stores

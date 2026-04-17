@@ -23,7 +23,7 @@ func (c *Config) Validate() error {
 	if err != nil {
 		errs = append(errs, fmt.Errorf("parsing tick_interval: %w", err))
 	} else if d < time.Second {
-		errs = append(errs, fmt.Errorf("tick_interval must be at least 1 second"))
+		errs = append(errs, errors.New("tick_interval must be at least 1 second"))
 	}
 
 	for i, l := range c.Listeners {

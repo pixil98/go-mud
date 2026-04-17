@@ -1,6 +1,7 @@
 package combat
 
 import (
+	"errors"
 	"fmt"
 	"math/rand/v2"
 	"strconv"
@@ -31,7 +32,7 @@ func (d DiceRoll) Roll() int {
 func ParseDice(expr string) (DiceRoll, error) {
 	expr = strings.TrimSpace(expr)
 	if expr == "" {
-		return DiceRoll{}, fmt.Errorf("empty dice expression")
+		return DiceRoll{}, errors.New("empty dice expression")
 	}
 
 	dIdx := strings.IndexByte(expr, 'd')

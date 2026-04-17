@@ -246,7 +246,7 @@ func (m *PlayerManager) initCharacter(rw io.ReadWriter, char *assets.Character) 
 		if err != nil {
 			return fmt.Errorf("selecting pronouns: %w", err)
 		}
-		char.Pronoun = storage.NewSmartIdentifier[*assets.Pronoun](string(sel))
+		char.Pronoun = storage.NewSmartIdentifier[*assets.Pronoun](sel)
 	}
 
 	for char.Race.Id() == "" {
@@ -254,7 +254,7 @@ func (m *PlayerManager) initCharacter(rw io.ReadWriter, char *assets.Character) 
 		if err != nil {
 			return fmt.Errorf("selecting race: %w", err)
 		}
-		char.Race = storage.NewSmartIdentifier[*assets.Race](string(sel))
+		char.Race = storage.NewSmartIdentifier[*assets.Race](sel)
 	}
 
 	if char.BaseStats == nil {

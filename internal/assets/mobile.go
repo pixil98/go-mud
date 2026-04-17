@@ -3,6 +3,7 @@ package assets
 import (
 	"errors"
 	"fmt"
+	"slices"
 	"strings"
 
 	"github.com/pixil98/go-mud/internal/storage"
@@ -103,28 +104,22 @@ func (m *Mobile) HasFlag(flag MobileFlag) bool {
 
 // MatchName returns true if name matches any of this mobile's aliases (case-insensitive).
 func (m *Mobile) MatchName(name string) bool {
-	nameLower := strings.ToLower(name)
-	for _, alias := range m.Aliases {
-		if strings.ToLower(alias) == nameLower {
-			return true
-		}
-	}
-	return false
+	return slices.ContainsFunc(m.Aliases, func(a string) bool {
+		return strings.EqualFold(a, name)
+	})
 }
 
 // Validate returns an error if the mobile definition is invalid.
 func (m *Mobile) Validate() error {
 	var errs []error
 	if len(m.Aliases) < 1 {
-		errs = append(errs, fmt.Errorf("mobile alias is required"))
+		errs = append(errs, errors.New("mobile alias is required"))
 	}
 	if m.ShortDesc == "" {
-		errs = append(errs, fmt.Errorf("mobile short description is required"))
+		errs = append(errs, errors.New("mobile short description is required"))
 	}
-	for i := range m.Perks {
-		if err := m.Perks[i].validate(); err != nil {
-			errs = append(errs, fmt.Errorf("perk[%d]: %w", i, err))
-		}
+	if err := validatePerks(m.Perks); err != nil {
+		errs = append(errs, err)
 	}
 	for _, f := range m.Flags {
 		if parseMobileFlag(f) == MobileFlagUnknown {

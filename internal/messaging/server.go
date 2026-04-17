@@ -2,6 +2,7 @@ package messaging
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log/slog"
 	"time"
@@ -52,7 +53,7 @@ func (n *NatsServer) Start(ctx context.Context) error {
 	n.ns.Start()
 
 	if !n.ns.ReadyForConnections(n.startupTimeout) {
-		return fmt.Errorf("nats server not ready for connections")
+		return errors.New("nats server not ready for connections")
 	}
 
 	// Create internal client connection
@@ -77,7 +78,7 @@ func (n *NatsServer) Start(ctx context.Context) error {
 // Returns an unsubscribe function to remove the subscription.
 func (n *NatsServer) Subscribe(subject string, handler func(data []byte)) (func(), error) {
 	if n.conn == nil {
-		return nil, fmt.Errorf("nats server not started")
+		return nil, errors.New("nats server not started")
 	}
 	sub, err := n.conn.Subscribe(subject, func(msg *nats.Msg) {
 		handler(msg.Data)
@@ -91,7 +92,7 @@ func (n *NatsServer) Subscribe(subject string, handler func(data []byte)) (func(
 // Publish sends a message to the given subject
 func (n *NatsServer) Publish(subject string, data []byte) error {
 	if n.conn == nil {
-		return fmt.Errorf("nats server not started")
+		return errors.New("nats server not started")
 	}
 	return n.conn.Publish(subject, data)
 }

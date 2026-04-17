@@ -1,6 +1,7 @@
 package assets
 
 import (
+	"errors"
 	"fmt"
 	"slices"
 	"strings"
@@ -8,6 +9,10 @@ import (
 
 	"github.com/Masterminds/sprig/v3"
 )
+
+// sprigFuncs is cached at package level so Validate doesn't rebuild Sprig's
+// large function map on every call.
+var sprigFuncs = sprig.TxtFuncMap()
 
 // Input type constants.
 const (
@@ -143,7 +148,7 @@ func (c *Command) HelpSummary() (string, string) {
 // Validate checks that the handler is set and that inputs and targets are valid.
 func (c *Command) Validate() error {
 	if c.Handler == "" {
-		return fmt.Errorf("command handler not set")
+		return errors.New("command handler not set")
 	}
 	return c.ValidateInputsTargets()
 }
@@ -217,7 +222,7 @@ func (c *Command) ValidateInputsTargets() error {
 		}
 
 		if target.NotFound != "" {
-			if _, err := template.New("").Funcs(sprig.TxtFuncMap()).Parse(target.NotFound); err != nil {
+			if _, err := template.New("").Funcs(sprigFuncs).Parse(target.NotFound); err != nil {
 				return fmt.Errorf("target %q: invalid not_found template: %w", target.Name, err)
 			}
 		}
