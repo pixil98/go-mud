@@ -114,6 +114,8 @@ github.com/pixil98/go-errors v0.0.0-20260129211429-af839a3eda29 h1:A2PYnmKJtFZcn
 github.com/pixil98/go-errors v0.0.0-20260129211429-af839a3eda29/go.mod h1:TxZ5wa++WexWf1eXctwGEwpqF0Tni9vSVryzOthlkPg=
 github.com/pixil98/go-service v0.0.0-20260129225234-fbbbcef1b2b8 h1:EUKStUxWpWCBMe2xVnCnws6lo8bkrKsI3RUXAT4acls=
 github.com/pixil98/go-service v0.0.0-20260129225234-fbbbcef1b2b8/go.mod h1:eaMWPcKjK89/RzAvKmLpIc51sqsDAkVNmofn5zpUcCY=
+github.com/pixil98/go-service v0.0.0-20260417183655-e748a89d22a0 h1:Gyz5yYm1zwxbkGq1g7SMw1XS5behVvYsv1fkLHsJNrE=
+github.com/pixil98/go-service v0.0.0-20260417183655-e748a89d22a0/go.mod h1:jwio5aS7e5ExSml/iEQCtyD5AD7VYD9upVuZanplyNg=
 github.com/pixil98/go-testutil v0.0.0-20260123222118-fa427b8db36a h1:zPxmhEFpnvx0F8H1KbXH6SFQdHcB3qcSevmlYEQ+m0g=
 github.com/pixil98/go-testutil v0.0.0-20260123222118-fa427b8db36a/go.mod h1:qT1b5ei2nkl9QpEONfXJCGyHxod5KlkvpNT2wtv4TDI=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
