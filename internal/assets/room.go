@@ -3,7 +3,6 @@ package assets
 import (
 	"errors"
 	"fmt"
-	"strings"
 
 	"github.com/pixil98/go-mud/internal/storage"
 )
@@ -23,8 +22,11 @@ const (
 	RoomFlagSingleOccupant          // Only one player allowed at a time
 )
 
+// parseRoomFlag converts a flag name to its enum value. Input must be
+// lowercase; Validate catches any non-lowercase or otherwise unknown flag at
+// load time so hot paths can skip the case-folding.
 func parseRoomFlag(s string) RoomFlag {
-	switch strings.ToLower(s) {
+	switch s {
 	case "death":
 		return RoomFlagDeath
 	case "nomob":

@@ -29,8 +29,11 @@ const (
 	MobileFlagAware                 // Cannot be backstabbed
 )
 
+// parseMobileFlag converts a flag name to its enum value. Input must be
+// lowercase; Validate catches any non-lowercase or otherwise unknown flag at
+// load time so hot paths can skip the case-folding.
 func parseMobileFlag(s string) MobileFlag {
-	switch strings.ToLower(s) {
+	switch s {
 	case "sentinel":
 		return MobileFlagSentinel
 	case "aggressive":
