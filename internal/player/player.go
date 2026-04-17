@@ -136,21 +136,29 @@ func (p *Player) Play(ctx context.Context) error {
 func (p *Player) prompt() error {
 	prompt := "> "
 	if ps := p.world.GetPlayer(p.charId); ps != nil {
-		var parts []string
-		// HP is always first.
-		if cur, mx := ps.Resource(assets.ResourceHp); mx > 0 {
-			parts = append(parts, game.ResourceLine(assets.ResourceHp, cur, mx))
+		// Single pass: collect HP plus all other resources with their values
+		// from ForEachResource directly, so we don't re-query each resource.
+		type res struct {
+			name     string
+			cur, max int
 		}
-		var others []string
-		ps.ForEachResource(func(name string, _, _ int) {
-			if name != assets.ResourceHp {
-				others = append(others, name)
+		var hp *res
+		var others []res
+		ps.ForEachResource(func(name string, cur, mx int) {
+			if name == assets.ResourceHp {
+				hp = &res{name, cur, mx}
+				return
 			}
+			others = append(others, res{name, cur, mx})
 		})
-		sort.Strings(others)
-		for _, name := range others {
-			cur, mx := ps.Resource(name)
-			parts = append(parts, game.ResourceLine(name, cur, mx))
+		sort.Slice(others, func(i, j int) bool { return others[i].name < others[j].name })
+
+		var parts []string
+		if hp != nil && hp.max > 0 {
+			parts = append(parts, game.ResourceLine(hp.name, hp.cur, hp.max))
+		}
+		for _, r := range others {
+			parts = append(parts, game.ResourceLine(r.name, r.cur, r.max))
 		}
 		if ap := ps.CurrentAP(); ap > 0 {
 			parts = append(parts, strings.Repeat("*", ap))
