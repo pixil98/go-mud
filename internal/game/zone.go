@@ -14,6 +14,7 @@ type ZoneInstance struct {
 	Zone storage.SmartIdentifier[*assets.Zone]
 
 	world *WorldState
+	clock func() time.Time // source of current time for reset scheduling; defaults to time.Now
 
 	nextReset        time.Time     // when zone should next reset (runtime only)
 	lifespanDuration time.Duration // parsed lifespan
@@ -37,6 +38,7 @@ func NewZoneInstance(zone storage.SmartIdentifier[*assets.Zone], world *WorldSta
 	zi := &ZoneInstance{
 		Zone:  zone,
 		world: world,
+		clock: time.Now,
 		rooms: make(map[string]*RoomInstance),
 		Perks: NewPerkCache(def.Perks, nil),
 	}
@@ -61,7 +63,7 @@ func (z *ZoneInstance) AddRoom(ri *RoomInstance) {
 // Reset checks reset conditions and respawns mobs/objects if appropriate.
 // If force is true, bypasses time/occupancy checks.
 func (z *ZoneInstance) Reset(force bool, cf CommanderFactory) error {
-	now := time.Now()
+	now := z.clock()
 
 	if !force {
 		if z.Zone.Get().ResetMode == assets.ZoneResetNever {

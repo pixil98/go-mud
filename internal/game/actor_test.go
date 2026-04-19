@@ -1,39 +1,394 @@
 package game
 
 import (
+	"context"
 	"testing"
 
 	"github.com/pixil98/go-mud/internal/assets"
-	"github.com/pixil98/go-mud/internal/storage"
 )
 
-// newTestCI creates a minimal CharacterInstance for follow tree tests.
-func newTestCI(id, name string) *CharacterInstance {
-	charRef := storage.NewResolvedSmartIdentifier(id, &assets.Character{Name: name})
-	ci := &CharacterInstance{
-		Character: charRef,
-		ActorInstance: ActorInstance{
-			InstanceId: id,
-			PerkCache:  *NewPerkCache(nil, nil),
-		},
+func TestActorInstance_Level(t *testing.T) {
+	tests := map[string]struct {
+		level int
+		want  int
+	}{
+		"level 1":  {level: 1, want: 1},
+		"level 10": {level: 10, want: 10},
+		"level 0":  {level: 0, want: 0},
 	}
-	ci.self = ci
-	return ci
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			a := &ActorInstance{level: tc.level, PerkCache: *NewPerkCache(nil, nil)}
+			if got := a.Level(); got != tc.want {
+				t.Errorf("Level() = %d, want %d", got, tc.want)
+			}
+		})
+	}
 }
 
-// newTestMI creates a minimal MobileInstance for follow tree tests.
-func newTestMI(id, name string) *MobileInstance {
-	mobRef := storage.NewResolvedSmartIdentifier(id, &assets.Mobile{ShortDesc: name})
-	mi := &MobileInstance{
-		Mobile: mobRef,
-		ActorInstance: ActorInstance{
-			InstanceId: id,
-			PerkCache:  *NewPerkCache(nil, nil),
+func TestActorInstance_Room(t *testing.T) {
+	ri := newTestRoom("r")
+	tests := map[string]struct {
+		room    *RoomInstance
+		wantNil bool
+	}{
+		"returns set room":  {room: ri},
+		"returns nil":       {room: nil, wantNil: true},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			a := &ActorInstance{room: tc.room, PerkCache: *NewPerkCache(nil, nil)}
+			got := a.Room()
+			if tc.wantNil {
+				if got != nil {
+					t.Error("Room() expected nil")
+				}
+				return
+			}
+			if got != tc.room {
+				t.Error("Room() returned unexpected instance")
+			}
+		})
+	}
+}
+
+func TestActorInstance_IsInCombat_SetInCombat(t *testing.T) {
+	tests := map[string]struct {
+		setup func(*ActorInstance)
+		want  bool
+	}{
+		"initial state is false":     {setup: func(*ActorInstance) {}, want: false},
+		"true after SetInCombat(true)": {setup: func(a *ActorInstance) { a.SetInCombat(true) }, want: true},
+		"false after toggle back":    {setup: func(a *ActorInstance) { a.SetInCombat(true); a.SetInCombat(false) }, want: false},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			a := &ActorInstance{PerkCache: *NewPerkCache(nil, nil)}
+			tc.setup(a)
+			if got := a.IsInCombat(); got != tc.want {
+				t.Errorf("IsInCombat() = %v, want %v", got, tc.want)
+			}
+		})
+	}
+}
+
+func TestActorInstance_Inventory(t *testing.T) {
+	tests := map[string]struct {
+		inv     *Inventory
+		wantNil bool
+	}{
+		"returns set inventory": {inv: NewInventory()},
+		"returns nil":           {inv: nil, wantNil: true},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			a := &ActorInstance{inventory: tc.inv, PerkCache: *NewPerkCache(nil, nil)}
+			got := a.Inventory()
+			if tc.wantNil {
+				if got != nil {
+					t.Error("Inventory() expected nil")
+				}
+				return
+			}
+			if got != tc.inv {
+				t.Error("Inventory() returned unexpected instance")
+			}
+		})
+	}
+}
+
+func TestActorInstance_Equipment(t *testing.T) {
+	tests := map[string]struct {
+		eq      *Equipment
+		wantNil bool
+	}{
+		"returns set equipment": {eq: NewEquipment()},
+		"returns nil":           {eq: nil, wantNil: true},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			a := &ActorInstance{equipment: tc.eq, PerkCache: *NewPerkCache(nil, nil)}
+			got := a.Equipment()
+			if tc.wantNil {
+				if got != nil {
+					t.Error("Equipment() expected nil")
+				}
+				return
+			}
+			if got != tc.eq {
+				t.Error("Equipment() returned unexpected instance")
+			}
+		})
+	}
+}
+
+func TestActorInstance_IsAlive(t *testing.T) {
+	hpPerk := assets.Perk{
+		Type:  assets.PerkTypeModifier,
+		Key:   assets.BuildKey(assets.ResourcePrefix, assets.ResourceHp, assets.ResourceAspectMax),
+		Value: 10,
+	}
+	tests := map[string]struct {
+		currentHP int
+		wantAlive bool
+	}{
+		"HP above zero is alive":      {currentHP: 5, wantAlive: true},
+		"HP at exactly zero is dead":  {currentHP: 0, wantAlive: false},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			a := &ActorInstance{PerkCache: *NewPerkCache([]assets.Perk{hpPerk}, nil)}
+			a.initResources()
+			a.setResourceCurrent(assets.ResourceHp, tc.currentHP)
+			if got := a.IsAlive(); got != tc.wantAlive {
+				t.Errorf("IsAlive() = %v, want %v", got, tc.wantAlive)
+			}
+		})
+	}
+}
+
+func TestActorInstance_ForEachResource(t *testing.T) {
+	tests := map[string]struct {
+		perks     []assets.Perk
+		overrides map[string]int
+		wantPairs map[string][2]int // name → {current, max}
+	}{
+		"no resources yields no iterations": {
+			wantPairs: map[string][2]int{},
+		},
+		"two resources are both visited": {
+			perks: []assets.Perk{
+				{Type: assets.PerkTypeModifier, Key: assets.BuildKey(assets.ResourcePrefix, "hp", assets.ResourceAspectMax), Value: 10},
+				{Type: assets.PerkTypeModifier, Key: assets.BuildKey(assets.ResourcePrefix, "mana", assets.ResourceAspectMax), Value: 20},
+			},
+			overrides: map[string]int{"hp": 5, "mana": 15},
+			wantPairs: map[string][2]int{"hp": {5, 10}, "mana": {15, 20}},
 		},
 	}
-	mi.self = mi
-	return mi
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			a := &ActorInstance{PerkCache: *NewPerkCache(tc.perks, nil)}
+			a.initResources()
+			for k, v := range tc.overrides {
+				a.setResourceCurrent(k, v)
+			}
+			seen := make(map[string][2]int)
+			a.ForEachResource(func(name string, current, maximum int) {
+				seen[name] = [2]int{current, maximum}
+			})
+			for k, want := range tc.wantPairs {
+				if got, ok := seen[k]; !ok || got != want {
+					t.Errorf("resource[%q] = %v, want %v", k, got, want)
+				}
+			}
+		})
+	}
 }
+
+func TestActorInstance_ThreatTable(t *testing.T) {
+	tests := map[string]struct {
+		setup func() *ActorInstance
+		check func(*testing.T, *ActorInstance)
+	}{
+		"HasThreatEntries false before any entry": {
+			setup: func() *ActorInstance { return &ActorInstance{PerkCache: *NewPerkCache(nil, nil)} },
+			check: func(t *testing.T, a *ActorInstance) {
+				if a.HasThreatEntries() {
+					t.Error("HasThreatEntries should be false initially")
+				}
+			},
+		},
+		"EnsureThreat adds entry visible via HasThreatFrom and ThreatSnapshot": {
+			setup: func() *ActorInstance {
+				a := &ActorInstance{PerkCache: *NewPerkCache(nil, nil)}
+				a.EnsureThreat("e", newTestMI("e", "E"))
+				return a
+			},
+			check: func(t *testing.T, a *ActorInstance) {
+				if !a.HasThreatFrom("e") {
+					t.Error("HasThreatFrom = false, want true")
+				}
+				if !a.HasThreatEntries() {
+					t.Error("HasThreatEntries = false, want true")
+				}
+				if v := a.ThreatSnapshot()["e"]; v != 1 {
+					t.Errorf("initial threat = %d, want 1", v)
+				}
+			},
+		},
+		"AddThreatFrom increments threat": {
+			setup: func() *ActorInstance {
+				a := &ActorInstance{PerkCache: *NewPerkCache(nil, nil)}
+				a.EnsureThreat("e", newTestMI("e", "E"))
+				a.AddThreatFrom("e", 9) // 1 + 9 = 10
+				return a
+			},
+			check: func(t *testing.T, a *ActorInstance) {
+				if v := a.ThreatSnapshot()["e"]; v != 10 {
+					t.Errorf("threat after AddThreatFrom = %d, want 10", v)
+				}
+			},
+		},
+		"SetThreatFrom sets absolute value": {
+			setup: func() *ActorInstance {
+				a := &ActorInstance{PerkCache: *NewPerkCache(nil, nil)}
+				a.EnsureThreat("e", newTestMI("e", "E"))
+				a.SetThreatFrom("e", 42)
+				return a
+			},
+			check: func(t *testing.T, a *ActorInstance) {
+				if v := a.ThreatSnapshot()["e"]; v != 42 {
+					t.Errorf("threat after SetThreatFrom = %d, want 42", v)
+				}
+			},
+		},
+		"TopThreatFrom makes entry exceed current highest": {
+			setup: func() *ActorInstance {
+				a := &ActorInstance{PerkCache: *NewPerkCache(nil, nil)}
+				a.EnsureThreat("e", newTestMI("e", "E"))
+				a.EnsureThreat("f", newTestMI("f", "F"))
+				a.SetThreatFrom("f", 100)
+				a.TopThreatFrom("e")
+				return a
+			},
+			check: func(t *testing.T, a *ActorInstance) {
+				if v := a.ThreatSnapshot()["e"]; v <= 100 {
+					t.Errorf("threat after TopThreatFrom = %d, want >100", v)
+				}
+			},
+		},
+		"ThreatEnemies returns all actor references": {
+			setup: func() *ActorInstance {
+				a := &ActorInstance{PerkCache: *NewPerkCache(nil, nil)}
+				a.EnsureThreat("e", newTestMI("e", "E"))
+				a.EnsureThreat("f", newTestMI("f", "F"))
+				return a
+			},
+			check: func(t *testing.T, a *ActorInstance) {
+				if n := len(a.ThreatEnemies()); n != 2 {
+					t.Errorf("ThreatEnemies count = %d, want 2", n)
+				}
+			},
+		},
+		"ResolveCombatTarget returns non-nil with entries present": {
+			setup: func() *ActorInstance {
+				a := &ActorInstance{PerkCache: *NewPerkCache(nil, nil)}
+				a.EnsureThreat("e", newTestMI("e", "E"))
+				return a
+			},
+			check: func(t *testing.T, a *ActorInstance) {
+				if target := a.ResolveCombatTarget(""); target == nil {
+					t.Error("ResolveCombatTarget should not return nil")
+				}
+			},
+		},
+		"RemoveThreatEntry removes the entry": {
+			setup: func() *ActorInstance {
+				a := &ActorInstance{PerkCache: *NewPerkCache(nil, nil)}
+				a.EnsureThreat("e", newTestMI("e", "E"))
+				a.RemoveThreatEntry("e")
+				return a
+			},
+			check: func(t *testing.T, a *ActorInstance) {
+				if a.HasThreatFrom("e") {
+					t.Error("HasThreatFrom = true after RemoveThreatEntry, want false")
+				}
+			},
+		},
+		"ClearThreatTable removes all entries": {
+			setup: func() *ActorInstance {
+				a := &ActorInstance{PerkCache: *NewPerkCache(nil, nil)}
+				a.EnsureThreat("e", newTestMI("e", "E"))
+				a.EnsureThreat("f", newTestMI("f", "F"))
+				a.ClearThreatTable()
+				return a
+			},
+			check: func(t *testing.T, a *ActorInstance) {
+				if a.HasThreatEntries() {
+					t.Error("HasThreatEntries = true after ClearThreatTable, want false")
+				}
+			},
+		},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			tc.check(t, tc.setup())
+		})
+	}
+}
+
+func TestResourceLine(t *testing.T) {
+	tests := map[string]struct {
+		name    string
+		current int
+		maximum int
+		want    string
+	}{
+		"formats name and values": {name: "HP", current: 45, maximum: 50, want: "HP: 45/50"},
+		"zero current":            {name: "Mana", current: 0, maximum: 100, want: "Mana: 0/100"},
+		"current equals max":      {name: "Rage", current: 10, maximum: 10, want: "Rage: 10/10"},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			if got := ResourceLine(tc.name, tc.current, tc.maximum); got != tc.want {
+				t.Errorf("ResourceLine = %q, want %q", got, tc.want)
+			}
+		})
+	}
+}
+
+func TestWearSlots(t *testing.T) {
+	tests := map[string]struct {
+		perks   []assets.Perk
+		wantLen int
+	}{
+		"no grants returns empty":     {wantLen: 0},
+		"two distinct slots granted":  {
+			perks: []assets.Perk{
+				{Type: assets.PerkTypeGrant, Key: assets.PerkGrantWearSlot, Arg: "head"},
+				{Type: assets.PerkTypeGrant, Key: assets.PerkGrantWearSlot, Arg: "finger"},
+			},
+			wantLen: 2,
+		},
+		"duplicate slot creates two entries": {
+			perks: []assets.Perk{
+				{Type: assets.PerkTypeGrant, Key: assets.PerkGrantWearSlot, Arg: "finger"},
+				{Type: assets.PerkTypeGrant, Key: assets.PerkGrantWearSlot, Arg: "finger"},
+			},
+			wantLen: 2,
+		},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			a := &ActorInstance{PerkCache: *NewPerkCache(tc.perks, nil)}
+			if got := len(a.WearSlots()); got != tc.wantLen {
+				t.Errorf("WearSlots() len = %d, want %d", got, tc.wantLen)
+			}
+		})
+	}
+}
+
+func TestCountSlot(t *testing.T) {
+	tests := map[string]struct {
+		slots []string
+		slot  string
+		want  int
+	}{
+		"empty slice":        {slots: nil, slot: "finger", want: 0},
+		"slot not present":   {slots: []string{"head", "body"}, slot: "finger", want: 0},
+		"slot present once":  {slots: []string{"head", "finger"}, slot: "finger", want: 1},
+		"slot present twice": {slots: []string{"finger", "head", "finger"}, slot: "finger", want: 2},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			if got := countSlot(tc.slots, tc.slot); got != tc.want {
+				t.Errorf("countSlot(%v, %q) = %d, want %d", tc.slots, tc.slot, got, tc.want)
+			}
+		})
+	}
+}
+
+
 
 func TestSetFollowing_ManagesReverseLinks(t *testing.T) {
 	tests := map[string]struct {
@@ -384,44 +739,197 @@ func TestActorInstance_SetResource(t *testing.T) {
 
 func TestActorInstance_AdjustResource(t *testing.T) {
 	const resourceMax = 20
-	perks := []assets.Perk{
+	withResource := []assets.Perk{
 		{Type: assets.PerkTypeModifier, Key: assets.BuildKey(assets.ResourcePrefix, "a", assets.ResourceAspectMax), Value: resourceMax},
 	}
 
 	tests := map[string]struct {
+		perks    []assets.Perk
 		startCur int
 		delta    int
 		overfill bool
 		wantCur  int
+		wantMax  int
 	}{
-		"positive delta":       {startCur: 10, delta: 5, wantCur: 15},
-		"negative delta":       {startCur: 10, delta: -3, wantCur: 7},
-		"clamps at zero":       {startCur: 5, delta: -10, wantCur: 0},
-		"clamps at max":        {startCur: 15, delta: 10, wantCur: resourceMax},
-		"overfill exceeds max": {startCur: 15, delta: 10, overfill: true, wantCur: 25},
+		"positive delta":               {perks: withResource, startCur: 10, delta: 5, wantCur: 15, wantMax: resourceMax},
+		"negative delta":               {perks: withResource, startCur: 10, delta: -3, wantCur: 7, wantMax: resourceMax},
+		"clamps at zero":               {perks: withResource, startCur: 5, delta: -10, wantCur: 0, wantMax: resourceMax},
+		"clamps at max":                {perks: withResource, startCur: 15, delta: 10, wantCur: resourceMax, wantMax: resourceMax},
+		"overfill exceeds max":         {perks: withResource, startCur: 15, delta: 10, overfill: true, wantCur: 25, wantMax: resourceMax},
+		"non-existent resource no-op":  {perks: nil, startCur: 0, delta: 10, wantCur: 0, wantMax: 0},
 	}
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			a := &ActorInstance{PerkCache: *NewPerkCache(perks, nil)}
+			a := &ActorInstance{PerkCache: *NewPerkCache(tc.perks, nil)}
 			a.initResources()
 			a.setResourceCurrent("a", tc.startCur)
 
 			a.AdjustResource("a", tc.delta, tc.overfill)
 
-			cur, _ := a.Resource("a")
+			cur, mx := a.Resource("a")
 			if cur != tc.wantCur {
 				t.Errorf("current = %d, want %d", cur, tc.wantCur)
 			}
+			if mx != tc.wantMax {
+				t.Errorf("max = %d, want %d", mx, tc.wantMax)
+			}
 		})
 	}
+}
 
-	t.Run("non-existent resource is no-op", func(t *testing.T) {
-		a := &ActorInstance{PerkCache: *NewPerkCache(nil, nil)}
-		a.AdjustResource("b", 10, false)
-		cur, mx := a.Resource("b")
-		if cur != 0 || mx != 0 {
-			t.Errorf("non-existent resource = (%d, %d), want (0, 0)", cur, mx)
-		}
-	})
+func TestActorInstance_SetCommander(t *testing.T) {
+	tests := map[string]struct {
+		setNil bool
+	}{
+		"sets non-nil commander": {setNil: false},
+		"sets nil commander":     {setNil: true},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			a := &ActorInstance{PerkCache: *NewPerkCache(nil, nil)}
+			var fc Commander
+			if !tc.setNil {
+				fc = &fakeCommander{}
+			}
+			a.SetCommander(fc)
+			if a.commander != fc {
+				t.Errorf("commander = %v, want %v", a.commander, fc)
+			}
+		})
+	}
+}
+
+func TestActorInstance_ClaimDeath(t *testing.T) {
+	tests := map[string]struct {
+		calls    int
+		wantFirst bool
+	}{
+		"first call returns true":  {calls: 1, wantFirst: true},
+		"second call returns false": {calls: 2, wantFirst: true},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			a := &ActorInstance{PerkCache: *NewPerkCache(nil, nil)}
+			var got bool
+			for i := 0; i < tc.calls; i++ {
+				got = a.ClaimDeath()
+			}
+			wantLast := tc.calls == 1 && tc.wantFirst
+			if tc.calls > 1 {
+				wantLast = false
+			}
+			if tc.calls == 1 && got != tc.wantFirst {
+				t.Errorf("ClaimDeath() = %v, want %v", got, tc.wantFirst)
+			}
+			if tc.calls > 1 && got != wantLast {
+				t.Errorf("ClaimDeath() on call %d = %v, want %v", tc.calls, got, wantLast)
+			}
+		})
+	}
+}
+
+func TestActorInstance_QueueTickMsg(t *testing.T) {
+	tests := map[string]struct {
+		msgs     []string
+		wantLen  int
+	}{
+		"single message queued":   {msgs: []string{"hello"}, wantLen: 1},
+		"two messages queued":     {msgs: []string{"a", "b"}, wantLen: 2},
+		"no messages queued":      {msgs: nil, wantLen: 0},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			a := &ActorInstance{PerkCache: *NewPerkCache(nil, nil)}
+			for _, m := range tc.msgs {
+				a.QueueTickMsg(m)
+			}
+			if got := len(a.tickMsgBuf); got != tc.wantLen {
+				t.Errorf("tickMsgBuf len = %d, want %d", got, tc.wantLen)
+			}
+		})
+	}
+}
+
+func TestActorInstance_regenTick(t *testing.T) {
+	const maxHP = 20
+	hpPerks := []assets.Perk{
+		{Type: assets.PerkTypeModifier, Key: assets.BuildKey(assets.ResourcePrefix, assets.ResourceHp, assets.ResourceAspectMax), Value: maxHP},
+		{Type: assets.PerkTypeModifier, Key: assets.BuildKey(assets.ResourcePrefix, assets.ResourceHp, assets.ResourceAspectRegen), Value: 3},
+	}
+	tests := map[string]struct {
+		startHP  int
+		wantHP   int
+	}{
+		"regen applied when below max": {startHP: 10, wantHP: 13},
+		"regen does not exceed max":    {startHP: 19, wantHP: maxHP},
+		"full HP stays full":           {startHP: maxHP, wantHP: maxHP},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			a := &ActorInstance{PerkCache: *NewPerkCache(hpPerks, nil)}
+			a.initResources()
+			a.setResourceCurrent(assets.ResourceHp, tc.startHP)
+			a.mu.Lock()
+			a.regenTick()
+			a.mu.Unlock()
+			cur, _ := a.Resource(assets.ResourceHp)
+			if cur != tc.wantHP {
+				t.Errorf("HP after regenTick = %d, want %d", cur, tc.wantHP)
+			}
+		})
+	}
+}
+
+func TestActorInstance_autoUseTick(t *testing.T) {
+	ctx := context.Background()
+	tests := map[string]struct {
+		grants        []string
+		preTicks      int // ticks to run before checking, to advance cooldowns
+		wantAbilities []string
+	}{
+		"no grants fires nothing": {
+			grants:        nil,
+			wantAbilities: nil,
+		},
+		"single grant fires ability": {
+			grants:        []string{"heal"},
+			wantAbilities: []string{"heal"},
+		},
+		"grant with cooldown:2 fires on first tick then skips next": {
+			grants:        []string{"smite:2"},
+			preTicks:      0,
+			wantAbilities: []string{"smite"},
+		},
+		"grant on cooldown does not fire": {
+			grants:        []string{"smite:3"},
+			preTicks:      1, // fire once to set cooldown, then check second tick
+			wantAbilities: nil,
+		},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			fc := &fakeCommander{}
+			a := &ActorInstance{PerkCache: *NewPerkCache(nil, nil)}
+			a.commander = fc
+			target := newTestMI("t", "Target")
+
+			// Pre-ticks to advance cooldown state.
+			for range tc.preTicks {
+				a.autoUseTick(ctx, tc.grants, target)
+			}
+			fc.abilities = nil // reset after pre-ticks
+
+			a.autoUseTick(ctx, tc.grants, target)
+
+			if len(fc.abilities) != len(tc.wantAbilities) {
+				t.Fatalf("abilities fired = %v, want %v", fc.abilities, tc.wantAbilities)
+			}
+			for i, want := range tc.wantAbilities {
+				if fc.abilities[i] != want {
+					t.Errorf("ability[%d] = %q, want %q", i, fc.abilities[i], want)
+				}
+			}
+		})
+	}
 }

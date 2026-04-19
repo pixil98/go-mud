@@ -21,9 +21,9 @@ var (
 // Stat is an ability score value (e.g., 10 for average).
 type Stat int
 
-// Mod returns the D&D-style ability modifier: (score - 10) / 2.
+// Mod returns the D&D-style ability modifier: floor((score - 10) / 2).
 func (s Stat) Mod() int {
-	return (int(s) - 10) / 2
+	return (int(s) - 10) >> 1
 }
 
 // CharacterInstance holds all mutable state for an active player.

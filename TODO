@@ -1,3 +1,19 @@
+## Combat State Simplification
+Remove the explicit inCombat flag and combatTargetId field; drive everything from the threat
+table instead:
+- An actor is "in combat" if and only if their threat table is non-empty. Replace all
+  IsInCombat()/SetInCombat() calls with HasThreatEntries() checks.
+- Remove CombatTargetId()/SetCombatTargetId()/ClearCombatTargetId() and the combatTargetId
+  field — SetCombatTargetId has no callers and the inCombat side-effects are now redundant.
+- Each tick the combat path calls ResolveCombatTarget(""); if it returns nil, clear the table
+  (which implicitly ends combat). No separate sweep needed.
+- The assist command and DefaultCombatTarget resolution in resolve.go both use CombatTargetId()
+  but should use the threat table instead: IsInCombat() → HasThreatEntries(),
+  target lookup → ResolveCombatTarget("").
+- "Sticky target" intent (player prefers the mob they issued kill against) can be re-implemented
+  via TopThreatFrom at the point the kill command is issued, rather than a separate field.
+
+## Misc TODOs
 - Notify the player when a decayable item expires (e.g. "The rusty key crumbles to dust.")
 - Remove StatSections from CharacterInstance and format everything from Actor and perks
 - the wear command should have a config option to limit the slots it can apply to and then we can implement wield and hold properly.
@@ -6,6 +22,7 @@
   session. This means the player sees a full HP prompt right before being disconnected, which
   looks wrong. Decide on a proper death/respawn policy (e.g. respawn at 1 HP, or defer the
   heal until login) and update the test in character_test.go to match.
+
 ## Light and Darkness
 Current implementation: rooms grant `dark` perk to occupants; personal `darkvision` grant (race, spell, or equipped light source) counters it. Darkness blocks look, room-scope target resolution (combat, get, etc.), and movement announcements to observers who can't see.
 
@@ -65,4 +82,3 @@ manager into per-actor tick behavior:
 - Should overhealing generate threat? Currently heal threat is based on the full heal amount, even if the target is already at max HP.
 - Make threat multiplier configurable per effect. Currently damage generates 1:1 threat and heal generates 0.5x threat, both hardcoded. A config field (e.g. "threat_multiplier") would allow tuning per ability.
 - TimedPerkCaches in world/zone/room currently apply to all players and no mobs
-

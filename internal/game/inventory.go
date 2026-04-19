@@ -84,14 +84,6 @@ func (inv *Inventory) Len() int {
 	return len(inv.objs)
 }
 
-// Clear removes all items.
-func (inv *Inventory) Clear() {
-	inv.mu.Lock()
-	defer inv.mu.Unlock()
-
-	inv.objs = make(map[string]*ObjectInstance)
-}
-
 // Tick advances decay on all items. Each object's Tick is called, then any
 // object whose RemainingTicks has reached zero is removed.
 func (inv *Inventory) Tick() {

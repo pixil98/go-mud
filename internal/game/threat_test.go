@@ -1,16 +1,6 @@
 package game
 
-import (
-	"testing"
-
-	"github.com/pixil98/go-mud/internal/assets"
-	"github.com/pixil98/go-mud/internal/storage"
-)
-
-func testMob(id string) *MobileInstance {
-	mi, _ := NewMobileInstance(storage.NewResolvedSmartIdentifier(id, &assets.Mobile{ShortDesc: id}))
-	return mi
-}
+import "testing"
 
 func TestThreatTable_EnsureEntry(t *testing.T) {
 	tests := map[string]struct {
@@ -28,7 +18,7 @@ func TestThreatTable_EnsureEntry(t *testing.T) {
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
 			var tt ThreatTable
-			mob := testMob("a")
+			mob := newTestMI("a", "A")
 			if tc.preloadThreat > 0 {
 				tt.ensureEntry("a", mob)
 				tt.entries["a"].threat = tc.preloadThreat
@@ -43,7 +33,7 @@ func TestThreatTable_EnsureEntry(t *testing.T) {
 
 func TestThreatTable_AddThreat(t *testing.T) {
 	var tt ThreatTable
-	tt.ensureEntry("a", testMob("a"))
+	tt.ensureEntry("a", newTestMI("a", "A"))
 	tt.addThreat("a", 10)
 	if got := tt.entries["a"].threat; got != 11 {
 		t.Errorf("threat = %d, want 11", got)
@@ -56,7 +46,7 @@ func TestThreatTable_AddThreat(t *testing.T) {
 
 func TestThreatTable_SetThreat(t *testing.T) {
 	var tt ThreatTable
-	tt.ensureEntry("a", testMob("a"))
+	tt.ensureEntry("a", newTestMI("a", "A"))
 	tt.setThreat("a", 42)
 	if got := tt.entries["a"].threat; got != 42 {
 		t.Errorf("threat = %d, want 42", got)
@@ -65,8 +55,8 @@ func TestThreatTable_SetThreat(t *testing.T) {
 
 func TestThreatTable_TopThreat(t *testing.T) {
 	var tt ThreatTable
-	tt.ensureEntry("a", testMob("a"))
-	tt.ensureEntry("b", testMob("b"))
+	tt.ensureEntry("a", newTestMI("a", "A"))
+	tt.ensureEntry("b", newTestMI("b", "B"))
 	tt.entries["b"].threat = 20
 	tt.topThreat("a")
 	if got := tt.entries["a"].threat; got != 21 {
@@ -76,7 +66,7 @@ func TestThreatTable_TopThreat(t *testing.T) {
 
 func TestThreatTable_HasEntry(t *testing.T) {
 	var tt ThreatTable
-	tt.ensureEntry("a", testMob("a"))
+	tt.ensureEntry("a", newTestMI("a", "A"))
 	if !tt.hasEntry("a") {
 		t.Error("expected hasEntry(a) = true")
 	}
@@ -91,7 +81,7 @@ func TestThreatTable_HasEntries(t *testing.T) {
 		t.Error("expected empty table to have no entries")
 	}
 	var full ThreatTable
-	full.ensureEntry("a", testMob("a"))
+	full.ensureEntry("a", newTestMI("a", "A"))
 	if !full.hasEntries() {
 		t.Error("expected non-empty table to have entries")
 	}
@@ -99,8 +89,8 @@ func TestThreatTable_HasEntries(t *testing.T) {
 
 func TestThreatTable_RemoveEntry(t *testing.T) {
 	var tt ThreatTable
-	tt.ensureEntry("a", testMob("a"))
-	tt.ensureEntry("b", testMob("b"))
+	tt.ensureEntry("a", newTestMI("a", "A"))
+	tt.ensureEntry("b", newTestMI("b", "B"))
 	tt.removeEntry("a")
 	if tt.hasEntry("a") {
 		t.Error("expected a to be removed")
@@ -126,7 +116,7 @@ func TestThreatTable_Snapshot(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			var tt ThreatTable
 			for id, threat := range tc.entries {
-				tt.ensureEntry(id, testMob(id))
+				tt.ensureEntry(id, newTestMI(id, id))
 				tt.entries[id].threat = threat
 			}
 			snap := tt.snapshot()
@@ -147,67 +137,85 @@ func TestThreatTable_Snapshot(t *testing.T) {
 
 func TestThreatTable_Clear(t *testing.T) {
 	var tt ThreatTable
-	tt.ensureEntry("a", testMob("a"))
+	tt.ensureEntry("a", newTestMI("a", "A"))
 	tt.clear()
 	if tt.hasEntries() {
 		t.Error("expected empty after clear")
 	}
 }
 
-func TestThreatTable_ResolveTarget(t *testing.T) {
-	t.Run("empty table", func(t *testing.T) {
-		var tt ThreatTable
-		if got := tt.resolveTarget(""); got != nil {
-			t.Errorf("expected nil, got %v", got)
-		}
-	})
-
-	t.Run("highest threat wins", func(t *testing.T) {
-		var tt ThreatTable
-		a := testMob("a")
-		b := testMob("b")
-		tt.ensureEntry(a.Id(), a)
-		tt.ensureEntry(b.Id(), b)
-		tt.entries[b.Id()].threat = 20
-		got := tt.resolveTarget("")
-		if got == nil || got.Id() != b.Id() {
-			t.Errorf("expected b, got %v", got)
-		}
-	})
-
-	t.Run("preferred overrides highest", func(t *testing.T) {
-		var tt ThreatTable
-		a := testMob("a")
-		b := testMob("b")
-		tt.ensureEntry(a.Id(), a)
-		tt.ensureEntry(b.Id(), b)
-		tt.entries[b.Id()].threat = 20
-		got := tt.resolveTarget(a.Id())
-		if got == nil || got.Id() != a.Id() {
-			t.Errorf("expected a, got %v", got)
-		}
-	})
-
-	t.Run("preferred not in table falls back", func(t *testing.T) {
-		var tt ThreatTable
-		a := testMob("a")
-		b := testMob("b")
-		tt.ensureEntry(a.Id(), a)
-		tt.ensureEntry(b.Id(), b)
-		tt.entries[b.Id()].threat = 20
-		got := tt.resolveTarget("gone")
-		if got == nil || got.Id() != b.Id() {
-			t.Errorf("expected b, got %v", got)
-		}
-	})
-}
-
 func TestThreatTable_Enemies(t *testing.T) {
 	var tt ThreatTable
-	tt.ensureEntry("a", testMob("a"))
-	tt.ensureEntry("b", testMob("b"))
+	tt.ensureEntry("a", newTestMI("a", "A"))
+	tt.ensureEntry("b", newTestMI("b", "B"))
 	enemies := tt.enemies()
 	if len(enemies) != 2 {
 		t.Errorf("enemies count = %d, want 2", len(enemies))
 	}
 }
+
+func TestThreatTable_ResolveTarget(t *testing.T) {
+	tests := map[string]struct {
+		setup     func() ThreatTable
+		preferred string
+		wantId    string // empty means expect nil
+	}{
+		"empty table returns nil": {
+			setup:  func() ThreatTable { return ThreatTable{} },
+			wantId: "",
+		},
+		"highest threat wins": {
+			setup: func() ThreatTable {
+				var tt ThreatTable
+				tt.ensureEntry("a", newTestMI("a", "A"))
+				tt.ensureEntry("b", newTestMI("b", "B"))
+				tt.entries["b"].threat = 20
+				return tt
+			},
+			wantId: "b",
+		},
+		"preferred target overrides highest threat": {
+			setup: func() ThreatTable {
+				var tt ThreatTable
+				tt.ensureEntry("a", newTestMI("a", "A"))
+				tt.ensureEntry("b", newTestMI("b", "B"))
+				tt.entries["b"].threat = 20
+				return tt
+			},
+			preferred: "a",
+			wantId:    "a",
+		},
+		"preferred not in table falls back to highest": {
+			setup: func() ThreatTable {
+				var tt ThreatTable
+				tt.ensureEntry("a", newTestMI("a", "A"))
+				tt.ensureEntry("b", newTestMI("b", "B"))
+				tt.entries["b"].threat = 20
+				return tt
+			},
+			preferred: "gone",
+			wantId:    "b",
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			tt := tc.setup()
+			got := tt.resolveTarget(tc.preferred)
+			if tc.wantId == "" {
+				if got != nil {
+					t.Errorf("expected nil, got %v", got)
+				}
+				return
+			}
+			if got == nil {
+				t.Fatalf("expected %q, got nil", tc.wantId)
+			}
+			if got.Id() != tc.wantId {
+				t.Errorf("Id = %q, want %q", got.Id(), tc.wantId)
+			}
+		})
+	}
+}
+
+

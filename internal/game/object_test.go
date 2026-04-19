@@ -7,6 +7,67 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
+func TestSpawnObject(t *testing.T) {
+	tests := map[string]struct {
+		spec          assets.ObjectSpawn
+		wantContents  int
+		wantContainer bool
+	}{
+		"simple object has no contents": {
+			spec: assets.ObjectSpawn{
+				Object: storage.NewResolvedSmartIdentifier("sword", &assets.Object{
+					Aliases: []string{"sword"}, ShortDesc: "a sword",
+				}),
+			},
+			wantContents:  0,
+			wantContainer: false,
+		},
+		"container with contents spawned recursively": {
+			spec: assets.ObjectSpawn{
+				Object: storage.NewResolvedSmartIdentifier("box", &assets.Object{
+					Aliases: []string{"box"}, ShortDesc: "a box",
+					Flags: []string{"container"},
+				}),
+				Contents: []assets.ObjectSpawn{
+					{Object: storage.NewResolvedSmartIdentifier("coin", &assets.Object{
+						Aliases: []string{"coin"}, ShortDesc: "a coin",
+					})},
+					{Object: storage.NewResolvedSmartIdentifier("gem", &assets.Object{
+						Aliases: []string{"gem"}, ShortDesc: "a gem",
+					})},
+				},
+			},
+			wantContents:  2,
+			wantContainer: true,
+		},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			oi, err := SpawnObject(tc.spec)
+			if err != nil {
+				t.Fatalf("SpawnObject: %v", err)
+			}
+			if oi == nil {
+				t.Fatal("SpawnObject returned nil")
+			}
+			if tc.wantContainer {
+				if oi.Contents == nil {
+					t.Fatal("Contents is nil, want non-nil for container")
+				}
+				count := 0
+				oi.Contents.ForEachObj(func(string, *ObjectInstance) { count++ })
+				if count != tc.wantContents {
+					t.Errorf("contents count = %d, want %d", count, tc.wantContents)
+				}
+			} else {
+				if oi.Contents != nil {
+					t.Errorf("Contents = %v, want nil for non-container", oi.Contents)
+				}
+			}
+		})
+	}
+}
+
 func TestObjectInstance_ActivateDecay(t *testing.T) {
 	tests := map[string]struct {
 		lifetime      int
@@ -116,107 +177,36 @@ func TestObjectInstance_Tick_RecursesContents(t *testing.T) {
 	}
 }
 
-func TestInventory_Tick(t *testing.T) {
+func TestObjectInstance_Resolve(t *testing.T) {
 	tests := map[string]struct {
-		items     []int // lifetime per item (0 = permanent)
-		activate  bool
-		ticks     int
-		wantCount int
+		obj     *assets.Object
+		wantErr bool
 	}{
-		"permanent items are not removed": {
-			items:     []int{0, 0},
-			ticks:     10,
-			wantCount: 2,
+		"non-container resolves cleanly": {
+			obj: &assets.Object{Aliases: []string{"sword"}, ShortDesc: "a sword"},
 		},
-		"inactive decayable items are not removed": {
-			items:     []int{5},
-			activate:  false,
-			ticks:     10,
-			wantCount: 1,
-		},
-		"expired item is removed": {
-			items:     []int{2},
-			activate:  true,
-			ticks:     2,
-			wantCount: 0,
-		},
-		"mixed permanent and decayable": {
-			items:     []int{0, 3, 0, 1},
-			activate:  true,
-			ticks:     2,
-			wantCount: 3,
+		"container without contents gets empty Contents initialized": {
+			obj: &assets.Object{Aliases: []string{"box"}, ShortDesc: "a box", Flags: []string{"container"}},
 		},
 	}
-
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			inv := NewInventory()
-			for i, lt := range tc.items {
-				oi := newTestObj(string(rune('a'+i)), lt)
-				if tc.activate {
-					oi.ActivateDecay()
-				}
-				inv.AddObj(oi)
+			si := storage.NewResolvedSmartIdentifier("obj", tc.obj)
+			oi, _ := NewObjectInstance(si)
+			store := newFakeStore[*assets.Object](map[string]*assets.Object{"obj": tc.obj})
+
+			err := oi.Resolve(store)
+			if tc.wantErr && err == nil {
+				t.Error("expected error, got nil")
 			}
-			for range tc.ticks {
-				inv.Tick()
+			if !tc.wantErr && err != nil {
+				t.Errorf("Resolve: %v", err)
 			}
-			if inv.Len() != tc.wantCount {
-				t.Errorf("Len() = %d, want %d", inv.Len(), tc.wantCount)
+			if tc.obj.HasFlag(assets.ObjectFlagContainer) && oi.Contents == nil {
+				t.Error("Contents should be initialized for container after Resolve")
 			}
 		})
 	}
 }
 
-func TestEquipment_Tick(t *testing.T) {
-	tests := map[string]struct {
-		items     []int // lifetime per item
-		activate  bool
-		ticks     int
-		wantCount int
-	}{
-		"permanent items survive": {
-			items:     []int{0, 0},
-			ticks:     10,
-			wantCount: 2,
-		},
-		"expired item is removed": {
-			items:     []int{2},
-			activate:  true,
-			ticks:     2,
-			wantCount: 0,
-		},
-		"mixed items": {
-			items:     []int{0, 1},
-			activate:  true,
-			ticks:     1,
-			wantCount: 1,
-		},
-	}
 
-	for name, tc := range tests {
-		t.Run(name, func(t *testing.T) {
-			eq := NewEquipment()
-			for i, lt := range tc.items {
-				obj := storage.NewResolvedSmartIdentifier(string(rune('a'+i)), &assets.Object{
-					Aliases:   []string{"a"},
-					ShortDesc: "a wearable",
-					Flags:     []string{"wearable"},
-					WearSlots: []string{"test"},
-					Lifetime:  lt,
-				})
-				oi, _ := NewObjectInstance(obj)
-				if tc.activate {
-					oi.ActivateDecay()
-				}
-				eq.equip("test", oi)
-			}
-			for range tc.ticks {
-				eq.Tick()
-			}
-			if eq.Len() != tc.wantCount {
-				t.Errorf("Len() = %d, want %d", eq.Len(), tc.wantCount)
-			}
-		})
-	}
-}

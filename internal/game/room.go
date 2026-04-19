@@ -150,7 +150,7 @@ func (ri *RoomInstance) Reset(cf CommanderFactory) error {
 	}
 	ri.mu.Unlock()
 
-	ri.objects.Clear()
+	_ = ri.objects.Drain()
 	for _, spawn := range def.ObjSpawns {
 		oi, err := SpawnObject(spawn)
 		if err != nil {

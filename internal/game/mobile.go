@@ -24,6 +24,8 @@ type MobileInstance struct {
 	Mobile storage.SmartIdentifier[*assets.Mobile]
 
 	ActorInstance
+
+	randIntN func(int) int // source of randomness for wander/scavenge; defaults to rand.IntN
 }
 
 // NewMobileInstance constructs a fully initialized MobileInstance from a mob
@@ -35,7 +37,8 @@ func NewMobileInstance(mob storage.SmartIdentifier[*assets.Mobile]) (*MobileInst
 		return nil, fmt.Errorf("materializing inventory for %q: %w", mob.Id(), err)
 	}
 	mi := &MobileInstance{
-		Mobile: mob,
+		Mobile:   mob,
+		randIntN: rand.IntN,
 		ActorInstance: ActorInstance{
 			InstanceId: uuid.New().String(),
 			inventory:  inv,
@@ -84,7 +87,7 @@ func (mi *MobileInstance) tryWander(ctx context.Context) {
 	if mi.Mobile.Get().HasFlag(assets.MobileFlagSentinel) {
 		return
 	}
-	if rand.IntN(wanderChance) != 0 {
+	if mi.randIntN(wanderChance) != 0 {
 		return
 	}
 
@@ -125,7 +128,7 @@ func (mi *MobileInstance) tryScavenge(ctx context.Context) {
 	if !mi.Mobile.Get().HasFlag(assets.MobileFlagScavenger) {
 		return
 	}
-	if rand.IntN(scavengeChance) != 0 {
+	if mi.randIntN(scavengeChance) != 0 {
 		return
 	}
 

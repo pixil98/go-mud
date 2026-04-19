@@ -1,6 +1,7 @@
 package game
 
 import (
+	"context"
 	"strings"
 	"testing"
 
@@ -8,23 +9,107 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
-func newTestMob(level int) *MobileInstance {
-	mob := storage.NewResolvedSmartIdentifier("test-mob", &assets.Mobile{
-		ShortDesc: "a test mob",
-		Level:     level,
-	})
-	eq := NewEquipment()
-	mi := &MobileInstance{
-		Mobile: mob,
-		ActorInstance: ActorInstance{
-			InstanceId: "test-instance",
-			inventory:  NewInventory(),
-			equipment: eq,
-			level:     level,
-			PerkCache: *NewPerkCache(nil, map[string]PerkSource{"equipment": eq}),
-		},
+func TestNewMobileInstance(t *testing.T) {
+	tests := map[string]struct {
+		level int
+	}{
+		"level set from definition": {level: 5},
+		"level zero":                {level: 0},
 	}
-	return mi
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			ref := storage.NewResolvedSmartIdentifier("test-mob", &assets.Mobile{
+				ShortDesc: "a goblin",
+				Level:     tc.level,
+			})
+			mi, err := NewMobileInstance(ref)
+			if err != nil {
+				t.Fatalf("NewMobileInstance: %v", err)
+			}
+			if mi.Level() != tc.level {
+				t.Errorf("Level() = %d, want %d", mi.Level(), tc.level)
+			}
+			if mi.Id() == "" {
+				t.Error("Id() should not be empty")
+			}
+		})
+	}
+}
+
+func TestMobileInstance_Name(t *testing.T) {
+	tests := map[string]struct {
+		shortDesc string
+	}{
+		"returns short desc": {shortDesc: "a fierce goblin"},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			mi := newTestMI("mob", "a test mob")
+			mi.Mobile.Get().ShortDesc = tc.shortDesc
+			if got := mi.Name(); got != tc.shortDesc {
+				t.Errorf("Name() = %q, want %q", got, tc.shortDesc)
+			}
+		})
+	}
+}
+
+func TestMobileInstance_Flags(t *testing.T) {
+	tests := map[string]struct {
+		inCombat  bool
+		wantFlags []string
+	}{
+		"no flags when idle":           {inCombat: false, wantFlags: nil},
+		"fighting flag when in combat": {inCombat: true, wantFlags: []string{"fighting"}},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			mi := newTestMI("mob", "a test mob")
+			mi.SetInCombat(tc.inCombat)
+			got := mi.Flags()
+			if len(got) != len(tc.wantFlags) {
+				t.Fatalf("Flags() = %v, want %v", got, tc.wantFlags)
+			}
+			for i, f := range got {
+				if f != tc.wantFlags[i] {
+					t.Errorf("Flags()[%d] = %q, want %q", i, f, tc.wantFlags[i])
+				}
+			}
+		})
+	}
+}
+
+func TestMobileInstance_IsCharacter(t *testing.T) {
+	tests := map[string]struct {
+		want bool
+	}{
+		"mobs are not characters": {want: false},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			mi := newTestMI("mob", "a test mob")
+			if got := mi.IsCharacter(); got != tc.want {
+				t.Errorf("IsCharacter() = %v, want %v", got, tc.want)
+			}
+		})
+	}
+}
+
+func TestMobileInstance_SpendAP(t *testing.T) {
+	tests := map[string]struct {
+		cost int
+		want bool
+	}{
+		"always returns true regardless of cost": {cost: 100, want: true},
+		"zero cost also returns true":            {cost: 0, want: true},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			mi := newTestMI("mob", "a test mob")
+			if got := mi.SpendAP(tc.cost); got != tc.want {
+				t.Errorf("SpendAP(%d) = %v, want %v", tc.cost, got, tc.want)
+			}
+		})
+	}
 }
 
 
@@ -54,7 +139,8 @@ func TestNewCorpse(t *testing.T) {
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			mi := newTestMob(5)
+			ref := storage.NewResolvedSmartIdentifier("test-mob", &assets.Mobile{ShortDesc: "a test mob", Level: 5})
+			mi, _ := NewMobileInstance(ref)
 			for _, id := range tc.inventoryItems {
 				mi.inventory.AddObj(newTestObj(id))
 			}
@@ -101,7 +187,8 @@ func TestMobileInstance_OnDeath(t *testing.T) {
 	})
 	ri, _ := NewRoomInstance(room)
 
-	mi := newTestMob(3)
+	ref := storage.NewResolvedSmartIdentifier("test-mob", &assets.Mobile{ShortDesc: "a test mob", Level: 3})
+	mi, _ := NewMobileInstance(ref)
 	mi.inventory.AddObj(newTestObj("coin"))
 	ri.mobiles[mi.Id()] = mi
 
@@ -118,5 +205,404 @@ func TestMobileInstance_OnDeath(t *testing.T) {
 	corpse.Contents.ForEachObj(func(_ string, _ *ObjectInstance) { itemCount++ })
 	if itemCount != 1 {
 		t.Errorf("corpse has %d items, want 1", itemCount)
+	}
+}
+
+func TestMobileInstance_Notify(t *testing.T) {
+	tests := map[string]struct{}{
+		"no-op for mob": {},
+	}
+	for name := range tests {
+		t.Run(name, func(t *testing.T) {
+			mi := newTestMI("mob", "a mob")
+			mi.Notify("any message") // must not panic
+		})
+	}
+}
+
+func TestMobileInstance_QueueTickMsg(t *testing.T) {
+	tests := map[string]struct{}{
+		"no-op for mob": {},
+	}
+	for name := range tests {
+		t.Run(name, func(t *testing.T) {
+			mi := newTestMI("mob", "a mob")
+			mi.QueueTickMsg("any message") // must not panic
+			if len(mi.tickMsgBuf) != 0 {
+				t.Errorf("tickMsgBuf should remain empty for mobs, got %d entries", len(mi.tickMsgBuf))
+			}
+		})
+	}
+}
+
+func TestMobileInstance_sweepDeadEnemies(t *testing.T) {
+	tests := map[string]struct {
+		killEnemy    bool
+		wantInTable  bool
+		wantInCombat bool
+	}{
+		"alive enemy stays in table":           {killEnemy: false, wantInTable: true, wantInCombat: true},
+		"dead enemy removed and combat cleared": {killEnemy: true, wantInTable: false, wantInCombat: false},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			room := newTestRoom("room")
+
+			mi := newTestMI("mob", "mob")
+			mi.SetInCombat(true)
+			room.AddMob(mi)
+
+			hpPerk := assets.Perk{
+				Type:  assets.PerkTypeModifier,
+				Key:   assets.BuildKey(assets.ResourcePrefix, assets.ResourceHp, assets.ResourceAspectMax),
+				Value: 10,
+			}
+			enemy := newTestMI("enemy", "enemy mob")
+			enemy.PerkCache = *NewPerkCache([]assets.Perk{hpPerk}, nil)
+			enemy.initResources()
+			if tc.killEnemy {
+				enemy.setResourceCurrent(assets.ResourceHp, 0)
+			} else {
+				enemy.setResourceCurrent(assets.ResourceHp, 10)
+			}
+			room.AddMob(enemy)
+
+			mi.EnsureThreat("enemy", enemy)
+			mi.sweepDeadEnemies()
+
+			if got := mi.HasThreatFrom("enemy"); got != tc.wantInTable {
+				t.Errorf("HasThreatFrom(enemy) = %v, want %v", got, tc.wantInTable)
+			}
+			if got := mi.IsInCombat(); got != tc.wantInCombat {
+				t.Errorf("IsInCombat() = %v, want %v", got, tc.wantInCombat)
+			}
+		})
+	}
+}
+
+func TestMobileInstance_combatTick(t *testing.T) {
+	ctx := context.Background()
+	tests := map[string]struct {
+		hasTarget    bool
+		wantInCombat bool
+		wantAbility  bool
+	}{
+		"no target clears combat":       {hasTarget: false, wantInCombat: false, wantAbility: false},
+		"with target executes auto-use": {hasTarget: true, wantInCombat: true, wantAbility: true},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			autoUsePerk := assets.Perk{Type: assets.PerkTypeGrant, Key: assets.PerkGrantAutoUse, Arg: "attack"}
+			fc := &fakeCommander{}
+			mi := newTestMI("mob", "mob")
+			mi.commander = fc
+			mi.SetInCombat(true)
+
+			if tc.hasTarget {
+				mi.SetOwn([]assets.Perk{autoUsePerk})
+				hpPerk := assets.Perk{
+					Type:  assets.PerkTypeModifier,
+					Key:   assets.BuildKey(assets.ResourcePrefix, assets.ResourceHp, assets.ResourceAspectMax),
+					Value: 10,
+				}
+				target := newTestMI("target", "target")
+				target.PerkCache = *NewPerkCache([]assets.Perk{hpPerk}, nil)
+				target.initResources()
+				mi.EnsureThreat("target", target)
+			}
+
+			mi.combatTick(ctx)
+
+			if got := mi.IsInCombat(); got != tc.wantInCombat {
+				t.Errorf("IsInCombat() = %v, want %v", got, tc.wantInCombat)
+			}
+			if tc.wantAbility && len(fc.abilities) == 0 {
+				t.Error("expected ability to fire, got none")
+			}
+			if !tc.wantAbility && len(fc.abilities) != 0 {
+				t.Errorf("expected no abilities, got %v", fc.abilities)
+			}
+		})
+	}
+}
+
+func TestMobileInstance_Tick(t *testing.T) {
+	ctx := context.Background()
+	tests := map[string]struct {
+		nilCommander bool
+		inCombat     bool
+		itemLifetime int
+		wantItemGone bool
+	}{
+		"nil commander logs error and returns": {nilCommander: true},
+		"out of combat ticks inventory decay": {
+			itemLifetime: 1,
+			wantItemGone: true,
+		},
+		"in combat runs combatTick": {
+			inCombat: true,
+		},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			ref := storage.NewResolvedSmartIdentifier("mob", &assets.Mobile{ShortDesc: "a mob"})
+			mi, _ := NewMobileInstance(ref)
+			mi.randIntN = neverRand // prevent wander/scavenge
+
+			if !tc.nilCommander {
+				fc := &fakeCommander{}
+				mi.commander = fc
+			}
+			if tc.inCombat {
+				mi.SetInCombat(true)
+				// No threat entries → combatTick will clear combat immediately
+			}
+			if tc.itemLifetime > 0 {
+				oi := newTestObj("potion", tc.itemLifetime)
+				oi.ActivateDecay()
+				mi.inventory.AddObj(oi)
+			}
+
+			mi.Tick(ctx)
+
+			if tc.itemLifetime > 0 {
+				if got := mi.inventory.Len() == 0; got != tc.wantItemGone {
+					t.Errorf("item gone = %v, want %v", got, tc.wantItemGone)
+				}
+			}
+		})
+	}
+}
+
+func TestMobileInstance_tryWander(t *testing.T) {
+	ctx := context.Background()
+	tests := map[string]struct {
+		flags        []string
+		setupRoom    func(ri *RoomInstance, destRi *RoomInstance, zi *ZoneInstance)
+		randResult   func(int) int
+		wantCommands int
+	}{
+		"sentinel flag skips wander": {
+			flags:        []string{"sentinel"},
+			randResult:   zeroRand,
+			setupRoom:    func(ri, dest *RoomInstance, zi *ZoneInstance) {},
+			wantCommands: 0,
+		},
+		"non-zero rand skips wander": {
+			randResult:   neverRand,
+			setupRoom:    func(ri, dest *RoomInstance, zi *ZoneInstance) {},
+			wantCommands: 0,
+		},
+		"no exits skips wander": {
+			randResult:   zeroRand,
+			setupRoom:    func(ri, dest *RoomInstance, zi *ZoneInstance) {},
+			wantCommands: 0,
+		},
+		"closed exit skipped": {
+			randResult: zeroRand,
+			setupRoom: func(ri, dest *RoomInstance, zi *ZoneInstance) {
+				zi.AddRoom(ri)
+				zi.AddRoom(dest)
+				ri.exits["north"] = &ResolvedExit{Exit: assets.Exit{}, Dest: dest, closed: true}
+			},
+			wantCommands: 0,
+		},
+		"valid exit causes wander": {
+			randResult: zeroRand,
+			setupRoom: func(ri, dest *RoomInstance, zi *ZoneInstance) {
+				zi.AddRoom(ri)
+				zi.AddRoom(dest)
+				ri.exits["north"] = &ResolvedExit{Exit: assets.Exit{}, Dest: dest}
+			},
+			wantCommands: 1,
+		},
+		"stay_zone flag skips cross-zone exit": {
+			flags:      []string{"stay_zone"},
+			randResult: zeroRand,
+			setupRoom: func(ri, dest *RoomInstance, zi *ZoneInstance) {
+				otherZone := newTestZone("other")
+				zi.AddRoom(ri)
+				otherZone.AddRoom(dest)
+				ri.exits["north"] = &ResolvedExit{Exit: assets.Exit{}, Dest: dest}
+			},
+			wantCommands: 0,
+		},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			fc := &fakeCommander{}
+			mobDef := storage.NewResolvedSmartIdentifier("mob", &assets.Mobile{
+				ShortDesc: "a mob",
+				Flags:     tc.flags,
+			})
+			mi, _ := NewMobileInstance(mobDef)
+			mi.commander = fc
+			mi.randIntN = tc.randResult
+
+			zi := newTestZone("z")
+			ri := newTestRoom("r1")
+			dest := newTestRoom("r2")
+			tc.setupRoom(ri, dest, zi)
+
+			mi.mu.Lock()
+			mi.room = ri
+			mi.mu.Unlock()
+
+			mi.tryWander(ctx)
+
+			if got := len(fc.commands); got != tc.wantCommands {
+				t.Errorf("commands issued = %d, want %d (commands: %v)", got, tc.wantCommands, fc.commands)
+			}
+		})
+	}
+}
+
+func TestMobileInstance_tryScavenge(t *testing.T) {
+	ctx := context.Background()
+	tests := map[string]struct {
+		flags        []string
+		roomItem     *ObjectInstance
+		randResult   func(int) int
+		wantCommands int
+	}{
+		"non-scavenger skips": {
+			randResult:   zeroRand,
+			wantCommands: 0,
+		},
+		"non-zero rand skips": {
+			flags:        []string{"scavenger"},
+			randResult:   neverRand,
+			wantCommands: 0,
+		},
+		"empty room skips": {
+			flags:        []string{"scavenger"},
+			randResult:   zeroRand,
+			wantCommands: 0,
+		},
+		"immobile item skipped": {
+			flags:      []string{"scavenger"},
+			randResult: zeroRand,
+			roomItem: func() *ObjectInstance {
+				oi, _ := NewObjectInstance(storage.NewResolvedSmartIdentifier("rock", &assets.Object{
+					Aliases: []string{"rock"}, ShortDesc: "a rock", Flags: []string{"immobile"},
+				}))
+				return oi
+			}(),
+			wantCommands: 0,
+		},
+		"picks up first valid item": {
+			flags:      []string{"scavenger"},
+			randResult: zeroRand,
+			roomItem:   newTestObj("coin"),
+			wantCommands: 1,
+		},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			fc := &fakeCommander{}
+			mobDef := storage.NewResolvedSmartIdentifier("mob", &assets.Mobile{
+				ShortDesc: "a mob",
+				Flags:     tc.flags,
+			})
+			mi, _ := NewMobileInstance(mobDef)
+			mi.commander = fc
+			mi.randIntN = tc.randResult
+
+			ri := newTestRoom("r")
+			if tc.roomItem != nil {
+				ri.AddObj(tc.roomItem)
+			}
+			mi.mu.Lock()
+			mi.room = ri
+			mi.mu.Unlock()
+
+			mi.tryScavenge(ctx)
+
+			if got := len(fc.commands); got != tc.wantCommands {
+				t.Errorf("commands issued = %d, want %d (commands: %v)", got, tc.wantCommands, fc.commands)
+			}
+		})
+	}
+}
+
+func TestMobileInstance_Move(t *testing.T) {
+	tests := map[string]struct {
+		name string
+	}{
+		"moves mob from one room to another": {},
+	}
+	for name := range tests {
+		t.Run(name, func(t *testing.T) {
+			from := newTestRoom("from")
+			to := newTestRoom("to")
+			mi := newTestMI("mob", "a mob")
+			from.AddMob(mi)
+
+			mi.Move(from, to)
+
+			if _, inFrom := from.mobiles[mi.Id()]; inFrom {
+				t.Error("mob still in from-room after Move")
+			}
+			if _, inTo := to.mobiles[mi.Id()]; !inTo {
+				t.Error("mob not in to-room after Move")
+			}
+		})
+	}
+}
+
+func TestMobileInstance_CombatTargetId(t *testing.T) {
+	tests := map[string]struct {
+		setId  string
+		wantId string
+	}{
+		"always returns empty string":              {},
+		"SetCombatTargetId is a no-op":             {setId: "mob-1", wantId: ""},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			mi := newTestMI("mob", "a mob")
+			if tc.setId != "" {
+				mi.SetCombatTargetId(tc.setId)
+			}
+			if got := mi.CombatTargetId(); got != tc.wantId {
+				t.Errorf("CombatTargetId() = %q, want %q", got, tc.wantId)
+			}
+		})
+	}
+}
+
+func TestMobileInstance_StatSections(t *testing.T) {
+	tests := map[string]struct {
+		name  string
+		level int
+	}{
+		"returns name and level in first section": {name: "Orc", level: 3},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			mob := storage.NewResolvedSmartIdentifier("orc", &assets.Mobile{ShortDesc: tc.name, Level: tc.level})
+			mi, _ := NewMobileInstance(mob)
+
+			sections := mi.StatSections()
+
+			if len(sections) == 0 {
+				t.Fatal("StatSections() returned no sections")
+			}
+			foundName, foundLevel := false, false
+			for _, line := range sections[0].Lines {
+				if line.Value == tc.name {
+					foundName = true
+				}
+				if line.Value == "Level 3" {
+					foundLevel = true
+				}
+			}
+			if !foundName {
+				t.Errorf("name %q not found in first section", tc.name)
+			}
+			if !foundLevel {
+				t.Errorf("level line not found in first section")
+			}
+		})
 	}
 }

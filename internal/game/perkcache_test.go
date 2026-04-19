@@ -304,3 +304,55 @@ func TestPerkCacheChain(t *testing.T) {
 		t.Errorf("chained value = %d, want 111", got)
 	}
 }
+
+func TestPerkCache_Grants(t *testing.T) {
+	tests := map[string]struct {
+		perks    []assets.Perk
+		queryKey string
+		wantArgs []string
+	}{
+		"empty cache returns nil for any key": {
+			perks:    nil,
+			queryKey: assets.PerkGrantWearSlot,
+			wantArgs: nil,
+		},
+		"key not in grants returns nil": {
+			perks: []assets.Perk{
+				{Type: assets.PerkTypeGrant, Key: assets.PerkGrantWearSlot, Arg: "head"},
+			},
+			queryKey: "nonexistent-grant",
+			wantArgs: nil,
+		},
+		"single grant is present": {
+			perks: []assets.Perk{
+				{Type: assets.PerkTypeGrant, Key: assets.PerkGrantWearSlot, Arg: "head"},
+			},
+			queryKey: assets.PerkGrantWearSlot,
+			wantArgs: []string{"head"},
+		},
+		"two grants for same key both present": {
+			perks: []assets.Perk{
+				{Type: assets.PerkTypeGrant, Key: assets.PerkGrantWearSlot, Arg: "finger"},
+				{Type: assets.PerkTypeGrant, Key: assets.PerkGrantWearSlot, Arg: "finger"},
+			},
+			queryKey: assets.PerkGrantWearSlot,
+			wantArgs: []string{"finger", "finger"},
+		},
+		"modifier perks do not appear in grants": {
+			perks: []assets.Perk{
+				{Type: assets.PerkTypeModifier, Key: "some-modifier", Value: 5},
+			},
+			queryKey: "some-modifier",
+			wantArgs: nil,
+		},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			pc := NewPerkCache(tc.perks, nil)
+			got := pc.Grants()[tc.queryKey]
+			if len(got) != len(tc.wantArgs) {
+				t.Errorf("Grants()[%q] = %v, want %v", tc.queryKey, got, tc.wantArgs)
+			}
+		})
+	}
+}
