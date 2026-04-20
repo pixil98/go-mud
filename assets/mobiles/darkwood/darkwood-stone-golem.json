@@ -1,46 +1,51 @@
 {
-    "version": 1,
-    "id": "darkwood-stone-golem",
-    "spec": {
-        "aliases": [
-            "golem",
-            "stone",
-            "construct"
-        ],
-        "short_desc": "a stone golem",
-        "long_desc": "A massive figure of shaped stone stands in the undercroft, its blank face turning slowly toward you.",
-        "detailed_desc": "The golem is roughly man-shaped but scaled up by half, its body carved from a single piece of dense grey stone that shows marks of considerable craft \u2014 jointing at the limbs, a face with suggested rather than literal features, runes carved into the chest in a style consistent with the ruins above. It does not appear to breathe. It has been standing in this undercroft for a very long time, and it has been waiting the entire time.",
-        "level": 9,
-        "perks": [
-            {
-                "type": "modifier",
-                "key": "core.resource.hp.max",
-                "value": 145
-            },
-            {
-                "type": "modifier",
-                "key": "core.combat.ac.flat",
-                "value": 16
-            },
-            {
-                "type": "modifier",
-                "key": "core.combat.attack.flat",
-                "value": 9
-            },
-            {
-                "type": "grant",
-                "key": "attack",
-                "arg": "physical:1d8+5"
-            },
-            {
-                "type": "grant",
-                "key": "attack",
-                "arg": "physical:1d4+5"
-            },
-            {
-                "type": "grant",
-                "key": "auto_use", "arg": "attack:1"
-            }
-        ]
-    }
+  "version": 1,
+  "id": "darkwood-stone-golem",
+  "spec": {
+    "aliases": [
+      "golem",
+      "stone",
+      "construct"
+    ],
+    "short_desc": "a stone golem",
+    "long_desc": "A massive figure of shaped stone stands in the undercroft, its blank face turning slowly toward you.",
+    "detailed_desc": "The golem is roughly man-shaped but scaled up by half, its body carved from a single piece of dense grey stone that shows marks of considerable craft — jointing at the limbs, a face with suggested rather than literal features, runes carved into the chest in a style consistent with the ruins above. It does not appear to breathe. It has been standing in this undercroft for a very long time, and it has been waiting the entire time.",
+    "level": 9,
+    "perks": [
+      {
+        "type": "modifier",
+        "key": "core.resource.hp.max",
+        "value": 145
+      },
+      {
+        "type": "modifier",
+        "key": "core.combat.ac.flat",
+        "value": 16
+      },
+      {
+        "type": "modifier",
+        "key": "core.combat.attack.flat",
+        "value": 9
+      },
+      {
+        "type": "grant",
+        "key": "attack",
+        "arg": "physical:1d8+5"
+      },
+      {
+        "type": "grant",
+        "key": "attack",
+        "arg": "physical:1d4+5"
+      },
+      {
+        "type": "grant",
+        "key": "auto_use",
+        "arg": "attack:1"
+      }
+    ],
+    "flags": [
+      "sentinel",
+      "stay_zone"
+    ]
+  }
 }

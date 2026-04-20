@@ -1,40 +1,45 @@
 {
-    "version": 1,
-    "id": "darkwood-boar",
-    "spec": {
-        "aliases": [
-            "boar",
-            "pig"
-        ],
-        "short_desc": "a wild boar",
-        "long_desc": "A heavy-bodied boar roots in the damp earth, its curved tusks caked with mud.",
-        "detailed_desc": "A broad, low-slung animal with a coarse grey-black bristle coat and small, angry eyes. The tusks are old and yellowed but still sharp. It does not flee at your approach; it has apparently decided that this section of hollow is its territory and you are an infringement.",
-        "level": 4,
-        "perks": [
-            {
-                "type": "modifier",
-                "key": "core.resource.hp.max",
-                "value": 35
-            },
-            {
-                "type": "modifier",
-                "key": "core.combat.ac.flat",
-                "value": 11
-            },
-            {
-                "type": "modifier",
-                "key": "core.combat.attack.flat",
-                "value": 3
-            },
-            {
-                "type": "grant",
-                "key": "attack",
-                "arg": "physical:1d6+1"
-            },
-            {
-                "type": "grant",
-                "key": "auto_use", "arg": "attack:1"
-            }
-        ]
-    }
+  "version": 1,
+  "id": "darkwood-boar",
+  "spec": {
+    "aliases": [
+      "boar",
+      "pig"
+    ],
+    "short_desc": "a wild boar",
+    "long_desc": "A heavy-bodied boar roots in the damp earth, its curved tusks caked with mud.",
+    "detailed_desc": "A broad, low-slung animal with a coarse grey-black bristle coat and small, angry eyes. The tusks are old and yellowed but still sharp. It does not flee at your approach; it has apparently decided that this section of hollow is its territory and you are an infringement.",
+    "level": 4,
+    "perks": [
+      {
+        "type": "modifier",
+        "key": "core.resource.hp.max",
+        "value": 35
+      },
+      {
+        "type": "modifier",
+        "key": "core.combat.ac.flat",
+        "value": 11
+      },
+      {
+        "type": "modifier",
+        "key": "core.combat.attack.flat",
+        "value": 3
+      },
+      {
+        "type": "grant",
+        "key": "attack",
+        "arg": "physical:1d6+1"
+      },
+      {
+        "type": "grant",
+        "key": "auto_use",
+        "arg": "attack:1"
+      }
+    ],
+    "flags": [
+      "sentinel",
+      "stay_zone"
+    ]
+  }
 }

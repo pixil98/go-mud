@@ -1,55 +1,60 @@
 {
-    "version": 1,
-    "id": "darkwood-spider-queen",
-    "spec": {
-        "aliases": [
-            "queen",
-            "spider"
-        ],
-        "short_desc": "the spider queen",
-        "long_desc": "The spider queen emerges from her nest, her body vast, her many eyes fixed on you with absolute attention.",
-        "detailed_desc": "The spider queen is a creature of considerable scale \u2014 her body alone is the size of a large dog, and with her legs spread she occupies most of the chamber. Her carapace is a deep black-brown with a complex pale pattern that shifts subtly as she moves. She does not hesitate or posture; the moment she has assessed the situation, she moves. She is very, very fast.",
-        "level": 10,
-        "perks": [
-            {
-                "type": "modifier",
-                "key": "core.resource.hp.max",
-                "value": 155
-            },
-            {
-                "type": "modifier",
-                "key": "core.combat.ac.flat",
-                "value": 16
-            },
-            {
-                "type": "modifier",
-                "key": "core.combat.attack.flat",
-                "value": 9
-            },
-            {
-                "type": "grant",
-                "key": "attack",
-                "arg": "poison:1d3+5"
-            },
-            {
-                "type": "grant",
-                "key": "attack",
-                "arg": "poison:1d3+5"
-            },
-            {
-                "type": "grant",
-                "key": "attack",
-                "arg": "poison:1d3+5"
-            },
-            {
-                "type": "grant",
-                "key": "attack",
-                "arg": "poison:1d3+5"
-            },
-            {
-                "type": "grant",
-                "key": "auto_use", "arg": "attack:1"
-            }
-        ]
-    }
+  "version": 1,
+  "id": "darkwood-spider-queen",
+  "spec": {
+    "aliases": [
+      "queen",
+      "spider"
+    ],
+    "short_desc": "the spider queen",
+    "long_desc": "The spider queen emerges from her nest, her body vast, her many eyes fixed on you with absolute attention.",
+    "detailed_desc": "The spider queen is a creature of considerable scale — her body alone is the size of a large dog, and with her legs spread she occupies most of the chamber. Her carapace is a deep black-brown with a complex pale pattern that shifts subtly as she moves. She does not hesitate or posture; the moment she has assessed the situation, she moves. She is very, very fast.",
+    "level": 10,
+    "perks": [
+      {
+        "type": "modifier",
+        "key": "core.resource.hp.max",
+        "value": 155
+      },
+      {
+        "type": "modifier",
+        "key": "core.combat.ac.flat",
+        "value": 16
+      },
+      {
+        "type": "modifier",
+        "key": "core.combat.attack.flat",
+        "value": 9
+      },
+      {
+        "type": "grant",
+        "key": "attack",
+        "arg": "poison:1d3+5"
+      },
+      {
+        "type": "grant",
+        "key": "attack",
+        "arg": "poison:1d3+5"
+      },
+      {
+        "type": "grant",
+        "key": "attack",
+        "arg": "poison:1d3+5"
+      },
+      {
+        "type": "grant",
+        "key": "attack",
+        "arg": "poison:1d3+5"
+      },
+      {
+        "type": "grant",
+        "key": "auto_use",
+        "arg": "attack:1"
+      }
+    ],
+    "flags": [
+      "sentinel",
+      "stay_zone"
+    ]
+  }
 }

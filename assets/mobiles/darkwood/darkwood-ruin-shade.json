@@ -1,41 +1,45 @@
 {
-    "version": 1,
-    "id": "darkwood-ruin-shade",
-    "spec": {
-        "aliases": [
-            "shade",
-            "ruin",
-            "shadow"
-        ],
-        "short_desc": "a ruin shade",
-        "long_desc": "A dark form drifts through the ruins, barely visible at the edges of your vision.",
-        "detailed_desc": "The shade is not quite solid \u2014 it is visible as a displacement, a shadow that falls wrongly, a shape that resolves only when you are not looking directly at it. It moves without sound and without any apparent acknowledgement of obstacles. It does not appear to have eyes, but it has noticed you.",
-        "level": 8,
-        "perks": [
-            {
-                "type": "modifier",
-                "key": "core.resource.hp.max",
-                "value": 95
-            },
-            {
-                "type": "modifier",
-                "key": "core.combat.ac.flat",
-                "value": 15
-            },
-            {
-                "type": "modifier",
-                "key": "core.combat.attack.flat",
-                "value": 7
-            },
-            {
-                "type": "grant",
-                "key": "attack",
-                "arg": "necrotic:1d8+4"
-            },
-            {
-                "type": "grant",
-                "key": "auto_use", "arg": "attack:1"
-            }
-        ]
-    }
+  "version": 1,
+  "id": "darkwood-ruin-shade",
+  "spec": {
+    "aliases": [
+      "shade",
+      "ruin",
+      "shadow"
+    ],
+    "short_desc": "a ruin shade",
+    "long_desc": "A dark form drifts through the ruins, barely visible at the edges of your vision.",
+    "detailed_desc": "The shade is not quite solid — it is visible as a displacement, a shadow that falls wrongly, a shape that resolves only when you are not looking directly at it. It moves without sound and without any apparent acknowledgement of obstacles. It does not appear to have eyes, but it has noticed you.",
+    "level": 8,
+    "perks": [
+      {
+        "type": "modifier",
+        "key": "core.resource.hp.max",
+        "value": 95
+      },
+      {
+        "type": "modifier",
+        "key": "core.combat.ac.flat",
+        "value": 15
+      },
+      {
+        "type": "modifier",
+        "key": "core.combat.attack.flat",
+        "value": 7
+      },
+      {
+        "type": "grant",
+        "key": "attack",
+        "arg": "necrotic:1d8+4"
+      },
+      {
+        "type": "grant",
+        "key": "auto_use",
+        "arg": "attack:1"
+      }
+    ],
+    "flags": [
+      "stay_zone"
+    ]
+  }
 }
