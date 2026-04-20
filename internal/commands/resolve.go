@@ -391,7 +391,13 @@ func (r *TargetResolver) ResolveSpecs(specs []assets.TargetSpec, inputs map[stri
 		if name == "" {
 			switch spec.Default {
 			case assets.DefaultCombatTarget:
-				name = actor.CombatTargetId()
+				if t := actor.CombatTarget(); t != nil {
+					targets[spec.Name] = []*TargetRef{{
+						Type:  targetTypeActor,
+						Actor: actorRefFromActor(t),
+					}}
+				}
+				continue
 			case assets.DefaultSelf:
 				targets[spec.Name] = []*TargetRef{{
 					Type:  targetTypeActor,

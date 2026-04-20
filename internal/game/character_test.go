@@ -481,7 +481,10 @@ func TestCharacterInstance_Flags(t *testing.T) {
 			wantFlags: nil,
 		},
 		"fighting flag when in combat": {
-			setup:     func(ci *CharacterInstance) { ci.SetInCombat(true) },
+			setup: func(ci *CharacterInstance) {
+				enemy := newTestMI("enemy", "enemy")
+				ci.EnsureThreat(enemy.Id(), enemy)
+			},
 			wantFlags: []string{"fighting"},
 		},
 		"linkless flag when linkless": {
@@ -494,7 +497,8 @@ func TestCharacterInstance_Flags(t *testing.T) {
 		},
 		"both flags when in combat and linkless": {
 			setup: func(ci *CharacterInstance) {
-				ci.SetInCombat(true)
+				enemy := newTestMI("enemy", "enemy")
+				ci.EnsureThreat(enemy.Id(), enemy)
 				ci.mu.Lock()
 				ci.linkless = true
 				ci.mu.Unlock()
@@ -711,31 +715,32 @@ func TestCharacterInstance_GainXP(t *testing.T) {
 	}
 }
 
-func TestCharacterInstance_CombatTargetId(t *testing.T) {
+
+func TestCharacterInstance_CombatTarget(t *testing.T) {
 	tests := map[string]struct {
-		setId   string
-		clear   bool
-		wantId  string
-		wantCombat bool
+		setup func(ci *CharacterInstance) Actor
 	}{
-		"empty by default":                     {wantId: "", wantCombat: false},
-		"set stores id and marks in combat":    {setId: "mob-1", wantId: "mob-1", wantCombat: true},
-		"clear resets id and marks out":        {setId: "mob-1", clear: true, wantId: "", wantCombat: false},
+		"nil when not in combat": {
+			setup: func(ci *CharacterInstance) Actor { return nil },
+		},
+		"returns sticky target set via combatTargetId": {
+			setup: func(ci *CharacterInstance) Actor {
+				sticky := newEnemyMI("sticky")
+				other := newEnemyMI("other")
+				ci.EnsureThreat(sticky.Id(), sticky)
+				ci.EnsureThreat(other.Id(), other)
+				ci.AddThreatFrom(other.Id(), 9999)
+				ci.combatTargetId = sticky.Id()
+				return sticky
+			},
+		},
 	}
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
 			ci := newTestCharacterInstance()
-			if tc.setId != "" {
-				ci.SetCombatTargetId(tc.setId)
-			}
-			if tc.clear {
-				ci.ClearCombatTargetId()
-			}
-			if got := ci.CombatTargetId(); got != tc.wantId {
-				t.Errorf("CombatTargetId() = %q, want %q", got, tc.wantId)
-			}
-			if got := ci.IsInCombat(); got != tc.wantCombat {
-				t.Errorf("IsInCombat() = %v, want %v", got, tc.wantCombat)
+			want := tc.setup(ci)
+			if got := ci.CombatTarget(); got != want {
+				t.Errorf("CombatTarget() = %v, want %v", got, want)
 			}
 		})
 	}
@@ -846,11 +851,6 @@ func TestCharacterInstance_Move(t *testing.T) {
 }
 
 func TestCharacterInstance_sweepDeadEnemies(t *testing.T) {
-	hpPerk := assets.Perk{
-		Type:  assets.PerkTypeModifier,
-		Key:   assets.BuildKey(assets.ResourcePrefix, assets.ResourceHp, assets.ResourceAspectMax),
-		Value: 10,
-	}
 	tests := map[string]struct {
 		killEnemy    bool
 		wantInTable  bool
@@ -864,15 +864,10 @@ func TestCharacterInstance_sweepDeadEnemies(t *testing.T) {
 			room := newTestRoom("room")
 			ci := newTestCharacterInstance()
 			room.AddPlayer(ci.Character.Id(), ci)
-			ci.SetInCombat(true)
 
-			enemy := newTestMI("enemy", "enemy mob")
-			enemy.PerkCache = *NewPerkCache([]assets.Perk{hpPerk}, nil)
-			enemy.initResources()
+			enemy := newEnemyMI("enemy")
 			if tc.killEnemy {
 				enemy.setResourceCurrent(assets.ResourceHp, 0)
-			} else {
-				enemy.setResourceCurrent(assets.ResourceHp, 10)
 			}
 			room.AddMob(enemy)
 
@@ -891,11 +886,6 @@ func TestCharacterInstance_sweepDeadEnemies(t *testing.T) {
 
 func TestCharacterInstance_combatTick(t *testing.T) {
 	ctx := context.Background()
-	hpPerk := assets.Perk{
-		Type:  assets.PerkTypeModifier,
-		Key:   assets.BuildKey(assets.ResourcePrefix, assets.ResourceHp, assets.ResourceAspectMax),
-		Value: 10,
-	}
 	tests := map[string]struct {
 		hasTarget    bool
 		wantInCombat bool
@@ -910,17 +900,13 @@ func TestCharacterInstance_combatTick(t *testing.T) {
 			fc := &fakeCommander{}
 			ci := newTestCharacterInstance()
 			ci.SetCommander(fc)
-			ci.SetInCombat(true)
 
 			if tc.hasTarget {
 				ci.SetOwn([]assets.Perk{autoUsePerk})
-				target := newTestMI("target", "target mob")
-				target.PerkCache = *NewPerkCache([]assets.Perk{hpPerk}, nil)
-				target.initResources()
-				ci.EnsureThreat("target", target)
+				ci.EnsureThreat("target", newEnemyMI("target"))
 			}
 
-			ci.combatTick(ctx)
+			ci.combatTick(ctx, "")
 
 			if got := ci.IsInCombat(); got != tc.wantInCombat {
 				t.Errorf("IsInCombat() = %v, want %v", got, tc.wantInCombat)
@@ -963,9 +949,8 @@ func TestCharacterInstance_Tick(t *testing.T) {
 			ci.SetOwn([]assets.Perk{apPerk, hpPerk, regenPerk})
 			ci.initResources()
 			ci.currentAP = 0 // exhaust AP before tick
-
 			if tc.inCombat {
-				ci.SetInCombat(true)
+				ci.EnsureThreat("enemy", newEnemyMI("enemy"))
 			}
 
 			ci.Tick(ctx)

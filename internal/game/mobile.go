@@ -72,7 +72,7 @@ func (mi *MobileInstance) Tick(ctx context.Context) {
 	mi.PerkCache.Tick()
 
 	if mi.IsInCombat() {
-		mi.combatTick(ctx)
+		mi.combatTick(ctx, "")
 	} else {
 		mi.mu.Lock()
 		mi.regenTick()
@@ -163,7 +163,7 @@ func (mi *MobileInstance) Flags() []string {
 	mi.mu.RLock()
 	defer mi.mu.RUnlock()
 	var flags []string
-	if mi.inCombat {
+	if mi.threatTable.hasEntries() {
 		flags = append(flags, "fighting")
 	}
 	return flags
@@ -217,13 +217,11 @@ func newCorpse(mi *MobileInstance) *ObjectInstance {
 	return corpse
 }
 
-// CombatTargetId returns an empty string; mobs select targets via their threat table.
-func (mi *MobileInstance) CombatTargetId() string {
-	return ""
+// CombatTarget returns the mob's current auto-attack target (highest-threat
+// enemy), or nil if the mob is not in combat.
+func (mi *MobileInstance) CombatTarget() Actor {
+	return mi.ResolveCombatTarget("")
 }
-
-// SetCombatTargetId is a no-op for mobs; their target is resolved from the threat table.
-func (mi *MobileInstance) SetCombatTargetId(_ string) {}
 
 // SpendAP always succeeds for mobs — they have no action point budget.
 func (mi *MobileInstance) SpendAP(_ int) bool { return true }

@@ -15,8 +15,7 @@ import (
 // without constructing a full CharacterInstance.
 type AssistedPlayer interface {
 	Name() string
-	CombatTargetId() string
-	Room() *game.RoomInstance
+	CombatTarget() game.Actor
 }
 
 var _ AssistedPlayer = (*game.CharacterInstance)(nil)
@@ -90,13 +89,12 @@ func (f *AssistHandlerFactory) handle(ctx context.Context, in *CommandInput) err
 		return NewUserError(fmt.Sprintf("%s isn't here.", assistedName))
 	}
 
-	targetMobId := assisted.CombatTargetId()
-	if targetMobId == "" {
+	target := assisted.CombatTarget()
+	if target == nil {
 		return NewUserError(fmt.Sprintf("%s isn't fighting anyone.", assistedName))
 	}
 
-	targetMob := assisted.Room().GetMob(targetMobId)
-	if err := combat.StartCombat(char, targetMob); err != nil {
+	if err := combat.StartCombat(char, target); err != nil {
 		return NewUserError(fmt.Sprintf("%s isn't fighting anything you can assist with.", assistedName))
 	}
 

@@ -55,16 +55,22 @@ func TestMobileInstance_Name(t *testing.T) {
 
 func TestMobileInstance_Flags(t *testing.T) {
 	tests := map[string]struct {
-		inCombat  bool
+		setup     func(*MobileInstance)
 		wantFlags []string
 	}{
-		"no flags when idle":           {inCombat: false, wantFlags: nil},
-		"fighting flag when in combat": {inCombat: true, wantFlags: []string{"fighting"}},
+		"no flags when idle":           {setup: func(*MobileInstance) {}, wantFlags: nil},
+		"fighting flag when in combat": {
+			setup: func(mi *MobileInstance) {
+				enemy := newTestMI("enemy", "enemy")
+				mi.EnsureThreat(enemy.Id(), enemy)
+			},
+			wantFlags: []string{"fighting"},
+		},
 	}
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
 			mi := newTestMI("mob", "a test mob")
-			mi.SetInCombat(tc.inCombat)
+			tc.setup(mi)
 			got := mi.Flags()
 			if len(got) != len(tc.wantFlags) {
 				t.Fatalf("Flags() = %v, want %v", got, tc.wantFlags)
@@ -249,21 +255,11 @@ func TestMobileInstance_sweepDeadEnemies(t *testing.T) {
 			room := newTestRoom("room")
 
 			mi := newTestMI("mob", "mob")
-			mi.SetInCombat(true)
 			room.AddMob(mi)
 
-			hpPerk := assets.Perk{
-				Type:  assets.PerkTypeModifier,
-				Key:   assets.BuildKey(assets.ResourcePrefix, assets.ResourceHp, assets.ResourceAspectMax),
-				Value: 10,
-			}
-			enemy := newTestMI("enemy", "enemy mob")
-			enemy.PerkCache = *NewPerkCache([]assets.Perk{hpPerk}, nil)
-			enemy.initResources()
+			enemy := newEnemyMI("enemy")
 			if tc.killEnemy {
 				enemy.setResourceCurrent(assets.ResourceHp, 0)
-			} else {
-				enemy.setResourceCurrent(assets.ResourceHp, 10)
 			}
 			room.AddMob(enemy)
 
@@ -296,22 +292,13 @@ func TestMobileInstance_combatTick(t *testing.T) {
 			fc := &fakeCommander{}
 			mi := newTestMI("mob", "mob")
 			mi.commander = fc
-			mi.SetInCombat(true)
 
 			if tc.hasTarget {
 				mi.SetOwn([]assets.Perk{autoUsePerk})
-				hpPerk := assets.Perk{
-					Type:  assets.PerkTypeModifier,
-					Key:   assets.BuildKey(assets.ResourcePrefix, assets.ResourceHp, assets.ResourceAspectMax),
-					Value: 10,
-				}
-				target := newTestMI("target", "target")
-				target.PerkCache = *NewPerkCache([]assets.Perk{hpPerk}, nil)
-				target.initResources()
-				mi.EnsureThreat("target", target)
+				mi.EnsureThreat("target", newEnemyMI("target"))
 			}
 
-			mi.combatTick(ctx)
+			mi.combatTick(ctx, "")
 
 			if got := mi.IsInCombat(); got != tc.wantInCombat {
 				t.Errorf("IsInCombat() = %v, want %v", got, tc.wantInCombat)
@@ -330,7 +317,6 @@ func TestMobileInstance_Tick(t *testing.T) {
 	ctx := context.Background()
 	tests := map[string]struct {
 		nilCommander bool
-		inCombat     bool
 		itemLifetime int
 		wantItemGone bool
 	}{
@@ -338,9 +324,6 @@ func TestMobileInstance_Tick(t *testing.T) {
 		"out of combat ticks inventory decay": {
 			itemLifetime: 1,
 			wantItemGone: true,
-		},
-		"in combat runs combatTick": {
-			inCombat: true,
 		},
 	}
 	for name, tc := range tests {
@@ -352,10 +335,6 @@ func TestMobileInstance_Tick(t *testing.T) {
 			if !tc.nilCommander {
 				fc := &fakeCommander{}
 				mi.commander = fc
-			}
-			if tc.inCombat {
-				mi.SetInCombat(true)
-				// No threat entries → combatTick will clear combat immediately
 			}
 			if tc.itemLifetime > 0 {
 				oi := newTestObj("potion", tc.itemLifetime)
@@ -550,22 +529,31 @@ func TestMobileInstance_Move(t *testing.T) {
 	}
 }
 
-func TestMobileInstance_CombatTargetId(t *testing.T) {
+
+func TestMobileInstance_CombatTarget(t *testing.T) {
 	tests := map[string]struct {
-		setId  string
-		wantId string
+		setup func(mi *MobileInstance) Actor
 	}{
-		"always returns empty string":              {},
-		"SetCombatTargetId is a no-op":             {setId: "mob-1", wantId: ""},
+		"nil when not in combat": {
+			setup: func(*MobileInstance) Actor { return nil },
+		},
+		"returns highest-threat enemy regardless of insertion order": {
+			setup: func(mi *MobileInstance) Actor {
+				low := newEnemyMI("low")
+				high := newEnemyMI("high")
+				mi.EnsureThreat(low.Id(), low)
+				mi.EnsureThreat(high.Id(), high)
+				mi.AddThreatFrom(high.Id(), 100)
+				return high
+			},
+		},
 	}
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			mi := newTestMI("mob", "a mob")
-			if tc.setId != "" {
-				mi.SetCombatTargetId(tc.setId)
-			}
-			if got := mi.CombatTargetId(); got != tc.wantId {
-				t.Errorf("CombatTargetId() = %q, want %q", got, tc.wantId)
+			mi := newTestMI("mob", "mob")
+			want := tc.setup(mi)
+			if got := mi.CombatTarget(); got != want {
+				t.Errorf("CombatTarget() = %v, want %v", got, want)
 			}
 		})
 	}

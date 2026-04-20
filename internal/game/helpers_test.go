@@ -144,6 +144,22 @@ func newTestWorld() (*WorldState, *ZoneInstance, *RoomInstance) {
 	return w, zi, ri
 }
 
+// testHPPerk grants 10 max HP, used throughout combat-related tests.
+var testHPPerk = assets.Perk{
+	Type:  assets.PerkTypeModifier,
+	Key:   assets.BuildKey(assets.ResourcePrefix, assets.ResourceHp, assets.ResourceAspectMax),
+	Value: 10,
+}
+
+// newEnemyMI creates a MobileInstance with 10 max HP initialized, ready for
+// use in threat table tests.
+func newEnemyMI(id string) *MobileInstance {
+	mi := newTestMI(id, id)
+	mi.PerkCache = *NewPerkCache([]assets.Perk{testHPPerk}, nil)
+	mi.initResources()
+	return mi
+}
+
 // newTestMI creates a minimal MobileInstance with a deterministic InstanceId.
 // randIntN defaults to rand.IntN; tests can override it for deterministic behavior.
 func newTestMI(id, name string) *MobileInstance {

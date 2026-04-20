@@ -16,8 +16,8 @@ type BaseActor struct {
 	Alive          bool
 	ActorLevel     int
 	Character      bool
-	InCombat       bool
-	CombatTarget   string
+	InCombat           bool
+	ActorCombatTarget  game.Actor
 	Notified       []string
 	ActorFollowing game.Actor
 	ActorFollowers []game.Actor
@@ -41,12 +41,10 @@ func (a *BaseActor) Name() string { return a.ActorName }
 
 func (a *BaseActor) Room() *game.RoomInstance { return a.ActorRoom }
 
-func (a *BaseActor) IsInCombat() bool      { return a.InCombat }
-func (a *BaseActor) SetInCombat(v bool)    { a.InCombat = v }
-func (a *BaseActor) IsCharacter() bool     { return a.Character }
-func (a *BaseActor) Level() int            { return a.ActorLevel }
-func (a *BaseActor) CombatTargetId() string { return a.CombatTarget }
-func (a *BaseActor) SetCombatTargetId(id string) { a.CombatTarget = id }
+func (a *BaseActor) IsInCombat() bool             { return a.InCombat }
+func (a *BaseActor) CombatTarget() game.Actor      { return a.ActorCombatTarget }
+func (a *BaseActor) IsCharacter() bool             { return a.Character }
+func (a *BaseActor) Level() int                    { return a.ActorLevel }
 
 func (a *BaseActor) IsAlive() bool {
 	if a.IsAliveFunc != nil {

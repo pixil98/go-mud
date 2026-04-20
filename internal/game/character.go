@@ -186,27 +186,13 @@ func (ci *CharacterInstance) Asset() *assets.Character {
 	return ci.Character.Get()
 }
 
-// CombatTargetId returns the InstanceId of the mob being auto-attacked, or empty.
-func (ci *CharacterInstance) CombatTargetId() string {
+// CombatTarget returns the character's current auto-attack target, or nil.
+// Prefers the sticky target if it is still on the threat table; otherwise
+// falls back to the highest-threat enemy.
+func (ci *CharacterInstance) CombatTarget() Actor {
 	ci.mu.RLock()
 	defer ci.mu.RUnlock()
-	return ci.combatTargetId
-}
-
-// SetCombatTargetId sets the mob being auto-attacked and marks the character in combat.
-func (ci *CharacterInstance) SetCombatTargetId(mobInstanceId string) {
-	ci.mu.Lock()
-	defer ci.mu.Unlock()
-	ci.combatTargetId = mobInstanceId
-	ci.inCombat = true
-}
-
-// ClearCombatTargetId clears the auto-attack target and marks the character out of combat.
-func (ci *CharacterInstance) ClearCombatTargetId() {
-	ci.mu.Lock()
-	defer ci.mu.Unlock()
-	ci.combatTargetId = ""
-	ci.inCombat = false
+	return ci.threatTable.resolveTarget(ci.combatTargetId)
 }
 
 // SpendAP deducts cost from the character's remaining action points for this tick.
@@ -287,7 +273,22 @@ func (ci *CharacterInstance) Tick(ctx context.Context) {
 	ci.ResetAP()
 
 	if ci.IsInCombat() {
-		ci.combatTick(ctx)
+		// Update the sticky target each tick: prefer combatTargetId if it is
+		// still on the threat table, otherwise shift to the highest-threat enemy.
+		ci.mu.Lock()
+		target := ci.threatTable.resolveTarget(ci.combatTargetId)
+		if target != nil {
+			ci.combatTargetId = target.Id()
+		}
+		preferredId := ci.combatTargetId
+		ci.mu.Unlock()
+		ci.combatTick(ctx, preferredId)
+		// If combatTick cleared the threat table, clear the sticky target too.
+		if !ci.IsInCombat() {
+			ci.mu.Lock()
+			ci.combatTargetId = ""
+			ci.mu.Unlock()
+		}
 	} else {
 		ci.mu.Lock()
 		ci.regenTick()
@@ -314,7 +315,7 @@ func (ci *CharacterInstance) Flags() []string {
 	ci.mu.RLock()
 	defer ci.mu.RUnlock()
 	var flags []string
-	if ci.inCombat {
+	if ci.threatTable.hasEntries() {
 		flags = append(flags, "fighting")
 	}
 	if ci.linkless {

@@ -29,9 +29,7 @@ type Actor interface {
 	ModifierValue(key string) int
 	GrantArgs(key string) []string
 	AddTimedPerks(name string, perks []assets.Perk, ticks int)
-	SetInCombat(bool)
-	CombatTargetId() string
-	SetCombatTargetId(id string)
+	CombatTarget() Actor
 	OnDeath() []*ObjectInstance
 	IsCharacter() bool
 	Inventory() *Inventory
@@ -100,7 +98,6 @@ type ActorInstance struct {
 	level      int
 
 	room           *RoomInstance
-	inCombat       bool
 	deathProcessed atomic.Bool
 	threatTable    ThreatTable
 	cooldown       map[string][]int // auto_use arg → per-duplicate cooldown counters
@@ -226,18 +223,11 @@ func (a *ActorInstance) Room() *RoomInstance {
 	return a.room
 }
 
-// IsInCombat returns whether the actor is currently in combat.
+// IsInCombat reports whether the actor has any active threat entries.
 func (a *ActorInstance) IsInCombat() bool {
 	a.mu.RLock()
 	defer a.mu.RUnlock()
-	return a.inCombat
-}
-
-// SetInCombat sets the actor's combat state.
-func (a *ActorInstance) SetInCombat(v bool) {
-	a.mu.Lock()
-	defer a.mu.Unlock()
-	a.inCombat = v
+	return a.threatTable.hasEntries()
 }
 
 // Resource returns the current and max for a named resource.
@@ -468,12 +458,11 @@ func (a *ActorInstance) ThreatEnemies() []Actor {
 }
 
 // combatTick processes one round of combat. Resolves a target from the threat
-// table (preferring self.CombatTargetId for players), fires auto_use abilities,
-// and sweeps dead enemies. Exits combat if no target remains.
-func (a *ActorInstance) combatTick(ctx context.Context) {
-	target := a.ResolveCombatTarget(a.self.CombatTargetId())
+// table (preferring preferredId for players), fires auto_use abilities, and
+// sweeps dead enemies. Clears the threat table if no target remains.
+func (a *ActorInstance) combatTick(ctx context.Context, preferredId string) {
+	target := a.ResolveCombatTarget(preferredId)
 	if target == nil {
-		a.self.SetInCombat(false)
 		a.ClearThreatTable()
 		return
 	}
@@ -493,9 +482,6 @@ func (a *ActorInstance) sweepDeadEnemies() {
 			processDeath(enemy, a.self.Room())
 		}
 		a.RemoveThreatEntry(enemy.Id())
-	}
-	if !a.HasThreatEntries() {
-		a.self.SetInCombat(false)
 	}
 }
 

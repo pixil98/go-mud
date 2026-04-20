@@ -52,21 +52,77 @@ func TestActorInstance_Room(t *testing.T) {
 	}
 }
 
-func TestActorInstance_IsInCombat_SetInCombat(t *testing.T) {
+func TestActorInstance_IsInCombat(t *testing.T) {
 	tests := map[string]struct {
-		setup func(*ActorInstance)
+		setup func(*MobileInstance)
 		want  bool
 	}{
-		"initial state is false":     {setup: func(*ActorInstance) {}, want: false},
-		"true after SetInCombat(true)": {setup: func(a *ActorInstance) { a.SetInCombat(true) }, want: true},
-		"false after toggle back":    {setup: func(a *ActorInstance) { a.SetInCombat(true); a.SetInCombat(false) }, want: false},
+		"false with empty threat table": {setup: func(*MobileInstance) {}, want: false},
+		"true after EnsureThreat": {
+			setup: func(mi *MobileInstance) {
+				enemy := newTestMI("enemy", "enemy")
+				mi.EnsureThreat(enemy.Id(), enemy)
+			},
+			want: true,
+		},
 	}
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			a := &ActorInstance{PerkCache: *NewPerkCache(nil, nil)}
-			tc.setup(a)
-			if got := a.IsInCombat(); got != tc.want {
+			mi := newTestMI("mob", "a mob")
+			tc.setup(mi)
+			if got := mi.IsInCombat(); got != tc.want {
 				t.Errorf("IsInCombat() = %v, want %v", got, tc.want)
+			}
+		})
+	}
+}
+
+func TestActorInstance_ResolveCombatTarget(t *testing.T) {
+	tests := map[string]struct {
+		setup       func(mi *MobileInstance) Actor // returns expected target
+		preferredId string
+	}{
+		"nil when table is empty": {
+			setup: func(*MobileInstance) Actor { return nil },
+		},
+		"sticky: preferred wins over higher-threat enemy": {
+			setup: func(mi *MobileInstance) Actor {
+				preferred := newEnemyMI("preferred")
+				high := newEnemyMI("high")
+				mi.EnsureThreat(preferred.Id(), preferred)
+				mi.EnsureThreat(high.Id(), high)
+				mi.AddThreatFrom(high.Id(), 9999)
+				return preferred
+			},
+			preferredId: "preferred",
+		},
+		"non-sticky: top threat wins when no preferred": {
+			setup: func(mi *MobileInstance) Actor {
+				low := newEnemyMI("low")
+				high := newEnemyMI("high")
+				mi.EnsureThreat(low.Id(), low)
+				mi.EnsureThreat(high.Id(), high)
+				mi.AddThreatFrom(high.Id(), 100)
+				return high
+			},
+		},
+		"preferred absent falls back to top threat": {
+			setup: func(mi *MobileInstance) Actor {
+				high := newEnemyMI("high")
+				mi.EnsureThreat(high.Id(), high)
+				mi.AddThreatFrom(high.Id(), 50)
+				return high
+			},
+			preferredId: "gone",
+		},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			mi := newTestMI("actor", "actor")
+			want := tc.setup(mi)
+			got := mi.ResolveCombatTarget(tc.preferredId)
+			if got != want {
+				t.Errorf("ResolveCombatTarget(%q) = %v, want %v", tc.preferredId, got, want)
 			}
 		})
 	}

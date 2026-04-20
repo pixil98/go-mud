@@ -16,18 +16,18 @@ the same commit as the tests.
 
 | Package                    | Coverage | Last run    | Notes                     |
 |----------------------------|---------:|-------------|---------------------------|
-| `internal/storage`         | 83.1%    | 2026-04-15  | —                         |
-| `internal/combat`          | 67.6%    | 2026-04-15  | —                         |
-| `internal/assets`          | 30.6%    | 2026-04-15  | —                         |
-| `internal/game`            | 90.6%    | 2026-04-18  | Phases 1-3 complete            |
-| `internal/commands`        | 27.9%    | 2026-04-15  | —                         |
-| `cmd/treetool`             |  0.0%    | 2026-04-15  | —                         |
+| `internal/storage`         | 83.3%    | 2026-04-18  | —                         |
+| `internal/combat`          | 67.6%    | 2026-04-18  | —                         |
+| `internal/assets`          | 32.6%    | 2026-04-18  | —                         |
+| `internal/game`            | 91.0%    | 2026-04-18  | Phases 1-3 complete       |
+| `internal/commands`        | 28.0%    | 2026-04-18  | —                         |
+| `internal/listener`        | 24.3%    | 2026-04-18  | —                         |
+| `cmd/treetool`             |  0.0%    | 2026-04-18  | —                         |
 | `cmd/mud`                  | no tests | 2026-04-15  | —                         |
 | `cmd/mud/command`          | no tests | 2026-04-15  | —                         |
 | `internal`                 | no tests | 2026-04-15  | —                         |
 | `internal/display`         | no tests | 2026-04-15  | —                         |
 | `internal/gametest`        | no tests | 2026-04-15  | test helper package       |
-| `internal/listener`        | no tests | 2026-04-15  | network layer             |
 | `internal/messaging`       | no tests | 2026-04-15  | NATS layer                |
 | `internal/player`          | no tests | 2026-04-15  | login/session flows       |
 

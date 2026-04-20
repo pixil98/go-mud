@@ -43,7 +43,7 @@ func TestAssistHandler(t *testing.T) {
 				mob := newCombatMob("mob:test-mob", "Goblin")
 				room.AddMob(mob)
 
-				bob := &gametest.BaseActor{ActorId: "bob", ActorName: "Bob", Alive: true, CombatTarget: mob.Id(), ActorRoom: room}
+				bob := &gametest.BaseActor{ActorId: "bob", ActorName: "Bob", Alive: true, ActorCombatTarget: mob, ActorRoom: room}
 				actor := &gametest.BaseActor{ActorId: "alice", ActorName: "Alice", Alive: true, ActorRoom: room}
 
 				_ = newTestPlayer("charlie", "Charlie", room)
@@ -83,7 +83,7 @@ func TestAssistHandler(t *testing.T) {
 				mob := newCombatMob("mob:test-mob", "Goblin")
 				room.AddMob(mob)
 
-				bob := &gametest.BaseActor{ActorId: "bob", ActorName: "Bob", Alive: true, CombatTarget: mob.Id(), ActorRoom: room}
+				bob := &gametest.BaseActor{ActorId: "bob", ActorName: "Bob", Alive: true, ActorCombatTarget: mob, ActorRoom: room}
 				actor := &gametest.BaseActor{ActorId: "alice", ActorName: "Alice", Alive: true, ActorFollowing: bob, ActorRoom: room}
 
 				players := &mockAssistPlayerLookup{players: map[string]AssistedPlayer{"bob": bob}}

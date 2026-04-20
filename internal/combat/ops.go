@@ -17,8 +17,6 @@ func StartCombat(attacker, target game.Actor) error {
 	}
 	attacker.EnsureThreat(target.Id(), target)
 	target.EnsureThreat(attacker.Id(), attacker)
-	attacker.SetInCombat(true)
-	target.SetInCombat(true)
 	return nil
 }
 
@@ -59,6 +57,5 @@ func NotifyHeal(healer, target game.Actor, amount int, roomOccupants []game.Acto
 		}
 		occupant.AddThreatFrom(healerId, modified)
 		healer.EnsureThreat(occupant.Id(), occupant)
-		healer.SetInCombat(true)
 	}
 }
