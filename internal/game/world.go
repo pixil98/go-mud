@@ -202,7 +202,14 @@ type Subscriber interface {
 }
 
 // Tick processes zone resets and ticks the full hierarchy:
-// world perks → players → zones → rooms → mobs.
+// Tick advances the world by one game tick in a fixed order:
+// world perks → players → zones/rooms → mobs.
+//
+// Players are ticked before mobs deliberately. This guarantees that when a
+// player initiates combat (e.g. "kill mob-A"), their sticky target is resolved
+// on the same tick before any mob can generate competing threat. Changing this
+// order would allow a mob's tick to add threat before the player's tick runs,
+// potentially locking the player onto the wrong target.
 func (w *WorldState) Tick(ctx context.Context) error {
 	for _, zi := range w.zones {
 		if err := zi.Reset(false, w.commanderFactory); err != nil {
