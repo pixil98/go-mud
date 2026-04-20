@@ -15,7 +15,7 @@
             {
                 "type": "modifier",
                 "key": "core.combat.ac.flat",
-                "value": 90
+                "value": -80
             },
             {
                 "type": "grant",

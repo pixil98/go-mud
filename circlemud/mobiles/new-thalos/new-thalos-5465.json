@@ -12,6 +12,11 @@
         "level": 35,
         "perks": [
             {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 10
+            },
+            {
                 "type": "grant",
                 "key": "attack",
                 "arg": "5d5+5"

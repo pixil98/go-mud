@@ -20,7 +20,7 @@
             {
                 "type": "modifier",
                 "key": "core.combat.ac.flat",
-                "value": -3
+                "value": 3
             }
         ]
     },

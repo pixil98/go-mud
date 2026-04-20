@@ -28,6 +28,11 @@
                 "key": "notrack"
             },
             {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 10
+            },
+            {
                 "type": "grant",
                 "key": "attack",
                 "arg": "6d9+5"

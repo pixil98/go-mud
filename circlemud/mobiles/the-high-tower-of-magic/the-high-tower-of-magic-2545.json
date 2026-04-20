@@ -22,7 +22,7 @@
             {
                 "type": "modifier",
                 "key": "core.combat.ac.flat",
-                "value": 1
+                "value": 9
             },
             {
                 "type": "grant",

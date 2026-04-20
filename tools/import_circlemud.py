@@ -916,10 +916,12 @@ def convert_mob(parsed_mob, zone_slug, v2z, zones):
                           "CURSE", "POISON", "SLEEP"):
             skipped_affects.append(name)
 
-    # Armor class
+    # Armor class: CircleMUD uses descending AC (10=unarmored, lower=better).
+    # Convert to ascending (0=unarmored, higher=better): ascending = 10 - descending.
     ac = parsed_mob["ac"]
-    if ac != 0:
-        perks.append({"type": "modifier", "key": "core.combat.ac.flat", "value": ac})
+    ascending_ac = 10 - ac
+    if ascending_ac != 0:
+        perks.append({"type": "modifier", "key": "core.combat.ac.flat", "value": ascending_ac})
 
     # Bare hand damage
     bhd = parsed_mob["bare_hand_damage"]
@@ -1078,7 +1080,10 @@ def convert_object(parsed_obj, zone_slug, v2z, zones, known_obj_vnums):
         loc_name = AFFECT_LOCATION_MAP.get(aff["location"], "")
         key = AFFECT_KEYS.get(loc_name)
         if key and aff["value"] != 0:
-            perks.append({"type": "modifier", "key": key, "value": aff["value"]})
+            # APPLY_AC is a delta to descending AC (negative = better).
+            # Negate to get ascending delta (positive = better).
+            value = -aff["value"] if loc_name == "AC" else aff["value"]
+            perks.append({"type": "modifier", "key": key, "value": value})
 
     # Extra descriptions — promote alias-matching to detailed_desc
     aliases_set = set(a.lower() for a in parsed_obj["aliases"])
