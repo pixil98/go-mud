@@ -73,28 +73,13 @@ func TestMudDriver_Tick(t *testing.T) {
 }
 
 func TestMudDriver_Start(t *testing.T) {
-	tests := map[string]struct {
-		cancelImmediately bool
-	}{
-		"canceled context returns nil": {cancelImmediately: true},
-	}
-	for name, tc := range tests {
-		t.Run(name, func(t *testing.T) {
-			ft := &fakeTicker{}
-			d := NewMudDriver([]Ticker{ft}, WithTickLength(10*time.Millisecond))
+	ft := &fakeTicker{}
+	d := NewMudDriver([]Ticker{ft}, WithTickLength(10*time.Millisecond))
 
-			ctx, cancel := context.WithCancel(context.Background())
-			if tc.cancelImmediately {
-				cancel()
-			}
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
 
-			err := d.Start(ctx)
-			if !tc.cancelImmediately {
-				cancel()
-			}
-			if err != nil {
-				t.Errorf("Start: %v", err)
-			}
-		})
+	if err := d.Start(ctx); err != nil {
+		t.Errorf("Start with cancelled context: %v", err)
 	}
 }
