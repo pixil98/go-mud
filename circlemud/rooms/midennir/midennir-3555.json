@@ -15,11 +15,8 @@
                 "description": "You see a small cavern."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

@@ -20,11 +20,8 @@
                 "description": "You can see a sewer line."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "mobile_spawns": [
             "the-sewer-maze-7203"

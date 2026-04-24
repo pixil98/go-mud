@@ -17,11 +17,8 @@
                 "room_id": "drow-city-5111"
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

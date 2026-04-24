@@ -10,11 +10,8 @@
                 "room_id": "river-island-of-minos-910"
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "object_spawns": [
             {

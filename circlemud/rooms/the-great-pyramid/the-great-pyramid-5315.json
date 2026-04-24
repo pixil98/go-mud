@@ -19,11 +19,8 @@
                 "description": "The hole looks very slippery and very dark."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

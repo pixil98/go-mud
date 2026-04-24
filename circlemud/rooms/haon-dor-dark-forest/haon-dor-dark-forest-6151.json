@@ -15,11 +15,8 @@
                 "description": "The start of the trail."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

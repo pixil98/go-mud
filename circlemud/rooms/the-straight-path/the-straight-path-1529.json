@@ -16,11 +16,8 @@
                 "room_id": "the-straight-path-1528"
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

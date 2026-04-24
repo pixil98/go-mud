@@ -15,11 +15,8 @@
                 "description": "West. All you can see, is that the pipe leads into a bend that goes north. But there is less mud in that direction, however odd that sounds."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "extra_descs": [
             {

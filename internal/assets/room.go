@@ -20,6 +20,7 @@ const (
 	RoomFlagDeath                   // Death trap; character dies on entry
 	RoomFlagNoMob                   // Mobs cannot wander in
 	RoomFlagSingleOccupant          // Only one player allowed at a time
+	RoomFlagDark                    // Room is dark; occupants without darkvision can't see
 )
 
 // parseRoomFlag converts a flag name to its enum value. Input must be
@@ -33,6 +34,8 @@ func parseRoomFlag(s string) RoomFlag {
 		return RoomFlagNoMob
 	case "single_occupant":
 		return RoomFlagSingleOccupant
+	case "dark":
+		return RoomFlagDark
 	default:
 		return RoomFlagUnknown
 	}

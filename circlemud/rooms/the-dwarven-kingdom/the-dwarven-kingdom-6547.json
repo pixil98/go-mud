@@ -16,11 +16,8 @@
                 "room_id": "the-dwarven-kingdom-6546"
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

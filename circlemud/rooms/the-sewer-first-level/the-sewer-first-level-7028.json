@@ -18,11 +18,8 @@
                 "description": "To the west you can just make out an old well."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

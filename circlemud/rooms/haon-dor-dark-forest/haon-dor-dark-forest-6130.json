@@ -18,11 +18,8 @@
                 "room_id": "haon-dor-dark-forest-6132"
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "extra_descs": [
             {

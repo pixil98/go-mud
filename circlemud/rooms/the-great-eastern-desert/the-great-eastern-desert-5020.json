@@ -15,11 +15,8 @@
                 "description": "The fragrant smell of spores continues to the west."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

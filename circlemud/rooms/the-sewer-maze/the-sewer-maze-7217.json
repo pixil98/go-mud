@@ -19,11 +19,8 @@
                 "description": "You see a drain running to the west."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "extra_descs": [
             {

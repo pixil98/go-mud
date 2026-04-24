@@ -19,11 +19,8 @@
                 }
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "mobile_spawns": [
             "new-thalos-5470"

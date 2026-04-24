@@ -23,11 +23,8 @@
                 "description": "You can see a narrow crawlway."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

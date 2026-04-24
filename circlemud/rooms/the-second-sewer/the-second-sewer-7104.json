@@ -19,11 +19,8 @@
                 "description": "West. There is a room with a ladder leading up."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "mobile_spawns": [
             "the-sewer-first-level-7002"

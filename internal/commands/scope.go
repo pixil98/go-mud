@@ -124,7 +124,7 @@ func (ws *WorldScopes) SpacesFor(s scope, actor game.Actor) ([]SearchSpace, erro
 	if s&scopeRoom != 0 {
 		room := actor.Room()
 		var finder TargetFinder = room
-		if !CanSee(actor) {
+		if !CanSee(actor, room) {
 			finder = darkRoomFinder{}
 		}
 		spaces = append(spaces, SearchSpace{

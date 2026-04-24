@@ -23,11 +23,8 @@
                 "description": "A few yards ahead - away from this junction - there is a pit leading down, but the smell from there...>PHEWW<."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "extra_descs": [
             {

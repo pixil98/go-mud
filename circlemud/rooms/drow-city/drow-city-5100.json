@@ -20,13 +20,8 @@
                 "description": "A passageway opens up into a fairly large cave above."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
-        ],
         "flags": [
+            "dark",
             "nomob"
         ],
         "extra_descs": [

@@ -20,6 +20,9 @@
         "sector_type": "INSIDE",
         "flags": [
             "INDOORS"
-        ]
+        ],
+        "missing_exit_keys": {
+            "north": 12104
+        }
     }
 }

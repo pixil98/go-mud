@@ -15,11 +15,8 @@
                 "description": "You can see a room in which mud drips from the roof onto the floor in great cakes of sludge. There doesn't seem to be any exits from that room apart from in you direction."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "extra_descs": [
             {

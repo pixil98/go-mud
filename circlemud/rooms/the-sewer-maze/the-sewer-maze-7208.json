@@ -19,13 +19,8 @@
                 "description": "You see a crawlway."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
-        ],
         "flags": [
+            "dark",
             "nomob"
         ],
         "extra_descs": [

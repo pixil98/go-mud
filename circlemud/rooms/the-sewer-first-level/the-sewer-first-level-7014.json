@@ -15,11 +15,8 @@
                 "description": "West. There is less mud that way, maybe you're on your way out of this foul place."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "extra_descs": [
             {

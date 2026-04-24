@@ -38,41 +38,53 @@ func objInRoom(t *testing.T, room *game.RoomInstance, id, name string) *game.Obj
 
 func TestSpacesForDarkRoom(t *testing.T) {
 	tests := map[string]struct {
-		grants    map[string]bool
-		expBlocks bool // true if room lookups should be blocked
+		roomDark    bool
+		darkvision  bool
+		expBlocks   bool // true if room lookups should be blocked
 	}{
-		"no dark grant sees normally": {
-			grants:    nil,
+		"lit room sees normally": {
 			expBlocks: false,
 		},
-		"dark grant without darkvision is blocked": {
-			grants:    map[string]bool{assets.PerkGrantDark: true},
+		"dark room without darkvision is blocked": {
+			roomDark:  true,
 			expBlocks: true,
 		},
-		"dark grant with darkvision sees normally": {
-			grants: map[string]bool{
-				assets.PerkGrantDark:       true,
-				assets.PerkGrantDarkvision: true,
-			},
-			expBlocks: false,
+		"dark room with darkvision sees normally": {
+			roomDark:   true,
+			darkvision: true,
+			expBlocks:  false,
 		},
 	}
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			room, err := newTestRoom("dark-room", "Dark Room", "test-zone")
+			var flags []string
+			if tc.roomDark {
+				flags = []string{"dark"}
+			}
+			zone := &assets.Zone{ResetMode: assets.ZoneResetNever}
+			roomSpec := &assets.Room{
+				Name:  "Dark Room",
+				Zone:  storage.NewResolvedSmartIdentifier("test-zone", zone),
+				Flags: flags,
+			}
+			room, err := game.NewRoomInstance(storage.NewResolvedSmartIdentifier("dark-room", roomSpec))
 			if err != nil {
-				t.Fatalf("newTestRoom: %v", err)
+				t.Fatalf("NewRoomInstance: %v", err)
 			}
 			mobInRoom(t, room, "mob-1", "goblin")
 			objInRoom(t, room, "obj-1", "sword")
 			newTestPlayer("player-1", "Alice", room)
 
+			var grants map[string]bool
+			if tc.darkvision {
+				grants = map[string]bool{assets.PerkGrantDarkvision: true}
+			}
 			actor := &gametest.BaseActor{
 				ActorId:   "actor",
 				ActorName: "Actor",
 				ActorRoom: room,
-				Grants:    tc.grants,
+				Grants:    grants,
 			}
 
 			ws := NewWorldScopes()

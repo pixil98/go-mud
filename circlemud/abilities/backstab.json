@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "backstab",
+    "spec": {
+        "effects": [
+            {"type": "damage", "config": {"amount": "4d4+4"}}
+        ],
+        "command": {
+            "category": "combat",
+            "priority": 4,
+            "description": "Drive a blade between your target's ribs. Most effective as an opener.",
+            "config": {
+                "ap_cost": "2",
+                "message_actor": "You drive your blade into {{ .Targets.target.Name }}'s back!",
+                "message_target": "{{ .Actor.Name }} drives a blade into your back!",
+                "message_room": "{{ .Actor.Name }} drives a blade into {{ .Targets.target.Name }}'s back!"
+            },
+            "inputs": [
+                {"name": "target", "type": "string", "required": true, "missing": "Backstab whom?"}
+            ],
+            "targets": [
+                {
+                    "name": "target",
+                    "types": ["mobile"],
+                    "scopes": ["room"],
+                    "input": "target",
+                    "not_found": "You don't see '{{ .Inputs.target }}' here."
+                }
+            ]
+        }
+    }
+}

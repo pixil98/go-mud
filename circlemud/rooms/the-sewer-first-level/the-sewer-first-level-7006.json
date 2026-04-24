@@ -15,11 +15,8 @@
                 "description": "The muddy sewer pipe leads into a bend that goes east."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "extra_descs": [
             {

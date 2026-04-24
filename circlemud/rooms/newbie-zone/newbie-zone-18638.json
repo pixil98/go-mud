@@ -14,11 +14,8 @@
                 "description": "The room extends into shadows..."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "mobile_spawns": [
             "newbie-zone-18608"

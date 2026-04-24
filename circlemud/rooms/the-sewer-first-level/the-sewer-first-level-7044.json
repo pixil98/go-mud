@@ -18,11 +18,8 @@
                 "description": "West. You see another junction very similar to this one that leads north and west."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

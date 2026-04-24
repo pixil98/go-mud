@@ -15,11 +15,8 @@
                 "description": "To the south you see a sewer drain filled with water."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "extra_descs": [
             {

@@ -12,11 +12,8 @@
                 "description": "Down. It is utterly dark that way, though you can make out an intersection of sewer pipes leading west, north and east."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

@@ -11,13 +11,8 @@
                 "description": "You see a sand dune."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
-        ],
         "flags": [
+            "dark",
             "nomob"
         ],
         "object_spawns": [

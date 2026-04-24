@@ -15,11 +15,8 @@
                 "description": "The trail intersects the main forest path."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

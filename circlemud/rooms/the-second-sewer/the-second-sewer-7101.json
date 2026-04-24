@@ -11,13 +11,8 @@
                 "description": "East. You see nothing of interest."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
-        ],
         "flags": [
+            "dark",
             "nomob"
         ],
         "extra_descs": [

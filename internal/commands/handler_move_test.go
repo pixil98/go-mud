@@ -9,14 +9,14 @@ import (
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
-// newDarkTestRoom creates a room whose asset spec has the `dark` grant perk.
+// newDarkTestRoom creates a room whose asset spec has the `dark` flag.
 func newDarkTestRoom(t *testing.T, id, name, zoneId string) *game.RoomInstance {
 	t.Helper()
 	zone := &assets.Zone{ResetMode: assets.ZoneResetNever}
 	room := &assets.Room{
 		Name:  name,
 		Zone:  storage.NewResolvedSmartIdentifier(zoneId, zone),
-		Perks: []assets.Perk{{Type: assets.PerkTypeGrant, Key: assets.PerkGrantDark}},
+		Flags: []string{"dark"},
 	}
 	ri, err := game.NewRoomInstance(storage.NewResolvedSmartIdentifier(id, room))
 	if err != nil {
@@ -47,7 +47,6 @@ func TestAnnounceToRoomDarkness(t *testing.T) {
 				t.Fatalf("NewCharacterInstance: %v", err)
 			}
 			room.AddPlayer("observer", observer)
-			observer.AddSource("room", room.Perks)
 			if tc.observerDarkvision {
 				dvCache := game.NewPerkCache(
 					[]assets.Perk{{Type: assets.PerkTypeGrant, Key: assets.PerkGrantDarkvision}},

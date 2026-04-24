@@ -13,11 +13,8 @@
                 "room_id": "new-thalos-5474"
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "mobile_spawns": [
             "new-thalos-5443"

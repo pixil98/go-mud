@@ -13,13 +13,8 @@
                 "room_id": "mines-of-moria-4115"
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
-        ],
         "flags": [
+            "dark",
             "nomob"
         ],
         "mobile_spawns": [

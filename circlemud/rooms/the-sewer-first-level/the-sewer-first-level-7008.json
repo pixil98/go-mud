@@ -19,11 +19,8 @@
                 "description": "South. There is much less mud in that direction. Your light doesn't uncover enough space for you to see much more than that it leads into some sort of junction."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "extra_descs": [
             {

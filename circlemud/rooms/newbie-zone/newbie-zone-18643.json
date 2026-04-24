@@ -15,11 +15,8 @@
                 "description": "Down the stairs to a large, domed room."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "extra_descs": [
             {

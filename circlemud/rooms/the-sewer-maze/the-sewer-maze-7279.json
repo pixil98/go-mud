@@ -18,11 +18,8 @@
                 "room_id": "the-sewer-maze-7299"
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

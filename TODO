@@ -1,18 +1,3 @@
-## Combat State Simplification
-Remove the explicit inCombat flag and combatTargetId field; drive everything from the threat
-table instead:
-- An actor is "in combat" if and only if their threat table is non-empty. Replace all
-  IsInCombat()/SetInCombat() calls with HasThreatEntries() checks.
-- Remove CombatTargetId()/SetCombatTargetId()/ClearCombatTargetId() and the combatTargetId
-  field — SetCombatTargetId has no callers and the inCombat side-effects are now redundant.
-- Each tick the combat path calls ResolveCombatTarget(""); if it returns nil, clear the table
-  (which implicitly ends combat). No separate sweep needed.
-- The assist command and DefaultCombatTarget resolution in resolve.go both use CombatTargetId()
-  but should use the threat table instead: IsInCombat() → HasThreatEntries(),
-  target lookup → ResolveCombatTarget("").
-- "Sticky target" intent (player prefers the mob they issued kill against) can be re-implemented
-  via TopThreatFrom at the point the kill command is issued, rather than a separate field.
-
 ## Misc TODOs
 - Notify the player when a decayable item expires (e.g. "The rusty key crumbles to dust.")
 - Remove StatSections from CharacterInstance and format everything from Actor and perks
@@ -31,9 +16,9 @@ Still needed:
 - Utility "light" spell: non-combat spell that adds a timed `darkvision` grant. Requires distinguishing combat vs utility abilities so utility spells can auto-cast outside of combat.
 
 ## Mobile Flags — Runtime Wiring Needed
-Wired up: sentinel (wandering), stay_zone (wandering), scavenger (item pickup).
+Wired up: sentinel (wandering), stay_zone (wandering), scavenger (item pickup),
+aggressive (attacks living players in same room on tick).
 Still need runtime behavior:
-- aggressive — mob attacks players on sight (needs aggro initiation in zone tick)
 - wimpy — mob flees at low HP (needs flee logic, probably in combat tick)
 - helper — mob assists other mobs in combat (needs combat awareness in zone tick)
 - memory — mob remembers and retaliates against past attackers (needs per-mob memory + aggro)
@@ -50,24 +35,6 @@ Still need runtime behavior:
 - nocharm / nosummon / nosleep / nobash / noblind — immunity to specific effects (needs those effects)
 - protect_evil / protect_good — alignment-based damage reduction (needs alignment system)
 - notrack — prevent tracking (needs tracking system)
-
-## CircleMUD Import
-- Object vnum 12104 (key referenced by rome-12038) doesn't exist in the CircleMUD source data.
-  Stubbed as rome-12104 for now. Investigate whether the original .wld file is broken or if the
-  parser missed it.
-- I'm pretty sure this is incorrect, but I don't know what the new script does to handle it
-
-## Combat Manager Refactor
-Now that mobs have a Commander that can execute commands, consider dissolving the combat
-manager into per-actor tick behavior:
-- Move threat tables onto ActorInstance (each actor tracks who they're fighting and threat levels)
-- On tick, each actor in combat checks their threat table and executes combat abilities
-  through their commander/handler, just like they execute movement commands for wandering
-- The combat manager's orchestration (pairing combatants, running auto_use, publishing
-  room messages) moves into the actor tick
-- This makes mobs and players symmetrical — both are just actors with a tick that
-  execute commands. The only difference is who issues the commands (AI vs player input).
-- Eliminates SetAbilityHandler wiring and the separate combat tick phase
 
 ## Mob Wandering
 - wanderChance and scavengeChance consts in zone.go should be configurable, either per-zone or global config

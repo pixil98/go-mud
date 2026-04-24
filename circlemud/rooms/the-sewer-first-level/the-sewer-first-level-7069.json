@@ -15,11 +15,8 @@
                 "description": "You can't see a thing. It is too dark."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "extra_descs": [
             {

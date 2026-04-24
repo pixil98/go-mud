@@ -18,13 +18,8 @@
                 "description": "A small cave is to the east."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
-        ],
         "flags": [
+            "dark",
             "nomob"
         ]
     },

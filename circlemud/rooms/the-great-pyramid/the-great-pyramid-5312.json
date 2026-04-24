@@ -19,11 +19,8 @@
                 "description": "A small hole above your head leads into a dank chamber."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

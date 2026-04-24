@@ -15,11 +15,8 @@
                 "description": "You can see nothing but smoke."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "extra_descs": [
             {

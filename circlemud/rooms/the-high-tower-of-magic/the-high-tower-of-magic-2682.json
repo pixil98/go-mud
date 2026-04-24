@@ -17,11 +17,8 @@
                 "room_id": "the-high-tower-of-magic-2683"
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "object_spawns": [
             {

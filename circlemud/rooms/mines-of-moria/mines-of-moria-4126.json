@@ -15,13 +15,8 @@
                 "description": "You can see the light emanating from the southern exit of the crawlway."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
-        ],
         "flags": [
+            "dark",
             "nomob",
             "single_occupant"
         ]

@@ -14,11 +14,8 @@
                 "description": "You can easily slide down the rocks without getting hurt."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

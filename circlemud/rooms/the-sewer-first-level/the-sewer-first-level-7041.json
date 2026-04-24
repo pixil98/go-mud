@@ -16,11 +16,8 @@
                 "description": "Down and utter darkness. There is absolutely nothing to be seen in that direction."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "extra_descs": [
             {

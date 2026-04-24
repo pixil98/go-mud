@@ -20,16 +20,15 @@
         "perks": [
             {
                 "type": "grant",
-                "key": "dark"
-            },
-            {
-                "type": "grant",
                 "key": "peaceful"
             },
             {
                 "type": "grant",
                 "key": "nomagic"
             }
+        ],
+        "flags": [
+            "dark"
         ],
         "mobile_spawns": [
             "new-thalos-5444",

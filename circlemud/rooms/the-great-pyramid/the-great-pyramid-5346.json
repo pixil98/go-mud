@@ -15,13 +15,8 @@
                 "description": "From here you see only darkness."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
-        ],
         "flags": [
+            "dark",
             "nomob"
         ]
     },

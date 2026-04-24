@@ -19,13 +19,8 @@
                 "description": "South. The ledge leads further south into utter darkness."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
-        ],
         "flags": [
+            "dark",
             "nomob"
         ]
     },

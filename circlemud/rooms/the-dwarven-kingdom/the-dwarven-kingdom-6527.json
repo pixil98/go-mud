@@ -14,11 +14,8 @@
                 }
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "mobile_spawns": [
             "the-dwarven-kingdom-6502"

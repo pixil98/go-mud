@@ -19,13 +19,8 @@
                 "description": "West. There is an ordinary bend leading south into the sewer system in that direction."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
-        ],
         "flags": [
+            "dark",
             "nomob"
         ]
     },

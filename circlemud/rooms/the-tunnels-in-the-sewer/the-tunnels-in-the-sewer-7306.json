@@ -18,11 +18,8 @@
                 "room_id": "the-tunnels-in-the-sewer-7307"
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "mobile_spawns": [
             "the-sewer-first-level-7044"

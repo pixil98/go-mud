@@ -21,7 +21,7 @@
             "path": "./assets/pronouns"
         },
         "races": {
-            "path": "./assets/races"
+            "path": "./circlemud/races"
         },
         "zones": {
             "path": "./circlemud/zones"

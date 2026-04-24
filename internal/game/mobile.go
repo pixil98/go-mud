@@ -16,6 +16,8 @@ const (
 	wanderChance = 20
 	// scavengeChance is the 1-in-N chance a scavenger mob picks up an item each tick.
 	scavengeChance = 10
+	// aggroChance is the 1-in-N chance an aggressive mob initiates combat each tick.
+	aggroChance = 5
 )
 
 // MobileInstance represents a single spawned instance of a Mobile definition.
@@ -77,9 +79,48 @@ func (mi *MobileInstance) Tick(ctx context.Context) {
 		mi.mu.Lock()
 		mi.regenTick()
 		mi.mu.Unlock()
+		if mi.tryAggro() {
+			return
+		}
 		mi.tryWander(ctx)
 		mi.tryScavenge(ctx)
 	}
+}
+
+// tryAggro initiates combat with a living player in the mob's room if the mob
+// has the aggressive flag. Returns true if combat was initiated.
+func (mi *MobileInstance) tryAggro() bool {
+	if !mi.Mobile.Get().HasFlag(assets.MobileFlagAggressive) {
+		return false
+	}
+	if mi.randIntN(aggroChance) != 0 {
+		return false
+	}
+	if !mi.IsAlive() {
+		return false
+	}
+	room := mi.Room()
+	if room == nil {
+		return false
+	}
+	if room.Room.Get().HasFlag(assets.RoomFlagDark) && !mi.HasGrant(assets.PerkGrantDarkvision, "") {
+		return false
+	}
+
+	var target *CharacterInstance
+	room.ForEachPlayer(func(_ string, ci *CharacterInstance) {
+		if target != nil || !ci.IsAlive() {
+			return
+		}
+		target = ci
+	})
+	if target == nil {
+		return false
+	}
+
+	mi.EnsureThreat(target.Id(), target)
+	target.EnsureThreat(mi.Id(), mi)
+	return true
 }
 
 // tryWander gives the mob a chance to move to a random adjacent room.

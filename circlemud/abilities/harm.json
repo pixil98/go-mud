@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "id": "harm",
+    "spec": {
+        "effects": [
+            {"type": "damage", "config": {"amount": "3d6+3", "damage_types": "holy"}}
+        ],
+        "command": {
+            "category": "combat",
+            "priority": 3,
+            "description": "Call down divine wrath upon your target.",
+            "config": {
+                "resource": "mana",
+                "resource_cost": "12",
+                "ap_cost": "2",
+                "message_actor": "You invoke divine wrath upon {{ .Targets.target.Name }}!",
+                "message_target": "{{ .Actor.Name }} invokes divine wrath upon you!",
+                "message_room": "{{ .Actor.Name }} invokes divine wrath upon {{ .Targets.target.Name }}!"
+            },
+            "inputs": [
+                {"name": "target", "type": "string", "required": true, "missing": "Harm whom?"}
+            ],
+            "targets": [
+                {
+                    "name": "target",
+                    "types": ["mobile", "player"],
+                    "scopes": ["room"],
+                    "input": "target",
+                    "not_found": "You don't see '{{ .Inputs.target }}' here."
+                }
+            ]
+        }
+    }
+}

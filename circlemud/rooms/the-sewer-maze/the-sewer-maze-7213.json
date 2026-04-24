@@ -15,11 +15,8 @@
                 "description": "You can see the drain continuing south."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "mobile_spawns": [
             "the-sewer-maze-7203"

@@ -18,11 +18,8 @@
                 "room_id": "the-sewer-first-level-7000"
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "extra_descs": [
             {

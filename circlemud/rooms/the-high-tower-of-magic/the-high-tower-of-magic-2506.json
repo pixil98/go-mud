@@ -23,13 +23,8 @@
                 "description": "You see a small clearing in the shadows."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
-        ],
         "flags": [
+            "dark",
             "nomob"
         ],
         "mobile_spawns": [

@@ -15,11 +15,8 @@
                 "description": "You can see a room with a lot of light in it. You can't make out any details."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "mobile_spawns": [
             "the-sewer-first-level-7003"

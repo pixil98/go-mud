@@ -19,13 +19,8 @@
                 "description": "South. You can just make out the south-western corner of this ledge."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
-        ],
         "flags": [
+            "dark",
             "nomob"
         ]
     },

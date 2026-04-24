@@ -19,13 +19,8 @@
                 "description": "To the west there is another intersection like this one, with sewer pipes leading south and west."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
-        ],
         "flags": [
+            "dark",
             "nomob"
         ]
     },

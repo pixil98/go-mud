@@ -15,11 +15,8 @@
                 "description": "You see a VERY long hallway."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "extra_descs": [
             {

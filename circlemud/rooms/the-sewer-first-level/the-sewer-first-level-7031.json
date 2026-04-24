@@ -19,11 +19,8 @@
                 "description": "West. You can just make out a triple junction leading north and west."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "mobile_spawns": [
             "the-sewer-first-level-7002"

@@ -19,11 +19,8 @@
                 "description": "South. It looks like a pipe junction just like this one. Only that one leads east and west."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

@@ -19,11 +19,8 @@
                 "description": "You can just make out a triple junction leading north and west."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "extra_descs": [
             {

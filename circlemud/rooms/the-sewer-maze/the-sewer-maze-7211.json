@@ -11,11 +11,8 @@
                 "description": "You look back into the four-way junction."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "object_spawns": [
             {

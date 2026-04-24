@@ -16,11 +16,8 @@
                 "room_id": "newbie-zone-18633"
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

@@ -19,11 +19,8 @@
                 "room_id": "the-tunnels-in-the-sewer-7325"
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "extra_descs": [
             {

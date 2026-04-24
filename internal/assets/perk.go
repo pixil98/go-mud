@@ -137,10 +137,6 @@ const (
 	// (e.g. "head", "finger"). Duplicate grants of the same type create
 	// multiple slots (e.g. two "finger" grants = two ring slots).
 	PerkGrantWearSlot = "wear_slot"
-	// PerkGrantDark makes the holder unable to see as if in a dark room.
-	// When granted by a room, all occupants are affected unless they have
-	// a countering darkvision effect.
-	PerkGrantDark = "dark"
 	// PerkGrantDarkvision lets the holder see in dark rooms. Granted by
 	// racial traits, spells, or equipment like torches and lanterns.
 	PerkGrantDarkvision = "darkvision"

@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "id": "cure-light",
+    "spec": {
+        "effects": [
+            {"type": "heal", "config": {"amount": "2d4+2"}}
+        ],
+        "command": {
+            "category": "support",
+            "priority": 3,
+            "description": "Mend light wounds on yourself or a companion.",
+            "config": {
+                "resource": "mana",
+                "resource_cost": "8",
+                "ap_cost": "1",
+                "message_actor": "You channel healing light into {{ .Targets.target.Name }}.",
+                "message_target": "{{ .Actor.Name }} channels healing light into you.",
+                "message_room": "{{ .Actor.Name }} channels healing light into {{ .Targets.target.Name }}."
+            },
+            "inputs": [
+                {"name": "target", "type": "string", "required": false}
+            ],
+            "targets": [
+                {
+                    "name": "target",
+                    "types": ["mobile", "player"],
+                    "scopes": ["room"],
+                    "input": "target",
+                    "default": "self",
+                    "not_found": "You don't see '{{ .Inputs.target }}' here."
+                }
+            ]
+        }
+    }
+}

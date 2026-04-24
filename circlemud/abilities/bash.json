@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "id": "bash",
+    "spec": {
+        "effects": [
+            {"type": "damage", "config": {"amount": "2d6"}}
+        ],
+        "command": {
+            "category": "combat",
+            "priority": 4,
+            "description": "Slam into your target with bone-rattling force.",
+            "config": {
+                "ap_cost": "2",
+                "message_actor": "You bash into {{ .Targets.target.Name }}!",
+                "message_target": "{{ .Actor.Name }} bashes into you!",
+                "message_room": "{{ .Actor.Name }} bashes into {{ .Targets.target.Name }}!"
+            },
+            "inputs": [
+                {"name": "target", "type": "string", "required": true, "missing": "Bash whom?"}
+            ],
+            "targets": [
+                {
+                    "name": "target",
+                    "types": ["mobile"],
+                    "scopes": ["room"],
+                    "input": "target",
+                    "not_found": "You don't see '{{ .Inputs.target }}' here."
+                }
+            ]
+        }
+    }
+}

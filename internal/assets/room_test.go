@@ -58,7 +58,7 @@ func TestRoom_Validate_Flags(t *testing.T) {
 		expErr string
 	}{
 		"valid flags": {
-			flags: []string{"death", "nomob", "single_occupant"},
+			flags: []string{"death", "nomob", "single_occupant", "dark"},
 		},
 		"unknown flag rejected": {
 			flags:  []string{"bogus"},

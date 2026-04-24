@@ -15,11 +15,8 @@
                 "description": "It is too dark for you to see any further along the crevasse."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

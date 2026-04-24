@@ -504,6 +504,101 @@ func TestMobileInstance_tryScavenge(t *testing.T) {
 	}
 }
 
+func TestMobileInstance_tryAggro(t *testing.T) {
+	tests := map[string]struct {
+		flags         []string
+		randResult    func(int) int
+		mobDead       bool
+		mobDarkvision bool
+		roomDark      bool
+		playerInRoom  bool
+		playerDead    bool
+		wantAggro     bool
+	}{
+		"no aggressive flag skips":    {playerInRoom: true},
+		"non-zero rand skips aggro":   {flags: []string{"aggressive"}, randResult: neverRand, playerInRoom: true},
+		"aggressive with no players":  {flags: []string{"aggressive"}},
+		"aggressive attacks living player": {
+			flags: []string{"aggressive"}, playerInRoom: true, wantAggro: true,
+		},
+		"aggressive skips dead player": {
+			flags: []string{"aggressive"}, playerInRoom: true, playerDead: true,
+		},
+		"dead mob does not aggro": {
+			flags: []string{"aggressive"}, mobDead: true, playerInRoom: true,
+		},
+		"blind in dark room skips": {
+			flags: []string{"aggressive"}, roomDark: true, playerInRoom: true,
+		},
+		"darkvision mob aggros in dark room": {
+			flags: []string{"aggressive"}, roomDark: true, mobDarkvision: true,
+			playerInRoom: true, wantAggro: true,
+		},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			perks := []assets.Perk{testHPPerk}
+			if tc.mobDarkvision {
+				perks = append(perks, assets.Perk{Type: assets.PerkTypeGrant, Key: assets.PerkGrantDarkvision})
+			}
+			mobDef := storage.NewResolvedSmartIdentifier("mob", &assets.Mobile{
+				ShortDesc: "a mob",
+				Flags:     tc.flags,
+				Perks:     perks,
+			})
+			mi, _ := NewMobileInstance(mobDef)
+			mi.randIntN = zeroRand
+			if tc.randResult != nil {
+				mi.randIntN = tc.randResult
+			}
+			if tc.mobDead {
+				mi.setResourceCurrent(assets.ResourceHp, 0)
+			}
+
+			var roomFlags []string
+			if tc.roomDark {
+				roomFlags = []string{"dark"}
+			}
+			roomDef := storage.NewResolvedSmartIdentifier("r", &assets.Room{Name: "r", Flags: roomFlags})
+			ri, _ := NewRoomInstance(roomDef)
+			mi.mu.Lock()
+			mi.room = ri
+			mi.mu.Unlock()
+
+			var player *CharacterInstance
+			if tc.playerInRoom {
+				player = newTestCI("p1", "Player")
+				player.PerkCache = *NewPerkCache([]assets.Perk{testHPPerk}, nil)
+				player.initResources()
+				if tc.playerDead {
+					player.setResourceCurrent(assets.ResourceHp, 0)
+				}
+				ri.AddPlayer(player.Id(), player)
+			}
+
+			if got := mi.tryAggro(); got != tc.wantAggro {
+				t.Errorf("tryAggro() = %v, want %v", got, tc.wantAggro)
+			}
+
+			if tc.wantAggro {
+				if !mi.HasThreatFrom(player.Id()) {
+					t.Error("mob should have threat from player")
+				}
+				if !player.HasThreatFrom(mi.Id()) {
+					t.Error("player should have threat from mob")
+				}
+			} else {
+				if mi.IsInCombat() {
+					t.Error("mob should not be in combat")
+				}
+				if player != nil && player.IsInCombat() {
+					t.Error("player should not be in combat")
+				}
+			}
+		})
+	}
+}
+
 func TestMobileInstance_Move(t *testing.T) {
 	tests := map[string]struct {
 		name string

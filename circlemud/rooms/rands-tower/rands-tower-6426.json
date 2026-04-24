@@ -16,11 +16,8 @@
                 "room_id": "rands-tower-6428"
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "extra_descs": [
             {

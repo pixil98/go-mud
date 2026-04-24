@@ -15,11 +15,8 @@
                 "description": "To the west is the entrance to the cave-like structure."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "extra_descs": [
             {

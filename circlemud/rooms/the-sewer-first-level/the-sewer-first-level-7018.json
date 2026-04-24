@@ -19,13 +19,8 @@
                 "description": "There is a bend to the west leading north."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
-        ],
         "flags": [
+            "dark",
             "nomob"
         ]
     },

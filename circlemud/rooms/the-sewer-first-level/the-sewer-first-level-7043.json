@@ -15,11 +15,8 @@
                 "description": "To the south you can see a triple junction leading west and east."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

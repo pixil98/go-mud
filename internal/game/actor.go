@@ -410,13 +410,6 @@ func (a *ActorInstance) HasThreatFrom(enemyId string) bool {
 	return a.threatTable.hasEntry(enemyId)
 }
 
-// HasThreatEntries reports whether the threat table has any entries.
-func (a *ActorInstance) HasThreatEntries() bool {
-	a.mu.RLock()
-	defer a.mu.RUnlock()
-	return a.threatTable.hasEntries()
-}
-
 // RemoveThreatEntry removes an enemy from the threat table.
 func (a *ActorInstance) RemoveThreatEntry(enemyId string) {
 	a.mu.Lock()

@@ -11,11 +11,8 @@
                 "description": "You can see the dirt road through the doorway to the west."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "mobile_spawns": [
             "king-welmars-castle-15002"

@@ -15,11 +15,8 @@
                 "description": "It is hard to see, but it looks like the drain runs a little bit upwards."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

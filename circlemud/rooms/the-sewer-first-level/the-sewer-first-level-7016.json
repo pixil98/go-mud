@@ -15,11 +15,8 @@
                 "description": "East. What a quiet place you've found there. It is an intersection that has pipeways going north and east."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

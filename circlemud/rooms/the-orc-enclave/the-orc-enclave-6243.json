@@ -16,11 +16,8 @@
                 "room_id": "the-orc-enclave-6244"
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "extra_descs": [
             {

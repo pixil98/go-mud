@@ -15,11 +15,8 @@
                 "description": "You see a slimy sewer drain."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

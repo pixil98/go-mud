@@ -1,0 +1,37 @@
+{
+    "version": 1,
+    "id": "thief",
+    "spec": {
+        "name": "Thief",
+        "abbreviation": "Th",
+        "perks": [
+            { "type": "grant", "key": "wear_slot", "arg": "head" },
+            { "type": "grant", "key": "wear_slot", "arg": "neck" },
+            { "type": "grant", "key": "wear_slot", "arg": "neck" },
+            { "type": "grant", "key": "wear_slot", "arg": "about" },
+            { "type": "grant", "key": "wear_slot", "arg": "body" },
+            { "type": "grant", "key": "wear_slot", "arg": "arms" },
+            { "type": "grant", "key": "wear_slot", "arg": "wrist" },
+            { "type": "grant", "key": "wear_slot", "arg": "wrist" },
+            { "type": "grant", "key": "wear_slot", "arg": "hands" },
+            { "type": "grant", "key": "wear_slot", "arg": "finger" },
+            { "type": "grant", "key": "wear_slot", "arg": "finger" },
+            { "type": "grant", "key": "wear_slot", "arg": "wield" },
+            { "type": "grant", "key": "wear_slot", "arg": "shield" },
+            { "type": "grant", "key": "wear_slot", "arg": "hold" },
+            { "type": "grant", "key": "wear_slot", "arg": "waist" },
+            { "type": "grant", "key": "wear_slot", "arg": "legs" },
+            { "type": "grant", "key": "wear_slot", "arg": "feet" },
+            { "type": "modifier", "key": "core.stats.dex", "value": 2 },
+            { "type": "modifier", "key": "core.stats.con", "value": -2 },
+            { "type": "modifier", "key": "core.resource.hp.max", "value": 15 },
+            { "type": "modifier", "key": "core.resource.hp.per_level", "value": 4 },
+            { "type": "modifier", "key": "core.resource.hp.regen", "value": 1 },
+            { "type": "modifier", "key": "core.combat.ac.flat", "value": 10 },
+            { "type": "modifier", "key": "core.action_points.max", "value": 2 },
+            { "type": "grant", "key": "auto_use", "arg": "attack:1" },
+            { "type": "grant", "key": "unlock_ability", "arg": "attack" },
+            { "type": "grant", "key": "unlock_ability", "arg": "backstab" }
+        ]
+    }
+}

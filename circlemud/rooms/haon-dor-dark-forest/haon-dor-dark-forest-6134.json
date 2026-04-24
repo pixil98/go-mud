@@ -11,11 +11,8 @@
                 "description": "Compared to this place the east exit looks inviting."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "extra_descs": [
             {

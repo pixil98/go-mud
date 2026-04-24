@@ -19,13 +19,8 @@
                 "room_id": "the-second-sewer-7111"
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
-        ],
         "flags": [
+            "dark",
             "nomob"
         ]
     },

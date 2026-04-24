@@ -17,11 +17,8 @@
                 "zone_id": "northern-midgaard-main-city"
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "extra_descs": [
             {

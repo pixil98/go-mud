@@ -14,11 +14,8 @@
                 "description": "The fragrant smell of fungus spores continues to the east."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

@@ -15,11 +15,8 @@
                 "description": "You can see another junction although this one is a triple one with pipes going south and west."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

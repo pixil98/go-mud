@@ -16,11 +16,8 @@
                 "room_id": "newbie-zone-18620"
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "mobile_spawns": [
             "newbie-zone-18608"

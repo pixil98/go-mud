@@ -19,13 +19,8 @@
                 "description": "You can see a big fire to the west. It looks like a unhealthy place to enter!"
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
-        ],
         "flags": [
+            "dark",
             "nomob"
         ],
         "extra_descs": [

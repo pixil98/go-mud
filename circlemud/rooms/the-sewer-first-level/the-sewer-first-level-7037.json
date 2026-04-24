@@ -11,11 +11,8 @@
                 "description": "You can just make out a smaller room with a chair."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "mobile_spawns": [
             "the-sewer-first-level-7003",

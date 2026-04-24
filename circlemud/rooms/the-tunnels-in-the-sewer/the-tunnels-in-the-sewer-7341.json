@@ -15,13 +15,8 @@
                 "description": "You can see a blue glow. And you feel a fresh breeze... ahhhh..."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
-        ],
         "flags": [
+            "dark",
             "nomob"
         ]
     },

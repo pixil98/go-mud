@@ -19,11 +19,8 @@
                 "description": "The tunnel gets smaller in this direction."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

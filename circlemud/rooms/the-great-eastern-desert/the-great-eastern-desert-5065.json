@@ -16,12 +16,11 @@
         "perks": [
             {
                 "type": "grant",
-                "key": "dark"
-            },
-            {
-                "type": "grant",
                 "key": "nomagic"
             }
+        ],
+        "flags": [
+            "dark"
         ],
         "mobile_spawns": [
             "the-great-eastern-desert-5005"

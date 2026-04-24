@@ -19,11 +19,8 @@
                 "description": "You see a strange sewer pipe."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

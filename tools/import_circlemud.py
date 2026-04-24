@@ -41,7 +41,7 @@ ROOM_FLAG_BITS = {
 }
 
 ROOM_FLAGS = {
-    "DARK": {"type": "perk", "perk": {"type": "grant", "key": "dark"}},
+    "DARK": {"type": "flag", "flag": "dark"},
     "DEATH": {"type": "flag", "flag": "death"},
     "NOMOB": {"type": "flag", "flag": "nomob"},
     "PEACEFUL": {"type": "perk", "perk": {"type": "grant", "key": "peaceful"}},
@@ -876,6 +876,15 @@ def convert_room(parsed_room, zone_slug, v2z, zones, known_obj_vnums):
         unused["sector_type"] = sector
     if skipped_flags:
         unused["flags"] = skipped_flags
+
+    missing_keys = {}
+    for ex in parsed_room["exits"]:
+        if ex["door_flag"] > 0 and ex["key_vnum"] > 0 and ex["key_vnum"] not in known_obj_vnums:
+            direction = DIRECTIONS.get(ex["direction"])
+            if direction:
+                missing_keys[direction] = ex["key_vnum"]
+    if missing_keys:
+        unused["missing_exit_keys"] = missing_keys
 
     result = {
         "version": 1,

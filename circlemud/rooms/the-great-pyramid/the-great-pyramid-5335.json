@@ -19,11 +19,8 @@
                 "description": "Through the hole you see rubble and sand."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "extra_descs": [
             {

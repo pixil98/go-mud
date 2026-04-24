@@ -17,11 +17,8 @@
                 "description": "You smell the fragrant odor of fungus."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

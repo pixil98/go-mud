@@ -17,11 +17,8 @@
                 "room_id": "drow-city-5112"
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "mobile_spawns": [
             "drow-city-5102",

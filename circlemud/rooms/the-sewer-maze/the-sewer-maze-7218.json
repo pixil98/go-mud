@@ -11,11 +11,8 @@
                 "description": "Through the little hole you can see a half-dry drain."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

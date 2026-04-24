@@ -15,11 +15,8 @@
                 "description": "You can't see anything in that direction and your light isn't enough to light that far."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "extra_descs": [
             {

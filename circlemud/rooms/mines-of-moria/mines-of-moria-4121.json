@@ -18,11 +18,8 @@
                 "room_id": "mines-of-moria-4122"
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "extra_descs": [
             {

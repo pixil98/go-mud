@@ -15,11 +15,8 @@
                 "description": "It is too dark to see down the stairway."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

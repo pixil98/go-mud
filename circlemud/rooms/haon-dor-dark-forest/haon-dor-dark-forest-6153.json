@@ -19,11 +19,8 @@
                 "description": "The steps look appear like they will hold your weight."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ]
     },
     "circlemud_unused": {

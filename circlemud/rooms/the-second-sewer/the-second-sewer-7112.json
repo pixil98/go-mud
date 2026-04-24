@@ -17,11 +17,8 @@
                 "room_id": "the-second-sewer-7104"
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "mobile_spawns": [
             "the-sewer-first-level-7005",

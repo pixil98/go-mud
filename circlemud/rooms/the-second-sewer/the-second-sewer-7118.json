@@ -15,13 +15,8 @@
                 "description": "You stare into mid-air, and right under there is absolutely nothing but darkness. You shiver by the thought of falling that distance."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
-        ],
         "flags": [
+            "dark",
             "nomob"
         ]
     },

@@ -15,11 +15,8 @@
                 "description": "The glow from the west appears to be quite strong, but it does not give enough light to see by here, nor can you see the source of the glow."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "object_spawns": [
             {

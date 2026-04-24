@@ -139,7 +139,7 @@ func announceToRoom(room *game.RoomInstance, actor interface{ Name() string }, m
 		if ci.Name() == actorName {
 			return
 		}
-		if !CanSee(ci) {
+		if !CanSee(ci, room) {
 			return
 		}
 		ci.Notify(msg)

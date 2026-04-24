@@ -23,13 +23,8 @@
                 "description": "The shadows obscure your vision."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
-        ],
         "flags": [
+            "dark",
             "nomob"
         ]
     },

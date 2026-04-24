@@ -13,11 +13,8 @@
                 "room_id": "the-dwarven-kingdom-6541"
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "mobile_spawns": [
             "the-dwarven-kingdom-6507",

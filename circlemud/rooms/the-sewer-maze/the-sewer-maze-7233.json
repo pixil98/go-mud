@@ -15,11 +15,8 @@
                 "description": "You see a sewer."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "mobile_spawns": [
             "the-sewer-maze-7203",

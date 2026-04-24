@@ -11,11 +11,8 @@
                 "description": "You see the muddy sewer continuing into the darkness to the south."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "extra_descs": [
             {

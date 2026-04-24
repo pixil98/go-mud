@@ -13,11 +13,8 @@
                 "room_id": "the-three-of-swords-3370"
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "extra_descs": [
             {

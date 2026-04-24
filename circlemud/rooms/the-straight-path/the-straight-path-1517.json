@@ -13,11 +13,8 @@
                 "room_id": "the-straight-path-1516"
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "dark"
-            }
+        "flags": [
+            "dark"
         ],
         "mobile_spawns": [
             "the-straight-path-1519"
