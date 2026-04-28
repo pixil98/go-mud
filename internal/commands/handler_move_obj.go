@@ -122,10 +122,8 @@ func (f *MoveObjHandlerFactory) handle(ctx context.Context, char MoveObjActor, i
 		exclude := []string{char.Id()}
 
 		if targetMsg := in.Config["target_message"]; targetMsg != "" {
-			if ref := in.FirstTarget(in.Config["destination"]); ref != nil && ref.Actor != nil && ref.Actor.CharId != "" {
-				if err := f.pub.Publish(game.SinglePlayer(ref.Actor.CharId), nil, []byte(targetMsg)); err != nil {
-					slog.Warn("failed to publish target message", "error", err)
-				}
+			if ref := in.FirstTarget(in.Config["destination"]); ref != nil && ref.Actor != nil {
+				ref.Actor.actor.Notify(targetMsg)
 				exclude = append(exclude, ref.Actor.CharId)
 			}
 		}

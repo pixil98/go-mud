@@ -187,7 +187,7 @@ func (ca *compiledAbility) exec(actor game.Actor, targets map[string][]*TargetRe
 			result.TargetLines = append(result.TargetLines, msg)
 		}
 		for _, ref := range buildCtx().Targets {
-			if ref != nil && ref.Actor != nil && ref.Actor.CharId != "" {
+			if ref != nil && ref.Actor != nil && ref.Actor.actor.IsCharacter() {
 				result.TargetId = ref.Actor.CharId
 				break
 			}
