@@ -11,14 +11,11 @@
                 "description": "You see the East Gate."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "nomagic"
-            }
-        ],
         "mobile_spawns": [
             "northern-midgaard-main-city-3009"
+        ],
+        "flags": [
+            "nomagic"
         ]
     },
     "circlemud_unused": {

@@ -12,7 +12,10 @@
             "south": {
                 "room_id": "river-island-of-minos-903"
             }
-        }
+        },
+        "flags": [
+            "water"
+        ]
     },
     "circlemud_unused": {
         "sector_type": "WATER_NOSWIM"

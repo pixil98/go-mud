@@ -15,10 +15,6 @@
             {
                 "type": "grant",
                 "key": "peaceful"
-            },
-            {
-                "type": "grant",
-                "key": "nomagic"
             }
         ],
         "extra_descs": [
@@ -62,6 +58,9 @@
         ],
         "mobile_spawns": [
             "northern-midgaard-main-city-3010"
+        ],
+        "flags": [
+            "nomagic"
         ]
     },
     "circlemud_unused": {

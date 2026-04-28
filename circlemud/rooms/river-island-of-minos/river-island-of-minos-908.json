@@ -19,6 +19,9 @@
         "mobile_spawns": [
             "river-island-of-minos-909",
             "river-island-of-minos-909"
+        ],
+        "flags": [
+            "water"
         ]
     },
     "circlemud_unused": {

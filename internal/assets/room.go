@@ -21,6 +21,8 @@ const (
 	RoomFlagNoMob          RoomFlag = "nomob"           // Mobs cannot wander in
 	RoomFlagSingleOccupant RoomFlag = "single_occupant" // Only one player allowed at a time
 	RoomFlagDark           RoomFlag = "dark"            // Occupants without an "ignore_room_flag:dark" grant can't see
+	RoomFlagNoMagic        RoomFlag = "nomagic"         // Spellcasting blocked unless caster has "ignore_room_flag:nomagic"
+	RoomFlagWater          RoomFlag = "water"           // Deep water; entry blocked unless actor has "ignore_room_flag:water"
 )
 
 // validRoomFlags is the set of recognized RoomFlag values, used by Validate.
@@ -29,6 +31,8 @@ var validRoomFlags = map[RoomFlag]struct{}{
 	RoomFlagNoMob:          {},
 	RoomFlagSingleOccupant: {},
 	RoomFlagDark:           {},
+	RoomFlagNoMagic:        {},
+	RoomFlagWater:          {},
 }
 
 // ---------------------------------------------------------------------------

@@ -11,16 +11,13 @@
                 "description": "You see the park entrance."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "nomagic"
-            }
-        ],
         "mobile_spawns": [
             "northern-midgaard-main-city-3068",
             "southern-part-of-midgaard-3100",
             "southern-part-of-midgaard-3101"
+        ],
+        "flags": [
+            "nomagic"
         ]
     },
     "circlemud_unused": {

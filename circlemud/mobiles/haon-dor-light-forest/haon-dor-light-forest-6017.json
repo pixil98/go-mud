@@ -12,7 +12,8 @@
         "perks": [
             {
                 "type": "grant",
-                "key": "waterwalk"
+                "key": "ignore_room_flag",
+                "arg": "water"
             },
             {
                 "type": "grant",

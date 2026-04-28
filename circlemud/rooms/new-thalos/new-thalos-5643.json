@@ -13,7 +13,10 @@
                 "room_id": "the-great-eastern-desert-5004",
                 "zone_id": "the-great-eastern-desert"
             }
-        }
+        },
+        "flags": [
+            "water"
+        ]
     },
     "circlemud_unused": {
         "sector_type": "WATER_NOSWIM"

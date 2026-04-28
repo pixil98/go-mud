@@ -15,14 +15,9 @@
                 "description": "You see the laboratory."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "nomagic"
-            }
-        ],
         "flags": [
-            "nomob"
+            "nomob",
+            "nomagic"
         ],
         "mobile_spawns": [
             "northern-midgaard-main-city-3042"

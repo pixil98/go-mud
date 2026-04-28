@@ -13,6 +13,9 @@
         },
         "mobile_spawns": [
             "the-great-pyramid-5309"
+        ],
+        "flags": [
+            "water"
         ]
     },
     "circlemud_unused": {

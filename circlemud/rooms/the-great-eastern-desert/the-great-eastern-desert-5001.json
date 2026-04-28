@@ -16,7 +16,8 @@
             }
         },
         "flags": [
-            "dark"
+            "dark",
+            "water"
         ]
     },
     "circlemud_unused": {

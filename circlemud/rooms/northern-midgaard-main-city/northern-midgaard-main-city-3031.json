@@ -11,14 +11,9 @@
                 "description": "You see the main street."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "nomagic"
-            }
-        ],
         "flags": [
-            "nomob"
+            "nomob",
+            "nomagic"
         ],
         "extra_descs": [
             {

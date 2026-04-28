@@ -45,8 +45,13 @@ ROOM_FLAGS = {
     "DEATH": {"type": "flag", "flag": "death"},
     "NOMOB": {"type": "flag", "flag": "nomob"},
     "PEACEFUL": {"type": "perk", "perk": {"type": "grant", "key": "peaceful"}},
-    "NOMAGIC": {"type": "perk", "perk": {"type": "grant", "key": "nomagic"}},
+    "NOMAGIC": {"type": "flag", "flag": "nomagic"},
     "TUNNEL": {"type": "flag", "flag": "single_occupant"},
+}
+
+# Sector types that imply a room flag (e.g. deep water requires waterwalk).
+SECTOR_FLAGS = {
+    "WATER_NOSWIM": "water",
 }
 
 SECTOR_TYPES = {
@@ -119,7 +124,7 @@ AFFECT_GRANTS = {
     "INVISIBLE": {"key": "invisible"},
     "DETECT_INVIS": {"key": "detect_invis"},
     "SENSE_LIFE": {"key": "sense_life"},
-    "WATERWALK": {"key": "waterwalk"},
+    "WATERWALK": {"key": "ignore_room_flag", "arg": "water"},
     "INFRAVISION": {"key": "ignore_room_flag", "arg": "dark"},
     "SNEAK": {"key": "sneak"},
     "HIDE": {"key": "hide"},
@@ -132,6 +137,7 @@ AFFECT_GRANTS = {
     "NOBASH": {"key": "nobash"},
     "NOBLIND": {"key": "noblind"},
 }
+
 
 # E-spec mob stats we care about are handled inline.
 
@@ -840,6 +846,10 @@ def convert_room(parsed_room, zone_slug, v2z, zones, known_obj_vnums):
         elif mapping["type"] == "perk":
             perks.append(mapping["perk"])
 
+    sector = SECTOR_TYPES.get(parsed_room["sector_type"], "")
+    if (sector_flag := SECTOR_FLAGS.get(sector)) and sector_flag not in flags:
+        flags.append(sector_flag)
+
     exits = {}
     for ex in parsed_room["exits"]:
         direction = DIRECTIONS.get(ex["direction"])
@@ -872,7 +882,6 @@ def convert_room(parsed_room, zone_slug, v2z, zones, known_obj_vnums):
         room["extra_descs"] = extra_descs
 
     unused = {}
-    sector = SECTOR_TYPES.get(parsed_room["sector_type"], "")
     if sector:
         unused["sector_type"] = sector
     if skipped_flags:

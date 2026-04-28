@@ -15,14 +15,9 @@
                 "description": "You see the entrance hall to the thieves' guild."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "nomagic"
-            }
-        ],
         "flags": [
-            "nomob"
+            "nomob",
+            "nomagic"
         ],
         "extra_descs": [
             {

@@ -23,11 +23,10 @@
             {
                 "type": "grant",
                 "key": "peaceful"
-            },
-            {
-                "type": "grant",
-                "key": "nomagic"
             }
+        ],
+        "flags": [
+            "nomagic"
         ]
     },
     "circlemud_unused": {

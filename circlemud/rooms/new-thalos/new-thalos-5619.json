@@ -15,7 +15,10 @@
                 "room_id": "new-thalos-5634",
                 "description": "The waters of this swampy pool are flowing slowly towards the south."
             }
-        }
+        },
+        "flags": [
+            "water"
+        ]
     },
     "circlemud_unused": {
         "sector_type": "WATER_NOSWIM"

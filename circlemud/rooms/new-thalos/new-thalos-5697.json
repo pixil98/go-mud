@@ -18,7 +18,10 @@
             "west": {
                 "room_id": "new-thalos-5688"
             }
-        }
+        },
+        "flags": [
+            "water"
+        ]
     },
     "circlemud_unused": {
         "sector_type": "WATER_NOSWIM"

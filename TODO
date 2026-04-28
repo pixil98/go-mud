@@ -23,13 +23,14 @@ Still need runtime behavior:
 - aware — mob can't be backstabbed (needs backstab system)
 
 ## Room Flags — Runtime Wiring Needed
+Each flag pairs with an `ignore_room_flag:<flag>` grant for actors that bypass it.
 - death — players entering should die/respawn (needs respawn system)
+- nomagic — block spell casting at the cast site (needs spell system)
+- water — block movement at the move site (needs movement-cost / boat system)
 
 ## Perk Grants — Runtime Wiring Needed
-- nomagic — prevent spell casting (needs spell system)
 - invisible / detect_invis — actor visibility (needs visibility system beyond dark/darkvision)
 - sense_life / hide — hidden actor detection (needs stealth system)
-- waterwalk — water room traversal (needs water system)
 - nocharm / nosummon / nosleep / nobash / noblind — immunity to specific effects (needs those effects)
 - protect_evil / protect_good — alignment-based damage reduction (needs alignment system)
 - notrack — prevent tracking (needs tracking system)

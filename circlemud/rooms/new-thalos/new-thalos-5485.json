@@ -15,7 +15,10 @@
             "up": {
                 "room_id": "new-thalos-5412"
             }
-        }
+        },
+        "flags": [
+            "water"
+        ]
     },
     "circlemud_unused": {
         "sector_type": "WATER_NOSWIM"

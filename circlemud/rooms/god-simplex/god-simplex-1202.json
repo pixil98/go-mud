@@ -10,16 +10,15 @@
             {
                 "type": "grant",
                 "key": "peaceful"
-            },
-            {
-                "type": "grant",
-                "key": "nomagic"
             }
         ],
         "object_spawns": [
             {
                 "object_id": "northern-midgaard-main-city-3097"
             }
+        ],
+        "flags": [
+            "nomagic"
         ]
     },
     "circlemud_unused": {

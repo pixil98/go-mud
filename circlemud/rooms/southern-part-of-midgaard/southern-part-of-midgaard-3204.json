@@ -12,7 +12,10 @@
             "west": {
                 "room_id": "southern-part-of-midgaard-3203"
             }
-        }
+        },
+        "flags": [
+            "water"
+        ]
     },
     "circlemud_unused": {
         "sector_type": "WATER_NOSWIM"

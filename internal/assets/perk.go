@@ -141,8 +141,6 @@ const (
 	// Arg is the flag name (e.g. "dark" for darkvision). Granted by racial
 	// traits, spells, or equipment like torches and lanterns.
 	PerkGrantIgnoreRoomFlag = "ignore_room_flag"
-	// PerkGrantNoMagic prevents the holder from casting spells.
-	PerkGrantNoMagic = "nomagic"
 )
 
 // ---------------------------------------------------------------------------
@@ -153,7 +151,6 @@ const (
 	PerkGrantInvisible   = "invisible"
 	PerkGrantDetectInvis = "detect_invis"
 	PerkGrantSenseLife   = "sense_life"
-	PerkGrantWaterwalk   = "waterwalk"
 	PerkGrantSneak       = "sneak"
 	PerkGrantHide        = "hide"
 	PerkGrantNoCharm     = "nocharm"

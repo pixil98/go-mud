@@ -23,14 +23,9 @@
                 "description": "The market place lies this way."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "nomagic"
-            }
-        ],
         "flags": [
-            "nomob"
+            "nomob",
+            "nomagic"
         ],
         "mobile_spawns": [
             "the-city-of-thalos-5200"

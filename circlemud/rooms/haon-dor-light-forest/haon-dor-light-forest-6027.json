@@ -54,6 +54,9 @@
             {
                 "object_id": "haon-dor-light-forest-6015"
             }
+        ],
+        "flags": [
+            "water"
         ]
     },
     "circlemud_unused": {

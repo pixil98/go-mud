@@ -17,7 +17,8 @@
             }
         },
         "flags": [
-            "nomob"
+            "nomob",
+            "water"
         ]
     },
     "circlemud_unused": {

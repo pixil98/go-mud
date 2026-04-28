@@ -11,12 +11,6 @@
                 "description": "You see the exit to the entrance hall."
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "nomagic"
-            }
-        ],
         "extra_descs": [
             {
                 "keywords": [
@@ -38,6 +32,9 @@
         "mobile_spawns": [
             "northern-midgaard-main-city-3040",
             "northern-midgaard-main-city-3064"
+        ],
+        "flags": [
+            "nomagic"
         ]
     },
     "circlemud_unused": {

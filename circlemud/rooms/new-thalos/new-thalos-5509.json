@@ -19,15 +19,12 @@
                 "room_id": "new-thalos-5508"
             }
         },
-        "perks": [
-            {
-                "type": "grant",
-                "key": "nomagic"
-            }
-        ],
         "mobile_spawns": [
             "new-thalos-5433",
             "new-thalos-5442"
+        ],
+        "flags": [
+            "nomagic"
         ]
     },
     "circlemud_unused": {

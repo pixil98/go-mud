@@ -17,14 +17,13 @@
             {
                 "type": "grant",
                 "key": "peaceful"
-            },
-            {
-                "type": "grant",
-                "key": "nomagic"
             }
         ],
         "mobile_spawns": [
             "new-thalos-5457"
+        ],
+        "flags": [
+            "nomagic"
         ]
     },
     "circlemud_unused": {
