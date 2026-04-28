@@ -42,9 +42,6 @@ Still need runtime behavior:
   looks up rooms in its own zone instance. Needs access to the full instances map to resolve
   cross-zone exits.
 
-## Buff Targeting
-- Actor-scope buff abilities (guard, surge, etc.) should declare a target with `default: "self"` instead of relying on a fallback in the effect. Update ability JSONs and remove the self-apply fallback from buffEffect. Asset validation may need updating to support target specs with no input and a default.
-
 ## Consider
 - Should overhealing generate threat? Currently heal threat is based on the full heal amount, even if the target is already at max HP.
 - Make threat multiplier configurable per effect. Currently damage generates 1:1 threat and heal generates 0.5x threat, both hardcoded. A config field (e.g. "threat_multiplier") would allow tuning per ability.

@@ -35,7 +35,13 @@
         "message_room": "{{ .Actor.Name }} rushes forward, building momentum."
       },
       "inputs": [],
-      "targets": []
+      "targets": [
+        {
+          "name": "target",
+          "types": ["player", "mobile"],
+          "default": "self"
+        }
+      ]
     }
   }
 }

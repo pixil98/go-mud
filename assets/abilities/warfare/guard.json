@@ -35,7 +35,13 @@
         "message_room": "{{ .Actor.Name }} sets their stance and holds the line."
       },
       "inputs": [],
-      "targets": []
+      "targets": [
+        {
+          "name": "target",
+          "types": ["player", "mobile"],
+          "default": "self"
+        }
+      ]
     }
   }
 }

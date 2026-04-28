@@ -71,7 +71,7 @@ func (e *buffEffect) Spec() *HandlerSpec {
 	if e.scope == buffScopeActor {
 		return &HandlerSpec{
 			Targets: []TargetRequirement{
-				{Name: "target", Type: targetTypeMobile | targetTypePlayer, Required: false},
+				{Name: "target", Type: targetTypeMobile | targetTypePlayer, Required: true},
 			},
 		}
 	}
@@ -129,17 +129,13 @@ func (e *buffEffect) Create(id string, config map[string]string, targets []asset
 
 		switch e.scope {
 		case buffScopeActor:
-			// TODO: actor-scope buffs should use default:"self" in target spec
-			// instead of this fallback. See TODO file.
 			for _, spec := range targets {
 				for _, ref := range resolved[spec.Name] {
 					if ref.Actor != nil {
 						ref.Actor.Actor().AddTimedPerks(name, p, dur)
-						return nil
 					}
 				}
 			}
-			actor.AddTimedPerks(name, p, dur)
 		case buffScopeRoom:
 			actor.Room().Perks.AddTimedPerks(name, p, dur)
 		case buffScopeZone:

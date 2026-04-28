@@ -35,7 +35,13 @@
         "message_room": "{{ .Actor.Name }} braces for impact."
       },
       "inputs": [],
-      "targets": []
+      "targets": [
+        {
+          "name": "target",
+          "types": ["player", "mobile"],
+          "default": "self"
+        }
+      ]
     }
   }
 }

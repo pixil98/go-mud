@@ -25,7 +25,13 @@
         "message_room": "{{ .Actor.Name }} feints, testing the guard."
       },
       "inputs": [],
-      "targets": []
+      "targets": [
+        {
+          "name": "target",
+          "types": ["player", "mobile"],
+          "default": "self"
+        }
+      ]
     }
   }
 }
