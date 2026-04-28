@@ -2,6 +2,7 @@ package game
 
 import (
 	"context"
+	"log/slog"
 	"sync"
 
 	"github.com/pixil98/go-mud/internal/assets"
@@ -144,7 +145,9 @@ func (w *WorldState) AddPlayer(ci *CharacterInstance) error {
 	return nil
 }
 
-// RemovePlayer removes a player from the world state and from the room instance.
+// RemovePlayer removes a player from the world state and from their room.
+// Callers must use commands.DetachFromFollowTree before this to cleanly
+// detach follow/group relationships with proper notifications.
 func (w *WorldState) RemovePlayer(charId string) error {
 	w.mu.Lock()
 	ps, exists := w.players[charId]
@@ -156,6 +159,10 @@ func (w *WorldState) RemovePlayer(charId string) error {
 	room := ps.Room()
 	delete(w.players, charId)
 	w.mu.Unlock()
+
+	if len(ps.Followers()) > 0 || ps.Following() != nil {
+		slog.Error("RemovePlayer called with active follow links; caller should use DetachFromFollowTree first", "charId", charId)
+	}
 
 	room.RemovePlayer(charId)
 	return nil

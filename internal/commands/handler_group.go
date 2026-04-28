@@ -11,6 +11,52 @@ import (
 	"github.com/pixil98/go-mud/internal/game"
 )
 
+// DetachFromFollowTree removes an actor from all follow and group
+// relationships, sending the appropriate messages to affected parties.
+// Call this before removing a player from the world.
+func DetachFromFollowTree(actor game.Actor) {
+	// Handle group membership first.
+	if leader := game.GroupLeader(actor); leader != nil {
+		if leader.Id() == actor.Id() {
+			disbandGroup(leader)
+		} else {
+			leaveGroup(actor, leader)
+		}
+	}
+
+	// Detach any remaining non-grouped followers.
+	for _, f := range actor.Followers() {
+		unfollowActor(f)
+	}
+
+	// Stop following if still following (non-grouped follow).
+	unfollowActor(actor)
+}
+
+// unfollowActor stops actor from following their leader, notifying both sides.
+func unfollowActor(actor game.Actor) {
+	old := actor.Following()
+	if old == nil {
+		return
+	}
+	actor.Publish([]byte(fmt.Sprintf("You stop following %s.", old.Name())), nil)
+	old.Publish([]byte(fmt.Sprintf("%s stops following you.", actor.Name())), nil)
+	actor.SetFollowing(nil)
+}
+
+// leaveGroup removes a non-leader member from their group, notifying the group.
+func leaveGroup(actor game.Actor, leader game.Actor) {
+	leader.SetFollowerGrouped(actor.Id(), false)
+	actor.SetFollowing(nil)
+
+	actor.Publish([]byte("You leave the group."), nil)
+	game.GroupPublishTarget(leader).Publish([]byte(fmt.Sprintf("%s has left the group.", actor.Name())), nil)
+
+	if len(leader.GroupedFollowers()) == 0 {
+		leader.Publish([]byte("The group has been disbanded."), nil)
+	}
+}
+
 // disbandGroup removes all of the leader's direct grouped followers.
 // Sub-groups remain intact — a sub-leader keeps their own grouped followers.
 func disbandGroup(leader game.Actor) {
@@ -254,16 +300,7 @@ func (f *UngroupHandlerFactory) disbandOrLeave(char game.Actor) error {
 		return nil
 	}
 
-	// Non-leader leaves the group.
-	leader.SetFollowerGrouped(char.Id(), false)
-	char.SetFollowing(nil)
-
-	char.Publish([]byte("You leave the group."), nil)
-	game.GroupPublishTarget(leader).Publish([]byte(fmt.Sprintf("%s has left the group.", char.Name())), nil)
-
-	if len(leader.GroupedFollowers()) == 0 {
-		leader.Publish([]byte("The group has been disbanded."), nil)
-	}
+	leaveGroup(char, leader)
 	return nil
 }
 

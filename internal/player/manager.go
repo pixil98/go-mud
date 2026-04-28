@@ -101,9 +101,7 @@ func (m *PlayerManager) Tick(_ context.Context) error {
 		if err := ps.SaveCharacter(m.dict.Characters); err != nil {
 			slog.Warn("failed to save linkless player", "charId", charId, "error", err)
 		}
-		if err := m.world.RemovePlayer(charId); err != nil {
-			slog.Warn("failed to remove linkless player", "charId", charId, "error", err)
-		}
+		m.removePlayer(charId, ps)
 		slog.Info("linkless player removed", "charId", charId)
 	}
 
@@ -195,6 +193,15 @@ func (m *PlayerManager) newPlayer(conn io.ReadWriter) (*Player, error) {
 	return p, nil
 }
 
+// removePlayer detaches the player from follow/group relationships and removes
+// them from the world.
+func (m *PlayerManager) removePlayer(charId string, ps *game.CharacterInstance) {
+	commands.DetachFromFollowTree(ps)
+	if err := m.world.RemovePlayer(charId); err != nil {
+		slog.Warn("failed to remove player", "charId", charId, "error", err)
+	}
+}
+
 // HandleSessionEnd handles a player's Play() loop ending. It examines the error and
 // player state to determine whether to remove the player, mark them linkless, or do nothing.
 func (m *PlayerManager) handleSessionEnd(charId string, playErr error) {
@@ -212,9 +219,7 @@ func (m *PlayerManager) handleSessionEnd(charId string, playErr error) {
 	}
 
 	if ps.IsQuit() {
-		if err := m.world.RemovePlayer(charId); err != nil {
-			slog.Warn("failed to remove player on quit", "charId", charId, "error", err)
-		}
+		m.removePlayer(charId, ps)
 		slog.Info("player quit", "charId", charId)
 	} else {
 		ps.MarkLinkless()
