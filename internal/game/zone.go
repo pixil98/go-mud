@@ -108,6 +108,14 @@ func (z *ZoneInstance) ForEachPlayer(fn func(string, *CharacterInstance)) {
 	}
 }
 
+// Publish delivers data to every player in every room of the zone, skipping
+// any whose id appears in exclude.
+func (z *ZoneInstance) Publish(data []byte, exclude []string) {
+	for _, ri := range z.rooms {
+		ri.Publish(data, exclude)
+	}
+}
+
 // ForEachRoom calls fn for each room in the zone.
 func (z *ZoneInstance) ForEachRoom(fn func(roomId string, room *RoomInstance)) {
 	for id, ri := range z.rooms {

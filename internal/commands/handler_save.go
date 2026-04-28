@@ -12,7 +12,7 @@ import (
 // SaveActor provides the character state needed by the save handler.
 type SaveActor interface {
 	Id() string
-	Notify(msg string)
+	Publish(data []byte, exclude []string)
 	SaveCharacter(storage.Storer[*assets.Character]) error
 }
 
@@ -48,6 +48,6 @@ func (f *SaveHandlerFactory) handle(ctx context.Context, char SaveActor, in *Com
 		return fmt.Errorf("saving character: %w", err)
 	}
 
-	char.Notify("Character saved.")
+	char.Publish([]byte("Character saved."), nil)
 	return nil
 }

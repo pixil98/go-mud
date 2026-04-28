@@ -14,7 +14,7 @@ import (
 type ClosureActor interface {
 	Id() string
 	Name() string
-	Notify(msg string)
+	Publish(data []byte, exclude []string)
 	Room() *game.RoomInstance
 	Inventory() *game.Inventory
 }
@@ -27,13 +27,11 @@ var _ ClosureActor = (*game.CharacterInstance)(nil)
 //
 // Targets:
 //   - target (required): an exit or container object resolved by the command system
-type ClosureHandlerFactory struct {
-	pub Publisher
-}
+type ClosureHandlerFactory struct{}
 
 // NewClosureHandlerFactory creates a handler factory for open/close/lock/unlock commands.
-func NewClosureHandlerFactory(pub Publisher) *ClosureHandlerFactory {
-	return &ClosureHandlerFactory{pub: pub}
+func NewClosureHandlerFactory() *ClosureHandlerFactory {
+	return &ClosureHandlerFactory{}
 }
 
 // Spec returns the required target (exit or container object) and config (action) for closure commands.
@@ -221,9 +219,7 @@ func (f *ClosureHandlerFactory) checkKey(char ClosureActor, lock *assets.Lock) e
 }
 
 func (f *ClosureHandlerFactory) publish(char ClosureActor, selfMsg, roomMsg string) error {
-	char.Notify(selfMsg)
-	if f.pub == nil {
-		return nil
-	}
-	return f.pub.Publish(char.Room(), []string{char.Id()}, []byte(roomMsg))
+	char.Publish([]byte(selfMsg), nil)
+	char.Room().Publish([]byte(roomMsg), []string{char.Id()})
+	return nil
 }

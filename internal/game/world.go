@@ -11,9 +11,8 @@ import (
 // WorldState is the single source of truth for all mutable game state.
 // All access must go through its methods to ensure thread-safety.
 type WorldState struct {
-	mu         sync.RWMutex
-	subscriber Subscriber
-	players    map[string]*CharacterInstance
+	mu      sync.RWMutex
+	players map[string]*CharacterInstance
 
 	zones            map[string]*ZoneInstance
 	perks            *PerkCache
@@ -54,14 +53,13 @@ func (w *WorldState) ResetAll() error {
 }
 
 // NewWorldState creates a new WorldState with zone and room instances initialized.
-func NewWorldState(sub Subscriber, zones storage.Storer[*assets.Zone], rooms storage.Storer[*assets.Room]) (*WorldState, error) {
+func NewWorldState(zones storage.Storer[*assets.Zone], rooms storage.Storer[*assets.Room]) (*WorldState, error) {
 	worldPerks := NewPerkCache(nil, nil)
 
 	w := &WorldState{
-		subscriber: sub,
-		players:    make(map[string]*CharacterInstance),
-		zones:      make(map[string]*ZoneInstance),
-		perks:      worldPerks,
+		players: make(map[string]*CharacterInstance),
+		zones:   make(map[string]*ZoneInstance),
+		perks:   worldPerks,
 	}
 
 	// Build zone instances
@@ -136,7 +134,6 @@ func (w *WorldState) AddPlayer(ci *CharacterInstance) error {
 		w.mu.Unlock()
 		return ErrPlayerExists
 	}
-	ci.subscriber = w.subscriber
 	w.players[charId] = ci
 	room := ci.Room()
 	ci.AddSource("room", room.Perks)
@@ -196,9 +193,12 @@ func (w *WorldState) ForEachPlayer(fn func(string, *CharacterInstance)) {
 	}
 }
 
-// Subscriber provides the ability to subscribe to message subjects.
-type Subscriber interface {
-	Subscribe(subject string, handler func(data []byte)) (unsubscribe func(), err error)
+// Publish delivers data to every player in the world, skipping any whose id
+// appears in exclude.
+func (w *WorldState) Publish(data []byte, exclude []string) {
+	for _, zi := range w.zones {
+		zi.Publish(data, exclude)
+	}
 }
 
 // Tick processes zone resets and ticks the full hierarchy:

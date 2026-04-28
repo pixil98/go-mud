@@ -9,33 +9,6 @@ import (
 	"github.com/pixil98/go-mud/internal/gametest"
 )
 
-// recordingPublisher captures messages sent via Publish for test assertions.
-type recordingPublisher struct {
-	messages []publishedMessage
-}
-
-type publishedMessage struct {
-	targetId string
-	data     string
-}
-
-func (p *recordingPublisher) Publish(targets game.PlayerGroup, exclude []string, data []byte) error {
-	targets.ForEachPlayer(func(charId string, _ *game.CharacterInstance) {
-		p.messages = append(p.messages, publishedMessage{targetId: charId, data: string(data)})
-	})
-	return nil
-}
-
-func (p *recordingPublisher) messagesTo(charId string) []string {
-	var msgs []string
-	for _, m := range p.messages {
-		if m.targetId == charId {
-			msgs = append(msgs, m.data)
-		}
-	}
-	return msgs
-}
-
 func TestFollowHandler(t *testing.T) {
 	tests := map[string]struct {
 		setup       func(alice, bob *gametest.BaseActor, charlie *gametest.BaseActor)
@@ -171,14 +144,14 @@ func TestFollowHandler(t *testing.T) {
 			}
 
 			if tt.expMsgAlice != "" {
-				if !containsSubstring(alice.Notified, tt.expMsgAlice) {
-					t.Errorf("expected Notify to alice containing %q, got %v", tt.expMsgAlice, alice.Notified)
+				if !containsSubstring(alice.PublishedStrings(), tt.expMsgAlice) {
+					t.Errorf("expected Notify to alice containing %q, got %v", tt.expMsgAlice, alice.PublishedStrings())
 				}
 			}
 
 			if tt.expMsgBob != "" {
-				if !containsSubstring(bob.Notified, tt.expMsgBob) {
-					t.Errorf("expected Notify to bob containing %q, got %v", tt.expMsgBob, bob.Notified)
+				if !containsSubstring(bob.PublishedStrings(), tt.expMsgBob) {
+					t.Errorf("expected Notify to bob containing %q, got %v", tt.expMsgBob, bob.PublishedStrings())
 				}
 			}
 		})

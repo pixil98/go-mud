@@ -68,10 +68,10 @@ func AreAllies(a, b Actor) bool {
 	return la.Id() == lb.Id()
 }
 
-// GroupPublishTarget returns a PlayerGroup that yields the leader and all
-// grouped character followers recursively. Mobs are skipped since they have
-// no NATS subscriptions.
-func GroupPublishTarget(leader Actor) PlayerGroup {
+// GroupPublishTarget returns a target that yields the leader and all grouped
+// character followers recursively. Mobs are skipped since they have no client
+// connection to publish to.
+func GroupPublishTarget(leader Actor) groupPublishTarget {
 	return groupPublishTarget{leader: leader}
 }
 
@@ -83,6 +83,16 @@ func (g groupPublishTarget) ForEachPlayer(fn func(string, *CharacterInstance)) {
 	WalkGroup(g.leader, func(a Actor) {
 		if a.IsCharacter() {
 			fn(a.Id(), nil)
+		}
+	})
+}
+
+// Publish delivers data to every grouped character in the leader's group,
+// skipping any whose id appears in exclude.
+func (g groupPublishTarget) Publish(data []byte, exclude []string) {
+	WalkGroup(g.leader, func(a Actor) {
+		if a.IsCharacter() {
+			a.Publish(data, exclude)
 		}
 	})
 }

@@ -11,7 +11,7 @@ import (
 type FollowActor interface {
 	Id() string
 	Name() string
-	Notify(msg string)
+	Publish(data []byte, exclude []string)
 	Following() game.Actor
 	SetFollowing(game.Actor)
 }
@@ -72,14 +72,14 @@ func (f *FollowHandlerFactory) follow(char FollowActor, target *TargetRef) error
 
 	// Stop following old leader first.
 	if old := char.Following(); old != nil {
-		old.Notify(fmt.Sprintf("%s stops following you.", char.Name()))
-		char.Notify(fmt.Sprintf("You stop following %s.", old.Name()))
+		old.Publish([]byte(fmt.Sprintf("%s stops following you.", char.Name())), nil)
+		char.Publish([]byte(fmt.Sprintf("You stop following %s.", old.Name())), nil)
 	}
 
 	char.SetFollowing(leader)
 
-	char.Notify(fmt.Sprintf("You now follow %s.", target.Actor.Name))
-	leader.Notify(fmt.Sprintf("%s now follows you.", char.Name()))
+	char.Publish([]byte(fmt.Sprintf("You now follow %s.", target.Actor.Name)), nil)
+	leader.Publish([]byte(fmt.Sprintf("%s now follows you.", char.Name())), nil)
 
 	return nil
 }
@@ -90,8 +90,8 @@ func (f *FollowHandlerFactory) unfollow(char FollowActor) error {
 		return NewUserError("You aren't following anyone.")
 	}
 
-	char.Notify(fmt.Sprintf("You stop following %s.", old.Name()))
-	old.Notify(fmt.Sprintf("%s stops following you.", char.Name()))
+	char.Publish([]byte(fmt.Sprintf("You stop following %s.", old.Name())), nil)
+	old.Publish([]byte(fmt.Sprintf("%s stops following you.", char.Name())), nil)
 	char.SetFollowing(nil)
 	return nil
 }

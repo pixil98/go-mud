@@ -12,13 +12,11 @@ import (
 //   - scope (required): "room", "zone", "world", or "player"
 //   - recipient_message (required): template for message sent to scope targets
 //   - sender_message (optional): template for 2nd-person message sent to actor
-type MessageHandlerFactory struct {
-	pub Publisher
-}
+type MessageHandlerFactory struct{}
 
-// NewMessageHandlerFactory creates a new MessageHandlerFactory with a publisher.
-func NewMessageHandlerFactory(pub Publisher) *MessageHandlerFactory {
-	return &MessageHandlerFactory{pub: pub}
+// NewMessageHandlerFactory creates a new MessageHandlerFactory.
+func NewMessageHandlerFactory() *MessageHandlerFactory {
+	return &MessageHandlerFactory{}
 }
 
 // Spec returns the handler's target and config requirements.
@@ -61,7 +59,7 @@ func (f *MessageHandlerFactory) handle(ctx context.Context, in *CommandInput) er
 
 	// Send 2nd-person message to actor if configured
 	if senderMessage != "" {
-		actor.Notify(senderMessage)
+		actor.Publish([]byte(senderMessage), nil)
 	}
 
 	// Send message to scope targets, excluding actor only if they got a sender_message
@@ -70,29 +68,30 @@ func (f *MessageHandlerFactory) handle(ctx context.Context, in *CommandInput) er
 		exclude = []string{actor.Id()}
 	}
 
+	data := []byte(recipientMessage)
 	switch scope {
 	case "room":
-		return f.pub.Publish(actor.Room(), exclude, []byte(recipientMessage))
+		actor.Room().Publish(data, exclude)
 
 	case "zone":
-		return f.pub.Publish(actor.Room().Zone(), exclude, []byte(recipientMessage))
+		actor.Room().Zone().Publish(data, exclude)
 
 	case "world":
-		return f.pub.Publish(actor.Room().Zone().World(), exclude, []byte(recipientMessage))
+		actor.Room().Zone().World().Publish(data, exclude)
 
 	case "player":
 		target := in.FirstTarget("target")
 		if target == nil || target.Actor == nil {
 			return NewUserError("They're not here.")
 		}
-		return f.pub.Publish(game.SinglePlayer(target.Actor.CharId), nil, []byte(recipientMessage))
+		target.Actor.Actor().Publish(data, nil)
 
 	case "group":
 		leader := game.GroupLeader(actor)
 		if leader == nil {
 			return NewUserError("You are not in a group.")
 		}
-		return f.pub.Publish(game.GroupPublishTarget(leader), exclude, []byte(recipientMessage))
+		game.GroupPublishTarget(leader).Publish(data, exclude)
 	}
 
 	return nil

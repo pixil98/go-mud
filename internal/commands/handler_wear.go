@@ -14,7 +14,7 @@ import (
 type WearActor interface {
 	Id() string
 	Name() string
-	Notify(msg string)
+	Publish(data []byte, exclude []string)
 	Room() *game.RoomInstance
 	Inventory() *game.Inventory
 	Equip(slot string, obj *game.ObjectInstance) error
@@ -25,13 +25,11 @@ var _ WearActor = (*game.CharacterInstance)(nil)
 // WearHandlerFactory creates handlers for equipping wearable items.
 // Targets:
 //   - target (required): the object to wear
-type WearHandlerFactory struct {
-	pub Publisher
-}
+type WearHandlerFactory struct{}
 
 // NewWearHandlerFactory creates a handler factory for equipping wearable item commands.
-func NewWearHandlerFactory(pub Publisher) *WearHandlerFactory {
-	return &WearHandlerFactory{pub: pub}
+func NewWearHandlerFactory() *WearHandlerFactory {
+	return &WearHandlerFactory{}
 }
 
 // Spec returns the handler's target and config requirements.
@@ -103,8 +101,7 @@ func (f *WearHandlerFactory) wearOne(actor WearActor, target *TargetRef) error {
 		return NewUserError(fmt.Sprintf("You have nowhere to wear %s.", obj.ShortDesc))
 	}
 
-	actor.Notify(fmt.Sprintf("You wear %s.", obj.ShortDesc))
-	roomMsg := fmt.Sprintf("%s wears %s.", actor.Name(), obj.ShortDesc)
-	_ = f.pub.Publish(actor.Room(), []string{actor.Id()}, []byte(roomMsg))
+	actor.Publish([]byte(fmt.Sprintf("You wear %s.", obj.ShortDesc)), nil)
+	actor.Room().Publish([]byte(fmt.Sprintf("%s wears %s.", actor.Name(), obj.ShortDesc)), []string{actor.Id()})
 	return nil
 }

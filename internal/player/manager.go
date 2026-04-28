@@ -101,7 +101,6 @@ func (m *PlayerManager) Tick(_ context.Context) error {
 		if err := ps.SaveCharacter(m.dict.Characters); err != nil {
 			slog.Warn("failed to save linkless player", "charId", charId, "error", err)
 		}
-		ps.UnsubscribeAll()
 		if err := m.world.RemovePlayer(charId); err != nil {
 			slog.Warn("failed to remove linkless player", "charId", charId, "error", err)
 		}
@@ -193,13 +192,6 @@ func (m *PlayerManager) newPlayer(conn io.ReadWriter) (*Player, error) {
 		done:       ps.Done(),
 	}
 
-	if err := m.subscribePlayer(ps, charId); err != nil {
-		if removeErr := m.world.RemovePlayer(charId); removeErr != nil {
-			slog.Warn("failed to remove player after subscribe failure", "charId", charId, "error", removeErr)
-		}
-		return nil, fmt.Errorf("subscribing player: %w", err)
-	}
-
 	return p, nil
 }
 
@@ -220,7 +212,6 @@ func (m *PlayerManager) handleSessionEnd(charId string, playErr error) {
 	}
 
 	if ps.IsQuit() {
-		ps.UnsubscribeAll()
 		if err := m.world.RemovePlayer(charId); err != nil {
 			slog.Warn("failed to remove player on quit", "charId", charId, "error", err)
 		}
@@ -229,14 +220,6 @@ func (m *PlayerManager) handleSessionEnd(charId string, playErr error) {
 		ps.MarkLinkless()
 		slog.Info("player went linkless", "charId", charId)
 	}
-}
-
-// subscribePlayer subscribes the player to their individual NATS channel.
-func (m *PlayerManager) subscribePlayer(ps *game.CharacterInstance, charId string) error {
-	if err := ps.Subscribe(fmt.Sprintf("player-%s", charId)); err != nil {
-		return fmt.Errorf("subscribing to player channel: %w", err)
-	}
-	return nil
 }
 
 // initCharacter prompts for any missing traits on a character and initializes HP for new characters.

@@ -5,6 +5,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/gametest"
 )
 
@@ -19,16 +20,26 @@ func (m *mockAssistPlayerLookup) GetPlayer(charId string) AssistedPlayer {
 	return m.players[charId]
 }
 
+// assistTestCtx bundles the witnesses a test wants to assert against.
+type assistTestCtx struct {
+	factory  *AssistHandlerFactory
+	in       *CommandInput
+	actor    *gametest.BaseActor
+	assisted *gametest.BaseActor       // nil when not relevant
+	witness  *game.CharacterInstance   // a third party in the room used to verify room broadcasts
+	witCh    chan []byte
+}
+
 func TestAssistHandler(t *testing.T) {
 	tests := map[string]struct {
-		setup          func() (*AssistHandlerFactory, *CommandInput, *gametest.BaseActor)
+		setup          func() *assistTestCtx
 		expErr         string
 		expMsgActor    string
 		expMsgAssisted string
 		expMsgRoom     string
 	}{
 		"assist explicit target": {
-			setup: func() (*AssistHandlerFactory, *CommandInput, *gametest.BaseActor) {
+			setup: func() *assistTestCtx {
 				room, err := newTestRoom("test-room", "Test Room", "test-zone")
 				if err != nil {
 					t.Fatalf("failed to create test room: %v", err)
@@ -38,7 +49,6 @@ func TestAssistHandler(t *testing.T) {
 					t.Fatalf("failed to create test zone: %v", err)
 				}
 				zone.AddRoom(room)
-				pub := &recordingPublisher{}
 
 				mob := newCombatMob("mob:test-mob", "Goblin")
 				room.AddMob(mob)
@@ -46,29 +56,26 @@ func TestAssistHandler(t *testing.T) {
 				bob := &gametest.BaseActor{ActorId: "bob", ActorName: "Bob", Alive: true, ActorCombatTarget: mob, ActorRoom: room}
 				actor := &gametest.BaseActor{ActorId: "alice", ActorName: "Alice", Alive: true, ActorRoom: room}
 
-				_ = newTestPlayer("charlie", "Charlie", room)
+				witness, witCh := newRecordingPlayer("charlie", "Charlie", room)
 
 				players := &mockAssistPlayerLookup{players: map[string]AssistedPlayer{"bob": bob}}
-				f := &AssistHandlerFactory{
-					players: players,
-					pub:     pub,
-				}
+				f := &AssistHandlerFactory{players: players}
 
-				cmdCtx := &CommandInput{
+				in := &CommandInput{
 					Actor: actor,
 					Targets: map[string][]*TargetRef{
 						"target": {{Type: targetTypeActor, Actor: &ActorRef{CharId: "bob", Name: "Bob"}}},
 					},
 					Config: make(map[string]string),
 				}
-				return f, cmdCtx, actor
+				return &assistTestCtx{factory: f, in: in, actor: actor, assisted: bob, witness: witness, witCh: witCh}
 			},
 			expMsgActor:    "You jump to Bob's aid!",
 			expMsgAssisted: "Alice jumps to your aid!",
 			expMsgRoom:     "Alice jumps to Bob's aid!",
 		},
 		"assist follow leader": {
-			setup: func() (*AssistHandlerFactory, *CommandInput, *gametest.BaseActor) {
+			setup: func() *assistTestCtx {
 				room, err := newTestRoom("test-room", "Test Room", "test-zone")
 				if err != nil {
 					t.Fatalf("failed to create test room: %v", err)
@@ -78,7 +85,6 @@ func TestAssistHandler(t *testing.T) {
 					t.Fatalf("failed to create test zone: %v", err)
 				}
 				zone.AddRoom(room)
-				pub := &recordingPublisher{}
 
 				mob := newCombatMob("mob:test-mob", "Goblin")
 				room.AddMob(mob)
@@ -87,60 +93,57 @@ func TestAssistHandler(t *testing.T) {
 				actor := &gametest.BaseActor{ActorId: "alice", ActorName: "Alice", Alive: true, ActorFollowing: bob, ActorRoom: room}
 
 				players := &mockAssistPlayerLookup{players: map[string]AssistedPlayer{"bob": bob}}
-				f := &AssistHandlerFactory{
-					players: players,
-					pub:     pub,
-				}
+				f := &AssistHandlerFactory{players: players}
 
-				cmdCtx := &CommandInput{
+				in := &CommandInput{
 					Actor:   actor,
 					Targets: map[string][]*TargetRef{},
 					Config:  make(map[string]string),
 				}
-				return f, cmdCtx, actor
+				return &assistTestCtx{factory: f, in: in, actor: actor, assisted: bob}
 			},
 			expMsgActor:    "You jump to Bob's aid!",
 			expMsgAssisted: "Alice jumps to your aid!",
 		},
 		"already in combat": {
-			setup: func() (*AssistHandlerFactory, *CommandInput, *gametest.BaseActor) {
-				f := &AssistHandlerFactory{players: &mockAssistPlayerLookup{}, pub: &recordingPublisher{}}
+			setup: func() *assistTestCtx {
+				f := &AssistHandlerFactory{players: &mockAssistPlayerLookup{}}
 				actor := &gametest.BaseActor{ActorId: "alice", ActorName: "Alice", InCombat: true}
-				cmdCtx := &CommandInput{
+				in := &CommandInput{
 					Actor:   actor,
 					Targets: map[string][]*TargetRef{},
 					Config:  make(map[string]string),
 				}
-				return f, cmdCtx, actor
+				return &assistTestCtx{factory: f, in: in, actor: actor}
 			},
 			expErr: "already fighting",
 		},
 		"no target and not following": {
-			setup: func() (*AssistHandlerFactory, *CommandInput, *gametest.BaseActor) {
-				f := &AssistHandlerFactory{players: &mockAssistPlayerLookup{}, pub: &recordingPublisher{}}
+			setup: func() *assistTestCtx {
+				f := &AssistHandlerFactory{players: &mockAssistPlayerLookup{}}
 				actor := &gametest.BaseActor{ActorId: "alice", ActorName: "Alice"}
-				cmdCtx := &CommandInput{
+				in := &CommandInput{
 					Actor:   actor,
 					Targets: map[string][]*TargetRef{},
 					Config:  make(map[string]string),
 				}
-				return f, cmdCtx, actor
+				return &assistTestCtx{factory: f, in: in, actor: actor}
 			},
 			expErr: "Assist whom?",
 		},
 		"assisted player not in combat": {
-			setup: func() (*AssistHandlerFactory, *CommandInput, *gametest.BaseActor) {
+			setup: func() *assistTestCtx {
 				bob := &gametest.BaseActor{ActorId: "bob", ActorName: "Bob"}
-				f := &AssistHandlerFactory{players: &mockAssistPlayerLookup{players: map[string]AssistedPlayer{"bob": bob}}, pub: &recordingPublisher{}}
+				f := &AssistHandlerFactory{players: &mockAssistPlayerLookup{players: map[string]AssistedPlayer{"bob": bob}}}
 				actor := &gametest.BaseActor{ActorId: "alice", ActorName: "Alice"}
-				cmdCtx := &CommandInput{
+				in := &CommandInput{
 					Actor: actor,
 					Targets: map[string][]*TargetRef{
 						"target": {{Type: targetTypeActor, Actor: &ActorRef{CharId: "bob", Name: "Bob"}}},
 					},
 					Config: make(map[string]string),
 				}
-				return f, cmdCtx, actor
+				return &assistTestCtx{factory: f, in: in, actor: actor, assisted: bob}
 			},
 			expErr: "isn't fighting anyone",
 		},
@@ -148,9 +151,9 @@ func TestAssistHandler(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			factory, cmdCtx, actor := tt.setup()
+			ctx := tt.setup()
 
-			err := factory.handle(context.Background(), cmdCtx)
+			err := ctx.factory.handle(context.Background(), ctx.in)
 
 			if tt.expErr != "" {
 				if err == nil {
@@ -165,39 +168,43 @@ func TestAssistHandler(t *testing.T) {
 				t.Fatalf("unexpected error: %v", err)
 			}
 
-			pub := factory.pub.(*recordingPublisher)
-			actorId := actor.Id()
-
 			if tt.expMsgActor != "" {
-				if !containsSubstring(actor.Notified, tt.expMsgActor) {
-					t.Errorf("expected Notify to actor containing %q, got %v", tt.expMsgActor, actor.Notified)
+				if !containsSubstring(ctx.actor.PublishedStrings(), tt.expMsgActor) {
+					t.Errorf("expected published msg to actor containing %q, got %v", tt.expMsgActor, ctx.actor.PublishedStrings())
 				}
 			}
 			if tt.expMsgAssisted != "" {
-				var assistedId string
-				if refs := cmdCtx.Targets["target"]; len(refs) > 0 {
-					assistedId = refs[0].Actor.CharId
-				} else if leader := actor.Following(); leader != nil {
-					assistedId = leader.Id()
+				if ctx.assisted == nil {
+					t.Fatalf("test expects assisted message but setup did not provide an assisted actor")
 				}
-				msgs := pub.messagesTo(assistedId)
-				if !containsSubstring(msgs, tt.expMsgAssisted) {
-					t.Errorf("expected message to assisted containing %q, got %v", tt.expMsgAssisted, msgs)
+				if !containsSubstring(ctx.assisted.PublishedStrings(), tt.expMsgAssisted) {
+					t.Errorf("expected published msg to assisted containing %q, got %v", tt.expMsgAssisted, ctx.assisted.PublishedStrings())
 				}
 			}
 			if tt.expMsgRoom != "" {
-				found := false
-				for _, m := range pub.messages {
-					if m.targetId != actorId && strings.Contains(m.data, tt.expMsgRoom) {
-						found = true
-						break
-					}
+				if ctx.witness == nil {
+					t.Fatalf("test expects room message but setup did not provide a witness")
 				}
-				if !found {
-					t.Errorf("expected room message containing %q, got %v", tt.expMsgRoom, pub.messages)
+				msgs := drainAll(ctx.witCh)
+				if !containsSubstring(msgs, tt.expMsgRoom) {
+					t.Errorf("expected witness to receive room message containing %q, got %v", tt.expMsgRoom, msgs)
 				}
 			}
 		})
+	}
+}
+
+// drainAll reads all currently-buffered messages from ch and returns them as
+// strings.
+func drainAll(ch chan []byte) []string {
+	var out []string
+	for {
+		select {
+		case b := <-ch:
+			out = append(out, string(b))
+		default:
+			return out
+		}
 	}
 }
 

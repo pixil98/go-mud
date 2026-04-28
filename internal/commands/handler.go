@@ -72,15 +72,8 @@ type PlayerLookup interface {
 	game.PlayerGroup
 }
 
-// Publisher sends messages to groups of players. Implemented by
-// messaging.NatsPublisher in production and by test doubles in tests.
-type Publisher interface {
-	Publish(targets game.PlayerGroup, exclude []string, data []byte) error
-}
-
 // HandlerFactory creates CommandFuncs from command configurations.
 // Implementations should expose their expected config structure.
-// Factories that need a Publisher should accept it in their constructor.
 type HandlerFactory interface {
 	// Spec returns the handler's requirements for validation.
 	// Return nil to skip spec-based validation.
@@ -109,7 +102,7 @@ type compiledCommand struct {
 type AbilityResult struct {
 	ActorLines  []string
 	TargetLines []string
-	TargetId    string // charId of the target player, if any
+	Target      game.Actor // the target player, if any
 	RoomLines   []string
 }
 
@@ -127,7 +120,7 @@ type Handler struct {
 }
 
 // NewHandler creates a Handler, registers all built-in command factories, and compiles every command from the store.
-func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, publisher Publisher, world PlayerLookup) (*Handler, error) {
+func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, world PlayerLookup) (*Handler, error) {
 	h := &Handler{
 		factories: make(map[string]HandlerFactory),
 		compiled:  make(map[string]*compiledCommand),
@@ -152,25 +145,25 @@ func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, pub
 		name    string
 		factory HandlerFactory
 	}{
-		{"assist", NewAssistHandlerFactory(world, publisher)},
-		{"closure", NewClosureHandlerFactory(publisher)},
+		{"assist", NewAssistHandlerFactory(world)},
+		{"closure", NewClosureHandlerFactory()},
 		{"equipment", NewEquipmentHandlerFactory()},
 		{"follow", NewFollowHandlerFactory()},
 		{"gain", NewGainHandlerFactory()},
-		{"group", NewGroupHandlerFactory(publisher)},
-		{"ungroup", NewUngroupHandlerFactory(publisher)},
+		{"group", NewGroupHandlerFactory()},
+		{"ungroup", NewUngroupHandlerFactory()},
 		{"help", NewHelpHandlerFactory(cmds, dict.Abilities)},
 		{"inventory", NewInventoryHandlerFactory()},
 		{"look", NewLookHandlerFactory()},
-		{"message", NewMessageHandlerFactory(publisher)},
+		{"message", NewMessageHandlerFactory()},
 		{"move", NewMoveHandlerFactory()},
-		{"move_obj", NewMoveObjHandlerFactory(publisher)},
+		{"move_obj", NewMoveObjHandlerFactory()},
 		{"quit", NewQuitHandlerFactory()},
 		{"save", NewSaveHandlerFactory(dict.Characters)},
 		{"score", NewScoreHandlerFactory()},
 		{"title", NewTitleHandlerFactory()},
 		{"trees", NewTreesHandlerFactory(dict.Trees)},
-		{"wear", NewWearHandlerFactory(publisher)},
+		{"wear", NewWearHandlerFactory()},
 		{"who", NewWhoHandlerFactory(world)},
 	} {
 		if err := h.RegisterFactory(reg.name, reg.factory); err != nil {
@@ -187,7 +180,7 @@ func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, pub
 
 	// Auto-register all abilities as top-level commands
 	for id, ability := range dict.Abilities.GetAll() {
-		if err := h.registerAbility(id, ability, publisher); err != nil {
+		if err := h.registerAbility(id, ability); err != nil {
 			return nil, fmt.Errorf("registering ability %q: %w", id, err)
 		}
 	}
@@ -197,14 +190,14 @@ func NewHandler(cmds storage.Storer[*assets.Command], dict *game.Dictionary, pub
 
 // registerAbility compiles the ability's effects, stores the compiledAbility
 // for direct execution, and registers a command wrapper for dispatch.
-func (h *Handler) registerAbility(id string, ability *assets.Ability, pub Publisher) error {
+func (h *Handler) registerAbility(id string, ability *assets.Ability) error {
 	ca, err := newCompiledAbility(id, ability, h.effects)
 	if err != nil {
 		return err
 	}
 	h.abilities[id] = ca
 
-	w := &abilityCommandWrapper{id: id, ca: ca, pub: pub}
+	w := &abilityCommandWrapper{id: id, ca: ca}
 	factoryName := "ability:" + id
 	if err := h.RegisterFactory(factoryName, w); err != nil {
 		return err

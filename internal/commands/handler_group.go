@@ -3,7 +3,6 @@ package commands
 import (
 	"context"
 	"fmt"
-	"log/slog"
 	"sort"
 	"strings"
 
@@ -15,12 +14,13 @@ import (
 // disbandGroup removes all of the leader's direct grouped followers.
 // Sub-groups remain intact — a sub-leader keeps their own grouped followers.
 func disbandGroup(leader game.Actor) {
+	disbandedMsg := []byte("The group has been disbanded.")
 	for _, ft := range leader.GroupedFollowers() {
 		leader.SetFollowerGrouped(ft.Id(), false)
 		ft.SetFollowing(nil)
-		ft.Notify("The group has been disbanded.")
+		ft.Publish(disbandedMsg, nil)
 	}
-	leader.Notify("You have disbanded the group.")
+	leader.Publish([]byte("You have disbanded the group."), nil)
 }
 
 // ---------------------------------------------------------------------------
@@ -31,13 +31,11 @@ func disbandGroup(leader game.Actor) {
 // With no target: displays the current group members.
 // With a target: toggles membership — adds a following player who is not yet
 // in the group, or removes one who already is.
-type GroupHandlerFactory struct {
-	pub Publisher
-}
+type GroupHandlerFactory struct{}
 
 // NewGroupHandlerFactory creates a handler factory for group management commands.
-func NewGroupHandlerFactory(pub Publisher) *GroupHandlerFactory {
-	return &GroupHandlerFactory{pub: pub}
+func NewGroupHandlerFactory() *GroupHandlerFactory {
+	return &GroupHandlerFactory{}
 }
 
 // Spec returns the handler's target and config requirements.
@@ -156,7 +154,7 @@ func (f *GroupHandlerFactory) showGroup(char game.Actor) error {
 		line := fmt.Sprintf("%-*s  %s", maxNameWidth, name, strings.Join(resParts, " | "))
 		lines = append(lines, line)
 	}
-	char.Notify(strings.Join(lines, "\n"))
+	char.Publish([]byte(strings.Join(lines, "\n")), nil)
 	return nil
 }
 
@@ -188,12 +186,10 @@ func (f *GroupHandlerFactory) toggleMember(char game.Actor, target *TargetRef) e
 	// Announce to the wider group if the actor is part of one.
 	leader := game.GroupLeader(char)
 	if leader != nil {
-		joinMsg := fmt.Sprintf("%s has joined the group.", target.Actor.Name)
-		if err := f.pub.Publish(game.GroupPublishTarget(leader), []string{targetId}, []byte(joinMsg)); err != nil {
-			slog.Warn("failed to notify group of new member", "error", err)
-		}
+		joinMsg := []byte(fmt.Sprintf("%s has joined the group.", target.Actor.Name))
+		game.GroupPublishTarget(leader).Publish(joinMsg, []string{targetId})
 	}
-	targetActor.Notify(fmt.Sprintf("You join %s's group.", char.Name()))
+	targetActor.Publish([]byte(fmt.Sprintf("You join %s's group.", char.Name())), nil)
 
 	return nil
 }
@@ -206,13 +202,11 @@ func (f *GroupHandlerFactory) toggleMember(char game.Actor, target *TargetRef) e
 // With no target: the leader disbands the group; a member leaves it.
 // With a target: the leader removes a specific member.
 // Targeting yourself disbands the group if you are the leader.
-type UngroupHandlerFactory struct {
-	pub Publisher
-}
+type UngroupHandlerFactory struct{}
 
 // NewUngroupHandlerFactory creates a handler factory for ungroup commands.
-func NewUngroupHandlerFactory(pub Publisher) *UngroupHandlerFactory {
-	return &UngroupHandlerFactory{pub: pub}
+func NewUngroupHandlerFactory() *UngroupHandlerFactory {
+	return &UngroupHandlerFactory{}
 }
 
 // Spec returns the handler's target and config requirements.
@@ -264,14 +258,11 @@ func (f *UngroupHandlerFactory) disbandOrLeave(char game.Actor) error {
 	leader.SetFollowerGrouped(char.Id(), false)
 	char.SetFollowing(nil)
 
-	char.Notify("You leave the group.")
-	if err := f.pub.Publish(game.GroupPublishTarget(leader), nil,
-		[]byte(fmt.Sprintf("%s has left the group.", char.Name()))); err != nil {
-		slog.Warn("failed to notify group of member leaving", "error", err)
-	}
+	char.Publish([]byte("You leave the group."), nil)
+	game.GroupPublishTarget(leader).Publish([]byte(fmt.Sprintf("%s has left the group.", char.Name())), nil)
 
 	if len(leader.GroupedFollowers()) == 0 {
-		leader.Notify("The group has been disbanded.")
+		leader.Publish([]byte("The group has been disbanded."), nil)
 	}
 	return nil
 }
@@ -297,14 +288,11 @@ func (f *UngroupHandlerFactory) removeTarget(char game.Actor, target *TargetRef)
 	char.SetFollowerGrouped(targetId, false)
 	targetActor.SetFollowing(nil)
 
-	targetActor.Notify(fmt.Sprintf("You have been removed from the group by %s.", char.Name()))
-	if err := f.pub.Publish(game.GroupPublishTarget(char), nil,
-		[]byte(fmt.Sprintf("%s has been removed from the group.", target.Actor.Name))); err != nil {
-		slog.Warn("failed to notify group of removal", "error", err)
-	}
+	targetActor.Publish([]byte(fmt.Sprintf("You have been removed from the group by %s.", char.Name())), nil)
+	game.GroupPublishTarget(char).Publish([]byte(fmt.Sprintf("%s has been removed from the group.", target.Actor.Name)), nil)
 
 	if len(char.GroupedFollowers()) == 0 {
-		char.Notify("The group has been disbanded.")
+		char.Publish([]byte("The group has been disbanded."), nil)
 	}
 	return nil
 }

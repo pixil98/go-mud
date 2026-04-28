@@ -13,7 +13,7 @@ const scoreBoxWidth = 40
 // ScoreActor provides the character state needed by the score handler.
 type ScoreActor interface {
 	Id() string
-	Notify(msg string)
+	Publish(data []byte, exclude []string)
 	StatSections() []game.StatSection
 }
 
@@ -52,7 +52,7 @@ func (f *ScoreHandlerFactory) handle(ctx context.Context, char ScoreActor, in *C
 		return err
 	}
 
-	char.Notify(renderBox(sections, scoreBoxWidth))
+	char.Publish([]byte(renderBox(sections, scoreBoxWidth)), nil)
 	return nil
 }
 

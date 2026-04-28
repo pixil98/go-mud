@@ -1,36 +1,61 @@
 package game
 
-import "testing"
+import (
+	"testing"
 
-func TestSinglePlayer_ForEachPlayer(t *testing.T) {
+	"github.com/pixil98/go-mud/internal/assets"
+	"github.com/pixil98/go-mud/internal/storage"
+)
+
+// addPlayerToRoom creates a CharacterInstance backed by a buffered msgs channel
+// and adds it to room. Returns the instance and the channel.
+func addPlayerToRoom(t *testing.T, room *RoomInstance, charId string) (*CharacterInstance, chan []byte) {
+	t.Helper()
+	msgs := make(chan []byte, 4)
+	charRef := storage.NewResolvedSmartIdentifier(charId, &assets.Character{Name: charId})
+	ci, err := NewCharacterInstance(charRef, msgs, room)
+	if err != nil {
+		t.Fatalf("NewCharacterInstance: %v", err)
+	}
+	room.AddPlayer(charId, ci)
+	return ci, msgs
+}
+
+func TestRoomInstance_Publish(t *testing.T) {
 	tests := map[string]struct {
-		charId string
+		exclude    []string
+		wantInA    bool
+		wantInB    bool
 	}{
-		"calls fn with given id": {charId: "player-123"},
-		"empty string id":        {charId: ""},
+		"no exclude delivers to all":        {wantInA: true, wantInB: true},
+		"exclude one player skips them":     {exclude: []string{"a"}, wantInB: true},
+		"exclude all skips everyone":        {exclude: []string{"a", "b"}},
 	}
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			pg := SinglePlayer(tc.charId)
+			room := newTestRoom("r")
+			_, msgsA := addPlayerToRoom(t, room, "a")
+			_, msgsB := addPlayerToRoom(t, room, "b")
 
-			var gotId string
-			var gotCi *CharacterInstance
-			called := 0
-			pg.ForEachPlayer(func(id string, ci *CharacterInstance) {
-				gotId = id
-				gotCi = ci
-				called++
-			})
+			room.Publish([]byte("hello"), tc.exclude)
 
-			if called != 1 {
-				t.Errorf("ForEachPlayer called %d times, want 1", called)
+			gotA := drainOne(msgsA)
+			gotB := drainOne(msgsB)
+			if (gotA != "") != tc.wantInA {
+				t.Errorf("a got %q, wantDelivered=%v", gotA, tc.wantInA)
 			}
-			if gotId != tc.charId {
-				t.Errorf("id = %q, want %q", gotId, tc.charId)
-			}
-			if gotCi != nil {
-				t.Errorf("ci = %v, want nil", gotCi)
+			if (gotB != "") != tc.wantInB {
+				t.Errorf("b got %q, wantDelivered=%v", gotB, tc.wantInB)
 			}
 		})
+	}
+}
+
+func drainOne(ch chan []byte) string {
+	select {
+	case b := <-ch:
+		return string(b)
+	default:
+		return ""
 	}
 }

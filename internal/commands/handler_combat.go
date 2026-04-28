@@ -3,7 +3,6 @@ package commands
 import (
 	"context"
 	"fmt"
-	"log/slog"
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/combat"
@@ -16,6 +15,7 @@ import (
 type AssistedPlayer interface {
 	Name() string
 	CombatTarget() game.Actor
+	Publish(data []byte, exclude []string)
 }
 
 var _ AssistedPlayer = (*game.CharacterInstance)(nil)
@@ -43,12 +43,11 @@ func (a *assistPlayerAdapter) GetPlayer(charId string) AssistedPlayer {
 // When no target is given, the actor assists their follow leader.
 type AssistHandlerFactory struct {
 	players AssistPlayerLookup
-	pub     Publisher
 }
 
 // NewAssistHandlerFactory creates a handler factory for the assist command.
-func NewAssistHandlerFactory(players PlayerLookup, pub Publisher) *AssistHandlerFactory {
-	return &AssistHandlerFactory{players: &assistPlayerAdapter{inner: players}, pub: pub}
+func NewAssistHandlerFactory(players PlayerLookup) *AssistHandlerFactory {
+	return &AssistHandlerFactory{players: &assistPlayerAdapter{inner: players}}
 }
 
 // Spec returns the optional target player requirement for the assist handler.
@@ -98,16 +97,9 @@ func (f *AssistHandlerFactory) handle(ctx context.Context, in *CommandInput) err
 		return NewUserError(fmt.Sprintf("%s isn't fighting anything you can assist with.", assistedName))
 	}
 
-	char.Notify(fmt.Sprintf("You jump to %s's aid!", assistedName))
-	if err := f.pub.Publish(game.SinglePlayer(assistedId), nil,
-		[]byte(fmt.Sprintf("%s jumps to your aid!", char.Name()))); err != nil {
-		slog.Warn("failed to notify assisted player", "error", err)
-	}
-
-	roomMsg := fmt.Sprintf("%s jumps to %s's aid!", char.Name(), assistedName)
-	if err := f.pub.Publish(char.Room(), []string{char.Id(), assistedId}, []byte(roomMsg)); err != nil {
-		slog.Warn("failed to publish room assist message", "error", err)
-	}
+	char.Publish([]byte(fmt.Sprintf("You jump to %s's aid!", assistedName)), nil)
+	assisted.Publish([]byte(fmt.Sprintf("%s jumps to your aid!", char.Name())), nil)
+	char.Room().Publish([]byte(fmt.Sprintf("%s jumps to %s's aid!", char.Name(), assistedName)), []string{char.Id(), assistedId})
 
 	return nil
 }

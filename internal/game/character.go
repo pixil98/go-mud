@@ -28,14 +28,11 @@ func (s Stat) Mod() int {
 
 // CharacterInstance holds all mutable state for an active player.
 type CharacterInstance struct {
-	subscriber Subscriber
-	msgs       chan []byte
+	msgs chan []byte
 
 	Character storage.SmartIdentifier[*assets.Character]
 
 	ActorInstance
-
-	subs map[string]func()
 
 	quit           bool
 	combatTargetId string
@@ -64,7 +61,6 @@ func NewCharacterInstance(char storage.SmartIdentifier[*assets.Character], msgs 
 	}
 
 	ci := &CharacterInstance{
-		subs:      make(map[string]func()),
 		msgs:      msgs,
 		Character: char,
 		ActorInstance: ActorInstance{
@@ -99,44 +95,6 @@ func (ci *CharacterInstance) Done() <-chan struct{} {
 	return ci.done
 }
 
-// Subscribe adds a new subscription, replacing any existing subscription on
-// the same subject.
-func (ci *CharacterInstance) Subscribe(subject string) error {
-	if ci.subscriber == nil {
-		return errors.New("subscriber is nil")
-	}
-
-	if old, ok := ci.subs[subject]; ok {
-		old()
-		delete(ci.subs, subject)
-	}
-
-	unsub, err := ci.subscriber.Subscribe(subject, func(data []byte) {
-		ci.msgs <- data
-	})
-	if err != nil {
-		return fmt.Errorf("subscribing to channel '%s': %w", subject, err)
-	}
-	ci.subs[subject] = unsub
-	return nil
-}
-
-// Unsubscribe removes a subscription by name.
-func (ci *CharacterInstance) Unsubscribe(subject string) {
-	if unsub, ok := ci.subs[subject]; ok {
-		unsub()
-		delete(ci.subs, subject)
-	}
-}
-
-// UnsubscribeAll removes all subscriptions.
-func (ci *CharacterInstance) UnsubscribeAll() {
-	for name, unsub := range ci.subs {
-		unsub()
-		delete(ci.subs, name)
-	}
-}
-
 // Kick closes the done channel, signaling the active Play() goroutine to exit.
 // Safe to call multiple times; subsequent calls are no-ops.
 func (ci *CharacterInstance) Kick() {
@@ -148,11 +106,9 @@ func (ci *CharacterInstance) Kick() {
 	}
 }
 
-// Reattach swaps the msgs and done channels for a reconnecting player.
-// It unsubscribes all old NATS subscriptions, clears the linkless flag,
-// and creates a fresh done channel. The caller must re-subscribe to NATS after this.
+// Reattach swaps the msgs and done channels for a reconnecting player and
+// clears the linkless flag.
 func (ci *CharacterInstance) Reattach(msgs chan []byte) {
-	ci.UnsubscribeAll()
 	ci.msgs = msgs
 	ci.done = make(chan struct{})
 
@@ -163,15 +119,12 @@ func (ci *CharacterInstance) Reattach(msgs chan []byte) {
 	ci.mu.Unlock()
 }
 
-// MarkLinkless sets the player as linkless and unsubscribes all NATS subscriptions
-// to prevent channel fill-up while they have no active connection.
+// MarkLinkless sets the player as linkless.
 func (ci *CharacterInstance) MarkLinkless() {
 	ci.mu.Lock()
 	ci.linkless = true
 	ci.linklessAt = time.Now()
 	ci.mu.Unlock()
-
-	ci.UnsubscribeAll()
 }
 
 // --- Accessor methods ---
@@ -307,7 +260,7 @@ func (ci *CharacterInstance) flushTickMessages() {
 	if len(buf) == 0 {
 		return
 	}
-	ci.Notify(strings.Join(buf, "\n"))
+	ci.Publish([]byte(strings.Join(buf, "\n")), nil)
 }
 
 // Flags returns display labels for the player's current state.
@@ -355,14 +308,19 @@ func (ci *CharacterInstance) GainXP(xp int) bool {
 	return char.Level < MaxLevel && char.Experience >= ExpForLevel(char.Level+1)
 }
 
-// Notify sends a message directly to the character's client. Non-blocking;
-// drops the message if the channel is full.
-func (ci *CharacterInstance) Notify(msg string) {
+// Publish delivers data to the character's client. Non-blocking; drops the
+// message if the channel is full or the character's id appears in exclude.
+func (ci *CharacterInstance) Publish(data []byte, exclude []string) {
 	if ci.msgs == nil {
 		return
 	}
+	for _, id := range exclude {
+		if id == ci.Id() {
+			return
+		}
+	}
 	select {
-	case ci.msgs <- []byte(msg):
+	case ci.msgs <- data:
 	default:
 	}
 }

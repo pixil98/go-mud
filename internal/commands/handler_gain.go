@@ -11,7 +11,7 @@ import (
 // GainActor provides the character state needed by the gain handler.
 type GainActor interface {
 	Id() string
-	Notify(msg string)
+	Publish(data []byte, exclude []string)
 	IsInCombat() bool
 	Asset() *assets.Character
 	Gain()
@@ -62,6 +62,6 @@ func (f *GainHandlerFactory) handle(ctx context.Context, char GainActor, in *Com
 
 	char.Gain()
 
-	char.Notify(fmt.Sprintf("Congratulations! You have advanced to level %d!", actor.Level))
+	char.Publish([]byte(fmt.Sprintf("Congratulations! You have advanced to level %d!", actor.Level)), nil)
 	return nil
 }

@@ -224,8 +224,8 @@ func (mi *MobileInstance) OnDeath() []*ObjectInstance {
 // IsCharacter returns false for mobs.
 func (mi *MobileInstance) IsCharacter() bool { return false }
 
-// Notify is a no-op for mobs since they have no client connection.
-func (mi *MobileInstance) Notify(_ string) {}
+// Publish is a no-op for mobs since they have no client connection.
+func (mi *MobileInstance) Publish(_ []byte, _ []string) {}
 
 // QueueTickMsg is a no-op for mobs since they have no client connection.
 func (mi *MobileInstance) QueueTickMsg(_ string) {}

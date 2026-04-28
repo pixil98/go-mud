@@ -10,7 +10,7 @@ import (
 // TitleActor provides the character state needed by the title handler.
 type TitleActor interface {
 	Id() string
-	Notify(msg string)
+	Publish(data []byte, exclude []string)
 	SetTitle(string)
 }
 
@@ -56,6 +56,6 @@ func (f *TitleHandlerFactory) handle(ctx context.Context, char TitleActor, in *C
 		output = fmt.Sprintf("Title set to: %s", title)
 	}
 
-	char.Notify(output)
+	char.Publish([]byte(output), nil)
 	return nil
 }

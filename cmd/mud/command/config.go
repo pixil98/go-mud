@@ -11,7 +11,6 @@ type Config struct {
 	TickInterval  string              `json:"tick_interval"`
 	Listeners     []ListenerConfig    `json:"listeners"`
 	Storage       StorageConfig       `json:"storage"`
-	Nats          NatsConfig          `json:"nats"`
 	PlayerManager PlayerManagerConfig `json:"player_manager"`
 }
 
@@ -34,7 +33,6 @@ func (c *Config) Validate() error {
 	}
 
 	errs = append(errs, c.Storage.validate())
-	errs = append(errs, c.Nats.validate())
 	errs = append(errs, c.PlayerManager.validate())
 
 	return errors.Join(errs...)

@@ -33,19 +33,6 @@ func newTestZone(id string) *ZoneInstance {
 	return zi
 }
 
-// fakeSubscriber is a test double for the Subscriber interface.
-type fakeSubscriber struct {
-	subs map[string]func([]byte)
-}
-
-func (fs *fakeSubscriber) Subscribe(subject string, handler func(data []byte)) (func(), error) {
-	if fs.subs == nil {
-		fs.subs = make(map[string]func([]byte))
-	}
-	fs.subs[subject] = handler
-	return func() { delete(fs.subs, subject) }, nil
-}
-
 // fakeCommander is a test double for the Commander interface that records calls.
 type fakeCommander struct {
 	commands  []string
@@ -133,7 +120,7 @@ func newTestWorld() (*WorldState, *ZoneInstance, *RoomInstance) {
 	zones := newFakeStore[*assets.Zone](map[string]*assets.Zone{"z1": zone})
 	rooms := newFakeStore[*assets.Room](map[string]*assets.Room{"r1": room})
 
-	w, err := NewWorldState(&fakeSubscriber{}, zones, rooms)
+	w, err := NewWorldState(zones, rooms)
 	if err != nil {
 		panic("newTestWorld: " + err.Error())
 	}

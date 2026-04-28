@@ -22,11 +22,19 @@ func newTestRoom(id, name, zoneId string) (*game.RoomInstance, error) {
 
 // newTestPlayer creates a CharacterInstance and adds it to the given room.
 func newTestPlayer(charId, name string, room *game.RoomInstance) *game.CharacterInstance {
+	ci, _ := newRecordingPlayer(charId, name, room)
+	return ci
+}
+
+// newRecordingPlayer creates a CharacterInstance with a buffered msgs channel
+// and adds it to the given room. The returned channel can be drained to inspect
+// what was published to this player.
+func newRecordingPlayer(charId, name string, room *game.RoomInstance) (*game.CharacterInstance, chan []byte) {
 	msgs := make(chan []byte, 10)
 	charRef := storage.NewResolvedSmartIdentifier(charId, &assets.Character{Name: name})
 	ci, _ := game.NewCharacterInstance(charRef, msgs, room)
 	room.AddPlayer(charId, ci)
-	return ci
+	return ci, msgs
 }
 
 // newCombatMob creates a mob with enough HP to be alive for combat tests.

@@ -207,76 +207,6 @@ func TestCharacterInstance_Reattach(t *testing.T) {
 	}
 }
 
-func TestCharacterInstance_Subscribe_Unsubscribe(t *testing.T) {
-	tests := map[string]struct {
-		subject        string
-		nilSubscriber  bool
-		subscribeTwice bool
-		unsubscribe    bool
-		wantInSubs     bool
-		wantErr        bool
-	}{
-		"subscribe adds to subs":              {subject: "room.1", wantInSubs: true},
-		"unsubscribe removes from subs":       {subject: "room.1", unsubscribe: true, wantInSubs: false},
-		"unsubscribe nonexistent is no-op":    {subject: "nonexistent", unsubscribe: true, wantInSubs: false},
-		"nil subscriber returns error":        {subject: "room.1", nilSubscriber: true, wantErr: true, wantInSubs: false},
-		"re-subscribe replaces old unsub":     {subject: "room.1", subscribeTwice: true, wantInSubs: true},
-	}
-	for name, tc := range tests {
-		t.Run(name, func(t *testing.T) {
-			msgs := make(chan []byte, 1)
-			char := storage.NewResolvedSmartIdentifier("c", &assets.Character{Name: "T"})
-			ci, _ := NewCharacterInstance(char, msgs, newTestRoom("r"))
-			if !tc.nilSubscriber {
-				ci.subscriber = &fakeSubscriber{}
-			}
-
-			if tc.subject != "nonexistent" {
-				if tc.subscribeTwice {
-					_ = ci.Subscribe(tc.subject)
-				}
-				err := ci.Subscribe(tc.subject)
-				if tc.wantErr && err == nil {
-					t.Error("expected error from Subscribe, got nil")
-				}
-				if !tc.wantErr && err != nil {
-					t.Fatalf("Subscribe: %v", err)
-				}
-			}
-			if tc.unsubscribe {
-				ci.Unsubscribe(tc.subject)
-			}
-
-			_, inSubs := ci.subs[tc.subject]
-			if inSubs != tc.wantInSubs {
-				t.Errorf("subs[%q] present = %v, want %v", tc.subject, inSubs, tc.wantInSubs)
-			}
-		})
-	}
-}
-
-func TestCharacterInstance_UnsubscribeAll(t *testing.T) {
-	tests := map[string]struct {
-		subjects []string
-	}{
-		"no subs is a no-op":       {subjects: nil},
-		"clears all subscriptions": {subjects: []string{"room.1", "zone.2"}},
-	}
-	for name, tc := range tests {
-		t.Run(name, func(t *testing.T) {
-			ci := newTestCharacterInstance()
-			ci.subscriber = &fakeSubscriber{}
-			for _, s := range tc.subjects {
-				_ = ci.Subscribe(s)
-			}
-			ci.UnsubscribeAll()
-			if len(ci.subs) != 0 {
-				t.Errorf("subs len = %d after UnsubscribeAll, want 0", len(ci.subs))
-			}
-		})
-	}
-}
-
 func TestCharacterInstance_OnDeath(t *testing.T) {
 	tests := map[string]struct {
 		startHP    int
@@ -746,14 +676,16 @@ func TestCharacterInstance_CombatTarget(t *testing.T) {
 	}
 }
 
-func TestCharacterInstance_Notify(t *testing.T) {
+func TestCharacterInstance_Publish(t *testing.T) {
 	tests := map[string]struct {
 		nilMsgs bool
 		msg     string
+		exclude []string
 		wantMsg bool
 	}{
 		"nil msgs channel does not panic":   {nilMsgs: true, msg: "hi"},
 		"buffered channel receives message": {msg: "hello", wantMsg: true},
+		"self in exclude drops message":     {msg: "hello", exclude: []string{"c"}, wantMsg: false},
 	}
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
@@ -764,16 +696,22 @@ func TestCharacterInstance_Notify(t *testing.T) {
 			char := storage.NewResolvedSmartIdentifier("c", &assets.Character{Name: "T"})
 			ci, _ := NewCharacterInstance(char, msgs, newTestRoom("r"))
 
-			ci.Notify(tc.msg)
+			ci.Publish([]byte(tc.msg), tc.exclude)
 
 			if tc.wantMsg {
 				select {
 				case got := <-msgs:
 					if string(got) != tc.msg {
-						t.Errorf("Notify sent %q, want %q", got, tc.msg)
+						t.Errorf("Publish sent %q, want %q", got, tc.msg)
 					}
 				default:
 					t.Error("expected message in channel, got none")
+				}
+			} else if msgs != nil {
+				select {
+				case got := <-msgs:
+					t.Errorf("expected no message, got %q", got)
+				default:
 				}
 			}
 		})

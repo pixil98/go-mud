@@ -97,7 +97,7 @@ func (f *HelpHandlerFactory) listCommands(actor game.Actor) error {
 		lines = append(lines, fmt.Sprintf("  %s: %s", label, strings.Join(cmds, ", ")))
 	}
 
-	actor.Notify(strings.Join(lines, "\n"))
+	actor.Publish([]byte(strings.Join(lines, "\n")), nil)
 	return nil
 }
 
@@ -116,6 +116,6 @@ func (f *HelpHandlerFactory) showCommand(name string, actor game.Actor) error {
 		return NewUserError(fmt.Sprintf("Command %q is unknown.", name))
 	}
 
-	actor.Notify(h.Help(lower))
+	actor.Publish([]byte(h.Help(lower)), nil)
 	return nil
 }

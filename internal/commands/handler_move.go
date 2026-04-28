@@ -99,7 +99,7 @@ func (f *MoveHandlerFactory) handle(ctx context.Context, in *CommandInput) error
 	announceArrive(char, toRoom)
 
 	// Send room description to player
-	char.Notify(DescribeRoom(char, toRoom))
+	char.Publish([]byte(DescribeRoom(char, toRoom)), nil)
 
 	// Move any followers in the old room
 	moveFollowers(char, fromRoom, toRoom, direction)
@@ -142,7 +142,7 @@ func announceToRoom(room *game.RoomInstance, actor interface{ Name() string }, m
 		if room.Restricts(ci, assets.RoomFlagDark) {
 			return
 		}
-		ci.Notify(msg)
+		ci.Publish([]byte(msg), nil)
 	})
 }
 
@@ -155,14 +155,14 @@ func moveFollowers(leader game.Actor, fromRoom, toRoom *game.RoomInstance, direc
 			continue
 		}
 		if fl.IsInCombat() {
-			fl.Notify(fmt.Sprintf("%s leaves %s without you.", leader.Name(), direction))
+			fl.Publish([]byte(fmt.Sprintf("%s leaves %s without you.", leader.Name(), direction)), nil)
 			continue
 		}
 
 		announceDepart(fl, fromRoom, direction)
 		fl.Move(fromRoom, toRoom)
 		announceArrive(fl, toRoom)
-		fl.Notify(fmt.Sprintf("You follow %s.\n%s", leader.Name(), DescribeRoom(fl, toRoom)))
+		fl.Publish([]byte(fmt.Sprintf("You follow %s.\n%s", leader.Name(), DescribeRoom(fl, toRoom))), nil)
 		moveFollowers(fl, fromRoom, toRoom, direction)
 	}
 }

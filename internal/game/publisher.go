@@ -1,20 +1,15 @@
 package game
 
 // PlayerGroup represents any group of players that can be iterated.
-// Implemented by RoomInstance, ZoneInstance, WorldState, and singlePlayer.
+// Implemented by RoomInstance, ZoneInstance, WorldState, and groupPublishTarget.
 type PlayerGroup interface {
 	ForEachPlayer(func(string, *CharacterInstance))
 }
 
-// singlePlayer wraps a single charId as a PlayerGroup.
-type singlePlayer string
-
-func (sp singlePlayer) ForEachPlayer(fn func(string, *CharacterInstance)) {
-	fn(string(sp), nil)
+// MessageTarget is the audience for a published message. Implemented by
+// CharacterInstance, MobileInstance, RoomInstance, ZoneInstance, WorldState,
+// and groupPublishTarget. Larger targets compose by calling Publish on their
+// members; CharacterInstance is the leaf that actually delivers data.
+type MessageTarget interface {
+	Publish(data []byte, exclude []string)
 }
-
-// SinglePlayer returns a PlayerGroup targeting a single player.
-func SinglePlayer(charId string) PlayerGroup {
-	return singlePlayer(charId)
-}
-

@@ -40,7 +40,6 @@ func TestNewWorldState(t *testing.T) {
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
 			w, err := NewWorldState(
-				&fakeSubscriber{},
 				newFakeStore[*assets.Zone](tc.zones),
 				newFakeStore[*assets.Room](tc.rooms),
 			)

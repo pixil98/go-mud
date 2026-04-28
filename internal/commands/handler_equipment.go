@@ -11,7 +11,7 @@ import (
 // EquipmentActor provides the character state needed by the equipment handler.
 type EquipmentActor interface {
 	Id() string
-	Notify(msg string)
+	Publish(data []byte, exclude []string)
 	Equipment() *game.Equipment
 	WearSlots() []string
 }
@@ -54,7 +54,7 @@ func (f *EquipmentHandlerFactory) handle(ctx context.Context, char EquipmentActo
 	lines := []string{"You are wearing:"}
 	lines = append(lines, FormatEquipmentSlots(eq, slots)...)
 
-	char.Notify(strings.Join(lines, "\n"))
+	char.Publish([]byte(strings.Join(lines, "\n")), nil)
 	return nil
 }
 

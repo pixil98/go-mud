@@ -61,7 +61,7 @@ func (f *TreesHandlerFactory) listTrees(actor game.Actor) error {
 		lines = append(lines, fmt.Sprintf("  %-16s - %s", t.Name, firstSentence(t.Description)))
 	}
 
-	actor.Notify(strings.Join(lines, "\n"))
+	actor.Publish([]byte(strings.Join(lines, "\n")), nil)
 	return nil
 }
 
@@ -70,7 +70,7 @@ func (f *TreesHandlerFactory) showTree(name string, actor game.Actor) error {
 	if tree == nil {
 		return NewUserError(fmt.Sprintf("No skill tree named %q.", name))
 	}
-	actor.Notify(renderTree(tree))
+	actor.Publish([]byte(renderTree(tree)), nil)
 	return nil
 }
 

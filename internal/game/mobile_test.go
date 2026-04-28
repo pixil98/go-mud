@@ -214,14 +214,14 @@ func TestMobileInstance_OnDeath(t *testing.T) {
 	}
 }
 
-func TestMobileInstance_Notify(t *testing.T) {
+func TestMobileInstance_Publish(t *testing.T) {
 	tests := map[string]struct{}{
 		"no-op for mob": {},
 	}
 	for name := range tests {
 		t.Run(name, func(t *testing.T) {
 			mi := newTestMI("mob", "a mob")
-			mi.Notify("any message") // must not panic
+			mi.Publish([]byte("any message"), nil) // must not panic
 		})
 	}
 }

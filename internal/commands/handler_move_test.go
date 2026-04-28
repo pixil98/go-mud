@@ -164,14 +164,14 @@ func TestMoveFollowers(t *testing.T) {
 			}
 			for id, substr := range tt.expMsgContains {
 				found := false
-				for _, msg := range actors[id].Notified {
+				for _, msg := range actors[id].PublishedStrings() {
 					if containsStr(msg, substr) {
 						found = true
 						break
 					}
 				}
 				if !found {
-					t.Errorf("expected message to %q containing %q, got %v", id, substr, actors[id].Notified)
+					t.Errorf("expected message to %q containing %q, got %v", id, substr, actors[id].PublishedStrings())
 				}
 			}
 		})

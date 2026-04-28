@@ -12,23 +12,23 @@ import (
 // All methods return zero/empty values unless overridden via fields.
 // Tests set only the fields they care about.
 type BaseActor struct {
-	ActorId        string
-	ActorName      string
-	ActorRoom      *game.RoomInstance
-	Alive          bool
-	ActorLevel     int
-	Character      bool
-	InCombat           bool
-	ActorCombatTarget  game.Actor
-	Notified       []string
-	ActorFollowing game.Actor
-	ActorFollowers []game.Actor
-	GroupedIds     map[string]bool
-	Resources      map[string][2]int   // name → {current, max}
-	Grants         map[string][]string // grant key → args
-	SpendAPFails   bool
-	SpentAP        int
-	Moved          bool
+	ActorId           string
+	ActorName         string
+	ActorRoom         *game.RoomInstance
+	Alive             bool
+	ActorLevel        int
+	Character         bool
+	InCombat          bool
+	ActorCombatTarget game.Actor
+	Published         [][]byte
+	ActorFollowing    game.Actor
+	ActorFollowers    []game.Actor
+	GroupedIds        map[string]bool
+	Resources         map[string][2]int   // name → {current, max}
+	Grants            map[string][]string // grant key → args
+	SpendAPFails      bool
+	SpentAP           int
+	Moved             bool
 
 	// Override hooks for behaviors that vary per-test.
 	IsAliveFunc func() bool
@@ -42,10 +42,10 @@ func (a *BaseActor) Name() string { return a.ActorName }
 
 func (a *BaseActor) Room() *game.RoomInstance { return a.ActorRoom }
 
-func (a *BaseActor) IsInCombat() bool             { return a.InCombat }
-func (a *BaseActor) CombatTarget() game.Actor      { return a.ActorCombatTarget }
-func (a *BaseActor) IsCharacter() bool             { return a.Character }
-func (a *BaseActor) Level() int                    { return a.ActorLevel }
+func (a *BaseActor) IsInCombat() bool         { return a.InCombat }
+func (a *BaseActor) CombatTarget() game.Actor { return a.ActorCombatTarget }
+func (a *BaseActor) IsCharacter() bool        { return a.Character }
+func (a *BaseActor) Level() int               { return a.ActorLevel }
 
 func (a *BaseActor) IsAlive() bool {
 	if a.IsAliveFunc != nil {
@@ -97,15 +97,28 @@ func (a *BaseActor) OnDeath() []*game.ObjectInstance {
 	return nil
 }
 
-func (a *BaseActor) Inventory() *game.Inventory  { return nil }
-func (a *BaseActor) Equipment() *game.Equipment  { return nil }
-func (a *BaseActor) Notify(msg string)            { a.Notified = append(a.Notified, msg) }
+func (a *BaseActor) Inventory() *game.Inventory { return nil }
+func (a *BaseActor) Equipment() *game.Equipment { return nil }
 
-func (a *BaseActor) Following() game.Actor          { return a.ActorFollowing }
-func (a *BaseActor) SetFollowing(ft game.Actor)      { a.ActorFollowing = ft }
-func (a *BaseActor) Followers() []game.Actor          { return a.ActorFollowers }
-func (a *BaseActor) AddFollower(ft game.Actor)        { a.ActorFollowers = append(a.ActorFollowers, ft) }
-func (a *BaseActor) RemoveFollower(string)             {}
+// Publish records the published data for test assertions.
+func (a *BaseActor) Publish(data []byte, _ []string) {
+	a.Published = append(a.Published, data)
+}
+
+// PublishedStrings returns the published payloads as strings for convenient assertions.
+func (a *BaseActor) PublishedStrings() []string {
+	out := make([]string, len(a.Published))
+	for i, d := range a.Published {
+		out[i] = string(d)
+	}
+	return out
+}
+
+func (a *BaseActor) Following() game.Actor      { return a.ActorFollowing }
+func (a *BaseActor) SetFollowing(ft game.Actor) { a.ActorFollowing = ft }
+func (a *BaseActor) Followers() []game.Actor    { return a.ActorFollowers }
+func (a *BaseActor) AddFollower(ft game.Actor)  { a.ActorFollowers = append(a.ActorFollowers, ft) }
+func (a *BaseActor) RemoveFollower(string)      {}
 
 func (a *BaseActor) SetFollowerGrouped(id string, grouped bool) {
 	if a.GroupedIds == nil {
@@ -137,12 +150,12 @@ func (a *BaseActor) Move(_, to *game.RoomInstance) {
 	a.ActorRoom = to
 }
 
-func (a *BaseActor) EnsureThreat(string, game.Actor) {}
-func (a *BaseActor) AddThreatFrom(string, int)       {}
-func (a *BaseActor) SetThreatFrom(string, int)       {}
+func (a *BaseActor) EnsureThreat(string, game.Actor)  {}
+func (a *BaseActor) AddThreatFrom(string, int)        {}
+func (a *BaseActor) SetThreatFrom(string, int)        {}
 func (a *BaseActor) TopThreatFrom(string)             {}
 func (a *BaseActor) HasThreatFrom(string) bool        { return false }
 func (a *BaseActor) ThreatSnapshot() map[string]int   { return nil }
-func (a *BaseActor) ClaimDeath() bool                  { return true }
-func (a *BaseActor) QueueTickMsg(msg string)          { a.Notified = append(a.Notified, msg) }
-func (a *BaseActor) StatSections() []game.StatSection  { return nil }
+func (a *BaseActor) ClaimDeath() bool                 { return true }
+func (a *BaseActor) QueueTickMsg(msg string)          { a.Published = append(a.Published, []byte(msg)) }
+func (a *BaseActor) StatSections() []game.StatSection { return nil }

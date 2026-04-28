@@ -46,7 +46,7 @@ func (f *WhoHandlerFactory) Create() (CommandFunc, error) {
 			lines = append(lines, fmt.Sprintf("[%s] %s %s", bracket, char.Name, char.Title))
 		})
 
-		in.Actor.Notify("Players Online:\n" + strings.Join(lines, "\n"))
+		in.Actor.Publish([]byte("Players Online:\n"+strings.Join(lines, "\n")), nil)
 		return nil
 	}, nil
 }

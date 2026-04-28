@@ -188,7 +188,7 @@ func (ca *compiledAbility) exec(actor game.Actor, targets map[string][]*TargetRe
 		}
 		for _, ref := range buildCtx().Targets {
 			if ref != nil && ref.Actor != nil && ref.Actor.actor.IsCharacter() {
-				result.TargetId = ref.Actor.CharId
+				result.Target = ref.Actor.actor
 				break
 			}
 		}
@@ -217,9 +217,8 @@ func (ca *compiledAbility) exec(actor game.Actor, targets map[string][]*TargetRe
 // HandlerFactory for command dispatch. It adds the unlock check, message
 // publishing, and spec/validation that the command system requires.
 type abilityCommandWrapper struct {
-	id  string
-	ca  *compiledAbility
-	pub Publisher
+	id string
+	ca *compiledAbility
 }
 
 // Spec returns the compiled spec from the underlying compiledAbility.
@@ -271,26 +270,18 @@ func (w *abilityCommandWrapper) Create() (CommandFunc, error) {
 
 // publishResult delivers an AbilityResult's messages to the appropriate audiences.
 func (w *abilityCommandWrapper) publishResult(result *AbilityResult, actor game.Actor) error {
-	if w.pub == nil {
-		return nil
-	}
-
 	charId := actor.Id()
 	exclude := []string{charId}
 
 	if len(result.ActorLines) > 0 {
-		actor.Notify(strings.Join(result.ActorLines, "\n"))
+		actor.Publish([]byte(strings.Join(result.ActorLines, "\n")), nil)
 	}
-	if len(result.TargetLines) > 0 && result.TargetId != "" {
-		if err := w.pub.Publish(game.SinglePlayer(result.TargetId), nil, []byte(strings.Join(result.TargetLines, "\n"))); err != nil {
-			return err
-		}
-		exclude = append(exclude, result.TargetId)
+	if len(result.TargetLines) > 0 && result.Target != nil {
+		result.Target.Publish([]byte(strings.Join(result.TargetLines, "\n")), nil)
+		exclude = append(exclude, result.Target.Id())
 	}
 	if len(result.RoomLines) > 0 {
-		if err := w.pub.Publish(actor.Room(), exclude, []byte(strings.Join(result.RoomLines, "\n"))); err != nil {
-			return err
-		}
+		actor.Room().Publish([]byte(strings.Join(result.RoomLines, "\n")), exclude)
 	}
 	return nil
 }

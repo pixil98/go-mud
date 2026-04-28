@@ -34,7 +34,7 @@ type Actor interface {
 	IsCharacter() bool
 	Inventory() *Inventory
 	Equipment() *Equipment
-	Notify(msg string)
+	Publish(data []byte, exclude []string)
 	Following() Actor
 	SetFollowing(Actor)
 	Followers() []Actor

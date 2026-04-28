@@ -409,6 +409,14 @@ func (ri *RoomInstance) ForEachPlayer(fn func(string, *CharacterInstance)) {
 	}
 }
 
+// Publish delivers data to every player in the room, skipping any whose id
+// appears in exclude.
+func (ri *RoomInstance) Publish(data []byte, exclude []string) {
+	ri.ForEachPlayer(func(_ string, ci *CharacterInstance) {
+		ci.Publish(data, exclude)
+	})
+}
+
 // PlayerCount returns the number of players in the room.
 func (ri *RoomInstance) PlayerCount() int {
 	ri.mu.RLock()

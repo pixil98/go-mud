@@ -9,7 +9,6 @@ import (
 	"github.com/pixil98/go-mud/internal/commands"
 	"github.com/pixil98/go-mud/internal/game"
 	"github.com/pixil98/go-mud/internal/listener"
-	"github.com/pixil98/go-mud/internal/messaging"
 	"github.com/pixil98/go-service"
 )
 
@@ -46,23 +45,14 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 		return nil, fmt.Errorf("creating command store: %w", err)
 	}
 
-	// Setup the nats server
-	natsServer, err := cfg.Nats.buildNatsServer()
-	if err != nil {
-		return nil, fmt.Errorf("creating nats server: %w", err)
-	}
-
 	// Create world state (must be before command handler since handlers need it)
-	world, err := game.NewWorldState(natsServer, dict.Zones, dict.Rooms)
+	world, err := game.NewWorldState(dict.Zones, dict.Rooms)
 	if err != nil {
 		return nil, fmt.Errorf("creating world state: %w", err)
 	}
 
-	// Create publisher for command handlers
-	publisher := messaging.NewNatsPublisher(natsServer)
-
 	// Create command handler and compile all commands
-	cmdHandler, err := commands.NewHandler(storeCmds, dict, publisher, world)
+	cmdHandler, err := commands.NewHandler(storeCmds, dict, world)
 	if err != nil {
 		return nil, fmt.Errorf("compiling commands: %w", err)
 	}
@@ -107,8 +97,7 @@ func BuildWorkers(config interface{}) (service.WorkerList, error) {
 
 	// Create a worker list
 	return service.WorkerList{
-		"driver":      driver,
-		"listeners":   &listeners,
-		"nats server": natsServer,
+		"driver":    driver,
+		"listeners": &listeners,
 	}, nil
 }

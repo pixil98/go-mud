@@ -13,7 +13,7 @@ type LookActor interface {
 	Id() string
 	Name() string
 	Room() *game.RoomInstance
-	Notify(msg string)
+	Publish(data []byte, exclude []string)
 	HasGrant(key, arg string) bool
 }
 
@@ -69,7 +69,7 @@ func (f *LookHandlerFactory) handle(ctx context.Context, actor LookActor, in *Co
 	}
 
 	if ri.Restricts(actor, assets.RoomFlagDark) {
-		actor.Notify(darkRoomDesc)
+		actor.Publish([]byte(darkRoomDesc), nil)
 		return nil
 	}
 
@@ -81,7 +81,7 @@ func (f *LookHandlerFactory) handle(ctx context.Context, actor LookActor, in *Co
 		return f.showExtraDesc(actor, ri, input)
 	}
 
-	actor.Notify(ri.Describe(actor.Name()))
+	actor.Publish([]byte(ri.Describe(actor.Name())), nil)
 	return nil
 }
 
@@ -102,7 +102,7 @@ func (f *LookHandlerFactory) showTarget(actor LookActor, target *TargetRef) erro
 		return NewUserError("You can't look at that.")
 	}
 
-	actor.Notify(msg)
+	actor.Publish([]byte(msg), nil)
 	return nil
 }
 
@@ -114,6 +114,6 @@ func (f *LookHandlerFactory) showExtraDesc(actor LookActor, ri *game.RoomInstanc
 		return NewUserError("You don't see '" + display.Capitalize(keyword) + "' here.")
 	}
 
-	actor.Notify(display.Wrap(ed.Description))
+	actor.Publish([]byte(display.Wrap(ed.Description)), nil)
 	return nil
 }

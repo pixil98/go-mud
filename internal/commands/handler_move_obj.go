@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log/slog"
 
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/display"
@@ -14,7 +13,7 @@ import (
 // MoveObjActor provides the character state needed by the move_obj handler.
 type MoveObjActor interface {
 	Id() string
-	Notify(msg string)
+	Publish(data []byte, exclude []string)
 	Room() *game.RoomInstance
 	Inventory() *game.Inventory
 }
@@ -32,13 +31,11 @@ type ObjectHolder interface {
 //   - destination (required): "inventory", "room", or a target name
 //   - message (required): Go template for room broadcast
 //   - no_self_target (optional): target name to prevent self-targeting
-type MoveObjHandlerFactory struct {
-	pub Publisher
-}
+type MoveObjHandlerFactory struct{}
 
 // NewMoveObjHandlerFactory creates a handler factory for object movement commands.
-func NewMoveObjHandlerFactory(pub Publisher) *MoveObjHandlerFactory {
-	return &MoveObjHandlerFactory{pub: pub}
+func NewMoveObjHandlerFactory() *MoveObjHandlerFactory {
+	return &MoveObjHandlerFactory{}
 }
 
 // Spec returns the handler's target and config requirements.
@@ -95,7 +92,7 @@ func (f *MoveObjHandlerFactory) handle(ctx context.Context, char MoveObjActor, i
 	var moved int
 	for _, item := range items {
 		if item.Obj.instance.Object.Get().HasFlag(assets.ObjectFlagImmobile) {
-			char.Notify(fmt.Sprintf("You can't seem to move %s.", item.Obj.Name))
+			char.Publish([]byte(fmt.Sprintf("You can't seem to move %s.", item.Obj.Name)), nil)
 			continue
 		}
 
@@ -113,26 +110,22 @@ func (f *MoveObjHandlerFactory) handle(ctx context.Context, char MoveObjActor, i
 	}
 
 	if selfMsg := in.Config["self_message"]; selfMsg != "" {
-		char.Notify(selfMsg)
+		char.Publish([]byte(selfMsg), nil)
 	}
 	// For multi-item moves, the template only names the first item.
 	// TODO: build per-item or summary messages for all. targeting.
 
-	if f.pub != nil {
-		exclude := []string{char.Id()}
+	exclude := []string{char.Id()}
 
-		if targetMsg := in.Config["target_message"]; targetMsg != "" {
-			if ref := in.FirstTarget(in.Config["destination"]); ref != nil && ref.Actor != nil {
-				ref.Actor.actor.Notify(targetMsg)
-				exclude = append(exclude, ref.Actor.CharId)
-			}
+	if targetMsg := in.Config["target_message"]; targetMsg != "" {
+		if ref := in.FirstTarget(in.Config["destination"]); ref != nil && ref.Actor != nil {
+			ref.Actor.actor.Publish([]byte(targetMsg), nil)
+			exclude = append(exclude, ref.Actor.CharId)
 		}
+	}
 
-		if roomMsg := in.Config["room_message"]; roomMsg != "" {
-			if err := f.pub.Publish(char.Room(), exclude, []byte(roomMsg)); err != nil {
-				slog.Warn("failed to publish room message", "error", err)
-			}
-		}
+	if roomMsg := in.Config["room_message"]; roomMsg != "" {
+		char.Room().Publish([]byte(roomMsg), exclude)
 	}
 
 	return nil
