@@ -58,9 +58,9 @@ func TestSpacesForDarkRoom(t *testing.T) {
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			var flags []string
+			var flags []assets.RoomFlag
 			if tc.roomDark {
-				flags = []string{"dark"}
+				flags = []assets.RoomFlag{assets.RoomFlagDark}
 			}
 			zone := &assets.Zone{ResetMode: assets.ZoneResetNever}
 			roomSpec := &assets.Room{
@@ -76,9 +76,9 @@ func TestSpacesForDarkRoom(t *testing.T) {
 			objInRoom(t, room, "obj-1", "sword")
 			newTestPlayer("player-1", "Alice", room)
 
-			var grants map[string]bool
+			var grants map[string][]string
 			if tc.darkvision {
-				grants = map[string]bool{assets.PerkGrantDarkvision: true}
+				grants = map[string][]string{assets.PerkGrantIgnoreRoomFlag: {string(assets.RoomFlagDark)}}
 			}
 			actor := &gametest.BaseActor{
 				ActorId:   "actor",

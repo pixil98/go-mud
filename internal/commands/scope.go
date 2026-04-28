@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 )
 
@@ -124,7 +125,7 @@ func (ws *WorldScopes) SpacesFor(s scope, actor game.Actor) ([]SearchSpace, erro
 	if s&scopeRoom != 0 {
 		room := actor.Room()
 		var finder TargetFinder = room
-		if !CanSee(actor, room) {
+		if room.Restricts(actor, assets.RoomFlagDark) {
 			finder = darkRoomFinder{}
 		}
 		spaces = append(spaces, SearchSpace{

@@ -2,6 +2,8 @@
 package gametest
 
 import (
+	"slices"
+
 	"github.com/pixil98/go-mud/internal/assets"
 	"github.com/pixil98/go-mud/internal/game"
 )
@@ -22,9 +24,8 @@ type BaseActor struct {
 	ActorFollowing game.Actor
 	ActorFollowers []game.Actor
 	GroupedIds     map[string]bool
-	Resources      map[string][2]int // name → {current, max}
-	Grants         map[string]bool
-	GrantValues    map[string][]string
+	Resources      map[string][2]int   // name → {current, max}
+	Grants         map[string][]string // grant key → args
 	SpendAPFails   bool
 	SpentAP        int
 	Moved          bool
@@ -78,11 +79,13 @@ func (a *BaseActor) SpendAP(cost int) bool {
 	return !a.SpendAPFails
 }
 
-func (a *BaseActor) HasGrant(key, _ string) bool { return a.Grants[key] }
-func (a *BaseActor) ModifierValue(string) int    { return 0 }
+func (a *BaseActor) HasGrant(key, arg string) bool {
+	return slices.Contains(a.Grants[key], arg)
+}
+func (a *BaseActor) ModifierValue(string) int { return 0 }
 
 func (a *BaseActor) GrantArgs(key string) []string {
-	return a.GrantValues[key]
+	return a.Grants[key]
 }
 
 func (a *BaseActor) AddTimedPerks(string, []assets.Perk, int) {}

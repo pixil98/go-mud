@@ -18,7 +18,8 @@
         "perks": [
             {
                 "type": "grant",
-                "key": "darkvision"
+                "key": "ignore_room_flag",
+                "arg": "dark"
             }
         ],
         "extra_descs": [

@@ -8,11 +8,10 @@
   heal until login) and update the test in character_test.go to match.
 
 ## Light and Darkness
-Current implementation: rooms grant `dark` perk to occupants; personal `darkvision` grant (race, spell, or equipped light source) counters it. Darkness blocks look, room-scope target resolution (combat, get, etc.), and movement announcements to observers who can't see.
-
+Current implementation: rooms flag `dark`; personal `ignore_room_flag:dark` grant (race, spell, or equipped light source) counters it. Darkness blocks look, room-scope target resolution (combat, get, etc.), and movement announcements to observers who can't see.
 Still needed:
 - Light source objects with finite duration (burn time)
-- Utility "light" spell: non-combat spell that adds a timed `darkvision` grant. Requires distinguishing combat vs utility abilities so utility spells can auto-cast outside of combat.
+- Utility "light" spell: non-combat spell that adds a timed `ignore_room_flag:dark` grant. Requires distinguishing combat vs utility abilities so utility spells can auto-cast outside of combat.
 
 ## Mobile Flags — Runtime Wiring Needed
 Wired up: sentinel (wandering), stay_zone (wandering), scavenger (item pickup),

@@ -51,21 +51,12 @@ func (f *LookHandlerFactory) Create() (CommandFunc, error) {
 
 const darkRoomDesc = "It is pitch black..."
 
-// CanSee returns true if the actor can see in the given room. Returns false
-// when the room is dark and the actor lacks a darkvision grant.
-func CanSee(actor interface{ HasGrant(string, string) bool }, room *game.RoomInstance) bool {
-	if room == nil || !room.Room.Get().HasFlag(assets.RoomFlagDark) {
-		return true
-	}
-	return actor.HasGrant(assets.PerkGrantDarkvision, "")
-}
-
 // DescribeRoom returns a visibility-aware room description for the actor.
 func DescribeRoom(actor interface {
 	Name() string
-	HasGrant(string, string) bool
+	HasGrant(key, arg string) bool
 }, room *game.RoomInstance) string {
-	if !CanSee(actor, room) {
+	if room.Restricts(actor, assets.RoomFlagDark) {
 		return darkRoomDesc
 	}
 	return room.Describe(actor.Name())
@@ -77,7 +68,7 @@ func (f *LookHandlerFactory) handle(ctx context.Context, actor LookActor, in *Co
 		return NewUserError("You are in an invalid location.")
 	}
 
-	if !CanSee(actor, ri) {
+	if ri.Restricts(actor, assets.RoomFlagDark) {
 		actor.Notify(darkRoomDesc)
 		return nil
 	}

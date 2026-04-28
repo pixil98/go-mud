@@ -103,6 +103,21 @@ func (ri *RoomInstance) Zone() *ZoneInstance {
 	return ri.zone
 }
 
+// GrantHolder is the subset of Actor needed to check perk grants.
+type GrantHolder interface {
+	HasGrant(key, arg string) bool
+}
+
+// Restricts reports whether the room imposes the given flag's restriction on
+// the actor. Returns true when the room has the flag and the actor lacks an
+// "ignore_room_flag" grant for it. nil rooms do not restrict.
+func (ri *RoomInstance) Restricts(actor GrantHolder, flag assets.RoomFlag) bool {
+	if ri == nil || !ri.Room.Get().HasFlag(flag) {
+		return false
+	}
+	return !actor.HasGrant(assets.PerkGrantIgnoreRoomFlag, string(flag))
+}
+
 // Reset clears all mobs and objects and respawns them from the room definition.
 // Players are preserved. Exit closure state is restored to definition defaults.
 // Cross-zone door state is also synchronized via resolved exit pointers.

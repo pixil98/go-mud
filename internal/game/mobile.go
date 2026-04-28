@@ -103,7 +103,7 @@ func (mi *MobileInstance) tryAggro() bool {
 	if room == nil {
 		return false
 	}
-	if room.Room.Get().HasFlag(assets.RoomFlagDark) && !mi.HasGrant(assets.PerkGrantDarkvision, "") {
+	if room.Restricts(mi, assets.RoomFlagDark) {
 		return false
 	}
 

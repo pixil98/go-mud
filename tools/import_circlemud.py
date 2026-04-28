@@ -113,23 +113,24 @@ MOB_FLAGS = {
     "AWARE": "aware",
 }
 
-# Affect flags we map to perk grants.
+# Affect flags we map to perk grants. Each value is the grant body (key + optional arg)
+# without the "type" field; the importer adds "type": "grant" before emitting.
 AFFECT_GRANTS = {
-    "INVISIBLE": "invisible",
-    "DETECT_INVIS": "detect_invis",
-    "SENSE_LIFE": "sense_life",
-    "WATERWALK": "waterwalk",
-    "INFRAVISION": "darkvision",
-    "SNEAK": "sneak",
-    "HIDE": "hide",
-    "PROTECT_EVIL": "protect_evil",
-    "PROTECT_GOOD": "protect_good",
-    "NOTRACK": "notrack",
-    "NOCHARM": "nocharm",
-    "NOSUMMON": "nosummon",
-    "NOSLEEP": "nosleep",
-    "NOBASH": "nobash",
-    "NOBLIND": "noblind",
+    "INVISIBLE": {"key": "invisible"},
+    "DETECT_INVIS": {"key": "detect_invis"},
+    "SENSE_LIFE": {"key": "sense_life"},
+    "WATERWALK": {"key": "waterwalk"},
+    "INFRAVISION": {"key": "ignore_room_flag", "arg": "dark"},
+    "SNEAK": {"key": "sneak"},
+    "HIDE": {"key": "hide"},
+    "PROTECT_EVIL": {"key": "protect_evil"},
+    "PROTECT_GOOD": {"key": "protect_good"},
+    "NOTRACK": {"key": "notrack"},
+    "NOCHARM": {"key": "nocharm"},
+    "NOSUMMON": {"key": "nosummon"},
+    "NOSLEEP": {"key": "nosleep"},
+    "NOBASH": {"key": "nobash"},
+    "NOBLIND": {"key": "noblind"},
 }
 
 # E-spec mob stats we care about are handled inline.
@@ -920,7 +921,7 @@ def convert_mob(parsed_mob, zone_slug, v2z, zones):
         if name == "SANCTUARY":
             perks.append({"type": "modifier", "key": "core.defense.all.absorb.pct", "value": 50})
         elif name in AFFECT_GRANTS:
-            perks.append({"type": "grant", "key": AFFECT_GRANTS[name]})
+            perks.append({"type": "grant", **AFFECT_GRANTS[name]})
         elif name not in ("BLIND", "DETECT_ALIGN", "DETECT_MAGIC", "GROUP",
                           "CURSE", "POISON", "SLEEP"):
             skipped_affects.append(name)
@@ -1054,7 +1055,7 @@ def convert_object(parsed_obj, zone_slug, v2z, zones, known_obj_vnums):
     elif type_name == "LIGHT":
         burn_time = values[2]
         if burn_time != 0:
-            perks.append({"type": "grant", "key": "darkvision"})
+            perks.append({"type": "grant", "key": "ignore_room_flag", "arg": "dark"})
         if burn_time > 0:
             unused["burn_time_hours"] = burn_time
 

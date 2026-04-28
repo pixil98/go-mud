@@ -9,17 +9,17 @@ import (
 
 func TestRoom_HasFlag(t *testing.T) {
 	tests := map[string]struct {
-		flags []string
+		flags []RoomFlag
 		check RoomFlag
 		want  bool
 	}{
 		"has death flag": {
-			flags: []string{"death"},
+			flags: []RoomFlag{RoomFlagDeath},
 			check: RoomFlagDeath,
 			want:  true,
 		},
 		"does not have flag": {
-			flags: []string{"death"},
+			flags: []RoomFlag{RoomFlagDeath},
 			check: RoomFlagNoMob,
 			want:  false,
 		},
@@ -29,7 +29,7 @@ func TestRoom_HasFlag(t *testing.T) {
 			want:  false,
 		},
 		"multiple flags": {
-			flags: []string{"nomob", "single_occupant"},
+			flags: []RoomFlag{RoomFlagNoMob, RoomFlagSingleOccupant},
 			check: RoomFlagSingleOccupant,
 			want:  true,
 		},
@@ -39,7 +39,7 @@ func TestRoom_HasFlag(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			r := &Room{Flags: tc.flags}
 			if got := r.HasFlag(tc.check); got != tc.want {
-				t.Errorf("HasFlag(%d) = %v, want %v", tc.check, got, tc.want)
+				t.Errorf("HasFlag(%q) = %v, want %v", tc.check, got, tc.want)
 			}
 		})
 	}
@@ -54,14 +54,14 @@ func TestRoom_Validate_Flags(t *testing.T) {
 	}
 
 	tests := map[string]struct {
-		flags  []string
+		flags  []RoomFlag
 		expErr string
 	}{
 		"valid flags": {
-			flags: []string{"death", "nomob", "single_occupant", "dark"},
+			flags: []RoomFlag{RoomFlagDeath, RoomFlagNoMob, RoomFlagSingleOccupant, RoomFlagDark},
 		},
 		"unknown flag rejected": {
-			flags:  []string{"bogus"},
+			flags:  []RoomFlag{"bogus"},
 			expErr: `unknown flag "bogus"`,
 		},
 		"no flags is valid": {

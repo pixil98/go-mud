@@ -34,7 +34,7 @@
             { "type": "modifier", "key": "core.combat.ac.flat", "value": 10 },
             { "type": "modifier", "key": "core.action_points.max", "value": 1 },
             { "type": "modifier", "key": "core.action_points.max", "value": 1 },
-            { "type": "grant", "key": "darkvision" },
+            { "type": "grant", "key": "ignore_room_flag", "arg": "dark" },
             { "type": "grant", "key": "unlock_ability", "arg": "attack" },
             { "type": "grant", "key": "unlock_ability", "arg": "fireball" },
             { "type": "grant", "key": "unlock_ability", "arg": "flame-ward" },

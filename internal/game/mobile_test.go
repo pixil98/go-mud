@@ -539,7 +539,7 @@ func TestMobileInstance_tryAggro(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			perks := []assets.Perk{testHPPerk}
 			if tc.mobDarkvision {
-				perks = append(perks, assets.Perk{Type: assets.PerkTypeGrant, Key: assets.PerkGrantDarkvision})
+				perks = append(perks, assets.Perk{Type: assets.PerkTypeGrant, Key: assets.PerkGrantIgnoreRoomFlag, Arg: string(assets.RoomFlagDark)})
 			}
 			mobDef := storage.NewResolvedSmartIdentifier("mob", &assets.Mobile{
 				ShortDesc: "a mob",
@@ -555,9 +555,9 @@ func TestMobileInstance_tryAggro(t *testing.T) {
 				mi.setResourceCurrent(assets.ResourceHp, 0)
 			}
 
-			var roomFlags []string
+			var roomFlags []assets.RoomFlag
 			if tc.roomDark {
-				roomFlags = []string{"dark"}
+				roomFlags = []assets.RoomFlag{assets.RoomFlagDark}
 			}
 			roomDef := storage.NewResolvedSmartIdentifier("r", &assets.Room{Name: "r", Flags: roomFlags})
 			ri, _ := NewRoomInstance(roomDef)

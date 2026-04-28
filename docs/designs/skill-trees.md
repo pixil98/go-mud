@@ -232,7 +232,7 @@ Well-known grant keys:
 ```json
 { "type": "grant", "key": "unlock_ability", "arg": "firebolt" }
 { "type": "grant", "key": "attack", "arg": "1d6" }
-{ "type": "grant", "key": "darkvision" }
+{ "type": "grant", "key": "ignore_room_flag", "arg": "dark" }
 ```
 
 ### Key naming convention (recommended)

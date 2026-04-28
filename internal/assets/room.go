@@ -3,6 +3,7 @@ package assets
 import (
 	"errors"
 	"fmt"
+	"slices"
 
 	"github.com/pixil98/go-mud/internal/storage"
 )
@@ -11,34 +12,23 @@ import (
 // Room flags
 // ---------------------------------------------------------------------------
 
-// RoomFlag defines a boolean property of a room.
-type RoomFlag int
+// RoomFlag is a boolean property of a room. Values match the lowercase string
+// stored in asset JSON.
+type RoomFlag string
 
-// RoomFlag values.
 const (
-	RoomFlagUnknown        RoomFlag = iota
-	RoomFlagDeath                   // Death trap; character dies on entry
-	RoomFlagNoMob                   // Mobs cannot wander in
-	RoomFlagSingleOccupant          // Only one player allowed at a time
-	RoomFlagDark                    // Room is dark; occupants without darkvision can't see
+	RoomFlagDeath          RoomFlag = "death"           // Death trap; character dies on entry
+	RoomFlagNoMob          RoomFlag = "nomob"           // Mobs cannot wander in
+	RoomFlagSingleOccupant RoomFlag = "single_occupant" // Only one player allowed at a time
+	RoomFlagDark           RoomFlag = "dark"            // Occupants without an "ignore_room_flag:dark" grant can't see
 )
 
-// parseRoomFlag converts a flag name to its enum value. Input must be
-// lowercase; Validate catches any non-lowercase or otherwise unknown flag at
-// load time so hot paths can skip the case-folding.
-func parseRoomFlag(s string) RoomFlag {
-	switch s {
-	case "death":
-		return RoomFlagDeath
-	case "nomob":
-		return RoomFlagNoMob
-	case "single_occupant":
-		return RoomFlagSingleOccupant
-	case "dark":
-		return RoomFlagDark
-	default:
-		return RoomFlagUnknown
-	}
+// validRoomFlags is the set of recognized RoomFlag values, used by Validate.
+var validRoomFlags = map[RoomFlag]struct{}{
+	RoomFlagDeath:          {},
+	RoomFlagNoMob:          {},
+	RoomFlagSingleOccupant: {},
+	RoomFlagDark:           {},
 }
 
 // ---------------------------------------------------------------------------
@@ -89,18 +79,13 @@ type Room struct {
 	MobSpawns   []storage.SmartIdentifier[*Mobile] `json:"mobile_spawns"` // mobile IDs to spawn; list duplicates for multiple
 	ObjSpawns   []ObjectSpawn                      `json:"object_spawns"` // objects to spawn
 	Perks       []Perk                             `json:"perks,omitempty"`
-	Flags       []string                           `json:"flags,omitempty"`
+	Flags       []RoomFlag                         `json:"flags,omitempty"`
 	ExtraDescs  []ExtraDesc                        `json:"extra_descs,omitempty"`
 }
 
 // HasFlag returns true if the room has the given flag.
 func (r *Room) HasFlag(flag RoomFlag) bool {
-	for _, f := range r.Flags {
-		if parseRoomFlag(f) == flag {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(r.Flags, flag)
 }
 
 // Validate returns an error if the room definition is invalid.
@@ -127,7 +112,7 @@ func (r *Room) Validate() error {
 	}
 
 	for _, f := range r.Flags {
-		if parseRoomFlag(f) == RoomFlagUnknown {
+		if _, ok := validRoomFlags[f]; !ok {
 			errs = append(errs, fmt.Errorf("unknown flag %q", f))
 		}
 	}

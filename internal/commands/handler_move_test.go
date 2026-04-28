@@ -16,7 +16,7 @@ func newDarkTestRoom(t *testing.T, id, name, zoneId string) *game.RoomInstance {
 	room := &assets.Room{
 		Name:  name,
 		Zone:  storage.NewResolvedSmartIdentifier(zoneId, zone),
-		Flags: []string{"dark"},
+		Flags: []assets.RoomFlag{assets.RoomFlagDark},
 	}
 	ri, err := game.NewRoomInstance(storage.NewResolvedSmartIdentifier(id, room))
 	if err != nil {
@@ -49,7 +49,7 @@ func TestAnnounceToRoomDarkness(t *testing.T) {
 			room.AddPlayer("observer", observer)
 			if tc.observerDarkvision {
 				dvCache := game.NewPerkCache(
-					[]assets.Perk{{Type: assets.PerkTypeGrant, Key: assets.PerkGrantDarkvision}},
+					[]assets.Perk{{Type: assets.PerkTypeGrant, Key: assets.PerkGrantIgnoreRoomFlag, Arg: string(assets.RoomFlagDark)}},
 					nil,
 				)
 				observer.AddSource("darkvision", dvCache)
