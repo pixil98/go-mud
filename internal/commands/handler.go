@@ -69,7 +69,7 @@ type HandlerSpec struct {
 // PlayerLookup finds a player by character ID.
 type PlayerLookup interface {
 	GetPlayer(charId string) *game.CharacterInstance
-	game.PlayerGroup
+	PlayerGroup
 }
 
 // HandlerFactory creates CommandFuncs from command configurations.

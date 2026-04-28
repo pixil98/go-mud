@@ -13,10 +13,10 @@ func TestResolvedExit_ClosedLocked(t *testing.T) {
 		setClosed bool
 		setLocked bool
 	}{
-		"closed and locked":          {setClosed: true, setLocked: true},
-		"closed only":                {setClosed: true, setLocked: false},
-		"locked only":                {setClosed: false, setLocked: true},
-		"neither closed nor locked":  {setClosed: false, setLocked: false},
+		"closed and locked":         {setClosed: true, setLocked: true},
+		"closed only":               {setClosed: true, setLocked: false},
+		"locked only":               {setClosed: false, setLocked: true},
+		"neither closed nor locked": {setClosed: false, setLocked: false},
 	}
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
@@ -354,10 +354,10 @@ func TestRoomInstance_ForEachActor(t *testing.T) {
 		players int
 		want    int
 	}{
-		"empty room visits nobody":   {mobs: 0, players: 0, want: 0},
-		"mobs only":                  {mobs: 2, players: 0, want: 2},
-		"players only":               {mobs: 0, players: 2, want: 2},
-		"mixed mobs and players":     {mobs: 1, players: 2, want: 3},
+		"empty room visits nobody": {mobs: 0, players: 0, want: 0},
+		"mobs only":                {mobs: 2, players: 0, want: 2},
+		"players only":             {mobs: 0, players: 2, want: 2},
+		"mixed mobs and players":   {mobs: 1, players: 2, want: 3},
 	}
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
@@ -384,8 +384,8 @@ func TestRoomInstance_Zone(t *testing.T) {
 		addToZone bool
 		wantNil   bool
 	}{
-		"nil before AddRoom":    {addToZone: false, wantNil: true},
-		"set after AddRoom":     {addToZone: true, wantNil: false},
+		"nil before AddRoom": {addToZone: false, wantNil: true},
+		"set after AddRoom":  {addToZone: true, wantNil: false},
 	}
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
@@ -534,13 +534,13 @@ func TestRoomInstance_Describe(t *testing.T) {
 			wantInOut: []string{"The Great Hall"},
 		},
 		"object long desc appears": {
-			roomName: "Hall",
-			addObj:   true,
+			roomName:  "Hall",
+			addObj:    true,
 			wantInOut: []string{"A shiny sword lies here."},
 		},
 		"mob appears in output": {
-			roomName: "Hall",
-			addMob:   true,
+			roomName:  "Hall",
+			addMob:    true,
 			wantInOut: []string{"goblin"},
 		},
 		"actor excluded from player list": {
@@ -603,5 +603,58 @@ func TestRoomInstance_Describe(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+// addPlayerToRoom creates a CharacterInstance backed by a buffered msgs channel
+// and adds it to room. Returns the instance and the channel.
+func addPlayerToRoom(t *testing.T, room *RoomInstance, charId string) (*CharacterInstance, chan []byte) {
+	t.Helper()
+	msgs := make(chan []byte, 4)
+	charRef := storage.NewResolvedSmartIdentifier(charId, &assets.Character{Name: charId})
+	ci, err := NewCharacterInstance(charRef, msgs, room)
+	if err != nil {
+		t.Fatalf("NewCharacterInstance: %v", err)
+	}
+	room.AddPlayer(charId, ci)
+	return ci, msgs
+}
+
+func TestRoomInstance_Publish(t *testing.T) {
+	tests := map[string]struct {
+		exclude []string
+		wantInA bool
+		wantInB bool
+	}{
+		"no exclude delivers to all":    {wantInA: true, wantInB: true},
+		"exclude one player skips them": {exclude: []string{"a"}, wantInB: true},
+		"exclude all skips everyone":    {exclude: []string{"a", "b"}},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			room := newTestRoom("r")
+			_, msgsA := addPlayerToRoom(t, room, "a")
+			_, msgsB := addPlayerToRoom(t, room, "b")
+
+			room.Publish([]byte("hello"), tc.exclude)
+
+			gotA := drainOne(msgsA)
+			gotB := drainOne(msgsB)
+			if (gotA != "") != tc.wantInA {
+				t.Errorf("a got %q, wantDelivered=%v", gotA, tc.wantInA)
+			}
+			if (gotB != "") != tc.wantInB {
+				t.Errorf("b got %q, wantDelivered=%v", gotB, tc.wantInB)
+			}
+		})
+	}
+}
+
+func drainOne(ch chan []byte) string {
+	select {
+	case b := <-ch:
+		return string(b)
+	default:
+		return ""
 	}
 }

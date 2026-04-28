@@ -11,11 +11,11 @@ import (
 
 // WhoHandlerFactory creates handlers that list online players.
 type WhoHandlerFactory struct {
-	players game.PlayerGroup
+	players PlayerGroup
 }
 
 // NewWhoHandlerFactory creates a new WhoHandlerFactory.
-func NewWhoHandlerFactory(players game.PlayerGroup) *WhoHandlerFactory {
+func NewWhoHandlerFactory(players PlayerGroup) *WhoHandlerFactory {
 	return &WhoHandlerFactory{players: players}
 }
 

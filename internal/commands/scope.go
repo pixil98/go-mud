@@ -22,7 +22,7 @@ func (f objectOnlyFinder) FindExit(string) (string, *game.ResolvedExit) { return
 // playerOnlyFinder wraps a PlayerGroup into a full TargetFinder.
 // FindPlayers searches members via the matcher; mobs, objects, and exits always return empty.
 type playerOnlyFinder struct {
-	game.PlayerGroup
+	PlayerGroup
 }
 
 func (f playerOnlyFinder) FindPlayers(match func(*game.CharacterInstance) bool) []*game.CharacterInstance {
