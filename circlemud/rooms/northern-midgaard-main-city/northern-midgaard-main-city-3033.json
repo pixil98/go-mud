@@ -11,11 +11,14 @@
                 "description": "You see the main street."
             }
         },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomagic"
+            }
+        ],
         "mobile_spawns": [
             "northern-midgaard-main-city-3000"
-        ],
-        "flags": [
-            "nomagic"
         ]
     },
     "circlemud_unused": {

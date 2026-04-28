@@ -14,8 +14,11 @@
                 "description": "You look down into the cave. Bones are strewn about everywhere."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ]
     },
     "circlemud_unused": {

@@ -15,9 +15,15 @@
                 "description": "There appear to be some bars here, making passage to the west difficult."
             }
         },
-        "flags": [
-            "dark",
-            "water"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            },
+            {
+                "type": "grant",
+                "key": "room_water"
+            }
         ]
     },
     "circlemud_unused": {

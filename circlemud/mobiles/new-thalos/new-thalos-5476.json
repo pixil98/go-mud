@@ -16,8 +16,8 @@
             },
             {
                 "type": "grant",
-                "key": "ignore_room_flag",
-                "arg": "water"
+                "key": "ignore_restriction",
+                "arg": "room_water"
             },
             {
                 "type": "modifier",
@@ -26,8 +26,8 @@
             },
             {
                 "type": "grant",
-                "key": "ignore_room_flag",
-                "arg": "dark"
+                "key": "ignore_restriction",
+                "arg": "room_dark"
             },
             {
                 "type": "grant",

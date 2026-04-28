@@ -11,9 +11,15 @@
                 "description": "You see a rocky crevasse that proceeds deep under the pyramid."
             }
         },
-        "flags": [
-            "dark",
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            },
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ],
         "extra_descs": [
             {

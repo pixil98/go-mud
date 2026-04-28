@@ -13,8 +13,11 @@
                 "room_id": "river-island-of-minos-908"
             }
         },
-        "flags": [
-            "water"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_water"
+            }
         ]
     },
     "circlemud_unused": {

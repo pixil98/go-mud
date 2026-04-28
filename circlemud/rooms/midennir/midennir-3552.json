@@ -15,8 +15,11 @@
                 "description": "The tunnel continues to the south."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ]
     },
     "circlemud_unused": {

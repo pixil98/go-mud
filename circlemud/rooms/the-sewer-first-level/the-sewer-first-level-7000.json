@@ -15,9 +15,15 @@
                 "description": "The water's edge."
             }
         },
-        "flags": [
-            "dark",
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            },
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ]
     },
     "circlemud_unused": {

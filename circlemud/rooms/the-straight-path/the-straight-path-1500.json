@@ -16,8 +16,11 @@
                 "description": "The River of Lost Souls flows just to the south of here."
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ]
     },
     "circlemud_unused": {

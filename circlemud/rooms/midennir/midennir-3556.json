@@ -11,8 +11,11 @@
                 "description": "The tunnel heads north."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ],
         "mobile_spawns": [
             "midennir-3501",

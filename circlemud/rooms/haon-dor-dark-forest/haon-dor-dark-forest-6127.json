@@ -15,8 +15,11 @@
                 "description": "The narrow, dusty trail leads south through the forest."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ],
         "extra_descs": [
             {

@@ -15,8 +15,11 @@
                 "description": "The path winds its way westward."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ],
         "extra_descs": [
             {

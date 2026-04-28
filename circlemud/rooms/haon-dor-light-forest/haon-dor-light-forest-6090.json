@@ -15,8 +15,11 @@
                 "description": "To the west the dusty trail ends, and becomes a narrow trail into the cool shadows of the forest."
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ],
         "extra_descs": [
             {

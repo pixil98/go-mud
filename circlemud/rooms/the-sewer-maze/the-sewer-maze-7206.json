@@ -19,8 +19,11 @@
                 "description": "You see another part of the lair."
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ],
         "extra_descs": [
             {

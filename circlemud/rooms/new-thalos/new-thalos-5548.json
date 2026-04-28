@@ -13,14 +13,15 @@
         "perks": [
             {
                 "type": "grant",
-                "key": "peaceful"
+                "key": "room_peaceful"
+            },
+            {
+                "type": "grant",
+                "key": "room_nomagic"
             }
         ],
         "mobile_spawns": [
             "new-thalos-5400"
-        ],
-        "flags": [
-            "nomagic"
         ]
     },
     "circlemud_unused": {

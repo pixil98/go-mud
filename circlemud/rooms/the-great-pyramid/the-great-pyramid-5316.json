@@ -11,8 +11,11 @@
                 "description": "The crawlway gets a little larger to the north."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ],
         "mobile_spawns": [
             "the-great-pyramid-5302"

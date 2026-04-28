@@ -23,8 +23,11 @@
                 "description": "You see more aqueduct."
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ],
         "extra_descs": [
             {

@@ -23,9 +23,15 @@
                 "description": "The shadows obscure your vision."
             }
         },
-        "flags": [
-            "dark",
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            },
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ],
         "mobile_spawns": [
             "the-high-tower-of-magic-2502"

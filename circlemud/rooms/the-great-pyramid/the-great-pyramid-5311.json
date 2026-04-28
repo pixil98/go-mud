@@ -11,11 +11,14 @@
                 "description": "The pool of fire ends to the east."
             }
         },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_water"
+            }
+        ],
         "mobile_spawns": [
             "the-great-pyramid-5309"
-        ],
-        "flags": [
-            "water"
         ]
     },
     "circlemud_unused": {

@@ -16,11 +16,14 @@
                 "description": "You see the river flowing west."
             }
         },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomagic"
+            }
+        ],
         "mobile_spawns": [
             "northern-midgaard-main-city-3006"
-        ],
-        "flags": [
-            "nomagic"
         ]
     },
     "circlemud_unused": {

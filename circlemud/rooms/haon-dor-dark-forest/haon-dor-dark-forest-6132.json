@@ -20,9 +20,15 @@
                 "description": "Downwards is the narrow forest path."
             }
         },
-        "flags": [
-            "dark",
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            },
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ],
         "extra_descs": [
             {

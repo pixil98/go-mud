@@ -19,8 +19,11 @@
                 "description": "East. The muddy sewer leads into a bend that goes south."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ],
         "extra_descs": [
             {

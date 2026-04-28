@@ -24,8 +24,11 @@
                 }
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ],
         "mobile_spawns": [
             "new-thalos-5462",

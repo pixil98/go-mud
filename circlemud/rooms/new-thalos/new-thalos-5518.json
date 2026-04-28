@@ -16,7 +16,7 @@
         "perks": [
             {
                 "type": "grant",
-                "key": "peaceful"
+                "key": "room_peaceful"
             }
         ]
     },

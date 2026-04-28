@@ -16,8 +16,11 @@
                 "description": "You can't see what is down there, it is too dark. Looks like it would be impossible to climb back up."
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ],
         "mobile_spawns": [
             "northern-midgaard-main-city-3020"

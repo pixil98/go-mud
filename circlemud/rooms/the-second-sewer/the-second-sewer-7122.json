@@ -10,8 +10,11 @@
                 "room_id": "the-second-sewer-7112"
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ],
         "extra_descs": [
             {

@@ -19,8 +19,11 @@
                 "description": "You see a small chamber filled with fire."
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ]
     },
     "circlemud_unused": {

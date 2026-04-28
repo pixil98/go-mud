@@ -3,37 +3,29 @@ package assets
 import (
 	"errors"
 	"fmt"
-	"slices"
 
 	"github.com/pixil98/go-mud/internal/storage"
 )
 
 // ---------------------------------------------------------------------------
-// Room flags
+// Room flag keys
 // ---------------------------------------------------------------------------
 
-// RoomFlag is a boolean property of a room. Values match the lowercase string
-// stored in asset JSON.
+// RoomFlag is the perk key string for a well-known room property. Authoring
+// stores these as grant perks; runtime checks query the room's PerkCache via
+// (*RoomInstance).Restricts. The "room_" prefix encodes the audience and
+// keeps keys unique across scopes.
 type RoomFlag string
 
 const (
-	RoomFlagDeath          RoomFlag = "death"           // Death trap; character dies on entry
-	RoomFlagNoMob          RoomFlag = "nomob"           // Mobs cannot wander in
-	RoomFlagSingleOccupant RoomFlag = "single_occupant" // Only one player allowed at a time
-	RoomFlagDark           RoomFlag = "dark"            // Occupants without an "ignore_room_flag:dark" grant can't see
-	RoomFlagNoMagic        RoomFlag = "nomagic"         // Spellcasting blocked unless caster has "ignore_room_flag:nomagic"
-	RoomFlagWater          RoomFlag = "water"           // Deep water; entry blocked unless actor has "ignore_room_flag:water"
+	RoomFlagDeath          RoomFlag = "room_death"           // Death trap; character dies on entry
+	RoomFlagNoMob          RoomFlag = "room_nomob"           // Mobs cannot wander in
+	RoomFlagSingleOccupant RoomFlag = "room_single_occupant" // Only one player allowed at a time
+	RoomFlagDark           RoomFlag = "room_dark"            // Occupants without an "ignore_restriction:room_dark" grant can't see
+	RoomFlagNoMagic        RoomFlag = "room_nomagic"         // Spellcasting blocked unless caster has "ignore_restriction:room_nomagic"
+	RoomFlagWater          RoomFlag = "room_water"           // Deep water; entry blocked unless actor has "ignore_restriction:room_water"
+	RoomFlagPeaceful       RoomFlag = "room_peaceful"        // Combat initiation blocked unless actor has "ignore_restriction:room_peaceful"
 )
-
-// validRoomFlags is the set of recognized RoomFlag values, used by Validate.
-var validRoomFlags = map[RoomFlag]struct{}{
-	RoomFlagDeath:          {},
-	RoomFlagNoMob:          {},
-	RoomFlagSingleOccupant: {},
-	RoomFlagDark:           {},
-	RoomFlagNoMagic:        {},
-	RoomFlagWater:          {},
-}
 
 // ---------------------------------------------------------------------------
 // Extra descriptions
@@ -83,13 +75,7 @@ type Room struct {
 	MobSpawns   []storage.SmartIdentifier[*Mobile] `json:"mobile_spawns"` // mobile IDs to spawn; list duplicates for multiple
 	ObjSpawns   []ObjectSpawn                      `json:"object_spawns"` // objects to spawn
 	Perks       []Perk                             `json:"perks,omitempty"`
-	Flags       []RoomFlag                         `json:"flags,omitempty"`
 	ExtraDescs  []ExtraDesc                        `json:"extra_descs,omitempty"`
-}
-
-// HasFlag returns true if the room has the given flag.
-func (r *Room) HasFlag(flag RoomFlag) bool {
-	return slices.Contains(r.Flags, flag)
 }
 
 // Validate returns an error if the room definition is invalid.
@@ -115,10 +101,8 @@ func (r *Room) Validate() error {
 		}
 	}
 
-	for _, f := range r.Flags {
-		if _, ok := validRoomFlags[f]; !ok {
-			errs = append(errs, fmt.Errorf("unknown flag %q", f))
-		}
+	if err := validatePerks(r.Perks); err != nil {
+		errs = append(errs, err)
 	}
 
 	for i := range r.ExtraDescs {

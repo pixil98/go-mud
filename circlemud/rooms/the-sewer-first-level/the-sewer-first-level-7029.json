@@ -19,8 +19,11 @@
                 "description": "To the west you can just make out another junction similar to the one you are standing in."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ]
     },
     "circlemud_unused": {

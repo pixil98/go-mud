@@ -11,8 +11,11 @@
                 "description": "You see the sewer system that way."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ],
         "mobile_spawns": [
             "the-sewer-maze-7204"

@@ -24,6 +24,12 @@
                 }
             }
         },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomagic"
+            }
+        ],
         "extra_descs": [
             {
                 "keywords": [
@@ -40,9 +46,6 @@
             "rome-12005",
             "rome-12011",
             "rome-12019"
-        ],
-        "flags": [
-            "nomagic"
         ]
     },
     "circlemud_unused": {

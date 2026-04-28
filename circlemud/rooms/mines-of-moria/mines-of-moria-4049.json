@@ -16,8 +16,11 @@
                 "description": "A trail heads towards the mountains to the west."
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ]
     },
     "circlemud_unused": {

@@ -15,8 +15,11 @@
                 "description": "You see an odd red glow from that direction."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ],
         "mobile_spawns": [
             "newbie-zone-18607"

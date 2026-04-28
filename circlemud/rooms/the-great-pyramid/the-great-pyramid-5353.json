@@ -15,8 +15,11 @@
                 "description": "You see only a wall of whirling, blowing, dry sand."
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ],
         "extra_descs": [
             {

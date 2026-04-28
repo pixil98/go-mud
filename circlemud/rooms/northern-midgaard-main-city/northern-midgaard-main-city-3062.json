@@ -14,7 +14,11 @@
         "perks": [
             {
                 "type": "grant",
-                "key": "peaceful"
+                "key": "room_peaceful"
+            },
+            {
+                "type": "grant",
+                "key": "room_nomagic"
             }
         ],
         "extra_descs": [
@@ -58,9 +62,6 @@
         ],
         "mobile_spawns": [
             "northern-midgaard-main-city-3010"
-        ],
-        "flags": [
-            "nomagic"
         ]
     },
     "circlemud_unused": {

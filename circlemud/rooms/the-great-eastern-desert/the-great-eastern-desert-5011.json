@@ -15,8 +15,11 @@
                 "description": "The passageway spirals down into the gloom."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ],
         "mobile_spawns": [
             "the-great-eastern-desert-5010"

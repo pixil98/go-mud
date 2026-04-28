@@ -24,8 +24,11 @@
                 "description": "There is a strange path leading towards a rusty gate to the west."
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ]
     },
     "circlemud_unused": {

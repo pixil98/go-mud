@@ -15,8 +15,11 @@
                 "description": "The hall extends to the south where it seems to lighten somewhat."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ],
         "extra_descs": [
             {

@@ -109,13 +109,14 @@ type GrantHolder interface {
 }
 
 // Restricts reports whether the room imposes the given flag's restriction on
-// the actor. Returns true when the room has the flag and the actor lacks an
-// "ignore_room_flag" grant for it. nil rooms do not restrict.
+// the actor. Returns true when the room resolves the flag in its PerkCache
+// (own, inherited, or timed) and the actor lacks an "ignore_room_flag" grant
+// for it. nil rooms do not restrict.
 func (ri *RoomInstance) Restricts(actor GrantHolder, flag assets.RoomFlag) bool {
-	if ri == nil || !ri.Room.Get().HasFlag(flag) {
+	if ri == nil || !ri.Perks.HasGrant(string(flag), "") {
 		return false
 	}
-	return !actor.HasGrant(assets.PerkGrantIgnoreRoomFlag, string(flag))
+	return !actor.HasGrant(assets.PerkGrantIgnoreRestriction, string(flag))
 }
 
 // Reset clears all mobs and objects and respawns them from the room definition.

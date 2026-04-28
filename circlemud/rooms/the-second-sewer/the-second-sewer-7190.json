@@ -22,8 +22,11 @@
                 "room_id": "the-second-sewer-7113"
             }
         },
-        "flags": [
-            "death"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_death"
+            }
         ]
     },
     "circlemud_unused": {

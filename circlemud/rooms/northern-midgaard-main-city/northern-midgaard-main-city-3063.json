@@ -14,11 +14,12 @@
         "perks": [
             {
                 "type": "grant",
-                "key": "peaceful"
+                "key": "room_nomob"
+            },
+            {
+                "type": "grant",
+                "key": "room_peaceful"
             }
-        ],
-        "flags": [
-            "nomob"
         ]
     },
     "circlemud_unused": {

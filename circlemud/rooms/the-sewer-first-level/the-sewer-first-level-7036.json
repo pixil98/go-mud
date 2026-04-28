@@ -16,8 +16,11 @@
                 "description": "Down the pit it is so utterly dark that you can't see a thing."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ]
     },
     "circlemud_unused": {

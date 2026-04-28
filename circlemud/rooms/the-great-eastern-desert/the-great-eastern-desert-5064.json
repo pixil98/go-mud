@@ -14,8 +14,11 @@
                 "room_id": "the-great-eastern-desert-5065"
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ]
     },
     "circlemud_unused": {

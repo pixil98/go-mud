@@ -40,18 +40,22 @@ ROOM_FLAG_BITS = {
     10: "GODROOM",
 }
 
+# Each entry is the perk body emitted (without "type": "grant", which is added
+# by the conversion). Room properties are keyed "room_<name>" so the audience
+# is visible in the identifier; actor-target perks (none here yet) would stay
+# unprefixed.
 ROOM_FLAGS = {
-    "DARK": {"type": "flag", "flag": "dark"},
-    "DEATH": {"type": "flag", "flag": "death"},
-    "NOMOB": {"type": "flag", "flag": "nomob"},
-    "PEACEFUL": {"type": "perk", "perk": {"type": "grant", "key": "peaceful"}},
-    "NOMAGIC": {"type": "flag", "flag": "nomagic"},
-    "TUNNEL": {"type": "flag", "flag": "single_occupant"},
+    "DARK": {"key": "room_dark"},
+    "DEATH": {"key": "room_death"},
+    "NOMOB": {"key": "room_nomob"},
+    "PEACEFUL": {"key": "room_peaceful"},
+    "NOMAGIC": {"key": "room_nomagic"},
+    "TUNNEL": {"key": "room_single_occupant"},
 }
 
-# Sector types that imply a room flag (e.g. deep water requires waterwalk).
+# Sector types that imply a room perk (e.g. deep water requires waterwalk).
 SECTOR_FLAGS = {
-    "WATER_NOSWIM": "water",
+    "WATER_NOSWIM": {"key": "room_water"},
 }
 
 SECTOR_TYPES = {
@@ -124,8 +128,8 @@ AFFECT_GRANTS = {
     "INVISIBLE": {"key": "invisible"},
     "DETECT_INVIS": {"key": "detect_invis"},
     "SENSE_LIFE": {"key": "sense_life"},
-    "WATERWALK": {"key": "ignore_room_flag", "arg": "water"},
-    "INFRAVISION": {"key": "ignore_room_flag", "arg": "dark"},
+    "WATERWALK": {"key": "ignore_restriction", "arg": "room_water"},
+    "INFRAVISION": {"key": "ignore_restriction", "arg": "room_dark"},
     "SNEAK": {"key": "sneak"},
     "HIDE": {"key": "hide"},
     "PROTECT_EVIL": {"key": "protect_evil"},
@@ -831,24 +835,20 @@ def convert_exit(ex, source_zone_slug, v2z, zones, known_obj_vnums):
 
 
 def convert_room(parsed_room, zone_slug, v2z, zones, known_obj_vnums):
-    flags = []
     perks = []
 
     flag_names = bitvector_to_names(parsed_room["flags"], ROOM_FLAG_BITS)
     skipped_flags = []
     for name in flag_names:
-        mapping = ROOM_FLAGS.get(name)
-        if mapping is None:
+        body = ROOM_FLAGS.get(name)
+        if body is None:
             skipped_flags.append(name)
             continue
-        if mapping["type"] == "flag":
-            flags.append(mapping["flag"])
-        elif mapping["type"] == "perk":
-            perks.append(mapping["perk"])
+        perks.append({"type": "grant", **body})
 
     sector = SECTOR_TYPES.get(parsed_room["sector_type"], "")
-    if (sector_flag := SECTOR_FLAGS.get(sector)) and sector_flag not in flags:
-        flags.append(sector_flag)
+    if (sector_body := SECTOR_FLAGS.get(sector)):
+        perks.append({"type": "grant", **sector_body})
 
     exits = {}
     for ex in parsed_room["exits"]:
@@ -876,8 +876,6 @@ def convert_room(parsed_room, zone_slug, v2z, zones, known_obj_vnums):
 
     if perks:
         room["perks"] = perks
-    if flags:
-        room["flags"] = flags
     if extra_descs:
         room["extra_descs"] = extra_descs
 
@@ -1064,7 +1062,7 @@ def convert_object(parsed_obj, zone_slug, v2z, zones, known_obj_vnums):
     elif type_name == "LIGHT":
         burn_time = values[2]
         if burn_time != 0:
-            perks.append({"type": "grant", "key": "ignore_room_flag", "arg": "dark"})
+            perks.append({"type": "grant", "key": "ignore_restriction", "arg": "room_dark"})
         if burn_time > 0:
             unused["burn_time_hours"] = burn_time
 

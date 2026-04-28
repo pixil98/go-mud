@@ -15,8 +15,11 @@
                 "description": "The forest continues, but appears to be getting lighter."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ],
         "mobile_spawns": [
             "midennir-3502"

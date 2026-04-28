@@ -17,8 +17,11 @@
                 "description": "A very odd red glow emanates from that direction."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ]
     },
     "circlemud_unused": {

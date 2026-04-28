@@ -15,8 +15,11 @@
                 "description": "The narrow path winds its way through the trees to the east."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ],
         "extra_descs": [
             {

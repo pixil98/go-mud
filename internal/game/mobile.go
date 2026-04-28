@@ -144,8 +144,7 @@ func (mi *MobileInstance) tryWander(ctx context.Context) {
 		if re.closed || re.Dest == nil {
 			continue
 		}
-		destDef := re.Dest.Room.Get()
-		if destDef.HasFlag(assets.RoomFlagNoMob) || destDef.HasFlag(assets.RoomFlagDeath) {
+		if re.Dest.Restricts(mi, assets.RoomFlagNoMob) || re.Dest.Restricts(mi, assets.RoomFlagDeath) {
 			continue
 		}
 		if stayZone && re.Dest.zone != from.zone {

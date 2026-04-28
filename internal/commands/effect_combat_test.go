@@ -63,7 +63,7 @@ func TestAttackEffect_PeacefulArea(t *testing.T) {
 	player.AddSource("room", room.Perks)
 
 	room.Perks.SetOwn([]assets.Perk{
-		{Type: assets.PerkTypeGrant, Key: assets.PerkGrantPeaceful},
+		{Type: assets.PerkTypeGrant, Key: string(assets.RoomFlagPeaceful)},
 	})
 
 	effect := &attackEffect{}

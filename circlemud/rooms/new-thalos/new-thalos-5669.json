@@ -16,9 +16,15 @@
                 "room_id": "new-thalos-5670"
             }
         },
-        "flags": [
-            "dark",
-            "water"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            },
+            {
+                "type": "grant",
+                "key": "room_water"
+            }
         ]
     },
     "circlemud_unused": {

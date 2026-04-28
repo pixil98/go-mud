@@ -20,8 +20,11 @@
                 "description": "Thousands of spiders eye you with undisguised hunger."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ]
     },
     "circlemud_unused": {

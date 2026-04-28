@@ -58,15 +58,15 @@ func TestSpacesForDarkRoom(t *testing.T) {
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			var flags []assets.RoomFlag
+			var perks []assets.Perk
 			if tc.roomDark {
-				flags = []assets.RoomFlag{assets.RoomFlagDark}
+				perks = []assets.Perk{{Type: assets.PerkTypeGrant, Key: string(assets.RoomFlagDark)}}
 			}
 			zone := &assets.Zone{ResetMode: assets.ZoneResetNever}
 			roomSpec := &assets.Room{
 				Name:  "Dark Room",
 				Zone:  storage.NewResolvedSmartIdentifier("test-zone", zone),
-				Flags: flags,
+				Perks: perks,
 			}
 			room, err := game.NewRoomInstance(storage.NewResolvedSmartIdentifier("dark-room", roomSpec))
 			if err != nil {
@@ -78,7 +78,7 @@ func TestSpacesForDarkRoom(t *testing.T) {
 
 			var grants map[string][]string
 			if tc.darkvision {
-				grants = map[string][]string{assets.PerkGrantIgnoreRoomFlag: {string(assets.RoomFlagDark)}}
+				grants = map[string][]string{assets.PerkGrantIgnoreRestriction: {string(assets.RoomFlagDark)}}
 			}
 			actor := &gametest.BaseActor{
 				ActorId:   "actor",

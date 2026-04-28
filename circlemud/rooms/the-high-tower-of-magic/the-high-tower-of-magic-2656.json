@@ -10,8 +10,11 @@
                 "room_id": "the-high-tower-of-magic-2654"
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ]
     },
     "circlemud_unused": {

@@ -16,8 +16,11 @@
                 "description": "To the west the road continues towards the forest."
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ],
         "extra_descs": [
             {

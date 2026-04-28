@@ -11,6 +11,12 @@
                 "description": "Some animals have gathered on the bank to watch you, curious about what you are doing."
             }
         },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_water"
+            }
+        ],
         "extra_descs": [
             {
                 "keywords": [
@@ -54,9 +60,6 @@
             {
                 "object_id": "haon-dor-light-forest-6015"
             }
-        ],
-        "flags": [
-            "water"
         ]
     },
     "circlemud_unused": {

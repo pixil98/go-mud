@@ -16,8 +16,11 @@
                 "description": "The huge chessboard opens up to the west."
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ]
     },
     "circlemud_unused": {

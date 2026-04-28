@@ -9,16 +9,17 @@
         "perks": [
             {
                 "type": "grant",
-                "key": "peaceful"
+                "key": "room_peaceful"
+            },
+            {
+                "type": "grant",
+                "key": "room_nomagic"
             }
         ],
         "object_spawns": [
             {
                 "object_id": "northern-midgaard-main-city-3097"
             }
-        ],
-        "flags": [
-            "nomagic"
         ]
     },
     "circlemud_unused": {

@@ -13,12 +13,15 @@
                 "room_id": "river-island-of-minos-908"
             }
         },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_water"
+            }
+        ],
         "mobile_spawns": [
             "river-island-of-minos-910",
             "river-island-of-minos-910"
-        ],
-        "flags": [
-            "water"
         ]
     },
     "circlemud_unused": {

@@ -8,10 +8,10 @@
   heal until login) and update the test in character_test.go to match.
 
 ## Light and Darkness
-Current implementation: rooms flag `dark`; personal `ignore_room_flag:dark` grant (race, spell, or equipped light source) counters it. Darkness blocks look, room-scope target resolution (combat, get, etc.), and movement announcements to observers who can't see.
+Current implementation: rooms flag `room_dark`; personal `ignore_restriction:room_dark` grant (race, spell, or equipped light source) counters it. Darkness blocks look, room-scope target resolution (combat, get, etc.), and movement announcements to observers who can't see.
 Still needed:
 - Light source objects with finite duration (burn time)
-- Utility "light" spell: non-combat spell that adds a timed `ignore_room_flag:dark` grant. Requires distinguishing combat vs utility abilities so utility spells can auto-cast outside of combat.
+- Utility "light" spell: non-combat spell that adds a timed `ignore_restriction:room_dark` grant. Requires distinguishing combat vs utility abilities so utility spells can auto-cast outside of combat.
 
 ## Mobile Flags — Runtime Wiring Needed
 Wired up: sentinel (wandering), stay_zone (wandering), scavenger (item pickup),
@@ -23,10 +23,10 @@ Still need runtime behavior:
 - aware — mob can't be backstabbed (needs backstab system)
 
 ## Room Flags — Runtime Wiring Needed
-Each flag pairs with an `ignore_room_flag:<flag>` grant for actors that bypass it.
-- death — players entering should die/respawn (needs respawn system)
-- nomagic — block spell casting at the cast site (needs spell system)
-- water — block movement at the move site (needs movement-cost / boat system)
+Each flag pairs with an `ignore_restriction:<key>` grant for actors that bypass it.
+- room_death — players entering should die/respawn (needs respawn system)
+- room_nomagic — block spell casting at the cast site (needs spell system)
+- room_water — block movement at the move site (needs movement-cost / boat system)
 
 ## Perk Grants — Runtime Wiring Needed
 - invisible / detect_invis — actor visibility (needs visibility system beyond dark/darkvision)
@@ -44,4 +44,4 @@ Each flag pairs with an `ignore_room_flag:<flag>` grant for actors that bypass i
 ## Consider
 - Should overhealing generate threat? Currently heal threat is based on the full heal amount, even if the target is already at max HP.
 - Make threat multiplier configurable per effect. Currently damage generates 1:1 threat and heal generates 0.5x threat, both hardcoded. A config field (e.g. "threat_multiplier") would allow tuning per ability.
-- TimedPerkCaches in world/zone/room currently apply to all players and no mobs
+- TimedPerkCaches in world/zone/room currently apply to all players and no mobs. Wiring mobs to subscribe to their room's PerkCache would let restriction checks move from `room.Restricts(actor, flag)` onto the actor (the actor would resolve room flags via inheritance), but it also requires a filter so player-side room buffs (e.g. an AC buff cast on the room) don't accidentally also buff the mobs being fought. That filter is what `target`/audience metadata on perks would be for; revisit when the use case lands.

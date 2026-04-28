@@ -6,8 +6,11 @@
         "description": "The minute you step off onto this floor you realize it was a mistake. The old rotted floorboards suddenly give way and you fall down, impaling yourself on jagged boards below.",
         "zone_id": "the-city-of-thalos",
         "exits": {},
-        "flags": [
-            "death"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_death"
+            }
         ]
     },
     "circlemud_unused": {

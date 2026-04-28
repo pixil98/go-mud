@@ -26,7 +26,7 @@ func (e *attackEffect) ValidateConfig(_ map[string]string) error { return nil }
 
 func (e *attackEffect) Create(_ string, _ map[string]string, targets []assets.TargetSpec) EffectFunc {
 	return func(actor game.Actor, resolved map[string][]*TargetRef, result *AbilityResult) error {
-		if actor.HasGrant(assets.PerkGrantPeaceful, "") {
+		if actor.Room().Restricts(actor, assets.RoomFlagPeaceful) {
 			return errPeacefulArea
 		}
 		for _, spec := range targets {
@@ -106,7 +106,7 @@ func (e *damageEffect) Create(_ string, config map[string]string, targets []asse
 	}
 
 	return func(actor game.Actor, resolved map[string][]*TargetRef, _ *AbilityResult) error {
-		if actor.HasGrant(assets.PerkGrantPeaceful, "") {
+		if actor.Room().Restricts(actor, assets.RoomFlagPeaceful) {
 			return errPeacefulArea
 		}
 

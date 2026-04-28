@@ -13,8 +13,11 @@
                 "room_id": "the-orc-enclave-6212"
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ],
         "extra_descs": [
             {

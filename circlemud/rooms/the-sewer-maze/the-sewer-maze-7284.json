@@ -6,8 +6,11 @@
         "description": "This room is very hot. There are flames surrounding you. You can see no exits at all! Skeletons are lying all over the floor.",
         "zone_id": "the-sewer-maze",
         "exits": {},
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ],
         "extra_descs": [
             {

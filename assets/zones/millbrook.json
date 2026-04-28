@@ -5,7 +5,10 @@
         "reset_mode": "lifespan",
         "lifespan": "6h",
         "perks": [
-            { "type": "grant", "key": "peaceful" }
+            {
+                "type": "grant",
+                "key": "room_peaceful"
+            }
         ]
     }
 }

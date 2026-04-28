@@ -23,8 +23,11 @@
                 "description": "The Woodsman's Inn can be seen a short distance to the west, it appears to be the source of the smoke."
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ]
     },
     "circlemud_unused": {

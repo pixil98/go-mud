@@ -18,8 +18,8 @@
             },
             {
                 "type": "grant",
-                "key": "ignore_room_flag",
-                "arg": "dark"
+                "key": "ignore_restriction",
+                "arg": "room_dark"
             },
             {
                 "type": "modifier",

@@ -19,8 +19,11 @@
                 "description": "West. The mud reaches that way too, all the way up the walls."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ],
         "extra_descs": [
             {

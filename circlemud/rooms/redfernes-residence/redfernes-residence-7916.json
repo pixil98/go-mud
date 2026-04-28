@@ -15,8 +15,11 @@
                 "description": "The chain down there is swinging wildly back and forth. Going down there will be pretty risky!"
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ]
     },
     "circlemud_unused": {

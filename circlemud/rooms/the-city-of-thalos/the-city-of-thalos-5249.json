@@ -6,8 +6,11 @@
         "description": "As you descend the ladder, the rotted rungs break, sending you quickly to your demise far below on the city street. Splat.",
         "zone_id": "the-city-of-thalos",
         "exits": {},
-        "flags": [
-            "death"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_death"
+            }
         ]
     },
     "circlemud_unused": {

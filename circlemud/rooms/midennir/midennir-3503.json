@@ -14,8 +14,11 @@
                 "zone_id": "northern-midgaard-main-city"
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ]
     },
     "circlemud_unused": {

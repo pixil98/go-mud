@@ -15,8 +15,11 @@
                 "description": "THAT WAY IS CERTAIN DEATH!!!! You can see the wind tearing at the chain down below you. It swings like a furious serpent from side to side! The descent is ABSOLUTELY out of the QUESTION."
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ]
     },
     "circlemud_unused": {

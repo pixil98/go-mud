@@ -15,8 +15,11 @@
                 "description": "You see a set of steps leading up into the spectator stands."
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ],
         "extra_descs": [
             {

@@ -19,9 +19,15 @@
                 "description": "To the west you see a load of mud and sediment in the sewer. That should be an intersection there but you're not quite sure."
             }
         },
-        "flags": [
-            "dark",
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            },
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ],
         "extra_descs": [
             {

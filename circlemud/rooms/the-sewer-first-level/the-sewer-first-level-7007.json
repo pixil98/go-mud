@@ -15,8 +15,11 @@
                 "description": "The pipe leads into a intersection that goes south and east. The floor here is still covered in mud."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ],
         "extra_descs": [
             {

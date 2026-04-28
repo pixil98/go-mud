@@ -15,9 +15,15 @@
                 "description": "You see the inner sanctum."
             }
         },
-        "flags": [
-            "nomob",
-            "nomagic"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            },
+            {
+                "type": "grant",
+                "key": "room_nomagic"
+            }
         ],
         "extra_descs": [
             {

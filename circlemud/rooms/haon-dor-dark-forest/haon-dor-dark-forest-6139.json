@@ -16,8 +16,11 @@
                 "description": "The path leads southwards through the underbrush."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ]
     },
     "circlemud_unused": {

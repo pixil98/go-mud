@@ -19,8 +19,11 @@
                 "description": "Another intersection lies to the south. It leads west and south."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ],
         "mobile_spawns": [
             "the-sewer-first-level-7001"

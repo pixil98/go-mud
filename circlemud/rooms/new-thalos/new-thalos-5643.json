@@ -14,8 +14,11 @@
                 "zone_id": "the-great-eastern-desert"
             }
         },
-        "flags": [
-            "water"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_water"
+            }
         ]
     },
     "circlemud_unused": {

@@ -75,7 +75,7 @@ func (f *AssistHandlerFactory) handle(ctx context.Context, in *CommandInput) err
 	if char.IsInCombat() {
 		return NewUserError("You're already fighting!")
 	}
-	if char.HasGrant(assets.PerkGrantPeaceful, "") {
+	if char.Room().Restricts(char, assets.RoomFlagPeaceful) {
 		return errPeacefulArea
 	}
 

@@ -15,9 +15,15 @@
                 "description": "You stare into mid-air, and right under there is absolutely nothing but darkness. You shiver by the thought of falling that distance."
             }
         },
-        "flags": [
-            "dark",
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            },
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ],
         "mobile_spawns": [
             "the-sewer-first-level-7006"

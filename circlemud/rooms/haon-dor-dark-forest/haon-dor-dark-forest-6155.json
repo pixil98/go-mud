@@ -11,8 +11,11 @@
                 "description": "The hallway to the north looks quite grand."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ],
         "mobile_spawns": [
             "haon-dor-dark-forest-6116"

@@ -14,8 +14,11 @@
                 }
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ],
         "object_spawns": [
             {

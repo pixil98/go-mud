@@ -85,7 +85,7 @@ func (f *MoveHandlerFactory) handle(ctx context.Context, in *CommandInput) error
 		return NewUserError("Alas, you cannot go that way...")
 	}
 
-	if toRoom.Room.Get().HasFlag(assets.RoomFlagSingleOccupant) && toRoom.PlayerCount() >= 1 {
+	if toRoom.Restricts(char, assets.RoomFlagSingleOccupant) && toRoom.PlayerCount() >= 1 {
 		return NewUserError("There isn't enough room for you to enter.")
 	}
 

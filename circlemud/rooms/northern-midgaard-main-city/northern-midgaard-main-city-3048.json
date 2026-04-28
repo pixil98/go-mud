@@ -11,12 +11,15 @@
                 "description": "You see the alley."
             }
         },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomagic"
+            }
+        ],
         "mobile_spawns": [
             "northern-midgaard-main-city-3046",
             "northern-midgaard-main-city-3065"
-        ],
-        "flags": [
-            "nomagic"
         ]
     },
     "circlemud_unused": {

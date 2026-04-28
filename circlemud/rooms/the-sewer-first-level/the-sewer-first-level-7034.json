@@ -15,8 +15,11 @@
                 "description": "To the south you can see another bend leading west."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ]
     },
     "circlemud_unused": {

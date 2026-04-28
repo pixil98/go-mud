@@ -13,9 +13,15 @@
                 "room_id": "the-great-eastern-desert-5066"
             }
         },
-        "flags": [
-            "dark",
-            "nomagic"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            },
+            {
+                "type": "grant",
+                "key": "room_nomagic"
+            }
         ],
         "mobile_spawns": [
             "the-great-eastern-desert-5005"

@@ -6,8 +6,11 @@
         "description": "Mahatma, that silly thief, is here, and he steals everything you have. He says 'Here, have a quick trip to the Temple of Midgaard.' He plunges a black dagger into your back...",
         "zone_id": "arachnos",
         "exits": {},
-        "flags": [
-            "death"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_death"
+            }
         ]
     },
     "circlemud_unused": {

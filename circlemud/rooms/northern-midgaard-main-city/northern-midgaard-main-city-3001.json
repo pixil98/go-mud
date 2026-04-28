@@ -30,12 +30,16 @@
         "perks": [
             {
                 "type": "grant",
-                "key": "peaceful"
+                "key": "room_nomob"
+            },
+            {
+                "type": "grant",
+                "key": "room_peaceful"
+            },
+            {
+                "type": "grant",
+                "key": "room_nomagic"
             }
-        ],
-        "flags": [
-            "nomob",
-            "nomagic"
         ],
         "object_spawns": [
             {

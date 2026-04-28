@@ -15,8 +15,11 @@
                 "description": "The stairs are old, but in good repair. They lead up into the tower."
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ],
         "extra_descs": [
             {

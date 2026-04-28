@@ -16,9 +16,15 @@
                 "description": "The muddy drainpipe leads down through the mud, otherwise it is utterly dark."
             }
         },
-        "flags": [
-            "dark",
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            },
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ],
         "extra_descs": [
             {

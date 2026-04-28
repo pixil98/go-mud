@@ -15,8 +15,11 @@
                 "description": "It is hard to see, but it looks like the drain runs a little bit upwards."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ]
     },
     "circlemud_unused": {

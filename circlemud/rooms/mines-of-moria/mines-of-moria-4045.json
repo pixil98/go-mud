@@ -15,8 +15,11 @@
                 "description": "The valley lies at the bottom of the steep trail."
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ]
     },
     "circlemud_unused": {

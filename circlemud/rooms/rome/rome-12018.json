@@ -19,8 +19,11 @@
                 "description": "An acrid, almost medicinal smell is coming from that direction."
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ],
         "extra_descs": [
             {

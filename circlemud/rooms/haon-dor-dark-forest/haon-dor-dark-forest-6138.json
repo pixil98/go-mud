@@ -15,8 +15,11 @@
                 "description": "The dusty trail leads east through the trees."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ],
         "extra_descs": [
             {

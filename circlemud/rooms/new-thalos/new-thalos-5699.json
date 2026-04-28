@@ -14,9 +14,15 @@
                 }
             }
         },
-        "flags": [
-            "dark",
-            "water"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            },
+            {
+                "type": "grant",
+                "key": "room_water"
+            }
         ],
         "mobile_spawns": [
             "new-thalos-5469"

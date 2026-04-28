@@ -11,8 +11,11 @@
                 "description": "You see a well manicured path that winds through the estate."
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ],
         "extra_descs": [
             {

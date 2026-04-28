@@ -131,16 +131,15 @@ const (
 	// PerkGrantAutoUse enables automatic ability use each combat tick.
 	// Arg format: "ability_id:cooldown_ticks" (e.g. "attack:1", "fireball:3").
 	PerkGrantAutoUse = "auto_use"
-	// PerkGrantPeaceful prevents the holder from initiating combat.
-	PerkGrantPeaceful = "peaceful"
 	// PerkGrantWearSlot grants one equipment slot of the type given in Arg
 	// (e.g. "head", "finger"). Duplicate grants of the same type create
 	// multiple slots (e.g. two "finger" grants = two ring slots).
 	PerkGrantWearSlot = "wear_slot"
-	// PerkGrantIgnoreRoomFlag exempts the holder from a restricting room flag.
-	// Arg is the flag name (e.g. "dark" for darkvision). Granted by racial
-	// traits, spells, or equipment like torches and lanterns.
-	PerkGrantIgnoreRoomFlag = "ignore_room_flag"
+	// PerkGrantIgnoreRestriction exempts the holder from a flag-style perk.
+	// Arg is the full prefixed key being ignored (e.g. "room_dark" for
+	// darkvision, "room_water" for waterwalk). Granted by racial traits,
+	// spells, or equipment like torches and lanterns.
+	PerkGrantIgnoreRestriction = "ignore_restriction"
 )
 
 // ---------------------------------------------------------------------------
@@ -172,6 +171,11 @@ const (
 //
 // modifier perks use Key and Value; their values are summed across all sources.
 // grant perks use Key and an optional Arg string for parameterized effects.
+//
+// Audience is encoded by convention in the Key prefix (e.g. "room_dark" is
+// a room property, "peaceful" with no prefix is an actor property). The
+// runtime never filters on prefix; it's a naming convention that keeps keys
+// unique across scopes and makes the audience readable at a glance.
 type Perk struct {
 	Type  string `json:"type"`
 	Key   string `json:"key,omitempty"`   // modifier: the key to modify; grant: the keyword to grant

@@ -15,9 +15,15 @@
                 "description": "You see the entrance hall to the warriors' guild."
             }
         },
-        "flags": [
-            "nomob",
-            "nomagic"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            },
+            {
+                "type": "grant",
+                "key": "room_nomagic"
+            }
         ],
         "mobile_spawns": [
             "northern-midgaard-main-city-3045"

@@ -5,32 +5,136 @@
         "name": "Naga",
         "abbreviation": "Na",
         "perks": [
-            { "type": "grant", "key": "wear_slot", "arg": "light" },
-            { "type": "grant", "key": "wear_slot", "arg": "head" },
-            { "type": "grant", "key": "wear_slot", "arg": "neck" },
-            { "type": "grant", "key": "wear_slot", "arg": "neck" },
-            { "type": "grant", "key": "wear_slot", "arg": "about" },
-            { "type": "grant", "key": "wear_slot", "arg": "body" },
-            { "type": "grant", "key": "wear_slot", "arg": "arms" },
-            { "type": "grant", "key": "wear_slot", "arg": "wrist" },
-            { "type": "grant", "key": "wear_slot", "arg": "wrist" },
-            { "type": "grant", "key": "wear_slot", "arg": "hands" },
-            { "type": "grant", "key": "wear_slot", "arg": "finger" },
-            { "type": "grant", "key": "wear_slot", "arg": "finger" },
-            { "type": "grant", "key": "wear_slot", "arg": "wield" },
-            { "type": "grant", "key": "wear_slot", "arg": "off_hand" },
-            { "type": "grant", "key": "wear_slot", "arg": "hold" },
-            { "type": "grant", "key": "wear_slot", "arg": "waist" },
-            { "type": "grant", "key": "wear_slot", "arg": "tail" },
-            { "type": "modifier", "key": "core.stats.str", "value": 2 },
-            { "type": "modifier", "key": "core.stats.dex", "value": -2 },
-            { "type": "modifier", "key": "core.resource.hp.max", "value": 20 },
-            { "type": "modifier", "key": "core.resource.hp.per_level", "value": 5 },
-            { "type": "modifier", "key": "core.resource.hp.regen", "value": 1 },
-            { "type": "modifier", "key": "core.combat.ac.flat", "value": 10 },
-            { "type": "modifier", "key": "core.action_points.max", "value": 1 },
-            { "type": "grant", "key": "ignore_room_flag", "arg": "dark" },
-            { "type": "grant", "key": "unlock_ability", "arg": "attack" }
+            {
+                "type": "grant",
+                "key": "wear_slot",
+                "arg": "light"
+            },
+            {
+                "type": "grant",
+                "key": "wear_slot",
+                "arg": "head"
+            },
+            {
+                "type": "grant",
+                "key": "wear_slot",
+                "arg": "neck"
+            },
+            {
+                "type": "grant",
+                "key": "wear_slot",
+                "arg": "neck"
+            },
+            {
+                "type": "grant",
+                "key": "wear_slot",
+                "arg": "about"
+            },
+            {
+                "type": "grant",
+                "key": "wear_slot",
+                "arg": "body"
+            },
+            {
+                "type": "grant",
+                "key": "wear_slot",
+                "arg": "arms"
+            },
+            {
+                "type": "grant",
+                "key": "wear_slot",
+                "arg": "wrist"
+            },
+            {
+                "type": "grant",
+                "key": "wear_slot",
+                "arg": "wrist"
+            },
+            {
+                "type": "grant",
+                "key": "wear_slot",
+                "arg": "hands"
+            },
+            {
+                "type": "grant",
+                "key": "wear_slot",
+                "arg": "finger"
+            },
+            {
+                "type": "grant",
+                "key": "wear_slot",
+                "arg": "finger"
+            },
+            {
+                "type": "grant",
+                "key": "wear_slot",
+                "arg": "wield"
+            },
+            {
+                "type": "grant",
+                "key": "wear_slot",
+                "arg": "off_hand"
+            },
+            {
+                "type": "grant",
+                "key": "wear_slot",
+                "arg": "hold"
+            },
+            {
+                "type": "grant",
+                "key": "wear_slot",
+                "arg": "waist"
+            },
+            {
+                "type": "grant",
+                "key": "wear_slot",
+                "arg": "tail"
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.str",
+                "value": 2
+            },
+            {
+                "type": "modifier",
+                "key": "core.stats.dex",
+                "value": -2
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.max",
+                "value": 20
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.per_level",
+                "value": 5
+            },
+            {
+                "type": "modifier",
+                "key": "core.resource.hp.regen",
+                "value": 1
+            },
+            {
+                "type": "modifier",
+                "key": "core.combat.ac.flat",
+                "value": 10
+            },
+            {
+                "type": "modifier",
+                "key": "core.action_points.max",
+                "value": 1
+            },
+            {
+                "type": "grant",
+                "key": "ignore_restriction",
+                "arg": "room_dark"
+            },
+            {
+                "type": "grant",
+                "key": "unlock_ability",
+                "arg": "attack"
+            }
         ]
     }
 }

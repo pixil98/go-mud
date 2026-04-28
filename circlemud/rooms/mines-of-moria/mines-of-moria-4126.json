@@ -15,10 +15,19 @@
                 "description": "You can see the light emanating from the southern exit of the crawlway."
             }
         },
-        "flags": [
-            "dark",
-            "nomob",
-            "single_occupant"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            },
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            },
+            {
+                "type": "grant",
+                "key": "room_single_occupant"
+            }
         ]
     },
     "circlemud_unused": {

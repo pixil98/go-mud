@@ -15,8 +15,11 @@
                 "description": "You see a lot of light, bright as daylight, but nothing of interest."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ]
     },
     "circlemud_unused": {

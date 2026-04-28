@@ -16,8 +16,11 @@
                 "description": "Down the well there is even less light than up here, so... sorry, you can't see a thing. There are metal bars in the side leading down into the darkness."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ],
         "extra_descs": [
             {

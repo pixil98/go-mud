@@ -44,8 +44,11 @@
                 "description": "You see the staircase extending upwards into the very high tower. It ends in what seems like a large bedroom up there."
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ],
         "extra_descs": [
             {

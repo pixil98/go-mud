@@ -15,8 +15,11 @@
                 "description": "You see nothing but the thick clouds. They've closed completely around the Chain."
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ]
     },
     "circlemud_unused": {

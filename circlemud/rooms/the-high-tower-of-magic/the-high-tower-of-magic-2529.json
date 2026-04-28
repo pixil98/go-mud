@@ -6,9 +6,15 @@
         "description": "As you dive beneath the putrid waters, you feel a strong tug and a whirlpool drags you under. You are sucked into blackness. You feel your lungs burst from lack of oxygen. Just as you feel your life fading, you notice a change in direction... and are sucked under by a rip tide.",
         "zone_id": "the-high-tower-of-magic",
         "exits": {},
-        "flags": [
-            "dark",
-            "death"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            },
+            {
+                "type": "grant",
+                "key": "room_death"
+            }
         ]
     },
     "circlemud_unused": {

@@ -15,8 +15,11 @@
                 "room_id": "southern-part-of-midgaard-3204"
             }
         },
-        "flags": [
-            "water"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_water"
+            }
         ]
     },
     "circlemud_unused": {

@@ -23,8 +23,11 @@
                 "description": "There is a marble staircase leading down."
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ],
         "mobile_spawns": [
             "rome-12004"

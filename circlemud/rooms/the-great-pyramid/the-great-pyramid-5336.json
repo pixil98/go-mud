@@ -15,8 +15,11 @@
                 "description": "You cannot see into the darkness of the low tunnel."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ]
     },
     "circlemud_unused": {

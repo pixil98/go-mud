@@ -15,8 +15,11 @@
                 "description": "Below you is a small path, probably used by the forest animals. You think that you could jump down with a little effort."
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ],
         "extra_descs": [
             {

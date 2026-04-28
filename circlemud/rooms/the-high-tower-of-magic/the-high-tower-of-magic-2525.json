@@ -14,8 +14,11 @@
                 "description": "No light penetrates the gloom of the stagnant pool."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ]
     },
     "circlemud_unused": {

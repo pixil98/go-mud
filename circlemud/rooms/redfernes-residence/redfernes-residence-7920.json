@@ -26,8 +26,11 @@
                 "zone_id": "southern-part-of-midgaard"
             }
         },
-        "flags": [
-            "death"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_death"
+            }
         ]
     },
     "circlemud_unused": {

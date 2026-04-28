@@ -19,8 +19,11 @@
                 "description": "It is too dark to see up the stairway."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ],
         "extra_descs": [
             {

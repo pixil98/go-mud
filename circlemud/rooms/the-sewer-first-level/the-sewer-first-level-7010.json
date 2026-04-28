@@ -15,8 +15,11 @@
                 "description": "East. The Pipe leads into utter darkness that way."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ]
     },
     "circlemud_unused": {

@@ -23,8 +23,11 @@
                 "description": "There is a table to the south occupied by a heavy drinker."
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ]
     },
     "circlemud_unused": {

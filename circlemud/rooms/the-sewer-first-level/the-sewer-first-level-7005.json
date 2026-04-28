@@ -15,8 +15,11 @@
                 "description": "South. There is even more mud in that direction than where you are now. Incredible."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ],
         "extra_descs": [
             {

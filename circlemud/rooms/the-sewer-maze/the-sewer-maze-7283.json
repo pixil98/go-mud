@@ -19,9 +19,15 @@
                 "description": "You can see a big fire to the west. It looks like a unhealthy place to enter!"
             }
         },
-        "flags": [
-            "dark",
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            },
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ],
         "extra_descs": [
             {

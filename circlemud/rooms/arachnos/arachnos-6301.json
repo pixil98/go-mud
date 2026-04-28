@@ -14,8 +14,11 @@
                 "zone_id": "haon-dor-dark-forest"
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ],
         "mobile_spawns": [
             "arachnos-6301"

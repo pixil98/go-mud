@@ -19,8 +19,11 @@
                 "description": "South. All you can see is more mud! Although the pipe goes into a bend leading west."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ],
         "extra_descs": [
             {

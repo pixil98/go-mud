@@ -11,8 +11,11 @@
                 "description": "The city lies below... far, far below."
             }
         },
-        "flags": [
-            "nomob"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomob"
+            }
         ],
         "mobile_spawns": [
             "the-city-of-thalos-5208"

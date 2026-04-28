@@ -16,8 +16,11 @@
                 "description": "The Dark Pit leads down and down and down... well you can't see the bottom anyway. There are bars that could function as a ladder on the side."
             }
         },
-        "flags": [
-            "dark"
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_dark"
+            }
         ],
         "mobile_spawns": [
             "the-sewer-first-level-7001",

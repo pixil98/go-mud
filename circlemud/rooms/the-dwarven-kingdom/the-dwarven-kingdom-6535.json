@@ -10,11 +10,14 @@
                 "room_id": "the-dwarven-kingdom-6517"
             }
         },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_nomagic"
+            }
+        ],
         "mobile_spawns": [
             "the-dwarven-kingdom-6504"
-        ],
-        "flags": [
-            "nomagic"
         ]
     },
     "circlemud_unused": {

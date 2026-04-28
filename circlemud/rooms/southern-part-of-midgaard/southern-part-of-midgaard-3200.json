@@ -14,6 +14,12 @@
                 "zone_id": "river-island-of-minos"
             }
         },
+        "perks": [
+            {
+                "type": "grant",
+                "key": "room_water"
+            }
+        ],
         "extra_descs": [
             {
                 "keywords": [
@@ -21,9 +27,6 @@
                 ],
                 "description": "It is built from large grey rocks that have been fastened to each other with some kind of mortar. Looks pretty solid."
             }
-        ],
-        "flags": [
-            "water"
         ]
     },
     "circlemud_unused": {
