@@ -3,7 +3,7 @@ module github.com/pixil98/go-mud
 go 1.25.6
 
 require (
-	github.com/AlexanderGrooff/mermaid-ascii v0.0.0-20260221123917-b5d02c35decf
+	github.com/AlexanderGrooff/mermaid-ascii v0.0.0-20260427023503-6fffb8e2714a
 	github.com/Masterminds/sprig/v3 v3.3.0
 	github.com/google/uuid v1.6.0
 	github.com/iammegalith/telnet v0.0.0-20230201230822-b5765a6db0cf
