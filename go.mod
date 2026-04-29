@@ -10,9 +10,9 @@ require (
 	github.com/muesli/reflow v0.3.0
 	github.com/pixil98/go-service v0.0.0-20260417183655-e748a89d22a0
 	github.com/pixil98/go-testutil v0.0.0-20260123222118-fa427b8db36a
-	golang.org/x/crypto v0.49.0
+	golang.org/x/crypto v0.50.0
 	golang.org/x/sync v0.20.0
-	golang.org/x/text v0.35.0
+	golang.org/x/text v0.36.0
 )
 
 require (
@@ -61,6 +61,6 @@ require (
 	go.mongodb.org/mongo-driver/v2 v2.5.0 // indirect
 	golang.org/x/arch v0.25.0 // indirect
 	golang.org/x/net v0.52.0 // indirect
-	golang.org/x/sys v0.42.0 // indirect
+	golang.org/x/sys v0.43.0 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
 )
