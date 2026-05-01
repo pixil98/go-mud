@@ -73,7 +73,7 @@ func (f *WearHandlerFactory) wearOne(actor WearActor, target *TargetRef) error {
 	obj := target.Obj.instance.Object.Get()
 
 	if !obj.HasFlag(assets.ObjectFlagWearable) {
-		return NewUserError(fmt.Sprintf("You can't wear %s.", obj.ShortDesc))
+		return NewUserError(fmt.Sprintf("You can't equip %s.", obj.ShortDesc))
 	}
 
 	oi := target.Obj.source.RemoveObj(target.Obj.InstanceId)
@@ -96,12 +96,12 @@ func (f *WearHandlerFactory) wearOne(actor WearActor, target *TargetRef) error {
 	if slot == "" {
 		actor.Inventory().AddObj(oi)
 		if slotFull {
-			return NewUserError("You're already wearing something in that slot.")
+			return NewUserError("You already have something equipped in that slot.")
 		}
-		return NewUserError(fmt.Sprintf("You have nowhere to wear %s.", obj.ShortDesc))
+		return NewUserError(fmt.Sprintf("You have nowhere to equip %s.", obj.ShortDesc))
 	}
 
-	actor.Publish([]byte(fmt.Sprintf("You wear %s.", obj.ShortDesc)), nil)
-	actor.Room().Publish([]byte(fmt.Sprintf("%s wears %s.", actor.Name(), obj.ShortDesc)), []string{actor.Id()})
+	actor.Publish([]byte(fmt.Sprintf("You equip %s.", obj.ShortDesc)), nil)
+	actor.Room().Publish([]byte(fmt.Sprintf("%s equips %s.", actor.Name(), obj.ShortDesc)), []string{actor.Id()})
 	return nil
 }

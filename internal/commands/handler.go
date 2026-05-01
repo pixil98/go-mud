@@ -382,8 +382,11 @@ func (h *Handler) validateSpec(cmd *assets.Command, spec *HandlerSpec) error {
 
 // resolve finds the compiled command for a given input string.
 // It tries an exact match first, then falls back to prefix matching
-// with priority-based disambiguation.
-func (h *Handler) resolve(input string) (*compiledCommand, error) {
+// with priority-based disambiguation. When multiple commands match at the
+// same priority, hasArgs is used to prefer commands whose input requirements
+// match — commands with required inputs when args are present, commands
+// without when they are absent.
+func (h *Handler) resolve(input string, hasArgs bool) (*compiledCommand, error) {
 	id := strings.ToLower(input)
 
 	// Exact match always wins.
@@ -427,7 +430,22 @@ func (h *Handler) resolve(input string) (*compiledCommand, error) {
 		return best[0].compiled, nil
 	}
 
-	// Ambiguous — list the matching commands alphabetically.
+	// Disambiguate by input requirements: prefer commands that expect args
+	// when the player provided them, and commands that don't when they didn't.
+	var filtered []match
+	for _, m := range best {
+		if hasArgs == hasRequiredInput(m.compiled.cmd) {
+			filtered = append(filtered, m)
+		}
+	}
+	if len(filtered) == 1 {
+		return filtered[0].compiled, nil
+	}
+	if len(filtered) > 1 {
+		best = filtered
+	}
+
+	// Still ambiguous — list the matching commands alphabetically.
 	names := make([]string, len(best))
 	for i, m := range best {
 		names[i] = m.id
@@ -436,9 +454,19 @@ func (h *Handler) resolve(input string) (*compiledCommand, error) {
 	return nil, NewUserError(fmt.Sprintf("Did you mean: %s?", strings.Join(names, ", ")))
 }
 
+// hasRequiredInput reports whether a command has any required input parameters.
+func hasRequiredInput(cmd *assets.Command) bool {
+	for _, input := range cmd.Inputs {
+		if input.Required {
+			return true
+		}
+	}
+	return false
+}
+
 // Exec executes a command with the given arguments.
 func (h *Handler) Exec(ctx context.Context, actor game.Actor, cmdName string, rawArgs ...string) error {
-	compiled, err := h.resolve(cmdName)
+	compiled, err := h.resolve(cmdName, len(rawArgs) > 0)
 	if err != nil {
 		return err
 	}

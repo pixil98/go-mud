@@ -3,15 +3,16 @@
     "id": "remove",
     "spec": {
         "handler": "move_obj",
+        "aliases": ["unequip"],
         "category": "items",
-        "description": "Remove a worn item back to your inventory.",
+        "description": "Remove an equipped item back to your inventory.",
         "config": {
             "destination": "inventory",
             "self_message": "You remove {{ .Targets.item.Obj.Name }}.",
             "room_message": "{{ .Actor.Name }} removes {{ .Targets.item.Obj.Name }}."
         },
         "targets": [
-            {"name": "item", "types": ["object"], "scopes": ["equipment"], "input": "item", "not_found": "You aren't wearing anything called '{{ .Inputs.item }}'.", "allow_all": true}
+            {"name": "item", "types": ["object"], "scopes": ["equipment"], "input": "item", "not_found": "You don't have anything called '{{ .Inputs.item }}' equipped.", "allow_all": true}
         ],
         "inputs": [
             {"name": "item", "type": "string", "required": true, "missing": "Remove what?"}

@@ -51,7 +51,7 @@ func (f *EquipmentHandlerFactory) handle(ctx context.Context, char EquipmentActo
 		})
 	}
 
-	lines := []string{"You are wearing:"}
+	lines := []string{"You have equipped:"}
 	lines = append(lines, FormatEquipmentSlots(eq, slots)...)
 
 	char.Publish([]byte(strings.Join(lines, "\n")), nil)

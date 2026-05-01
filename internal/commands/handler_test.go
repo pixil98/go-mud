@@ -212,29 +212,40 @@ func TestHandler_parseInputs(t *testing.T) {
 }
 
 func TestHandler_resolve(t *testing.T) {
-	mkCmd := func(priority int) *compiledCommand {
-		return &compiledCommand{cmd: &assets.Command{Priority: priority}}
+	mkCmd := func(priority int, requiredInputs ...string) *compiledCommand {
+		cmd := &assets.Command{Priority: priority}
+		for _, name := range requiredInputs {
+			cmd.Inputs = append(cmd.Inputs, assets.InputSpec{Name: name, Type: assets.InputTypeString, Required: true})
+		}
+		return &compiledCommand{cmd: cmd}
 	}
 
 	// delta has an alias "dd" — both keys share the same compiledCommand.
 	deltaCmd := mkCmd(0)
 
+	// equip requires an input; equipment does not.
+	equipCmd := mkCmd(0, "item")
+	equipmentCmd := mkCmd(0)
+
 	h := &Handler{
 		compiled: map[string]*compiledCommand{
-			"alpha": mkCmd(10),
-			"apple": mkCmd(0),
-			"beta":  mkCmd(5),
-			"bat":   mkCmd(5),
-			"gamma": mkCmd(0),
-			"delta": deltaCmd,
-			"dd":    deltaCmd,
+			"alpha":     mkCmd(10),
+			"apple":     mkCmd(0),
+			"beta":      mkCmd(5),
+			"bat":       mkCmd(5),
+			"gamma":     mkCmd(0),
+			"delta":     deltaCmd,
+			"dd":        deltaCmd,
+			"equip":     equipCmd,
+			"equipment": equipmentCmd,
 		},
 	}
 
 	tests := map[string]struct {
-		input  string
-		expCmd *compiledCommand
-		expErr string
+		input   string
+		hasArgs bool
+		expCmd  *compiledCommand
+		expErr  string
 	}{
 		"exact match": {
 			input:  "gamma",
@@ -276,11 +287,26 @@ func TestHandler_resolve(t *testing.T) {
 			input:  "delta",
 			expCmd: deltaCmd,
 		},
+		"prefix disambiguates by args: no args prefers no-input command": {
+			input:   "eq",
+			hasArgs: false,
+			expCmd:  equipmentCmd,
+		},
+		"prefix disambiguates by args: with args prefers input command": {
+			input:   "eq",
+			hasArgs: true,
+			expCmd:  equipCmd,
+		},
+		"exact match ignores hasArgs": {
+			input:   "equip",
+			hasArgs: false,
+			expCmd:  equipCmd,
+		},
 	}
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			got, err := h.resolve(tt.input)
+			got, err := h.resolve(tt.input, tt.hasArgs)
 
 			if tt.expErr != "" {
 				if err == nil {
